@@ -773,7 +773,7 @@ daniel.boehnke@dlr.de
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
                     <xsd:element name="eta" type="doubleBaseType"/>
-                    <xsd:element name="ksi" type="doubleBaseType"/>
+                    <xsd:element name="xsi" type="doubleBaseType"/>
                     <xsd:element name="relHeight" type="doubleBaseType"/>
                     <xsd:element name="material" type="materialDefinitionType"/>
                 </xsd:sequence>
@@ -9227,7 +9227,7 @@ daniel.boehnke@dlr.de
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:element maxOccurs="unbounded" minOccurs="0" name="fusealgeCutLoadsEnvelope" type="componentCutLoadsEnvelopeType">
+                    <xsd:element maxOccurs="unbounded" minOccurs="0" name="fuselageCutLoadsEnvelope" type="componentCutLoadsEnvelopeType">
                     </xsd:element>
                     <xsd:element maxOccurs="unbounded" minOccurs="0" name="wingCutLoadsEnvelope" type="componentCutLoadsEnvelopeType">
                     </xsd:element>
@@ -13528,6 +13528,130 @@ daniel.boehnke@dlr.de
         </xsd:complexContent>
     </xsd:complexType>
 
+    <xsd:complexType name="fuselageCutOutType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>fuselageCutOutType</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>fuselageCutOut type, containing a fuselage cutout definition</ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="name" type="stringBaseType" minOccurs="0" maxOccurs="1">
+                        <xsd:annotation>
+                            <xsd:documentation>Name of the cutout</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="description" type="stringBaseType" minOccurs="0" maxOccurs="1">
+                        <xsd:annotation>
+                            <xsd:documentation>Description of the cutout</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="positionX" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>X position of the cutout center point</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="referenceY" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Y offset of the cutout reference point</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="referenceZ" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Z offset of the cutout reference point</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="referenceAngle" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Angle in degrees of the vector pointing from the cutout reference point to the cutout center point, measured relative to the direction of the fuselage z axis.</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="orientationVector" type="pointXYZType">
+                        <xsd:annotation>
+                            <xsd:documentation>Coordinates of the unit vector defining the direction of extrusion</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="alignmentVector" type="pointXYZType" minOccurs="0" maxOccurs="1">
+                        <xsd:annotation>
+                            <xsd:documentation>Coordinates of the unit vector defining the y-axis of the local cutout coordinate system. Must be normal to the orientationVector.</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="deltaY" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>This value is used to define the width of the cutout</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="deltaZ" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>This value is used to define the height of the cutout</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="deltaY1" type="doubleBaseType" minOccurs="0" maxOccurs="1">
+                        <xsd:annotation>
+                            <xsd:documentation>This value is used to define the width of the cutout</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="deltaZ1" type="doubleBaseType" minOccurs="0" maxOccurs="1">
+                        <xsd:annotation>
+                            <xsd:documentation>This value is used to define the height of the cutout</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="filletRadius" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Fillet radius of the cut element (absolute value)</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="cutoutType">
+                        <xsd:annotation>
+                            <xsd:documentation>Cutout type. Determines the type of the cutout and how it is treated by the tools. Possible values: ("window"|"door"|"ramp")</xsd:documentation>
+                        </xsd:annotation>
+                        <xsd:complexType>
+                            <xsd:simpleContent>
+                                <xsd:restriction base="stringBaseType">
+                                    <xsd:enumeration value="window" />
+                                    <xsd:enumeration value="door" />
+                                    <xsd:enumeration value="paxDoor" />
+                                    <xsd:enumeration value="emergencyDoor" />
+                                    <xsd:enumeration value="cargoDoor" />
+                                    <xsd:enumeration value="ramp" />
+                                </xsd:restriction>
+                            </xsd:simpleContent>
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:all>
+                <xsd:attribute name="uID" type="xsd:string" use="required" />
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    <xsd:complexType name="fuselageCutOutsType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>fuselageCutOutsType</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>fuselageCutOuts type, containing fuselage cutouts</ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element maxOccurs="unbounded" name="element" type="fuselageCutOutType" />
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
 
     <xsd:complexType name="fuselageElementsType">
         
@@ -13856,6 +13980,7 @@ daniel.boehnke@dlr.de
                     <xsd:element minOccurs="0" name="decks" type="decksType"/>
                     <xsd:element minOccurs="0" name="dynamicAircraftModel" type="dynamicAircraftModelType"/>
                     <xsd:element minOccurs="0" name="fuelTanks" type="fuselageFuelTanksType"/>
+                    <xsd:element minOccurs="0" name="cutOuts" type="fuselageCutOutsType"/>
                 </xsd:all>
                 <xsd:attribute name="uID" type="xsd:string" use="required"/>
                 <xsd:attribute name="symmetry" use="optional">
@@ -29461,36 +29586,59 @@ daniel.boehnke@dlr.de
     </xsd:complexContent>
 </xsd:complexType>  
 
+    <xsd:complexType name="steffsValidationBucklingFactorsType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>steffsValidationBucklingFactorsType</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para />
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element minOccurs="1" name="kc" type="doubleBaseType" />
+                    <xsd:element minOccurs="1" name="ks" type="doubleBaseType" />
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
 
     <xsd:complexType name="steffsSizingParametersType">
-    <xsd:annotation>
-        <xsd:appinfo>
-            <sd:schemaDoc>
-                <ddue:summary>
-                    <ddue:para>steffsSizingParametersType</ddue:para>
-                </ddue:summary>
-                <ddue:remarks>
-                    <ddue:para/>
-                </ddue:remarks>
-            </sd:schemaDoc>
-        </xsd:appinfo>
-    </xsd:annotation>
-    <xsd:complexContent>
-        <xsd:extension base="complexBaseType">
-            <xsd:sequence>
-                <xsd:element minOccurs="1" name="kc" type="doubleBaseType"/>
-                <xsd:element minOccurs="1" name="ks" type="doubleBaseType"/>
-                <xsd:element minOccurs="1" name="skinStringerRatio" type="doubleBaseType"/>
-                <xsd:element minOccurs="1" name="minSkinThickness" type="doubleBaseType"/>
-                <xsd:element minOccurs="1" name="plasticityFactor" type="doubleBaseType"/>
-                <xsd:element minOccurs="1" name="pointsPerPerimeter" type="integerBaseType"/>
-                <xsd:element minOccurs="1" name="xPosCrossSectionCut" type="doubleBaseType"/>
-                <xsd:element minOccurs="1" name="considerCabinPressure" type="booleanBaseType"/>
-                <xsd:element minOccurs="1" name="consideredLoadCases" type="stringBaseType"/>
-            </xsd:sequence>
-        </xsd:extension>
-    </xsd:complexContent>
-</xsd:complexType>
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>steffsSizingParametersType</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para />
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element minOccurs="1" name="skinStringerRatio" type="doubleBaseType" />
+                    <xsd:element minOccurs="1" name="minSkinThickness" type="doubleBaseType" />
+                    <xsd:element minOccurs="1" name="plasticityFactor" type="doubleBaseType" />
+                    <xsd:element minOccurs="1" name="pointsPerPerimeter" type="integerBaseType" />
+                    <xsd:element minOccurs="1" name="xPosCrossSectionCut" type="doubleBaseType" />
+                    <xsd:element minOccurs="1" name="considerCabinPressure" type="booleanBaseType" />
+                    <xsd:element minOccurs="1" name="consideredLoadCases" type="stringBaseType" />
+                    <xsd:element minOccurs="1" name="bucklingBoundaryCondition" type="stringBaseType" />
+                    <xsd:element minOccurs="1" name="tConstForStress" type="doubleBaseType" />
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
 
 <xsd:complexType name="steffsToolType">
     <xsd:annotation>
@@ -29548,31 +29696,31 @@ daniel.boehnke@dlr.de
     </xsd:complexContent>
 </xsd:complexType>  
 
-<xsd:complexType name="steffsValidationModelType">
-    <xsd:annotation>
-        <xsd:appinfo>
-            <sd:schemaDoc>
-                <ddue:summary>
-                    <ddue:para>steffsValidationModelType</ddue:para>
-                </ddue:summary>
-                <ddue:remarks>
-                    <ddue:para/>
-                </ddue:remarks>
-            </sd:schemaDoc>
-        </xsd:appinfo>
-    </xsd:annotation>
-    <xsd:complexContent>
-        <xsd:extension base="complexBaseType">
-            <xsd:sequence>
-                <xsd:element minOccurs="1" name="numberStringers" type="integerBaseType"/>
-                <xsd:element minOccurs="1" name="numberFrames" type="integerBaseType"/>                 
-                <xsd:element minOccurs="1" name="width" type="doubleBaseType"/>
-                <xsd:element minOccurs="1" name="height" type="doubleBaseType"/>
-                <xsd:element minOccurs="1" name="length" type="doubleBaseType"/>
-            </xsd:sequence>
-        </xsd:extension>
-    </xsd:complexContent>
-</xsd:complexType>
+    <xsd:complexType name="steffsValidationModelType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>steffsValidationModelType</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para />
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element minOccurs="1" name="numberStringers" type="integerBaseType" />
+                    <xsd:element minOccurs="1" name="numberFrames" type="integerBaseType" />
+                    <xsd:element minOccurs="1" name="width" type="doubleBaseType" />
+                    <xsd:element minOccurs="1" name="height" type="doubleBaseType" />
+                    <xsd:element minOccurs="1" name="length" type="doubleBaseType" />
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
 
 <xsd:complexType name="steffsValidationParametersType">
     <xsd:annotation>
@@ -30823,103 +30971,106 @@ daniel.boehnke@dlr.de
     </xsd:complexType>
 
 
-<xsd:complexType name="trafumoToolType">
-	
-	<xsd:annotation>
-		<xsd:appinfo>
-			<sd:schemaDoc>
-				<ddue:summary>
-					<ddue:para>trafumoToolType</ddue:para>
-				</ddue:summary>
-				<ddue:remarks>
-					<ddue:para>trafumoTool type, containing transport aircraft fuselage
-						modelling tool </ddue:para>
-				</ddue:remarks>
-			</sd:schemaDoc>
-		</xsd:appinfo>
-	</xsd:annotation>
-	<xsd:complexContent>
-		<xsd:extension base="complexBaseType">
-			<xsd:sequence>
-				<xsd:element name="tool" type="toolType">
-					<xsd:annotation>
-						<xsd:documentation>Tool identification</xsd:documentation>
-					</xsd:annotation>
-				</xsd:element>
-				<xsd:element minOccurs="0" name="dummyWingFile" type="stringUIDBaseType">
-					<xsd:annotation>
-						<xsd:documentation>File name for dummy wing model to be able to model detailed center fuselage area without real wing model
-						</xsd:documentation>
-					</xsd:annotation>
-				</xsd:element>
-				<xsd:element minOccurs="0" name="fvkSizingPrepFuselage" type="booleanBaseType">
-					<xsd:annotation>
-						<xsd:documentation>Decision if the fuselage model has to be prepared for FVK sizing by other DLR partners
-						</xsd:documentation>
-					</xsd:annotation>
-				</xsd:element>
-				<xsd:element minOccurs="0" name="wingDamsToSingleFrame" type="booleanBaseType">
-					<xsd:annotation>
-						<xsd:documentation>Decision if the wing dynamic aircraft model points should be attached to a single frame or a larger x-region
-						</xsd:documentation>
-					</xsd:annotation>
-				</xsd:element>     
-				<xsd:element minOccurs="1" name="clampAtFrameUID" type="stringUIDBaseType">
-					<xsd:annotation>
-						<xsd:documentation>Refer to frame that has to be clamped
-						</xsd:documentation>
-					</xsd:annotation>
-				</xsd:element>                   	
-				<xsd:element minOccurs="1" name="analysisType">
-					<xsd:annotation>
-						<xsd:documentation>Definition of the analysis type used in TRAFUMO,
-							restricted to values 'modelling', 'analysis' and 'sizing'
-						</xsd:documentation>
-					</xsd:annotation>
-					<xsd:complexType>
-						<xsd:simpleContent>
-							<xsd:restriction base="stringBaseType">
-								<xsd:enumeration value="modelling"/>
-								<xsd:enumeration value="analysis"/>
-								<xsd:enumeration value="sizing"/>
-							</xsd:restriction>
-						</xsd:simpleContent>
-					</xsd:complexType>
-				</xsd:element>
-				<xsd:element name="aircraftModelUID" type="stringUIDBaseType"/>
-				<xsd:element name="aircraftFuselageUID" type="stringUIDBaseType"/>
-				<xsd:element minOccurs="0" name="aircraftWingUID" type="stringUIDBaseType"/>
-				<xsd:element minOccurs="0" name="aircraftHtpUID" type="stringUIDBaseType"/>
-				<xsd:element minOccurs="0" name="aircraftVtpUID" type="stringUIDBaseType"/>
-				<xsd:element minOccurs="0" name="createMetaData" type="booleanBaseType"/>
-				<xsd:element minOccurs="0" name="plotFormat">
-					<xsd:annotation>
-						<xsd:documentation>Definition of the graphics plot format to be
-							generated in TRAFUMO (png, jpg or bmp, default: *.png)
-						</xsd:documentation>
-					</xsd:annotation>
-					<xsd:complexType>
-						<xsd:simpleContent>
-							<xsd:restriction base="stringBaseType">
-								<xsd:enumeration value="png"/>
-								<xsd:enumeration value="PNG"/>
-								<xsd:enumeration value="jpg"/>
-								<xsd:enumeration value="JPG"/>
-								<xsd:enumeration value="bmp"/>
-								<xsd:enumeration value="BMP"/>
-							</xsd:restriction>
-						</xsd:simpleContent>
-					</xsd:complexType>
-				</xsd:element>
-				<xsd:element maxOccurs="1" minOccurs="0" name="consideredLoadCases" type="bkConsideredLoadCasesType"/>
-				<xsd:element maxOccurs="1" minOccurs="0" name="bkLoadCaseDefinitions" type="bkLoadCasesType"/>
-				<xsd:element maxOccurs="1" minOccurs="0" name="bkMassCaseDefinitions" type="bkMassCasesType"/>
-				<xsd:element maxOccurs="1" minOccurs="0" name="bkOperationalCaseDefinitions" type="bkOperationalCasesType"/>
-			</xsd:sequence>
-		</xsd:extension>
-	</xsd:complexContent>
-</xsd:complexType>
-
+    <xsd:complexType name="trafumoToolType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>trafumoToolType</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>trafumoTool type, containing transport aircraft fuselage modelling tool</ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="tool" type="toolType">
+                        <xsd:annotation>
+                            <xsd:documentation>Tool identification</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="dummyWingFile" type="stringUIDBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>File name for dummy wing model to be able to model detailed center fuselage area without real wing model</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="fvkSizingPrepFuselage" type="booleanBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Decision if the fuselage model has to be prepared for FVK sizing by other DLR partners</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="damPointsConsideration">
+                        <xsd:annotation>
+                            <xsd:documentation>Decision if only the fuselage dynamic aircraft model points or all dynamic aircraft model points should be regarded in TRAFUMO, restricted to values 'all' and 'fuselage'</xsd:documentation>
+                        </xsd:annotation>
+                        <xsd:complexType>
+                            <xsd:simpleContent>
+                                <xsd:restriction base="stringBaseType">
+                                    <xsd:enumeration value="all" />
+                                    <xsd:enumeration value="fuselage" />
+                                </xsd:restriction>
+                            </xsd:simpleContent>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="wingDamsToSingleFrame" type="booleanBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Decision if the wing dynamic aircraft model points should be attached to a single frame or a larger x-region</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="1" name="clampAtFrameUID" type="stringUIDBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Refer to frame that has to be clamped</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="1" name="analysisType">
+                        <xsd:annotation>
+                            <xsd:documentation>Definition of the analysis type used in TRAFUMO, restricted to values 'modelling', 'analysis' and 'sizing'</xsd:documentation>
+                        </xsd:annotation>
+                        <xsd:complexType>
+                            <xsd:simpleContent>
+                                <xsd:restriction base="stringBaseType">
+                                    <xsd:enumeration value="modelling" />
+                                    <xsd:enumeration value="analysis" />
+                                    <xsd:enumeration value="sizing" />
+                                </xsd:restriction>
+                            </xsd:simpleContent>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="aircraftModelUID" type="stringUIDBaseType" />
+                    <xsd:element name="aircraftFuselageUID" type="stringUIDBaseType" />
+                    <xsd:element minOccurs="0" name="aircraftWingUID" type="stringUIDBaseType" />
+                    <xsd:element minOccurs="0" name="aircraftHtpUID" type="stringUIDBaseType" />
+                    <xsd:element minOccurs="0" name="aircraftVtpUID" type="stringUIDBaseType" />
+                    <xsd:element minOccurs="0" name="aircraftStrutUID" type="stringUIDBaseType" />
+                    <xsd:element minOccurs="0" name="createMetaData" type="booleanBaseType" />
+                    <xsd:element minOccurs="0" name="plotFormat">
+                        <xsd:annotation>
+                            <xsd:documentation>Definition of the graphics plot format to be generated in TRAFUMO (png, jpg or bmp, default: *.png)</xsd:documentation>
+                        </xsd:annotation>
+                        <xsd:complexType>
+                            <xsd:simpleContent>
+                                <xsd:restriction base="stringBaseType">
+                                    <xsd:enumeration value="png" />
+                                    <xsd:enumeration value="PNG" />
+                                    <xsd:enumeration value="jpg" />
+                                    <xsd:enumeration value="JPG" />
+                                    <xsd:enumeration value="bmp" />
+                                    <xsd:enumeration value="BMP" />
+                                </xsd:restriction>
+                            </xsd:simpleContent>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element maxOccurs="1" minOccurs="0" name="consideredLoadCases" type="bkConsideredLoadCasesType" />
+                    <xsd:element maxOccurs="1" minOccurs="0" name="bkLoadCaseDefinitions" type="bkLoadCasesType" />
+                    <xsd:element maxOccurs="1" minOccurs="0" name="bkMassCaseDefinitions" type="bkMassCasesType" />
+                    <xsd:element maxOccurs="1" minOccurs="0" name="bkOperationalCaseDefinitions" type="bkOperationalCasesType" />
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
 
     <xsd:complexType name="trailingEdgeDeviceType">
         
