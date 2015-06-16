@@ -2842,28 +2842,21 @@ daniel.boehnke@dlr.de
         </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element minOccurs="0" name="paxSeats" type="integerBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Number of passenger seats</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element minOccurs="0" name="cargoCapacity" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Cargo transport capacity [kg]</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element minOccurs="0" name="machCruise" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Cruise Mach Number</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element maxOccurs="1" minOccurs="0" name="altCruise" type="doubleBaseType"/>
-                    <xsd:element maxOccurs="1" minOccurs="0" name="designRange" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>designRange equals the full payload max range, i.e. point B in payload range diagramm</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
+                <xsd:all>
+                    <xsd:element maxOccurs="1" minOccurs="0" name="designRange" type="requirementType">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				designRange equals the full payload max
+                				range, i.e. point B in payload range
+                				diagramm
+                			</xsd:documentation>
+                		</xsd:annotation>
+                	</xsd:element>
+                    <xsd:element name="payload" type="payloadGlobalType" maxOccurs="1" minOccurs="0"></xsd:element>
+                    <xsd:element name="airportCompatability"
+                		type="airportCompatabilityGlobalType" maxOccurs="1" minOccurs="0">
+                	</xsd:element>
+                	<xsd:element name="performanceTargets" type="performanceTargetsGlobalType" maxOccurs="1" minOccurs="0"></xsd:element>
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
@@ -35157,4 +35150,48 @@ daniel.boehnke@dlr.de
     
     
     
-    </xsd:schema>
+    
+    <xsd:complexType name="requirementType">
+    	<xsd:sequence>
+    		<xsd:element name="required" type="doubleBaseType"></xsd:element>
+    		<xsd:element name="actual" type="doubleBaseType"></xsd:element>
+    	</xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="payloadGlobalType">
+    	<xsd:sequence>
+    		<xsd:element name="paxSeats" type="requirementType" maxOccurs="1" minOccurs="0"></xsd:element>
+    		<xsd:element name="cargoCapacity" type="requirementType" maxOccurs="1" minOccurs="0"></xsd:element>
+    	</xsd:sequence>
+    </xsd:complexType>
+    
+    <xsd:complexType name="airportCompatabilityGlobalType">
+    	<xsd:sequence>
+    		<xsd:element name="wingSpan" type="requirementType" maxOccurs="1" minOccurs="0"></xsd:element>
+    		<xsd:element name="wheelTrackWidth" type="requirementType" maxOccurs="1" minOccurs="0"></xsd:element>
+    		<xsd:element name="runwayLoading" type="requirementType" maxOccurs="1" minOccurs="0"></xsd:element>
+    		<xsd:element name="takeOffFieldLength" type="requirementType" maxOccurs="1" minOccurs="0"></xsd:element>
+    		<xsd:element name="landingFieldLength" type="requirementType" maxOccurs="1" minOccurs="0"></xsd:element>
+    	</xsd:sequence>
+    </xsd:complexType>
+    
+    <xsd:complexType name="performanceTargetsGlobalType">
+    	<xsd:sequence>
+    		<xsd:element name="cruiseMach" type="requirementType" maxOccurs="1" minOccurs="0"></xsd:element>
+    		<xsd:element name="maximumOperatingVelocity"
+    			type="requirementType" maxOccurs="1" minOccurs="0">
+    		</xsd:element>
+    		<xsd:element name="maximumOperatingMach"
+    			type="requirementType" maxOccurs="1" minOccurs="0">
+    		</xsd:element>
+    		<xsd:element name="initialCruiseAltitude"
+    			type="requirementType" maxOccurs="1" minOccurs="0">
+    		</xsd:element>
+    		<xsd:element name="timeToClimb" type="requirementType" maxOccurs="1" minOccurs="0"></xsd:element>
+    		<xsd:element name="maxOperatingAltitude"
+    			type="requirementType" maxOccurs="1" minOccurs="0">
+    		</xsd:element>
+    		<xsd:element name="approachSpeed" type="requirementType" maxOccurs="1" minOccurs="0"></xsd:element>
+    	</xsd:sequence>
+    </xsd:complexType>
+</xsd:schema>
