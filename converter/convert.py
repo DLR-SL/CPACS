@@ -186,6 +186,9 @@ if __name__ == '__main__':
         line = line.replace('xsd:href','xlink:href')
         line = line.replace('xsd:list','ddue:list')
         line = line.replace('xsd:listItem','ddue:listItem')
+        #These tow lines represent default values and are not necessary in the CPACS file
+        line = line.replace('minOccurs="1"',' ')
+        line = line.replace('maxOccurs="1"',' ')
 
 
 
