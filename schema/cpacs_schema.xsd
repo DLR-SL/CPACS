@@ -2086,6 +2086,50 @@ daniel.boehnke@dlr.de
         </xsd:complexContent>
     </xsd:complexType>
 
+    <xsd:complexType name="hingeMomentsMapType">
+        
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>hingeMomentsMapType</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>hingeMomentsMap type, containing a hinge moments map with aerodynamic data. Array order is: angleOfAttack min-&gt;max then angleOfYaw then reynoldsNumber then machNumber.</ddue:para>
+                        <ddue:para>All coefficients in the aeroperformanceMap relate to the CPACS coordinate system. See documentation of the CPACS-Element for further information.</ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="machNumber" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Mach number</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="reynoldsNumber" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Reynolds Number</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="angleOfYaw" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Yaw angle</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="angleOfAttack" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Angle of attack</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="controlSurfaces" type="controlSurfaceHingeMomentMapsType"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
     <xsd:complexType name="aeroPerformanceMapsType">
         
         <xsd:annotation>
@@ -2803,23 +2847,42 @@ daniel.boehnke@dlr.de
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element minOccurs="0" name="aeroPerformanceMap" type="aeroPerformanceMapType"/>
-                    <xsd:element minOccurs="0" name="aeroelastics" type="aeroelasticsType"/>
-                    <xsd:element minOccurs="0" name="dynamicAircraftModel" type="dynamicAircraftModelAnalysisType"/>
-                    <xsd:element maxOccurs="1" minOccurs="0" name="emission" type="emissionAnalysisType"/>
-                    <xsd:element maxOccurs="1" minOccurs="0" name="flyingQualities" type="flyingQualitiesType">
-                    </xsd:element>
-                    <xsd:element maxOccurs="1" minOccurs="0" name="flightPerformance" type="flightPerformanceType">
-                    </xsd:element>
-                    <xsd:element minOccurs="0" name="landingGearPositionSafetyMargins" type="landingGearPositionSafetyMarginsType"/>
-                    <xsd:element minOccurs="0" name="loadAnalysis" type="loadAnalysisType"/>
-                    <xsd:element minOccurs="0" name="massBreakdown" type="massBreakdownType"/>
-                    <xsd:element maxOccurs="1" minOccurs="0" name="monetaryValues" type="monetaryValuesAnalysisType">
-                    </xsd:element>
-                    <xsd:element maxOccurs="1" minOccurs="0" name="noise" type="noiseAnalysisType"/>
-                    <xsd:element minOccurs="0" name="trajectories" type="trajectoriesType"/>
-                    <xsd:element minOccurs="0" name="weightAndBalance" type="weightAndBalanceType"/>
-                    <xsd:element minOccurs="0" name="paxFlow" type="xsd:string"/>
+                	<xsd:element minOccurs="0" name="aeroPerformanceMap"
+                		type="aeroPerformanceMapType" />
+                	<xsd:element minOccurs="0" name="aeroelastics"
+                		type="aeroelasticsType" />
+                	<xsd:element minOccurs="0"
+                		name="dynamicAircraftModel"
+                		type="dynamicAircraftModelAnalysisType" />
+                	<xsd:element maxOccurs="1" minOccurs="0"
+                		name="emission" type="emissionAnalysisType" />
+                	<xsd:element maxOccurs="1" minOccurs="0"
+                		name="flyingQualities" type="flyingQualitiesType">
+                	</xsd:element>
+                	<xsd:element maxOccurs="1" minOccurs="0"
+                		name="flightPerformance"
+                		type="flightPerformanceType">
+                	</xsd:element>
+                    <xsd:element name="flightSystems" type="flightSystemsType" maxOccurs="1" minOccurs="0"></xsd:element>
+                    <xsd:element minOccurs="0"
+                		name="landingGearPositionSafetyMargins"
+                		type="landingGearPositionSafetyMarginsType" />
+                	<xsd:element minOccurs="0" name="loadAnalysis"
+                		type="loadAnalysisType" />
+                	<xsd:element minOccurs="0" name="massBreakdown"
+                		type="massBreakdownType" />
+                	<xsd:element maxOccurs="1" minOccurs="0"
+                		name="monetaryValues"
+                		type="monetaryValuesAnalysisType">
+                	</xsd:element>
+                	<xsd:element maxOccurs="1" minOccurs="0"
+                		name="noise" type="noiseAnalysisType" />
+                	<xsd:element minOccurs="0" name="trajectories"
+                		type="trajectoriesType" />
+                	<xsd:element minOccurs="0" name="weightAndBalance"
+                		type="weightAndBalanceType" />
+                	<xsd:element minOccurs="0" name="paxFlow"
+                		type="xsd:string" />
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
@@ -7360,6 +7423,67 @@ daniel.boehnke@dlr.de
                     <xsd:element minOccurs="0" name="dcmx" type="stringArrayBaseType"/>
                     <xsd:element minOccurs="0" name="dcmy" type="stringArrayBaseType"/>
                     <xsd:element minOccurs="0" name="dcmz" type="stringArrayBaseType"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="controlSurfaceHingeMomentMapType">
+        
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>controlSurfaceHingeMomentMapType</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>controlSurfaceHingeMomentMap type, containing a moment map with aerodynamic data for a control surface. Array order is: relativeDeflection min-&gt;max then angleOfAttack then angleOfYaw then reynoldsNumber then machNumber. AngleOfAttack, angleOfYaw, reynoldsNumber and machNumber are taken from the basic performance map one level above.</ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="controlSurfaceUID" type="stringUIDBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Reference to the control surface</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="relDeflection" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Relative deflection of the control surface</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="dcfx" type="stringArrayBaseType"/>
+                    <xsd:element minOccurs="0" name="dcfy" type="stringArrayBaseType"/>
+                    <xsd:element minOccurs="0" name="dcfz" type="stringArrayBaseType"/>
+                    <xsd:element minOccurs="0" name="dcmx" type="stringArrayBaseType"/>
+                    <xsd:element minOccurs="0" name="dcmy" type="stringArrayBaseType"/>
+                    <xsd:element minOccurs="0" name="dcmz" type="stringArrayBaseType"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="controlSurfaceHingeMomentMapsType">
+        
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>controlSurfaceHingeMomentMapsType</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>controlSurfaceHingeMomentMapsType type, containing the aerodynamic moment maps for one or more control surfaces.</ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element maxOccurs="unbounded" name="controlSurface" type="controlSurfaceHingeMomentMapType"/>
                 </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
@@ -35454,4 +35578,10 @@ daniel.boehnke@dlr.de
                 </xsd:sequence>
 </xsd:complexType>                
     
+
+    <xsd:complexType name="flightSystemsType">
+    	<xsd:sequence>
+    		<xsd:element name="hingeMomentMap" type="hingeMomentsMapType" maxOccurs="1" minOccurs="0"></xsd:element>
+    	</xsd:sequence>
+    </xsd:complexType>
 </xsd:schema>
