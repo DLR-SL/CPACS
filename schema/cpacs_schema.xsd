@@ -14476,7 +14476,7 @@ daniel.boehnke@dlr.de
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="transformation" type="transformationType"/>
-                    <xsd:element name="linkToFile" type="stringBaseType"/>
+                    <xsd:element name="linkToFile" type="linkToFileType"/>
                 </xsd:all>
                 <xsd:attribute name="uID" type="xsd:string" use="required"/>
                 <xsd:attribute name="symmetry" use="optional">
@@ -14485,6 +14485,35 @@ daniel.boehnke@dlr.de
                             <xsd:enumeration value="x-y-plane"/>
                             <xsd:enumeration value="x-z-plane"/>
                             <xsd:enumeration value="y-z-plane"/>
+                        </xsd:restriction>
+                    </xsd:simpleType>
+                </xsd:attribute>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="linkToFileType">
+        
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>linkToFile</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>Please provide a link to the additional file that shall be loaded by the TIGL library. Furthermore it is necessary to provide the format attribute so that the file type can be identified. Several CAD formats provide multiple endings, and hence, this measure seems necessary.</ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="stringBaseType">
+                <xsd:attribute name="format">
+                    <xsd:simpleType>
+                        <xsd:restriction base="xsd:string">
+                            <xsd:enumeration value="Step"/>
+                            <xsd:enumeration value="Iges"/>
+                            <xsd:enumeration value="Stl"/>
                         </xsd:restriction>
                     </xsd:simpleType>
                 </xsd:attribute>
