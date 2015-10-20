@@ -3982,33 +3982,53 @@ daniel.boehnke@dlr.de
     </xsd:complexType>
 
 
-	<xsd:complexType name="bkConsideredLoadCasesType">
-		<xsd:annotation>
-			<xsd:appinfo>
-				<sd:schemaDoc>
-					<ddue:summary>
-						<ddue:para>BK Considered LoadcasesType</ddue:para>
-					</ddue:summary>
-					<ddue:remarks>
-						<ddue:para>Definition of loadcases used for Sizing (preliminary BK version)</ddue:para>
-					</ddue:remarks>
-				</sd:schemaDoc>
-			</xsd:appinfo>
-		</xsd:annotation>
-		<xsd:complexContent>
-			<xsd:extension base="complexBaseType">
-				<xsd:sequence minOccurs="1">
-					<xsd:element maxOccurs="unbounded" minOccurs="0" name="damLoadCase" type="bkDamLoadCaseType"/>
-					<xsd:element maxOccurs="unbounded" minOccurs="0" name="standardLoadCase" type="bkStandardLoadCaseType"/>
-					<xsd:element maxOccurs="unbounded" minOccurs="0" name="bkLoadCaseUID" type="stringUIDBaseType">
-						<xsd:annotation>
-							<xsd:documentation>Sequence of Loadcases to be considered in sizing loop (preliminary BK definition)</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-				</xsd:sequence>
-			</xsd:extension>
-		</xsd:complexContent>
-	</xsd:complexType>
+<xsd:complexType name="bkConsideredLoadCasesType">
+    <xsd:annotation>
+        <xsd:appinfo>
+            <sd:schemaDoc>
+                <ddue:summary>
+                    <ddue:para>BK Considered LoadcasesType</ddue:para>
+                </ddue:summary>
+                <ddue:remarks>
+                    <ddue:para>Definition of loadcases used for Sizing (preliminary BK
+                        version)</ddue:para>
+                </ddue:remarks>
+            </sd:schemaDoc>
+        </xsd:appinfo>
+    </xsd:annotation>
+    <xsd:complexContent>
+        <xsd:extension base="complexBaseType">
+            <xsd:sequence minOccurs="1">
+                <xsd:element minOccurs="1" name="type">
+                    <xsd:annotation>
+                        <xsd:documentation>Type of load case consideration: "all", "envelope" or
+                            "specific" </xsd:documentation>
+                    </xsd:annotation>
+                    <xsd:complexType>
+                        <xsd:simpleContent>
+                            <xsd:restriction base="stringBaseType">
+                                <xsd:enumeration value="all"/>
+                                <xsd:enumeration value="envelope"/>
+                                <xsd:enumeration value="specific"/>
+                            </xsd:restriction>
+                        </xsd:simpleContent>
+                    </xsd:complexType>
+                </xsd:element>
+                <xsd:element maxOccurs="unbounded" minOccurs="0" name="damLoadCase"
+                    type="bkDamLoadCaseType"/>
+                <xsd:element maxOccurs="unbounded" minOccurs="0" name="standardLoadCase"
+                    type="bkStandardLoadCaseType"/>
+                <xsd:element maxOccurs="unbounded" minOccurs="0" name="bkLoadCaseUID"
+                    type="stringUIDBaseType">
+                    <xsd:annotation>
+                        <xsd:documentation>Sequence of Loadcases to be considered in sizing loop
+                            (preliminary BK definition)</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
+            </xsd:sequence>
+        </xsd:extension>
+    </xsd:complexContent>
+</xsd:complexType>
 
     <xsd:complexType name="bkDamLoadCaseType">
         <xsd:annotation>
@@ -12302,34 +12322,37 @@ daniel.boehnke@dlr.de
 
 
 <xsd:complexType name="fDesignToolType">
-	<xsd:annotation>
-		<xsd:appinfo>
-			<sd:schemaDoc>
-				<ddue:summary>
-					<ddue:para>fDesignToolType</ddue:para>
-				</ddue:summary>
-				<ddue:remarks>
-					<ddue:para>fDesignTool type, containing data for rule based filling auf strcutural tree</ddue:para>
-				</ddue:remarks>
-			</sd:schemaDoc>
-		</xsd:appinfo>
-	</xsd:annotation>
-	<xsd:complexContent>
-		<xsd:extension base="complexBaseType">
-			<xsd:all>
-				<xsd:element name="tool" type="toolType">
-					<xsd:annotation>
-						<xsd:documentation>Tool identification</xsd:documentation>
-					</xsd:annotation>
-				</xsd:element>
-				<xsd:element name="aircraftModelUID" type="stringUIDBaseType"/>
-				<xsd:element name="aircraftFuselageUID" type="stringUIDBaseType"/>
-				<xsd:element name="aircraftWingUID" type="stringUIDBaseType"/>
-				<xsd:element name="aircraftHtpUID" type="stringUIDBaseType"/>
-				<xsd:element name="aircraftVtpUID" type="stringUIDBaseType"/>
-			</xsd:all>
-		</xsd:extension>
-	</xsd:complexContent>
+    <xsd:annotation>
+        <xsd:appinfo>
+            <sd:schemaDoc>
+                <ddue:summary>
+                    <ddue:para>fDesignToolType</ddue:para>
+                </ddue:summary>
+                <ddue:remarks>
+                    <ddue:para>fDesignTool type, containing data for rule based filling auf
+                        strcutural tree</ddue:para>
+                </ddue:remarks>
+            </sd:schemaDoc>
+        </xsd:appinfo>
+    </xsd:annotation>
+    <xsd:complexContent>
+        <xsd:extension base="complexBaseType">
+            <xsd:all>
+                <xsd:element name="tool" type="toolType">
+                    <xsd:annotation>
+                        <xsd:documentation>Tool identification</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
+                <xsd:element name="aircraftModelUID" type="stringUIDBaseType"/>
+                <xsd:element name="aircraftFuselageUID" type="stringUIDBaseType"/>
+                <xsd:element name="aircraftWingUID" type="stringUIDBaseType"/>
+                <xsd:element name="aircraftHtpUID" type="stringUIDBaseType"/>
+                <xsd:element name="aircraftVtpUID" type="stringUIDBaseType"/>
+                <xsd:element minOccurs="0" name="aircraftStrutUID" type="stringUIDBaseType"/>                    
+                <xsd:element name="adaptAttachmentAreas" type="booleanBaseType"/>                    
+            </xsd:all>
+        </xsd:extension>
+    </xsd:complexContent>
 </xsd:complexType>
 
 
@@ -17838,81 +17861,96 @@ daniel.boehnke@dlr.de
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="htpInterfaceDefType">
-        
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>htpInterfaceDefType</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>Definition of the interface of HTP</ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
+<xsd:complexType name="htpInterfaceDefType">
+    
+    <xsd:annotation>
+        <xsd:appinfo>
+            <sd:schemaDoc>
+                <ddue:summary>
+                    <ddue:para>htpInterfaceDefType</ddue:para>
+                </ddue:summary>
+                <ddue:remarks>
+                    <ddue:para>Definition of the interface of HTP</ddue:para>
+                </ddue:remarks>
+            </sd:schemaDoc>
+        </xsd:appinfo>
+    </xsd:annotation>
+    <xsd:complexContent>
+        <xsd:extension base="complexBaseType">
+            <xsd:sequence>
+                <xsd:annotation>
+                    <xsd:documentation>Definition of the HTP interface</xsd:documentation>
+                </xsd:annotation>
+                <xsd:element name="htpFrame1UID" type="stringUIDBaseType">
                     <xsd:annotation>
-                        <xsd:documentation>Definition of the HTP interface</xsd:documentation>
+                        <xsd:documentation>UID of the fuselage frame at the forward HTP
+                            attchment</xsd:documentation>
                     </xsd:annotation>
-                    <xsd:element name="htpFrame1UID" type="stringUIDBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>UID of the fuselage frame at the forward HTP attchment</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="htpFrame2UID" type="stringUIDBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>UID of the fuselage frame at the backward HTP attchment</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="htpAlphaUp" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>maximum HTP deflection (nose up in degrees)</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="htpAlphaDown" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>maximum HTP deflection (nose down in degrees)</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="htpReinfAngle" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>angle of the reinforcements at backward HTP attchment (in degrees)</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="htpAreaToleranceX" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Defines area (absolute) in x-direction around htpFrame2UID where the HTP attachmentpoint has correct position ==&gt; check and potentially warning message</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="htpAreaToleranceY" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Defines area (absolute) in y-direction around the outer edge of htpFrame2UID where the HTP attachmentpoint has correct y-position ==&gt; check and potentially warning message</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="htpAreaToleranceZ" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Defines allowed z-position for rear HTP attachment relativ to total frame height ==&gt; check and potentially warning message ==&gt; check and potentially warning message</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="htpStructuralElementDefinitions" type="htpStructElemDefType">
-                        <xsd:annotation>
-                            <xsd:documentation>Definition of HTP structural elements</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="htpForwardInterfaceDefinitions" type="htpFwdInterfaceDefType">
-                        <xsd:annotation>
-                            <xsd:documentation>Definition of HTP forward attachment to structure</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:sequence>
-                <xsd:attribute name="uID" type="xsd:string" use="optional"/>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
+                </xsd:element>
+                <xsd:element name="htpFrame2UID" type="stringUIDBaseType">
+                    <xsd:annotation>
+                        <xsd:documentation>UID of the fuselage frame at the backward HTP
+                            attchment</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
+                <xsd:element name="htpAlphaUp" type="doubleBaseType">
+                    <xsd:annotation>
+                        <xsd:documentation>maximum HTP deflection (nose up in
+                            degrees)</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
+                <xsd:element name="htpAlphaDown" type="doubleBaseType">
+                    <xsd:annotation>
+                        <xsd:documentation>maximum HTP deflection (nose down in
+                            degrees)</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
+                <xsd:element name="htpReinfAngle" type="doubleBaseType">
+                    <xsd:annotation>
+                        <xsd:documentation>angle of the reinforcements at backward HTP attchment
+                            (in degrees)</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
+                <xsd:element maxOccurs="1" minOccurs="0" name="htpAreaToleranceX" type="doubleBaseType">
+                    <xsd:annotation>
+                        <xsd:documentation>Defines area (absolute) in x-direction around
+                            htpFrame2UID where the HTP attachmentpoint has correct position
+                            ==&gt; check and potentially warning message</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
+                <xsd:element maxOccurs="1" minOccurs="0" name="htpAreaToleranceY" type="doubleBaseType">
+                    <xsd:annotation>
+                        <xsd:documentation>Defines area (absolute) in y-direction around the
+                            outer edge of htpFrame2UID where the HTP attachmentpoint has correct
+                            y-position ==&gt; check and potentially warning
+                            message</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
+                <xsd:element maxOccurs="1" minOccurs="0" name="htpAreaToleranceZ" type="doubleBaseType">
+                    <xsd:annotation>
+                        <xsd:documentation>Defines allowed z-position for rear HTP attachment
+                            relativ to total frame height ==&gt; check and potentially warning
+                            message ==&gt; check and potentially warning
+                            message</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
+                <xsd:element name="htpStructuralElementDefinitions" type="htpStructElemDefType">
+                    <xsd:annotation>
+                        <xsd:documentation>Definition of HTP structural
+                            elements</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
+                <xsd:element name="htpForwardInterfaceDefinitions" type="htpFwdInterfaceDefType">
+                    <xsd:annotation>
+                        <xsd:documentation>Definition of HTP forward attachment to
+                            structure</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
+            </xsd:sequence>
+            <xsd:attribute name="uID" type="xsd:string" use="optional"/>
+        </xsd:extension>
+    </xsd:complexContent>
+</xsd:complexType>
 
     <xsd:complexType name="htpStructElemDefType">
         
@@ -29772,7 +29810,7 @@ daniel.boehnke@dlr.de
     </xsd:complexType>
 
 
-    <xsd:complexType name="steffsOutputParametersType">
+<xsd:complexType name="steffsOutputParametersType">
     <xsd:annotation>
         <xsd:appinfo>
             <sd:schemaDoc>
@@ -29793,17 +29831,51 @@ daniel.boehnke@dlr.de
                 <xsd:element minOccurs="1" name="plotMoments" type="booleanBaseType"/>
                 <xsd:element minOccurs="1" name="plotSkinThickness3D" type="booleanBaseType"/>
                 <xsd:element minOccurs="1" name="plotMaxSkinThickness" type="booleanBaseType"/>
-                <xsd:element minOccurs="1" name="plotSkinThicknessAtCrossSectionCut" type="booleanBaseType"/>
+                <xsd:element minOccurs="1" name="plotSkinThicknessAtCrossSectionCut"
+                    type="booleanBaseType"/>
                 <xsd:element minOccurs="1" name="calcValidationStresses" type="booleanBaseType"/>
                 <xsd:element minOccurs="1" name="calcRealStresses" type="booleanBaseType"/>
-                <xsd:element minOccurs="1" name="plotDimensioningCriteria" type="booleanBaseType"/>
+                <xsd:element minOccurs="1" name="plotDimensioningCriteria"
+                    type="booleanBaseType"/>
                 <xsd:element minOccurs="1" name="createExcelOutput" type="booleanBaseType"/>
-                <xsd:element minOccurs="1" name="createCpacsFile" type="booleanBaseType"/>
                 <xsd:element minOccurs="1" name="createLatexOutput" type="booleanBaseType"/>
+                <xsd:element minOccurs="1" name="createCpacsFile" type="booleanBaseType"/>
+                <xsd:element minOccurs="1" name="updateConsideredLoadCases"
+                    type="booleanBaseType"/>
+                <xsd:element minOccurs="0" name="consideredLoadCasesRatingType">
+                    <xsd:annotation>
+                        <xsd:documentation>Decision which load case rating should be done
+                            'relative' or 'absolute' </xsd:documentation>
+                    </xsd:annotation>
+                    <xsd:complexType>
+                        <xsd:simpleContent>
+                            <xsd:restriction base="stringBaseType">
+                                <xsd:enumeration value="relative"/>
+                                <xsd:enumeration value="absolute"/>
+                            </xsd:restriction>
+                        </xsd:simpleContent>
+                    </xsd:complexType>
+                </xsd:element>
+                <xsd:element minOccurs="0" name="consideredLoadCasesRelativeThreshold">
+                    <xsd:annotation>
+                        <xsd:documentation>Define relative threshold for load case being regarded relevant:
+                            value between 0.0 and 1.0</xsd:documentation>
+                    </xsd:annotation>
+                    <xsd:complexType>
+                        <xsd:simpleContent>
+                            <xsd:restriction base="doubleBaseType">
+                                <xsd:minInclusive value="0.0"/>
+                                <xsd:maxInclusive value="1.0"/>
+                            </xsd:restriction>
+                        </xsd:simpleContent>
+                    </xsd:complexType>
+                </xsd:element>
+                <xsd:element minOccurs="0" name="consideredLoadCasesNumberAllowed"
+                    type="integerBaseType"/>
             </xsd:sequence>
         </xsd:extension>
     </xsd:complexContent>
-</xsd:complexType>  
+</xsd:complexType>
 
     <xsd:complexType name="steffsValidationBucklingFactorsType">
         <xsd:annotation>
@@ -29829,35 +29901,38 @@ daniel.boehnke@dlr.de
     </xsd:complexType>
 
 
-    <xsd:complexType name="steffsSizingParametersType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>steffsSizingParametersType</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para />
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element minOccurs="1" name="skinStringerRatio" type="doubleBaseType" />
-                    <xsd:element minOccurs="1" name="minSkinThickness" type="doubleBaseType" />
-                    <xsd:element minOccurs="1" name="plasticityFactor" type="doubleBaseType" />
-                    <xsd:element minOccurs="1" name="pointsPerPerimeter" type="integerBaseType" />
-                    <xsd:element minOccurs="1" name="xPosCrossSectionCut" type="doubleBaseType" />
-                    <xsd:element minOccurs="1" name="considerCabinPressure" type="booleanBaseType" />
-                    <xsd:element minOccurs="1" name="consideredLoadCases" type="stringBaseType" />
-                    <xsd:element minOccurs="1" name="bucklingBoundaryCondition" type="stringBaseType" />
-                    <xsd:element minOccurs="1" name="tConstForStress" type="doubleBaseType" />
-                </xsd:sequence>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
+<xsd:complexType name="steffsSizingParametersType">
+    <xsd:annotation>
+        <xsd:appinfo>
+            <sd:schemaDoc>
+                <ddue:summary>
+                    <ddue:para>steffsSizingParametersType</ddue:para>
+                </ddue:summary>
+                <ddue:remarks>
+                    <ddue:para/>
+                </ddue:remarks>
+            </sd:schemaDoc>
+        </xsd:appinfo>
+    </xsd:annotation>
+    <xsd:complexContent>
+        <xsd:extension base="complexBaseType">
+            <xsd:sequence>
+                <xsd:element minOccurs="1" name="skinStringerRatio" type="doubleBaseType"/>
+                <xsd:element minOccurs="1" name="minSkinThickness" type="doubleBaseType"/>
+                <xsd:element minOccurs="1" name="plasticityFactor" type="doubleBaseType"/>
+                <xsd:element minOccurs="1" name="pointsPerPerimeter" type="integerBaseType"/>
+                <xsd:element minOccurs="1" name="xPosCrossSectionCut" type="doubleBaseType"/>
+                <xsd:element minOccurs="1" name="considerCabinPressure" type="booleanBaseType"/>
+                <xsd:element minOccurs="1" name="considerStringerPositions"
+                    type="booleanBaseType"/>
+                <xsd:element minOccurs="1" name="consideredLoadCases" type="stringBaseType"/>
+                <xsd:element minOccurs="1" name="bucklingBoundaryCondition"
+                    type="stringBaseType"/>
+                <xsd:element minOccurs="1" name="tConstForStress" type="doubleBaseType"/>
+            </xsd:sequence>
+        </xsd:extension>
+    </xsd:complexContent>
+</xsd:complexType>
 
 <xsd:complexType name="steffsToolType">
     <xsd:annotation>
@@ -30582,55 +30657,57 @@ daniel.boehnke@dlr.de
     </xsd:complexType>
 
 
-    <xsd:complexType name="tailplaneAttachmentAreaType">
-        
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>tailplaneAttachmentAreaType</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>tailplaneAttachmentArea type, containing dat on fuselage structure to attach tailplaine</ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
+<xsd:complexType name="tailplaneAttachmentAreaType">
+    
+    <xsd:annotation>
+        <xsd:appinfo>
+            <sd:schemaDoc>
+                <ddue:summary>
+                    <ddue:para>tailplaneAttachmentAreaType</ddue:para>
+                </ddue:summary>
+                <ddue:remarks>
+                    <ddue:para>tailplaneAttachmentArea type, containing dat on fuselage
+                        structure to attach tailplaine</ddue:para>
+                </ddue:remarks>
+            </sd:schemaDoc>
+        </xsd:appinfo>
+    </xsd:annotation>
+    <xsd:complexContent>
+        <xsd:extension base="complexBaseType">
+            <xsd:sequence>
+                <xsd:annotation>
+                    <xsd:documentation>Definition of tailplane attachment area (Standard
+                        Configuration)</xsd:documentation>
+                </xsd:annotation>
+                <xsd:element maxOccurs="1" minOccurs="0" name="tailplaneAttachmentType">
                     <xsd:annotation>
-                        <xsd:documentation>Definition of tailplane attachment area (Standard Configuration)</xsd:documentation>
+                        <xsd:documentation>type of tailplane attachment: Currently restricted to
+                            'Type1' and 'Type2' (see documentation)</xsd:documentation>
                     </xsd:annotation>
-                    <xsd:element name="tailplaneAttachmentType">
-                        <xsd:annotation>
-                            <xsd:documentation>type of tailplane attachment: Currently restricted to 'Type1' and 'Type2' (see documentation)</xsd:documentation>
-                        </xsd:annotation>
-                        <xsd:complexType>
-                            <xsd:simpleContent>
-                                <xsd:restriction base="stringBaseType">
-                                    <xsd:enumeration value="Type1"/>
-                                    <xsd:enumeration value="Type2"/>
-                                </xsd:restriction>
-                            </xsd:simpleContent>
-                        </xsd:complexType>
-                    </xsd:element>
-                    <xsd:element name="vtpInterfaceDefinitions" type="vtpInterfaceDefType">
-                        <xsd:annotation>
-                            <xsd:documentation>Definitions of VTP interface</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="htpInterfaceDefinitions" type="htpInterfaceDefType">
-                        <xsd:annotation>
-                            <xsd:documentation>Definitions of VTP interface</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:sequence>
-                <xsd:attribute name="uID" type="xsd:string" use="optional"/>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
+                    <xsd:complexType>
+                        <xsd:simpleContent>
+                            <xsd:restriction base="stringBaseType">
+                                <xsd:enumeration value="Type1"/>
+                                <xsd:enumeration value="Type2"/>
+                            </xsd:restriction>
+                        </xsd:simpleContent>
+                    </xsd:complexType>
+                </xsd:element>
+                <xsd:element name="vtpInterfaceDefinitions" type="vtpInterfaceDefType">
+                    <xsd:annotation>
+                        <xsd:documentation>Definitions of VTP interface</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
+                <xsd:element name="htpInterfaceDefinitions" type="htpInterfaceDefType">
+                    <xsd:annotation>
+                        <xsd:documentation>Definitions of VTP interface</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
+            </xsd:sequence>
+            <xsd:attribute name="uID" type="xsd:string" use="optional"/>
+        </xsd:extension>
+    </xsd:complexContent>
+</xsd:complexType>
     <xsd:complexType name="takeoffPerformanceParametersType">
         <xsd:annotation><xsd:appinfo><sd:schemaDoc><ddue:summary><ddue:para>takeoffPerformanceParametersType</ddue:para></ddue:summary><ddue:remarks><ddue:para/></ddue:remarks></sd:schemaDoc></xsd:appinfo></xsd:annotation><xsd:complexContent><xsd:extension base="complexBaseType"><xsd:sequence>
             <xsd:element name="todVLiftoff" type="doubleBaseType">
@@ -32760,65 +32837,77 @@ daniel.boehnke@dlr.de
     </xsd:complexType>
 
     <xsd:complexType name="vtpInterfaceDefType">
-        
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>vtpInterfaceDefType</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>Definition of the interface of the VTP</ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
+    
+    <xsd:annotation>
+        <xsd:appinfo>
+            <sd:schemaDoc>
+                <ddue:summary>
+                    <ddue:para>vtpInterfaceDefType</ddue:para>
+                </ddue:summary>
+                <ddue:remarks>
+                    <ddue:para>Definition of the interface of the VTP</ddue:para>
+                </ddue:remarks>
+            </sd:schemaDoc>
+        </xsd:appinfo>
+    </xsd:annotation>
+    <xsd:complexContent>
+        <xsd:extension base="complexBaseType">
+            <xsd:sequence>
+                <xsd:annotation>
+                    <xsd:documentation>Definition of the VTP interface</xsd:documentation>
+                </xsd:annotation>
+                <xsd:element maxOccurs="unbounded" minOccurs="2" name="vtpFrameDefinitions"
+                    type="vtpFrameDefType">
                     <xsd:annotation>
-                        <xsd:documentation>Definition of the VTP interface</xsd:documentation>
+                        <xsd:documentation>Definition of the VTP attachment frames and their
+                            reinforcement</xsd:documentation>
                     </xsd:annotation>
-                    <xsd:element maxOccurs="unbounded" minOccurs="2" name="vtpFrameDefinitions" type="vtpFrameDefType">
-                        <xsd:annotation>
-                            <xsd:documentation>Definition of the VTP attachment frames and their reinforcement</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="vtpAreaToleranceX" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Defines area for valid x-position of VTP (just used if attachmentpoint is directly based on frame) ==&gt; check and potentially warning message</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="vtpAreaToleranceZ" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Definition of the max. distance between fuselage and the defined VTP pins ==&gt; check and potentially warning message</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="vtpReinfRelZ" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Definition of reinforcement area at VTP frame positions (relative coordinate, smaller than 1.0)</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="vtpReinfRelWidth" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Definition of vertical reinforcements at VTP frame positions (relative coordinate, smaller than 1.0)</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="vtpIntersectionArc" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>value to change from horizontal to radial reinforcements for VTP frame plates</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="vtpAttachmentStructElemUID" type="stringUIDBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>UID of elements to connect VTP pins with fuselage (beam elements)</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:sequence>
-                <xsd:attribute name="uID" type="xsd:string" use="optional"/>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
+                </xsd:element>
+                <xsd:element maxOccurs="1" minOccurs="0" name="vtpAreaToleranceX" type="doubleBaseType">
+                    <xsd:annotation>
+                        <xsd:documentation>Defines area for valid x-position of VTP (just used
+                            if attachmentpoint is directly based on frame) ==&gt; check and
+                            potentially warning message</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
+                <xsd:element maxOccurs="1" minOccurs="0" name="vtpAreaToleranceZ" type="doubleBaseType">
+                    <xsd:annotation>
+                        <xsd:documentation>Definition of the max. distance between fuselage and
+                            the defined VTP pins ==&gt; check and potentially warning
+                            message</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
+                <xsd:element name="vtpReinfRelZ" type="doubleBaseType">
+                    <xsd:annotation>
+                        <xsd:documentation>Definition of reinforcement area at VTP frame
+                            positions (relative coordinate, smaller than
+                            1.0)</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
+                <xsd:element name="vtpReinfRelWidth" type="doubleBaseType">
+                    <xsd:annotation>
+                        <xsd:documentation>Definition of vertical reinforcements at VTP frame
+                            positions (relative coordinate, smaller than
+                            1.0)</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
+                <xsd:element name="vtpIntersectionArc" type="doubleBaseType">
+                    <xsd:annotation>
+                        <xsd:documentation>value to change from horizontal to radial
+                            reinforcements for VTP frame plates</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
+                <xsd:element name="vtpAttachmentStructElemUID" type="stringUIDBaseType">
+                    <xsd:annotation>
+                        <xsd:documentation>UID of elements to connect VTP pins with fuselage
+                            (beam elements)</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
+            </xsd:sequence>
+            <xsd:attribute name="uID" type="xsd:string" use="optional"/>
+        </xsd:extension>
+    </xsd:complexContent>
+</xsd:complexType>
 
     <xsd:complexType name="waypointType">
         
