@@ -3237,7 +3237,6 @@ daniel.boehnke@dlr.de
 					<xsd:element minOccurs="0" name="aeroelastics" type="aeroelasticsType" />
 					<xsd:element minOccurs="0" name="dynamicAircraftModel"
 						type="dynamicAircraftModelAnalysisType" />
-					<xsd:element minOccurs="0" name="emission" type="emissionAnalysisType" />
 					<xsd:element minOccurs="0" name="flyingQualities" type="flyingQualitiesType">
 					</xsd:element>
 					<xsd:element minOccurs="0" name="flightPerformance"
@@ -12766,32 +12765,6 @@ daniel.boehnke@dlr.de
 	</xsd:complexType>
 
 
-	<xsd:complexType name="emissionAnalysisType">
-
-		<xsd:annotation>
-			<xsd:appinfo>
-				<sd:schemaDoc>
-					<ddue:summary>
-						<ddue:para>emissionAnalysisType</ddue:para>
-					</ddue:summary>
-					<ddue:remarks>
-						<ddue:para />
-					</ddue:remarks>
-				</sd:schemaDoc>
-			</xsd:appinfo>
-		</xsd:annotation>
-		<xsd:complexContent>
-			<xsd:extension base="complexBaseType">
-				<xsd:sequence>
-					<xsd:element minOccurs="0" name="emissionValue" type="doubleBaseType">
-						<xsd:annotation>
-							<xsd:documentation>ERLIG-Formula (EV-Value)</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-				</xsd:sequence>
-			</xsd:extension>
-		</xsd:complexContent>
-	</xsd:complexType>
 
 
 	<xsd:complexType name="engineAnalysisType">
@@ -14377,40 +14350,67 @@ daniel.boehnke@dlr.de
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
 				<xsd:sequence>
-					<xsd:element name="index" type="stringVectorBaseType" />
-					<xsd:element name="segmentUID" type="stringVectorBaseType" />
-					<xsd:element minOccurs="0" name="flightTime" type="stringVectorBaseType" />
-					<xsd:element minOccurs="0" name="flightDistance" type="stringVectorBaseType" />
-					<xsd:element minOccurs="0" name="groundDistance" type="stringVectorBaseType" />
-					<xsd:element minOccurs="0" name="staticPressure" type="stringVectorBaseType" />
-					<xsd:element minOccurs="0" name="tAS" type="stringVectorBaseType" />
-					<xsd:element minOccurs="0" name="cAS" type="stringVectorBaseType" />
-					<xsd:element minOccurs="0" name="angleOfAttack" type="stringVectorBaseType" />
-					<xsd:element minOccurs="0" name="angleOfYaw" type="stringVectorBaseType" />
-					<xsd:element minOccurs="0" name="angleOfRoll" type="stringVectorBaseType" />
-					<xsd:element minOccurs="0" name="mass" type="stringVectorBaseType" />
-					<xsd:element minOccurs="0" name="fuelFlow" type="stringVectorBaseType" />
-					<xsd:element minOccurs="0" name="cOFlow" type="stringVectorBaseType" />
-					<xsd:element minOccurs="0" name="nOXFlow" type="stringVectorBaseType" />
-					<xsd:element minOccurs="0" name="sootFlow" type="stringVectorBaseType" />
-					<xsd:element minOccurs="0" name="hCFlow" type="stringVectorBaseType" />
-					<xsd:element minOccurs="0" name="gearDeflections"
+					<xsd:element name="index"
+						type="stringVectorBaseType" />
+					<xsd:element name="segmentUID"
+						type="stringVectorBaseType" />
+					<xsd:element minOccurs="0" name="flightTime"
+						type="stringVectorBaseType" />
+					<xsd:element minOccurs="0" name="flightDistance"
+						type="stringVectorBaseType" />
+					<xsd:element minOccurs="0" name="groundDistance"
+						type="stringVectorBaseType" />
+					<xsd:element minOccurs="0" name="staticPressure"
+						type="stringVectorBaseType" />
+					<xsd:element minOccurs="0" name="tAS"
+						type="stringVectorBaseType" />
+					<xsd:element minOccurs="0" name="cAS"
+						type="stringVectorBaseType" />
+					<xsd:element minOccurs="0" name="angleOfAttack"
+						type="stringVectorBaseType" />
+					<xsd:element minOccurs="0" name="angleOfYaw"
+						type="stringVectorBaseType" />
+					<xsd:element minOccurs="0" name="angleOfRoll"
+						type="stringVectorBaseType" />
+					<xsd:element minOccurs="0" name="mass"
+						type="stringVectorBaseType" />
+					<xsd:element minOccurs="0" name="fuelFlow"
+						type="stringVectorBaseType" />
+					<xsd:element minOccurs="0" name="cOFlow"
+						type="stringVectorBaseType" />
+					<xsd:element name="cO2Flow" type="stringVectorBaseType" maxOccurs="1" minOccurs="0"></xsd:element>
+					<xsd:element minOccurs="0" name="nOXFlow"
+						type="stringVectorBaseType" />
+					<xsd:element minOccurs="0" name="sootFlow"
+						type="stringVectorBaseType" />
+					<xsd:element minOccurs="0" name="hCFlow"
+						type="stringVectorBaseType" />
+                    <xsd:element name="sO2Flow" type="stringVectorBaseType" maxOccurs="1" minOccurs="0"></xsd:element>
+                    <xsd:element minOccurs="0" name="gearDeflections"
 						type="gearDeflectionVectorsType" />
-					<xsd:element minOccurs="0" name="controlSurfaceDeflections"
+					<xsd:element minOccurs="0"
+						name="controlSurfaceDeflections"
 						type="controlSurfaceDeflectionVectorsType" />
 					<xsd:choice>
-						<xsd:element name="thrust" type="stringVectorBaseType" />
-						<xsd:element name="n1" type="stringVectorBaseType" />
+						<xsd:element name="thrust"
+							type="stringVectorBaseType" />
+						<xsd:element name="n1"
+							type="stringVectorBaseType" />
 					</xsd:choice>
 					<xsd:choice>
 						<xsd:sequence>
-							<xsd:element name="refLocation" type="pointListXYZVectorType" />
-							<xsd:element name="currentLocation" type="pointListXYZVectorType" />
+							<xsd:element name="refLocation"
+								type="pointListXYZVectorType" />
+							<xsd:element name="currentLocation"
+								type="pointListXYZVectorType" />
 						</xsd:sequence>
 						<xsd:sequence>
-							<xsd:element name="latitude" type="stringVectorBaseType" />
-							<xsd:element name="longitude" type="stringVectorBaseType" />
-							<xsd:element name="altitude" type="stringVectorBaseType" />
+							<xsd:element name="latitude"
+								type="stringVectorBaseType" />
+							<xsd:element name="longitude"
+								type="stringVectorBaseType" />
+							<xsd:element name="altitude"
+								type="stringVectorBaseType" />
 						</xsd:sequence>
 					</xsd:choice>
 				</xsd:sequence>
@@ -33276,7 +33276,7 @@ daniel.boehnke@dlr.de
 						type="weightAndBalanceType" />
 					<xsd:element minOccurs="0" name="trajectories" type="trajectoriesType" />
 					<xsd:element minOccurs="0" name="noise" type="noiseAnalysisType" />
-					<xsd:element minOccurs="0" name="emission" type="emissionAnalysisType" />
+					<xsd:element minOccurs="0" name="emission" type="xsd:string" />
 				</xsd:all>
 			</xsd:extension>
 		</xsd:complexContent>
@@ -37258,12 +37258,32 @@ daniel.boehnke@dlr.de
 			<xsd:extension base="complexBaseType">
 				<xsd:sequence>
 					<xsd:element name="fuelMass" type="doubleBaseType" />
-					<xsd:element name="nOXMass" type="doubleBaseType" />
-					<xsd:element name="nOXMassHumid" type="doubleBaseType" />
 					<xsd:element name="time" type="doubleBaseType" />
 					<xsd:element name="distance" type="doubleBaseType" />
-					<xsd:element name="radiativeForcing" type="radiativeForcingType" />
-					<xsd:element name="deltaTemperature" type="deltaTemperatureType" />
+					<xsd:element name="radiativeForcing"
+						type="radiativeForcingType" maxOccurs="1" minOccurs="0" />
+					<xsd:element name="deltaTemperature"
+						type="deltaTemperatureType" maxOccurs="1" minOccurs="0" />
+					<xsd:element name="nOXMass" type="doubleBaseType"
+						maxOccurs="1" minOccurs="0" />
+					<xsd:element name="nOXMassHumid"
+						type="doubleBaseType" maxOccurs="1" minOccurs="0" />
+					<xsd:element name="cO2Mass" type="doubleBaseType"
+						maxOccurs="1" minOccurs="0">
+					</xsd:element>
+                    <xsd:element name="cOMass" type="doubleBaseType" maxOccurs="1" minOccurs="0"></xsd:element>
+                    <xsd:element name="h2OMass" type="doubleBaseType"
+						maxOccurs="1" minOccurs="0">
+					</xsd:element>
+					<xsd:element name="sO2Mass" type="doubleBaseType"
+						maxOccurs="1" minOccurs="0">
+					</xsd:element>
+					<xsd:element name="hCMass" type="doubleBaseType"
+						maxOccurs="1" minOccurs="0">
+					</xsd:element>
+					<xsd:element name="sootMass" type="doubleBaseType"
+						maxOccurs="1" minOccurs="0">
+					</xsd:element>
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
