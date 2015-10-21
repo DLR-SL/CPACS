@@ -1160,10 +1160,14 @@ daniel.boehnke@dlr.de
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
 				<xsd:all>
-					<xsd:element name="flowCondition" type="flowConditionType" />
+					<xsd:element name="flowCondition"
+						type="flowConditionType" />
 					<xsd:element minOccurs="0" name="totalCoefficients"
 						type="coefficientsType" />
-					<xsd:element minOccurs="0" name="wings" type="wingsCoefficientsType" />
+					<xsd:element minOccurs="0" name="wings"
+						type="wingsCoefficientsType" />
+					<xsd:element name="fuselages" type="fuselagesCoefficientsType" minOccurs="0"></xsd:element>
+					<xsd:element name="genericComponents" type="genericComponentsCoefficientsType" minOccurs="0"></xsd:element>
 				</xsd:all>
 				<xsd:attribute name="uID" type="xsd:string" />
 			</xsd:extension>
@@ -39862,6 +39866,73 @@ daniel.boehnke@dlr.de
 		</xsd:complexContent>
 	</xsd:complexType>
 
+	<xsd:complexType name="fuselageCoefficientsType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>Aerodynamic coefficients of a fuselage</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:content>
+							<ddue:section>
+								<ddue:title>0. General overview</ddue:title>
+								<ddue:content>
+									<ddue:para>This type contains the integral aerodynamic
+										coefficients, as well as spanwise coefficient distributions
+										for one fuselage.</ddue:para>
+								</ddue:content>
+							</ddue:section>
+							<ddue:section>
+								<ddue:title>1.
+									&lt;fuselageUID&gt;
+									<ddue:legacyItalic>(mandatory)</ddue:legacyItalic>
+								</ddue:title>
+								<ddue:content>
+									<ddue:para>Reference to the fuselage</ddue:para>
+								</ddue:content>
+							</ddue:section>
+							<ddue:section>
+								<ddue:title>2.
+									&lt;coefficients&gt;
+									<ddue:legacyItalic>(mandatory)</ddue:legacyItalic>
+								</ddue:title>
+								<ddue:content>
+									<ddue:para>Total force and moment coefficients of a fuselage.
+									</ddue:para>
+								</ddue:content>
+							</ddue:section>
+							<ddue:section>
+								<ddue:title>3.
+									&lt;segments&gt;
+									<ddue:legacyItalic>(mandatory)</ddue:legacyItalic>
+								</ddue:title>
+								<ddue:content>
+									<ddue:para>A list of segments with their spanwise coefficient
+										distributions.</ddue:para>
+								</ddue:content>
+							</ddue:section>
+						</ddue:content>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:all>
+					<xsd:element name="fuselageUID" type="stringUIDBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Reference to the fuselage segment
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="coefficients" type="coefficientsType" />
+					<xsd:element name="segments" type="fuselageSegmentsCoefficientsType" />
+				</xsd:all>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
 
 	<xsd:complexType name="wingComponentSegmentStructureType">
 
@@ -41048,6 +41119,64 @@ daniel.boehnke@dlr.de
 		</xsd:complexContent>
 	</xsd:complexType>
 
+	<xsd:complexType name="fuselageSegmentCoefficientsType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>The aerodynamic coefficients of a fuselage segment
+						</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:content>
+							<ddue:section>
+								<ddue:title>0. General overview</ddue:title>
+								<ddue:content>
+									<ddue:para>This type contains the aerodynamic coefficients of
+										one fuselage segment.</ddue:para>
+								</ddue:content>
+							</ddue:section>
+							<ddue:section>
+								<ddue:title>1.
+									&lt;segmentUID&gt;
+									<ddue:legacyItalic>(mandatory)</ddue:legacyItalic>
+								</ddue:title>
+								<ddue:content>
+									<ddue:para>A reference to the fuselage segment.</ddue:para>
+								</ddue:content>
+							</ddue:section>
+							<ddue:section>
+								<ddue:title>2.
+									&lt;strip&gt;
+									<ddue:legacyItalic>(mandatory)</ddue:legacyItalic>
+								</ddue:title>
+								<ddue:content>
+									<ddue:para>A list of nodes, each containing the local
+										aerodynamic coefficients of a fuselage segment's strip.
+									</ddue:para>
+								</ddue:content>
+							</ddue:section>
+						</ddue:content>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="segmentUID" type="stringUIDBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Reference to the fuselage segment
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element maxOccurs="unbounded" name="strip"
+						type="fuselageSegmentStripCoefficientsType" />
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
 
 	<xsd:complexType name="wingSegmentStripCoefficientsType">
 
@@ -41197,6 +41326,155 @@ daniel.boehnke@dlr.de
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
+	
+	<xsd:complexType name="fuselageSegmentStripCoefficientsType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>Aerodynamic force- and moment coefficients of a fuselage
+							strip</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:content>
+							<ddue:section>
+								<ddue:title>0. General overview</ddue:title>
+								<ddue:content>
+									<ddue:para>This type can contain a complete set of aerodynamic
+										force- and moment coefficients for a fuselage strip. It also
+										includes the local reference values belonging to the strip
+										coefficients. All coefficients act in the CPACS coordinate
+										system. See the documentation for the global CPACS-Element for
+										further information.</ddue:para>
+								</ddue:content>
+							</ddue:section>
+							<ddue:section>
+								<ddue:title>1.
+									&lt;cfx&gt;
+									<ddue:legacyItalic>(optional)</ddue:legacyItalic>
+								</ddue:title>
+								<ddue:content>
+									<ddue:para>Force coefficient in (global, i.e. CPACS)
+										x-direction, normalized with the local reference area.
+									</ddue:para>
+								</ddue:content>
+							</ddue:section>
+							<ddue:section>
+								<ddue:title>2.
+									&lt;cfy&gt;
+									<ddue:legacyItalic>(optional)</ddue:legacyItalic>
+								</ddue:title>
+								<ddue:content>
+									<ddue:para>Force coefficient in (global, i.e. CPACS)
+										y-direction, normalized with the local reference area.
+									</ddue:para>
+								</ddue:content>
+							</ddue:section>
+							<ddue:section>
+								<ddue:title>3.
+									&lt;cfz&gt;
+									<ddue:legacyItalic>(optional)</ddue:legacyItalic>
+								</ddue:title>
+								<ddue:content>
+									<ddue:para>Force coefficient in (global, i.e. CPACS)
+										z-direction, normalized with the local reference area.
+									</ddue:para>
+								</ddue:content>
+							</ddue:section>
+							<ddue:section>
+								<ddue:title>4.
+									&lt;cmx&gt;
+									<ddue:legacyItalic>(optional)</ddue:legacyItalic>
+								</ddue:title>
+								<ddue:content>
+									<ddue:para>Moment coefficient around the (global, i.e. CPACS)
+										x-axis and the local reference point, normalized with the
+										local reference area and reference length.</ddue:para>
+								</ddue:content>
+							</ddue:section>
+							<ddue:section>
+								<ddue:title>5.
+									&lt;cmy&gt;
+									<ddue:legacyItalic>(optional)</ddue:legacyItalic>
+								</ddue:title>
+								<ddue:content>
+									<ddue:para>Moment coefficient around the (global, i.e. CPACS)
+										y-axis and the local reference point, normalized with the
+										local reference area and reference length.</ddue:para>
+								</ddue:content>
+							</ddue:section>
+							<ddue:section>
+								<ddue:title>6.
+									&lt;cmz&gt;
+									<ddue:legacyItalic>(optional)</ddue:legacyItalic>
+								</ddue:title>
+								<ddue:content>
+									<ddue:para>Moment coefficient around the (global, i.e. CPACS)
+										z-axis and the local reference point, normalized with the
+										local reference area and reference length.</ddue:para>
+								</ddue:content>
+							</ddue:section>
+							<ddue:section>
+								<ddue:title>7.
+									&lt;reference&gt;
+									<ddue:legacyItalic>(mandatory)</ddue:legacyItalic>
+								</ddue:title>
+								<ddue:content>
+									<ddue:para>Reference values for the strip's coefficients.
+										Moment reference point is given in absolut CPACS coordinates,
+										i.e. x,y,z.</ddue:para>
+								</ddue:content>
+							</ddue:section>
+						</ddue:content>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="cfx" type="doubleBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Force coefficient in CPACS-x direction
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="cfy" type="doubleBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Force coefficient in CPACS-y direction
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="cfz" type="doubleBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Force coefficient in CPACS-z direction
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="cmx" type="doubleBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Moment coefficient in CPACS-x direction
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="cmy" type="doubleBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Moment coefficient in CPACS-y direction
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="cmz" type="doubleBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Moment coefficient in CPACS-z direction
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="reference" type="loadReferenceType" />
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>	
 
 
 	<xsd:complexType name="wingSegmentType">
@@ -41305,6 +41583,49 @@ daniel.boehnke@dlr.de
 		</xsd:complexContent>
 	</xsd:complexType>
 
+	<xsd:complexType name="fuselageSegmentsCoefficientsType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>A list of fuselage segments with their coefficients.
+						</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:content>
+							<ddue:section>
+								<ddue:title>0. General overview</ddue:title>
+								<ddue:content>
+									<ddue:para>This type contains one subnode with aerodynamic
+										coefficients for each of the fuselage's segments.</ddue:para>
+								</ddue:content>
+							</ddue:section>
+							<ddue:section>
+								<ddue:title>1.
+									&lt;segment&gt;
+									<ddue:legacyItalic>(mandatory)</ddue:legacyItalic>
+								</ddue:title>
+								<ddue:content>
+									<ddue:para>A node with the coefficient distributions on one
+										fuselage.</ddue:para>
+								</ddue:content>
+							</ddue:section>
+						</ddue:content>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" name="segment"
+						type="fuselageSegmentCoefficientsType" />
+					<xsd:element minOccurs="0" name="calibration" type="coefficientsType" />
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
 
 	<xsd:complexType name="wingSegmentsType">
 
@@ -41939,6 +42260,16 @@ daniel.boehnke@dlr.de
 									</ddue:para>
 								</ddue:content>
 							</ddue:section>
+							<ddue:section>
+								<ddue:title>2.
+									&lt;calibration&gt;
+									<ddue:legacyItalic>(optional)</ddue:legacyItalic>
+								</ddue:title>
+								<ddue:content>
+									<ddue:para>Aerodynamic coefficients for additional entities used for calibration.
+									</ddue:para>
+								</ddue:content>
+							</ddue:section>
 						</ddue:content>
 					</ddue:remarks>
 				</sd:schemaDoc>
@@ -41949,6 +42280,60 @@ daniel.boehnke@dlr.de
 				<xsd:sequence>
 					<xsd:element maxOccurs="unbounded" name="wing"
 						type="wingCoefficientsType" />
+					<xsd:element minOccurs="0" name="calibration" type="coefficientsType" />
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+<xsd:complexType name="fuselagesCoefficientsType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>List of fuselage coefficient nodes for each wing
+						</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:content>
+							<ddue:section>
+								<ddue:title>0. General overview</ddue:title>
+								<ddue:content>
+									<ddue:para>This type contains one subnode with coefficients for
+										each of the fuselages.</ddue:para>
+								</ddue:content>
+							</ddue:section>
+							<ddue:section>
+								<ddue:title>1.
+									&lt;fuselage&gt;
+									<ddue:legacyItalic>(mandatory)</ddue:legacyItalic>
+								</ddue:title>
+								<ddue:content>
+									<ddue:para>Aerodynamic coefficients for a single fuselage.
+									</ddue:para>
+								</ddue:content>
+							</ddue:section>
+							<ddue:section>
+								<ddue:title>2.
+									&lt;calibration&gt;
+									<ddue:legacyItalic>(optional)</ddue:legacyItalic>
+								</ddue:title>
+								<ddue:content>
+									<ddue:para>Aerodynamic coefficients for additional entities used for calibration.
+									</ddue:para>
+								</ddue:content>
+							</ddue:section>
+						</ddue:content>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" name="fuselage"
+						type="fuselageCoefficientsType" />
 					<xsd:element minOccurs="0" name="calibration" type="coefficientsType" />
 				</xsd:sequence>
 			</xsd:extension>
@@ -42221,6 +42606,19 @@ daniel.boehnke@dlr.de
 	<xsd:complexType name="structuralMountsType">
 		<xsd:sequence>
 			<xsd:element name="structuralMount" type="structuralMountType" maxOccurs="unbounded" minOccurs="1"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="genericComponentsCoefficientsType">
+		<xsd:sequence>
+			<xsd:element name="genericComponent" type="genericComponentCoefficientsType" maxOccurs="unbounded" minOccurs="1"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="genericComponentCoefficientsType">
+		<xsd:sequence>
+			<xsd:element name="parentUID" type="stringUIDBaseType"></xsd:element>
+			<xsd:element name="coefficients" type="coefficientsType"></xsd:element>
 		</xsd:sequence>
 	</xsd:complexType>
 </xsd:schema>
