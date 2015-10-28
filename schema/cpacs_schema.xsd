@@ -3234,27 +3234,38 @@ daniel.boehnke@dlr.de
 				<xsd:all>
 					<xsd:element minOccurs="0" name="aeroPerformanceMap"
 						type="aeroPerformanceMapType" />
-					<xsd:element minOccurs="0" name="aeroelastics" type="aeroelasticsType" />
-					<xsd:element minOccurs="0" name="dynamicAircraftModel"
+					<xsd:element minOccurs="0" name="aeroelastics"
+						type="aeroelasticsType" />
+					<xsd:element minOccurs="0"
+						name="dynamicAircraftModel"
 						type="dynamicAircraftModelAnalysisType" />
-					<xsd:element minOccurs="0" name="flyingQualities" type="flyingQualitiesType">
+                    <xsd:element name="flightDynamics" type="flightDynamicsAnalysisType" maxOccurs="1" minOccurs="0"></xsd:element>
+                    <xsd:element minOccurs="0" name="flyingQualities"
+						type="flyingQualitiesType">
 					</xsd:element>
 					<xsd:element minOccurs="0" name="flightPerformance"
 						type="flightPerformanceType">
 					</xsd:element>
-					<xsd:element minOccurs="0" name="flightSystems" type="flightSystemsType" />
+					<xsd:element minOccurs="0" name="flightSystems"
+						type="flightSystemsType" />
 					<xsd:element minOccurs="0"
-						name="landingGearPositionSafetyMargins" type="landingGearPositionSafetyMarginsType" />
-					<xsd:element minOccurs="0" name="loadAnalysis" type="loadAnalysisType" />
-					<xsd:element minOccurs="0" name="massBreakdown" type="massBreakdownType" />
+						name="landingGearPositionSafetyMargins"
+						type="landingGearPositionSafetyMarginsType" />
+					<xsd:element minOccurs="0" name="loadAnalysis"
+						type="loadAnalysisType" />
+					<xsd:element minOccurs="0" name="massBreakdown"
+						type="massBreakdownType" />
 					<xsd:element minOccurs="0" name="monetaryValues"
 						type="monetaryValuesAnalysisType">
 					</xsd:element>
-					<xsd:element minOccurs="0" name="noise" type="noiseAnalysisType" />
-					<xsd:element minOccurs="0" name="trajectories" type="trajectoriesType" />
+					<xsd:element minOccurs="0" name="noise"
+						type="noiseAnalysisType" />
+					<xsd:element minOccurs="0" name="trajectories"
+						type="trajectoriesType" />
 					<xsd:element minOccurs="0" name="weightAndBalance"
 						type="weightAndBalanceType" />
-					<xsd:element minOccurs="0" name="paxFlow" type="xsd:string" />
+					<xsd:element minOccurs="0" name="paxFlow"
+						type="xsd:string" />
 
 				</xsd:all>
 			</xsd:extension>
@@ -42641,4 +42652,81 @@ daniel.boehnke@dlr.de
 			<xsd:element name="coefficients" type="coefficientsType"></xsd:element>
 		</xsd:sequence>
 	</xsd:complexType>
+
+	<xsd:complexType name="flightDynamicsAnalysisType">
+		<xsd:sequence>
+			<xsd:element name="flightCases" type="flightDynamicsFlightCasesType" maxOccurs="1" minOccurs="0"></xsd:element>
+			<xsd:element name="model" type="flightDynamicsModelType" maxOccurs="1" minOccurs="0"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="flightDynamicsModelType">
+		<xsd:sequence>
+            <xsd:element name="name" type="stringBaseType" maxOccurs="1" minOccurs="0"></xsd:element>
+            <xsd:element name="description" type="stringBaseType"
+				maxOccurs="1" minOccurs="0">
+			</xsd:element>
+			<xsd:element name="xLonNames" type="stringVectorBaseType"></xsd:element>
+			<xsd:element name="yLonNames" type="stringVectorBaseType"></xsd:element>
+			<xsd:element name="uLonNames" type="stringVectorBaseType"></xsd:element>
+			<xsd:element name="xLatNames" type="stringVectorBaseType"></xsd:element>
+			<xsd:element name="yLatNames" type="stringVectorBaseType"></xsd:element>
+			<xsd:element name="uLatNames" type="stringVectorBaseType"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+    <xsd:complexType name="flightDynamicsFlightCasesType">
+    	<xsd:sequence>
+    		<xsd:element name="flightCase" type="flightDynamicsFlightCaseType" maxOccurs="unbounded" minOccurs="1"></xsd:element>
+    	</xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="flightDynamicsFlightCaseType">
+    	<xsd:sequence>
+    		<xsd:element name="name" type="stringBaseType" maxOccurs="1"
+    			minOccurs="0">
+    		</xsd:element>
+    		<xsd:element name="description" type="stringBaseType"
+    			maxOccurs="1" minOccurs="0">
+    		</xsd:element>
+    		<xsd:element name="weightAndBalanceUID"
+    			type="stringUIDBaseType">
+    		</xsd:element>
+    		<xsd:element name="standardAltitude"
+    			type="doubleBaseType">
+    		</xsd:element>
+    		<xsd:element name="vCAS" type="doubleBaseType"></xsd:element>
+    		<xsd:element name="configuration" type="integerBaseType"></xsd:element>
+    		<xsd:element name="gear" type="integerBaseType"></xsd:element>
+    		<xsd:element name="linearModel"
+    			type="flightDynamicsLinearModelType" maxOccurs="1"
+    			minOccurs="0">
+    		</xsd:element>
+
+    		<xsd:element name="trimResult" type="flightDynamicsTrimResultType" maxOccurs="1" minOccurs="0"></xsd:element>
+    	</xsd:sequence>
+    	<xsd:attribute name="uID" type="xsd:string"></xsd:attribute>
+    </xsd:complexType>
+
+    <xsd:complexType name="flightDynamicsLinearModelType">
+    	<xsd:sequence>
+    		<xsd:element name="aLon" type="stringVectorBaseType"></xsd:element>
+    		<xsd:element name="bLon" type="stringVectorBaseType"></xsd:element>
+    		<xsd:element name="cLon" type="stringVectorBaseType"></xsd:element>
+    		<xsd:element name="dLon" type="stringVectorBaseType"></xsd:element>
+    		<xsd:element name="aLat" type="stringVectorBaseType"></xsd:element>
+    		<xsd:element name="bLat" type="stringVectorBaseType"></xsd:element>
+    		<xsd:element name="cLat" type="stringVectorBaseType"></xsd:element>
+    		<xsd:element name="dLat" type="stringVectorBaseType"></xsd:element>
+    	</xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="flightDynamicsTrimResultType">
+    	<xsd:sequence>
+    		<xsd:element name="mach" type="doubleBaseType"></xsd:element>
+    		<xsd:element name="vTAS" type="doubleBaseType"></xsd:element>
+    		<xsd:element name="alpha" type="doubleBaseType"></xsd:element>
+    		<xsd:element name="altitude" type="doubleBaseType"></xsd:element>
+    	</xsd:sequence>
+    </xsd:complexType>
 </xsd:schema>
