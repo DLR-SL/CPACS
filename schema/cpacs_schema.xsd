@@ -12427,6 +12427,39 @@ jonas.jepsen@dlr.de
 	</xsd:complexType>
 
 
+	<xsd:complexType name="emissivityMapType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>Emissivity map, containing the diffuse emissivity of a material at different spectral lengths.</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>The emissivity of a material can vary with the spectral wave length. 
+							The vectors diffuseEmissivity and waveLength must have the same size to be valid. 
+							The data should be linearly interpolated.
+						</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:all>
+					<xsd:element name="waveLength" type="stringVectorBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Wave length in [m]</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="diffuseEmissivity" type="stringVectorBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Diffuse emissivity of the material</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:all>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
 
 
 	<xsd:complexType name="engineAnalysisType">
@@ -28218,56 +28251,8 @@ jonas.jepsen@dlr.de
 							</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element name="specificHeatMap" minOccurs="0">
-						<xsd:complexType>
-							<xsd:annotation>
-								<xsd:documentation>
-									Specific heat map, containing the specific heat capacity of a material at different temperatures.
-								</xsd:documentation>
-							</xsd:annotation>
-							<xsd:complexContent>
-								<xsd:extension base="complexBaseType">
-									<xsd:all>
-										<xsd:element name="temperature" type="stringVectorBaseType">
-											<xsd:annotation>
-												<xsd:documentation>temperature in [K]</xsd:documentation>
-											</xsd:annotation>
-										</xsd:element>
-										<xsd:element name="specificHeat" type="stringVectorBaseType">
-											<xsd:annotation>
-												<xsd:documentation>specific heat capacity of the material in [J/(kg*K)]</xsd:documentation>
-											</xsd:annotation>
-										</xsd:element>
-									</xsd:all>
-								</xsd:extension>
-							</xsd:complexContent>
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="emissivityMap" minOccurs="0">
-						<xsd:complexType>
-							<xsd:annotation>
-								<xsd:documentation>
-									Emissivity map, containing the diffuse emissivity of a material at different spectral lengths.
-								</xsd:documentation>
-							</xsd:annotation>
-							<xsd:complexContent>
-								<xsd:extension base="complexBaseType">
-									<xsd:all>
-										<xsd:element name="waveLength" type="stringVectorBaseType">
-											<xsd:annotation>
-												<xsd:documentation>Wave length in [m]</xsd:documentation>
-											</xsd:annotation>
-										</xsd:element>
-										<xsd:element name="diffuseEmissivity" type="stringVectorBaseType">
-											<xsd:annotation>
-												<xsd:documentation>Diffuse emissivity of the material</xsd:documentation>
-											</xsd:annotation>
-										</xsd:element>
-									</xsd:all>
-								</xsd:extension>
-							</xsd:complexContent>
-						</xsd:complexType>
-					</xsd:element>
+					<xsd:element name="specificHeatMap" minOccurs="0" type="specificHeatMapType" />
+					<xsd:element name="emissivityMap" minOccurs="0" type="emissivityMapType" />
 				</xsd:sequence>
 				<xsd:attribute name="uID" type="xsd:string" use="optional"/>
 			</xsd:extension>
@@ -34415,6 +34400,39 @@ jonas.jepsen@dlr.de
 				<xsd:sequence>
 					<xsd:element maxOccurs="unbounded" name="sparSegment" type="sparSegmentType"/>
 				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType  name="specificHeatMapType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>Specific heat map, containing the specific heat capacity of a material at different temperatures.</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>The specific heat of a material can vary with the temperature. The vectors specificHeat and temperature
+							must have the same size to be valid. The data should be linearly interpolated.
+						</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:all>
+					<xsd:element name="temperature" type="stringVectorBaseType">
+						<xsd:annotation>
+							<xsd:documentation>temperature in [K]</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="specificHeat" type="stringVectorBaseType">
+						<xsd:annotation>
+							<xsd:documentation>specific heat capacity of the material in [J/(kg*K)]</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:all>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
