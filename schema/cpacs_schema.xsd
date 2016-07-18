@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 
+<!--
 
-Licensed under the Apache License, Version 2.0 (the "License"); 
-you may not use this file except in compliance with 
-the License. You may obtain a copy of the License at 
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with
+the License. You may obtain a copy of the License at
 
-http://www.apache.org/licenses/LICENSE-2.0 
+http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing,
-software distributed under the License is distributed on 
+software distributed under the License is distributed on
 an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
 either express or implied. See the License for the specific
 language governing permissions and limitations under the License.
 
-Copyright: (c) 2015 Deutsches Zentrum fuer Luft- und Raumfahrt e.V. 
+Copyright: (c) 2015 Deutsches Zentrum fuer Luft- und Raumfahrt e.V.
 
-If you have any questions regarding CPACS please feel free to contact: 
+If you have any questions regarding CPACS please feel free to contact:
 
 Jonas Jepsen
 Air Transportations Systems
-German Aerospace Center 
-Blohmstrasse 20, 21079 Hamburg 
-+49 40 42878 4597 
-jonas.jepsen@dlr.de 
+German Aerospace Center
+Blohmstrasse 20, 21079 Hamburg
++49 40 42878 4597
+jonas.jepsen@dlr.de
 -->
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:sd="http://schemas.xsddoc.codeplex.com/schemaDoc/2009/3" xmlns:xlink="http://www.w3.org/1999/xlink"><xsd:element name="cpacs">
 <xsd:annotation>
@@ -590,6 +590,7 @@ jonas.jepsen@dlr.de
                 <xsd:element minOccurs="0" name="missions" type="missionsType"/>
                 <xsd:element minOccurs="0" name="airports" type="airportsType"/>
                 <xsd:element minOccurs="0" name="fleets" type="fleetsType"/>
+                <xsd:element minOccurs="0" name="studies" type="studiesType"/>
                 <xsd:element minOccurs="0" name="toolspecific" type="toolspecificType"/>
             </xsd:all>
         </xsd:complexType>
@@ -11654,6 +11655,58 @@ jonas.jepsen@dlr.de
 		</xsd:complexContent>
 	</xsd:complexType>
 
+	<xsd:complexType name="designParameterType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>Design parameter definition</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>Contains a the values of a parameter and its uid as reference.
+						</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:all>
+					<xsd:element name="parameterUID" type="stringUIDBaseType"/>
+					<xsd:element name="values" type="stringVectorBaseType"/>
+				</xsd:all>
+				<xsd:attribute name="uID" type="xsd:string" use="required"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	
+	
+	<xsd:complexType name="designParametersType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>Design parameters list</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>Contains a list of all design parameters.
+						</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" name="designParameter" type="designParameterType"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	
+	
 	<xsd:complexType name="designSetType">
 
 		<xsd:annotation>
@@ -11707,6 +11760,59 @@ jonas.jepsen@dlr.de
 		</xsd:complexContent>
 	</xsd:complexType>
 
+	<xsd:complexType name="designSpaceType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>Design space definition</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>Contains the definition of the design space.
+						</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:all>
+					<xsd:element name="designParameters" type="designParametersType"/>
+					<xsd:element name="stateParameters" type="stateParametersType"/>
+					<xsd:element name="status" type="stringVectorBaseType"/>
+				</xsd:all>
+				<xsd:attribute name="uID" type="xsd:string" use="required"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	
+	
+	<xsd:complexType name="designStudiesType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>Design study definitions</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>Contains the data of design studies definitions.
+						</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" name="designSpace" type="designSpaceType"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	
+	
 	<xsd:complexType name="directOCEngineType">
 
 		<xsd:annotation>
@@ -29590,6 +29696,61 @@ jonas.jepsen@dlr.de
 	</xsd:complexType>
 
 
+	<xsd:complexType name="parameterType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>Parameter definition for design studies.</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>Contains a name for the design parameter to give semantic meaning to parameters used in design studies.
+						</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:all>
+					<xsd:element name="name" type="stringBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Name of parameter</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:all>
+				<xsd:attribute name="uID" type="xsd:string" use="required"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	
+	
+	<xsd:complexType name="parametersType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>Container for parameter definitions</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>Contains a of the design parameter definitions.
+						</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" name="parameter" type="parameterType"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	
+	
 	<xsd:complexType name="paxCrossBeamStrutsAssemblyType">
 
 		<xsd:annotation>
@@ -34516,6 +34677,60 @@ jonas.jepsen@dlr.de
 	</xsd:complexType>
 
 
+	<xsd:complexType name="stateParameterType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>State parameter definition</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>Contains the values of a parameter and its uid as reference.
+						</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:all>
+					<xsd:element name="parameterUID" type="stringUIDBaseType"/>
+					<xsd:element name="values" type="stringVectorBaseType"/>
+					<xsd:element name="jacobian" type="stringArrayBaseType"/>
+					<xsd:element name="hessian" type="stringArrayBaseType"/>
+				</xsd:all>
+				<xsd:attribute name="uID" type="xsd:string" use="required"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	
+
+	<xsd:complexType name="stateParametersType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>State parameters list</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>Contains a list of all state parameters.
+						</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" name="stateParameter" type="stateParameterType"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	
+	
 	<xsd:complexType name="staticAccelerationFieldType">
 
 		<xsd:annotation>
@@ -35451,6 +35666,37 @@ jonas.jepsen@dlr.de
 		</xsd:complexContent>
 	</xsd:complexType>
 
+	<xsd:complexType name="studiesType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>Design study parameters and results.</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:content>
+							<ddue:para>Contains optimization data such as definitions of design parameters and design studies. 
+							</ddue:para>
+							<ddue:mediaLink>
+								<ddue:image xlink:href="DOE OPT Hierarchy"/>
+							</ddue:mediaLink>
+						</ddue:content>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:all>
+					<xsd:element name="parameters" type="parametersType"/>
+					<xsd:element name="designStudies" type="designStudiesType"/>
+				</xsd:all>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	
+	
 	<xsd:complexType name="subLoadType">
 
 		<xsd:annotation>
