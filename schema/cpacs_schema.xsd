@@ -590,12 +590,14 @@ jonas.jepsen@dlr.de
                 <xsd:element minOccurs="0" name="missions" type="missionsType"/>
                 <xsd:element minOccurs="0" name="airports" type="airportsType"/>
                 <xsd:element minOccurs="0" name="flights" type="flightsType"/>
+                <xsd:element minOccurs="0" name="airlines" type="airlinesType"/>
                 <xsd:element minOccurs="0" name="toolspecific" type="toolspecificType"/>
             </xsd:all>
         </xsd:complexType>
     </xsd:element>
 
-	<xsd:complexType name="UIDGroupDefinitionType">
+
+<xsd:complexType name="UIDGroupDefinitionType">
 
 		<xsd:annotation>
 			<xsd:appinfo>
@@ -3333,7 +3335,66 @@ jonas.jepsen@dlr.de
 		</xsd:complexContent>
 	</xsd:complexType>
 
-	<xsd:complexType name="airportCompatabilityGlobalType">
+	<xsd:complexType name="airlineType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>airlineType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>Describes a specific airline and their fleet</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="name" type="stringBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Name of the airline</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="description" type="stringBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Description of the airline</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="fleet" type="fleetType"/>
+				</xsd:sequence>
+				<xsd:attribute name="uID" type="xsd:string" use="required"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+
+<xsd:complexType name="airlinesType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>airlinesType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>Contains a list of different airlines</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" name="airline" type="airlineType"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+
+<xsd:complexType name="airportCompatabilityGlobalType">
 		<xsd:annotation>
 			<xsd:appinfo>
 				<sd:schemaDoc>
@@ -13581,6 +13642,45 @@ jonas.jepsen@dlr.de
 					<xsd:element name="referenceLength" type="doubleBaseType"/>
 					<xsd:element name="multiplier" type="doubleBaseType"/>
 				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+
+	<xsd:complexType name="fleetType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>fleetType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>Each fleet can be divided into sub fleet groups</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="name" type="stringBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Name of fleet</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="description" type="stringBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Description of the fleet</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="tailsigns" type="stringVectorBaseType">
+						<xsd:annotation>
+							<xsd:documentation>A ; separated list of all tailsign strings</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+				<xsd:attribute name="uID" type="xsd:string" use="required"/>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
