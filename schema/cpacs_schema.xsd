@@ -3680,81 +3680,7 @@ jonas.jepsen@dlr.de
 	</xsd:complexType>
 
 
-<xsd:complexType name="flightType">
-
-		<xsd:annotation>
-			<xsd:appinfo>
-				<sd:schemaDoc>
-					<ddue:summary>
-						<ddue:para>flightType</ddue:para>
-					</ddue:summary>
-					<ddue:remarks>
-						<ddue:para>Flight type, containing data of a scheduled flight</ddue:para>
-					</ddue:remarks>
-				</sd:schemaDoc>
-			</xsd:appinfo>
-		</xsd:annotation>
-		<xsd:complexContent>
-			<xsd:extension base="complexBaseType">
-				<xsd:all>
-					<xsd:element name="missionUID" type="stringUIDBaseType">
-						<xsd:annotation>
-							<xsd:documentation>MissionUID for the flights mission definition</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-					<xsd:element name="modelUID" type="stringUIDBaseType">
-						<xsd:annotation>
-							<xsd:documentation>ModelUID of the aircraft appointed to perform the flight</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-					<xsd:element name="departure" type="dateTimeBaseType">
-						<xsd:annotation>
-							<xsd:documentation>Day and time of departure - the time is defined as SOBT (Scheduled Off-Block Time) / STD (Scheduled Time of Departure)</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-					<xsd:element name="arrival" type="dateTimeBaseType">
-						<xsd:annotation>
-							<xsd:documentation>Day and time of arrival - the time is defined as SIBT (Scheduled In-Block Time) / STA (Scheduled Time of Arrival)</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-					<xsd:element name="operatingAirline" type="stringUIDBaseType">
-						<xsd:annotation>
-							<xsd:documentation>Reference to the operating airline of a flight</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-				</xsd:all>
-				<xsd:attribute name="uID" type="xsd:string" use="required"/>
-			</xsd:extension>
-		</xsd:complexContent>
-	</xsd:complexType>
-
-
-	<xsd:complexType name="flightsType">
-
-		<xsd:annotation>
-			<xsd:appinfo>
-				<sd:schemaDoc>
-					<ddue:summary>
-						<ddue:para>flightsType</ddue:para>
-					</ddue:summary>
-					<ddue:remarks>
-						<ddue:para>Flighs type, containing all flight definitions
-						</ddue:para>
-					</ddue:remarks>
-				</sd:schemaDoc>
-			</xsd:appinfo>
-		</xsd:annotation>
-		<xsd:complexContent>
-			<xsd:extension base="complexBaseType">
-				<xsd:sequence>
-					<xsd:element maxOccurs="unbounded" name="flight" type="flightType"/>
-				</xsd:sequence>
-			</xsd:extension>
-		</xsd:complexContent>
-	</xsd:complexType>
-
-
-	<xsd:complexType name="alignmentCrossBeamType">
+<xsd:complexType name="alignmentCrossBeamType">
 
 		<xsd:annotation>
 			<xsd:appinfo>
@@ -13660,6 +13586,31 @@ jonas.jepsen@dlr.de
 	</xsd:complexType>
 
 
+	<xsd:complexType name="flightAnalysisType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>flightAnalysisType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="totalOperatingCost" type="totalOperatingCostType"/>
+					<xsd:element minOccurs="0" name="revenue" type="doubleBaseType"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+
 	<xsd:complexType name="flightDynamicsAnalysisType">
 		<xsd:annotation><xsd:appinfo><sd:schemaDoc><ddue:summary><ddue:para>flightDynamicsAnalysisType</ddue:para></ddue:summary><ddue:remarks><ddue:para/></ddue:remarks></sd:schemaDoc></xsd:appinfo></xsd:annotation><xsd:complexContent><xsd:extension base="complexBaseType"><xsd:sequence>
 			<xsd:element minOccurs="0" name="flightCases" type="flightDynamicsFlightCasesType"/>
@@ -14111,6 +14062,81 @@ jonas.jepsen@dlr.de
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
+
+	<xsd:complexType name="flightType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>flightType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>Flight type, containing data of a scheduled flight</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:all>
+					<xsd:element name="missionUID" type="stringUIDBaseType">
+						<xsd:annotation>
+							<xsd:documentation>MissionUID for the flights mission definition</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="modelUID" type="stringUIDBaseType">
+						<xsd:annotation>
+							<xsd:documentation>ModelUID of the aircraft appointed to perform the flight</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="departure" type="dateTimeBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Day and time of departure - the time is defined as SOBT (Scheduled Off-Block Time) / STD (Scheduled Time of Departure)</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="arrival" type="dateTimeBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Day and time of arrival - the time is defined as SIBT (Scheduled In-Block Time) / STA (Scheduled Time of Arrival)</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="operatingAirline" type="stringUIDBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Reference to the operating airline of a flight</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="analysis" type="flightAnalysisType"/>
+				</xsd:all>
+				<xsd:attribute name="uID" type="xsd:string" use="required"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+
+	<xsd:complexType name="flightsType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>flightsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>Flighs type, containing all flight definitions
+						</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" name="flight" type="flightType"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
 
 	<xsd:complexType name="floorPanelType">
 
@@ -32970,31 +32996,6 @@ jonas.jepsen@dlr.de
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
-
-	<xsd:complexType name="routeAnalysisType">
-
-		<xsd:annotation>
-			<xsd:appinfo>
-				<sd:schemaDoc>
-					<ddue:summary>
-						<ddue:para>routeAnalysisType</ddue:para>
-					</ddue:summary>
-					<ddue:remarks>
-						<ddue:para/>
-					</ddue:remarks>
-				</sd:schemaDoc>
-			</xsd:appinfo>
-		</xsd:annotation>
-		<xsd:complexContent>
-			<xsd:extension base="complexBaseType">
-				<xsd:sequence>
-					<xsd:element minOccurs="0" name="totalOperatingCost" type="totalOperatingCostType"/>
-					<xsd:element minOccurs="0" name="revenue" type="doubleBaseType"/>
-				</xsd:sequence>
-			</xsd:extension>
-		</xsd:complexContent>
-	</xsd:complexType>
-
 
 	<xsd:complexType name="runwayILSType">
 
