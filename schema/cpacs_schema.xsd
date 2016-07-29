@@ -589,7 +589,8 @@ jonas.jepsen@dlr.de
                 <xsd:element minOccurs="0" name="vehicles" type="vehiclesType"/>
                 <xsd:element minOccurs="0" name="missions" type="missionsType"/>
                 <xsd:element minOccurs="0" name="airports" type="airportsType"/>
-                <xsd:element minOccurs="0" name="fleets" type="fleetsType"/>
+                <xsd:element minOccurs="0" name="flights" type="flightsType"/>
+                <xsd:element minOccurs="0" name="airlines" type="airlinesType"/>
                 <xsd:element minOccurs="0" name="studies" type="studiesType"/>
                 <xsd:element minOccurs="0" name="toolspecific" type="toolspecificType"/>
             </xsd:all>
@@ -3334,7 +3335,66 @@ jonas.jepsen@dlr.de
 		</xsd:complexContent>
 	</xsd:complexType>
 
-	<xsd:complexType name="airportCompatabilityGlobalType">
+	<xsd:complexType name="airlineType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>airlineType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>Describes a specific airline and their fleet</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="name" type="stringBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Name of the airline</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="description" type="stringBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Description of the airline</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="fleet" type="fleetType"/>
+				</xsd:sequence>
+				<xsd:attribute name="uID" type="xsd:string" use="required"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+
+<xsd:complexType name="airlinesType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>airlinesType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>Contains a list of different airlines</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" name="airline" type="airlineType"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+
+<xsd:complexType name="airportCompatabilityGlobalType">
 		<xsd:annotation>
 			<xsd:appinfo>
 				<sd:schemaDoc>
@@ -3632,17 +3692,17 @@ jonas.jepsen@dlr.de
 							<xsd:documentation>ICAO 4-letter-code</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element name="positionNorth" type="doubleBaseType">
+					<xsd:element minOccurs="0" name="positionNorth" type="doubleBaseType">
 						<xsd:annotation>
 							<xsd:documentation>Position in degrees north</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element name="positionEast" type="doubleBaseType">
+					<xsd:element minOccurs="0" name="positionEast" type="doubleBaseType">
 						<xsd:annotation>
 							<xsd:documentation>Position in degrees east</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element name="elevation" type="doubleBaseType">
+					<xsd:element minOccurs="0" name="elevation" type="doubleBaseType">
 						<xsd:annotation>
 							<xsd:documentation>Airport elevation</xsd:documentation>
 						</xsd:annotation>
@@ -10744,6 +10804,36 @@ jonas.jepsen@dlr.de
 	</xsd:complexType>
 
 
+	<xsd:complexType name="dateBaseType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>dateBaseType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>Base type for date nodes (including external data attributes).
+							This date type is based on the xsd:date definition.
+							"To specify a time zone, you can either enter a date in UTC time by adding a "Z" behind the date - like this: 2002-09-24Z
+							or you can specify an offset from the UTC time by adding a positive or negative time behind the date - like this:
+							2002-09-24-06:00
+							or
+							2002-09-24+06:00" (description taken from http://www.w3schools.com/xml/schema_dtypes_date.asp)
+						</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:date">
+				<xsd:attribute name="externalDataNodePath" type="xsd:string" use="optional"/>
+				<xsd:attribute name="externalFileName" type="xsd:string" use="optional"/>
+				<xsd:attribute name="externalDataDirectory" type="xsd:string" use="optional"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	
 	<xsd:complexType name="dateTimeBaseType">
 
 		<xsd:annotation>
@@ -13724,43 +13814,6 @@ jonas.jepsen@dlr.de
 		</xsd:complexContent>
 	</xsd:complexType>
 
-	<xsd:complexType name="fleetFlightPlanType">
-
-		<xsd:annotation>
-			<xsd:appinfo>
-				<sd:schemaDoc>
-					<ddue:summary>
-						<ddue:para>Describes a specific flightplan</ddue:para>
-					</ddue:summary>
-					<ddue:remarks>
-						<ddue:para>Describes a specific flightplan, e.g. the flightplan
-							being operated by a certain airline during summer times. A
-							flightplan is composed of one or more routes that are served by a
-							specific air vehicle on a specific mission profile.</ddue:para>
-					</ddue:remarks>
-				</sd:schemaDoc>
-			</xsd:appinfo>
-		</xsd:annotation>
-		<xsd:complexContent>
-			<xsd:extension base="complexBaseType">
-				<xsd:sequence>
-					<xsd:element name="name" type="stringBaseType">
-						<xsd:annotation>
-							<xsd:documentation>Name of the flightplan</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-					<xsd:element minOccurs="0" name="description" type="stringBaseType">
-						<xsd:annotation>
-							<xsd:documentation>Description of the flightplan. The description
-								should contain the region and/or the period the flightplan is
-								operated.</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-					<xsd:element minOccurs="0" name="routes" type="routesType"/>
-				</xsd:sequence>
-			</xsd:extension>
-		</xsd:complexContent>
-	</xsd:complexType>
 
 	<xsd:complexType name="fleetType">
 
@@ -13768,12 +13821,10 @@ jonas.jepsen@dlr.de
 			<xsd:appinfo>
 				<sd:schemaDoc>
 					<ddue:summary>
-						<ddue:para>Describes a specific fleet of air vehicles.</ddue:para>
+						<ddue:para>fleetType</ddue:para>
 					</ddue:summary>
 					<ddue:remarks>
-						<ddue:para>Describes a specific fleet of air vehicles, e.g. the
-							Lufthansa fleet. A fleet is composed of different air vehicles
-							that are operated by one or more flightplans.</ddue:para>
+						<ddue:para>Each fleet can be divided into sub fleet groups</ddue:para>
 					</ddue:remarks>
 				</sd:schemaDoc>
 			</xsd:appinfo>
@@ -13783,7 +13834,7 @@ jonas.jepsen@dlr.de
 				<xsd:sequence>
 					<xsd:element name="name" type="stringBaseType">
 						<xsd:annotation>
-							<xsd:documentation>Name of the fleet</xsd:documentation>
+							<xsd:documentation>Name of fleet</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
 					<xsd:element minOccurs="0" name="description" type="stringBaseType">
@@ -13791,25 +13842,28 @@ jonas.jepsen@dlr.de
 							<xsd:documentation>Description of the fleet</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element minOccurs="0" name="flightplan" type="fleetFlightPlanType"/>
+					<xsd:element minOccurs="0" name="subFleets" type="subFleetsType">
+						<xsd:annotation>
+							<xsd:documentation>Description of sub-fleets.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
 				</xsd:sequence>
+				<xsd:attribute name="uID" type="xsd:string" use="required"/>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
 
 
-	<xsd:complexType name="fleetsType">
+	<xsd:complexType name="flightAnalysisType">
 
 		<xsd:annotation>
 			<xsd:appinfo>
 				<sd:schemaDoc>
 					<ddue:summary>
-						<ddue:para>Catalog of fleets of air vehicles.</ddue:para>
+						<ddue:para>flightAnalysisType</ddue:para>
 					</ddue:summary>
 					<ddue:remarks>
-						<ddue:para>Contains a list of different fleets of air
-							vehicles,e.g. the Lufthansa fleet and/or the A320 fleet, etc.
-						</ddue:para>
+						<ddue:para/>
 					</ddue:remarks>
 				</sd:schemaDoc>
 			</xsd:appinfo>
@@ -13817,7 +13871,8 @@ jonas.jepsen@dlr.de
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
 				<xsd:sequence>
-					<xsd:element maxOccurs="unbounded" name="fleet" type="fleetType"/>
+					<xsd:element minOccurs="0" name="totalOperatingCost" type="totalOperatingCostType"/>
+					<xsd:element minOccurs="0" name="revenue" type="doubleBaseType"/>
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
@@ -14274,6 +14329,91 @@ jonas.jepsen@dlr.de
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
+
+	<xsd:complexType name="flightType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>flightType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>Flight type, containing data of a scheduled flight</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:all>
+					<xsd:element name="missionUID" type="stringUIDBaseType">
+						<xsd:annotation>
+							<xsd:documentation>MissionUID for the flights mission definition</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="modelUID" type="stringUIDBaseType">
+						<xsd:annotation>
+							<xsd:documentation>ModelUID of the aircraft appointed to perform the flight</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="departureDate" type="dateBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Departure day of the flight</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="departureTime" type="timeBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Time of departure - the time is defined as SOBT (Scheduled Off-Block Time) / STD (Scheduled Time of Departure)</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="arrivalDate" type="dateBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Arrival day of the flight</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="arrivalTime" type="timeBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Time of arrival - the time is defined as SIBT (Scheduled In-Block Time) / STA (Scheduled Time of Arrival)</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="operatingAirline" type="stringUIDBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Reference to the operating airline of a flight</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="analysis" type="flightAnalysisType"/>
+				</xsd:all>
+				<xsd:attribute name="uID" type="xsd:string" use="required"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+
+	<xsd:complexType name="flightsType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>flightsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>Flighs type, containing all flight definitions
+						</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" name="flight" type="flightType"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
 
 	<xsd:complexType name="floorPanelType">
 
@@ -33198,130 +33338,6 @@ jonas.jepsen@dlr.de
 		</xsd:complexContent>
 	</xsd:complexType>
 
-	<xsd:complexType name="routeAnalysisType">
-
-		<xsd:annotation>
-			<xsd:appinfo>
-				<sd:schemaDoc>
-					<ddue:summary>
-						<ddue:para>routeAnalysisType</ddue:para>
-					</ddue:summary>
-					<ddue:remarks>
-						<ddue:para/>
-					</ddue:remarks>
-				</sd:schemaDoc>
-			</xsd:appinfo>
-		</xsd:annotation>
-		<xsd:complexContent>
-			<xsd:extension base="complexBaseType">
-				<xsd:sequence>
-					<xsd:element minOccurs="0" name="totalOperatingCost" type="totalOperatingCostType"/>
-					<xsd:element minOccurs="0" name="revenue" type="doubleBaseType"/>
-				</xsd:sequence>
-			</xsd:extension>
-		</xsd:complexContent>
-	</xsd:complexType>
-
-	<xsd:complexType name="routeType">
-
-		<xsd:annotation>
-			<xsd:appinfo>
-				<sd:schemaDoc>
-					<ddue:summary>
-						<ddue:para>Describes a specific route</ddue:para>
-					</ddue:summary>
-					<ddue:remarks>
-						<ddue:para>Describes a specific route, e.g. FRA-EWR, which is
-							operated by a speicifc air vehicle (modelUID) on a specific
-							mission profile (missionUID). The route is further described by
-							the UTC starting time.</ddue:para>
-					</ddue:remarks>
-				</sd:schemaDoc>
-			</xsd:appinfo>
-		</xsd:annotation>
-		<xsd:complexContent>
-			<xsd:extension base="complexBaseType">
-				<xsd:sequence>
-					<xsd:element name="name" type="stringBaseType">
-						<xsd:annotation>
-							<xsd:documentation>Name of the route</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-					<xsd:element minOccurs="0" name="description" type="stringBaseType">
-						<xsd:annotation>
-							<xsd:documentation>Description of the route</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-					<xsd:element name="modelUID" type="stringUIDBaseType">
-						<xsd:annotation>
-							<xsd:documentation>The aircraft operated on this route
-							</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-					<xsd:element name="missionUID" type="stringUIDBaseType">
-						<xsd:annotation>
-							<xsd:documentation>The mission specified for this route
-							</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-					<xsd:element minOccurs="0" name="utcStartingTime" type="stringBaseType">
-						<xsd:annotation>
-							<xsd:documentation>Starting time of the flight expressed as
-								Greenwich (Zulu) time in UTC format: JJJJ:MM:DDThh:mm:ss, e.g.
-								2011:06:16T12:31:51</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-					<xsd:element minOccurs="0" name="frequency" type="integerBaseType">
-						<xsd:annotation>
-							<xsd:documentation>The frequency at which this flight is operated
-								in flights per year</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-					<xsd:element minOccurs="0" name="paxLoadFactor" type="doubleBaseType">
-						<xsd:annotation>
-							<xsd:documentation>The specific pax load factor for this route,
-								ranges from 0...1</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-					<xsd:element minOccurs="0" name="cargoLoadFactor" type="doubleBaseType">
-						<xsd:annotation>
-							<xsd:documentation>The specific cargo load factor for this route,
-								ranges from 0...1</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-					<xsd:element minOccurs="0" name="analysis" type="routeAnalysisType"/>
-				</xsd:sequence>
-				<xsd:attribute name="uID" type="xsd:string" use="optional"/>
-			</xsd:extension>
-		</xsd:complexContent>
-	</xsd:complexType>
-
-
-	<xsd:complexType name="routesType">
-
-		<xsd:annotation>
-			<xsd:appinfo>
-				<sd:schemaDoc>
-					<ddue:summary>
-						<ddue:para>Catalog of routes</ddue:para>
-					</ddue:summary>
-					<ddue:remarks>
-						<ddue:para>Catalog of routes composed of various single routes,
-							e.g. FRA-EWR.</ddue:para>
-					</ddue:remarks>
-				</sd:schemaDoc>
-			</xsd:appinfo>
-		</xsd:annotation>
-		<xsd:complexContent>
-			<xsd:extension base="complexBaseType">
-				<xsd:sequence>
-					<xsd:element maxOccurs="unbounded" name="route" type="routeType"/>
-				</xsd:sequence>
-			</xsd:extension>
-		</xsd:complexContent>
-	</xsd:complexType>
-
-
 	<xsd:complexType name="runwayILSType">
 
 		<xsd:annotation>
@@ -34598,7 +34614,6 @@ jonas.jepsen@dlr.de
 		</xsd:complexContent>
 	</xsd:complexType>
 
-
 	<xsd:complexType name="spoilerType">
 
 		<xsd:annotation>
@@ -35695,9 +35710,68 @@ jonas.jepsen@dlr.de
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
-	
-	
-	<xsd:complexType name="subLoadType">
+	<xsd:complexType name="subFleetType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>subFleetType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>Each fleet can be divided into sub fleet groups</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="name" type="stringBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Name of fleet</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="description" type="stringBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Description of the fleet</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="tailsigns" type="stringVectorBaseType">
+						<xsd:annotation>
+							<xsd:documentation>A ; separated list of all tailsign strings</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+				<xsd:attribute name="uID" type="xsd:string" use="required"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+
+	<xsd:complexType name="subFleetsType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>subFleetsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>Contains a list of different sub fleets</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" name="subFleet" type="subFleetType"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+		<xsd:complexType name="subLoadType">
 
 		<xsd:annotation>
 			<xsd:appinfo>
@@ -36044,6 +36118,36 @@ jonas.jepsen@dlr.de
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
+	</xsd:complexType>
+
+
+	<xsd:complexType name="timeBaseType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>timeBaseType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>Base type for time nodes (including external data attributes)
+							This time type is based on the xsd:time definition.
+							"To specify a time zone, you can either enter a time in UTC time by adding a "Z" behind the time - like this: 09:30:10Z
+							or you can specify an offset from the UTC time by adding a positive or negative time behind the time - like this:
+							09:30:10-06:00
+							or
+							09:30:10+06:00" (description taken from http://www.w3schools.com/xml/schema_dtypes_date.asp)</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:time">
+				<xsd:attribute name="externalDataNodePath" type="xsd:string" use="optional"/>
+				<xsd:attribute name="externalFileName" type="xsd:string" use="optional"/>
+				<xsd:attribute name="externalDataDirectory" type="xsd:string" use="optional"/>
+			</xsd:extension>
+		</xsd:simpleContent>
 	</xsd:complexType>
 
 
