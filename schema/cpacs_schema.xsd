@@ -10804,6 +10804,36 @@ jonas.jepsen@dlr.de
 	</xsd:complexType>
 
 
+	<xsd:complexType name="dateBaseType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>dateBaseType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>Base type for date nodes (including external data attributes).
+							This date type is based on the xsd:date definition.
+							"To specify a time zone, you can either enter a date in UTC time by adding a "Z" behind the date - like this: 2002-09-24Z
+							or you can specify an offset from the UTC time by adding a positive or negative time behind the date - like this:
+							2002-09-24-06:00
+							or
+							2002-09-24+06:00" (description taken from http://www.w3schools.com/xml/schema_dtypes_date.asp)
+						</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:date">
+				<xsd:attribute name="externalDataNodePath" type="xsd:string" use="optional"/>
+				<xsd:attribute name="externalFileName" type="xsd:string" use="optional"/>
+				<xsd:attribute name="externalDataDirectory" type="xsd:string" use="optional"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	
 	<xsd:complexType name="dateTimeBaseType">
 
 		<xsd:annotation>
@@ -10821,54 +10851,6 @@ jonas.jepsen@dlr.de
 		</xsd:annotation>
 		<xsd:simpleContent>
 			<xsd:extension base="xsd:dateTime">
-				<xsd:attribute name="externalDataNodePath" type="xsd:string" use="optional"/>
-				<xsd:attribute name="externalFileName" type="xsd:string" use="optional"/>
-				<xsd:attribute name="externalDataDirectory" type="xsd:string" use="optional"/>
-			</xsd:extension>
-		</xsd:simpleContent>
-	</xsd:complexType>
-	
-	<xsd:complexType name="dateBaseType">
-
-		<xsd:annotation>
-			<xsd:appinfo>
-				<sd:schemaDoc>
-					<ddue:summary>
-						<ddue:para>dateBaseType</ddue:para>
-					</ddue:summary>
-					<ddue:remarks>
-						<ddue:para>Base type for date nodes (including external data
-							attributes)</ddue:para>
-					</ddue:remarks>
-				</sd:schemaDoc>
-			</xsd:appinfo>
-		</xsd:annotation>
-		<xsd:simpleContent>
-			<xsd:extension base="xsd:date">
-				<xsd:attribute name="externalDataNodePath" type="xsd:string" use="optional"/>
-				<xsd:attribute name="externalFileName" type="xsd:string" use="optional"/>
-				<xsd:attribute name="externalDataDirectory" type="xsd:string" use="optional"/>
-			</xsd:extension>
-		</xsd:simpleContent>
-	</xsd:complexType>
-	
-	<xsd:complexType name="timeBaseType">
-
-		<xsd:annotation>
-			<xsd:appinfo>
-				<sd:schemaDoc>
-					<ddue:summary>
-						<ddue:para>timeBaseType</ddue:para>
-					</ddue:summary>
-					<ddue:remarks>
-						<ddue:para>Base type for time nodes (including external data
-							attributes)</ddue:para>
-					</ddue:remarks>
-				</sd:schemaDoc>
-			</xsd:appinfo>
-		</xsd:annotation>
-		<xsd:simpleContent>
-			<xsd:extension base="xsd:time">
 				<xsd:attribute name="externalDataNodePath" type="xsd:string" use="optional"/>
 				<xsd:attribute name="externalFileName" type="xsd:string" use="optional"/>
 				<xsd:attribute name="externalDataDirectory" type="xsd:string" use="optional"/>
@@ -13722,9 +13704,9 @@ jonas.jepsen@dlr.de
 							<xsd:documentation>Description of the fleet</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element minOccurs="0" name="tailsigns" type="stringVectorBaseType">
+					<xsd:element minOccurs="0" name="subFleets" type="subFleetsType">
 						<xsd:annotation>
-							<xsd:documentation>A ; separated list of all tailsign strings</xsd:documentation>
+							<xsd:documentation>Description of sub-fleets.</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
 				</xsd:sequence>
@@ -14238,14 +14220,24 @@ jonas.jepsen@dlr.de
 							<xsd:documentation>ModelUID of the aircraft appointed to perform the flight</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element name="departure" type="dateTimeBaseType">
+					<xsd:element name="departureDate" type="dateBaseType">
 						<xsd:annotation>
-							<xsd:documentation>Day and time of departure - the time is defined as SOBT (Scheduled Off-Block Time) / STD (Scheduled Time of Departure)</xsd:documentation>
+							<xsd:documentation>Departure day of the flight</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element name="arrival" type="dateTimeBaseType">
+					<xsd:element name="departureTime" type="timeBaseType">
 						<xsd:annotation>
-							<xsd:documentation>Day and time of arrival - the time is defined as SIBT (Scheduled In-Block Time) / STA (Scheduled Time of Arrival)</xsd:documentation>
+							<xsd:documentation>Time of departure - the time is defined as SOBT (Scheduled Off-Block Time) / STD (Scheduled Time of Departure)</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="arrivalDate" type="dateBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Arrival day of the flight</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="arrivalTime" type="timeBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Time of arrival - the time is defined as SIBT (Scheduled In-Block Time) / STA (Scheduled Time of Arrival)</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
 					<xsd:element name="operatingAirline" type="stringUIDBaseType">
@@ -35402,6 +35394,69 @@ jonas.jepsen@dlr.de
 		</xsd:complexContent>
 	</xsd:complexType>
 
+	<xsd:complexType name="subFleetType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>subFleetType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>Each fleet can be divided into sub fleet groups</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="name" type="stringBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Name of fleet</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="description" type="stringBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Description of the fleet</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="tailsigns" type="stringVectorBaseType">
+						<xsd:annotation>
+							<xsd:documentation>A ; separated list of all tailsign strings</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+				<xsd:attribute name="uID" type="xsd:string" use="required"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+
+	<xsd:complexType name="subFleetsType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>subFleetsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>Contains a list of different sub fleets</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" name="subFleet" type="subFleetType"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	
+	
 	<xsd:complexType name="subLoadType">
 
 		<xsd:annotation>
@@ -35749,6 +35804,36 @@ jonas.jepsen@dlr.de
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
+	</xsd:complexType>
+
+
+	<xsd:complexType name="timeBaseType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>timeBaseType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>Base type for time nodes (including external data attributes)
+							This time type is based on the xsd:time definition.
+							"To specify a time zone, you can either enter a time in UTC time by adding a "Z" behind the time - like this: 09:30:10Z
+							or you can specify an offset from the UTC time by adding a positive or negative time behind the time - like this:
+							09:30:10-06:00
+							or
+							09:30:10+06:00" (description taken from http://www.w3schools.com/xml/schema_dtypes_date.asp)</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:time">
+				<xsd:attribute name="externalDataNodePath" type="xsd:string" use="optional"/>
+				<xsd:attribute name="externalFileName" type="xsd:string" use="optional"/>
+				<xsd:attribute name="externalDataDirectory" type="xsd:string" use="optional"/>
+			</xsd:extension>
+		</xsd:simpleContent>
 	</xsd:complexType>
 
 
