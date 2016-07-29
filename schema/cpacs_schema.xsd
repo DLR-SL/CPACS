@@ -16533,7 +16533,7 @@ jonas.jepsen@dlr.de
 			<xsd:appinfo>
 				<sd:schemaDoc>
 					<ddue:summary>
-						<ddue:para>Detailed description of all components of the main
+						<ddue:para>Detailed description of all components of the
 							landing gear.</ddue:para>
 					</ddue:summary>
 					<ddue:remarks>
@@ -29154,15 +29154,15 @@ jonas.jepsen@dlr.de
 				<xsd:sequence>
 					<xsd:element name="totalLength" type="doubleBaseType">
 						<xsd:annotation>
-							<xsd:documentation>Total length of main landing gear, equals the
+							<xsd:documentation>Total length of nose landing gear, equals the
 								distance form the middle of the bogie/axles to the axis of
-								rotation of the pintle strut. Distance is measured while main
+								rotation of the pintle strut. Distance is measured while nose
 								landing gear is fully extended.</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
 					<xsd:element name="retractAngle" type="doubleBaseType">
 						<xsd:annotation>
-							<xsd:documentation>Retraction angle of the main landing gear.
+							<xsd:documentation>Retraction angle of the nose landing gear.
 								Equals a rotation around the global z-axis in degrees. 0 =
 								retraction to the front; 90 = retraction to the left; 180 =
 								retraction to the rear; 270 = retraction to the right.
@@ -29172,7 +29172,7 @@ jonas.jepsen@dlr.de
 					<xsd:element name="extAngle" type="doubleBaseType">
 						<xsd:annotation>
 							<xsd:documentation>Angle between the full extended and the full
-								retracted moin strut.</xsd:documentation>
+								retracted main strut.</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
 					<xsd:element name="offset" type="doubleBaseType">
@@ -33974,6 +33974,34 @@ jonas.jepsen@dlr.de
 		</xsd:complexContent>
 	</xsd:complexType>
 
+	<xsd:complexType name="skidGearGlobalType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>Definition of global skid landing gear geometry
+							parameters.</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="totalLength" type="doubleBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Total length of skid gear.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
 	<xsd:complexType name="skidGearType">
 
 		<xsd:annotation>
@@ -34015,6 +34043,9 @@ jonas.jepsen@dlr.de
 								exactly one part without a parent part.</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
+					<xsd:element minOccurs="0" name="fuselageAttachment" type="transformationType"/>
+					<xsd:element minOccurs="0" name="global" type="skidGearGlobalType"/>
+					<xsd:element minOccurs="0" name="components" type="gearComponentsType"/>
 				</xsd:all>
 				<xsd:attribute name="uID" type="xsd:string" use="required"/>
 				<xsd:attribute name="symmetry" use="optional">
