@@ -13,7 +13,7 @@ an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
 either express or implied. See the License for the specific
 language governing permissions and limitations under the License.
 
-Copyright: (c) 2016 Deutsches Zentrum fuer Luft- und Raumfahrt e.V.
+Copyright: (c) 2017 Deutsches Zentrum fuer Luft- und Raumfahrt e.V.
 
 If you have any questions regarding CPACS please feel free to contact:
 
@@ -6558,6 +6558,7 @@ jonas.jepsen@dlr.de
 								Each wing has at least one componentSegment (from root to tip).
 								The maximal number of componentSegments equals the number of
 								segments (each segment is defined as one componentSegment).
+								This also implies that each segment can only be part of one componentSegment.
 							</ddue:para>
 							<ddue:para>In principal a componentSegment can combine any number
 								of segments. But if in one section two elements are defined, the
@@ -6572,40 +6573,45 @@ jonas.jepsen@dlr.de
 							<ddue:para>Within componentSegments a relative spanwise
 								coordinate (eta) and a relative chordwise coordinate (xsi) is
 								defined. Those coordinates are used for the definition of e.g.
-								wing structures and control surfaces. The eta coordinate is
-								defined by the line that occures due to the projection of the
-								wing leading edge on the wing y-z-plane. The beginning of this
-								line at from-element equals eta = 0, while the end of this line
-								at the to-element equals eta = 1. All wing positions that lay in
-								a plane, whose normal axis the eta-line is, have the same eta
-								coordinate. The crossing points of the wing leading and trailing
-								edge with this planes define the xsi coordinate from 0 (leading
-								edge) to 1 (trailing edge). A relative height coordinate is
-								defined by the right hand rule at each eta-xsi-position. The
-								relative hight equals 0 at the lower skin and 1 at the upper
-								skin. Pleas not that the orientation of the relative hight
-								vector therefore changes if the order of the 'from' and 'to'
-								lement are changed.</ddue:para>
+								wing structures and control surfaces. there are two types of eta xsi coordinates.
+								Segment (eta, xsi) coordinates define the relative local coordinate system for a segment ranging from (0,0) to (1,1).
+							</ddue:para>
+							<ddue:mediaLink>
+								<ddue:image xlink:href="componentsegments_1"/>
+							</ddue:mediaLink>
+							<ddue:para>
+								The eta xsi coordinates for a component segment are based on the segment eta xsi planes.
+								As a reference length for the component segment eta coordinate the
+								mid chord lines of all the segments are used.
+								The beginning of this line at from-element equals eta = 0, while the end of this line
+								at the to-element equals eta = 1. All wing positions that lie on the same
+								element (segment border) have the same eta coordinate. The points inbetween
+								two elements are defined by the iso xsi lines of the segment eta xsi space.
+								A relative height coordinate is
+								defined by the elements orientation. The
+								relative height equals 0 at the lower skin and 1 at the upper
+								skin. Please note that the surface points of a point between
+								two elements is calculated by a linear interpolation of the
+								respective upper/lower points of the inner and outer element.
+								For illustration see the picture below.
+							</ddue:para>
+							<ddue:mediaLink>
+								<ddue:image xlink:href="wing-get-upper"/>
+							</ddue:mediaLink>
 							<ddue:para>An example for the definition of the relative axes can
 								be found in the picture below:</ddue:para>
 							<ddue:mediaLink>
-								<ddue:image xlink:href="etaxsi1"/>
+								<ddue:image xlink:href="componentsegments_2"/>
 							</ddue:mediaLink>
-							<ddue:para>If e.g. the 'to'-element is not heading in flight
-								direction (see picture below) and the leading edge of the wing
-								ends more inbound than the trailing edge, the wing extended
-								virtually to the maximal eta position (trailing edge). The
-								eta-coordinate is defined in this case by the projection of the
-								real leading edge and by the virtual projection. In this case
-								the xsi-coordinate at the tip is defined by the extended leading
-								edge and the trailing edge. At a negative rotaion of the
-								'to'-element would lead to an virtual extension of the rear part
-								of the wing. Skew 'from'-elements are handeld similar.
+							<ddue:para>
+								In order to calculate the global coordinates of a component segment eta xsi point
+								one first has to calculate the eta point on the xsi iso line of (xsi=0.5),
+								and then walk along the iso eta lineof the segment.
 							</ddue:para>
-							<ddue:para>An example for the definition of the relative axes at
-								a skew tip can be found in the picture below:</ddue:para>
+							<ddue:para>An example for determining the a component
+							eta xsi point can be found in the picture below:</ddue:para>
 							<ddue:mediaLink>
-								<ddue:image xlink:href="etaxsi2"/>
+								<ddue:image xlink:href="componentsegments_3"/>
 							</ddue:mediaLink>
 						</ddue:content>
 					</ddue:remarks>
