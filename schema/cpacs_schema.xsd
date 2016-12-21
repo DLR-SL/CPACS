@@ -10957,6 +10957,8 @@ jonas.jepsen@dlr.de
 					<xsd:element minOccurs="0" name="crossbeamSizingSettings" type="delisProfileSizingSettingsType"/>
 					<xsd:element minOccurs="0" name="crossbeamstrutSizingSettings" type="delisProfileSizingSettingsType"/>
 					<xsd:element minOccurs="0" name="longfloorbeamSizingSettings" type="delisProfileSizingSettingsType"/>
+					<xsd:element minOccurs="0" name="bulkheadBeamSizingSettings" type="delisProfileSizingSettingsType" />
+					<xsd:element minOccurs="0" name="bulkheadShellSizingSettings" type="delisSheetSizingSettingsType" />
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
@@ -11083,6 +11085,15 @@ jonas.jepsen@dlr.de
 		</xsd:complexContent>
 	</xsd:complexType>
 
+    <xsd:complexType name="delisBeamModelingType">
+        <xsd:simpleContent>
+            <xsd:restriction base="stringBaseType">
+                <xsd:enumeration value="smeared"/>
+                <xsd:enumeration value="simpleBeamSection"/>
+                <xsd:enumeration value="complexBeamSection"/>
+            </xsd:restriction>
+        </xsd:simpleContent>
+    </xsd:complexType>
 
 	<xsd:complexType name="delisFuselageSettingsType">
 
@@ -11330,36 +11341,93 @@ jonas.jepsen@dlr.de
 				<xsd:sequence>
 					<xsd:element name="tool" type="toolType">
 						<xsd:annotation>
-							<xsd:documentation>Tool identification</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-					<xsd:element name="aircraftModelUID" type="stringUIDBaseType">
-						<xsd:annotation>
-							<xsd:documentation>UID of the aircraft model</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-					<xsd:element minOccurs="0" name="createdComponents" type="delisCreatedComponentsType">
-						<xsd:annotation>
-							<xsd:documentation>Optional list of ComponentIDs of the
-								component(wing or fuselage) that should be modeled. If not set
-								all components are modeled.</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-					<xsd:element minOccurs="0" name="wings" type="delisWingsSettingsType">
-						<xsd:annotation>
-							<xsd:documentation>List of wings to set specific model and sizing
-								settings. If not specified, default values are used.
+							<xsd:documentation>
+								Tool identification
 							</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element minOccurs="0" name="fuselages" type="delisFuselagesSettingsType">
+					<xsd:element name="aircraftModelUID"
+						type="stringUIDBaseType">
 						<xsd:annotation>
-							<xsd:documentation>List of fuselages to set specific model and
-								sizing settings. If not specified, default values are used.
+							<xsd:documentation>
+								UID of the aircraft model
 							</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element minOccurs="0" name="sizingConvergence" type="delisSizingConvergenceType"/>
+					<xsd:element name="lumpMassBreakdownOutput"
+						type="xsd:boolean">
+						<xsd:annotation>
+							<xsd:documentation>
+								Flag if the massbreakdown should be
+								written with every single structural
+								item or if the mass sum of each type of
+								structural element of one component
+								should be written. E.g. write all
+								sparCells or write only the sum of the
+								sparCells of the wing.
+
+								Defaults to false
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="coupleFuselageBT"
+						type="xsd:boolean">
+						<xsd:annotation>
+							<xsd:documentation>
+								Flag if coupling with the BT fuselage
+								should be performed. In this case, DELiS
+								creates only wings and the ansys
+								components for coupling with Trafuma. If
+								False, also a DELiS fuselage will be
+								created, if given and requested and
+								coupled with the DELiS wings.
+
+								Defaults to false
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="useAeroCoefficientAndNodalInertialLoads" type="xsd:boolean">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Flag if the loadcase AeroCoefficientAndNodalInertialLoadsLoadCase should be used before other loadcases
+        
+                                Defaults to False
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+					<xsd:element minOccurs="0" name="createdComponents"
+						type="delisCreatedComponentsType">
+						<xsd:annotation>
+							<xsd:documentation>
+								Optional list of ComponentIDs of the
+								component(wing or fuselage) that should
+								be modeled. If not set all components
+								are modeled.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="wings"
+						type="delisWingsSettingsType">
+						<xsd:annotation>
+							<xsd:documentation>
+								List of wings to set specific model and
+								sizing settings. If not specified,
+								default values are used.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="fuselages"
+						type="delisFuselagesSettingsType">
+						<xsd:annotation>
+							<xsd:documentation>
+								List of fuselages to set specific model
+								and sizing settings. If not specified,
+								default values are used.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="sizingConvergence"
+						type="delisSizingConvergenceType" />
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
@@ -11386,71 +11454,127 @@ jonas.jepsen@dlr.de
 						model.</xsd:documentation>
 				</xsd:annotation>
 				<xsd:sequence>
-					<xsd:element minOccurs="0" name="numberOfElementsInEtaDirectionInEachBay" type="integerBaseType">
-						<xsd:annotation>
-							<xsd:documentation>Number of finite elements in span(eta)
-								direction within each region of adjacent spars and ribs.
-								Defaults to 3</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-					<xsd:element minOccurs="0" name="numberOfElementsInXsiDirectionInEachBay" type="integerBaseType">
-						<xsd:annotation>
-							<xsd:documentation>Number of finite elements in chord(xsi)
-								direction within each region of adjacent spars and ribs.
-								Defaults to 10</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-					<xsd:element minOccurs="0" name="skinBaysInSizingRegionEta" type="integerBaseType">
-						<xsd:annotation>
-							<xsd:documentation>Number of bays in span(eta) direction that
-								defines the size of the optimization region. Defaults to 1
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="numberOfElementsInEtaDirection"
+                        type="integerBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Number of Elements in span(eta)
+                                direction. This also defines the number
+                                of real and imaginary ribs in delis.
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="numberOfElementsInXsiDirection"
+                        type="integerBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Number of Elements in chord(xsi)
+                                direction. This also defines the number
+                                of all types of spars
+                                (le,te,real,imaginary) in delis.
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="skinBaysInSizingRegionEta"
+                        type="integerBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Number of bays in span(eta) direction
+                                that defines the size of the
+                                optimization region. Defaults to 1
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="skinBaysInSizingRegionXsi"
+                        type="integerBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Number of bays in chord(xsi) direction
+                                that defines the size of the
+                                optimization region. Defaults to the
+                                number of bays between adjacent spars
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="createOnlyWingBox"
+                        type="booleanBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Flag if just the wing box(region from
+                                front spar to rear spar) should be
+                                modeled. Otherwise a model from leading
+                                to trailing edge is created. Defaults to
+                                True
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="createControlSurfaces"
+                        type="booleanBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Flag if the control surfaces should be
+                                modeled explicitly instead of using mass
+                                points Defaults to False
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="stringerModeling"
+                        type="delisBeamModelingType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Determines how stringers are modeled.
+                                These strings can be given: [smeared,
+                                simpleBeamSection, complexBeamSection]
+                                Defaults to smeared
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="capModeling"
+                        type="delisBeamModelingType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Determines how caps are modeled. These
+                                strings can be given:
+                                [simpleBeamSection, complexBeamSection].
+                                Defaults to simpleBeamSection.
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="createStructureTopology"
+                        type="booleanBaseType" maxOccurs="1"
+                        minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Flag if wing structure should be created
+                                automatically via aircraft generator
+                                class without an input dataset. If the
+                                flag is set to false, the inner
+                                structure needs to be read from CPACS or
+                                any other input dataset.
+
+                                Attention: At the moment, only ribs will
+                                be created if True.
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="splitWingStructure" type="booleanBaseType" maxOccurs="1" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>Flag if wing structure(spars and skins) defined in cpacs should be split
+								into smaller regions bordered by spars and ribs. If False, the initial cpacs definition of sparSegments
+								and the default skin definition is used instead of a fine granular structure. This has effects on
+								the sizing regions, which are coarse or fine.
+								
+								Defaults to True 
 							</xsd:documentation>
 						</xsd:annotation>
-					</xsd:element>
-					<xsd:element minOccurs="0" name="skinBaysInSizingRegionXsi" type="integerBaseType">
-						<xsd:annotation>
-							<xsd:documentation>Number of bays in chord(xsi) direction that
-								defines the size of the optimization region. Defaults to the
-								number of bays between adjacent spars</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-					<xsd:element minOccurs="0" name="createHalfWing" type="booleanBaseType">
-						<xsd:annotation>
-							<xsd:documentation>Flag if a half wing model should be created
-								even if symmetry is given in the wing definition Defaults to
-								False</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-					<xsd:element minOccurs="0" name="createWingBox" type="booleanBaseType">
-						<xsd:annotation>
-							<xsd:documentation>Flag if just the wing box(region from front
-								spar to rear spar) should be modeled. Otherwise a model from
-								leading to trailing edge is created. Defaults to True
-							</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-					<xsd:element minOccurs="0" name="createControlSurfaces" type="booleanBaseType">
-						<xsd:annotation>
-							<xsd:documentation>Flag if the control surfaces should be modeled
-								explicitly instead of using mass points Defaults to False
-							</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-					<xsd:element minOccurs="0" name="stringerModeling">
-						<xsd:annotation>
-							<xsd:documentation>Determines how stringers are modeled. These
-								strings can be given: [smeared, simpleBeamSection,
-								complexBeamSection] Defaults to smeared</xsd:documentation>
-						</xsd:annotation>
-						<xsd:complexType>
-							<xsd:simpleContent>
-								<xsd:restriction base="stringBaseType">
-									<xsd:enumeration value="smeared"/>
-									<xsd:enumeration value="simpleBeamSection"/>
-									<xsd:enumeration value="complexBeamSection"/>
-								</xsd:restriction>
-							</xsd:simpleContent>
-						</xsd:complexType>
 					</xsd:element>
 				</xsd:sequence>
 			</xsd:extension>
