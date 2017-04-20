@@ -610,6 +610,7 @@ jonas.jepsen@dlr.de
                 <xsd:element name="header" type="headerType"/>
                 <xsd:element minOccurs="0" name="vehicles" type="vehiclesType"/>
                 <xsd:element minOccurs="0" name="missions" type="missionsType"/>
+                <xsd:element minOccurs="0" name="designPerformance" type="designPerformanceType"/>
                 <xsd:element minOccurs="0" name="airports" type="airportsType"/>
                 <xsd:element minOccurs="0" name="flights" type="flightsType"/>
                 <xsd:element minOccurs="0" name="airlines" type="airlinesType"/>
@@ -11770,6 +11771,238 @@ jonas.jepsen@dlr.de
 		</xsd:complexContent>
 	</xsd:complexType>
 
+
+    <xsd:complexType name="designMissionPhaseType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>designMissionPhaseType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>Design mission phase type, containing a mission phase for a pre-design mission
+						</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="mach" type="doubleBaseType">
+						<xsd:annotation>
+							<xsd:documentation>mach number for the mission phase</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="time" type="doubleBaseType">
+						<xsd:annotation>
+							<xsd:documentation>time/duration for the mission phase</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+                    <xsd:element name="statusEng" type="integerBaseType">
+						<xsd:annotation>
+							<xsd:documentation>status of engine for the mission phase</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+                    <xsd:element name="dir" type="stringBaseType">
+						<xsd:annotation>
+							<xsd:documentation>direction of the mission phase can be either "out" or "in"</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+                    <xsd:element name="climbAngle" type="doubleBaseType">
+						<xsd:annotation>
+							<xsd:documentation>climb angle for the mission phase</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+                    <xsd:element name="enginePerformanceMapUID" type="stringUIDBaseType">
+						<xsd:annotation>
+							<xsd:documentation>reference to the engine performance map used for the mission phase</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+                    <xsd:element name="range" type="doubleBaseType">
+						<xsd:annotation>
+							<xsd:documentation>range/distance for the mission phase</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+                    <xsd:element name="descentAngle" type="doubleBaseType">
+						<xsd:annotation>
+							<xsd:documentation>descent angle for the mission phase</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+                    <xsd:element name="endAltitude" type="doubleBaseType">
+						<xsd:annotation>
+							<xsd:documentation>the end altitude for the mission phase</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+                    <xsd:element name="massFraction" type="doubleBaseType">
+						<xsd:annotation>
+							<xsd:documentation>explicit mass fraction to be used for the mission phase</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+                    <xsd:element name="enginePerformanceMapUID" type="stringUIDBaseType">
+						<xsd:annotation>
+							<xsd:documentation>reference to the engine performance map used for the mission phase</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+				<xsd:attribute name="uID" type="xsd:string" use="required" />
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+
+    <xsd:complexType name="designMissionPhasesType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>designMissionPhasesType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>Design missions phase type, containing the different mission phases for pre-design missions
+						</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" name="phase" type="designMissionPhaseType" />
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+
+    <xsd:complexType name="designMissionSegmentType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>designMissionSegmentType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>DesignMissionSegment type, containing a segment of a pre-design mission
+						</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="segmentType" type="stringBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Name of mission segment</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+                    <xsd:element name="phaseSequence" type="stringVectorBaseType">
+						<xsd:annotation>
+							<xsd:documentation>An ordered ; separated list of phases for the pre-design mission segment</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+				<xsd:attribute name="uID" type="xsd:string" use="required" />
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+
+	<xsd:complexType name="designMissionSegmentsType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>designMissionSegmentsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>DesignMissionSegments type, containing the list of segments
+							of a pre-design mission</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" name="segment" type="designMissionSegmentType" />
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+
+	<xsd:complexType name="designMissionType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>designMissionType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>Design mission type, containing a pre-design mission definition
+						</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="name" type="stringBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Name of design mission</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="description" type="stringBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Description of design mission</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+                    <xsd:element name="segmentSequence" type="stringVectorBaseType">
+						<xsd:annotation>
+							<xsd:documentation>An ordered ; separated list of design segment UIDs</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element   name="segments" type="designMissionSegmentsType" />
+				</xsd:sequence>
+				<xsd:attribute name="uID" type="xsd:string" use="required" />
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+
+	<xsd:complexType name="designMissionsType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>designMissionsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>Design missions type, containing the pre-design missions
+						</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" name="designMission" type="designMissionType" />
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+
 	<xsd:complexType name="designParameterType">
 
 		<xsd:annotation>
@@ -11821,6 +12054,33 @@ jonas.jepsen@dlr.de
 		</xsd:complexContent>
 	</xsd:complexType>
 	
+	
+    <xsd:complexType name="designPerformanceType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>designPerformanceType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>DesignPerformance node, containing definitions for design points and design missions
+							for the predesign phase.</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:all>
+					<xsd:element minOccurs="0" name="designMissions" type="designMissionsType" />
+                    <xsd:element minOccurs="0" name="phases" type="designMissionPhasesType" />
+                    <xsd:element minOccurs="0" name="pointPerformance" type="pointPerformanceType" />
+				</xsd:all>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
 	
 	<xsd:complexType name="designSetType">
 
@@ -30381,6 +30641,41 @@ jonas.jepsen@dlr.de
 	</xsd:complexType>
 
 
+    <xsd:complexType name="pointPerformanceType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>pointPerformanceType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>point performance as constraints in aircraft design</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="serviceCeilings" type="serviceCeilingsType">
+						<xsd:annotation>
+							<xsd:documentation>Service ceilings for the performance. Used for the flight envelope.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="turns" type="turnsType">
+						<xsd:annotation>
+							<xsd:documentation>Definition of turn performances
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+				<xsd:attribute name="uID" type="xsd:string" use="optional"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+
 	<xsd:complexType name="pointPolarType">
 
 		<xsd:annotation>
@@ -33747,7 +34042,63 @@ jonas.jepsen@dlr.de
 	</xsd:complexType>
 
 
+    <xsd:complexType name="serviceCeilingType">
 
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>serviceCeilingType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>Definition of a service ceiling
+						</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="altitude" type="doubleBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Altitude of service ceiling</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="statusEng" type="integerBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Status of the engine for the service ceiling</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+				<xsd:attribute name="uID" type="xsd:string" use="required" />
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+    <xsd:complexType name="serviceCeilingsType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>serviceCeilingsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>Holds the service ceiling definitions
+						</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" name="serviceCeiling" type="serviceCeilingType" />
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
 
 
 	<xsd:complexType name="shaftLinkedComponentsType">
@@ -37392,6 +37743,74 @@ jonas.jepsen@dlr.de
 					</xsd:element>
 					<xsd:element minOccurs="0" name="quasiSteadyRotation" type="quasiSteadyRotationType"/>
 				</xsd:all>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+    <xsd:complexType name="turnType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>turnType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>Definition of a turn for design performance evaluation
+						</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="mach" type="doubleBaseType">
+						<xsd:annotation>
+							<xsd:documentation>mach number during turn</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+                    <xsd:element name="nTurn" type="integerBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Number of turns</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+                    <xsd:element name="altitude" type="doubleBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Altitude at which the turn is performed</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="statusEng" type="integerBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Status of the engine for the service ceiling</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+				<xsd:attribute name="uID" type="xsd:string" use="required" />
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+    <xsd:complexType name="turnsType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>turnsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>Holds the definitions of the turns for design performance evaluation
+						</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" name="turn" type="turnType" />
+				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
