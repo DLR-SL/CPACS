@@ -3236,6 +3236,7 @@ jonas.jepsen@dlr.de
 					<xsd:element minOccurs="0" name="genericGeometryComponents" type="genericGeometryComponentsType"/>
 					<xsd:element minOccurs="0" name="global" type="aircraftGlobalType"/>
 					<xsd:element minOccurs="0" name="analyses" type="aircraftAnalysesType"/>
+					<xsd:element minOccurs="0" name="performanceRequirements" type="performanceRequirementsType"/>
 				</xsd:all>
 				<xsd:attribute name="uID" type="xsd:string" use="required"/>
 			</xsd:extension>
@@ -30111,6 +30112,101 @@ jonas.jepsen@dlr.de
 					<xsd:element minOccurs="0" name="paxSeats" type="requirementType"/>
 					<xsd:element minOccurs="0" name="cargoCapacity" type="requirementType"/>
 				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="performanceCasesType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>performanceCasesType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>Contains a list of performance case definitions for the aircraft model
+						</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" minOccurs="1" name="performanceCase" type="performanceCaseType"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="performanceCaseType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>performanceCaseType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:all>
+					<xsd:element name="name" type="stringBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Name of the performance case</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="description" type="stringBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Description of the performance case</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="weightAndBalanceUID" type="stringUIDBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Reference to the considered weightAndBalance case</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="missionUID" type="stringUIDBaseType">
+						<xsd:annotation>
+							<xsd:documentation>The UID of the mission to be flown</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="pointPerformanceUIDs" type="stringVectorBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Optional list of point performance UID's serving as constraints for the mission</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:all>
+				<xsd:attribute name="uID" type="xsd:string" use="required"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="performanceRequirementsType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>performanceRequirementsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:all>
+					<xsd:element minOccurs="0" name="requiredPerformanceCases" type="stringVectorBaseType"/>
+					<xsd:element minOccurs="0" name="optionalPerformanceCases" type="stringVectorBaseType"/>
+					<xsd:element name="performanceCases" type="performanceCasesType"/>
+				</xsd:all>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
