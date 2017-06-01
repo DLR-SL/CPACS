@@ -609,6 +609,7 @@ jonas.jepsen@dlr.de
             <xsd:all>
                 <xsd:element name="header" type="headerType"/>
                 <xsd:element minOccurs="0" name="vehicles" type="vehiclesType"/>
+                <xsd:element minOccurs="0" name="missionDefinitions" type="missionDefinitionsType"/>
                 <xsd:element minOccurs="0" name="airports" type="airportsType"/>
                 <xsd:element minOccurs="0" name="flights" type="flightsType"/>
                 <xsd:element minOccurs="0" name="airlines" type="airlinesType"/>
@@ -6962,6 +6963,39 @@ jonas.jepsen@dlr.de
 					<xsd:element minOccurs="0" name="rotation" type="pointXYZType"/>
 					<xsd:element minOccurs="0" name="stiffness" type="stiffnessType"/>
 				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+
+	<xsd:complexType name="constraintSettingsType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>constraintSettingsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>specific performance settings for the segment</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:all>
+					<xsd:element minOccurs="0" name="machNumber" type="doubleBaseType"/>
+					<xsd:element minOccurs="0" name="thrustSetting" type="doubleBaseType"/>
+					<xsd:element minOccurs="0" name="climbAngle" type="doubleBaseType"/>
+					<xsd:element minOccurs="0" name="rateOfClimb" type="doubleBaseType"/>
+					<xsd:element minOccurs="0" name="rateOfTurn" type="doubleBaseType"/>
+					<xsd:element minOccurs="0" name="rateOfDescent" type="doubleBaseType"/>
+					<xsd:element minOccurs="0" name="acceleration" type="doubleBaseType"/>
+					<xsd:element minOccurs="0" name="descentAngle" type="doubleBaseType"/>
+					<xsd:element minOccurs="0" name="loadFactor" type="doubleBaseType"/>
+					<xsd:element minOccurs="0" name="deltaTemperatureISA" type="doubleBaseType"/>
+				</xsd:all>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
@@ -18426,6 +18460,44 @@ jonas.jepsen@dlr.de
 		</xsd:complexContent>
 	</xsd:complexType>
 
+	<xsd:complexType name="geographicPointType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>geographicPointType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>Geographic point type, containing an longitude, latitude, altitude data triplet.</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="longitude" type="doubleBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Longitude coordinate 0-360</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="latitude" type="doubleBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Latitude coordinate 0-360</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="altitude" type="doubleBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Altitude in meters</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+				<xsd:attribute name="uID" type="xsd:string" use="required"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
 	<xsd:complexType name="globalAeroPerformanceType">
 
 		<xsd:annotation>
@@ -28677,6 +28749,175 @@ jonas.jepsen@dlr.de
 						</xsd:annotation>
 					</xsd:element>
 				</xsd:all>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+
+	<xsd:complexType name="missionDefinitionsType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>missionDefinitionsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>Containing mission and point performance definitions for performance evaluation of aircraft</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:all>
+					<xsd:element minOccurs="0" name="missionSegments" type="missionSegmentsType"/>
+				</xsd:all>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+
+	<xsd:complexType name="missionSegmentEndConditionType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>missionSegmentEndConditionType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>Conditions which signal the end of a mission segment</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+					<xsd:sequence>
+						<xsd:element minOccurs="0" name="endCAS" type="doubleBaseType">
+							<xsd:annotation>
+								<xsd:documentation>Calibrated airspeed at the end of the segment</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+						<xsd:element minOccurs="0" name="endMach" type="doubleBaseType">
+							<xsd:annotation>
+								<xsd:documentation>Mach number at the end of the segment</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+						<xsd:choice minOccurs="0">
+							<xsd:element name="endPositionXYZ" type="pointType">
+								<xsd:annotation>
+									<xsd:documentation>Global coordinate at the end of the segment in xyz coordinates</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+							<xsd:element name="endPositionGeo" type="geographicPointType">
+								<xsd:annotation>
+									<xsd:documentation>Global coordinate at the end of the segment in geographic coordinates (longitude, latitude, altitude)</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+						</xsd:choice>
+						<xsd:element minOccurs="0" name="endRange" type="pointType">
+							<xsd:annotation>
+								<xsd:documentation>Flown distance in the segment (x, y, z)</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+						<xsd:element minOccurs="0" name="endDuration" type="doubleBaseType">
+							<xsd:annotation>
+								<xsd:documentation>Duration of the segment</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+						<xsd:element minOccurs="0" name="endSpecificExcessPower" type="doubleBaseType">
+							<xsd:annotation>
+								<xsd:documentation>Specific excess power at the end of the segment</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+						<xsd:element minOccurs="0" name="endRateOfClimb" type="doubleBaseType">
+							<xsd:annotation>
+								<xsd:documentation>Rate of climb ending the segment</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+						<xsd:element minOccurs="0" name="endMassFraction" type="doubleBaseType">
+							<xsd:annotation>
+								<xsd:documentation>MassFraction ending the segment</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+						<xsd:element minOccurs="0" name="endFuelFraction" type="doubleBaseType">
+							<xsd:annotation>
+								<xsd:documentation>Fuel mass fraction ending the segment, as remaining fuel mass with respect to initial segment fuel mass</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+						<xsd:element minOccurs="0" name="endFuelRemaining" type="doubleBaseType">
+							<xsd:annotation>
+								<xsd:documentation>Remaining absolute fuel ending the segment</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+						<xsd:element minOccurs="0" name="endFuelConsumed" type="doubleBaseType">
+							<xsd:annotation>
+								<xsd:documentation>Consumed fuel mass ending the segment</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+
+	<xsd:complexType name="missionSegmentType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>missionSegmentType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>Containing a collection of mission segments which can be reused to define missions</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+					<xsd:sequence>
+						<xsd:element name="name" type="stringBaseType"/>
+						<xsd:element minOccurs="0" name="description" type="stringBaseType"/>
+						<xsd:choice>
+							<xsd:element minOccurs="0" name="massFraction" type="doubleBaseType"/>
+							<xsd:sequence>
+								<xsd:element name="enginePerformanceMapUID" type="stringUIDBaseType"/>
+								<xsd:element name="aeroPerformanceMapUID" type="stringUIDBaseType"/>
+								<xsd:element minOccurs="0" name="controlSurfaceUIDs" type="stringVectorBaseType"/>
+								<xsd:element minOccurs="0" name="endCondition" type="missionSegmentEndConditionType"/>
+								<xsd:element minOccurs="0" name="constraintSettings" type="constraintSettingsType"/>
+							</xsd:sequence>
+						</xsd:choice>
+					</xsd:sequence>
+				<xsd:attribute name="uID" type="xsd:string" use="required"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+
+	<xsd:complexType name="missionSegmentsType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>missionSegmentsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>Containing a collection of mission segments which can be reused to define missions</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" name="missionSegment" type="missionSegmentType"/>
+				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
