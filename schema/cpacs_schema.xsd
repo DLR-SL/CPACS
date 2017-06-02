@@ -18690,7 +18690,7 @@ jonas.jepsen@dlr.de
 						<xsd:sequence>
 							<xsd:element name="fromGuideCurveUID" type="stringUIDBaseType">
 								<xsd:annotation>
-									<xsd:documentation>Reference to the previuos guide curve from
+									<xsd:documentation>Reference to the previous guide curve from
 										which this guide curve shall start.
 									</xsd:documentation>
 								</xsd:annotation>
@@ -18716,10 +18716,11 @@ jonas.jepsen@dlr.de
 							</xsd:element>
 						</xsd:sequence>
 						<xsd:sequence>
-							<xsd:element name="fromRelativeCircumference" type="stringUIDBaseType">
+							<xsd:element name="fromRelativeCircumference" type="doubleBaseType">
 								<xsd:annotation>
 									<xsd:documentation>Reference to the relative circumference
-										position from which the guide curve shall start.
+										position from which the guide curve shall start. Valid values
+									    are in the interval -1.0...1.0.
 									</xsd:documentation>
 								</xsd:annotation>
 							</xsd:element>
@@ -18731,10 +18732,11 @@ jonas.jepsen@dlr.de
 						</xsd:sequence>
 					</xsd:choice>
 					<xsd:sequence>
-						<xsd:element name="toRelativeCircumference" type="stringUIDBaseType">
+						<xsd:element name="toRelativeCircumference" type="doubleBaseType">
 							<xsd:annotation>
-								<xsd:documentation>Reference to the relative circumference
-									position at which the guide curve shall end.
+								<xsd:documentation>The relative circumference
+									position at which the guide curve shall end. Valid values
+									are in the interval -1.0...1.0.
 								</xsd:documentation>
 							</xsd:annotation>
 						</xsd:element>
@@ -32693,13 +32695,20 @@ jonas.jepsen@dlr.de
 						</xsd:annotation>
 					</xsd:element>
 					<xsd:element name="transformation" type="transformationType"/>
-					<xsd:element name="type" type="stringBaseType">
+					<xsd:element name="type">
 						<xsd:annotation>
 							<xsd:documentation>Hinge type. Possible values: "flap", "pitch"
 								"leadLag". This is used to define the rotation axis of the hinge
 								(flap = y-axis in blade cs, pitch = x-axis in blade cs, lead-lag
 								= z-axis in blade cs).</xsd:documentation>
 						</xsd:annotation>
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:enumeration value="flap"/>
+								<xsd:enumeration value="pitch"/>
+								<xsd:enumeration value="leadLag"/>
+							</xsd:restriction>
+						</xsd:simpleType>
 					</xsd:element>
 					<xsd:element minOccurs="0" name="neutralPosition" type="doubleBaseType">
 						<xsd:annotation>
@@ -32794,11 +32803,19 @@ jonas.jepsen@dlr.de
 							</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element minOccurs="0" name="type" type="stringBaseType">
+					<xsd:element minOccurs="0" name="type">
 						<xsd:annotation>
 							<xsd:documentation>Rotor head type. Possible values: "semiRigid",
 								"rigid", "articulated", "hingeless"</xsd:documentation>
 						</xsd:annotation>
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:enumeration value="semiRigid"/>
+								<xsd:enumeration value="rigid"/>
+								<xsd:enumeration value="articulated"/>
+								<xsd:enumeration value="hingeless"/>
+							</xsd:restriction>
+						</xsd:simpleType>
 					</xsd:element>
 					<xsd:element name="rotorBladeAttachments" type="rotorBladeAttachmentsType">
 						<xsd:annotation>
@@ -32893,12 +32910,20 @@ jonas.jepsen@dlr.de
 							</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element minOccurs="0" name="type" type="stringBaseType">
+					<xsd:element minOccurs="0" name="type">
 						<xsd:annotation>
 							<xsd:documentation>Rotor type. Possible values: "mainRotor"
 								(default), "tailRotor", "fenestron" or "propeller"..
 							</xsd:documentation>
 						</xsd:annotation>
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:enumeration value="mainRotor"/>
+								<xsd:enumeration value="tailRotor"/>
+								<xsd:enumeration value="fenestron"/>
+								<xsd:enumeration value="propeller"/>
+							</xsd:restriction>
+						</xsd:simpleType>
 					</xsd:element>
 					<xsd:element minOccurs="0" name="nominalRotationsPerMinute" type="doubleBaseType">
 						<xsd:annotation>
@@ -37709,7 +37734,7 @@ jonas.jepsen@dlr.de
 			<xsd:extension base="complexBaseType">
 				<xsd:all>
 					<xsd:element minOccurs="0" name="wingPanelings" type="vSAeroWingPanelingsType"/>
-					<xsd:element minOccurs="0" name="fuselagePanelings">
+					<xsd:element minOccurs="0" name="fuselagePanelings" type="aeroFuseFuselagePanelingsType">
 						<xsd:annotation>
 							<xsd:documentation>Paneling for each fuselage</xsd:documentation>
 						</xsd:annotation>
