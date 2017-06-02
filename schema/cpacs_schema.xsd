@@ -14167,6 +14167,44 @@ jonas.jepsen@dlr.de
 	</xsd:complexType>
 
 
+	<xsd:complexType name="flightPathType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>flightPathType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>Definition of a flight path by points of longitude, latitude and a descriptive waypoint code</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+					<xsd:all>
+						<xsd:element name="wayPoints" type="stringVectorBaseType">
+							<xsd:annotation>
+								<xsd:documentation>Vector of waypoint codes. If waypoint codes are not available put empty items into the waypoint string</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+						<xsd:element name="latitude" type="stringVectorBaseType">
+							<xsd:annotation>
+								<xsd:documentation>Vector of waypoint latitute values in [deg]</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+						<xsd:element name="longitude" type="stringVectorBaseType">
+							<xsd:annotation>
+								<xsd:documentation>Vector of waypoint longitude values in [deg]</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:all>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+
 	<xsd:complexType name="flightPerformanceCaseType">
 		<xsd:annotation>
 			<xsd:appinfo>
@@ -28772,6 +28810,7 @@ jonas.jepsen@dlr.de
 			<xsd:extension base="complexBaseType">
 				<xsd:all>
 					<xsd:element minOccurs="0" name="missionSegments" type="missionSegmentsType"/>
+					<xsd:element minOccurs="0" name="missions" type="missionsType"/>
 				</xsd:all>
 			</xsd:extension>
 		</xsd:complexContent>
@@ -28863,6 +28902,103 @@ jonas.jepsen@dlr.de
 	</xsd:complexType>
 
 
+	<xsd:complexType name="missionSegmentBlockConstraintsType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>missionSegmentBlockConstraintsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>Definition of constraints for the mission segment block</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+					<xsd:sequence>
+						<xsd:choice>
+							<xsd:element name="endCondition" type="missionSegmentEndConditionType"/>
+							<xsd:element name="flightPath" type="flightPathType"/>
+						</xsd:choice>
+						<xsd:element minOccurs="0" name="variableSegments" type="stringVectorBaseType">
+							<xsd:annotation>
+								<xsd:documentation>Vector of segmentUIDs for segments that are allowed to be varied within a mission optimisation
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+
+	<xsd:complexType name="missionSegmentBlockType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>missionSegmentBlockType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>segmentBlocks are optional definitions for grouping multiple segments and apply an endCondition to it (e.g.: start-climb-cruise-descend-land having a total range, or defining the outbound and inbound segments of a radiusOfAction type of mission)</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+					<xsd:all>
+						<xsd:element name="segmentBlockConstraints" type="missionSegmentBlockConstraintsType"/>
+						<xsd:element minOccurs="0" name="segmentDirection">
+							<xsd:annotation>
+								<xsd:documentation>either 'outbound' or 'inbound', only needed for radiusOfAction kind of missions
+								</xsd:documentation>
+							</xsd:annotation>
+							<xsd:complexType>
+								<xsd:simpleContent>
+									<xsd:restriction base="stringBaseType">
+										<xsd:enumeration value="inbound"/>
+										<xsd:enumeration value="outbound"/>
+									</xsd:restriction>
+								</xsd:simpleContent>
+							</xsd:complexType>
+						</xsd:element>
+						<xsd:element name="segmentUIDSequence" type="stringVectorBaseType"/>
+					</xsd:all>
+				<xsd:attribute name="uID" type="xsd:string" use="required"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+
+	<xsd:complexType name="missionSegmentBlocksType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>missionSegmentBlocksType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>segmentBlocks are optional definitions for grouping multiple segments and apply an endCondition to it (e.g.: start-climb-cruise-descend-land having a total range, or defining the outbound and inbound segments of a radiusOfAction type of mission)</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" name="segmentBlock" type="missionSegmentBlockType"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+
 	<xsd:complexType name="missionSegmentType">
 
 		<xsd:annotation>
@@ -28872,7 +29008,7 @@ jonas.jepsen@dlr.de
 						<ddue:para>missionSegmentType</ddue:para>
 					</ddue:summary>
 					<ddue:remarks>
-						<ddue:para>Containing a collection of mission segments which can be reused to define missions</ddue:para>
+						<ddue:para>Definition of a mission segment which can be used to define missions</ddue:para>
 					</ddue:remarks>
 				</sd:schemaDoc>
 			</xsd:appinfo>
@@ -28917,6 +29053,120 @@ jonas.jepsen@dlr.de
 			<xsd:extension base="complexBaseType">
 				<xsd:sequence>
 					<xsd:element maxOccurs="unbounded" name="missionSegment" type="missionSegmentType"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+
+	<xsd:complexType name="missionStartConditionType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>missionStartConditionType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>Conditions which define the start of a mission</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:choice>
+					<xsd:element name="runwayUID" type="stringUIDBaseType">
+						<xsd:annotation>
+							<xsd:documentation>UID of the runway at which the mission starts</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:sequence>
+						<xsd:element minOccurs="0" name="CAS" type="doubleBaseType">
+							<xsd:annotation>
+								<xsd:documentation>Calibrated airspeed at the start of the mission</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+						<xsd:element minOccurs="0" name="mach" type="doubleBaseType">
+							<xsd:annotation>
+								<xsd:documentation>Mach number at the start of the mission</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+						<xsd:choice minOccurs="0">
+							<xsd:element name="positionXYZ" type="pointType">
+								<xsd:annotation>
+									<xsd:documentation>Global coordinate at the start of the mission in xyz coordinates</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+							<xsd:element name="positionGeo" type="geographicPointType">
+								<xsd:annotation>
+									<xsd:documentation>Global coordinate at the start of the mission in geographic coordinates (longitude, latitude, altitude)</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+						</xsd:choice>
+						<xsd:element minOccurs="0" name="heading" type="doubleBaseType">
+							<xsd:annotation>
+								<xsd:documentation>Flight heading at the start of the mission</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:choice>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+
+	<xsd:complexType name="missionType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>missionType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>Containing a collection of mission segments which can be reused to define missions</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+					<xsd:sequence>
+						<xsd:element name="name" type="stringBaseType"/>
+						<xsd:element minOccurs="0" name="description" type="stringBaseType"/>
+						<xsd:element name="startCondition" type="missionStartConditionType"/>
+						<xsd:element name="segmentUIDSequence" type="stringVectorBaseType"/>
+						<xsd:element minOccurs="0" name="segmentBlocks" type="missionSegmentBlocksType">
+							<xsd:annotation>
+								<xsd:documentation>optional entry for defining conditions for a predefined combination of segments (e.g.: setting the total range for a block of segments consisting of a takeOff, climb, cruise, descent and landing segment)</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				<xsd:attribute name="uID" type="xsd:string" use="required"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+
+	<xsd:complexType name="missionsType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>missionsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>Containing a collection of missions</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" name="mission" type="missionType"/>
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
