@@ -6985,57 +6985,57 @@ jonas.jepsen@dlr.de
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
 				<xsd:all>
-					<xsd:element minOccurs="0" name="machNumber" type="doubleBaseType">
+					<xsd:element minOccurs="0" name="machNumber" type="doubleConstraintBaseType">
 						<xsd:annotation>
 							<xsd:documentation>Mach number within the segment</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element minOccurs="0" name="thrustSetting" type="doubleBaseType">
+					<xsd:element minOccurs="0" name="thrustSetting" type="doubleConstraintBaseType">
 						<xsd:annotation>
 							<xsd:documentation>Thrust setting for derated engine as fraction of max. Thrust (e.g.: for powered descents, deceleration not at IDLE, manoevres).</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element minOccurs="0" name="climbAngle" type="doubleBaseType">
+					<xsd:element minOccurs="0" name="climbAngle" type="doubleConstraintBaseType">
 						<xsd:annotation>
 							<xsd:documentation>Climb angle within the segment</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element minOccurs="0" name="rateOfClimb" type="doubleBaseType">
+					<xsd:element minOccurs="0" name="rateOfClimb" type="doubleConstraintBaseType">
 						<xsd:annotation>
 							<xsd:documentation>Climb angle within the segment</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element minOccurs="0" name="rateOfTurn" type="doubleBaseType">
+					<xsd:element minOccurs="0" name="rateOfTurn" type="doubleConstraintBaseType">
 						<xsd:annotation>
 							<xsd:documentation>Rate of turn within the segment</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element minOccurs="0" name="rateOfDescent" type="doubleBaseType">
+					<xsd:element minOccurs="0" name="rateOfDescent" type="doubleConstraintBaseType">
 						<xsd:annotation>
 							<xsd:documentation>Rate of descent within the segment</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element minOccurs="0" name="acceleration" type="doubleBaseType">
+					<xsd:element minOccurs="0" name="acceleration" type="doubleConstraintBaseType">
 						<xsd:annotation>
 							<xsd:documentation>Rate of velocity within the segment</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element minOccurs="0" name="descentAngle" type="doubleBaseType">
+					<xsd:element minOccurs="0" name="descentAngle" type="doubleConstraintBaseType">
 						<xsd:annotation>
 							<xsd:documentation>Descent angle within the segment</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element minOccurs="0" name="loadFactor" type="doubleBaseType">
+					<xsd:element minOccurs="0" name="loadFactor" type="doubleConstraintBaseType">
 						<xsd:annotation>
 							<xsd:documentation>Load factor experienced during segment</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element minOccurs="0" name="duration" type="doubleBaseType">
+					<xsd:element minOccurs="0" name="duration" type="doubleConstraintBaseType">
 						<xsd:annotation>
 							<xsd:documentation>Duration of the condition (for pointPerformance constraints)</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element minOccurs="0" name="deltaTemperatureISA" type="doubleBaseType">
+					<xsd:element minOccurs="0" name="deltaTemperatureISA" type="doubleConstraintBaseType">
 						<xsd:annotation>
 							<xsd:documentation>Delta in temperature compared to standard ISA conditions</xsd:documentation>
 						</xsd:annotation>
@@ -12573,6 +12573,43 @@ jonas.jepsen@dlr.de
 			</xsd:extension>
 		</xsd:simpleContent>
 	</xsd:complexType>
+
+
+	<xsd:complexType name="doubleConstraintBaseType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>doubleConstraintBaseType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:content>
+							<ddue:para>Base type for double nodes including a relational operator attribute indicating valid constraint region</ddue:para>
+							<ddue:para>The doubleConstraintBaseType extends the doubleBaseType and thus inherits all its attributes.</ddue:para>
+						</ddue:content>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:simpleContent>
+			<xsd:extension base="doubleBaseType">
+				<xsd:attribute name="relationalOperator" use="required">
+					<xsd:simpleType>
+						<xsd:restriction base="xsd:string">
+							<xsd:enumeration value="lt"/>
+							<xsd:enumeration value="le"/>
+							<xsd:enumeration value="eq"/>
+							<xsd:enumeration value="ne"/>
+							<xsd:enumeration value="gt"/>
+							<xsd:enumeration value="ge"/>
+						</xsd:restriction>
+					</xsd:simpleType>
+				</xsd:attribute>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+
 
 	<xsd:complexType name="driveSystemType">
 
@@ -28880,12 +28917,12 @@ jonas.jepsen@dlr.de
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
 					<xsd:sequence>
-						<xsd:element minOccurs="0" name="CAS" type="doubleBaseType">
+						<xsd:element minOccurs="0" name="CAS" type="doubleConstraintBaseType">
 							<xsd:annotation>
 								<xsd:documentation>Calibrated airspeed at the end of the segment in [m/s]</xsd:documentation>
 							</xsd:annotation>
 						</xsd:element>
-						<xsd:element minOccurs="0" name="Mach" type="doubleBaseType">
+						<xsd:element minOccurs="0" name="Mach" type="doubleConstraintBaseType">
 							<xsd:annotation>
 								<xsd:documentation>Mach number at the end of the segment</xsd:documentation>
 							</xsd:annotation>
@@ -28907,37 +28944,37 @@ jonas.jepsen@dlr.de
 								<xsd:documentation>Flown distance in the segment (x, y, z)</xsd:documentation>
 							</xsd:annotation>
 						</xsd:element>
-						<xsd:element minOccurs="0" name="duration" type="doubleBaseType">
+						<xsd:element minOccurs="0" name="duration" type="doubleConstraintBaseType">
 							<xsd:annotation>
 								<xsd:documentation>Duration of the segment</xsd:documentation>
 							</xsd:annotation>
 						</xsd:element>
-						<xsd:element minOccurs="0" name="specificExcessPower" type="doubleBaseType">
+						<xsd:element minOccurs="0" name="specificExcessPower" type="doubleConstraintBaseType">
 							<xsd:annotation>
 								<xsd:documentation>Specific excess power at the end of the segment</xsd:documentation>
 							</xsd:annotation>
 						</xsd:element>
-						<xsd:element minOccurs="0" name="rateOfClimb" type="doubleBaseType">
+						<xsd:element minOccurs="0" name="rateOfClimb" type="doubleConstraintBaseType">
 							<xsd:annotation>
 								<xsd:documentation>Rate of climb ending the segment</xsd:documentation>
 							</xsd:annotation>
 						</xsd:element>
-						<xsd:element minOccurs="0" name="massFraction" type="doubleBaseType">
+						<xsd:element minOccurs="0" name="massFraction" type="doubleConstraintBaseType">
 							<xsd:annotation>
 								<xsd:documentation>MassFraction ending the segment</xsd:documentation>
 							</xsd:annotation>
 						</xsd:element>
-						<xsd:element minOccurs="0" name="fuelFraction" type="doubleBaseType">
+						<xsd:element minOccurs="0" name="fuelFraction" type="doubleConstraintBaseType">
 							<xsd:annotation>
 								<xsd:documentation>Fuel mass fraction ending the segment, as remaining fuel mass with respect to initial segment fuel mass</xsd:documentation>
 							</xsd:annotation>
 						</xsd:element>
-						<xsd:element minOccurs="0" name="fuelRemaining" type="doubleBaseType">
+						<xsd:element minOccurs="0" name="fuelRemaining" type="doubleConstraintBaseType">
 							<xsd:annotation>
 								<xsd:documentation>Remaining absolute fuel ending the segment</xsd:documentation>
 							</xsd:annotation>
 						</xsd:element>
-						<xsd:element minOccurs="0" name="fuelConsumed" type="doubleBaseType">
+						<xsd:element minOccurs="0" name="fuelConsumed" type="doubleConstraintBaseType">
 							<xsd:annotation>
 								<xsd:documentation>Consumed fuel mass ending the segment</xsd:documentation>
 							</xsd:annotation>
