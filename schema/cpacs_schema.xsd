@@ -18580,6 +18580,43 @@ jonas.jepsen@dlr.de
 		</xsd:complexContent>
 	</xsd:complexType>
 
+	<xsd:complexType name="geographicPointConstraintType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>geographicPointConstraintType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>Geographic point constraint, containing a longitude, latitude, altitude data triplet.</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:all>
+					<xsd:element minOccurs="0" name="longitude" type="doubleConstraintBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Longitude coordinate 0-360</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="latitude" type="doubleConstraintBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Latitude coordinate 0-360</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="altitude" type="doubleConstraintBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Altitude in meters</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:all>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
 	<xsd:complexType name="geographicPointType">
 
 		<xsd:annotation>
@@ -18589,7 +18626,7 @@ jonas.jepsen@dlr.de
 						<ddue:para>geographicPointType</ddue:para>
 					</ddue:summary>
 					<ddue:remarks>
-						<ddue:para>Geographic point type, containing an longitude, latitude, altitude data triplet.</ddue:para>
+						<ddue:para>Geographic point type, containing a longitude, latitude, altitude data triplet.</ddue:para>
 					</ddue:remarks>
 				</sd:schemaDoc>
 			</xsd:appinfo>
@@ -28928,18 +28965,18 @@ jonas.jepsen@dlr.de
 							</xsd:annotation>
 						</xsd:element>
 						<xsd:choice minOccurs="0">
-							<xsd:element name="positionXYZ" type="pointType">
+							<xsd:element name="positionXYZ" type="pointConstraintType">
 								<xsd:annotation>
 									<xsd:documentation>Global coordinate at the end of the segment in xyz coordinates</xsd:documentation>
 								</xsd:annotation>
 							</xsd:element>
-							<xsd:element name="positionGeo" type="geographicPointType">
+							<xsd:element name="positionGeo" type="geographicPointConstraintType">
 								<xsd:annotation>
 									<xsd:documentation>Global coordinate at the end of the segment in geographic coordinates (longitude, latitude, altitude)</xsd:documentation>
 								</xsd:annotation>
 							</xsd:element>
 						</xsd:choice>
-						<xsd:element minOccurs="0" name="range" type="pointType">
+						<xsd:element minOccurs="0" name="range" type="pointConstraintType">
 							<xsd:annotation>
 								<xsd:documentation>Flown distance in the segment (x, y, z)</xsd:documentation>
 							</xsd:annotation>
@@ -30658,6 +30695,43 @@ jonas.jepsen@dlr.de
 						</xsd:restriction>
 					</xsd:simpleType>
 				</xsd:attribute>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="pointConstraintType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>pointConstraintType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>Point constraint type, containing an xyz data triplet.</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="x" type="doubleConstraintBaseType">
+						<xsd:annotation>
+							<xsd:documentation>X-Component</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="y" type="doubleConstraintBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Y-Component</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="z" type="doubleConstraintBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Z-Component</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
