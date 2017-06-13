@@ -24580,6 +24580,30 @@ jonas.jepsen@dlr.de
 		</xsd:complexContent>
 	</xsd:complexType>
 
+	<xsd:complexType name="mCellsType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mCellsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element maxOccurs="unbounded" minOccurs="0" name="mCell" type="singleGenericMassType"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
 	<xsd:complexType name="mCockpitLightingsType">
 
 		<xsd:annotation>
@@ -24656,8 +24680,8 @@ jonas.jepsen@dlr.de
 					<xsd:element minOccurs="0" name="mMiscellaneous" type="mMiscellaneousType"/>
 					<xsd:element minOccurs="0" name="mWingBox" type="mWingBoxType"/>
 					<xsd:element minOccurs="0" name="mMoveables" type="mMoveablesType"/>
-					<xsd:element minOccurs="0" name="mFixedLeadingEdge" type="mFixedLeadingEdgeType"/>
-					<xsd:element minOccurs="0" name="mFixedTrailingEdge" type="mFixedTrailingEdgeType"/>
+					<xsd:element minOccurs="0" name="mFixedLeadingEdges" type="mFixedLeadingEdgesType"/>
+					<xsd:element minOccurs="0" name="mFixedTrailingEdges" type="mFixedTrailingEdgesType"/>
 				</xsd:all>
 			</xsd:extension>
 		</xsd:complexContent>
@@ -25170,6 +25194,31 @@ jonas.jepsen@dlr.de
 		</xsd:complexContent>
 	</xsd:complexType>
 
+	<xsd:complexType name="mFixedLeadingEdgesType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mFixedLeadingEdgesType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element maxOccurs="unbounded" minOccurs="0" name="mFixedLeadingEdge" type="mFixedLeadingEdgeType"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+
 	<xsd:complexType name="mFixedTrailingEdgeType">
 
 		<xsd:annotation>
@@ -25191,6 +25240,30 @@ jonas.jepsen@dlr.de
 					<xsd:element minOccurs="0" name="mPanelsAndFalsework" type="singleGenericMassType"/>
 					<xsd:element minOccurs="0" name="mControlSurfaceSupports" type="mControlSurfaceSupportsType"/>
 				</xsd:all>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="mFixedTrailingEdgesType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mFixedTrailingEdgesType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element maxOccurs="unbounded" minOccurs="0" name="mFixedTrailingEdge" type="mFixedTrailingEdgeType"/>
+				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
@@ -26400,8 +26473,34 @@ jonas.jepsen@dlr.de
 			<xsd:extension base="complexBaseType">
 				<xsd:all>
 					<xsd:element name="massDescription" type="genericMassType"/>
-					<xsd:element minOccurs="0" name="mSkin" type="singleGenericMassType"/>
-					<xsd:element minOccurs="0" name="mStringers" type="singleGenericMassType"/>
+					<xsd:element minOccurs="0" name="mSkins" type="mSkinsType"/>
+					<xsd:element minOccurs="0" name="mCells" type="mCellsType"/>
+					<xsd:element minOccurs="0" name="mStringers" type="mStringersType"/>
+				</xsd:all>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="mShellsType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mShellsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:all>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element minOccurs="0" name="mUpperShell" type="mShellType"/>
+					<xsd:element minOccurs="0" name="mLowerShell" type="mShellType"/>
 				</xsd:all>
 			</xsd:extension>
 		</xsd:complexContent>
@@ -26448,11 +26547,10 @@ jonas.jepsen@dlr.de
 		</xsd:annotation>
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
-				<xsd:all>
+				<xsd:sequence>
 					<xsd:element name="massDescription" type="genericMassType"/>
-					<xsd:element minOccurs="0" name="mUpperShell" type="mShellType"/>
-					<xsd:element minOccurs="0" name="mLowerShell" type="mShellType"/>
-				</xsd:all>
+					<xsd:element maxOccurs="unbounded" minOccurs="0" name="mSkin" type="singleGenericMassType"/>
+				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
@@ -26816,7 +26914,7 @@ jonas.jepsen@dlr.de
 			<xsd:extension base="complexBaseType">
 				<xsd:all>
 					<xsd:element name="massDescription" type="genericMassType"/>
-					<xsd:element minOccurs="0" name="mSkins" type="mSkinsType"/>
+					<xsd:element minOccurs="0" name="mShells" type="mShellsType"/>
 					<xsd:element minOccurs="0" name="mSpars" type="mSparsType"/>
 					<xsd:element minOccurs="0" name="mRibs" type="mRibsType"/>
 				</xsd:all>
