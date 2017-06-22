@@ -30,3 +30,57 @@ The following questions should be answered:
 
 - What is the driver for the requested change.
 - If new definitions shall be implemented; Is there an immediate plan to exchange the data between different parties? Don't waste time on the definition of nodes which might not be used for data exchange.
+
+
+## Development Guidelines
+We will try to find/define some guidelines for decisions on how to structure CPACS.
+
+Let us discuss different approaches at the example of introducing a second option for specifying internal wing points by using segment eta xsi coordinates.
+This related to issue https://github.com/DLR-LY/CPACS/issues/495.
+
+In principle I see three different possibilities to implement the two options.
+
+1. add an additional segmentUID node next to eta and xsi. THen, whenever a segmentUID is given the eta and xsi nodes should be interpreted as segment eta xsi coordinates.
+  ```
+  <parentNode>
+    <eta />
+    <xsi />
+    <segmentUID /> <!-- optional -->
+  </parentNode>
+```
+2. add the option as a choice between [eta, xsi] or [etaSeg, xsiSeg, segmentUID]
+  ```
+  <parentNode>
+    <!-- choice 1 start-->
+    <eta />
+    <xsi />
+    <!-- choice 1 end -->
+    <!-- choice 2 -->
+    <etaSeg />
+    <xsiSeg />
+    <segmentUID />
+    <!-- choice 2 end -->
+  </parentNode>
+```
+3. combine both options as described in 2. into their own parent node
+  ```
+  <parentNode>
+    <!-- choice 1 start-->
+    <componentSegmentPoint>
+      <eta />
+      <xsi />
+    </componentSegmentPoint>
+    <!-- choice 1 end -->
+    <!-- choice 2 -->
+    <segmentPoint>
+      <eta />
+      <xsi />
+      <segmentUID />
+    </segmentPoint>
+    <!-- choice 2 end -->
+  </parentNode>
+```
+
+Option 1. is clearly a very reduced approach. It allows the user of the data to switch the interpretation of the eta and xsi nodes depending on the existence of the segmentUID node. A risk of this approach is that without modifications, existing tools might miss the additional segmentUID node and thus misinterpret the point.
+Option 2. avoids misinterpreting the segment eta xsi values by giving them a different node name. But the drawback is the additional nodes (node names) which need to be processed.
+Option 3. is very similar to option 2. but keeps eta xsi as the names also for segment eta xsi coordinates and creates an additional intermediate node for both options. This opens up the opportunity to create separate types for both options which can be reused at several locations throughout the schema. This would minimize the effort in case changes are required for the definition of the points and ensures some consistency in the use of eta xsi points. E.g. if we had an etaXsiPointType for componentSegment points we could find all uses throughout the schema to implement the segment coordinate alternative. Also creating an additional type allows us to use xsd:all within the type definition which otherwise would not be possible due to the xsd:choice.
