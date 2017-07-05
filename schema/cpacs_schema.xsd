@@ -54,10 +54,10 @@ jonas.jepsen@dlr.de
                             <ddue:section>
                                 <ddue:title>2. Coordinate Systems</ddue:title>
                                 <ddue:content>
-                                    <ddue:para>Coordinate systems are a regular cause for ambiguous interpretation of data. In CPACS only the CPACS-coordinate system is valid. The following paragraphs outline the determination to known coordinate systems.</ddue:para>
+                                    <ddue:para>Coordinate systems are a regular cause for ambiguous interpretation of data. In CPACS, mostly the CPACS-coordinate system is used. The following paragraphs outline the determination to known coordinate systems.</ddue:para>
                                     <ddue:para>The CPACS coordinate system is the coordinate system identified by TIGL, CPACS's geometric library. It is a right-handed coordinate system. If an aircraft is defined in the CPACS coordinate system it will usually follow the directions listed in the table below.</ddue:para>
                                     <ddue:para>Therefore, the CPACS coordinate system can be confused with the body-fixed coordinate system. While often the CPACS coordinate system and the body-fixed coordinate system overlap, this must not always be true. Several definitions for body-fixed coordinate systems exist (x-axis through nose and tail, x-axis perpendicular to nose plane). For non-symmetric aircraft, body-fixed coordinate systems become even more complicated. Hence, analysis tools should stick to the CPACS-Coordinate system. It remains to the designer to model the geometry accordingly.</ddue:para>
-                                    <ddue:para>The CPACS coordinate system does not rotate with flow. Hence, aerodynamic calculations do rotate their flow relative to the CPACS-coordinate system. If not stated explicitly different, e.g. for target lift-coefficients, results are returned in the CPACS coordinate system, i.e. the cfx-coefficient is parrallel to the CPACS x-Coordinate, regardless of the way the geometry is defined.</ddue:para>
+                                    <ddue:para>The CPACS coordinate system does not rotate with flow. Aerodynamic coefficients in &lt;aeroDataSetsForLoads&gt; are specified in CPACS coordinates, i.e. the cfx-coefficient is parrallel to the CPACS x-Coordinate, regardless of the way the geometry is defined. On the other hand, aerodynamic performance maps are specified in the aerodynamic coordinate system (see below). They can be distinguished by the trailing 'Aero' in the coefficient names (e.g. &lt;cfxAero&gt;).</ddue:para>
                                     <ddue:para>The following table gives an "best-practice" advice on how to locate a geometry within CPACS. Different approaches are, of course, valid as well.</ddue:para>
                                     <ddue:table>
                                         <ddue:row>
@@ -87,11 +87,15 @@ jonas.jepsen@dlr.de
                                             <ddue:entry>from landing gear to tip of vertical tailplane</ddue:entry>
                                         </ddue:row>
                                     </ddue:table>
+                                    <ddue:para>Coming from the CPACS coordinate system, the aerodynamic coordinate system is defined (according to german LN 9300) by roation around two angles: Angle of attack (alpha) and angle of sideslip (beta).
+                                      Alpha and Beta are defined from aerodynamic to CPACS coordinate system, so the explanation for the way from CPACS to aerodynamic ccordinate system uses (minus alpha) and (minus beta). 
+                                      (Minus Alpha) is a rotation angle around the CPACS y-axis from CPACS axis to an intermediate coordinate system (A positive sign of alpha means that the flow comes upwards from below).
+                                      (Minus Beta is the angle around the intermediate system's z-axis from that intermediate system to the aerodynamic system (A positive sign of beat means that the flow comes from the right (starboard) side.</ddue:para>
                                     <ddue:para>The following pictures give an example for a geometry that is defined in alignment with the CPACS coordinate system, i.e. the body coordinate system overlaps with the CPACS coordinate system.</ddue:para>
                                     <ddue:mediaLink>
                                         <ddue:image xlink:href="cosys01"/>
                                     </ddue:mediaLink>
-                                    <ddue:para>The aerodynamic analysis is relative to the CPACS coordinate system. That is, the angle of attack is represented by the dashed orange line. Results of the aerodynamic calculation are given in the CPACS coordinate system.</ddue:para>
+                                    <ddue:para>The aerodynamic analysis is relative to the CPACS coordinate system. That is, the angle of attack is represented by the dashed orange line. Results of the aerodynamic calculation are given in the CPACS coordinate system (loadcases) or in the aerodynamic coordinate system (aero performance maps). Coefficients in the aerodynamic coordinate system are named &lt;cf?Aero&gt; or &lt;cm?Aero&gt;.</ddue:para>
                                     <ddue:mediaLink>
                                         <ddue:image xlink:href="cosys02"/>
                                     </ddue:mediaLink>
@@ -103,7 +107,7 @@ jonas.jepsen@dlr.de
                                     <ddue:mediaLink>
                                         <ddue:image xlink:href="cosys2"/>
                                     </ddue:mediaLink>
-                                    <ddue:para>Again, the aerodynamic analysis is relative to the CPACS coordinate system. That is, the angle of attack is represented by the dashed orange line. Results of the aerodynamic calculation are given in the CPACS coordinate system.</ddue:para>
+                                    <ddue:para>Again, the aerodynamic analysis is relative to the CPACS coordinate system. That is, the angle of attack is represented by the dashed orange line. Results of the aerodynamic calculation are given in the CPACS coordinate system (loadcases) or in the aerodynamic coordinate system (aero performance maps). Coefficients in the aerodynamic coordinate system are named &lt;cf?Aero&gt; or &lt;cm?Aero&gt;.</ddue:para>
                                 </ddue:content>
                             </ddue:section>
                             <ddue:section>
