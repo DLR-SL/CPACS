@@ -2000,15 +2000,30 @@ jonas.jepsen@dlr.de
 			<xsd:appinfo>
 				<sd:schemaDoc>
 					<ddue:summary>
-						<ddue:para>controlSurfacePerformanceMapType</ddue:para>
+						<ddue:para>aeroLandingGearType</ddue:para>
 					</ddue:summary>
 					<ddue:remarks>
 						<ddue:para>LandingGearPerformanceMap type, containing a delta
-							perfomance map with aerodynamic data for a landingGear. Array
-							order is: relativeDeflection min-&gt;max then angleOfAttack then
-							angleOfSideslip then reynoldsNumber then machNumber. AngleOfAttack,
-							angleOfSideslip, reynoldsNumber and machNumber are taken from the
-							basic performance map one level above.</ddue:para>
+							perfomance map with aerodynamic data for a landing gear. This
+							means that the coefficients are deltas to be added to the
+							corresponding coefficients of the base performance map. Array
+							order is (from innermost to outermost loop): relativeDeflection
+							min-&gt;max, then angleOfAttack, then angleOfSideslip, then
+							altitude, then machNumber. AngleOfAttack, angleOfSideslip,
+							altitude and machNumber are taken from the basic performance map
+							one level above. For the definition of the coefficients,
+							please refer to the description of the base performance map</ddue:para>
+						<ddue:para>LandingGearPerformanceMap type, containing a delta
+							perfomance map with aerodynamic data for a landing gear. This
+							means that the coefficients are deltas to be added to the
+							corresponding coefficients of the base performance map for a
+							specific landing gear deflection. Array order is (from innermost
+							to outermost loop): relativeDeflection min-&gt;max, then 
+							angleOfAttack, then angleOfSideslip, then altitude, then
+							machNumber. AngleOfAttack, angleOfSideslip, altitude
+							and machNumber are taken from the base performance map
+							one level above. For the definition of the coefficients,
+							please refer to the description of the base performance map</ddue:para>
 					</ddue:remarks>
 				</sd:schemaDoc>
 			</xsd:appinfo>
@@ -2024,16 +2039,16 @@ jonas.jepsen@dlr.de
 					</xsd:element>
 					<xsd:element name="relDeflection" type="stringVectorBaseType">
 						<xsd:annotation>
-							<xsd:documentation>Relative deflection of the control surface
+							<xsd:documentation>Relative deflection of the landing gear
 							</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element minOccurs="0" name="dcfx" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcfy" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcfz" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcmx" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcmy" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcmz" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="dcfxAero" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="dcfyAero" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="dcfzAero" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="dcmxAero" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="dcmyAero" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="dcmzAero" type="stringArrayBaseType"/>
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
@@ -2068,10 +2083,10 @@ jonas.jepsen@dlr.de
 			<xsd:appinfo>
 				<sd:schemaDoc>
 					<ddue:summary>
-						<ddue:para>aeroPerformanceMapType</ddue:para>
+						<ddue:para>aeroPerformanceMapRCType</ddue:para>
 					</ddue:summary>
 					<ddue:remarks>
-						<ddue:para>AeroPerformanceMap type, containing a perfomance map
+						<ddue:para>AeroPerformanceMapRC type, containing a perfomance map
 							with aerodynamic data. Array order is: angleOfAttack min-&gt;max
 							then angleOfSideslip then reynoldsNumber then machNumber</ddue:para>
 					</ddue:remarks>
@@ -2132,7 +2147,7 @@ jonas.jepsen@dlr.de
 		</xsd:complexContent>
 	</xsd:complexType>
 
-
+  
 	<xsd:complexType name="aeroPerformanceMapType">
 
 		<xsd:annotation>
@@ -2143,11 +2158,23 @@ jonas.jepsen@dlr.de
 					</ddue:summary>
 					<ddue:remarks>
 						<ddue:para>AeroPerformanceMap type, containing a perfomance map
-							with aerodynamic data. Array order is: angleOfAttack min-&gt;max
-							then angleOfSideslip then reynoldsNumber then machNumber.</ddue:para>
-						<ddue:para>All coefficients in the aeroperformanceMap relate to
-							the CPACS coordinate system. See documentation of the
-							CPACS-Element for further information.</ddue:para>
+							with aerodynamic data of the complete aircraft in the form of
+							nondimensionalized coefficients. The force coefficients (cf?Aero)
+							are nondimensionalized by dynamic pressure and reference area,
+							the moment coefficients (cm?Aero) by dynamic pressure, reference
+							area and reference length. Reference values are stored under the
+							aircraft model's &lt;reference&gt; node. The coefficients are
+							given in the aerodynamic coordiante system (see documentation of
+							the &lt;CPACS&gt; root element for further information).</ddue:para>
+						<ddue:para>The coefficients are provided as a four-dimensional full
+							factorial matrix with the four dimensions 'Mach number', 'Altitude',
+							'Angle of sideslip' and 'angle of attack' specified each in a
+							separate vector above the coefficients. The coefficient matrices
+							are each defined as a four-dimensional nested loop with
+							angleOfAttack as innermost loop, then angleOfSideslip, then altitude
+							and last (as outermost loop) machNumber. All four dimensions have to
+							be ordered from min-&gt;max. For a more detailed description, please
+							refer to documentation of the &lt;CPACS&gt; root element.</ddue:para>
 					</ddue:remarks>
 				</sd:schemaDoc>
 			</xsd:appinfo>
@@ -2155,36 +2182,121 @@ jonas.jepsen@dlr.de
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
 				<xsd:sequence>
-					<xsd:element name="machNumber" type="stringVectorBaseType">
+					<xsd:element name="name" type="stringBaseType">
 						<xsd:annotation>
-							<xsd:documentation>Mach number</xsd:documentation>
+							<xsd:documentation>Name of the AeroPerformanceMap.
+							</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element name="reynoldsNumber" type="stringVectorBaseType">
+					<xsd:element minOccurs="0" name="description" type="stringBaseType">
 						<xsd:annotation>
-							<xsd:documentation>Reynolds Number</xsd:documentation>
+							<xsd:documentation>Description of the AeroPerformanceMap.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="atmosphericModel">
+						<xsd:annotation>
+							<xsd:documentation>Atmospheric model (e.g. ISA for ICAO Standard
+								atmosphere (ISA) from 1993). For more details on atmospheric
+								models, please refer to documentation of the &lt;CPACS&gt; root
+								element.</xsd:documentation>
+						</xsd:annotation>
+						<xsd:complexType>
+							<xsd:simpleContent>
+								<xsd:restriction base="stringBaseType">
+									<xsd:enumeration value="ISA"/>
+								</xsd:restriction>
+							</xsd:simpleContent>
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="deltaTemperature" type="doubleBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Offset from temperature of the atmospheric model [K].
+								For more details on atmospheric models, please refer to documentation
+								of the &lt;CPACS&gt; root element.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="elastic" type="aeroPerformanceMapElasticType">
+						<xsd:annotation>
+							<xsd:documentation>Conditions specifying an elastic case. Used for
+							performance maps incorporating elastic deformation</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="controlSurfaces" type="controlSurfaceDeflectionsType">
+						<xsd:annotation>
+							<xsd:documentation>Default control surface setting for this AeroPerformanceMap.
+								Using this node, it is possible to define a default control surface setting
+								(e.g. all slats and flaps in landing configuration), which is already included
+								in the base performance map</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="machNumber" type="stringVectorBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Vector with mach numbers [-] for the performance map.
+								Ordered from min-&gt;max</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="altitude" type="stringVectorBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Vector with altitudes [m] for the performance map.
+								Ordered from min-&gt;max</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
 					<xsd:element name="angleOfSideslip" type="stringVectorBaseType">
 						<xsd:annotation>
-							<xsd:documentation>Sideslip angle</xsd:documentation>
+							<xsd:documentation>Vector with angles of sideslip [deg] for the performance map.
+								Ordered from min-&gt;max</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
 					<xsd:element name="angleOfAttack" type="stringVectorBaseType">
 						<xsd:annotation>
-							<xsd:documentation>Angle of attack</xsd:documentation>
+							<xsd:documentation>Vector with angles of attack [deg] for the performance map.
+								Ordered from min-&gt;max</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element minOccurs="0" name="cfx" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="cfy" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="cfz" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="cmx" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="cmy" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="cmz" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="cfxAero" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="cfyAero" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="cfzAero" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="cmxAero" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="cmyAero" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="cmzAero" type="stringArrayBaseType"/>
 					<xsd:element minOccurs="0" name="dampingDerivatives" type="dampingDerivativesRatesType"/>
 					<xsd:element minOccurs="0" name="controlSurfaces" type="controlSurfacePerformanceMapsType"/>
 					<xsd:element minOccurs="0" name="landingGears" type="aeroLandingGearsType"/>
 				</xsd:sequence>
+				<xsd:attribute name="uID" type="xsd:string" use="required"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="aeroPerformanceMapElasticType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>aeroPerformanceMapElasticType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>This node specifies a set of conditions specifying an elastic case</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:all>
+					<xsd:element name="weightAndBalanceUID" type="stringUIDBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Reference to a weight and balance case</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="loadFactor" type="pointType">
+						<xsd:annotation>
+							<xsd:documentation>Load factors in CPACS coordinates</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:all>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
@@ -2198,7 +2310,7 @@ jonas.jepsen@dlr.de
 						<ddue:para>aeroPerformanceMapsRCType</ddue:para>
 					</ddue:summary>
 					<ddue:remarks>
-						<ddue:para>aeroPerformanceMaps type, containing
+						<ddue:para>aeroPerformanceMapsRC type, containing
 							aeroPerformanceMaps</ddue:para>
 					</ddue:remarks>
 				</sd:schemaDoc>
@@ -2208,6 +2320,30 @@ jonas.jepsen@dlr.de
 			<xsd:extension base="complexBaseType">
 				<xsd:sequence>
 					<xsd:element maxOccurs="unbounded" name="aeroPerformanceMap" type="aeroPerformanceMapRCType"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="aeroPerformanceMapsType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>aeroPerformanceMapsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>aeroPerformanceMaps type, containing multiple
+							aeroPerformanceMaps for different cases</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element minOccurs="1" maxOccurs="unbounded" name="aeroPerformanceMap" type="aeroPerformanceMapType"/>
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
@@ -3129,7 +3265,7 @@ jonas.jepsen@dlr.de
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
 				<xsd:all>
-					<xsd:element minOccurs="0" name="aeroPerformanceMap" type="aeroPerformanceMapType"/>
+					<xsd:element minOccurs="0" name="aeroPerformanceMaps" type="aeroPerformanceMapsType"/>
 					<xsd:element minOccurs="0" name="aeroelastics" type="aeroelasticsType"/>
 					<xsd:element minOccurs="0" name="dynamicAircraftModel" type="dynamicAircraftModelAnalysisType"/>
                     <xsd:element minOccurs="0" name="flightDynamics" type="flightDynamicsAnalysisType"/>
@@ -8235,11 +8371,21 @@ jonas.jepsen@dlr.de
 					</ddue:summary>
 					<ddue:remarks>
 						<ddue:para>ControlSurfacePerformanceMap type, containing a delta
-							perfomance map with aerodynamic data for a control surface. Array
-							order is: relativeDeflection min-&gt;max then angleOfAttack then
-							angleOfSideslip then reynoldsNumber then machNumber. AngleOfAttack,
-							angleOfSideslip, reynoldsNumber and machNumber are taken from the
-							basic performance map one level above.</ddue:para>
+							perfomance map with aerodynamic data for a control surface. This
+							means that the coefficients are deltas to be added to the
+							corresponding coefficients of the base performance map for a
+							specific control surface deflection. Array order is (from innermost
+							to outermost loop): relativeDeflection min-&gt;max, then 
+							angleOfAttack, then angleOfSideslip, then altitude, then
+							machNumber. AngleOfAttack, angleOfSideslip, altitude
+							and machNumber are taken from the base performance map
+							one level above. If the base performance map does already contain
+							a default control surface setting, then the deflections specified 
+							here are added to the default deflections of the base performance
+							map. If, e.g. the base map contains a deflection of 0.3 and the
+							delta deflection is 0.5, then the delta coefficients are representing
+							a deflection from 0.3 to 0.8. For the definition of the coefficients,
+							please refer to the description of the base performance map</ddue:para>
 					</ddue:remarks>
 				</sd:schemaDoc>
 			</xsd:appinfo>
@@ -8255,16 +8401,16 @@ jonas.jepsen@dlr.de
 					</xsd:element>
 					<xsd:element name="relDeflection" type="stringVectorBaseType">
 						<xsd:annotation>
-							<xsd:documentation>Relative deflection of the control surface
-							</xsd:documentation>
+							<xsd:documentation>Vector with relative deflections [-] of the
+								control surface for the performance map. Ordered from min-&gt;max</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element minOccurs="0" name="dcfx" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcfy" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcfz" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcmx" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcmy" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcmz" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="dcfxAero" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="dcfyAero" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="dcfzAero" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="dcmxAero" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="dcmyAero" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="dcmzAero" type="stringArrayBaseType"/>
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
@@ -10537,7 +10683,7 @@ jonas.jepsen@dlr.de
 			<xsd:appinfo>
 				<sd:schemaDoc>
 					<ddue:summary>
-						<ddue:para>Performane maps with damping derivatives</ddue:para>
+						<ddue:para>Performance maps with damping derivatives</ddue:para>
 					</ddue:summary>
 					<ddue:remarks>
 						<ddue:content>
@@ -10548,119 +10694,123 @@ jonas.jepsen@dlr.de
 										the damping derivatives. The derivatives are calculated using
 										rotational rates [rad/s], normalized by:
 										Rate*ReferenceLength/flow speed. The rotations are performed
-										around the global axis directions with the aircraft model's
+										around the CPACS axis directions with the aircraft model's
 										global reference point as origin. The damping derivative
 										performance maps are arrays consisting of semicolon separated
-										values, simular to the baseline aerodynamic performance maps.
+										values, simular to the base aerodynamic performance maps see
+										there for the description of array structure and coefficients.
+										The damping derivatives given here are deltas to be multiplied
+										with a non-dimensional rotational rate and then to be added to
+										the corresponding base performance map values. 
 									</ddue:para>
 								</ddue:content>
 							</ddue:section>
 							<ddue:section>
-								<ddue:title>1. &lt;dcfxdpstar&gt; (optional)</ddue:title>
+								<ddue:title>1. &lt;dcfxAerodpstar&gt; (optional)</ddue:title>
 								<ddue:content>
-									<ddue:para>Change of cfx by normalized roll rate</ddue:para>
+									<ddue:para>Change of cfxAero by normalized roll rate</ddue:para>
 								</ddue:content>
 							</ddue:section>
 							<ddue:section>
-								<ddue:title>2. &lt;dcfxdqstar&gt; (optional)</ddue:title>
+								<ddue:title>2. &lt;dcfxAerodqstar&gt; (optional)</ddue:title>
 								<ddue:content>
-									<ddue:para>Change of cfx by normalized pitch rate</ddue:para>
+									<ddue:para>Change of cfxAero by normalized pitch rate</ddue:para>
 								</ddue:content>
 							</ddue:section>
 							<ddue:section>
-								<ddue:title>3. &lt;dcfxdrstar&gt; (optional)</ddue:title>
+								<ddue:title>3. &lt;dcfxAerodrstar&gt; (optional)</ddue:title>
 								<ddue:content>
-									<ddue:para>Change of cfx by normalized yaw rate</ddue:para>
+									<ddue:para>Change of cfxAero by normalized yaw rate</ddue:para>
 								</ddue:content>
 							</ddue:section>
 							<ddue:section>
-								<ddue:title>4. &lt;dcfydpstar&gt; (optional)</ddue:title>
+								<ddue:title>4. &lt;dcfyAerodpstar&gt; (optional)</ddue:title>
 								<ddue:content>
-									<ddue:para>Change of cfy by normalized roll rate</ddue:para>
+									<ddue:para>Change of cfyAero by normalized roll rate</ddue:para>
 								</ddue:content>
 							</ddue:section>
 							<ddue:section>
-								<ddue:title>5. &lt;dcfydqstar&gt; (optional)</ddue:title>
+								<ddue:title>5. &lt;dcfyAerodqstar&gt; (optional)</ddue:title>
 								<ddue:content>
-									<ddue:para>Change of cfy by normalized pitch rate</ddue:para>
+									<ddue:para>Change of cfyAero by normalized pitch rate</ddue:para>
 								</ddue:content>
 							</ddue:section>
 							<ddue:section>
-								<ddue:title>6. &lt;dcfydrstar&gt; (optional)</ddue:title>
+								<ddue:title>6. &lt;dcfyAerodrstar&gt; (optional)</ddue:title>
 								<ddue:content>
-									<ddue:para>Change of cfy by normalized yaw rate</ddue:para>
+									<ddue:para>Change of cfyAero by normalized yaw rate</ddue:para>
 								</ddue:content>
 							</ddue:section>
 							<ddue:section>
-								<ddue:title>7. &lt;dcfzdpstar&gt; (optional)</ddue:title>
+								<ddue:title>7. &lt;dcfzAerodpstar&gt; (optional)</ddue:title>
 								<ddue:content>
-									<ddue:para>Change of cfz by normalized roll rate</ddue:para>
+									<ddue:para>Change of cfzAero by normalized roll rate</ddue:para>
 								</ddue:content>
 							</ddue:section>
 							<ddue:section>
-								<ddue:title>8. &lt;dcfzdqstar&gt; (optional)</ddue:title>
+								<ddue:title>8. &lt;dcfzAerodqstar&gt; (optional)</ddue:title>
 								<ddue:content>
-									<ddue:para>Change of cfz by normalized pitch rate</ddue:para>
+									<ddue:para>Change of cfzAero by normalized pitch rate</ddue:para>
 								</ddue:content>
 							</ddue:section>
 							<ddue:section>
-								<ddue:title>9. &lt;dcfzdrstar&gt; (optional)</ddue:title>
+								<ddue:title>9. &lt;dcfzAerodrstar&gt; (optional)</ddue:title>
 								<ddue:content>
-									<ddue:para>Change of cfz by normalized yaw rate</ddue:para>
+									<ddue:para>Change of cfzAero by normalized yaw rate</ddue:para>
 								</ddue:content>
 							</ddue:section>
 							<ddue:section>
-								<ddue:title>10. &lt;dcmxdpstar&gt; (optional)</ddue:title>
+								<ddue:title>10. &lt;dcmxAerodpstar&gt; (optional)</ddue:title>
 								<ddue:content>
-									<ddue:para>Change of cmx by normalized roll rate</ddue:para>
+									<ddue:para>Change of cmxAero by normalized roll rate</ddue:para>
 								</ddue:content>
 							</ddue:section>
 							<ddue:section>
-								<ddue:title>11. &lt;dcmxdqstar&gt; (optional)</ddue:title>
+								<ddue:title>11. &lt;dcmxAerodqstar&gt; (optional)</ddue:title>
 								<ddue:content>
-									<ddue:para>Change of cmx by normalized pitch rate</ddue:para>
+									<ddue:para>Change of cmxAero by normalized pitch rate</ddue:para>
 								</ddue:content>
 							</ddue:section>
 							<ddue:section>
-								<ddue:title>12. &lt;dcmxdrstar&gt; (optional)</ddue:title>
+								<ddue:title>12. &lt;dcmxAerodrstar&gt; (optional)</ddue:title>
 								<ddue:content>
-									<ddue:para>Change of cmx by normalized yaw rate</ddue:para>
+									<ddue:para>Change of cmxAero by normalized yaw rate</ddue:para>
 								</ddue:content>
 							</ddue:section>
 							<ddue:section>
-								<ddue:title>13. &lt;dcmydpstar&gt; (optional)</ddue:title>
+								<ddue:title>13. &lt;dcmyAerodpstar&gt; (optional)</ddue:title>
 								<ddue:content>
-									<ddue:para>Change of cmy by normalized roll rate</ddue:para>
+									<ddue:para>Change of cmyAero by normalized roll rate</ddue:para>
 								</ddue:content>
 							</ddue:section>
 							<ddue:section>
-								<ddue:title>14. &lt;dcmydqstar&gt; (optional)</ddue:title>
+								<ddue:title>14. &lt;dcmyAerodqstar&gt; (optional)</ddue:title>
 								<ddue:content>
-									<ddue:para>Change of cmy by normalized pitch rate</ddue:para>
+									<ddue:para>Change of cmyAero by normalized pitch rate</ddue:para>
 								</ddue:content>
 							</ddue:section>
 							<ddue:section>
-								<ddue:title>15. &lt;dcmydrstar&gt; (optional)</ddue:title>
+								<ddue:title>15. &lt;dcmyAerodrstar&gt; (optional)</ddue:title>
 								<ddue:content>
-									<ddue:para>Change of cmy by normalized yaw rate</ddue:para>
+									<ddue:para>Change of cmyAero by normalized yaw rate</ddue:para>
 								</ddue:content>
 							</ddue:section>
 							<ddue:section>
-								<ddue:title>16. &lt;dcmzdpstar&gt; (optional)</ddue:title>
+								<ddue:title>16. &lt;dcmzAerodpstar&gt; (optional)</ddue:title>
 								<ddue:content>
-									<ddue:para>Change of cmz by normalized roll rate</ddue:para>
+									<ddue:para>Change of cmzAero by normalized roll rate</ddue:para>
 								</ddue:content>
 							</ddue:section>
 							<ddue:section>
-								<ddue:title>17. &lt;dcmzdqstar&gt; (optional)</ddue:title>
+								<ddue:title>17. &lt;dcmzAerodqstar&gt; (optional)</ddue:title>
 								<ddue:content>
-									<ddue:para>Change of cmz by normalized pitch rate</ddue:para>
+									<ddue:para>Change of cmzAero by normalized pitch rate</ddue:para>
 								</ddue:content>
 							</ddue:section>
 							<ddue:section>
-								<ddue:title>18. &lt;dcmzdrstar&gt; (optional)</ddue:title>
+								<ddue:title>18. &lt;dcmzAerodrstar&gt; (optional)</ddue:title>
 								<ddue:content>
-									<ddue:para>Change of cmz by normalized yaw rate</ddue:para>
+									<ddue:para>Change of cmzAero by normalized yaw rate</ddue:para>
 								</ddue:content>
 							</ddue:section>
 						</ddue:content>
@@ -10671,24 +10821,24 @@ jonas.jepsen@dlr.de
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
 				<xsd:all>
-					<xsd:element minOccurs="0" name="dcfxdpstar" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcfxdqstar" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcfxdrstar" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcfydpstar" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcfydqstar" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcfydrstar" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcfzdpstar" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcfzdqstar" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcfzdrstar" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcmxdpstar" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcmxdqstar" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcmxdrstar" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcmydpstar" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcmydqstar" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcmydrstar" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcmzdpstar" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcmzdqstar" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcmzdrstar" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="dcfxAerodpstar" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="dcfxAerodqstar" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="dcfxAerodrstar" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="dcfyAerodpstar" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="dcfyAerodqstar" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="dcfyAerodrstar" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="dcfzAerodpstar" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="dcfzAerodqstar" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="dcfzAerodrstar" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="dcmxAerodpstar" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="dcmxAerodqstar" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="dcmxAerodrstar" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="dcmyAerodpstar" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="dcmyAerodqstar" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="dcmyAerodrstar" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="dcmzAerodpstar" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="dcmzAerodqstar" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="dcmzAerodrstar" type="stringArrayBaseType"/>
 				</xsd:all>
 				<xsd:attribute name="uID" type="xsd:string" use="required"/>
 			</xsd:extension>
