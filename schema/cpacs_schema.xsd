@@ -2832,19 +2832,32 @@ jonas.jepsen@dlr.de
 										This type contains data for the aerodynamic performance map
 										computations. In
 										<ddue:legacyItalic>Framework integration</ddue:legacyItalic>
-										mode no further input is required here. But it is possible to
+										mode, only the UID of the aero performance map for computation
+										is required here. Furthermore, it is possible to
 										specify a quasiSteadyRotation node to switch on the
 										computation of damping derivatives. A list of control surface
 										UIDs further switches on the computation of delta-performance
 										maps for each of these control surfaces. In
 										<ddue:legacyItalic>Toolwrapper input</ddue:legacyItalic>
 										mode, the parameter vectors for the performance map
-										computations have to be specified here.
+										computations, and optionally the quasi steady rotation values,
+										have to be specified here.
 									</ddue:para>
 								</ddue:content>
 							</ddue:section>
 							<ddue:section>
 								<ddue:title>1.
+									&lt;aeroPerformanceMapUID&gt; (mandatory in
+									<ddue:legacyItalic>Framework integration</ddue:legacyItalic>
+									mode)
+								</ddue:title>
+								<ddue:content>
+									<ddue:para>The UID, referring to the aero performance map to
+										be computed.</ddue:para>
+								</ddue:content>
+							</ddue:section>
+							<ddue:section>
+								<ddue:title>2.
 									&lt;positiveQuasiSteadyRotation&gt; (optional in
 									<ddue:legacyItalic>Framework integration</ddue:legacyItalic>
 									mode)
@@ -2856,12 +2869,12 @@ jonas.jepsen@dlr.de
 										is performed and used (together with the reference compuation
 										without any rotation) to derive the damping derivatives. This
 										node itself switches on the computation of negative damping
-										derivatives. IIf there are no subnodes, the positive defaults
+										derivatives. If there are no subnodes, the positive defaults
 										are used.</ddue:para>
 								</ddue:content>
 							</ddue:section>
 							<ddue:section>
-								<ddue:title>2.
+								<ddue:title>3.
 									&lt;negativeQuasiSteadyRotation&gt; (optional in
 									<ddue:legacyItalic>Framework integration</ddue:legacyItalic>
 									mode)
@@ -2878,7 +2891,7 @@ jonas.jepsen@dlr.de
 								</ddue:content>
 							</ddue:section>
 							<ddue:section>
-								<ddue:title>3.
+								<ddue:title>4.
 									&lt;controlSurfaceUID&gt; (optional in
 									<ddue:legacyItalic>Framework integration</ddue:legacyItalic>
 									mode)
@@ -2890,7 +2903,7 @@ jonas.jepsen@dlr.de
 								</ddue:content>
 							</ddue:section>
 							<ddue:section>
-								<ddue:title>4.
+								<ddue:title>5.
 									&lt;machNumber&gt; (mandatory in
 									<ddue:legacyItalic>Toolwrapper input</ddue:legacyItalic>
 									mode)
@@ -2902,31 +2915,31 @@ jonas.jepsen@dlr.de
 								</ddue:content>
 							</ddue:section>
 							<ddue:section>
-								<ddue:title>5.
-									&lt;reynoldsNumber&gt; (mandatory in
-									<ddue:legacyItalic>Toolwrapper input</ddue:legacyItalic>
-									mode)
-								</ddue:title>
-								<ddue:content>
-									<ddue:para>A vector of semicolon-separated values, specifying
-										all the Reynolds numbers being used to create the aerodynamic
-										performance map (Reynolds number dimension)</ddue:para>
-								</ddue:content>
-							</ddue:section>
-							<ddue:section>
 								<ddue:title>6.
-									&lt;angleOfYaw&gt; (mandatory in
+									&lt;altitude&gt; (mandatory in
 									<ddue:legacyItalic>Toolwrapper input</ddue:legacyItalic>
 									mode)
 								</ddue:title>
 								<ddue:content>
 									<ddue:para>A vector of semicolon-separated values, specifying
-										all the angles of yaw being used to create the aerodynamic
-										performance map (Angle of yaw dimension)</ddue:para>
+										all the altitudes being used to create the aerodynamic
+										performance map (altitude dimension)</ddue:para>
 								</ddue:content>
 							</ddue:section>
 							<ddue:section>
 								<ddue:title>7.
+									&lt;angleOfSideslip&gt; (mandatory in
+									<ddue:legacyItalic>Toolwrapper input</ddue:legacyItalic>
+									mode)
+								</ddue:title>
+								<ddue:content>
+									<ddue:para>A vector of semicolon-separated values, specifying
+										all the angles of sideslip being used to create the aerodynamic
+										performance map (Angle of sideslip dimension)</ddue:para>
+								</ddue:content>
+							</ddue:section>
+							<ddue:section>
+								<ddue:title>8.
 									&lt;angleOfAttack&gt; (mandatory in
 									<ddue:legacyItalic>Toolwrapper input</ddue:legacyItalic>
 									mode)
@@ -2938,7 +2951,7 @@ jonas.jepsen@dlr.de
 								</ddue:content>
 							</ddue:section>
 							<ddue:section>
-								<ddue:title>8.
+								<ddue:title>9.
 									&lt;positiveQuasiSteadyRotation&gt; (optional in
 									<ddue:legacyItalic>Toolwrapper input</ddue:legacyItalic>
 									mode)
@@ -2959,7 +2972,7 @@ jonas.jepsen@dlr.de
 								</ddue:content>
 							</ddue:section>
 							<ddue:section>
-								<ddue:title>9.
+								<ddue:title>10.
 									&lt;negativeQuasiSteadyRotation&gt; (optional in
 									<ddue:legacyItalic>Toolwrapper input</ddue:legacyItalic>
 									mode)
@@ -2980,7 +2993,7 @@ jonas.jepsen@dlr.de
 								</ddue:content>
 							</ddue:section>
 							<ddue:section>
-								<ddue:title>10.
+								<ddue:title>11.
 									&lt;controlSurfaces&gt; (optional in
 									<ddue:legacyItalic>Toolwrapper input</ddue:legacyItalic>
 									mode)
@@ -3001,6 +3014,12 @@ jonas.jepsen@dlr.de
 			<xsd:extension base="complexBaseType">
 				<xsd:choice>
 					<xsd:sequence>
+						<xsd:element name="aeroPerformanceMapUID" type="stringUIDBaseType">
+							<xsd:annotation>
+								<xsd:documentation>Specification of the aero performance map to be computed
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
 						<xsd:element minOccurs="0" name="positiveQuasiSteadyRotation" type="quasiSteadyRotationType"/>
 						<xsd:element minOccurs="0" name="negativeQuasiSteadyRotation" type="quasiSteadyRotationType"/>
 						<xsd:element maxOccurs="unbounded" minOccurs="0" name="controlSurfaceUID" type="stringUIDBaseType">
@@ -3014,22 +3033,22 @@ jonas.jepsen@dlr.de
 					<xsd:sequence>
 						<xsd:element name="machNumber" type="stringVectorBaseType">
 							<xsd:annotation>
-								<xsd:documentation>Mach Number</xsd:documentation>
+								<xsd:documentation>Vector with Mach Numbers for computation</xsd:documentation>
 							</xsd:annotation>
 						</xsd:element>
-						<xsd:element name="reynoldsNumber" type="stringVectorBaseType">
+						<xsd:element name="altitude" type="stringVectorBaseType">
 							<xsd:annotation>
-								<xsd:documentation>Reynolds Number</xsd:documentation>
+								<xsd:documentation>Vector with altitudes for computation</xsd:documentation>
 							</xsd:annotation>
 						</xsd:element>
-						<xsd:element name="angleOfYaw" type="stringVectorBaseType">
+						<xsd:element name="angleOfSideslip" type="stringVectorBaseType">
 							<xsd:annotation>
-								<xsd:documentation>Yaw angle</xsd:documentation>
+								<xsd:documentation>Vector of angles of sideslip for computation</xsd:documentation>
 							</xsd:annotation>
 						</xsd:element>
 						<xsd:element name="angleOfAttack" type="stringVectorBaseType">
 							<xsd:annotation>
-								<xsd:documentation>Angle of attack</xsd:documentation>
+								<xsd:documentation>Vector of angles of attack for computation</xsd:documentation>
 							</xsd:annotation>
 						</xsd:element>
 						<xsd:element minOccurs="0" name="positiveQuasiSteadyRotation" type="quasiSteadyRotationType"/>
@@ -19568,6 +19587,15 @@ jonas.jepsen@dlr.de
 							</ddue:section>
 							<ddue:section>
 								<ddue:title>3.
+									&lt;technologyFactor&gt;
+									<ddue:legacyItalic>(optional)</ddue:legacyItalic>
+								</ddue:title>
+								<ddue:content>
+									<ddue:para>Additional factor for calibrating the results.</ddue:para>
+								</ddue:content>
+							</ddue:section>
+							<ddue:section>
+								<ddue:title>4.
 									&lt;polynomialCoefficients&gt;
 									<ddue:legacyItalic>(mandatory)</ddue:legacyItalic>
 								</ddue:title>
@@ -19594,6 +19622,12 @@ jonas.jepsen@dlr.de
 					<xsd:element minOccurs="0" name="turbulentFormFactor" type="doubleBaseType">
 						<xsd:annotation>
 							<xsd:documentation>Form Factor for the turbulent wing region
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="technologyFactor" type="doubleBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Technology factor
 							</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
@@ -19847,7 +19881,8 @@ jonas.jepsen@dlr.de
 										This type contains data for the aerodynamic performance map
 										computations with HandbookAero. In
 										<ddue:legacyItalic>Framework integration</ddue:legacyItalic>
-										mode no further input is required here. But it is possible to
+										mode, only the UID of the aero performance map for computation
+										is required here. Furthermore, it is possible to
 										specify a quasiSteadyRotation node to switch on the
 										computation of damping derivatives. A list of control surface
 										UIDs further switches on the computation of delta-performance
@@ -19863,6 +19898,17 @@ jonas.jepsen@dlr.de
 							</ddue:section>
 							<ddue:section>
 								<ddue:title>1.
+									&lt;aeroPerformanceMapUID&gt; (mandatory in
+									<ddue:legacyItalic>Framework integration</ddue:legacyItalic>
+									mode)
+								</ddue:title>
+								<ddue:content>
+									<ddue:para>The UID, referring to the aero performance map to
+										be computed.</ddue:para>
+								</ddue:content>
+							</ddue:section>
+							<ddue:section>
+								<ddue:title>2.
 									&lt;positiveQuasiSteadyRotation&gt; (optional in
 									<ddue:legacyItalic>Framework integration</ddue:legacyItalic>
 									mode)
@@ -19879,7 +19925,7 @@ jonas.jepsen@dlr.de
 								</ddue:content>
 							</ddue:section>
 							<ddue:section>
-								<ddue:title>2.
+								<ddue:title>3.
 									&lt;negativeQuasiSteadyRotation&gt; (optional in
 									<ddue:legacyItalic>Framework integration</ddue:legacyItalic>
 									mode)
@@ -19896,7 +19942,7 @@ jonas.jepsen@dlr.de
 								</ddue:content>
 							</ddue:section>
 							<ddue:section>
-								<ddue:title>3.
+								<ddue:title>4.
 									&lt;controlSurfaceUID&gt; (optional in
 									<ddue:legacyItalic>Framework integration</ddue:legacyItalic>
 									mode)
@@ -19908,7 +19954,7 @@ jonas.jepsen@dlr.de
 								</ddue:content>
 							</ddue:section>
 							<ddue:section>
-								<ddue:title>4.
+								<ddue:title>5.
 									&lt;machNumber&gt; (mandatory in
 									<ddue:legacyItalic>Toolwrapper input</ddue:legacyItalic>
 									mode)
@@ -19920,31 +19966,31 @@ jonas.jepsen@dlr.de
 								</ddue:content>
 							</ddue:section>
 							<ddue:section>
-								<ddue:title>5.
-									&lt;reynoldsNumber&gt; (mandatory in
-									<ddue:legacyItalic>Toolwrapper input</ddue:legacyItalic>
-									mode)
-								</ddue:title>
-								<ddue:content>
-									<ddue:para>A vector of semicolon-separated values, specifying
-										all the Reynolds numbers being used to create the aerodynamic
-										performance map (Reynolds number dimension)</ddue:para>
-								</ddue:content>
-							</ddue:section>
-							<ddue:section>
 								<ddue:title>6.
-									&lt;angleOfYaw&gt; (mandatory in
+									&lt;altitude&gt; (mandatory in
 									<ddue:legacyItalic>Toolwrapper input</ddue:legacyItalic>
 									mode)
 								</ddue:title>
 								<ddue:content>
 									<ddue:para>A vector of semicolon-separated values, specifying
-										all the angles of yaw being used to create the aerodynamic
-										performance map (Angle of yaw dimension)</ddue:para>
+										all the altitudes being used to create the aerodynamic
+										performance map (altitude dimension)</ddue:para>
 								</ddue:content>
 							</ddue:section>
 							<ddue:section>
 								<ddue:title>7.
+									&lt;angleOfSideslip&gt; (mandatory in
+									<ddue:legacyItalic>Toolwrapper input</ddue:legacyItalic>
+									mode)
+								</ddue:title>
+								<ddue:content>
+									<ddue:para>A vector of semicolon-separated values, specifying
+										all the angles of sideslip being used to create the aerodynamic
+										performance map (Angle of sideslip dimension)</ddue:para>
+								</ddue:content>
+							</ddue:section>
+							<ddue:section>
+								<ddue:title>8.
 									&lt;angleOfAttack&gt; (mandatory in
 									<ddue:legacyItalic>Toolwrapper input</ddue:legacyItalic>
 									mode)
@@ -19956,8 +20002,8 @@ jonas.jepsen@dlr.de
 								</ddue:content>
 							</ddue:section>
 							<ddue:section>
-								<ddue:title>8.
-									&lt;cfx&gt; (optional in
+								<ddue:title>9.
+									&lt;cfxAero&gt; (optional in
 									<ddue:legacyItalic>Toolwrapper input</ddue:legacyItalic>
 									mode)
 								</ddue:title>
@@ -19971,8 +20017,8 @@ jonas.jepsen@dlr.de
 								</ddue:content>
 							</ddue:section>
 							<ddue:section>
-								<ddue:title>9.
-									&lt;cfy&gt; (optional in
+								<ddue:title>10.
+									&lt;cfyAero&gt; (optional in
 									<ddue:legacyItalic>Toolwrapper input</ddue:legacyItalic>
 									mode)
 								</ddue:title>
@@ -19986,8 +20032,8 @@ jonas.jepsen@dlr.de
 								</ddue:content>
 							</ddue:section>
 							<ddue:section>
-								<ddue:title>10.
-									&lt;cfz&gt; (optional in
+								<ddue:title>11.
+									&lt;cfzAero&gt; (optional in
 									<ddue:legacyItalic>Toolwrapper input</ddue:legacyItalic>
 									mode)
 								</ddue:title>
@@ -20001,8 +20047,8 @@ jonas.jepsen@dlr.de
 								</ddue:content>
 							</ddue:section>
 							<ddue:section>
-								<ddue:title>11.
-									&lt;cmx&gt; (optional in
+								<ddue:title>12.
+									&lt;cmxAero&gt; (optional in
 									<ddue:legacyItalic>Toolwrapper input</ddue:legacyItalic>
 									mode)
 								</ddue:title>
@@ -20016,8 +20062,8 @@ jonas.jepsen@dlr.de
 								</ddue:content>
 							</ddue:section>
 							<ddue:section>
-								<ddue:title>12.
-									&lt;cmy&gt; (optional in
+								<ddue:title>13.
+									&lt;cmyAero&gt; (optional in
 									<ddue:legacyItalic>Toolwrapper input</ddue:legacyItalic>
 									mode)
 								</ddue:title>
@@ -20031,8 +20077,8 @@ jonas.jepsen@dlr.de
 								</ddue:content>
 							</ddue:section>
 							<ddue:section>
-								<ddue:title>13.
-									&lt;cmz&gt; (optional in
+								<ddue:title>14.
+									&lt;cmzAero&gt; (optional in
 									<ddue:legacyItalic>Toolwrapper input</ddue:legacyItalic>
 									mode)
 								</ddue:title>
@@ -20046,7 +20092,7 @@ jonas.jepsen@dlr.de
 								</ddue:content>
 							</ddue:section>
 							<ddue:section>
-								<ddue:title>14.
+								<ddue:title>15.
 									&lt;positiveQuasiSteadyRotation&gt; (optional in
 									<ddue:legacyItalic>Toolwrapper input</ddue:legacyItalic>
 									mode)
@@ -20067,7 +20113,7 @@ jonas.jepsen@dlr.de
 								</ddue:content>
 							</ddue:section>
 							<ddue:section>
-								<ddue:title>15.
+								<ddue:title>16.
 									&lt;negativeQuasiSteadyRotation&gt; (optional in
 									<ddue:legacyItalic>Toolwrapper input</ddue:legacyItalic>
 									mode)
@@ -20088,7 +20134,7 @@ jonas.jepsen@dlr.de
 								</ddue:content>
 							</ddue:section>
 							<ddue:section>
-								<ddue:title>16.
+								<ddue:title>17.
 									&lt;dampingDerivatives&gt; (optional in
 									<ddue:legacyItalic>Toolwrapper input</ddue:legacyItalic>
 									mode)
@@ -20099,7 +20145,7 @@ jonas.jepsen@dlr.de
 								</ddue:content>
 							</ddue:section>
 							<ddue:section>
-								<ddue:title>16.
+								<ddue:title>18.
 									&lt;controlSurfaces&gt; (optional in
 									<ddue:legacyItalic>Toolwrapper input</ddue:legacyItalic>
 									mode)
@@ -20122,46 +20168,48 @@ jonas.jepsen@dlr.de
 			<xsd:extension base="complexBaseType">
 				<xsd:choice>
 					<xsd:sequence>
+						<xsd:element name="aeroPerformanceMapUID" type="stringUIDBaseType">
+							<xsd:annotation>
+								<xsd:documentation>Specification of the aero performance map to be computed
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
 						<xsd:element minOccurs="0" name="positiveQuasiSteadyRotation" type="quasiSteadyRotationType"/>
 						<xsd:element minOccurs="0" name="negativeQuasiSteadyRotation" type="quasiSteadyRotationType"/>
 						<xsd:element maxOccurs="unbounded" minOccurs="0" name="controlSurfaceUID" type="stringBaseType">
 							<xsd:annotation>
 								<xsd:documentation>Specification of control surfaces, for which
-									additional delta-polars shall be computed</xsd:documentation>
+									additional delta-performance maps shall be computed</xsd:documentation>
 							</xsd:annotation>
 						</xsd:element>
 					</xsd:sequence>
 					<xsd:sequence>
 						<xsd:element name="machNumber" type="stringVectorBaseType">
 							<xsd:annotation>
-								<xsd:documentation>Vector with Mach Numbers for computation
-								</xsd:documentation>
+								<xsd:documentation>Vector with Mach Numbers for computation</xsd:documentation>
 							</xsd:annotation>
 						</xsd:element>
-						<xsd:element name="reynoldsNumber" type="stringVectorBaseType">
+						<xsd:element name="altitude" type="stringVectorBaseType">
 							<xsd:annotation>
-								<xsd:documentation>Vector of Reynolds Numbers for computation
-								</xsd:documentation>
+								<xsd:documentation>Vector with altitudes for computation</xsd:documentation>
 							</xsd:annotation>
 						</xsd:element>
-						<xsd:element name="angleOfYaw" type="stringVectorBaseType">
+						<xsd:element name="angleOfSideslip" type="stringVectorBaseType">
 							<xsd:annotation>
-								<xsd:documentation>Vector of yaw angles for computation
-								</xsd:documentation>
+								<xsd:documentation>Vector of angles of sideslip for computation</xsd:documentation>
 							</xsd:annotation>
 						</xsd:element>
 						<xsd:element name="angleOfAttack" type="stringVectorBaseType">
 							<xsd:annotation>
-								<xsd:documentation>Vector of angles of attack for computation
-								</xsd:documentation>
+								<xsd:documentation>Vector of angles of attack for computation</xsd:documentation>
 							</xsd:annotation>
 						</xsd:element>
-						<xsd:element minOccurs="0" name="cfx" type="stringArrayBaseType"/>
-						<xsd:element minOccurs="0" name="cfy" type="stringArrayBaseType"/>
-						<xsd:element minOccurs="0" name="cfz" type="stringArrayBaseType"/>
-						<xsd:element minOccurs="0" name="cmx" type="stringArrayBaseType"/>
-						<xsd:element minOccurs="0" name="cmy" type="stringArrayBaseType"/>
-						<xsd:element minOccurs="0" name="cmz" type="stringArrayBaseType"/>
+						<xsd:element minOccurs="0" name="cfxAero" type="stringArrayBaseType"/>
+						<xsd:element minOccurs="0" name="cfyAero" type="stringArrayBaseType"/>
+						<xsd:element minOccurs="0" name="cfzAero" type="stringArrayBaseType"/>
+						<xsd:element minOccurs="0" name="cmxAero" type="stringArrayBaseType"/>
+						<xsd:element minOccurs="0" name="cmyAero" type="stringArrayBaseType"/>
+						<xsd:element minOccurs="0" name="cmzAero" type="stringArrayBaseType"/>
 						<xsd:element minOccurs="0" name="positiveQuasiSteadyRotation" type="quasiSteadyRotationType"/>
 						<xsd:element minOccurs="0" name="negativeQuasiSteadyRotation" type="quasiSteadyRotationType"/>
 						<xsd:element minOccurs="0" name="dampingDerivatives" type="dampingDerivativesRatesType"/>
@@ -20267,12 +20315,15 @@ jonas.jepsen@dlr.de
 								</ddue:title>
 								<ddue:content>
 									<ddue:para>
-										Detail level of handbookAero logging. There are three options
+										Detail level of handbookAero logging. There are 6 options
 										available:
 										<ddue:list class="bullet">
-											<ddue:listItem>0: Minimum logging</ddue:listItem>
-											<ddue:listItem>1: Detailed logging</ddue:listItem>
-											<ddue:listItem>2: Very detailed logging</ddue:listItem>
+											<ddue:listItem>0: Input and cases only)</ddue:listItem>
+											<ddue:listItem>1: Input, cases and total coefficients</ddue:listItem>
+											<ddue:listItem>2: Input, cases and coefficients down to component level</ddue:listItem>
+											<ddue:listItem>3: Input, cases and coefficients down to strip level</ddue:listItem>
+											<ddue:listItem>4: Input, cases and coefficients down to sub-strip level</ddue:listItem>
+											<ddue:listItem>5: Input, cases and coefficients in all levels and computation details</ddue:listItem>
 										</ddue:list>
 									</ddue:para>
 								</ddue:content>
@@ -20913,6 +20964,15 @@ jonas.jepsen@dlr.de
 							</ddue:section>
 							<ddue:section>
 								<ddue:title>4.
+									&lt;technologyFactor&gt;
+									<ddue:legacyItalic>(optional)</ddue:legacyItalic>
+								</ddue:title>
+								<ddue:content>
+									<ddue:para>Additional factor for calibrating the results.</ddue:para>
+								</ddue:content>
+							</ddue:section>
+							<ddue:section>
+								<ddue:title>5.
 									&lt;polynomialCoefficients&gt;
 									<ddue:legacyItalic>(mandatory)</ddue:legacyItalic>
 								</ddue:title>
@@ -20946,6 +21006,12 @@ jonas.jepsen@dlr.de
 					<xsd:element minOccurs="0" name="turbulentFormFactor" type="doubleBaseType">
 						<xsd:annotation>
 							<xsd:documentation>Form Factor for the turbulent wing region
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="technologyFactor" type="doubleBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Technology factor
 							</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
@@ -21033,16 +21099,28 @@ jonas.jepsen@dlr.de
 										factors for additional pressure drag due to viscous
 										separation. The flat plate is computed including
 										laminar-turbulent transition, with the transition position as
-										polynomial function of the local Reynolds number.</ddue:para>
+										polynomial function of the local Reynolds number. Furthermore,
+										it is possible to specify technology factors. Fuselage
+										(including tailcone upsweep drag) is incorporated as well.</ddue:para>
 								</ddue:content>
 							</ddue:section>
 							<ddue:section>
 								<ddue:title>1.
+									&lt;fuselages&gt;
+									<ddue:legacyItalic>(optional)</ddue:legacyItalic>
+								</ddue:title>
+								<ddue:content>
+									<ddue:para>This node contains a list of fuselages and their
+										parameters for computation with this method.</ddue:para>
+								</ddue:content>
+							</ddue:section>
+							<ddue:section>
+								<ddue:title>2.
 									&lt;wings&gt;
 									<ddue:legacyItalic>(optional)</ddue:legacyItalic>
 								</ddue:title>
 								<ddue:content>
-									<ddue:para>This node contains a list of wings and theit
+									<ddue:para>This node contains a list of wings and their
 										parameters for computation with this method.</ddue:para>
 								</ddue:content>
 							</ddue:section>
@@ -21054,6 +21132,7 @@ jonas.jepsen@dlr.de
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
 				<xsd:all>
+					<xsd:element minOccurs="0" name="fuselages" type="handbookAeroFuselagesTransitionsType"/>
 					<xsd:element minOccurs="0" name="wings" type="handbookAeroWingsTransitionsType"/>
 				</xsd:all>
 			</xsd:extension>
@@ -21108,6 +21187,101 @@ jonas.jepsen@dlr.de
 	</xsd:complexType>
 
 
+	<xsd:complexType name="handbookAeroFuselageTransitionsType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>A selected fuselage with its transition definition
+						</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:content>
+							<ddue:section>
+								<ddue:title>0. General overview</ddue:title>
+								<ddue:content>
+									<ddue:para>Parameters for calculating the viscous drag of a
+										fuselage, or (if common parameters shall be used) for all fuselages.
+									</ddue:para>
+								</ddue:content>
+							</ddue:section>
+							<ddue:section>
+								<ddue:title>1.
+									&lt;fuselageUID&gt;
+									<ddue:legacyItalic>(optional)</ddue:legacyItalic>
+								</ddue:title>
+								<ddue:content>
+									<ddue:para>This node contains a reference to the fuselage, for
+										which the viscous drag shall be calculated. If all fuselages shall
+										be computed with common parameters, this node can be omitted.
+									</ddue:para>
+								</ddue:content>
+							</ddue:section>
+							<ddue:section>
+								<ddue:title>2.
+									&lt;relativeTransitionLocation&gt;
+									<ddue:legacyItalic>(mandatory)</ddue:legacyItalic>
+								</ddue:title>
+								<ddue:content>
+									<ddue:para>In this subnode, the relative transition location for the fuselage is specified</ddue:para>
+								</ddue:content>
+							</ddue:section>
+							<ddue:section>
+								<ddue:title>3.
+									&lt;calculateTailConeUpsweepDrag&gt;
+									<ddue:legacyItalic>(optional)</ddue:legacyItalic>
+								</ddue:title>
+								<ddue:content>
+									<ddue:para>This subnode is a switch. If there, it switches on the calculation of tail cone upsweep drag</ddue:para>
+								</ddue:content>
+							</ddue:section>
+							<ddue:section>
+								<ddue:title>4.
+									&lt;technologyFactor&gt;
+									<ddue:legacyItalic>(optional)</ddue:legacyItalic>
+								</ddue:title>
+								<ddue:content>
+									<ddue:para>Additional factor for calibrating the results.</ddue:para>
+								</ddue:content>
+							</ddue:section>
+						</ddue:content>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:all>
+					<xsd:element minOccurs="0" name="wingUID" type="stringBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Reference to a wing; required, if separate
+								transition definitions for each wing are used. If missing,
+								transition definitions are the same for all wings. If used, only
+								the specified wings are calculated</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="relativeTransitionLocation" type="doubleBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Relative location of laminar/turbulent transition</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="calculateTailConeUpsweepDrag" type="stringBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Switch for considering tail cone upsweep drag</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="technologyFactor" type="doubleBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Technology factor</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:all>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+
 	<xsd:complexType name="handbookAeroWingTransitionsType">
 
 		<xsd:annotation>
@@ -21145,7 +21319,7 @@ jonas.jepsen@dlr.de
 									<ddue:legacyItalic>(mandatory)</ddue:legacyItalic>
 								</ddue:title>
 								<ddue:content>
-									<ddue:para>In this subnode, the tansition regions and
+									<ddue:para>In this subnode, the transition regions and
 										parameters for this region are specified for the upper side of
 										the wing.</ddue:para>
 								</ddue:content>
@@ -21156,7 +21330,7 @@ jonas.jepsen@dlr.de
 									<ddue:legacyItalic>(mandatory)</ddue:legacyItalic>
 								</ddue:title>
 								<ddue:content>
-									<ddue:para>In this subnode, the tansition regions and
+									<ddue:para>In this subnode, the transition regions and
 										parameters for this region are specified for the lower side of
 										the wing.</ddue:para>
 								</ddue:content>
@@ -21185,6 +21359,52 @@ jonas.jepsen@dlr.de
 	</xsd:complexType>
 
 
+	<xsd:complexType name="handbookAeroFuselagesTransitionsType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>A list of fuselages for computation</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:content>
+							<ddue:section>
+								<ddue:title>0. General overview</ddue:title>
+								<ddue:content>
+									<ddue:para>A list of fuselages and their parameters for computation
+										of viscous drag. If only some fuselages are specified here, only
+										the specified fuselages will be computed. It is also possible to
+										specify only one fuselage here and to omit the reference to a fuselage
+										UID in this fuselage's subnode. Then, all fuselages are computed with
+										the specified parameters as common values.</ddue:para>
+								</ddue:content>
+							</ddue:section>
+							<ddue:section>
+								<ddue:title>1.
+									&lt;fuselage&gt;
+									<ddue:legacyItalic>(mandatory)</ddue:legacyItalic>
+								</ddue:title>
+								<ddue:content>
+									<ddue:para>A fuselage which is selected for computation, including
+										the required parameters.</ddue:para>
+								</ddue:content>
+							</ddue:section>
+						</ddue:content>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" name="fuselage" type="handbookAeroFuselageTransitionsType"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+
 	<xsd:complexType name="handbookAeroWingsTransitionsType">
 
 		<xsd:annotation>
@@ -21199,7 +21419,7 @@ jonas.jepsen@dlr.de
 								<ddue:title>0. General overview</ddue:title>
 								<ddue:content>
 									<ddue:para>A list of wings and their parameters for computation
-										of viscous drag. if only some wings are specified here, only
+										of viscous drag. If only some wings are specified here, only
 										the specified wings will be computed. It is also possible to
 										specify only one wing here and to omit the reference to a wing
 										UID in this wing's subnode. Then, all wings are computed with
@@ -22908,7 +23128,26 @@ jonas.jepsen@dlr.de
 							</ddue:section>
 							<ddue:section>
 								<ddue:title>
-									3. &lt;wingPanelings&gt;
+									3. &lt;parallelComputation&gt;
+									<ddue:legacyItalic>(mandatoy)</ddue:legacyItalic>
+								</ddue:title>
+								<ddue:content>
+									<ddue:para>This node specifies, on how many cores the LIFTING_LINE computation
+										shall be performed in parallel:
+ 									<ddue:list class="bullet">
+											<ddue:listItem>0: Parallel computation on as many cores as available 
+											</ddue:listItem>
+											<ddue:listItem>1: Sequential computation
+											</ddue:listItem>
+											<ddue:listItem>#: Parallel computation on # cores
+											</ddue:listItem>
+										</ddue:list>
+									</ddue:para>
+								</ddue:content>
+							</ddue:section>
+							<ddue:section>
+								<ddue:title>
+									4. &lt;wingPanelings&gt;
 									<ddue:legacyItalic>(mandatoy)</ddue:legacyItalic>
 								</ddue:title>
 								<ddue:content>
@@ -22948,21 +23187,12 @@ jonas.jepsen@dlr.de
 							</xsd:simpleContent>
 						</xsd:complexType>
 					</xsd:element>
-					<xsd:element name="parallelComputation">
+					<xsd:element name="parallelComputation" type="integerBaseType">
 						<xsd:annotation>
 							<xsd:documentation>0=parallel computation on all available cores,
-								1=sequencial computation, n=parallel computation on n cores
+								1=sequencial computation, #=parallel computation on # cores
 							</xsd:documentation>
 						</xsd:annotation>
-						<xsd:complexType>
-							<xsd:simpleContent>
-								<xsd:restriction base="integerBaseType">
-									<xsd:enumeration value="0"/>
-									<xsd:enumeration value="1"/>
-									<xsd:enumeration value="2"/>
-								</xsd:restriction>
-							</xsd:simpleContent>
-						</xsd:complexType>
 					</xsd:element>
 					<xsd:element name="wingPanelings" type="liftingLineWingPanelingsType"/>
 				</xsd:all>
