@@ -39650,7 +39650,7 @@ jonas.jepsen@dlr.de
 			<xsd:extension base="complexBaseType">
 				<xsd:sequence>
 					<xsd:element name="skin" type="wingSkinType"/>
-					<xsd:element name="stringer" type="wingStringerType"/>
+					<xsd:element name="stringers" type="wingStringersType"/>
 					<xsd:element name="positioningLeadingEdge" type="cellPositioningChordwiseType"/>
 					<xsd:element name="positioningTrailingEdge" type="cellPositioningChordwiseType"/>
 					<xsd:element name="positioningInnerBorder" type="cellPositioningSpanwiseType"/>
@@ -41224,7 +41224,7 @@ jonas.jepsen@dlr.de
 			<xsd:extension base="complexBaseType">
 				<xsd:sequence>
 					<xsd:element name="skin" type="wingSkinType"/>
-					<xsd:element minOccurs="0" name="stringer" type="wingStringerType"/>
+					<xsd:element minOccurs="0" name="stringers" type="wingStringersType"/>
 					<xsd:element minOccurs="0" name="cells" type="wingCellsType"/>
 				</xsd:sequence>
 				<xsd:attribute name="uID" type="xsd:string" use="required"/>
@@ -41322,6 +41322,85 @@ jonas.jepsen@dlr.de
 		</xsd:complexContent>
 	</xsd:complexType>
 
+	<xsd:complexType name="wingStringerExplicitType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>Definition of an explicit wing stringer.</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:content>
+							<ddue:para>This is the explicit stringer definition.
+							Please note that for a consistent definition two out of the
+							possible three elements innerBorder (xsiLE, xsiTE), outerBorder
+							(xsiLE, xsiTE) and stringer angle (and angle reference) must be
+							defined. Any combination of two of the three is valid</ddue:para>
+						</ddue:content>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:all>
+					<xsd:element name="stringerStructureUID" type="stringUIDBaseType"/>
+					<xsd:element minOccurs="0" name="numberOfStringers" type="integerBaseType">
+						<xsd:annotation>
+							<xsd:documentation>The number of stringers; default is 0
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="angle" type="doubleBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Stringer angle: the reference axis for the
+								stringer angle is defined by the two leading edge points of
+								the 'from'- and the 'to'-element of the componentSegment
+								definition. The angle between the reference axis and the
+								stringers equals the rotation around the z-reference axis. For
+								details, please refer to the picture below.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="angleReference" type="stringBaseType">
+						<xsd:annotation>
+							<xsd:documentation>If the reference of the stringer angle shall
+								be different from the default implementation then this
+								parameter may be set. Allowed values include: leadingEdge,
+								trailingEdge and globalY. Furthremore, it is possible to
+								provide the UID of a spar.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="innerBorderXsiLE" type="doubleBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Inner border xsi coordinate at the leading
+								edge of the stringer definition</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="outerBorderXsiLE" type="doubleBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Outer border xsi coordinate at the leading
+								edge of the stringer definition</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="innerBorderXsiTE" type="doubleBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Inner border xsi coordinate at the trailing
+								edge of the stringer definition</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="outerBorderXsiTE" type="doubleBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Outer border xsi coordinate at the trailing
+								edge of the stringer definition</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:all>
+				<xsd:attribute name="uID" type="xsd:string" use="required"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
 
 	<xsd:complexType name="wingStringerType">
 
@@ -41329,7 +41408,7 @@ jonas.jepsen@dlr.de
 			<xsd:appinfo>
 				<sd:schemaDoc>
 					<ddue:summary>
-						<ddue:para>Definition of the wing stringers.</ddue:para>
+						<ddue:para>Definition of a set of wing stringers.</ddue:para>
 					</ddue:summary>
 					<ddue:remarks>
 						<ddue:content>
@@ -41343,8 +41422,6 @@ jonas.jepsen@dlr.de
 							<ddue:mediaLink>
 								<ddue:image xlink:href="wingstringer"/>
 							</ddue:mediaLink>
-							<ddue:para>Alternatively, an exlicit stringer definition can be
-								applied if the stringers shall be tapered.</ddue:para>
 						</ddue:content>
 					</ddue:remarks>
 				</sd:schemaDoc>
@@ -41352,110 +41429,68 @@ jonas.jepsen@dlr.de
 		</xsd:annotation>
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
-				<xsd:sequence>
+				<xsd:all>
 					<xsd:element name="stringerStructureUID" type="stringUIDBaseType"/>
-					<xsd:choice>
-						<xsd:sequence>
-							<xsd:annotation>
-								<xsd:documentation>This is the simple and default stringer
-									definition</xsd:documentation>
-							</xsd:annotation>
-							<xsd:element name="pitch" type="doubleBaseType">
-								<xsd:annotation>
-									<xsd:documentation>The pitch describes the distance between to
-										adjacent stringers in the plane rectangular to the stringer
-										elongation direction.</xsd:documentation>
-								</xsd:annotation>
-							</xsd:element>
-							<xsd:element minOccurs="0" name="xsi" type="doubleBaseType"/>
-							<xsd:element minOccurs="0" name="eta" type="doubleBaseType"/>
-							<xsd:element name="angle" type="doubleBaseType">
-								<xsd:annotation>
-									<xsd:documentation>Stringer angle: the reference axis for the
-										stringer angle is defined by the two leading edge points of
-										the 'from'- and the 'to'-element of the componentSegment
-										definition. The angle between the reference axis and the
-										stringers equals the rotation around the z-reference axis. For
-										details, please refer to the picture below.
-									</xsd:documentation>
-								</xsd:annotation>
-							</xsd:element>
-							<xsd:element minOccurs="0" name="angleReference" type="stringBaseType">
-								<xsd:annotation>
-									<xsd:documentation>If the reference of the stringer angle shall
-										be different from the default implementation then this
-										parameter may be set. Allowed values include: leadingEdge,
-										trailingEdge and globalY. Furthremore, it is possible to
-										provide the UID of a spar.</xsd:documentation>
-								</xsd:annotation>
-							</xsd:element>
-						</xsd:sequence>
-						<xsd:sequence>
-							<xsd:annotation>
-								<xsd:documentation>This is the explicit stringer definition.
-									Please note that for a consistent definition two out of the
-									possible three elements innerBorder (xsiLE, xsiTE), outerBorder
-									(xsiLE, xsiTE) and stringer angle (and angle reference) must be
-									defined. Any combination of two of the three is valid
-								</xsd:documentation>
-							</xsd:annotation>
-							<xsd:element minOccurs="0" name="numberOfStringers" type="integerBaseType">
-								<xsd:annotation>
-									<xsd:documentation>The number of stringers; default is 0
-									</xsd:documentation>
-								</xsd:annotation>
-							</xsd:element>
-							<xsd:element minOccurs="0" name="angle" type="doubleBaseType">
-								<xsd:annotation>
-									<xsd:documentation>Stringer angle: the reference axis for the
-										stringer angle is defined by the two leading edge points of
-										the 'from'- and the 'to'-element of the componentSegment
-										definition. The angle between the reference axis and the
-										stringers equals the rotation around the z-reference axis. For
-										details, please refer to the picture below.
-									</xsd:documentation>
-								</xsd:annotation>
-							</xsd:element>
-							<xsd:element minOccurs="0" name="angleReference" type="stringBaseType">
-								<xsd:annotation>
-									<xsd:documentation>If the reference of the stringer angle shall
-										be different from the default implementation then this
-										parameter may be set. Allowed values include: leadingEdge,
-										trailingEdge and globalY. Furthremore, it is possible to
-										provide the UID of a spar.</xsd:documentation>
-								</xsd:annotation>
-							</xsd:element>
-							<xsd:element minOccurs="0" name="innerBorderXsiLE" type="doubleBaseType">
-								<xsd:annotation>
-									<xsd:documentation>Inner border xsi coordinate at the leading
-										edge of the stringer definition</xsd:documentation>
-								</xsd:annotation>
-							</xsd:element>
-							<xsd:element minOccurs="0" name="outerBorderXsiLE" type="doubleBaseType">
-								<xsd:annotation>
-									<xsd:documentation>Outer border xsi coordinate at the leading
-										edge of the stringer definition</xsd:documentation>
-								</xsd:annotation>
-							</xsd:element>
-							<xsd:element minOccurs="0" name="innerBorderXsiTE" type="doubleBaseType">
-								<xsd:annotation>
-									<xsd:documentation>Inner border xsi coordinate at the trailing
-										edge of the stringer definition</xsd:documentation>
-								</xsd:annotation>
-							</xsd:element>
-							<xsd:element minOccurs="0" name="outerBorderXsiTE" type="doubleBaseType">
-								<xsd:annotation>
-									<xsd:documentation>Outer border xsi coordinate at the trailing
-										edge of the stringer definition</xsd:documentation>
-								</xsd:annotation>
-							</xsd:element>
-						</xsd:sequence>
-					</xsd:choice>
-				</xsd:sequence>
+					<xsd:element name="pitch" type="doubleBaseType">
+						<xsd:annotation>
+							<xsd:documentation>The pitch describes the distance between to
+								adjacent stringers in the plane rectangular to the stringer
+								elongation direction.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="xsi" type="doubleBaseType"/>
+					<xsd:element minOccurs="0" name="eta" type="doubleBaseType"/>
+					<xsd:element name="angle" type="doubleBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Stringer angle: the reference axis for the
+								stringer angle is defined by the two leading edge points of
+								the 'from'- and the 'to'-element of the componentSegment
+								definition. The angle between the reference axis and the
+								stringers equals the rotation around the z-reference axis. For
+								details, please refer to the picture below.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="angleReference" type="stringBaseType">
+						<xsd:annotation>
+							<xsd:documentation>If the reference of the stringer angle shall
+								be different from the default implementation then this
+								parameter may be set. Allowed values include: leadingEdge,
+								trailingEdge and globalY. Furthremore, it is possible to
+								provide the UID of a spar.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:all>
+				<xsd:attribute name="uID" type="xsd:string" use="required"/>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
 
+	<xsd:complexType name="wingStringersType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>Definition of the wing stringers.</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:content>
+							<ddue:para>Wing stringers can either be defined as a set of stringers in stringer nodes of type wingStringerType or as single stringer definitions through the stringerExplicit node of wingStringerExplicitType.</ddue:para>
+						</ddue:content>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:choice maxOccurs="unbounded" minOccurs="1">
+					<xsd:element name="stringer" type="wingStringerType"/>
+					<xsd:element name="stringerExplicit" type="wingStringerExplicitType"/>
+				</xsd:choice>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
 
 	<xsd:complexType name="wingStructuralMountsType">
 		<xsd:annotation>
