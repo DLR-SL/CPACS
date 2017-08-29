@@ -29715,56 +29715,6 @@ jonas.jepsen@dlr.de
 		</xsd:complexContent>
 	</xsd:complexType>
 
-	<xsd:complexType name="nacelleElementType">
-		<xsd:annotation>
-			<xsd:appinfo>
-				<sd:schemaDoc>
-					<ddue:summary>
-						<ddue:para>nacelleElementType</ddue:para>
-					</ddue:summary>
-					<ddue:remarks>
-						<ddue:para/>
-					</ddue:remarks>
-				</sd:schemaDoc>
-			</xsd:appinfo>
-		</xsd:annotation>
-		<xsd:complexContent>
-			<xsd:extension base="complexBaseType">
-				<xsd:sequence>
-					<xsd:element name="name" type="stringBaseType"/>
-					<xsd:element minOccurs="0" name="description" type="stringBaseType">
-					</xsd:element>
-					<xsd:element name="profileUID" type="stringUIDBaseType"/>
-					<xsd:element name="transformation" type="transformationPolarType">
-					</xsd:element>
-				</xsd:sequence>
-				<xsd:attribute name="uID" type="xsd:string" use="required"/>
-			</xsd:extension>
-		</xsd:complexContent>
-	</xsd:complexType>
-
-	<xsd:complexType name="nacelleElementsType">
-		<xsd:annotation>
-			<xsd:appinfo>
-				<sd:schemaDoc>
-					<ddue:summary>
-						<ddue:para>nacelleElementsType</ddue:para>
-					</ddue:summary>
-					<ddue:remarks>
-						<ddue:para/>
-					</ddue:remarks>
-				</sd:schemaDoc>
-			</xsd:appinfo>
-		</xsd:annotation>
-		<xsd:complexContent>
-			<xsd:extension base="complexBaseType">
-				<xsd:sequence>
-					<xsd:element maxOccurs="unbounded" name="element" type="nacelleElementType"/>
-				</xsd:sequence>
-			</xsd:extension>
-		</xsd:complexContent>
-	</xsd:complexType>
-
 	<xsd:complexType name="nacelleOuterShapeType">
 		<xsd:annotation>
 			<xsd:appinfo>
@@ -29773,7 +29723,34 @@ jonas.jepsen@dlr.de
 						<ddue:para>nacelleOuterShapeType</ddue:para>
 					</ddue:summary>
 					<ddue:remarks>
-						<ddue:para/>
+						<ddue:para>The outer shape of the nacelle is defined using rotationally arranged nacelle sections. The transformation in each nacelle section defines the position at which the section is placed. Sections are combined to segments with neighbouring sections ordered by the translations phi angle.</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:all>
+					<xsd:element name="transformation" type="transformationType"/>
+					<xsd:element name="sections" type="nacelleSectionsType"/>
+					<xsd:element name="grid" type="pointListXYZVectorType"/>
+					<xsd:element name="deformation" type="pointListXYZVectorType"/>
+				</xsd:all>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="nacelleProfilesType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>nacelleProfilesType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>Nacelle profiles type, containing nacelle profile geometries.
+							See profileGeometryType for further documentation</ddue:para>
 					</ddue:remarks>
 				</sd:schemaDoc>
 			</xsd:appinfo>
@@ -29781,9 +29758,7 @@ jonas.jepsen@dlr.de
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
 				<xsd:sequence>
-					<xsd:element name="transformation" type="transformationType">
-					</xsd:element>
-					<xsd:element name="sections" type="nacelleSectionsType"/>
+					<xsd:element maxOccurs="unbounded" name="nacelleProfile" type="profileGeometryType"/>
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
@@ -29804,14 +29779,12 @@ jonas.jepsen@dlr.de
 		</xsd:annotation>
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
-				<xsd:sequence>
+				<xsd:all>
 					<xsd:element name="name" type="stringBaseType"/>
-					<xsd:element minOccurs="0" name="description" type="stringBaseType">
-					</xsd:element>
-					<xsd:element name="transformation" type="transformationPolarType">
-					</xsd:element>
-					<xsd:element name="elements" type="nacelleElementsType"/>
-				</xsd:sequence>
+					<xsd:element minOccurs="0" name="description" type="stringBaseType"/>
+					<xsd:element name="transformation" type="transformationPolarType"/>
+					<xsd:element name="profileUID" type="stringUIDBaseType"/>
+				</xsd:all>
 				<xsd:attribute name="uID" type="xsd:string" use="required"/>
 			</xsd:extension>
 		</xsd:complexContent>
@@ -32342,6 +32315,7 @@ jonas.jepsen@dlr.de
 					<xsd:element minOccurs="0" name="guideCurves" type="guideCurveProfilesType"/>
 					<xsd:element minOccurs="0" name="rotorAirfoils" type="rotorAirfoilsType"/>
 					<xsd:element minOccurs="0" name="structuralProfiles" type="structuralProfilesType"/>
+					<xsd:element minOccurs="0" name="nacelleProfiles" type="nacelleProfilesType"/>
 				</xsd:all>
 			</xsd:extension>
 		</xsd:complexContent>
