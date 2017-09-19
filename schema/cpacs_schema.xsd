@@ -792,7 +792,7 @@ jonas.jepsen@dlr.de
 					</xsd:element>
 					<xsd:element name="parentHeight" type="doubleBaseType">
 						<xsd:annotation>
-							<xsd:documentation>Definition of the relative hight position of
+							<xsd:documentation>Definition of the relative height position of
 								the parent actuator attachment. relHeight refers to the parents
 								dimensions.</xsd:documentation>
 						</xsd:annotation>
@@ -826,9 +826,7 @@ jonas.jepsen@dlr.de
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
 				<xsd:sequence>
-					<xsd:element name="eta" type="doubleBaseType"/>
-					<xsd:element name="xsi" type="doubleBaseType"/>
-					<xsd:element name="relHeight" type="doubleBaseType"/>
+					<xsd:element name="refPoint" type="etaXsiRelHeightPointType"/>
 					<xsd:element name="material" type="materialDefinitionType"/>
 				</xsd:sequence>
 			</xsd:extension>
@@ -910,7 +908,7 @@ jonas.jepsen@dlr.de
 					</xsd:element>
 					<xsd:element name="parentHeight" type="doubleBaseType">
 						<xsd:annotation>
-							<xsd:documentation>Definition of the relative hight position of
+							<xsd:documentation>Definition of the relative height position of
 								the parent actuator attachment. relHeight refers to the parents
 								dimensions.</xsd:documentation>
 						</xsd:annotation>
@@ -4013,49 +4011,6 @@ jonas.jepsen@dlr.de
 	</xsd:complexType>
 
 
-	<xsd:complexType name="attachmentPinPositionType">
-
-		<xsd:annotation>
-			<xsd:appinfo>
-				<sd:schemaDoc>
-					<ddue:summary>
-						<ddue:para>Position of the attachment pin of the
-							wing-fuselage-attachment.</ddue:para>
-					</ddue:summary>
-					<ddue:remarks>
-						<ddue:para>Position of the attachment pin of the
-							wing-fuselage-attachment.</ddue:para>
-					</ddue:remarks>
-				</sd:schemaDoc>
-			</xsd:appinfo>
-		</xsd:annotation>
-		<xsd:complexContent>
-			<xsd:extension base="complexBaseType">
-				<xsd:sequence>
-					<xsd:element name="eta" type="doubleBaseType">
-						<xsd:annotation>
-							<xsd:documentation>Relative spanwise position of the attachment
-								pin. Eta refers to the componentSegment.</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-					<xsd:element name="xsi" type="doubleBaseType">
-						<xsd:annotation>
-							<xsd:documentation>Relative chordwise position of the attachment
-								pin. Xsi refers to the componentSegment.</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-					<xsd:element name="relHeight" type="doubleBaseType">
-						<xsd:annotation>
-							<xsd:documentation>Relative hight position of the attachment pin.
-								relHeight refers to the componentSegment.</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-				</xsd:sequence>
-			</xsd:extension>
-		</xsd:complexContent>
-	</xsd:complexType>
-
-
 	<xsd:complexType name="attachmentPinType">
 
 		<xsd:annotation>
@@ -4075,7 +4030,7 @@ jonas.jepsen@dlr.de
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
 				<xsd:sequence>
-					<xsd:element name="relPosition" type="attachmentPinPositionType"/>
+					<xsd:element name="relPosition" type="etaXsiRelHeightPointType"/>
 					<xsd:element minOccurs="0" name="orientation" type="pointYZType"/>
 					<xsd:element minOccurs="0" name="blockedDOF" type="pointXYZType">
 						<xsd:annotation>
@@ -5622,13 +5577,13 @@ jonas.jepsen@dlr.de
 				<xsd:sequence>
 					<xsd:choice>
 						<xsd:sequence>
-							<xsd:element name="eta1" type="doubleBaseType">
+							<xsd:element name="eta1" type="etaIsoLineType">
 								<xsd:annotation>
 									<xsd:documentation>Relative spanwise position of the forward
 										end.</xsd:documentation>
 								</xsd:annotation>
 							</xsd:element>
-							<xsd:element name="eta2" type="doubleBaseType">
+							<xsd:element name="eta2" type="etaIsoLineType">
 								<xsd:annotation>
 									<xsd:documentation>Relative spanwise position of the rear end.
 									</xsd:documentation>
@@ -6440,7 +6395,7 @@ jonas.jepsen@dlr.de
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
 				<xsd:sequence>
-					<xsd:element name="hingePoint" type="hingePointComponentSegmentPathType">
+					<xsd:element name="hingePoint" type="etaXsiRelHeightPointType">
 						<xsd:annotation>
 							<xsd:documentation>Definition of hingePoint of the
 								componentSegment. The hingePoint is used as reference point for
@@ -7412,7 +7367,7 @@ jonas.jepsen@dlr.de
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
 				<xsd:sequence>
-					<xsd:element name="eta" type="doubleBaseType">
+					<xsd:element name="eta" type="etaIsoLineType">
 						<xsd:annotation>
 							<xsd:documentation>Relative spanwise coordinate (eta) of the
 								control surface, where the leading edge of the airfoil is
@@ -7497,22 +7452,20 @@ jonas.jepsen@dlr.de
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
 				<xsd:sequence>
-					<xsd:element name="etaLE" type="doubleBaseType">
+					<xsd:element name="etaLE" type="etaIsoLineType">
 						<xsd:annotation>
 							<xsd:documentation>Relative spanwise inner/outer position of the
-								leading edge of the control surface. Reference is eta/xsi from
-								the parent.</xsd:documentation>
+								leading edge of the control surface.</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element minOccurs="0" name="etaTE" type="doubleBaseType">
+					<xsd:element minOccurs="0" name="etaTE" type="etaIsoLineType">
 						<xsd:annotation>
 							<xsd:documentation>Relative spanwise inner/outer position of the
-								trailing edge of the control surface. Reference is eta/xsi from
-								the parent. Defaults to 'etaLE'.</xsd:documentation>
+								trailing edge of the control surface. Defaults to 'etaLE'.</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
 					<xsd:choice>
-						<xsd:element name="xsiTE" type="doubleBaseType">
+						<xsd:element name="xsiTE" type="xsiIsoLineType">
 							<xsd:annotation>
 								<xsd:documentation>Relative chordwise inner/outer position of
 									the trailing edge of the control surface. Reference is eta/xsi
@@ -7573,28 +7526,28 @@ jonas.jepsen@dlr.de
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
 				<xsd:sequence>
-					<xsd:element name="etaLE" type="doubleBaseType">
+					<xsd:element name="etaLE" type="etaIsoLineType">
 						<xsd:annotation>
 							<xsd:documentation>Relative spanwise inner/outer position of the
 								leading edge of the control surface. Reference is eta/xsi from
 								the parent.</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element minOccurs="0" name="etaTE" type="doubleBaseType">
+					<xsd:element minOccurs="0" name="etaTE" type="etaIsoLineType">
 						<xsd:annotation>
 							<xsd:documentation>Relative spanwise inner/outer position of the
 								trailing edge of the control surface. Reference is eta/xsi from
 								the parent. Defaults to 'etaLE'.</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element name="xsiLE" type="doubleBaseType">
+					<xsd:element name="xsiLE" type="xsiIsoLineType">
 						<xsd:annotation>
 							<xsd:documentation>Relative chordwise inner/outer position of the
 								leading edge of the control surface. Reference is eta/xsi from
 								the parent.</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element name="xsiTE" type="doubleBaseType">
+					<xsd:element name="xsiTE" type="xsiIsoLineType">
 						<xsd:annotation>
 							<xsd:documentation>Relative chordwise inner/outer position of the
 								trailing edge of the control surface. Reference is eta/xsi from
@@ -7605,7 +7558,7 @@ jonas.jepsen@dlr.de
 						<xsd:element minOccurs="0" name="relHeightLE" type="doubleBaseType">
 							<xsd:annotation>
 								<xsd:documentation>Defines the relative high of lowest point of
-									the spoiler leading edge, relative to the airfoil hight of the
+									the spoiler leading edge, relative to the airfoil height of the
 									parent at this position. See picture below.</xsd:documentation>
 							</xsd:annotation>
 						</xsd:element>
@@ -7657,21 +7610,21 @@ jonas.jepsen@dlr.de
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
 				<xsd:sequence>
-					<xsd:element name="etaLE" type="doubleBaseType">
+					<xsd:element name="etaLE" type="etaIsoLineType">
 						<xsd:annotation>
 							<xsd:documentation>Relative spanwise inner/outer position of the
 								leading edge of the control surface. Reference is eta/xsi from
 								the parent.</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element minOccurs="0" name="etaTE" type="doubleBaseType">
+					<xsd:element minOccurs="0" name="etaTE" type="etaIsoLineType">
 						<xsd:annotation>
 							<xsd:documentation>Relative spanwise inner/outer position of the
 								trailing edge of the control surface. Reference is eta/xsi from
 								the parent. Defaults to 'etaLE'.</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element name="xsiLE" type="doubleBaseType">
+					<xsd:element name="xsiLE" type="xsiIsoLineType">
 						<xsd:annotation>
 							<xsd:documentation>Relative chordwise inner/outer position of the
 								leading edge of the control surface. Reference is eta/xsi from
@@ -8013,7 +7966,7 @@ jonas.jepsen@dlr.de
 								with respect to two hinge points - one at the inner border of
 								the control surface and one at the outer border of the control
 								surface. Those two points are defined using the xsi and relative
-								hight coordinates of the parent. Therefore those points can also
+								height coordinates of the parent. Therefore those points can also
 								lay outbound of the control surface. Those two points defined
 								the hinge line, which is a straight line between the two points.
 							</ddue:para>
@@ -8038,7 +7991,7 @@ jonas.jepsen@dlr.de
 					</xsd:element>
 					<xsd:element name="hingeRelHeight" type="doubleBaseType">
 						<xsd:annotation>
-							<xsd:documentation>Relative hight of the hinge line point.
+							<xsd:documentation>Relative height of the hinge line point.
 								Reference is the parent airfoil height.</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
@@ -8183,7 +8136,7 @@ jonas.jepsen@dlr.de
 								with respect to two hinge points - one at the inner border of
 								the control surface and one at the outer border of the control
 								surface. Those two points are defined using the xsi and relative
-								hight coordinates of the parent. Therefore those points can also
+								height coordinates of the parent. Therefore those points can also
 								lay outbound of the control surface. Those two points defined
 								the hinge line, which is a straight line between the two points.
 							</ddue:para>
@@ -8334,13 +8287,13 @@ jonas.jepsen@dlr.de
 						</xsd:element>
 					</xsd:sequence>
 					<xsd:sequence>
-						<xsd:element name="etaLE" type="doubleBaseType">
+						<xsd:element name="etaLE" type="etaIsoLineType">
 							<xsd:annotation>
 								<xsd:documentation>Spanwise location of the border at the
 									leading edge of the cut out</xsd:documentation>
 							</xsd:annotation>
 						</xsd:element>
-						<xsd:element name="etaTE" type="doubleBaseType">
+						<xsd:element name="etaTE" type="etaIsoLineType">
 							<xsd:annotation>
 								<xsd:documentation>Spanwise location of the border at the
 									trailing edge of the cut out</xsd:documentation>
@@ -8564,7 +8517,7 @@ jonas.jepsen@dlr.de
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
 				<xsd:sequence>
-					<xsd:element name="eta" type="doubleBaseType">
+					<xsd:element name="eta" type="etaIsoLineType">
 						<xsd:annotation>
 							<xsd:documentation>Relative chordwise position of the track. Eta
 								refers to the control surface.</xsd:documentation>
@@ -9963,31 +9916,6 @@ jonas.jepsen@dlr.de
 	</xsd:complexType>
 
 
-	<xsd:complexType name="cruiseRollerPositionType">
-
-		<xsd:annotation>
-			<xsd:appinfo>
-				<sd:schemaDoc>
-					<ddue:summary>
-						<ddue:para>cruiseRollerPositionType</ddue:para>
-					</ddue:summary>
-					<ddue:remarks>
-						<ddue:para/>
-					</ddue:remarks>
-				</sd:schemaDoc>
-			</xsd:appinfo>
-		</xsd:annotation>
-		<xsd:complexContent>
-			<xsd:extension base="complexBaseType">
-				<xsd:sequence>
-					<xsd:element name="eta" type="doubleBaseType"/>
-					<xsd:element name="xsi" type="doubleBaseType"/>
-					<xsd:element name="relHeight" type="doubleBaseType"/>
-				</xsd:sequence>
-			</xsd:extension>
-		</xsd:complexContent>
-	</xsd:complexType>
-
 	<xsd:complexType name="cruiseRollerType">
 
 		<xsd:annotation>
@@ -10005,7 +9933,7 @@ jonas.jepsen@dlr.de
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
 				<xsd:sequence>
-					<xsd:element name="position" type="cruiseRollerPositionType">
+					<xsd:element name="position" type="etaXsiRelHeightPointType">
 						<xsd:annotation>
 							<xsd:documentation>Definition of the position of the mid point of
 								the roll of the cruise roller.</xsd:documentation>
@@ -10292,8 +10220,8 @@ jonas.jepsen@dlr.de
 				<xsd:sequence>
 					<xsd:element name="relHeight" type="doubleBaseType">
 						<xsd:annotation>
-							<xsd:documentation>Relative hight of the most forward position of
-								the parents leading edge, relative to the airfoil hight without
+							<xsd:documentation>Relative height of the most forward position of
+								the parents leading edge, relative to the airfoil height without
 								cut out.</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
@@ -10372,10 +10300,10 @@ jonas.jepsen@dlr.de
 								be linked in profiles/structuralProfiles</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element name="eta" type="doubleBaseType">
+					<xsd:element name="eta" type="etaIsoLineType">
 						<xsd:annotation>
 							<xsd:documentation>Relative spanwise position of the cut out
-								profiel. The eta coordinate refers to the control surface and
+								profile. The eta coordinate refers to the control surface and
 								desribes the cut out profile at the leading edge of the control
 								surface.</xsd:documentation>
 						</xsd:annotation>
@@ -13621,6 +13549,92 @@ jonas.jepsen@dlr.de
 				<xsd:sequence>
 					<xsd:element maxOccurs="unbounded" name="engine" type="engineType"/>
 				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+
+	<xsd:complexType name="etaIsoLineType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>etaIsoLineType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>Iso line described by point of the same eta coordinate.
+						Can be either segment or component segment coordinates.</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:all>
+					<xsd:element name="eta" type="doubleBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Relative spanwise position. Eta refers to the segment or componentSegment depending on the referenced uID.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="referenceUID" type="stringUIDBaseType">
+						<xsd:annotation>
+							<xsd:documentation>This reference uID determines the reference coordinate system.
+							If it points to a segment, then the eta value is considered to be in segment
+							eta coordinate; if it points to a componentSegment,
+							then componentSegment eta coordinate is used.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:all>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+
+	<xsd:complexType name="etaXsiRelHeightPointType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>etaXsiRelHeightPointType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>Point described by eta-xsi and a relative height coordinate.
+						Can be either segment or component segment coordinates.
+						If relHeight is not given, the point has no offset from the eta-xsi plane</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:all>
+					<xsd:element name="eta" type="doubleBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Relative spanwise position. Eta refers to the segment or componentSegment depending on the referenced uID.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="xsi" type="doubleBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Relative chordwise position. Xsi refers to the segment or componentSegment depending on the referenced uID.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="relHeight" type="doubleBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Relative height position.
+								relHeight is relative to the local airfoil thickness.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="referenceUID" type="stringUIDBaseType">
+						<xsd:annotation>
+							<xsd:documentation>This reference uID determines the reference coordinate system.
+							If it points to a segment, then the eta-xsi values are considered to be in segment
+							eta-xsi coordinates; if it points to a componentSegment,
+							then componentSegment eta-xsi coordinates are used.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:all>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
@@ -21204,31 +21218,6 @@ jonas.jepsen@dlr.de
 		</xsd:complexContent>
 	</xsd:complexType>
 
-	<xsd:complexType name="hingePointComponentSegmentPathType">
-
-		<xsd:annotation>
-			<xsd:appinfo>
-				<sd:schemaDoc>
-					<ddue:summary>
-						<ddue:para>hingePointComponentSegmentPathType</ddue:para>
-					</ddue:summary>
-					<ddue:remarks>
-						<ddue:para/>
-					</ddue:remarks>
-				</sd:schemaDoc>
-			</xsd:appinfo>
-		</xsd:annotation>
-		<xsd:complexContent>
-			<xsd:extension base="complexBaseType">
-				<xsd:sequence>
-					<xsd:element name="eta" type="doubleBaseType"/>
-					<xsd:element name="xsi" type="doubleBaseType"/>
-					<xsd:element name="relHeight" type="doubleBaseType"/>
-				</xsd:sequence>
-			</xsd:extension>
-		</xsd:complexContent>
-	</xsd:complexType>
-
 	<xsd:complexType name="holdingModeType">
 
 		<xsd:annotation>
@@ -21620,7 +21609,7 @@ jonas.jepsen@dlr.de
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
 				<xsd:sequence>
-					<xsd:element name="position" type="cruiseRollerPositionType">
+					<xsd:element name="position" type="etaXsiRelHeightPointType">
 						<xsd:annotation>
 							<xsd:documentation>Definition of the position of the attachment
 								joint in relative coordinates.</xsd:documentation>
@@ -22303,7 +22292,7 @@ jonas.jepsen@dlr.de
 				<xsd:sequence>
 					<xsd:element name="relHeightTE" type="doubleBaseType">
 						<xsd:annotation>
-							<xsd:documentation>Relative hight of the most forward point of
+							<xsd:documentation>Relative height of the most forward point of
 								the LED's rear part, based on the airfoil height of the parent
 								at this position. Optional.</xsd:documentation>
 						</xsd:annotation>
@@ -22349,7 +22338,7 @@ jonas.jepsen@dlr.de
 				<xsd:sequence>
 					<xsd:element name="relHeightLE" type="doubleBaseType">
 						<xsd:annotation>
-							<xsd:documentation>Relative hight of the leading edge of the TED,
+							<xsd:documentation>Relative height of the leading edge of the TED,
 								based on the airfoil height of the parent at this position.
 								Optional.</xsd:documentation>
 						</xsd:annotation>
@@ -23859,10 +23848,7 @@ jonas.jepsen@dlr.de
 						<xsd:element minOccurs="0" name="y" type="doubleBaseType"/>
 						<xsd:element minOccurs="0" name="z" type="doubleBaseType"/>
 					</xsd:sequence>
-					<xsd:sequence>
-						<xsd:element name="eta" type="doubleBaseType"/>
-						<xsd:element minOccurs="0" name="xsi" type="doubleBaseType"/>
-					</xsd:sequence>
+					<xsd:element name="refPoint" type="etaXsiRelHeightPointType"/>
 				</xsd:choice>
 			</xsd:extension>
 		</xsd:complexContent>
@@ -27073,20 +27059,18 @@ jonas.jepsen@dlr.de
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
 				<xsd:sequence>
-					<xsd:element name="xsiInside" type="doubleBaseType">
+					<xsd:element name="xsiInside" type="xsiIsoLineType">
 						<xsd:annotation>
 							<xsd:documentation>Relative chordwise coordinate (xsi) of the
-								inner end of the support beam. Xsi refers to the
-								componentSegment where the landing gear is attached to. The eta
-								postion of the inner end is defined by the eta position of the
+								inner end of the support beam. The eta
+								position of the inner end is defined by the eta position of the
 								wing root (=wing-fuselage attachment).</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element name="etaOutside" type="doubleBaseType">
+					<xsd:element name="etaOutside" type="etaIsoLineType">
 						<xsd:annotation>
 							<xsd:documentation>Relative spanwise coordinate (eta) of the
-								outer end of the support beam. Eta refers to the
-								componentSegment where the landing gear is attached to. The xsi
+								outer end of the support beam. The xsi
 								coordinate of the outer end is defined by the spar position
 								(first spar), where the support beam is attached to.
 							</xsd:documentation>
@@ -27185,59 +27169,6 @@ jonas.jepsen@dlr.de
 	</xsd:complexType>
 
 
-	<xsd:complexType name="mainGearWingAttachmentPositioningType">
-
-		<xsd:annotation>
-			<xsd:appinfo>
-				<sd:schemaDoc>
-					<ddue:summary>
-						<ddue:para>Definition of the position of the landing gear.
-						</ddue:para>
-					</ddue:summary>
-					<ddue:remarks>
-						<ddue:para>Definition of the position of the landing gear
-							(intersection point of main strut and pintle sturt) on the wing,
-							using relative componentSegment coordinates.</ddue:para>
-					</ddue:remarks>
-				</sd:schemaDoc>
-			</xsd:appinfo>
-		</xsd:annotation>
-		<xsd:complexContent>
-			<xsd:extension base="complexBaseType">
-				<xsd:sequence>
-					<xsd:element name="relHeight" type="doubleBaseType">
-						<xsd:annotation>
-							<xsd:documentation>Relative height of the landing gear attachment
-								point (intersection point of main strut and pintle sturt),
-								relative to the airfoil hight at the attachment position.
-							</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-					<xsd:element name="eta" type="doubleBaseType">
-						<xsd:annotation>
-							<xsd:documentation>Relative spanwise position (eta) of the
-								landing gear attachment point (intersection point of main strut
-								and pintle sturt). Eta refers to the componentSegment where it
-								is attached.</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-					<xsd:choice>
-						<xsd:element name="xsi" type="doubleBaseType">
-							<xsd:annotation>
-								<xsd:documentation>Relative chordwise position (xsi) of the
-									landing gear attachment point (intersection point of main strut
-									and pintle sturt). Xsi refers to the componentSegment where it
-									is attached.</xsd:documentation>
-							</xsd:annotation>
-						</xsd:element>
-						<xsd:element name="positionOverlap" type="xsd:string"/>
-					</xsd:choice>
-				</xsd:sequence>
-			</xsd:extension>
-		</xsd:complexContent>
-	</xsd:complexType>
-
-
 	<xsd:complexType name="mainGearWingAttachmentType">
 
 		<xsd:annotation>
@@ -27264,7 +27195,7 @@ jonas.jepsen@dlr.de
 								is attached to.</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element name="positioning" type="mainGearWingAttachmentPositioningType"/>
+					<xsd:element name="positioning" type="etaXsiRelHeightPointType"/>
 					<xsd:choice>
 						<xsd:element minOccurs="0" name="secondSparUID" type="stringUIDBaseType">
 							<xsd:annotation>
@@ -34578,13 +34509,13 @@ jonas.jepsen@dlr.de
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
 				<xsd:sequence>
-					<xsd:element name="fromEta" type="doubleBaseType">
+					<xsd:element name="fromEta" type="etaIsoLineType">
 						<xsd:annotation>
 							<xsd:documentation>Beginning (= inner border) of the spar cell.
 							</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element name="toEta" type="doubleBaseType">
+					<xsd:element name="toEta" type="etaIsoLineType">
 						<xsd:annotation>
 							<xsd:documentation>Ending (= outer border) of the spar cell.
 							</xsd:documentation>
@@ -34713,28 +34644,9 @@ jonas.jepsen@dlr.de
 		</xsd:annotation>
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
-				<xsd:sequence>
-					<xsd:choice>
-						<xsd:element name="eta" type="doubleBaseType">
-							<xsd:annotation>
-								<xsd:documentation>Eta coordinate of the spar definition point.
-								</xsd:documentation>
-							</xsd:annotation>
-						</xsd:element>
-						<xsd:element name="elementUID" type="stringUIDBaseType">
-							<xsd:annotation>
-								<xsd:documentation>Link to a section element.
-								</xsd:documentation>
-							</xsd:annotation>
-						</xsd:element>
-					</xsd:choice>
-					<xsd:element name="xsi" type="doubleBaseType">
-						<xsd:annotation>
-							<xsd:documentation>Xsi coordinate of the spar definition point.
-							</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-				</xsd:sequence>
+				<xsd:all>
+					<xsd:element name="sparPoint" type="etaXsiRelHeightPointType"/>
+				</xsd:all>
 				<xsd:attribute name="uID" type="xsd:string" use="required"/>
 			</xsd:extension>
 		</xsd:complexContent>
@@ -40528,7 +40440,7 @@ jonas.jepsen@dlr.de
 							</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element name="etaStart" type="doubleBaseType">
+					<xsd:element name="etaStart" type="etaIsoLineType">
 						<xsd:annotation>
 							<xsd:documentation>
 								etaStart defines the start of the rib defined by the startReference and
@@ -40545,7 +40457,7 @@ jonas.jepsen@dlr.de
 							</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element name="etaEnd" type="doubleBaseType">
+					<xsd:element name="etaEnd" type="etaIsoLineType">
 						<xsd:annotation>
 							<xsd:documentation>
 								etaEnd defines the end of the rib defined by the endReference and the
@@ -40671,48 +40583,23 @@ jonas.jepsen@dlr.de
 							</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:choice>
-						<xsd:element name="etaStart" type="doubleBaseType">
-							<xsd:annotation>
-								<xsd:documentation>
-									EtaStart defines the innerBorder location of the beginning of the rib
-									set on the
-									ribReference line. Please note, the eta is relative to wing eta coordinate!
-								</xsd:documentation>
-							</xsd:annotation>
-						</xsd:element>
-						<xsd:element name="elementStartUID" type="stringUIDBaseType">
-							<xsd:annotation>
-								<xsd:documentation>
-									elementStartUID defines the innerBorder location of the beginning of the rib
-									set on the
-									ribReference line. It is relative to a section element and hence linked to
-									the outer shape.
-								</xsd:documentation>
-							</xsd:annotation>
-						</xsd:element>
-					</xsd:choice>
-					<xsd:choice>
-						<xsd:element name="etaEnd" type="doubleBaseType">
-							<xsd:annotation>
-								<xsd:documentation>
-									EtaEnd defines the outerBorder location of the end of the rib set on
-									the
-									ribReference line. Please note, the eta is relative to wing eta coordinate!
-								</xsd:documentation>
-							</xsd:annotation>
-						</xsd:element>
-						<xsd:element name="elementEndUID" type="stringUIDBaseType">
-							<xsd:annotation>
-								<xsd:documentation>
-									elementEndUID defines the innerBorder location of the beginning of the rib
-									set on the
-									ribReference line. It is relative to a section element and hence linked to
-									the outer shape.
-								</xsd:documentation>
-							</xsd:annotation>
-						</xsd:element>
-					</xsd:choice>
+					<xsd:element name="etaStart" type="etaIsoLineType">
+						<xsd:annotation>
+							<xsd:documentation>
+								EtaStart defines the innerBorder location of the beginning of the rib
+								set on the ribReference line.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="etaEnd" type="etaIsoLineType">
+						<xsd:annotation>
+							<xsd:documentation>
+								EtaEnd defines the outerBorder location of the end of the rib set on
+								the
+								ribReference line. Please note, the eta is relative to wing eta coordinate!
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
 					<xsd:element name="ribStart" type="stringBaseType">
 						<xsd:annotation>
 							<xsd:documentation>
@@ -41367,8 +41254,7 @@ jonas.jepsen@dlr.de
 										elongation direction.</xsd:documentation>
 								</xsd:annotation>
 							</xsd:element>
-							<xsd:element minOccurs="0" name="xsi" type="doubleBaseType"/>
-							<xsd:element minOccurs="0" name="eta" type="doubleBaseType"/>
+							<xsd:element name="refPoint" type="etaXsiRelHeightPointType"/>
 							<xsd:element name="angle" type="doubleBaseType">
 								<xsd:annotation>
 									<xsd:documentation>Stringer angle: the reference axis for the
@@ -41425,25 +41311,25 @@ jonas.jepsen@dlr.de
 										provide the UID of a spar.</xsd:documentation>
 								</xsd:annotation>
 							</xsd:element>
-							<xsd:element minOccurs="0" name="innerBorderXsiLE" type="doubleBaseType">
+							<xsd:element minOccurs="0" name="innerBorderXsiLE" type="xsiIsoLineType">
 								<xsd:annotation>
 									<xsd:documentation>Inner border xsi coordinate at the leading
 										edge of the stringer definition</xsd:documentation>
 								</xsd:annotation>
 							</xsd:element>
-							<xsd:element minOccurs="0" name="outerBorderXsiLE" type="doubleBaseType">
+							<xsd:element minOccurs="0" name="outerBorderXsiLE" type="xsiIsoLineType">
 								<xsd:annotation>
 									<xsd:documentation>Outer border xsi coordinate at the leading
 										edge of the stringer definition</xsd:documentation>
 								</xsd:annotation>
 							</xsd:element>
-							<xsd:element minOccurs="0" name="innerBorderXsiTE" type="doubleBaseType">
+							<xsd:element minOccurs="0" name="innerBorderXsiTE" type="xsiIsoLineType">
 								<xsd:annotation>
 									<xsd:documentation>Inner border xsi coordinate at the trailing
 										edge of the stringer definition</xsd:documentation>
 								</xsd:annotation>
 							</xsd:element>
-							<xsd:element minOccurs="0" name="outerBorderXsiTE" type="doubleBaseType">
+							<xsd:element minOccurs="0" name="outerBorderXsiTE" type="xsiIsoLineType">
 								<xsd:annotation>
 									<xsd:documentation>Outer border xsi coordinate at the trailing
 										edge of the stringer definition</xsd:documentation>
@@ -41837,6 +41723,43 @@ jonas.jepsen@dlr.de
 				<xsd:sequence>
 					<xsd:element maxOccurs="unbounded" name="wing" type="wingType"/>
 				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+
+	<xsd:complexType name="xsiIsoLineType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>xsiIsoLineType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>Iso line described by point of same xsi coordinate.
+						Can be either segment or component segment coordinates.</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:all>
+					<xsd:element name="xsi" type="doubleBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Relative spanwise position. Xsi refers to the segment or componentSegment depending on the referenced uID.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="referenceUID" type="stringUIDBaseType">
+						<xsd:annotation>
+							<xsd:documentation>This reference uID determines the reference coordinate system.
+							If it points to a segment, then the eta value is considered to be in segment
+							eta coordinate; if it points to a componentSegment,
+							then componentSegment eta coordinate is used.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:all>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
