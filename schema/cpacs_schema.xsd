@@ -2100,7 +2100,7 @@ jonas.jepsen@dlr.de
 					<ddue:remarks>
 						<ddue:para>AeroPerformanceMap type, containing a perfomance map
 							with aerodynamic data. Array order is: angleOfAttack min-&gt;max
-							then angleOfSideslip then reynoldsNumber then machNumber</ddue:para>
+							then angleOfSideslip then altitude then machNumber</ddue:para>
 					</ddue:remarks>
 				</sd:schemaDoc>
 			</xsd:appinfo>
@@ -2108,14 +2108,19 @@ jonas.jepsen@dlr.de
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
 				<xsd:sequence>
+					<xsd:element name="atmosphericModel" type="atmosphericModelType">
+						<xsd:annotation>
+							<xsd:documentation>Atmospheric model and temperature offset</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
 					<xsd:element name="machNumber" type="stringVectorBaseType">
 						<xsd:annotation>
 							<xsd:documentation>Mach number</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element name="reynoldsNumber" type="stringVectorBaseType">
+					<xsd:element name="altitude" type="stringVectorBaseType">
 						<xsd:annotation>
-							<xsd:documentation>Reynolds Number</xsd:documentation>
+							<xsd:documentation>Altitude</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
 					<xsd:element name="angleOfSideslip" type="stringVectorBaseType">
@@ -2185,26 +2190,9 @@ jonas.jepsen@dlr.de
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
 				<xsd:sequence>
-					<xsd:element name="atmosphericModel">
+					<xsd:element name="atmosphericModel" type="atmosphericModelType">
 						<xsd:annotation>
-							<xsd:documentation>Atmospheric model (e.g. ISA for ICAO Standard
-								atmosphere (ISA) from 1993). For more details on atmospheric
-								models, please refer to documentation of the &lt;CPACS&gt; root
-								element.</xsd:documentation>
-						</xsd:annotation>
-						<xsd:complexType>
-							<xsd:simpleContent>
-								<xsd:restriction base="stringBaseType">
-									<xsd:enumeration value="ISA"/>
-								</xsd:restriction>
-							</xsd:simpleContent>
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element minOccurs="0" name="deltaTemperature" type="doubleBaseType">
-						<xsd:annotation>
-							<xsd:documentation>Offset from temperature of the atmospheric model [K].
-								For more details on atmospheric models, please refer to documentation
-								of the &lt;CPACS&gt; root element.</xsd:documentation>
+							<xsd:documentation>Atmospheric model and temperature offset</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
 					<xsd:element name="machNumber" type="stringVectorBaseType">
@@ -4063,6 +4051,53 @@ jonas.jepsen@dlr.de
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
+
+	<xsd:complexType name="atmosphericModelType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>atmosphericModelType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>Defines the the athmospheric model which should be used.
+								Currently there is only a single option which is ISA for ICAO Standard
+								atmosphere (ISA) from 1993. For more details on atmospheric
+								models, please refer to documentation of the &lt;CPACS&gt; root
+								element.</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:all>
+					<xsd:element name="atmosphericModel">
+						<xsd:annotation>
+							<xsd:documentation>Atmospheric model (e.g. ISA for ICAO Standard
+								atmosphere (ISA) from 1993).</xsd:documentation>
+						</xsd:annotation>
+						<xsd:complexType>
+							<xsd:simpleContent>
+								<xsd:restriction base="stringBaseType">
+									<xsd:enumeration value="ISA"/>
+								</xsd:restriction>
+							</xsd:simpleContent>
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="deltaTemperature" type="doubleBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Offset from temperature of the atmospheric model [K].
+								For more details on atmospheric models, please refer to documentation
+								of the &lt;CPACS&gt; root element.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:all>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
 
 
 	<xsd:complexType name="attachmentPinType">
