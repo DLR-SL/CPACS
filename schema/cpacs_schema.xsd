@@ -2022,23 +2022,11 @@ jonas.jepsen@dlr.de
 						<ddue:para>LandingGearPerformanceMap type, containing a delta
 							perfomance map with aerodynamic data for a landing gear. This
 							means that the coefficients are deltas to be added to the
-							corresponding coefficients of the base performance map. Array
-							order is (from innermost to outermost loop): relativeDeflection
-							min-&gt;max, then angleOfAttack, then angleOfSideslip, then
-							altitude, then machNumber. AngleOfAttack, angleOfSideslip,
-							altitude and machNumber are taken from the basic performance map
-							one level above. For the definition of the coefficients,
-							please refer to the description of the base performance map</ddue:para>
-						<ddue:para>LandingGearPerformanceMap type, containing a delta
-							perfomance map with aerodynamic data for a landing gear. This
-							means that the coefficients are deltas to be added to the
-							corresponding coefficients of the base performance map for a
-							specific landing gear deflection. Array order is (from innermost
-							to outermost loop): relativeDeflection min-&gt;max, then 
-							angleOfAttack, then angleOfSideslip, then altitude, then
-							machNumber. AngleOfAttack, angleOfSideslip, altitude
-							and machNumber are taken from the base performance map
-							one level above. For the definition of the coefficients,
+							corresponding coefficients of the base performance map.
+							The array must contain n * m entries where n is the length of the relDeflection vector and m is the number of points in the basic performance map. Array order is:
+							m elements relating to the same points as in the basic performance map with first deflection angle, then the next m points for the next deflection. This continues until all the relative deflections are covered. The order of the relative deflections is the same as given in the relDeflection node from left to right.
+							The corresponding angleOfAttack, angleOfSideslip, altitude and machNumber are taken from the basic performance map one level above.
+							For the definition of the coefficients,
 							please refer to the description of the base performance map</ddue:para>
 					</ddue:remarks>
 				</sd:schemaDoc>
@@ -2103,8 +2091,13 @@ jonas.jepsen@dlr.de
 					</ddue:summary>
 					<ddue:remarks>
 						<ddue:para>AeroPerformanceMapRC type, containing a perfomance map
-							with aerodynamic data. Array order is: angleOfAttack min-&gt;max
-							then angleOfSideslip then altitude then machNumber</ddue:para>
+							with aerodynamic data. The points are organized such that elements with the same index across the nodes belong to the same data point. All the array elements must have the same number of elements. Due to this there is no restriction on the order of the data points.</ddue:para>
+						<ddue:para>All coefficients in the aeroPerformanceMap relate to
+							the CPACS coordinate system. See documentation of the
+							CPACS-Element for further information.</ddue:para>
+						<ddue:para>Be aware that this behaviour changed in CPACS 3.0.
+						If you do not want to make use of the more flexible but less structured description of data points but rather use a topologically regular grid please use the following order for your data points.
+						First alter angleOfAttack then angleOfSideslip then altitude then machNumber.</ddue:para>
 					</ddue:remarks>
 				</sd:schemaDoc>
 			</xsd:appinfo>
@@ -2156,12 +2149,12 @@ jonas.jepsen@dlr.de
 								&gt;=100 = Experimental data.</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element minOccurs="0" name="cfx" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="cfy" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="cfz" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="cmx" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="cmy" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="cmz" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="cfx" type="stringVectorBaseType"/>
+					<xsd:element minOccurs="0" name="cfy" type="stringVectorBaseType"/>
+					<xsd:element minOccurs="0" name="cfz" type="stringVectorBaseType"/>
+					<xsd:element minOccurs="0" name="cmx" type="stringVectorBaseType"/>
+					<xsd:element minOccurs="0" name="cmy" type="stringVectorBaseType"/>
+					<xsd:element minOccurs="0" name="cmz" type="stringVectorBaseType"/>
 					<xsd:element minOccurs="0" name="dampingDerivatives" type="dampingDerivativesRatesType"/>
 				</xsd:sequence>
 			</xsd:extension>
@@ -2179,14 +2172,19 @@ jonas.jepsen@dlr.de
 					</ddue:summary>
 					<ddue:remarks>
 						<ddue:para>AeroPerformanceMap type, containing a perfomance map
-							with aerodynamic data of the complete aircraft in the form of
-							nondimensionalized coefficients. The force coefficients (cf?)
-							are nondimensionalized by dynamic pressure and reference area,
+							with aerodynamic data in the form of
+							dimensionless coefficients. The force coefficients (cf?)
+							are made dimensionless by dynamic pressure and reference area,
 							the moment coefficients (cm?) by dynamic pressure, reference
-							area and reference length.</ddue:para>
+							area and reference length.
+							The points are organized such that elements with the same index across the nodes belong to the same data point.
+							All the array elements must have the same number of elements. Due to this there is no restriction on the order of the data points.</ddue:para>
 						<ddue:para>All coefficients in the aeroPerformanceMap relate to
 							the CPACS coordinate system. See documentation of the
 							CPACS-Element for further information.</ddue:para>
+						<ddue:para>Be aware that this behaviour changed in CPACS 3.0.
+						If you do not want to make use of the more flexible but less structured description of data points but rather use a topologically regular grid please use the following order for your data points.
+						First alter angleOfAttack then angleOfSideslip then altitude then machNumber.</ddue:para>
 					</ddue:remarks>
 				</sd:schemaDoc>
 			</xsd:appinfo>
@@ -2219,12 +2217,12 @@ jonas.jepsen@dlr.de
 							<xsd:documentation>Angle of attack</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element minOccurs="0" name="cfx" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="cfy" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="cfz" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="cmx" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="cmy" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="cmz" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="cfx" type="stringVectorBaseType"/>
+					<xsd:element minOccurs="0" name="cfy" type="stringVectorBaseType"/>
+					<xsd:element minOccurs="0" name="cfz" type="stringVectorBaseType"/>
+					<xsd:element minOccurs="0" name="cmx" type="stringVectorBaseType"/>
+					<xsd:element minOccurs="0" name="cmy" type="stringVectorBaseType"/>
+					<xsd:element minOccurs="0" name="cmz" type="stringVectorBaseType"/>
 					<xsd:element minOccurs="0" name="dampingDerivatives" type="dampingDerivativesRatesType"/>
 					<xsd:element minOccurs="0" name="controlSurfaces" type="controlSurfacePerformanceMapsType"/>
 					<xsd:element minOccurs="0" name="landingGears" type="aeroLandingGearsType"/>
@@ -8141,11 +8139,9 @@ jonas.jepsen@dlr.de
 					</ddue:summary>
 					<ddue:remarks>
 						<ddue:para>controlSurfaceHingeMomentMap type, containing a moment
-							map with aerodynamic data for a control surface. Array order is:
-							relativeDeflection min-&gt;max then angleOfAttack then angleOfSideslip
-							then reynoldsNumber then machNumber. AngleOfAttack, angleOfSideslip,
-							reynoldsNumber and machNumber are taken from the basic
-							performance map one level above.</ddue:para>
+							map with aerodynamic data for a control surface. The array must contain n * m entries where n is the length of the relDeflection vector and m is the number of points in the basic performance map. Array order is:
+							m elements relating to the same points as in the basic performance map with first deflection angle, then the next m points for the next deflection. This continues until all the relative deflections are covered. The order of the relative deflections is the same as given in the relDeflection node from left to right.
+							The corresponding angleOfAttack, angleOfSideslip, reynoldsNumber and machNumber are taken from the basic performance map one level above.</ddue:para>
 					</ddue:remarks>
 				</sd:schemaDoc>
 			</xsd:appinfo>
@@ -8438,12 +8434,9 @@ jonas.jepsen@dlr.de
 					</ddue:summary>
 					<ddue:remarks>
 						<ddue:para>ControlSurfacePerformanceMap type, containing a delta
-							performance map with aerodynamic data for a control surface. Array
-							order is: relativeDeflection min-&gt;max then angleOfAttack then
-							angleOfSideslip then altitude then machNumber. AngleOfAttack,
-							angleOfSideslip, altitude and machNumber are taken from the
-							basic performance map one level above.</ddue:para>
-					</ddue:remarks>
+							perfomance map with aerodynamic data for a control surface. The array must contain n * m entries where n is the length of the relDeflection vector and m is the number of points in the basic performance map. Array order is:
+							m elements relating to the same points as in the basic performance map with first deflection angle, then the next m points for the next deflection. This continues until all the relative deflections are covered. The order of the relative deflections is the same as given in the relDeflection node from left to right.
+							The corresponding angleOfAttack, angleOfSideslip, altitude and machNumber are taken from the basic performance map one level above.</ddue:para>					</ddue:remarks>
 				</sd:schemaDoc>
 			</xsd:appinfo>
 		</xsd:annotation>
@@ -10885,24 +10878,24 @@ jonas.jepsen@dlr.de
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
 				<xsd:all>
-					<xsd:element minOccurs="0" name="dcfxdpstar" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcfxdqstar" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcfxdrstar" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcfydpstar" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcfydqstar" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcfydrstar" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcfzdpstar" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcfzdqstar" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcfzdrstar" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcmxdpstar" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcmxdqstar" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcmxdrstar" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcmydpstar" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcmydqstar" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcmydrstar" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcmzdpstar" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcmzdqstar" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcmzdrstar" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="dcfxdpstar" type="stringVectorBaseType"/>
+					<xsd:element minOccurs="0" name="dcfxdqstar" type="stringVectorBaseType"/>
+					<xsd:element minOccurs="0" name="dcfxdrstar" type="stringVectorBaseType"/>
+					<xsd:element minOccurs="0" name="dcfydpstar" type="stringVectorBaseType"/>
+					<xsd:element minOccurs="0" name="dcfydqstar" type="stringVectorBaseType"/>
+					<xsd:element minOccurs="0" name="dcfydrstar" type="stringVectorBaseType"/>
+					<xsd:element minOccurs="0" name="dcfzdpstar" type="stringVectorBaseType"/>
+					<xsd:element minOccurs="0" name="dcfzdqstar" type="stringVectorBaseType"/>
+					<xsd:element minOccurs="0" name="dcfzdrstar" type="stringVectorBaseType"/>
+					<xsd:element minOccurs="0" name="dcmxdpstar" type="stringVectorBaseType"/>
+					<xsd:element minOccurs="0" name="dcmxdqstar" type="stringVectorBaseType"/>
+					<xsd:element minOccurs="0" name="dcmxdrstar" type="stringVectorBaseType"/>
+					<xsd:element minOccurs="0" name="dcmydpstar" type="stringVectorBaseType"/>
+					<xsd:element minOccurs="0" name="dcmydqstar" type="stringVectorBaseType"/>
+					<xsd:element minOccurs="0" name="dcmydrstar" type="stringVectorBaseType"/>
+					<xsd:element minOccurs="0" name="dcmzdpstar" type="stringVectorBaseType"/>
+					<xsd:element minOccurs="0" name="dcmzdqstar" type="stringVectorBaseType"/>
+					<xsd:element minOccurs="0" name="dcmzdrstar" type="stringVectorBaseType"/>
 				</xsd:all>
 				<xsd:attribute name="uID" type="xsd:string" use="required"/>
 			</xsd:extension>
