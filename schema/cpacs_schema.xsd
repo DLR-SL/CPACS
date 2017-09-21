@@ -2235,6 +2235,7 @@ jonas.jepsen@dlr.de
 						</xsd:annotation>
 					</xsd:element>
 				</xsd:sequence>
+				<xsd:attribute name="uID" type="xsd:string" use="required"/>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
@@ -2290,6 +2291,30 @@ jonas.jepsen@dlr.de
 			<xsd:extension base="complexBaseType">
 				<xsd:sequence>
 					<xsd:element maxOccurs="unbounded" name="aeroPerformanceMap" type="aeroPerformanceMapRCType"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="aeroPerformanceMapsType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>aeroPerformanceMapsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>aeroPerformanceMaps type, containing multiple
+							aeroPerformanceMaps for different cases</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" name="aeroPerformanceMap" type="aeroPerformanceMapType"/>
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
@@ -3211,7 +3236,7 @@ jonas.jepsen@dlr.de
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
 				<xsd:all>
-					<xsd:element minOccurs="0" name="aeroPerformanceMap" type="aeroPerformanceMapType"/>
+					<xsd:element minOccurs="0" name="aeroPerformanceMaps" type="aeroPerformanceMapsType"/>
 					<xsd:element minOccurs="0" name="aeroelastics" type="aeroelasticsType"/>
 					<xsd:element minOccurs="0" name="dynamicAircraftModel" type="dynamicAircraftModelAnalysisType"/>
                     <xsd:element minOccurs="0" name="flightDynamics" type="flightDynamicsAnalysisType"/>
@@ -21575,6 +21600,18 @@ jonas.jepsen@dlr.de
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
 				<xsd:sequence>
+					<xsd:element name="name" type="stringBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Name of the AeroPerformanceMap.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="description" type="stringBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Description of the AeroPerformanceMap.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
 					<xsd:element name="machNumber" type="stringVectorBaseType">
 						<xsd:annotation>
 							<xsd:documentation>Mach number</xsd:documentation>
