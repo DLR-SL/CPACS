@@ -10,6 +10,10 @@ The new CPACS version 2.3 is finished. You can download the new version of CPACS
 
 Have a look at our first [tutorial](http://www.youtube.com/watch?v=NgYWfc5N-Xw) video for CPACS. It explains to you the creation on a wing in CPACS. Thanks to Till and Erwin for their work!
 
+## Development
+
+Further Information about CPACS development is available in [here](/development/README.md)
+
 ## Cite & Acknowledge
 
 CPACS is available as Open Source and we encourage anyone to make use of it. If you are applying CPACS in a scientific environment and publish any related work, please cite the following artice:
