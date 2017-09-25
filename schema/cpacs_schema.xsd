@@ -29153,7 +29153,7 @@ jonas.jepsen@dlr.de
 							</xsd:complexType>
 						</xsd:element>
 						<xsd:element name="segmentUIDSequence" type="stringVectorBaseType"/>
-						<xsd:element name="variableSegments" type="stringVectorBaseType">
+						<xsd:element minOccurs="0" name="variableSegments" type="stringVectorBaseType">
 							<xsd:annotation>
 								<xsd:documentation>list of segments that are allowed to be varied within a mission optimisation.
 									<ddue:para>This concept needs to be practically tested. Does it suffice to mention (a list of) segments that are free to change to fit the overall block constraints? What happens if a segment is variable, though it has some constraints? When to define a segment as variable (climb until endPosition z, then endPosition x should be left free. Is the segment then variable? Probably not.). Somehow the 'free' segment should be in between fully defined segments (i.e.: a cruise+descent in between endPosition z == ICA and endPosition z == 0 for landing to define max range. How to define this exactly?)
@@ -29161,15 +29161,21 @@ jonas.jepsen@dlr.de
 								</xsd:documentation>
 							</xsd:annotation>
 						</xsd:element>
-						<xsd:element name="fuelPlanningType" type="stringBaseType">
+						<xsd:element minOccurs="0" name="fuelPlanningType">
 							<xsd:annotation>
 								<xsd:documentation>Entry for defining which type of mass the segment fuel mass should be added.
-[blockFuel,
-taxiFuel,
-tripFuel,
-reserveFuel]
 </xsd:documentation>
 							</xsd:annotation>
+							<xsd:complexType>
+								<xsd:simpleContent>
+									<xsd:restriction base="stringBaseType">
+										<xsd:enumeration value="blockFuel"/>
+										<xsd:enumeration value="taxiFuel"/>
+										<xsd:enumeration value="tripFuel"/>
+										<xsd:enumeration value="reserveFuel"/>
+									</xsd:restriction>
+								</xsd:simpleContent>
+							</xsd:complexType>
 						</xsd:element>
 					</xsd:all>
 				<xsd:attribute name="uID" type="xsd:string" use="required"/>
