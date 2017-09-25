@@ -7030,9 +7030,24 @@ jonas.jepsen@dlr.de
 							<xsd:documentation>Load factor experienced during segment</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
+					<xsd:element minOccurs="0" name="stepClimbSpecificExcessPower" type="doubleConstraintBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Specific excess power within the segment (e.g.: for defining minimum SEP to remain after step climbs have been performed). [For segment constraint settings.]</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="stepClimbAltitudeDifference" type="doubleConstraintBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Altitude difference of each step climb. [For segment constraint settings.]</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="altitude" type="doubleConstraintBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Constant altitude for the segment. [For segment constraint settings.]</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
 					<xsd:element minOccurs="0" name="duration" type="doubleConstraintBaseType">
 						<xsd:annotation>
-							<xsd:documentation>Duration of the condition (for pointPerformance constraints)</xsd:documentation>
+							<xsd:documentation>Duration of the condition. [for pointPerformance constraints]</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
 					<xsd:element minOccurs="0" name="deltaTemperatureISA" type="doubleConstraintBaseType">
@@ -28205,6 +28220,45 @@ jonas.jepsen@dlr.de
 	</xsd:complexType>
 
 
+	<xsd:complexType name="massFractionType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>massFractionType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>Describing the mass fraction considered for a mission segment sequence</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="fromSegmentUID" type="stringUIDBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Reference to the segment from which the fuel fraction should be considered</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="toSegmentUID" type="stringUIDBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Reference to the segment to which the fuel fraction should be considered</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="fraction" type="doubleBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Float value of the mass fraction defined as 
+							fraction = m_end / m_start</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+
 	<xsd:complexType name="massInertiaType">
 
 		<xsd:annotation>
@@ -28928,9 +28982,14 @@ jonas.jepsen@dlr.de
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
 				<xsd:all>
-					<xsd:element minOccurs="0" name="missionSegments" type="missionSegmentsType"/>
+					<xsd:element minOccurs="0" name="segments" type="missionSegmentsType"/>
 					<xsd:element minOccurs="0" name="missions" type="missionsType"/>
 					<xsd:element minOccurs="0" name="pointPerformances" type="pointPerformancesType"/>
+					<xsd:element minOccurs="0" name="segmentBlocks" type="missionSegmentBlocksType">
+						<xsd:annotation>
+							<xsd:documentation>optional entry for defining conditions for a predefined combination of segments (e.g.: setting the total range for a block of segments consisting of a takeOff, climb, cruise, descent and landing segment)</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
 				</xsd:all>
 			</xsd:extension>
 		</xsd:complexContent>
@@ -28959,7 +29018,7 @@ jonas.jepsen@dlr.de
 								<xsd:documentation>Calibrated airspeed at the end of the segment in [m/s]</xsd:documentation>
 							</xsd:annotation>
 						</xsd:element>
-						<xsd:element minOccurs="0" name="Mach" type="doubleConstraintBaseType">
+						<xsd:element minOccurs="0" name="machNumber" type="doubleConstraintBaseType">
 							<xsd:annotation>
 								<xsd:documentation>Mach number at the end of the segment</xsd:documentation>
 							</xsd:annotation>
@@ -29014,6 +29073,12 @@ jonas.jepsen@dlr.de
 						<xsd:element minOccurs="0" name="fuelConsumed" type="doubleConstraintBaseType">
 							<xsd:annotation>
 								<xsd:documentation>Consumed fuel mass ending the segment</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+						<xsd:element minOccurs="0" name="storesReleased" type="stringVectorBaseType">
+							<xsd:annotation>
+								<xsd:documentation>uID list of stores released in the segment (mostly comes joined with a new aeroPerformanceMapUID for the new aerodynamic configuration of the aircraft). Links to entries in the weightAndBalance vector such that new state is retrievable.
+</xsd:documentation>
 							</xsd:annotation>
 						</xsd:element>
 					</xsd:sequence>
@@ -29088,6 +29153,24 @@ jonas.jepsen@dlr.de
 							</xsd:complexType>
 						</xsd:element>
 						<xsd:element name="segmentUIDSequence" type="stringVectorBaseType"/>
+						<xsd:element name="variableSegments" type="stringVectorBaseType">
+							<xsd:annotation>
+								<xsd:documentation>list of segments that are allowed to be varied within a mission optimisation.
+									<ddue:para>This concept needs to be practically tested. Does it suffice to mention (a list of) segments that are free to change to fit the overall block constraints? What happens if a segment is variable, though it has some constraints? When to define a segment as variable (climb until endPosition z, then endPosition x should be left free. Is the segment then variable? Probably not.). Somehow the 'free' segment should be in between fully defined segments (i.e.: a cruise+descent in between endPosition z == ICA and endPosition z == 0 for landing to define max range. How to define this exactly?)
+</ddue:para>
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+						<xsd:element name="fuelPlanningType" type="stringBaseType">
+							<xsd:annotation>
+								<xsd:documentation>Entry for defining which type of mass the segment fuel mass should be added.
+[blockFuel,
+taxiFuel,
+tripFuel,
+reserveFuel]
+</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
 					</xsd:all>
 				<xsd:attribute name="uID" type="xsd:string" use="required"/>
 			</xsd:extension>
@@ -29138,12 +29221,45 @@ jonas.jepsen@dlr.de
 					<xsd:sequence>
 						<xsd:element name="name" type="stringBaseType"/>
 						<xsd:element minOccurs="0" name="description" type="stringBaseType"/>
+						<xsd:element name="segmentType">
+							<xsd:annotation>
+								<xsd:documentation>Indicates the type of mission segment
+								</xsd:documentation>
+							</xsd:annotation>
+							<xsd:complexType>
+								<xsd:simpleContent>
+									<xsd:restriction base="stringBaseType">
+										<xsd:enumeration value="takeOff"/>
+										<xsd:enumeration value="climb"/>
+										<xsd:enumeration value="cruise"/>
+										<xsd:enumeration value="descent"/>
+										<xsd:enumeration value="landing"/>
+										<xsd:enumeration value="acceleration"/>
+									</xsd:restriction>
+								</xsd:simpleContent>
+							</xsd:complexType>
+						</xsd:element>
 						<xsd:choice>
-							<xsd:element minOccurs="0" name="massFraction" type="doubleBaseType"/>
+							<xsd:element minOccurs="0" name="massFraction" type="massFractionType"/>
 							<xsd:sequence>
-								<xsd:element name="enginePerformanceMapUID" type="stringUIDBaseType"/>
-								<xsd:element name="aeroPerformanceMapUID" type="stringUIDBaseType"/>
-								<xsd:element minOccurs="0" name="controlSurfaceUIDs" type="stringVectorBaseType"/>
+								<xsd:element name="enginePerformanceMapUID" type="stringUIDBaseType">
+									<xsd:annotation>
+										<xsd:documentation>Refers to the enginePerformanceMap to be used within the segment
+										</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="aeroPerformanceMapUID" type="stringUIDBaseType">
+									<xsd:annotation>
+										<xsd:documentation>Refers to the aeroPerformanceMap to be used within the segment
+										</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element minOccurs="0" name="controlSurfaceUIDs" type="stringVectorBaseType">
+									<xsd:annotation>
+										<xsd:documentation>Indicates which control surface uID's to use for trimming purposes
+										</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
 								<xsd:element minOccurs="0" name="endCondition" type="missionSegmentEndConditionType"/>
 								<xsd:element minOccurs="0" name="constraintSettings" type="constraintSettingsType"/>
 							</xsd:sequence>
@@ -29224,9 +29340,9 @@ jonas.jepsen@dlr.de
 								</xsd:annotation>
 							</xsd:element>
 						</xsd:choice>
-						<xsd:element minOccurs="0" name="heading" type="doubleBaseType">
+						<xsd:element minOccurs="0" name="orientation" type="orientationType">
 							<xsd:annotation>
-								<xsd:documentation>Flight heading at the start of the mission</xsd:documentation>
+								<xsd:documentation>Orientation if the aircraft at the start of the mission</xsd:documentation>
 							</xsd:annotation>
 						</xsd:element>
 					</xsd:sequence>
@@ -29257,11 +29373,6 @@ jonas.jepsen@dlr.de
 						<xsd:element minOccurs="0" name="description" type="stringBaseType"/>
 						<xsd:element name="startCondition" type="missionStartConditionType"/>
 						<xsd:element name="segmentUIDSequence" type="stringVectorBaseType"/>
-						<xsd:element minOccurs="0" name="segmentBlocks" type="missionSegmentBlocksType">
-							<xsd:annotation>
-								<xsd:documentation>optional entry for defining conditions for a predefined combination of segments (e.g.: setting the total range for a block of segments consisting of a takeOff, climb, cruise, descent and landing segment)</xsd:documentation>
-							</xsd:annotation>
-						</xsd:element>
 					</xsd:all>
 				<xsd:attribute name="uID" type="xsd:string" use="required"/>
 			</xsd:extension>
@@ -30019,6 +30130,32 @@ jonas.jepsen@dlr.de
 		</xsd:complexContent>
 	</xsd:complexType>
 
+	<xsd:complexType name="orientationType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>orientationType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="heading" type="doubleBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Flight heading</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
 
 	<xsd:complexType name="outerCutOutProfileType">
 
