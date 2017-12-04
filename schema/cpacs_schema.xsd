@@ -29758,7 +29758,7 @@ jonas.jepsen@dlr.de
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
 				<xsd:sequence>
-					<xsd:element maxOccurs="unbounded" name="nacelleProfile" type="profileGeometryType"/>
+					<xsd:element maxOccurs="unbounded" name="nacelleProfile" type="profileGeometry2DType"/>
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
@@ -31134,6 +31134,44 @@ jonas.jepsen@dlr.de
 	</xsd:complexType>
 
 
+	<xsd:complexType name="pointListXYVectorType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>List of 2D points, kept in two coordinate vecors (x, y)</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:content>
+							<ddue:para>This set of vectors contains an ordered list of points
+								for x and y coordinates in the form of stringBased Vectors.
+								The x and y vector elements with the same index specify a 2D
+								point. The coordinates of the x vector of [0, 1].</ddue:para>
+						</ddue:content>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="x" type="stringVectorBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Vector of x coordinates</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="y" type="stringVectorBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Vector of y coordinates</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+
 	<xsd:complexType name="pointListXZType">
 
 		<xsd:annotation>
@@ -32282,6 +32320,88 @@ jonas.jepsen@dlr.de
 							<xsd:enumeration value="x-y-plane"/>
 							<xsd:enumeration value="x-z-plane"/>
 							<xsd:enumeration value="y-z-plane"/>
+						</xsd:restriction>
+					</xsd:simpleType>
+				</xsd:attribute>
+
+				<xsd:attribute name="uID" type="xsd:string" use="required"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+
+	<xsd:complexType name="profileGeometry2DType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>profileGeometry2DType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:content>
+							<ddue:para>A profile is defined by a profile name, an optional
+								description and a 2-dimensional pointlist with both
+								coordinates mandatory. All point coordinates are transferred 
+								to the global coordinate system depending on the context they
+								are used in. The points have to be ordered in a mathematical
+								positive sense. The x-coordinates of the profile has to be
+								normalized between 0 and 1. First and last point
+								may, but need not to, be identical. Hence, it is possible to
+								include "open" profiles. However, the trailing edge position of
+								the upper and lower point need to be identical. No crooked
+								trailing edges are possible.</ddue:para>
+							<ddue:para>Example 1: For a conventional nacelle profile, the airfoil
+								coordinates are defined in x and y. The points have to be ordered 
+								from the trailing edge along the lower side to the leading
+								edge and then along the upper side back to the trailing edge.
+								When used for a nacelle the profile axis align
+								with the global axes as follows:
+								+x_profile -> +x_global;
+								+y-profile -> +z_global</ddue:para>
+							<ddue:para>Example 2: For a fuselage, the coordinates are
+								also given in x and z with x as the normalized fuselage height.
+								Starting point of the profile sould be the lowest point
+								(typically in the symmetry plane), then upwards on the positive x-side up to the highest
+								point (again, typically in the symmetry plane). Depending on,
+								whether the fuselage shall be specified with symmetry condition
+								or not, the profile either ends there, or continues on the
+								negative x-side back down to the lowest point.</ddue:para>
+							<ddue:para>Alternatively, it is possible to specify the
+								coordinates of a profile via the CST (class function /shape
+								function transformation technique) notation. Please see the
+								cst2DType for further information.</ddue:para>
+							<ddue:para>A profile can be symmetric. In that case the profile
+								is interpreted as being not closed and will be closed by
+								mirroring it on the symmetry plane.</ddue:para>
+						</ddue:content>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="name" type="stringBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Name of profile</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="description" type="stringBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Description of profile</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:choice>
+						<xsd:element name="pointList" type="pointListXYVectorType"/>
+						<xsd:element name="cst2D" type="cst2DType"/>
+					</xsd:choice>
+				</xsd:sequence>
+				<xsd:attribute name="symmetry">
+					<xsd:simpleType>
+						<xsd:restriction base="xsd:string">
+							<xsd:enumeration value="x-axis"/>
+							<xsd:enumeration value="y-axis"/>
 						</xsd:restriction>
 					</xsd:simpleType>
 				</xsd:attribute>
