@@ -56,7 +56,7 @@ jonas.jepsen@dlr.de
                             <ddue:section>
                                 <ddue:title>2. Coordinate Systems</ddue:title>
                                 <ddue:content>
-                                    <ddue:para>Coordinate systems are a regular cause for ambiguous interpretation of data. In CPACS only the CPACS-coordinate system is valid. The following paragraphs outline the determination to known coordinate systems.</ddue:para>
+                                    <ddue:para>Coordinate systems are a regular cause for ambiguous interpretation of data. In CPACS, the reference coordinate system is the CPACS-coordinate system. This coordinate system is used for most of the data. A single exception is made in order to keep aerodynamic data in an aerodynamic coordinate system. The following paragraphs outline the determination to known coordinate systems.</ddue:para>
                                     <ddue:para>The CPACS coordinate system is the coordinate system identified by TIGL, CPACS's geometric library. It is a right-handed coordinate system. If an aircraft is defined in the CPACS coordinate system it will usually follow the directions listed in the table below.</ddue:para>
                                     <ddue:para>Therefore, the CPACS coordinate system can be confused with the body-fixed coordinate system. While often the CPACS coordinate system and the body-fixed coordinate system overlap, this must not always be true. Several definitions for body-fixed coordinate systems exist (x-axis through nose and tail, x-axis perpendicular to nose plane). For non-symmetric aircraft, body-fixed coordinate systems become even more complicated. Hence, analysis tools should stick to the CPACS-Coordinate system. It remains to the designer to model the geometry accordingly.</ddue:para>
                                     <ddue:para>The CPACS coordinate system does not rotate with flow. Hence, aerodynamic calculations do rotate their flow relative to the CPACS-coordinate system. If not stated explicitly different, e.g. for target lift-coefficients, results are returned in the CPACS coordinate system, i.e. the cfx-coefficient is parrallel to the CPACS x-Coordinate, regardless of the way the geometry is defined.</ddue:para>
@@ -2059,12 +2059,42 @@ jonas.jepsen@dlr.de
 							</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element minOccurs="0" name="dcfx" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcfy" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcfz" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcmx" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcmy" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcmz" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="dcd" type="stringArrayBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Delta drag coefficient for landing gear
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="dcy" type="stringArrayBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Delta coefficient for landing gear force perpendicular to lift and drag
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="dcl" type="stringArrayBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Delta lift coefficient for landing gear
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="dcmd" type="stringArrayBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Delta moment coefficient around drag axis
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="dcmy" type="stringArrayBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Delta moment coefficient around axis perpendicular to lift and drag
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="dcml" type="stringArrayBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Delta moment coefficient around lift axis
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
@@ -2180,12 +2210,12 @@ jonas.jepsen@dlr.de
 					<ddue:remarks>
 						<ddue:para>AeroPerformanceMap type, containing a perfomance map
 							with aerodynamic data of the complete aircraft in the form of
-							nondimensionalized coefficients. The force coefficients (cf?)
+							nondimensionalized coefficients. The force coefficients (c?)
 							are nondimensionalized by dynamic pressure and reference area,
 							the moment coefficients (cm?) by dynamic pressure, reference
 							area and reference length.</ddue:para>
 						<ddue:para>All coefficients in the aeroPerformanceMap relate to
-							the CPACS coordinate system. See documentation of the
+							the aerodynamic coordinate system which is reached from the CPACS coordinate system by the transformations of angle of attack and angle of yaw. See documentation of the
 							CPACS-Element for further information.</ddue:para>
 					</ddue:remarks>
 				</sd:schemaDoc>
@@ -2219,12 +2249,16 @@ jonas.jepsen@dlr.de
 							<xsd:documentation>Angle of attack</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element minOccurs="0" name="cfx" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="cfy" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="cfz" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="cmx" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="cd" type="stringArrayBaseType">
+						<xsd:annotation>
+							<xsd:documentation>drag coefficient in aerodynamic coordinates</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="cy" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="cl" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="cmd" type="stringArrayBaseType"/>
 					<xsd:element minOccurs="0" name="cmy" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="cmz" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="cml" type="stringArrayBaseType"/>
 					<xsd:element minOccurs="0" name="dampingDerivatives" type="dampingDerivativesRatesType"/>
 					<xsd:element minOccurs="0" name="controlSurfaces" type="controlSurfacePerformanceMapsType"/>
 					<xsd:element minOccurs="0" name="landingGears" type="aeroLandingGearsType"/>
@@ -8266,12 +8300,12 @@ jonas.jepsen@dlr.de
 							</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element minOccurs="0" name="dcfx" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcfy" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcfz" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcmx" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="dcd" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="dcy" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="dcl" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="dcmd" type="stringArrayBaseType"/>
 					<xsd:element minOccurs="0" name="dcmy" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcmz" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="dcml" type="stringArrayBaseType"/>
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
@@ -8563,12 +8597,12 @@ jonas.jepsen@dlr.de
 							</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element minOccurs="0" name="dcfx" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcfy" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcfz" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcmx" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="dcd" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="dcy" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="dcl" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="dcmd" type="stringArrayBaseType"/>
 					<xsd:element minOccurs="0" name="dcmy" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcmz" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="dcml" type="stringArrayBaseType"/>
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
@@ -10871,75 +10905,75 @@ jonas.jepsen@dlr.de
 								</ddue:content>
 							</ddue:section>
 							<ddue:section>
-								<ddue:title>1. &lt;dcfxdpstar&gt; (optional)</ddue:title>
+								<ddue:title>1. &lt;dcddpstar&gt; (optional)</ddue:title>
 								<ddue:content>
-									<ddue:para>Change of cfx by normalized roll rate</ddue:para>
+									<ddue:para>Change of cd by normalized roll rate</ddue:para>
 								</ddue:content>
 							</ddue:section>
 							<ddue:section>
-								<ddue:title>2. &lt;dcfxdqstar&gt; (optional)</ddue:title>
+								<ddue:title>2. &lt;dcddqstar&gt; (optional)</ddue:title>
 								<ddue:content>
-									<ddue:para>Change of cfx by normalized pitch rate</ddue:para>
+									<ddue:para>Change of cd by normalized pitch rate</ddue:para>
 								</ddue:content>
 							</ddue:section>
 							<ddue:section>
-								<ddue:title>3. &lt;dcfxdrstar&gt; (optional)</ddue:title>
+								<ddue:title>3. &lt;dcddrstar&gt; (optional)</ddue:title>
 								<ddue:content>
-									<ddue:para>Change of cfx by normalized yaw rate</ddue:para>
+									<ddue:para>Change of cd by normalized yaw rate</ddue:para>
 								</ddue:content>
 							</ddue:section>
 							<ddue:section>
-								<ddue:title>4. &lt;dcfydpstar&gt; (optional)</ddue:title>
+								<ddue:title>4. &lt;dcydpstar&gt; (optional)</ddue:title>
 								<ddue:content>
-									<ddue:para>Change of cfy by normalized roll rate</ddue:para>
+									<ddue:para>Change of cy by normalized roll rate</ddue:para>
 								</ddue:content>
 							</ddue:section>
 							<ddue:section>
-								<ddue:title>5. &lt;dcfydqstar&gt; (optional)</ddue:title>
+								<ddue:title>5. &lt;dcydqstar&gt; (optional)</ddue:title>
 								<ddue:content>
-									<ddue:para>Change of cfy by normalized pitch rate</ddue:para>
+									<ddue:para>Change of cy by normalized pitch rate</ddue:para>
 								</ddue:content>
 							</ddue:section>
 							<ddue:section>
-								<ddue:title>6. &lt;dcfydrstar&gt; (optional)</ddue:title>
+								<ddue:title>6. &lt;dcydrstar&gt; (optional)</ddue:title>
 								<ddue:content>
-									<ddue:para>Change of cfy by normalized yaw rate</ddue:para>
+									<ddue:para>Change of cy by normalized yaw rate</ddue:para>
 								</ddue:content>
 							</ddue:section>
 							<ddue:section>
-								<ddue:title>7. &lt;dcfzdpstar&gt; (optional)</ddue:title>
+								<ddue:title>7. &lt;dcldpstar&gt; (optional)</ddue:title>
 								<ddue:content>
-									<ddue:para>Change of cfz by normalized roll rate</ddue:para>
+									<ddue:para>Change of cl by normalized roll rate</ddue:para>
 								</ddue:content>
 							</ddue:section>
 							<ddue:section>
-								<ddue:title>8. &lt;dcfzdqstar&gt; (optional)</ddue:title>
+								<ddue:title>8. &lt;dcldqstar&gt; (optional)</ddue:title>
 								<ddue:content>
-									<ddue:para>Change of cfz by normalized pitch rate</ddue:para>
+									<ddue:para>Change of cl by normalized pitch rate</ddue:para>
 								</ddue:content>
 							</ddue:section>
 							<ddue:section>
-								<ddue:title>9. &lt;dcfzdrstar&gt; (optional)</ddue:title>
+								<ddue:title>9. &lt;dcldrstar&gt; (optional)</ddue:title>
 								<ddue:content>
-									<ddue:para>Change of cfz by normalized yaw rate</ddue:para>
+									<ddue:para>Change of cl by normalized yaw rate</ddue:para>
 								</ddue:content>
 							</ddue:section>
 							<ddue:section>
-								<ddue:title>10. &lt;dcmxdpstar&gt; (optional)</ddue:title>
+								<ddue:title>10. &lt;dcmddpstar&gt; (optional)</ddue:title>
 								<ddue:content>
-									<ddue:para>Change of cmx by normalized roll rate</ddue:para>
+									<ddue:para>Change of cmd by normalized roll rate</ddue:para>
 								</ddue:content>
 							</ddue:section>
 							<ddue:section>
-								<ddue:title>11. &lt;dcmxdqstar&gt; (optional)</ddue:title>
+								<ddue:title>11. &lt;dcmddqstar&gt; (optional)</ddue:title>
 								<ddue:content>
-									<ddue:para>Change of cmx by normalized pitch rate</ddue:para>
+									<ddue:para>Change of cmd by normalized pitch rate</ddue:para>
 								</ddue:content>
 							</ddue:section>
 							<ddue:section>
-								<ddue:title>12. &lt;dcmxdrstar&gt; (optional)</ddue:title>
+								<ddue:title>12. &lt;dcmddrstar&gt; (optional)</ddue:title>
 								<ddue:content>
-									<ddue:para>Change of cmx by normalized yaw rate</ddue:para>
+									<ddue:para>Change of cmd by normalized yaw rate</ddue:para>
 								</ddue:content>
 							</ddue:section>
 							<ddue:section>
@@ -10961,21 +10995,21 @@ jonas.jepsen@dlr.de
 								</ddue:content>
 							</ddue:section>
 							<ddue:section>
-								<ddue:title>16. &lt;dcmzdpstar&gt; (optional)</ddue:title>
+								<ddue:title>16. &lt;dcmldpstar&gt; (optional)</ddue:title>
 								<ddue:content>
-									<ddue:para>Change of cmz by normalized roll rate</ddue:para>
+									<ddue:para>Change of cml by normalized roll rate</ddue:para>
 								</ddue:content>
 							</ddue:section>
 							<ddue:section>
-								<ddue:title>17. &lt;dcmzdqstar&gt; (optional)</ddue:title>
+								<ddue:title>17. &lt;dcmldqstar&gt; (optional)</ddue:title>
 								<ddue:content>
-									<ddue:para>Change of cmz by normalized pitch rate</ddue:para>
+									<ddue:para>Change of cml by normalized pitch rate</ddue:para>
 								</ddue:content>
 							</ddue:section>
 							<ddue:section>
-								<ddue:title>18. &lt;dcmzdrstar&gt; (optional)</ddue:title>
+								<ddue:title>18. &lt;dcmldrstar&gt; (optional)</ddue:title>
 								<ddue:content>
-									<ddue:para>Change of cmz by normalized yaw rate</ddue:para>
+									<ddue:para>Change of cml by normalized yaw rate</ddue:para>
 								</ddue:content>
 							</ddue:section>
 						</ddue:content>
@@ -10986,24 +11020,24 @@ jonas.jepsen@dlr.de
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
 				<xsd:all>
-					<xsd:element minOccurs="0" name="dcfxdpstar" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcfxdqstar" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcfxdrstar" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcfydpstar" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcfydqstar" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcfydrstar" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcfzdpstar" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcfzdqstar" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcfzdrstar" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcmxdpstar" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcmxdqstar" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcmxdrstar" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="dcddpstar" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="dcddqstar" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="dcddrstar" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="dcydpstar" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="dcydqstar" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="dcydrstar" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="dcldpstar" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="dcldqstar" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="dcldrstar" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="dcmddpstar" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="dcmddqstar" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="dcmddrstar" type="stringArrayBaseType"/>
 					<xsd:element minOccurs="0" name="dcmydpstar" type="stringArrayBaseType"/>
 					<xsd:element minOccurs="0" name="dcmydqstar" type="stringArrayBaseType"/>
 					<xsd:element minOccurs="0" name="dcmydrstar" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcmzdpstar" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcmzdqstar" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dcmzdrstar" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="dcmldpstar" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="dcmldqstar" type="stringArrayBaseType"/>
+					<xsd:element minOccurs="0" name="dcmldrstar" type="stringArrayBaseType"/>
 				</xsd:all>
 				<xsd:attribute name="uID" type="xsd:string" use="required"/>
 			</xsd:extension>
