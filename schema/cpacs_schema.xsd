@@ -14811,7 +14811,8 @@ jonas.jepsen@dlr.de
 										the &lt;angleOfAttack&gt; is iterated automatically, so that
 										the given lift coefficient (C
 										<xsd:subscript>Fz</xsd:subscript>
-										) is met.
+										) is met. If a &lt;targetLiftCoefficient&gt; is selected, the
+                    corresponding &lt;angleOfAttack&gt; may be placed here, as well.
 									</ddue:para>
 								</ddue:content>
 							</ddue:section>
@@ -14979,11 +14980,19 @@ jonas.jepsen@dlr.de
 								<xsd:documentation>Angle of attack</xsd:documentation>
 							</xsd:annotation>
 						</xsd:element>
-						<xsd:element name="targetLiftCoefficient" type="doubleBaseType">
-							<xsd:annotation>
-								<xsd:documentation>Target Lift Coefficient</xsd:documentation>
-							</xsd:annotation>
-						</xsd:element>
+						<xsd:sequence>
+							<xsd:element name="targetLiftCoefficient" type="doubleBaseType">
+								<xsd:annotation>
+									<xsd:documentation>Target Lift Coefficient</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+							<xsd:element minOccurs="0" name="angleOfAttack" type="doubleBaseType">
+								<xsd:annotation>
+									<xsd:documentation>Angle of attack corresponding to target lift
+										coefficient</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+						</xsd:sequence>
 					</xsd:choice>
 					<xsd:element minOccurs="0" name="quasiSteadyRotation" type="quasiSteadyRotationType"/>
 					<xsd:element minOccurs="0" name="controlSurfaces" type="controlSurfaceDeflectionsType"/>
@@ -21253,12 +21262,12 @@ jonas.jepsen@dlr.de
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
 				<xsd:all>
-					<xsd:element minOccurs="0" name="wingUID" type="stringBaseType">
+					<xsd:element minOccurs="0" name="fuselageUID" type="stringBaseType">
 						<xsd:annotation>
-							<xsd:documentation>Reference to a wing; required, if separate
-								transition definitions for each wing are used. If missing,
-								transition definitions are the same for all wings. If used, only
-								the specified wings are calculated</xsd:documentation>
+							<xsd:documentation>Reference to a fuselage; required, if separate
+								transition definitions for each fuselage are used. If missing,
+								transition definitions are the same for all fuselages. If used, only
+								the specified fuselages are calculated</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
 					<xsd:element name="relativeTransitionLocation" type="doubleBaseType">
