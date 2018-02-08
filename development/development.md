@@ -1,4 +1,7 @@
-# CPACS Documentation 
+# CPACS Development
+
+## Organizing Branches
+The developments of CPACS follows the Gitflow workflow as described in [https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow "https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow"). For the developments there are two main branches. While the *master* branch is used for keeping track of the official releases, the *develop* branch is used to combine all the developments and thus contains the main development version. All Feature branches are merged into the *develop* branch.
 
 ## Development Process
 
@@ -32,9 +35,25 @@ The following questions should be answered:
 - If new definitions shall be implemented; Is there an immediate plan to exchange the data between different parties? Don't waste time on the definition of nodes which might not be used for data exchange.
 
 
+## Contribution Guidelines
+TODO
+
+
 ## Development Guidelines
 We will try to find/define some guidelines for decisions on how to structure CPACS.
 
+First loose collection:
+
+- Always use SI and accepted derived units
+- Use the CPACS coordinate system for describing data (Do not introduce new coordinate systems if not absolutely neccessary)
+
+
+
+
+## Additional Development Guidelines by Example
+TODO: Explaining guidelines using examples from previous decisions...
+
+### Duplication VS Single Type Reference VS Hidden Changes
 Let us discuss different approaches at the example of introducing a second option for specifying internal wing points by using segment eta xsi coordinates.
 This related to issue https://github.com/DLR-LY/CPACS/issues/495.
 
@@ -84,3 +103,54 @@ In principle I see three different possibilities to implement the two options.
 Option 1. is clearly a very reduced approach. It allows the user of the data to switch the interpretation of the eta and xsi nodes depending on the existence of the segmentUID node. A risk of this approach is that without modifications, existing tools might miss the additional segmentUID node and thus misinterpret the point.
 Option 2. avoids misinterpreting the segment eta xsi values by giving them a different node name. But the drawback is the additional nodes (node names) which need to be processed.
 Option 3. is very similar to option 2. but keeps eta xsi as the names also for segment eta xsi coordinates and creates an additional intermediate node for both options. This opens up the opportunity to create separate types for both options which can be reused at several locations throughout the schema. This would minimize the effort in case changes are required for the definition of the points and ensures some consistency in the use of eta xsi points. E.g. if we had an etaXsiPointType for componentSegment points we could find all uses throughout the schema to implement the segment coordinate alternative. Also creating an additional type allows us to use xsd:all within the type definition which otherwise would not be possible due to the xsd:choice.
+
+
+### Favor compact solutions
+... if feasible
+
+For point clouds such as used in wing profiles in early CPACS versions a point definition with x,y and z coordinate was used for every profile point.
+
+```
+<points>
+  <point uID="p1">
+    <x>0.0</x>
+    <y>0.0</y>
+    <z>0.0</z>
+  </point>
+  <point uID="p2">
+    <x>1.0</x>
+    <y>0.0</y>
+    <z>0.0</z>
+  </point>
+  <point uID="p3">
+    <x>1.0</x>
+    <y>0.0</y>
+    <z>1.0</z>
+  </point>
+  <point uID="p4">
+    <x>0.0</x>
+    <y>0.0</y>
+    <z>1.0</z>
+  </point>
+  <point uID="p5">
+    <x>0.0</x>
+    <y>0.0</y>
+    <z>0.5</z>
+  </point>
+  <point uID="p6">
+    <x>0.0</x>
+    <y>0.0</y>
+    <z>0.0</z>
+  </point>
+</points>
+```
+
+In this case the overhead of data due to the tags was much higher than the actual data to be exchanged. Thus it was changed to a more compact definition:
+
+```
+<pointList>
+  <x>0.0;1.0;1.0;0.0;0.0;0.0</x>
+  <y>0.0;0.0;0.0;0.0;0.0;0.0</y>
+  <z>0.0;0.0;1.0;1.0;0.5;0.0</z>
+</pointList>
+```
