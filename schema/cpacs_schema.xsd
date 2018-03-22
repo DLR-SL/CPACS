@@ -30417,6 +30417,91 @@ jonas.jepsen@dlr.de
 	</xsd:complexType>
 
 
+	<xsd:complexType name="paradiseToolType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>paradiseToolType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>ParadiseTool type, containing PARADISE tool data</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:all>
+					<xsd:element name="tool" type="toolType">
+						<xsd:annotation>
+							<xsd:documentation>Tool identification</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="aircraftModelUID" type="stringUIDBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Reference to an aircraft model</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="toolMode">
+						<xsd:annotation>
+							<xsd:documentation>Mode of the tool (v)alidation and (c)alculation</xsd:documentation>
+						</xsd:annotation>
+						<xsd:complexType>
+							<xsd:simpleContent>
+								<xsd:restriction base="stringBaseType">
+									<xsd:enumeration value="normal"/>
+									<xsd:enumeration value="animation"/>
+									<xsd:attribute name="externalDataNodePath" type="xsd:string"/>
+								</xsd:restriction>
+							</xsd:simpleContent>
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="usecaseFile" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Usecase File</xsd:documentation>
+						</xsd:annotation>
+						<xsd:complexType>
+							<xsd:simpleContent>
+								<xsd:restriction base="stringBaseType">
+									<xsd:enumeration value="maxSPL [dBA]"/>
+									<xsd:enumeration value="EPNL [EPNdB]"/>
+								</xsd:restriction>
+							</xsd:simpleContent>
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="modelFile" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Model file</xsd:documentation>
+						</xsd:annotation>
+					<xsd:complexType>
+						<xsd:simpleContent>
+							<xsd:restriction base="stringBaseType">
+								<xsd:enumeration value="maxSPL [dBA]"/>
+								<xsd:enumeration value="EPNL [EPNdB]"/>
+							</xsd:restriction>
+						</xsd:simpleContent>
+					</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="mappingFile" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Mapping file</xsd:documentation>
+						</xsd:annotation>
+						<xsd:complexType>
+							<xsd:simpleContent>
+								<xsd:restriction base="stringBaseType">
+									<xsd:enumeration value="maxSPL [dBA]"/>
+									<xsd:enumeration value="EPNL [EPNdB]"/>
+								</xsd:restriction>
+							</xsd:simpleContent>
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:all>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	
 	<xsd:complexType name="paramamSbotToolType">
 
 		<xsd:annotation>
@@ -37250,6 +37335,7 @@ jonas.jepsen@dlr.de
 					<xsd:element minOccurs="0" name="misSim" type="misSimToolType"/>
 					<xsd:element minOccurs="0" name="modGen" type="modGenToolType"/>
 					<xsd:element minOccurs="0" name="panam" type="panamToolType"/>
+					<xsd:element minOccurs="0" name="paradise" type="paradiseToolType"/>
 					<xsd:element minOccurs="0" name="paramamSbot" type="paramamSbotToolType"/>
 					<xsd:element minOccurs="0" name="fDesignRC" type="fDesignRCToolType"/>
 					<xsd:element minOccurs="0" name="rofuma" type="rofumaToolType"/>
