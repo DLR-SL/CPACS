@@ -24126,6 +24126,9 @@ jonas.jepsen@dlr.de
 							</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
+					<xsd:element name="mGeneration" type="mGenerationsType" minOccurs="0"/>
+					<xsd:element name="mDistribution" type="mDistributionsType" minOccurs="0"/>
+					<xsd:element name="mVentilation" type="mVentilationsType" minOccurs="0"/>
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
@@ -24147,14 +24150,14 @@ jonas.jepsen@dlr.de
 		</xsd:annotation>
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
-				<xsd:all>
+				<xsd:sequence>
 					<xsd:element name="massDescription" type="genericMassType">
 						<xsd:annotation>
-							<xsd:documentation>Automatic flight system mass description
-							</xsd:documentation>
+							<xsd:documentation>Automatic flight system mass description</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-				</xsd:all>
+					<xsd:element name="AutomaticFlightControlItem" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
@@ -24227,14 +24230,36 @@ jonas.jepsen@dlr.de
 		</xsd:annotation>
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
-				<xsd:all>
+				<xsd:sequence>
 					<xsd:element name="massDescription" type="genericMassType">
 						<xsd:annotation>
-							<xsd:documentation>Bleed air system mass description
-							</xsd:documentation>
+							<xsd:documentation>Bleed air system mass description (Ceras 21)</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-				</xsd:all>
+					<xsd:element name="mBleedAirSystemtem" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mBlueGenerationSystemsType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mBlueGenerationSystemsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mBlueGeneration" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
@@ -24604,7 +24629,80 @@ jonas.jepsen@dlr.de
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
-
+	<xsd:complexType name="mComponentSegmentType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mComponentSegmentType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:all>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mPylonAttachments" type="mPylonAttachmentsType" minOccurs="0"/>
+					<xsd:element name="mLandingGearSupports" type="mLandingGearSupportsType" minOccurs="0"/>
+					<xsd:element name="mMiscellaneous" type="mMiscellaneousType" minOccurs="0"/>
+					<xsd:element name="mWingBox" type="mWingBoxType" minOccurs="0"/>
+					<xsd:element name="mMoveables" type="mMoveablesType" minOccurs="0"/>
+					<xsd:element name="mFixedLeadingEdges" type="mFixedLeadingEdgesType" minOccurs="0"/>
+					<xsd:element name="mFixedTrailingEdges" type="mFixedTrailingEdgesType" minOccurs="0"/>
+				</xsd:all>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mComponentSegmentsType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mComponentSegmentsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mComponentSegment" type="mComponentSegmentType" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mControlSurfaceSupportType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mControlSurfaceSupportType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:all>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mStructure" type="singleGenericMassType" minOccurs="0"/>
+					<xsd:element name="mFairing" type="singleGenericMassType" minOccurs="0"/>
+					<xsd:element name="mParentAttachment" type="singleGenericMassType" minOccurs="0"/>
+				</xsd:all>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
 	<xsd:complexType name="mCommunicationType">
 
 		<xsd:annotation>
@@ -24624,8 +24722,42 @@ jonas.jepsen@dlr.de
 				<xsd:all>
 					<xsd:element name="massDescription" type="genericMassType">
 						<xsd:annotation>
-							<xsd:documentation>Communication mass description
-							</xsd:documentation>
+							<xsd:documentation>Communication mass description</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mRadioCommunicaton" type="mRadioCommunicatonsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Radio communicaton</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mDataTransmission" type="mDataTransmissionsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Data transmission and automatic calling</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mPublicAddress" type="mPublicAddresssType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Public address</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mIFEs" type="mIFESystemsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>entertainment systems</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mIntercommunication" type="mIntercommunicationsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Intercommunication telephone installation</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mVoiceRecorder" type="mVoiceRecordersType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Voice recorder installation</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mFlightRecorder" type="mFlightRecordersType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Flight recorder installation</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
 				</xsd:all>
@@ -24633,43 +24765,12 @@ jonas.jepsen@dlr.de
 		</xsd:complexContent>
 	</xsd:complexType>
 
-	<xsd:complexType name="mComponentSegmentType">
-
+	<xsd:complexType name="mDataTransmissionsType">
 		<xsd:annotation>
 			<xsd:appinfo>
 				<sd:schemaDoc>
 					<ddue:summary>
-						<ddue:para>mComponentSegmentType</ddue:para>
-					</ddue:summary>
-					<ddue:remarks>
-						<ddue:para/>
-					</ddue:remarks>
-				</sd:schemaDoc>
-			</xsd:appinfo>
-		</xsd:annotation>
-		<xsd:complexContent>
-			<xsd:extension base="complexBaseType">
-				<xsd:all>
-					<xsd:element name="massDescription" type="genericMassType"/>
-					<xsd:element minOccurs="0" name="mPylonAttachments" type="mPylonAttachmentsType"/>
-					<xsd:element minOccurs="0" name="mLandingGearSupports" type="mLandingGearSupportsType"/>
-					<xsd:element minOccurs="0" name="mMiscellaneous" type="mMiscellaneousType"/>
-					<xsd:element minOccurs="0" name="mWingBox" type="mWingBoxType"/>
-					<xsd:element minOccurs="0" name="mMoveables" type="mMoveablesType"/>
-					<xsd:element minOccurs="0" name="mFixedLeadingEdges" type="mFixedLeadingEdgesType"/>
-					<xsd:element minOccurs="0" name="mFixedTrailingEdges" type="mFixedTrailingEdgesType"/>
-				</xsd:all>
-			</xsd:extension>
-		</xsd:complexContent>
-	</xsd:complexType>
-
-	<xsd:complexType name="mComponentSegmentsType">
-
-		<xsd:annotation>
-			<xsd:appinfo>
-				<sd:schemaDoc>
-					<ddue:summary>
-						<ddue:para>mComponentSegmentsType</ddue:para>
+						<ddue:para>mDataTransmissionsType</ddue:para>
 					</ddue:summary>
 					<ddue:remarks>
 						<ddue:para/>
@@ -24681,19 +24782,18 @@ jonas.jepsen@dlr.de
 			<xsd:extension base="complexBaseType">
 				<xsd:sequence>
 					<xsd:element name="massDescription" type="genericMassType"/>
-					<xsd:element maxOccurs="unbounded" name="mComponentSegment" type="mComponentSegmentType"/>
+					<xsd:element name="mDataTransmissionItem" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
 
-	<xsd:complexType name="mControlSurfaceSupportType">
-
+	<xsd:complexType name="mFlightRecordersType">
 		<xsd:annotation>
 			<xsd:appinfo>
 				<sd:schemaDoc>
 					<ddue:summary>
-						<ddue:para>mControlSurfaceSupportType</ddue:para>
+						<ddue:para>mFlightRecordersType</ddue:para>
 					</ddue:summary>
 					<ddue:remarks>
 						<ddue:para/>
@@ -24703,16 +24803,365 @@ jonas.jepsen@dlr.de
 		</xsd:annotation>
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
-				<xsd:all>
+				<xsd:sequence>
 					<xsd:element name="massDescription" type="genericMassType"/>
-					<xsd:element minOccurs="0" name="mStructure" type="singleGenericMassType"/>
-					<xsd:element minOccurs="0" name="mFairing" type="singleGenericMassType"/>
-					<xsd:element minOccurs="0" name="mParentAttachment" type="singleGenericMassType"/>
-				</xsd:all>
+					<xsd:element name="mFlightRecorderItem" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
-
+	<xsd:complexType name="mIntercommunicationsType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mIntercommunicationsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mIntercommunicationItem" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mRadioCommunicatonsType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mRadioCommunicatonsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mRadioCommunicatonItem" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mPublicAddresssType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mPublicAddresssType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mPublicAddressItem" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mVoiceRecordersType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mVoiceRecordersType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mVoiceRecorderItem" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mGreenGenerationSystemsType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mGreenGenerationSystemsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mGreenGeneration" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mYellowGenerationSystemsType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mYellowGenerationSystemsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mYellowGeneration" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mPressurizationSystemsType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mPressurizationSystemsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mPressurizationSystem" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mEmergencyGenerationsType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mEmergencyGenerationsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mEmergencyGeneration" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mTankPressurizationsType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mTankPressurizationsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mTankPressurization" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mLandingGearHydraulicSupplysType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mLandingGearHydraulicSupplysType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mLandingGearHydraulicSupply" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mFlightControlHydraulicSupplysType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mFlightControlHydraulicSupplysType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mFlightControlHydraulicSupply" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mCargoDoorSupplysType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mCargoDoorSupplysType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mCargoDoorSupply" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mSpoilersAirbrakesLiftdumperssType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mSpoilersAirbrakesLiftdumperssType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mSpoilersAirbrakesLiftdumpers" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mHighLiftDeviceControlssType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mHighLiftDeviceControlssType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mHighLiftDeviceControls" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mReverserControlsType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mReverserControlsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mReverserControls" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mCommonHydraulicSupplysType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mCommonHydraulicSupplysType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mCommonHydraulicSupply" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
 	<xsd:complexType name="mControlSurfaceSupportsType">
 
 		<xsd:annotation>
@@ -24807,6 +25256,8 @@ jonas.jepsen@dlr.de
 							<xsd:documentation>De-icing mass description</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
+					<xsd:element name="mGeneration" type="mGenerationsType" minOccurs="0"/>
+					<xsd:element name="mDistribution" type="mDistributionsType" minOccurs="0"/>
 				</xsd:all>
 			</xsd:extension>
 		</xsd:complexContent>
@@ -24859,37 +25310,7 @@ jonas.jepsen@dlr.de
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
-
-	<xsd:complexType name="mElectricalDistributionType">
-
-		<xsd:annotation>
-			<xsd:appinfo>
-				<sd:schemaDoc>
-					<ddue:summary>
-						<ddue:para>mElectricalDistributionType</ddue:para>
-					</ddue:summary>
-					<ddue:remarks>
-						<ddue:para/>
-					</ddue:remarks>
-				</sd:schemaDoc>
-			</xsd:appinfo>
-		</xsd:annotation>
-		<xsd:complexContent>
-			<xsd:extension base="complexBaseType">
-				<xsd:all>
-					<xsd:element name="massDescription" type="genericMassType">
-						<xsd:annotation>
-							<xsd:documentation>Electrical distribution mass description
-							</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-				</xsd:all>
-			</xsd:extension>
-		</xsd:complexContent>
-	</xsd:complexType>
-
-	<xsd:complexType name="mElectricalGenerationType">
-
+	<xsd:complexType name="mElectricalGenerationDistributionType">
 		<xsd:annotation>
 			<xsd:appinfo>
 				<sd:schemaDoc>
@@ -24907,15 +25328,496 @@ jonas.jepsen@dlr.de
 				<xsd:all>
 					<xsd:element name="massDescription" type="genericMassType">
 						<xsd:annotation>
-							<xsd:documentation>Electrical generation mass description
-							</xsd:documentation>
+							<xsd:documentation>Electrical generation mass description</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mGenerationRack" type="mGenerationRacksType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Generation rack</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mACGeneration" type="mACGenerationsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>AC generation circuit</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mDCGeneration" type="mDCGenerationsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>DC generation circuit</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mCommonItems" type="mCommonItemssType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Common items</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mEngineStartingControl" type="mEngineStartingControlsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Engine starting and control</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mLandingGearSystem" type="mLandingGearSystemsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Landing gear system assembly</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mFuelSystem" type="mFuelSystemsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Fuel system assembly</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mFlightControlSystem" type="mFlightControlSystemsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Flight control system assembly</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mWarningSystem" type="mWarningSystemsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Warning system assembly</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mHydraulicsSystem" type="mHydraulicsSystemsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Hydraulics system assembly</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mDeIcingSystem" type="mFuelSystemsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>De-icing system assembly</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mAirConditioningSystem" type="mFlightControlSystemsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Commercial and oxygen systems assembly</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mCommercialOxygenSystems" type="mCommercialOxygenSystemsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Commercial and oxygen systems assembly</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
 				</xsd:all>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
-
+	<xsd:complexType name="mGenerationRacksType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mGenerationRacksType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mGenerationRackItem" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mACGenerationsType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mACGenerationsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mACGenerationItem" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mDCGenerationsType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mDCGenerationsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mDCGenerationsItem" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mCommonItemssType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mCommonItemssType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mCommonItem" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mEngineStartingControlsType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mEngineStartingControlsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mEngineStartingControlItem" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mLandingGearSystemsType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mLandingGearSystemsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mLandingGearSystemItem" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mEngineFeedType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mEngineFeedType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mEngineFeedItem" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mVentingType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mVentingType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mVentingItem" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mRefuelTransferType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mRefuelTransferType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mRefuelTransferTypeItem" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mFuelQuantityIndicatingType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mFuelQuantityIndicatingType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mFuelQuantityIndicatingItem" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mDrainingType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mDrainingType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mDrainingItem" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mJettisonType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mJettisonType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mJettisonItem" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mFuelSystemsType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mFuelSystemsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mFuelSystemItem" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mFlightControlSystemsType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mFlightControlSystemsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mAirConmFlightControlSystemItem" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mWarningSystemsType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mWarningSystemsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mWarningSystemItem" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mHydraulicsSystemsType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mHydraulicsSystemsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mHydraulicsSystemItem" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mDeIcingSystemsType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mDeIcingSystemsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mDeIcingSystemType" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mAirConditioningSystemsType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mAirConditioningSystemsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mAirConditioningSystemType" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mCommercialOxygenSystemsType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mCommercialOxygenSystemsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mCommercialOxygenSystem" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
 	<xsd:complexType name="mEmergencyEquipmentsType">
 
 		<xsd:annotation>
@@ -24939,14 +25841,12 @@ jonas.jepsen@dlr.de
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
-
-	<xsd:complexType name="mEmergencyOxygenSystemsType">
-
+	<xsd:complexType name="mPassengersOxygenSystemsType">
 		<xsd:annotation>
 			<xsd:appinfo>
 				<sd:schemaDoc>
 					<ddue:summary>
-						<ddue:para>mEmergencyOxygenSystemsType</ddue:para>
+						<ddue:para>mPassengersOxygenSystemsType</ddue:para>
 					</ddue:summary>
 					<ddue:remarks>
 						<ddue:para/>
@@ -24958,12 +25858,33 @@ jonas.jepsen@dlr.de
 			<xsd:extension base="complexBaseType">
 				<xsd:sequence>
 					<xsd:element name="massDescription" type="genericMassType"/>
-					<xsd:element maxOccurs="unbounded" minOccurs="0" name="mEmergencyOxygenSystem" type="singleGenericMassType"/>
+					<xsd:element name="mEmergencyOxygenSystem" type="singleGenericMassType" minOccurs="0" maxOccurs="unbounded"/>
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
-
+	<xsd:complexType name="mFlightCrewOxygenSystemType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mFlightCrewOxygenSystemType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mFlightCrewSystem" type="singleGenericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
 	<xsd:complexType name="mEmptyULDType">
 		<xsd:annotation>
 			<xsd:appinfo>
@@ -25026,14 +25947,15 @@ jonas.jepsen@dlr.de
 		</xsd:annotation>
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
-				<xsd:all>
+				<xsd:sequence>
 					<xsd:element name="massDescription" type="genericMassType">
 						<xsd:annotation>
 							<xsd:documentation>Engine control mass description
 							</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-				</xsd:all>
+					<xsd:element name="mEngineControlItem" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
@@ -25057,12 +25979,20 @@ jonas.jepsen@dlr.de
 				<xsd:sequence>
 					<xsd:element name="massDescription" type="genericMassType">
 						<xsd:annotation>
-							<xsd:documentation>
-								Equipped engines mass description
-							</xsd:documentation>
+							<xsd:documentation>Equipped engines mass description (Ceras 20)		</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element maxOccurs="unbounded" minOccurs="0" name="mEngine" type="singleGenericMassType"/>
+					<xsd:element name="mEngine" type="singleGenericMassType" minOccurs="0" maxOccurs="unbounded"/>
+					<xsd:element name="mNacelleStructure" type="mNacelleStructureType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Nacelle structure</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mNacelleSystems" type="mNacelleSystemsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Nacelle systems</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
@@ -25086,12 +26016,55 @@ jonas.jepsen@dlr.de
 			<xsd:extension base="complexBaseType">
 				<xsd:sequence>
 					<xsd:element name="massDescription" type="genericMassType"/>
-					<xsd:element maxOccurs="unbounded" minOccurs="0" name="mExtLighting" type="singleGenericMassType"/>
+					<xsd:element name="mExtLighting" type="singleGenericMassType" minOccurs="0" maxOccurs="unbounded"/>
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
-
+	<xsd:complexType name="mNacelleStructureType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mNacelleStructureType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mNacelleStructureItem" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mNacelleSystemsType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mNacelleSystemsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mNacelleSystemItem" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
 	<xsd:complexType name="mFireProtectionType">
 
 		<xsd:annotation>
@@ -25111,8 +26084,22 @@ jonas.jepsen@dlr.de
 				<xsd:all>
 					<xsd:element name="massDescription" type="genericMassType">
 						<xsd:annotation>
-							<xsd:documentation>Fire protection mass description
-							</xsd:documentation>
+							<xsd:documentation>Fire protection mass description</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mEngineFireProtection" type="mEngineFireProtectionsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Engine fire protection</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mAPUFireProtection" type="mAPUFireProtectionsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>APU fire protection</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mSmokeDetector" type="mSmokeDetectorsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Smoke detector</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
 				</xsd:all>
@@ -25258,15 +26245,209 @@ jonas.jepsen@dlr.de
 				<xsd:all>
 					<xsd:element name="massDescription" type="genericMassType">
 						<xsd:annotation>
-							<xsd:documentation>Flight controls mass description
-							</xsd:documentation>
+							<xsd:documentation>Flight controls mass description</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mRoll" type="mRollsType" minOccurs="0"/>
+					<xsd:element name="mYaw" type="mYawsType" minOccurs="0"/>
+					<xsd:element name="mPitch" type="mPitchsType" minOccurs="0"/>
+					<xsd:element name="mMovableTailplane" type="mMovableTailplanesType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Movable tailplane</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mFlaps" type="mFlapsType" minOccurs="0"/>
+					<xsd:element name="mSpoilersAirbrakesLiftdumpers" type="mSpoilersAirbrakesLiftdumpersType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Spoilers, airbrakes and liftdumpers</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mSlats" type="mSlatsType" minOccurs="0"/>
+					<xsd:element name="mCommonInstallation" type="mCommonInstallationsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Common Installation</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
 				</xsd:all>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
-
+	<xsd:complexType name="mRollsType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mRollsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mRollItem" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mYawsType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mYawsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mYawItem" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mPitchsType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mPitchsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mPitchItem" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mMovableTailplanesType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mMovableTailplanesType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mMovableTailplane" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mFlapsType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mFlapsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mFlap" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mSpoilersAirbrakesLiftdumpersType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mSpoilersAirbrakesLiftdumpersType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mSpoilersAirbrakesLiftdumper" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mSlatsType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mSlatsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mSlat" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mCommonInstallationsType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mCommonInstallationsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mCommonInstallationItem" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
 	<xsd:complexType name="mFloorCoveringsType">
 
 		<xsd:annotation>
@@ -25286,31 +26467,6 @@ jonas.jepsen@dlr.de
 				<xsd:sequence>
 					<xsd:element name="massDescription" type="genericMassType"/>
 					<xsd:element maxOccurs="unbounded" minOccurs="0" name="mFloorCovering" type="singleGenericMassType"/>
-				</xsd:sequence>
-			</xsd:extension>
-		</xsd:complexContent>
-	</xsd:complexType>
-
-	<xsd:complexType name="mFramesType">
-		<xsd:annotation>
-			<xsd:appinfo>
-				<sd:schemaDoc>
-					<ddue:summary>
-						<ddue:para>mFramesType</ddue:para>
-					</ddue:summary>
-					<ddue:remarks>
-						<ddue:para/>
-					</ddue:remarks>
-				</sd:schemaDoc>
-			</xsd:appinfo>
-		</xsd:annotation>
-		<xsd:complexContent>
-			<xsd:extension base="complexBaseType">
-				<xsd:sequence>
-					<xsd:element name="massDescription" type="genericMassType">
-					</xsd:element>
-					<xsd:element maxOccurs="unbounded" minOccurs="0" name="mFrame" type="singleGenericMassType">
-					</xsd:element>
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
@@ -25355,14 +26511,43 @@ jonas.jepsen@dlr.de
 		</xsd:annotation>
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
-				<xsd:all>
+				<xsd:sequence>
 					<xsd:element name="massDescription" type="genericMassType">
 						<xsd:annotation>
-							<xsd:documentation>Fuel system mass description
-							</xsd:documentation>
+							<xsd:documentation>Fuel system mass description</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-				</xsd:all>
+					<xsd:element name="mEngineFeed" type="mEngineFeedType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Engine feed</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mVenting" type="mVentingType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Venting</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mRefuelTransfer" type="mFuelQuantityIndicatingType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Refuel and transfer</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mFuelQuantityIndicating" type="mFuelQuantityIndicatingType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Fuel quantity indicating</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mDraining" type="mDrainingType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Draining system</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mJettison" type="mJettisonType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Jettison system</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
@@ -25396,7 +26581,86 @@ jonas.jepsen@dlr.de
 	</xsd:complexType>
 
 	<xsd:complexType name="mFurnishingType">
-
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mFurnishingType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType">
+						<xsd:annotation>
+							<xsd:documentation>Mass description calculated from the furnisching mass descriptions</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mInsulations" type="mInsulationsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Insulation</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mCockpitCabinLining" type="genericMassType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Cockpit and cabin lining</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mFloorCoverings" type="mFloorCoveringsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Floor covering</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mCrewSeats" type="mCrewSeatsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Crew seats</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mPartStowDoors" type="mPartStowDoorsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Partitions and doors</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mLavatories" type="mLavatoriesType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Toilets</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mOverheadBins" type="mOverheadBinsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Hat racks</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mCargoLinings" type="mCargoLiningsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Cargo compartments lining</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mCargoLoadings" type="mCargoLoadingsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Cargo loading system</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mGeneralEquipments" type="genericMassType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>General equipments</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mLinings" type="mLiningsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>unspecified in Ceras</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mFurnishingsType">
 		<xsd:annotation>
 			<xsd:appinfo>
 				<sd:schemaDoc>
@@ -25414,26 +26678,29 @@ jonas.jepsen@dlr.de
 				<xsd:all>
 					<xsd:element name="massDescription" type="genericMassType">
 						<xsd:annotation>
-							<xsd:documentation>Furnishing mass description
-							</xsd:documentation>
+							<xsd:documentation>Mass description calculated from all furnisching systems mass description</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element minOccurs="0" name="mInsulations" type="mInsulationsType"/>
-					<xsd:element minOccurs="0" name="mLinings" type="mLiningsType"/>
-					<xsd:element minOccurs="0" name="mCrewSeats" type="mCrewSeatsType"/>
-					<xsd:element minOccurs="0" name="mPartStowDoors" type="mPartStowDoorsType"/>
-					<xsd:element minOccurs="0" name="mLavatories" type="mLavatoriesType"/>
-					<xsd:element minOccurs="0" name="mOverheadBins" type="mOverheadBinsType"/>
-					<xsd:element minOccurs="0" name="mFloorCoverings" type="mFloorCoveringsType"/>
-					<xsd:element minOccurs="0" name="mCargoLinings" type="mCargoLiningsType"/>
-					<xsd:element minOccurs="0" name="mCargoLoadings" type="mCargoLoadingsType"/>
-					<xsd:element minOccurs="0" name="mEmergencyOxygenSystems" type="mEmergencyOxygenSystemsType"/>
-					<xsd:element minOccurs="0" name="mCockpitLightings" type="mCockpitLightingsType"/>
-					<xsd:element minOccurs="0" name="mCabinLightings" type="mCabinLightingsType"/>
-					<xsd:element minOccurs="0" name="mExtLightings" type="mExtLightingsType"/>
-					<xsd:element minOccurs="0" name="mWasteWaterSystems" type="mWasteWaterSystemsType"/>
-					<xsd:element minOccurs="0" name="mFreshWaterSystems" type="mFreshWaterSystemsType"/>
-					<xsd:element minOccurs="0" name="mVacuumWasteSystems" type="mVacuumWasteSystemsType"/>
+					<xsd:element name="mFurnishings" type="mFurnishingType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Furnishings masses description (Ceras 50)</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mFixedEmergencyOxygen" type="mFixedEmergencyOxygenType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Furnishings masses description (Ceras 51)</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mLighting" type="mLightingType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Lighting installation masses description (Ceras 52)</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mWaterInstallations" type="mWaterInstallationType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Water installation masses description (Ceras 53)</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
 				</xsd:all>
 			</xsd:extension>
 		</xsd:complexContent>
@@ -25458,22 +26725,19 @@ jonas.jepsen@dlr.de
 				<xsd:all>
 					<xsd:element name="massDescription" type="genericMassType">
 						<xsd:annotation>
-							<xsd:documentation>Fuselage structure mass description
-							</xsd:documentation>
+							<xsd:documentation>Fuselage structure mass description	</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element minOccurs="0" name="mSkinPanels" type="mSkinPanelsType"/>
-					<xsd:element minOccurs="0" name="mBulkheads" type="mBulkheadsType"/>
-					<xsd:element minOccurs="0" name="mDoors" type="mDoorsType"/>
-					<xsd:element minOccurs="0" name="mWindows" type="mWindowsType"/>
-					<xsd:element minOccurs="0" name="mCabinFloors" type="mCabinFloorsType"/>
-					<xsd:element minOccurs="0" name="mCargoFloors" type="mCargoFloorsType"/>
-					<xsd:element minOccurs="0" name="mSpecialStructures" type="mSpecialStructuresType"/>
-					<xsd:element minOccurs="0" name="mBellyFairings" type="mBellyFairingsType"/>
-					<xsd:element minOccurs="0" name="mStringers" type="mStringersType">
-					</xsd:element>
-					<xsd:element minOccurs="0" name="mFrames" type="mFramesType">
-					</xsd:element>
+					<xsd:element name="mSkinPanels" type="mSkinPanelsType" minOccurs="0"/>
+					<xsd:element name="mBulkheads" type="mBulkheadsType" minOccurs="0"/>
+					<xsd:element name="mDoors" type="mDoorsType" minOccurs="0"/>
+					<xsd:element name="mWindows" type="mWindowsType" minOccurs="0"/>
+					<xsd:element name="mCabinFloors" type="mCabinFloorsType" minOccurs="0"/>
+					<xsd:element name="mCargoFloors" type="mCargoFloorsType" minOccurs="0"/>
+					<xsd:element name="mSpecialStructures" type="mSpecialStructuresType" minOccurs="0"/>
+					<xsd:element name="mBellyFairings" type="mBellyFairingsType" minOccurs="0"/>
+					<xsd:element name="mStringers" type="mStringersType" minOccurs="0"/>
+					<xsd:element name="mFrames" type="mFramesType" minOccurs="0"/>
 				</xsd:all>
 			</xsd:extension>
 		</xsd:complexContent>
@@ -25502,19 +26766,66 @@ jonas.jepsen@dlr.de
 							</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element maxOccurs="unbounded" minOccurs="0" name="mFuselageStructure" type="mFuselageStructureType"/>
+					<xsd:element name="mPanels" type="mPanelsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Panels</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mFrames" type="mFramesType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Frames</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mDoors" type="mDoorsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Doors</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mWindscreenWindows" type="mWindscreenWindowsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Windscreen and windows</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mOpeningFrames" type="mOpeningFramesType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>W/S and opening frames</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mCabinFloor" type="mCabinFloorType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Cabin Floor structure</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mCargoFloor" type="mCargoFloorType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Cargo compartment and floor structure</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mSpecialsStructures" type="mSpecialsStructuresType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Specials structures</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mFilletsFairings" type="mFilletsFairingsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Fillets and fairings</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mFuselageStructure" type="mFuselageStructureType" minOccurs="0" maxOccurs="unbounded">
+						<xsd:annotation>
+							<xsd:documentation>Miscellaneous</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
-
-	<xsd:complexType name="mHydraulicDistributionType">
-
+	<xsd:complexType name="mCargoFloorType">
 		<xsd:annotation>
 			<xsd:appinfo>
 				<sd:schemaDoc>
 					<ddue:summary>
-						<ddue:para>mHydraulicDistributionType</ddue:para>
+						<ddue:para>mCargoFloorType</ddue:para>
 					</ddue:summary>
 					<ddue:remarks>
 						<ddue:para/>
@@ -25524,25 +26835,173 @@ jonas.jepsen@dlr.de
 		</xsd:annotation>
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
-				<xsd:all>
-					<xsd:element name="massDescription" type="genericMassType">
-						<xsd:annotation>
-							<xsd:documentation>Hydraulic distribution mass description
-							</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-				</xsd:all>
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mCargoFloor" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
-
-	<xsd:complexType name="mHydraulicGenerationType">
-
+	<xsd:complexType name="mCabinFloorType">
 		<xsd:annotation>
 			<xsd:appinfo>
 				<sd:schemaDoc>
 					<ddue:summary>
-						<ddue:para>mHydraulicGenerationType</ddue:para>
+						<ddue:para>mCabinFloorType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mCabinFloor" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mPanelsType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mPanelsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mPanel" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mFramesType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mFramesType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mFrame" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mWindscreenWindowsType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mWindscreenWindowsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mWindscreenWindow" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mOpeningFramesType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mOpeningFramesType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mOpeningFrame" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mSpecialsStructuresType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mSpecialsStructuresType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mSpecialsStructure" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mFilletsFairingsType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mFilletsFairingsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mFilletsFairing" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mHydraulicGenerationDistributionType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mHydraulicGenerationDistributionType</ddue:para>
 					</ddue:summary>
 					<ddue:remarks>
 						<ddue:para/>
@@ -25555,10 +27014,22 @@ jonas.jepsen@dlr.de
 				<xsd:all>
 					<xsd:element name="massDescription" type="genericMassType">
 						<xsd:annotation>
-							<xsd:documentation>Hydraulic generation mass description
-							</xsd:documentation>
+							<xsd:documentation>Hydraulic generation and distribution mass description</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
+					<xsd:element name="mBlueGeneration" type="mBlueGenerationSystemsType" minOccurs="0"/>
+					<xsd:element name="mGreenGeneration" type="mGreenGenerationSystemsType" minOccurs="0"/>
+					<xsd:element name="mYellowGeneration" type="mYellowGenerationSystemsType" minOccurs="0"/>
+					<xsd:element name="mPressurizationSystem" type="mPressurizationSystemsType" minOccurs="0"/>
+					<xsd:element name="mEmergencyGeneration" type="mEmergencyGenerationsType" minOccurs="0"/>
+					<xsd:element name="mTankPressurization" type="mTankPressurizationsType" minOccurs="0"/>
+					<xsd:element name="mLandingGearHydraulicSupply" type="mLandingGearHydraulicSupplysType" minOccurs="0"/>
+					<xsd:element name="mFlightControlHydraulicSupply" type="mFlightControlHydraulicSupplysType" minOccurs="0"/>
+					<xsd:element name="mCargoDoorSupply" type="mCargoDoorSupplysType" minOccurs="0"/>
+					<xsd:element name="mSpoilersAirbrakesLiftdumpers" type="mSpoilersAirbrakesLiftdumperssType" minOccurs="0"/>
+					<xsd:element name="mHighLiftDeviceControls" type="mHighLiftDeviceControlssType" minOccurs="0"/>
+					<xsd:element name="mReverserControl" type="mReverserControlsType" minOccurs="0"/>
+					<xsd:element name="mCommonhydraulicSupply" type="mCommonHydraulicSupplysType" minOccurs="0"/>
 				</xsd:all>
 			</xsd:extension>
 		</xsd:complexContent>
@@ -25582,7 +27053,7 @@ jonas.jepsen@dlr.de
 			<xsd:extension base="complexBaseType">
 				<xsd:sequence>
 					<xsd:element name="massDescription" type="genericMassType"/>
-					<xsd:element maxOccurs="unbounded" minOccurs="0" name="mIFE" type="singleGenericMassType"/>
+					<xsd:element name="mIFE" type="singleGenericMassType" minOccurs="0" maxOccurs="unbounded"/>
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
@@ -25604,14 +27075,15 @@ jonas.jepsen@dlr.de
 		</xsd:annotation>
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
-				<xsd:all>
+				<xsd:sequence>
 					<xsd:element name="massDescription" type="genericMassType">
 						<xsd:annotation>
 							<xsd:documentation>Instrument panel mass description
 							</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-				</xsd:all>
+					<xsd:element name="InstrumentPanelItem" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
@@ -25657,12 +27129,7 @@ jonas.jepsen@dlr.de
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
 				<xsd:all>
-					<xsd:element name="massDescription" type="genericMassType">
-						<xsd:annotation>
-							<xsd:documentation>Integrated modular avionics mass description
-							</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
+					<xsd:element name="massDescription" type="genericMassType"/>
 				</xsd:all>
 			</xsd:extension>
 		</xsd:complexContent>
@@ -25714,12 +27181,180 @@ jonas.jepsen@dlr.de
 			<xsd:extension base="complexBaseType">
 				<xsd:sequence>
 					<xsd:element name="massDescription" type="genericMassType"/>
-					<xsd:element maxOccurs="unbounded" minOccurs="0" name="mLandingGearSupport" type="singleGenericMassType"/>
+					<xsd:element name="mLandingGearSupport" type="singleGenericMassType" minOccurs="0" maxOccurs="unbounded"/>
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
-
+	<xsd:complexType name="mFixedEmergencyOxygenType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mFixedEmergencyOxygenType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType">
+						<xsd:annotation>
+							<xsd:documentation>Mass calculated from the fixed emergency oxygen systems</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mFlightCrewOxygenSystems" type="mFlightCrewOxygenSystemType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Flight crew system masses description</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mPassengersOxygenSystems" type="mPassengersOxygenSystemsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Passengers cabin system masses description</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mEmergencyLightingsType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mEmergencyLightingsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mEmergencyLighting" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mCargoServiceLightingsType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mCargoServiceLightingsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mCargoServiceLighting" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mWaterInstallationType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mWaterInstallationType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType">
+						<xsd:annotation>
+							<xsd:documentation>Mass calculated from the water installation systems</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mWasteWaterSystems" type="mWasteWaterSystemsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Water/waste system FWD and AFT masses</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mFreshWaterSystems" type="mFreshWaterSystemsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Fresh water system masses</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mVacuumWasteSystems" type="mVacuumWasteSystemsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Toilet vacuum system masses</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mLightingType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mLightingType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType">
+						<xsd:annotation>
+							<xsd:documentation>Mass calculated from the lighting systems</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mCockpitLightings" type="mCockpitLightingsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Cockpit lighting</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mCabinLightings" type="mCabinLightingsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Cabin lighting</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mCargoServiceLightings" type="mCargoServiceLightingsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Cargo and service compartment lighting</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mExtLightings" type="mExtLightingsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Exterior lighting</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mEmergencyLightings" type="mEmergencyLightingsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Emergency lighting assembly</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
 	<xsd:complexType name="mLandingGearsType">
 
 		<xsd:annotation>
@@ -25736,17 +27371,28 @@ jonas.jepsen@dlr.de
 		</xsd:annotation>
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
-				<xsd:all>
+				<xsd:sequence>
 					<xsd:element name="massDescription" type="genericMassType">
 						<xsd:annotation>
-							<xsd:documentation>
-								Landing Gears mass description
-							</xsd:documentation>
+							<xsd:documentation>Landing Gears mass description (Ceras 15)</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element minOccurs="0" name="mNoseGears" type="mNoseGearsType"/>
-					<xsd:element minOccurs="0" name="mMainGears" type="mMainGearsType"/>
-				</xsd:all>
+					<xsd:element name="mMainGears" type="mMainGearsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Main Landing Gear</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mCenterGears" type="mCenterLandingGearsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Center Landing Gear</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mNoseGears" type="mNoseGearsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Nose Landing Gear</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
@@ -25841,14 +27487,29 @@ jonas.jepsen@dlr.de
 				<xsd:all>
 					<xsd:element name="massDescription" type="genericMassType">
 						<xsd:annotation>
-							<xsd:documentation>Manufacturer empty mass description
-							</xsd:documentation>
+							<xsd:documentation>Manufacturer empty mass description</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element minOccurs="0" name="mStructure" type="mStructureType"/>
-					<xsd:element minOccurs="0" name="mPowerUnits" type="mPowerUnitsType"/>
-					<xsd:element minOccurs="0" name="mSystems" type="mSystemsType"/>
-					<xsd:element minOccurs="0" name="mFurnishing" type="mFurnishingType"/>
+					<xsd:element name="mStructure" type="mStructureType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Structure masses description (Ceras 10)</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mPowerUnits" type="mPowerUnitsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Power Units masses description (Ceras 2x)</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mSystems" type="mSystemsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Systems mass description (Ceras 3x ... 4x) </xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mFurnishings" type="mFurnishingsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Furnishings masses description (Ceras 5x)</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
 				</xsd:all>
 			</xsd:extension>
 		</xsd:complexContent>
@@ -26001,7 +27662,116 @@ jonas.jepsen@dlr.de
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
-
+	<xsd:complexType name="mElectronicRackAssysType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mElectronicRackAssysType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mElectronicRackItem" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mAdirsInstallationsType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mAdirsInstallationsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mAdirsInstallationItem" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mAutonomousNavigationSystemsType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mAutonomousNavigationSystemsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mAutonomousNavigationItem" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mNavigationInstrumentationsType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mNavigationInstrumentationsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mNavigationInstrumentationItem" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mGuidesApproachLandingInstallationsType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mGuidesApproachLandingInstallationsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mGuidesApproachLandingItem" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
 	<xsd:complexType name="mNavigationType">
 
 		<xsd:annotation>
@@ -26021,8 +27791,37 @@ jonas.jepsen@dlr.de
 				<xsd:all>
 					<xsd:element name="massDescription" type="genericMassType">
 						<xsd:annotation>
-							<xsd:documentation>Navigation mass description
-							</xsd:documentation>
+							<xsd:documentation>Navigation mass description</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mElectronicRack" type="mElectronicRackAssysType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Electronic rack assy in hold</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mAdirsInstallation" type="mAdirsInstallationsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Adirs installation</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mNavigationInstrumentation" type="mNavigationInstrumentationsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Navigation instrumentation</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mGuidesApproachLandingInstallation" type="mGuidesApproachLandingInstallationsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Guides approach landing installation</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mAutonomousNavigationSystem" type="mAutonomousNavigationSystemsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Autonomous navigation system installation</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mOnboardMaintenance" type="mOnboardMaintenancesType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>ATA 45 on board maintenance</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
 				</xsd:all>
@@ -26052,7 +27851,50 @@ jonas.jepsen@dlr.de
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
-
+	<xsd:complexType name="mCenterLandingGearsType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mCenterLandingGearsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mCenterGear" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mOnboardMaintenancesType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mOnboardMaintenancesType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mOnboardMaintenanceItem" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
 	<xsd:complexType name="mOperatorItemsType">
 
 		<xsd:annotation>
@@ -26072,18 +27914,83 @@ jonas.jepsen@dlr.de
 				<xsd:all>
 					<xsd:element name="massDescription" type="genericMassType">
 						<xsd:annotation>
-							<xsd:documentation>Operator items mass description
-							</xsd:documentation>
+							<xsd:documentation>Operator items mass description</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element minOccurs="0" name="mDocumentsTools" type="mDocumentsToolsType"/>
-					<xsd:element minOccurs="0" name="mFixedGalleys" type="mFixedGalleysType"/>
-					<xsd:element minOccurs="0" name="mSeats" type="mSeatsType"/>
-					<xsd:element minOccurs="0" name="mIFEs" type="mIFESystemsType"/>
-					<xsd:element minOccurs="0" name="mEmergencyEquipments" type="mEmergencyEquipmentsType"/>
-					<xsd:element minOccurs="0" name="mCaterings" type="mCateringsType"/>
-					<xsd:element minOccurs="0" name="mCrewMembers" type="mCrewMembersType"/>
+					<xsd:element name="mOperatorEquipment" type="mOperatorEquipmentsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Operator equipment masses description (Ceras 60)</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mOperationalEquipment" type="mOperationalEquipmentsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Operator equipment masses description (Ceras 61)</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
 				</xsd:all>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mOperationalEquipmentsType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mOperationalEquipmentsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mEmergencyEquipment" type="mEmergencyEquipmentsType" minOccurs="0"/>
+					<xsd:element name="mFluids" type="mFluidsType" minOccurs="0"/>
+					<xsd:element name="mOils" type="mOilsType" minOccurs="0"/>
+					<xsd:element name="mCaterings" type="mCateringsType" minOccurs="0"/>
+					<xsd:element name="mCrewMembers" type="mCrewMembersType" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mOperatorEquipmentsType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mOperatorEquipmentsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mUnusableFuel" type="mFuelType" minOccurs="0"/>
+					<xsd:element name="mDocumentsTools" type="mDocumentsToolsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>A/C documents and tool kit</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mFixedGalleys" type="mFixedGalleysType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Galley structure mass description</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mPassengerSeats" type="mSeatsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Passenger seats mass description</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
@@ -26199,13 +28106,8 @@ jonas.jepsen@dlr.de
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
 				<xsd:all>
-					<xsd:element name="massDescription" type="genericMassType">
-						<xsd:annotation>
-							<xsd:documentation>Passanger masses Description
-							</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-					<xsd:element minOccurs="0" name="mPassengers" type="mPassengersType">
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mPassengers" type="mPassengersType" minOccurs="0">
 						<xsd:annotation>
 							<xsd:documentation>Passanger mass Description</xsd:documentation>
 						</xsd:annotation>
@@ -26264,19 +28166,39 @@ jonas.jepsen@dlr.de
 				<xsd:all>
 					<xsd:element name="massDescription" type="genericMassType">
 						<xsd:annotation>
-							<xsd:documentation>Power units mass description
-							</xsd:documentation>
+							<xsd:documentation>Maximum power units mass description (Ceras 20) </xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element minOccurs="0" name="mEngines" type="mEquippedEnginesType"/>
-					<xsd:element minOccurs="0" name="mBleedAirSystem" type="mBleedAirSystemType"/>
-					<xsd:element minOccurs="0" name="mEngineControl" type="mEngineControlType"/>
-					<xsd:element minOccurs="0" name="mFuelSystem" type="mFuelSystemType"/>
-					<xsd:element minOccurs="0" name="mInterGasSystem" type="mInterGasSystemType"/>
+					<xsd:element name="mEngines" type="mEquippedEnginesType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Equipped Engines and nacelles (Ceras 20)</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mBleedAirSystem" type="mBleedAirSystemType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Bleed air system (Ceras 21)</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mEngineControl" type="mEngineControlType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Engine control mass, included in Ceras 20 (Ceras 22)</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mFuelSystem" type="mFuelSystemType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Fuel system mass description (Ceras 25)</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mInterGasSystem" type="mInterGasSystemType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Inert gas system mass description (not covered by Ceras)</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
 				</xsd:all>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
+
 
 	<xsd:complexType name="mPylonAttachmentsType">
 
@@ -26319,14 +28241,17 @@ jonas.jepsen@dlr.de
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
 				<xsd:sequence>
-					<xsd:element name="massDescription" type="genericMassType">
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mPylons" type="singleGenericMassType" minOccurs="0" maxOccurs="unbounded">
 						<xsd:annotation>
-							<xsd:documentation>
-								Pylons mass description
-							</xsd:documentation>
+							<xsd:documentation>Pylons</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element maxOccurs="unbounded" minOccurs="0" name="mPylons" type="singleGenericMassType"/>
+					<xsd:element name="mFixedSupports" type="genericMassType" minOccurs="0" maxOccurs="unbounded">
+						<xsd:annotation>
+							<xsd:documentation>Fixed supports</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
@@ -26373,12 +28298,277 @@ jonas.jepsen@dlr.de
 			<xsd:extension base="complexBaseType">
 				<xsd:sequence>
 					<xsd:element name="massDescription" type="genericMassType"/>
-					<xsd:element maxOccurs="unbounded" minOccurs="0" name="mRib" type="mRibType"/>
+					<xsd:element name="mRib" type="mRibType" minOccurs="0" maxOccurs="unbounded"/>
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
-
+	<xsd:complexType name="mOilsType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mOilsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mOil" type="singleGenericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mFluidsType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mFluidsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mFluid" type="singleGenericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mHorizontalTailType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mHorizontalTailType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mTailplaneBox" type="mTailplaneBoxType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Tailplane Box</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mLeadingEdge" type="mLeadingEdgeType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Leading Edge</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mTrailingEdge" type="mTrailingEdgeDevicesType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Trailing Edge</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mElevators" type="mElevatorsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Elevators</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mHorizontalTailItem" type="genericMassType" minOccurs="0" maxOccurs="unbounded">
+						<xsd:annotation>
+							<xsd:documentation>Miscellaneous</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mLeadingEdgeType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mLeadingEdgeType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mLeadingEdge" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mElevatorsType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mElevatorsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mElevator" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mRudderType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mRudderType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mRudder" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mFinBoxType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mFinBoxType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mFinBoxItem" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mEngineFireProtectionsType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mEngineFireProtectionsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mEngineFireProtectionsItem" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mAPUFireProtectionsType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mAPUFireProtectionsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mAPUFireProtectionItem" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mGenerationsType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mGenerationsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mGenerationType" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mDistributionsType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mDistributionsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mDistributionType" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
 	<xsd:complexType name="mSeatsType">
 
 		<xsd:annotation>
@@ -26477,7 +28667,28 @@ jonas.jepsen@dlr.de
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
-
+	<xsd:complexType name="mSpecialStructuresType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mSpecialStructuresType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mSpecialStructure" type="singleGenericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
 	<xsd:complexType name="mSkinsType">
 
 		<xsd:annotation>
@@ -26525,31 +28736,6 @@ jonas.jepsen@dlr.de
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
-
-	<xsd:complexType name="mSpecialStructuresType">
-
-		<xsd:annotation>
-			<xsd:appinfo>
-				<sd:schemaDoc>
-					<ddue:summary>
-						<ddue:para>mSpecialStructuresType</ddue:para>
-					</ddue:summary>
-					<ddue:remarks>
-						<ddue:para/>
-					</ddue:remarks>
-				</sd:schemaDoc>
-			</xsd:appinfo>
-		</xsd:annotation>
-		<xsd:complexContent>
-			<xsd:extension base="complexBaseType">
-				<xsd:sequence>
-					<xsd:element name="massDescription" type="genericMassType"/>
-					<xsd:element maxOccurs="unbounded" minOccurs="0" name="mSpecialStructure" type="singleGenericMassType"/>
-				</xsd:sequence>
-			</xsd:extension>
-		</xsd:complexContent>
-	</xsd:complexType>
-
 	<xsd:complexType name="mSpoilersType">
 
 		<xsd:annotation>
@@ -26590,17 +28776,13 @@ jonas.jepsen@dlr.de
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
 				<xsd:sequence>
-					<xsd:element name="massDescription" type="genericMassType">
-					</xsd:element>
-					<xsd:element maxOccurs="unbounded" minOccurs="0" name="mStringer" type="singleGenericMassType">
-					</xsd:element>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mStringer" type="singleGenericMassType" minOccurs="0" maxOccurs="unbounded"/>
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
-
 	<xsd:complexType name="mStructureType">
-
 		<xsd:annotation>
 			<xsd:appinfo>
 				<sd:schemaDoc>
@@ -26616,22 +28798,42 @@ jonas.jepsen@dlr.de
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
 				<xsd:all>
-					<xsd:element name="massDescription" type="genericMassType">
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mWingsStructure" type="mWingsStructureType" minOccurs="0">
 						<xsd:annotation>
-							<xsd:documentation>Structure mass description</xsd:documentation>
+							<xsd:documentation>Wing mass descriptrion (Ceras 10)</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element minOccurs="0" name="mWingsStructure" type="mWingsStructureType"/>
-					<xsd:element minOccurs="0" name="mFuselagesStructure" type="mFuselagesStructureType"/>
-					<xsd:element minOccurs="0" name="mLandingGears" type="mLandingGearsType"/>
-					<xsd:element minOccurs="0" name="mPylons" type="mPylonsType"/>
+					<xsd:element name="mFuselagesStructure" type="mFuselagesStructureType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Horizontal tail mass descriptrion (Ceras 11)</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mHorizontalTail" type="mHorizontalTailType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Horizontal tail mass descriptrion (Ceras 13)</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mVerticalTail" type="mVerticalTailType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Horizontal tail mass descriptrion (Ceras 14)</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mLandingGears" type="mLandingGearsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Landing Gears mass description (Ceras 15)</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mPylons" type="mPylonsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Pylons mass description (Ceras 16)</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
 				</xsd:all>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
-
 	<xsd:complexType name="mSystemsType">
-
 		<xsd:annotation>
 			<xsd:appinfo>
 				<sd:schemaDoc>
@@ -26649,25 +28851,141 @@ jonas.jepsen@dlr.de
 				<xsd:all>
 					<xsd:element name="massDescription" type="genericMassType">
 						<xsd:annotation>
-							<xsd:documentation>Systems mass description</xsd:documentation>
+							<xsd:documentation>Mass description calculated from all systems mass description</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element minOccurs="0" name="mAuxillaryPowerUnit" type="mAuxillaryPowerUnitType"/>
-					<xsd:element minOccurs="0" name="mHydraulicGeneration" type="mHydraulicGenerationType"/>
-					<xsd:element minOccurs="0" name="mHydraulicDistribution" type="mHydraulicDistributionType"/>
-					<xsd:element minOccurs="0" name="mAirConditioning" type="mAirConditioningType"/>
-					<xsd:element minOccurs="0" name="mDeIcing" type="mDeIcingType"/>
-					<xsd:element minOccurs="0" name="mFireProtection" type="mFireProtectionType"/>
-					<xsd:element minOccurs="0" name="mFlightControls" type="mFlightControlsType"/>
-					<xsd:element minOccurs="0" name="mInstrumentPanel" type="mInstrumentPanelType"/>
-					<xsd:element minOccurs="0" name="mAutomaticFlightSystem" type="mAutomaticFlightSystemType"/>
-					<xsd:element minOccurs="0" name="mCommunication" type="mCommunicationType"/>
-					<xsd:element minOccurs="0" name="mElectricalGeneration" type="mElectricalGenerationType"/>
-					<xsd:element minOccurs="0" name="mElectricalDistribution" type="mElectricalDistributionType"/>
-					<xsd:element minOccurs="0" name="mIntegratedModularAvionics" type="mIntegratedModularAvionicsType"/>
-					<xsd:element minOccurs="0" name="mMillitarySystems" type="mMillitarySystemsType"/>
-					<xsd:element minOccurs="0" name="mNavigation" type="mNavigationType"/>
+					<xsd:element name="mAuxillaryPowerUnit" type="mAuxillaryPowerUnitType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Auxillary power unit equipped mass description (Ceras 30)</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mHydraulicGeneration" type="mHydraulicGenerationDistributionType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Auxillary power unit masse description (Ceras 31 and 32)</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mAirConditioning" type="mAirConditioningType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Air conditioning system masse description (Ceras 33)</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mDeIcing" type="mDeIcingType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>De-icing system masse description (Ceras 34)</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mFireProtection" type="mFireProtectionType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>fire protection system mass description (Ceras 35)</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mFlightControls" type="mFlightControlsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Flight control system mass description (Ceras 36)</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mInstrumentPanels" type="mInstrumentPanelType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Cockpit instruments, panel, structure and assembly system masses description (Ceras 37)</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mAutomaticFlightSystem" type="mAutomaticFlightSystemType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Automatic flight system mass description (Ceras 38)</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mNavigation" type="mNavigationType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Navigation system mass description (Ceras 39)</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mCommunication" type="mCommunicationType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Communication system mass description (Ceras 40)</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mElectricalGenerationDistribution" type="mElectricalGenerationDistributionType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>System mass of electrical power  generation (Ceras 41 and 42)</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mIntegratedModularAvionics" type="mIntegratedModularAvionicsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>System mass of Integrated modular avionics mass description (not covered by ceras)</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mMillitarySystems" type="mMillitarySystemsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>System masses of miliitary systems (not covered by ceras)</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
 				</xsd:all>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mSmokeDetectorsType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mSmokeDetectorsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mSmokeDetectorItem" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mTrailingEdgeType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mTrailingEdgeType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mTrailingEdge" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mTailplaneBoxType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mTailplaneBoxType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mTailplaneBoxItem" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
@@ -26790,7 +29108,74 @@ jonas.jepsen@dlr.de
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
-
+	<xsd:complexType name="mVerticalTailType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mVerticalTailType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mFinBox" type="mFinBoxType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Fin Box</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mLeadingEdge" type="mLeadingEdgeType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Leading Edge</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mTrailingEdge" type="mTrailingEdgeType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Trailing Edge</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="Rudder" type="mRudderType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Rudder</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mVerticalTailItem" type="genericMassType" minOccurs="0" maxOccurs="unbounded">
+						<xsd:annotation>
+							<xsd:documentation>Miscellaneous</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="mVentilationsType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>mVentilationsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para/>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mVentilationType" type="genericMassType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
 	<xsd:complexType name="mWasteWaterSystemsType">
 
 		<xsd:annotation>
@@ -26912,11 +29297,59 @@ jonas.jepsen@dlr.de
 				<xsd:sequence>
 					<xsd:element name="massDescription" type="genericMassType">
 						<xsd:annotation>
-							<xsd:documentation>Wings structure mass description
-							</xsd:documentation>
+							<xsd:documentation>Wings structure mass description</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element maxOccurs="unbounded" minOccurs="0" name="mWingStructure" type="mWingStructureType"/>
+					<xsd:element name="mSkins" type="mSkinsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Skins</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mSpars" type="mSparsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Spars</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mRibs" type="mRibsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Ribs</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mPylonAttachments" type="mPylonAttachmentsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Pylon Attachments</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mLandingGearSupports" type="mLandingGearSupportsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Landing Gear Supports</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mFixedLeadingEdge" type="mFixedLeadingEdgesType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Fixed Leading Edge</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mMovablesLeadingEdge" type="mMoveableTrailingEdgeType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Movables Leading Edge</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mFixedTrailingEdge" type="mFixedTrailingEdgesType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Fixed Trailing Edge</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mMovableTrailingEdge" type="mMoveableTrailingEdgeType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Movables Trailing Edge</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mWingStructure" type="mWingStructureType" minOccurs="0" maxOccurs="unbounded">
+						<xsd:annotation>
+							<xsd:documentation>Miscellaneous</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
@@ -27999,10 +30432,26 @@ jonas.jepsen@dlr.de
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
 				<xsd:all>
-					<xsd:element name="designMasses" type="designMassesType"/>
-					<xsd:element name="payload" type="mPayloadType"/>
-					<xsd:element name="fuel" type="mFuelType"/>
-					<xsd:element name="mOEM" type="oEMType"/>
+					<xsd:element name="designMasses" type="designMassesType">
+						<xsd:annotation>
+							<xsd:documentation>Aircraft design masses</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="payload" type="mPayloadType">
+						<xsd:annotation>
+							<xsd:documentation>Maximum payload masses (not covered by ceras) </xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="fuel" type="mFuelType">
+						<xsd:annotation>
+							<xsd:documentation>Maximum usable fuel masses (not covered by Ceras)</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="mOEM" type="oEMType">
+						<xsd:annotation>
+							<xsd:documentation>Maximum Operating Empty Masses</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
 				</xsd:all>
 			</xsd:extension>
 		</xsd:complexContent>
@@ -29754,14 +32203,17 @@ jonas.jepsen@dlr.de
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
 				<xsd:sequence>
-					<xsd:element name="massDescription" type="genericMassType">
+					<xsd:element name="massDescription" type="genericMassType"/>
+					<xsd:element name="mEM" type="mManufacturerEmptyType" minOccurs="0">
 						<xsd:annotation>
-							<xsd:documentation>Operating empty mass description
-							</xsd:documentation>
+							<xsd:documentation>Equipment mass description includes Ceras (1x ... 5x)</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element minOccurs="0" name="mEM" type="mManufacturerEmptyType"/>
-					<xsd:element minOccurs="0" name="mOperatorItems" type="mOperatorItemsType"/>
+					<xsd:element name="mOperatorItems" type="mOperatorItemsType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Operator items masses description (Ceras 60)</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
