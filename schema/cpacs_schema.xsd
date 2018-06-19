@@ -41385,6 +41385,22 @@ jonas.jepsen@dlr.de
 							</xsd:annotation>
 						</xsd:element>
                     </xsd:choice>
+                    <xsd:element name="ribStart" type="stringBaseType">
+						<xsd:annotation>
+							<xsd:documentation>
+								RibStart defines the forward beginning of the ribs. It can either be a
+								sparUID or "trailingEdge" or "leadingEdge".
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="ribEnd" type="stringBaseType">
+						<xsd:annotation>
+							<xsd:documentation>
+								RibEnd defines the backward ending of the ribs. It can either be a
+								sparUID or "trailingEdge" or "leadingEdge".
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
@@ -41494,25 +41510,27 @@ jonas.jepsen@dlr.de
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
 				<xsd:sequence>
-					<xsd:element name="ribReference" type="stringBaseType">
-						<xsd:annotation>
-							<xsd:documentation>
-								The ribReference is the reference line for the geometrical rib
-								placement. It can either
-								be a sparUID or "trailingEdge" or "leadingEdge"
-							</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
                     <xsd:choice>
-						<xsd:element name="etaStart" type="etaIsoLineType">
-                            <xsd:annotation>
-                                <xsd:documentation>
-                                    EtaStart defines the innerBorder location of the beginning of the rib
-                                    set on the ribReference line. The eta coordinate is a location on the 
-                                    ribReference measured in component segment eta coordinate.
-                                </xsd:documentation>
-                            </xsd:annotation>
-                        </xsd:element>
+                        <xsd:sequence>
+                            <xsd:element name="startReference" type="stringBaseType">
+                                <xsd:annotation>
+                                    <xsd:documentation>
+                                        The startReference is the reference line for the geometrical rib
+                                        placement start. It can either
+                                        be a sparUID or "trailingEdge" or "leadingEdge"
+                                    </xsd:documentation>
+                                </xsd:annotation>
+                            </xsd:element>
+                            <xsd:element name="etaStart" type="etaIsoLineType">
+                                <xsd:annotation>
+                                    <xsd:documentation>
+                                        EtaStart defines the innerBorder location of the beginning of the rib
+                                        set on the startReference line. The eta coordinate is a location on the 
+                                        startReference measured in component segment eta coordinate.
+                                    </xsd:documentation>
+                                </xsd:annotation>
+                            </xsd:element>
+                        </xsd:sequence>
 						<xsd:element name="sparPositionStartUID" type="stringUIDBaseType">
 							<xsd:annotation>
 								<xsd:documentation>
@@ -41522,15 +41540,26 @@ jonas.jepsen@dlr.de
 						</xsd:element>
 					</xsd:choice>
                     <xsd:choice>
-						<xsd:element name="etaEnd" type="etaIsoLineType">
-                            <xsd:annotation>
-                                <xsd:documentation>
-                                    EtaEnd defines the outerBorder location of the end of the rib set on
-                                    the ribReference line.  The eta coordinate is a location on the 
-                                    ribReference measured in component segment eta coordinate.
-                                </xsd:documentation>
-                            </xsd:annotation>
-                        </xsd:element>
+                        <xsd:sequence>
+                            <xsd:element name="endReference" type="stringBaseType">
+                                <xsd:annotation>
+                                    <xsd:documentation>
+                                        The endReference is the reference line for the geometrical rib
+                                        placement end. It can either
+                                        be a sparUID or "trailingEdge" or "leadingEdge"
+                                    </xsd:documentation>
+                                </xsd:annotation>
+                            </xsd:element>
+                            <xsd:element name="etaEnd" type="etaIsoLineType">
+                                <xsd:annotation>
+                                    <xsd:documentation>
+                                        EtaEnd defines the outerBorder location of the end of the rib set on
+                                        the endReference line.  The eta coordinate is a location on the 
+                                        endReference measured in component segment eta coordinate.
+                                    </xsd:documentation>
+                                </xsd:annotation>
+                            </xsd:element>
+                        </xsd:sequence>
 						<xsd:element name="sparPositionEndUID" type="stringUIDBaseType">
 							<xsd:annotation>
 								<xsd:documentation>
