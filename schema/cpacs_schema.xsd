@@ -18897,6 +18897,7 @@ jonas.jepsen@dlr.de
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
 				<xsd:sequence>
+					<xsd:element name="materialUID" type="stringUIDBaseType"/>
 					<xsd:element name="source" type="stringBaseType"/>
 					<xsd:element name="consistancy" type="booleanBaseType"/>
 					<xsd:element name="beamCrossSection" type="beamCrossSectionType"/>
@@ -32237,8 +32238,8 @@ jonas.jepsen@dlr.de
 								data of a structural element, that are based on 2-dimensional
 								profiles.</ddue:para>
 							<ddue:para>The parameter 'structuralProfileUID' refers to the
-								definition of the 2-dimensinal profile. This profile is defined
-								by several points in the x-y-space. Allways two points are
+								definition of the 2-dimensional profile. This profile is defined
+								by several points in the x-y-space. Always two points are
 								combined two one sheet. The properties of each sheet are defined
 								in the 'sheetProperties' section by referencing on the sheetUID
 								and the material properties. The orthotropy direction of
@@ -32275,63 +32276,64 @@ jonas.jepsen@dlr.de
 								element</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element maxOccurs="unbounded" name="sheetProperties" type="materialDefinitionForProfileBasedType"/>
 					<xsd:choice>
 						<xsd:annotation>
-							<xsd:documentation>Choise between general profile element
-								description (using structuralProfile definiton) and standard
-								profiles</xsd:documentation>
+							<xsd:documentation>Choice between global beam properties and sheet properties</xsd:documentation>
 						</xsd:annotation>
 						<xsd:sequence>
-							<xsd:annotation>
-								<xsd:documentation>Definition based aon structuralProfile
-									definition</xsd:documentation>
-							</xsd:annotation>
-							<xsd:element name="structuralProfileUID" type="stringUIDBaseType">
+							<xsd:element maxOccurs="unbounded" name="sheetProperties" type="materialDefinitionForProfileBasedType"/>
+							<xsd:choice>
 								<xsd:annotation>
-									<xsd:documentation>Reference to the structural profile profile
-										uID.</xsd:documentation>
+									<xsd:documentation>Choice between general profile element
+										description (using structuralProfile definition) and standard
+										profiles</xsd:documentation>
 								</xsd:annotation>
-							</xsd:element>
-							<xsd:element maxOccurs="unbounded" minOccurs="0" name="pointProperties" type="materialDefinitionForProfileBasedPointType"/>
-							<xsd:element minOccurs="0" name="referencePointUID" type="stringUIDBaseType">
-								<xsd:annotation>
-									<xsd:documentation>Reference point in structural profile
-										definition for structural element definition
-									</xsd:documentation>
-								</xsd:annotation>
-							</xsd:element>
+								<xsd:sequence>
+									<xsd:annotation>
+										<xsd:documentation>Definition based on structuralProfile
+											definition</xsd:documentation>
+									</xsd:annotation>
+									<xsd:element name="structuralProfileUID" type="stringUIDBaseType">
+										<xsd:annotation>
+											<xsd:documentation>Reference to the structural profile profile
+												uID.</xsd:documentation>
+										</xsd:annotation>
+									</xsd:element>
+									<xsd:element maxOccurs="unbounded" minOccurs="0" name="pointProperties" type="materialDefinitionForProfileBasedPointType"/>
+									<xsd:element minOccurs="0" name="referencePointUID" type="stringUIDBaseType">
+										<xsd:annotation>
+											<xsd:documentation>Reference point in structural profile
+												definition for structural element definition
+											</xsd:documentation>
+										</xsd:annotation>
+									</xsd:element>
+								</xsd:sequence>
+								<xsd:element name="standardProfileType">
+									<xsd:annotation>
+										<xsd:documentation>Standard Profile Type, see picture below for
+											further information.</xsd:documentation>
+									</xsd:annotation>
+									<xsd:complexType>
+										<xsd:simpleContent>
+											<xsd:restriction base="stringBaseType">
+												<xsd:enumeration value="C"/>
+												<xsd:enumeration value="T"/>
+												<xsd:enumeration value="Z"/>
+												<xsd:enumeration value="L"/>
+												<xsd:enumeration value="HAT"/>
+												<xsd:enumeration value="ROD"/>
+												<xsd:enumeration value="TUBE"/>
+												<xsd:enumeration value="BAR"/>
+												<xsd:enumeration value="BOX"/>
+											</xsd:restriction>
+										</xsd:simpleContent>
+									</xsd:complexType>
+								</xsd:element>
+							</xsd:choice>
 						</xsd:sequence>
-						<xsd:sequence>
-							<xsd:annotation>
-								<xsd:documentation>Standard Profiles, such as C, Z, ... (see
-									documentation)</xsd:documentation>
-							</xsd:annotation>
-							<xsd:element name="standardProfileType">
-								<xsd:annotation>
-									<xsd:documentation>Standard Profile Type, see picture below for
-										further information.</xsd:documentation>
-								</xsd:annotation>
-								<xsd:complexType>
-									<xsd:simpleContent>
-										<xsd:restriction base="stringBaseType">
-											<xsd:enumeration value="C"/>
-											<xsd:enumeration value="T"/>
-											<xsd:enumeration value="Z"/>
-											<xsd:enumeration value="L"/>
-											<xsd:enumeration value="HAT"/>
-											<xsd:enumeration value="ROD"/>
-											<xsd:enumeration value="TUBE"/>
-											<xsd:enumeration value="BAR"/>
-											<xsd:enumeration value="BOX"/>
-										</xsd:restriction>
-									</xsd:simpleContent>
-								</xsd:complexType>
-							</xsd:element>
-						</xsd:sequence>
+						<xsd:element minOccurs="0" name="globalBeamProperties" type="globalBeamPropertiesType"/>
 					</xsd:choice>
 					<xsd:element minOccurs="0" name="transformation" type="transformation2DType"/>
-					<xsd:element minOccurs="0" name="globalBeamProperties" type="globalBeamPropertiesType"/>
 				</xsd:sequence>
 				<xsd:attribute name="uID" type="xsd:string" use="required"/>
 			</xsd:extension>
