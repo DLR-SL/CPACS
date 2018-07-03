@@ -40753,6 +40753,93 @@ jonas.jepsen@dlr.de
 	</xsd:complexType>
 
 
+	<xsd:complexType name="wingExplicitStringerSetType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>Definition of explicit wing stringer sets.</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:content>
+							<ddue:para>Within the wingExplicitStringerSetType individual wing stringers sets are
+								defined. The stringer sets are defined by referencing on the
+								stringerStructureUID, where the shape and material settings of
+								each stringer is defined. Explicit stringer sets can be defined by
+								choosing exactly two options from the choice element. Although not restricted by the schema, 
+								using same option twice does not give a valid stringer set definition.</ddue:para>
+						</ddue:content>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="stringerStructureUID" type="stringUIDBaseType"/>
+					<xsd:element name="numberOfStringers" type="integerBaseType">
+						<xsd:annotation>
+							<xsd:documentation>The number of stringers</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:choice minOccurs="2" maxOccurs="2">
+						<xsd:sequence>
+							<xsd:element name="xsiInnerBorder1" type="xsiIsoLineType">
+								<xsd:annotation>
+									<xsd:documentation>TO BE FILLED: brief description of the parameter.
+									What does the 1 in InnerBorder1 stand for?
+									</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+							<xsd:element name="xsiInnerBorder2" type="xsiIsoLineType">
+								<xsd:annotation>
+									<xsd:documentation>TO BE FILLED: brief description of the parameter.
+									What does the 2 in InnerBorder2 stand for?
+									</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+						</xsd:sequence>
+						<xsd:sequence>
+							<xsd:element name="xsiOuterBorder1" type="xsiIsoLineType">
+								<xsd:annotation>
+									<xsd:documentation>TO BE FILLED: brief description of the parameter.
+									What does the 1 in OuterBorder1 stand for?
+									</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+							<xsd:element name="xsiOuterBorder2" type="xsiIsoLineType">
+								<xsd:annotation>
+									<xsd:documentation>TO BE FILLED: brief description of the parameter.
+									What does the 2 in OuterBorder2 stand for?
+									</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+						</xsd:sequence>
+						<xsd:sequence>
+							<xsd:element name="angle" type="doubleBaseType">
+								<xsd:annotation>
+									<xsd:documentation>TO BE FILLED: brief description of the parameter.
+									</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+							<xsd:element name="angleReference" type="stringBaseType">
+								<xsd:annotation>
+									<xsd:documentation>If the reference of the stringer angle shall
+										be different from the default implementation then this
+										parameter may be set. Allowed values include: leadingEdge,
+										trailingEdge and globalY. Furthermore, it is possible to
+										provide the UID of a spar.</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+						</xsd:sequence>
+					</xsd:choice>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+
 	<xsd:complexType name="wingExplicitStringerType">
 
 		<xsd:annotation>
@@ -40767,7 +40854,8 @@ jonas.jepsen@dlr.de
 								defined. The stringer are defined by referencing on the
 								stringerStructureUID, where the shape and material settings of
 								one single stringer is defined. Explicit stringers can be defined by
-                                choosing one of the following options:</ddue:para>
+								choosing exactly two options from the choice element. Although not restricted by the schema, 
+								using same option twice does not give a valid stringer definition.</ddue:para>
 						</ddue:content>
 					</ddue:remarks>
 				</sd:schemaDoc>
@@ -40777,187 +40865,21 @@ jonas.jepsen@dlr.de
 			<xsd:extension base="complexBaseType">
 				<xsd:sequence>
 					<xsd:element name="stringerStructureUID" type="stringUIDBaseType"/>
-					<xsd:choice>
+					<xsd:choice minOccurs="2" maxOccurs="2">
+						<xsd:element name="xsiInnerBorder" type="xsiIsoLineType">
+							<xsd:annotation>
+								<xsd:documentation>TO BE FILLED: brief description of the parameter.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+						<xsd:element name="xsiOuterBorder" type="xsiIsoLineType">
+							<xsd:annotation>
+								<xsd:documentation>TO BE FILLED: brief description of the parameter.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
 						<xsd:sequence>
-							<xsd:annotation>
-								<xsd:documentation>TO BE FILLED: brief description of the first option
-								</xsd:documentation>
-							</xsd:annotation>
-							<xsd:element name="xsiIB1" type="xsiIsoLineType">
-								<xsd:annotation>
-									<xsd:documentation>TO BE FILLED: brief description of the parameter.
-                                    What does the 1 in IB1 stand for?
-									</xsd:documentation>
-								</xsd:annotation>
-							</xsd:element>
-							<xsd:element name="xsiOB1" type="xsiIsoLineType">
-								<xsd:annotation>
-									<xsd:documentation>TO BE FILLED: brief description of the parameter.
-                                    What does the 1 in OB1 stand for?
-									</xsd:documentation>
-								</xsd:annotation>
-							</xsd:element>
-						</xsd:sequence>
-                        <xsd:sequence>
-							<xsd:annotation>
-								<xsd:documentation>TO BE FILLED: brief description of the second option
-								</xsd:documentation>
-							</xsd:annotation>
-							<xsd:element name="xsiIB1" type="xsiIsoLineType">
-								<xsd:annotation>
-									<xsd:documentation>TO BE FILLED: brief description of the parameter.
-                                    What does the 1 in IB1 stand for?
-									</xsd:documentation>
-								</xsd:annotation>
-							</xsd:element>
 							<xsd:element name="angle" type="doubleBaseType">
-								<xsd:annotation>
-									<xsd:documentation>TO BE FILLED: brief description of the parameter.
-									</xsd:documentation>
-								</xsd:annotation>
-							</xsd:element>
-							<xsd:element name="angleReference" type="stringBaseType">
-								<xsd:annotation>
-									<xsd:documentation>If the reference of the stringer angle shall
-										be different from the default implementation then this
-										parameter may be set. Allowed values include: leadingEdge,
-										trailingEdge and globalY. Furthermore, it is possible to
-										provide the UID of a spar.</xsd:documentation>
-								</xsd:annotation>
-							</xsd:element>
-						</xsd:sequence>
-                        <xsd:sequence>
-							<xsd:annotation>
-								<xsd:documentation>TO BE FILLED: brief description of the third option
-								</xsd:documentation>
-							</xsd:annotation>
-							<xsd:element name="xsiIB1" type="xsiIsoLineType">
-								<xsd:annotation>
-									<xsd:documentation>TO BE FILLED: brief description of the parameter.
-                                    What does the 1 in IB1 stand for?
-									</xsd:documentation>
-								</xsd:annotation>
-							</xsd:element>
-							<xsd:element name="angle" type="doubleBaseType">
-								<xsd:annotation>
-									<xsd:documentation>TO BE FILLED: brief description of the parameter.
-									</xsd:documentation>
-								</xsd:annotation>
-							</xsd:element>
-							<xsd:element name="angleReference" type="stringBaseType">
-								<xsd:annotation>
-									<xsd:documentation>If the reference of the stringer angle shall
-										be different from the default implementation then this
-										parameter may be set. Allowed values include: leadingEdge,
-										trailingEdge and globalY. Furthermore, it is possible to
-										provide the UID of a spar.</xsd:documentation>
-								</xsd:annotation>
-							</xsd:element>
-						</xsd:sequence>
-                        <xsd:sequence>
-							<xsd:annotation>
-								<xsd:documentation>TO BE FILLED: brief description of the fourth option
-								</xsd:documentation>
-							</xsd:annotation>
-							<xsd:element name="xsiIB1" type="xsiIsoLineType">
-								<xsd:annotation>
-									<xsd:documentation>TO BE FILLED: brief description of the parameter.
-                                    What does the 1 in IB1 stand for?
-									</xsd:documentation>
-								</xsd:annotation>
-							</xsd:element>
-							<xsd:element name="xsiIB2" type="xsiIsoLineType">
-								<xsd:annotation>
-									<xsd:documentation>TO BE FILLED: brief description of the parameter.
-                                    What does the 2 in IB2 stand for?
-									</xsd:documentation>
-								</xsd:annotation>
-							</xsd:element>
-                            <xsd:element name="xsiOB1" type="xsiIsoLineType">
-								<xsd:annotation>
-									<xsd:documentation>TO BE FILLED: brief description of the parameter.
-                                    What does the 1 in OB1 stand for?
-									</xsd:documentation>
-								</xsd:annotation>
-							</xsd:element>
-							<xsd:element name="xsiOB2" type="xsiIsoLineType">
-								<xsd:annotation>
-									<xsd:documentation>TO BE FILLED: brief description of the parameter.
-                                    What does the 2 in OB2 stand for?
-									</xsd:documentation>
-								</xsd:annotation>
-							</xsd:element>
-							<xsd:element name="numberOfStringers" type="integerBaseType">
-								<xsd:annotation>
-									<xsd:documentation>The number of stringers</xsd:documentation>
-								</xsd:annotation>
-							</xsd:element>
-						</xsd:sequence>
-                        <xsd:sequence>
-							<xsd:annotation>
-								<xsd:documentation>TO BE FILLED: brief description of the fifth option
-								</xsd:documentation>
-							</xsd:annotation>
-							<xsd:element name="xsiIB1" type="xsiIsoLineType">
-								<xsd:annotation>
-									<xsd:documentation>TO BE FILLED: brief description of the parameter.
-                                    What does the 1 in IB1 stand for?
-									</xsd:documentation>
-								</xsd:annotation>
-							</xsd:element>
-							<xsd:element name="xsiIB2" type="xsiIsoLineType">
-								<xsd:annotation>
-									<xsd:documentation>TO BE FILLED: brief description of the parameter.
-                                    What does the 2 in IB2 stand for?
-									</xsd:documentation>
-								</xsd:annotation>
-							</xsd:element>
-                            <xsd:element name="numberOfStringers" type="integerBaseType">
-								<xsd:annotation>
-									<xsd:documentation>The number of stringers</xsd:documentation>
-								</xsd:annotation>
-							</xsd:element>
-                            <xsd:element name="angle" type="doubleBaseType">
-								<xsd:annotation>
-									<xsd:documentation>TO BE FILLED: brief description of the parameter.
-									</xsd:documentation>
-								</xsd:annotation>
-							</xsd:element>
-							<xsd:element name="angleReference" type="stringBaseType">
-								<xsd:annotation>
-									<xsd:documentation>If the reference of the stringer angle shall
-										be different from the default implementation then this
-										parameter may be set. Allowed values include: leadingEdge,
-										trailingEdge and globalY. Furthermore, it is possible to
-										provide the UID of a spar.</xsd:documentation>
-								</xsd:annotation>
-							</xsd:element>
-						</xsd:sequence>
-                        <xsd:sequence>
-							<xsd:annotation>
-								<xsd:documentation>TO BE FILLED: brief description of the sixth option
-								</xsd:documentation>
-							</xsd:annotation>
-							<xsd:element name="xsiOB1" type="xsiIsoLineType">
-								<xsd:annotation>
-									<xsd:documentation>TO BE FILLED: brief description of the parameter.
-                                    What does the 1 in OB1 stand for?
-									</xsd:documentation>
-								</xsd:annotation>
-							</xsd:element>
-							<xsd:element name="xsiOB2" type="xsiIsoLineType">
-								<xsd:annotation>
-									<xsd:documentation>TO BE FILLED: brief description of the parameter.
-                                    What does the 2 in OB2 stand for?
-									</xsd:documentation>
-								</xsd:annotation>
-							</xsd:element>
-                            <xsd:element name="numberOfStringers" type="integerBaseType">
-								<xsd:annotation>
-									<xsd:documentation>The number of stringers</xsd:documentation>
-								</xsd:annotation>
-							</xsd:element>
-                            <xsd:element name="angle" type="doubleBaseType">
 								<xsd:annotation>
 									<xsd:documentation>TO BE FILLED: brief description of the parameter.
 									</xsd:documentation>
@@ -40997,9 +40919,10 @@ jonas.jepsen@dlr.de
 		</xsd:annotation>
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
-				<xsd:sequence>
-					<xsd:element maxOccurs="unbounded" name="explicitStringer" type="wingExplicitStringerType"/>
-				</xsd:sequence>
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="explicitStringer" type="wingExplicitStringerType"/>
+					<xsd:element name="explicitStringerSet" type="wingExplicitStringerSetType"/>
+				</xsd:choice>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
