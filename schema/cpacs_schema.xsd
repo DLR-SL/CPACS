@@ -7079,6 +7079,94 @@ jonas.jepsen@dlr.de
 	</xsd:complexType>
 
 
+	<xsd:complexType name="constraintSettingsPointPerformanceType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>constraintSettingsPointPerformanceType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>specific performance settings for the point performance</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:all>
+					<xsd:element minOccurs="0" name="CAS" type="doubleConstraintBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Calibrated airspeed within the segment</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="machNumber" type="doubleConstraintBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Mach number within the segment</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="thrustSetting" type="doubleConstraintBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Thrust setting for derated engine as fraction of max. Thrust (e.g.: for powered descents, deceleration not at IDLE, manoevres).</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="climbAngle" type="doubleConstraintBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Climb angle within the segment</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="rateOfClimb" type="doubleConstraintBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Climb angle within the segment</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="rateOfTurn" type="doubleConstraintBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Rate of turn within the segment</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="rateOfDescent" type="doubleConstraintBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Rate of descent within the segment</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="acceleration" type="doubleConstraintBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Rate of velocity within the segment</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="descentAngle" type="doubleConstraintBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Descent angle within the segment</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="loadFactor" type="doubleConstraintBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Load factor experienced during segment</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="duration" type="doubleConstraintBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Duration of the condition. [for pointPerformance constraints]</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="angleOfAttack" type="doubleConstraintBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Angle of attack [for pointPerformance constraints]</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="deltaTemperatureISA" type="doubleConstraintBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Delta in temperature compared to standard ISA conditions</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:all>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+
 	<xsd:complexType name="constraintSettingsType">
 
 		<xsd:annotation>
@@ -7096,6 +7184,11 @@ jonas.jepsen@dlr.de
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
 				<xsd:all>
+					<xsd:element minOccurs="0" name="CAS" type="doubleConstraintBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Calibrated airspeed within the segment</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
 					<xsd:element minOccurs="0" name="machNumber" type="doubleConstraintBaseType">
 						<xsd:annotation>
 							<xsd:documentation>Mach number within the segment</xsd:documentation>
@@ -7143,28 +7236,36 @@ jonas.jepsen@dlr.de
 					</xsd:element>
 					<xsd:element minOccurs="0" name="stepClimbSpecificExcessPower" type="doubleConstraintBaseType">
 						<xsd:annotation>
-							<xsd:documentation>Specific excess power within the segment (e.g.: for defining minimum SEP to remain after step climbs have been performed). [For segment constraint settings.]</xsd:documentation>
+							<xsd:documentation>Specific excess power within the segment (e.g.: for defining minimum SEP to remain after step climbs have been performed).</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
 					<xsd:element minOccurs="0" name="stepClimbAltitudeDifference" type="doubleConstraintBaseType">
 						<xsd:annotation>
-							<xsd:documentation>Altitude difference of each step climb. [For segment constraint settings.]</xsd:documentation>
+							<xsd:documentation>Altitude difference of each step climb.</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
 					<xsd:element minOccurs="0" name="altitude" type="doubleConstraintBaseType">
 						<xsd:annotation>
-							<xsd:documentation>Constant altitude for the segment. [For segment constraint settings.]</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-					<xsd:element minOccurs="0" name="duration" type="doubleConstraintBaseType">
-						<xsd:annotation>
-							<xsd:documentation>Duration of the condition. [for pointPerformance constraints]</xsd:documentation>
+							<xsd:documentation>Constant altitude for the segment.</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
 					<xsd:element minOccurs="0" name="deltaTemperatureISA" type="doubleConstraintBaseType">
 						<xsd:annotation>
 							<xsd:documentation>Delta in temperature compared to standard ISA conditions</xsd:documentation>
 						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="prioritySetting">
+						<xsd:annotation>
+							<xsd:documentation>priority setting indicating which constraint is preferred within the segment</xsd:documentation>
+						</xsd:annotation>
+						<xsd:complexType>
+								<xsd:simpleContent>
+									<xsd:restriction base="stringBaseType">
+										<xsd:enumeration value="velocity"/>
+										<xsd:enumeration value="flightPath"/>
+									</xsd:restriction>
+								</xsd:simpleContent>
+							</xsd:complexType>
 					</xsd:element>
 				</xsd:all>
 			</xsd:extension>
@@ -14540,13 +14641,26 @@ jonas.jepsen@dlr.de
 						</xsd:element>
 						<xsd:element name="latitude" type="stringVectorBaseType">
 							<xsd:annotation>
-								<xsd:documentation>Vector of waypoint latitute values in [deg]</xsd:documentation>
+								<xsd:documentation>Vector of waypoint latitude values in [deg]</xsd:documentation>
 							</xsd:annotation>
 						</xsd:element>
 						<xsd:element name="longitude" type="stringVectorBaseType">
 							<xsd:annotation>
 								<xsd:documentation>Vector of waypoint longitude values in [deg]</xsd:documentation>
 							</xsd:annotation>
+						</xsd:element>
+						<xsd:element name="wayPointType">
+							<xsd:annotation>
+								<xsd:documentation>Indicates the type of the way point.</xsd:documentation>
+							</xsd:annotation>
+							<xsd:complexType>
+								<xsd:simpleContent>
+									<xsd:restriction base="stringBaseType">
+										<xsd:enumeration value="flyOver"/>
+										<xsd:enumeration value="flyBy"/>
+									</xsd:restriction>
+								</xsd:simpleContent>
+							</xsd:complexType>
 						</xsd:element>
 					</xsd:all>
 			</xsd:extension>
@@ -29282,6 +29396,36 @@ jonas.jepsen@dlr.de
 	</xsd:complexType>
 
 
+	<xsd:complexType name="missionPerformanceMapDefinitionType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>Setting default and specific performance maps to be used for a model</ddue:para>
+					</ddue:summary>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:all>
+					<xsd:element name="defaultPerformanceMapUID" type="stringUIDBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Default performance map which is used if no other performance map
+							is assigned through the specificPerformanceMap node</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="specificPerformanceMaps" type="specificPerformanceMapsType">
+						<xsd:annotation>
+							<xsd:documentation>List of specific performance maps used on dedicated mission segments</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:all>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+
 	<xsd:complexType name="missionSegmentEndConditionType">
 
 		<xsd:annotation>
@@ -29320,7 +29464,17 @@ jonas.jepsen@dlr.de
 									<xsd:documentation>Global coordinate at the end of the segment in geographic coordinates (longitude, latitude, altitude)</xsd:documentation>
 								</xsd:annotation>
 							</xsd:element>
+							<xsd:element name="runwayUID" type="stringUIDBaseType">
+								<xsd:annotation>
+									<xsd:documentation>destination runway UID</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
 						</xsd:choice>
+						<xsd:element minOccurs="0" name="orientation" type="orientationType">
+							<xsd:annotation>
+								<xsd:documentation>Final orientation in segment</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
 						<xsd:element minOccurs="0" name="range" type="pointConstraintType">
 							<xsd:annotation>
 								<xsd:documentation>Flown distance in the segment (x, y, z)</xsd:documentation>
@@ -29341,6 +29495,11 @@ jonas.jepsen@dlr.de
 								<xsd:documentation>Rate of climb ending the segment</xsd:documentation>
 							</xsd:annotation>
 						</xsd:element>
+						<xsd:element minOccurs="0" name="flightPathAngle" type="doubleConstraintBaseType">
+							<xsd:annotation>
+								<xsd:documentation>Angle of flight path ending the segment</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
 						<xsd:element minOccurs="0" name="massFraction" type="doubleConstraintBaseType">
 							<xsd:annotation>
 								<xsd:documentation>MassFraction ending the segment</xsd:documentation>
@@ -29359,12 +29518,6 @@ jonas.jepsen@dlr.de
 						<xsd:element minOccurs="0" name="fuelConsumed" type="doubleConstraintBaseType">
 							<xsd:annotation>
 								<xsd:documentation>Consumed fuel mass ending the segment</xsd:documentation>
-							</xsd:annotation>
-						</xsd:element>
-						<xsd:element minOccurs="0" name="storesReleased" type="stringVectorBaseType">
-							<xsd:annotation>
-								<xsd:documentation>uID list of stores released in the segment (mostly comes joined with a new aeroPerformanceMapUID for the new aerodynamic configuration of the aircraft). Links to entries in the weightAndBalance vector such that new state is retrievable.
-</xsd:documentation>
 							</xsd:annotation>
 						</xsd:element>
 					</xsd:sequence>
@@ -29394,12 +29547,6 @@ jonas.jepsen@dlr.de
 							<xsd:element name="endCondition" type="missionSegmentEndConditionType"/>
 							<xsd:element name="flightPath" type="flightPathType"/>
 						</xsd:choice>
-						<xsd:element minOccurs="0" name="variableSegments" type="stringVectorBaseType">
-							<xsd:annotation>
-								<xsd:documentation>Vector of segmentUIDs for segments that are allowed to be varied within a mission optimisation
-								</xsd:documentation>
-							</xsd:annotation>
-						</xsd:element>
 					</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
@@ -29439,11 +29586,10 @@ jonas.jepsen@dlr.de
 							</xsd:complexType>
 						</xsd:element>
 						<xsd:element name="segmentUIDSequence" type="stringVectorBaseType"/>
-						<xsd:element minOccurs="0" name="variableSegments" type="stringVectorBaseType">
+						<xsd:element minOccurs="0" name="variableSegments" type="variableSegmentsType">
 							<xsd:annotation>
 								<xsd:documentation>list of segments that are allowed to be varied within a mission optimisation.
-									<ddue:para>This concept needs to be practically tested. Does it suffice to mention (a list of) segments that are free to change to fit the overall block constraints? What happens if a segment is variable, though it has some constraints? When to define a segment as variable (climb until endPosition z, then endPosition x should be left free. Is the segment then variable? Probably not.). Somehow the 'free' segment should be in between fully defined segments (i.e.: a cruise+descent in between endPosition z == ICA and endPosition z == 0 for landing to define max range. How to define this exactly?)
-</ddue:para>
+									<ddue:para>This concept needs to be practically tested. Does it suffice to mention (a list of) segments that are free to change to fit the overall block constraints? What happens if a segment is variable, though it has some constraints? When to define a segment as variable (climb until endPosition z, then endPosition x should be left free. Is the segment then variable? Probably not.). Somehow the 'free' segment should be in between fully defined segments (i.e.: a cruise+descent in between endPosition z == ICA and endPosition z == 0 for landing to define max range. How to define this exactly?)</ddue:para>
 								</xsd:documentation>
 							</xsd:annotation>
 						</xsd:element>
@@ -29456,8 +29602,6 @@ jonas.jepsen@dlr.de
 								<xsd:simpleContent>
 									<xsd:restriction base="stringBaseType">
 										<xsd:enumeration value="blockFuel"/>
-										<xsd:enumeration value="taxiFuel"/>
-										<xsd:enumeration value="tripFuel"/>
 										<xsd:enumeration value="reserveFuel"/>
 									</xsd:restriction>
 								</xsd:simpleContent>
@@ -29527,33 +29671,25 @@ jonas.jepsen@dlr.de
 										<xsd:enumeration value="descent"/>
 										<xsd:enumeration value="landing"/>
 										<xsd:enumeration value="acceleration"/>
+										<xsd:enumeration value="ground"/>
+										<xsd:enumeration value="range"/>
+										<xsd:enumeration value="duration"/>
+										<xsd:enumeration value="turn"/>
+										<xsd:enumeration value="holding"/>
+										<xsd:enumeration value="storeRelease"/>
+										<xsd:enumeration value="taxi"/>
+										<xsd:enumeration value="other"/>
 									</xsd:restriction>
 								</xsd:simpleContent>
 							</xsd:complexType>
 						</xsd:element>
 						<xsd:choice>
+							<xsd:element minOccurs="0" name="mass" type="doubleBaseType"/>
 							<xsd:element minOccurs="0" name="massFraction" type="massFractionType"/>
 							<xsd:sequence>
-								<xsd:element name="enginePerformanceMapUID" type="stringUIDBaseType">
-									<xsd:annotation>
-										<xsd:documentation>Refers to the enginePerformanceMap to be used within the segment
-										</xsd:documentation>
-									</xsd:annotation>
-								</xsd:element>
-								<xsd:element name="aeroPerformanceMapUID" type="stringUIDBaseType">
-									<xsd:annotation>
-										<xsd:documentation>Refers to the aeroPerformanceMap to be used within the segment
-										</xsd:documentation>
-									</xsd:annotation>
-								</xsd:element>
-								<xsd:element minOccurs="0" name="controlSurfaceUIDs" type="stringVectorBaseType">
-									<xsd:annotation>
-										<xsd:documentation>Indicates which control surface uID's to use for trimming purposes
-										</xsd:documentation>
-									</xsd:annotation>
-								</xsd:element>
 								<xsd:element minOccurs="0" name="endCondition" type="missionSegmentEndConditionType"/>
 								<xsd:element minOccurs="0" name="constraintSettings" type="constraintSettingsType"/>
+								<xsd:element minOccurs="0" name="configuration" type="stringBaseType"/>
 							</xsd:sequence>
 						</xsd:choice>
 					</xsd:sequence>
@@ -29580,7 +29716,7 @@ jonas.jepsen@dlr.de
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
 				<xsd:sequence>
-					<xsd:element maxOccurs="unbounded" name="missionSegment" type="missionSegmentType"/>
+					<xsd:element maxOccurs="unbounded" name="segment" type="missionSegmentType"/>
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
@@ -30441,7 +30577,8 @@ jonas.jepsen@dlr.de
 				<xsd:sequence>
 					<xsd:element minOccurs="0" name="heading" type="doubleBaseType">
 						<xsd:annotation>
-							<xsd:documentation>Flight heading</xsd:documentation>
+							<xsd:documentation>Flight heading at the start of the mission, in compassAngle with reference to true North
+</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
 				</xsd:sequence>
@@ -31041,6 +31178,34 @@ jonas.jepsen@dlr.de
 		</xsd:complexContent>
 	</xsd:complexType>
 
+	<xsd:complexType name="performanceMapSelectionType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>Selection of performance maps which are being applied for missions</ddue:para>
+					</ddue:summary>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:all>
+					<xsd:element minOccurs="0" name="engine" type="missionPerformanceMapDefinitionType">
+						<xsd:annotation>
+							<xsd:documentation>Engine performance map selection</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="aerodynamic" type="missionPerformanceMapDefinitionType">
+						<xsd:annotation>
+							<xsd:documentation>Aerodynamic performance map selection</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:all>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
 	<xsd:complexType name="performanceRequirementsType">
 		<xsd:annotation>
 			<xsd:appinfo>
@@ -31513,22 +31678,7 @@ jonas.jepsen@dlr.de
 								</xsd:simpleContent>
 							</xsd:complexType>
 						</xsd:element>
-						<xsd:element minOccurs="0" name="enginePerformanceMapUID" type="stringUIDBaseType">
-							<xsd:annotation>
-								<xsd:documentation>Refers to the enginePerformanceMap to be used within the point performance calculation</xsd:documentation>
-							</xsd:annotation>
-						</xsd:element>
-						<xsd:element minOccurs="0" name="aeroPerformanceMapUID" type="stringUIDBaseType">
-							<xsd:annotation>
-								<xsd:documentation>Refers to the aeroPerformanceMap to be used within the segment</xsd:documentation>
-							</xsd:annotation>
-						</xsd:element>
-						<xsd:element minOccurs="0" name="controlSurfaceUIDs" type="stringVectorBaseType">
-							<xsd:annotation>
-								<xsd:documentation>For trimming purposes indicate which control surface uID's to use</xsd:documentation>
-							</xsd:annotation>
-						</xsd:element>
-						<xsd:element minOccurs="0" name="constraintSettings" type="constraintSettingsType"/>
+						<xsd:element minOccurs="0" name="constraintSettings" type="constraintSettingsPointPerformanceType"/>
 					</xsd:sequence>
 				<xsd:attribute name="uID" type="xsd:string" use="required"/>
 			</xsd:extension>
@@ -35869,6 +36019,69 @@ jonas.jepsen@dlr.de
 		</xsd:complexContent>
 	</xsd:complexType>
 
+	<xsd:complexType name="specificPerformanceMapType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>specificPerformanceMapType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:content>
+							<ddue:para>Applying a specific performance map to selected mission segments</ddue:para>
+						</ddue:content>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:all>
+					<xsd:element name="performanceMapUID" type="stringUIDBaseType">
+						<xsd:annotation>
+							<xsd:documentation>UID of performance map to be used for mission segments</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="segmentUIDs" type="stringVectorBaseType">
+						<xsd:annotation>
+							<xsd:documentation>List of all mission segment UIDs to which the performance map is to be applied</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="pointPerformanceUIDs" type="stringVectorBaseType">
+						<xsd:annotation>
+							<xsd:documentation>List of point performance UIDs to which the  performance map is to be applied</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:all>
+				<xsd:attribute name="uID" type="xsd:string" use="required"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+<xsd:complexType name="specificPerformanceMapsType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>specificPerformanceMapsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>Collection of all assignments of specific performance maps to selected mission segments</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" name="specificPerformanceMap" type="specificPerformanceMapType"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
 	<xsd:complexType name="spoilerType">
 
 		<xsd:annotation>
@@ -39793,6 +40006,70 @@ jonas.jepsen@dlr.de
 					<xsd:element name="aircraftModelUID" type="stringUIDBaseType"/>
 					<xsd:element name="engineUID" type="stringUIDBaseType"/>
 					<xsd:element minOccurs="0" name="components" type="zeroComponentsType"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+
+	<xsd:complexType name="variableSegmentType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>variableSegmentType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:content>
+							<ddue:para>Containing the definition of variable segments for a segment block</ddue:para>
+						</ddue:content>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:all>
+					<xsd:element name="segmentUID" type="stringUIDBaseType">
+						<xsd:annotation>
+							<xsd:documentation>defines uID of the segment having variable conditions</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="variableConditions" type="stringVectorBaseType">
+						<xsd:annotation>
+							<xsd:documentation>defines which condition(s) are variable within the segment (must be one of the defined 
+							endConditions for the segmentBlock)</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:all>
+				<xsd:attribute name="uID" type="xsd:string" use="required"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+
+	<xsd:complexType name="variableSegmentsType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>variableSegmentsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>provides a list of segments having variable conditions within the segmentBlock.
+						Example: a segmentBlock containing takeOff, climb, cruise, decent, landing segments has a cruise segment for which the range is variable.
+						The range of this segment is then to be calculated using the range defined for the segmentBlock while concerning the known ranges of all 
+						other segments within the segmentBlock.</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" name="variableSegment" type="variableSegmentType"/>
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
