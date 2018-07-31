@@ -29508,11 +29508,10 @@ jonas.jepsen@dlr.de
 							</xsd:complexType>
 						</xsd:element>
 						<xsd:element name="segmentUIDSequence" type="stringVectorBaseType"/>
-						<xsd:element minOccurs="0" name="variableSegments" type="stringVectorBaseType">
+						<xsd:element minOccurs="0" name="variableSegments" type="variableSegmentsType">
 							<xsd:annotation>
 								<xsd:documentation>list of segments that are allowed to be varied within a mission optimisation.
-									<ddue:para>This concept needs to be practically tested. Does it suffice to mention (a list of) segments that are free to change to fit the overall block constraints? What happens if a segment is variable, though it has some constraints? When to define a segment as variable (climb until endPosition z, then endPosition x should be left free. Is the segment then variable? Probably not.). Somehow the 'free' segment should be in between fully defined segments (i.e.: a cruise+descent in between endPosition z == ICA and endPosition z == 0 for landing to define max range. How to define this exactly?)
-</ddue:para>
+									<ddue:para>This concept needs to be practically tested. Does it suffice to mention (a list of) segments that are free to change to fit the overall block constraints? What happens if a segment is variable, though it has some constraints? When to define a segment as variable (climb until endPosition z, then endPosition x should be left free. Is the segment then variable? Probably not.). Somehow the 'free' segment should be in between fully defined segments (i.e.: a cruise+descent in between endPosition z == ICA and endPosition z == 0 for landing to define max range. How to define this exactly?)</ddue:para>
 								</xsd:documentation>
 							</xsd:annotation>
 						</xsd:element>
@@ -39929,6 +39928,70 @@ jonas.jepsen@dlr.de
 					<xsd:element name="aircraftModelUID" type="stringUIDBaseType"/>
 					<xsd:element name="engineUID" type="stringUIDBaseType"/>
 					<xsd:element minOccurs="0" name="components" type="zeroComponentsType"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+
+	<xsd:complexType name="variableSegmentType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>variableSegmentType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:content>
+							<ddue:para>Containing the definition of variable segments for a segment block</ddue:para>
+						</ddue:content>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:all>
+					<xsd:element name="segmentUID" type="stringUIDBaseType">
+						<xsd:annotation>
+							<xsd:documentation>defines uID of the segment having variable conditions</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="variableConditions" type="stringVectorBaseType">
+						<xsd:annotation>
+							<xsd:documentation>defines which condition(s) are variable within the segment (must be one of the defined 
+							endConditions for the segmentBlock)</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:all>
+				<xsd:attribute name="uID" type="xsd:string" use="required"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+
+	<xsd:complexType name="variableSegmentsType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>variableSegmentsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>provides a list of segments having variable conditions within the segmentBlock.
+						Example: a segmentBlock containing takeOff, climb, cruise, decent, landing segments has a cruise segment for which the range is variable.
+						The range of this segment is then to be calculated using the range defined for the segmentBlock while concerning the known ranges of all 
+						other segments within the segmentBlock.</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" name="variableSegment" type="variableSegmentType"/>
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
