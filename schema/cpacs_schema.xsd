@@ -29282,6 +29282,36 @@ jonas.jepsen@dlr.de
 	</xsd:complexType>
 
 
+	<xsd:complexType name="missionPerformanceMapDefinitionType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>Setting default and specific performance maps to be used for a model</ddue:para>
+					</ddue:summary>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:all>
+					<xsd:element name="defaultPerformanceMapUID" type="stringUIDBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Default performance map which is used if no other performance map
+							is assigned through the specificPerformanceMap node</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="specificPerformanceMaps" type="specificPerformanceMapsType">
+						<xsd:annotation>
+							<xsd:documentation>List of specific performance maps used on dedicated mission segments</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:all>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+
 	<xsd:complexType name="missionSegmentEndConditionType">
 
 		<xsd:annotation>
@@ -31037,6 +31067,34 @@ jonas.jepsen@dlr.de
 					</xsd:element>
 				</xsd:all>
 				<xsd:attribute name="uID" type="xsd:string" use="required"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="performanceMapSelectionType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>Selection of performance maps which are being applied for missions</ddue:para>
+					</ddue:summary>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:all>
+					<xsd:element minOccurs="0" name="engine" type="missionPerformanceMapDefinitionType">
+						<xsd:annotation>
+							<xsd:documentation>Engine performance map selection</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="aerodynamic" type="missionPerformanceMapDefinitionType">
+						<xsd:annotation>
+							<xsd:documentation>Aerodynamic performance map selection</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:all>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
@@ -35865,6 +35923,69 @@ jonas.jepsen@dlr.de
 						</xsd:annotation>
 					</xsd:element>
 				</xsd:all>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="specificPerformanceMapType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>specificPerformanceMapType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:content>
+							<ddue:para>Applying a specific performance map to selected mission segments</ddue:para>
+						</ddue:content>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:all>
+					<xsd:element name="performanceMapUID" type="stringUIDBaseType">
+						<xsd:annotation>
+							<xsd:documentation>UID of performance map to be used for mission segments</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="segmentUIDs" type="stringVectorBaseType">
+						<xsd:annotation>
+							<xsd:documentation>List of all mission segment UIDs to which the performance map is to be applied</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="pointPerformanceUIDs" type="stringVectorBaseType">
+						<xsd:annotation>
+							<xsd:documentation>List of point performance UIDs to which the  performance map is to be applied</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:all>
+				<xsd:attribute name="uID" type="xsd:string" use="required"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+<xsd:complexType name="specificPerformanceMapsType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>specificPerformanceMapsType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>Collection of all assignments of specific performance maps to selected mission segments</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" name="specificPerformanceMap" type="specificPerformanceMapType"/>
+				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
