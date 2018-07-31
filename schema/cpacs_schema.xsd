@@ -7096,6 +7096,11 @@ jonas.jepsen@dlr.de
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
 				<xsd:all>
+					<xsd:element minOccurs="0" name="CAS" type="doubleConstraintBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Calibrated airspeed within the segment</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
 					<xsd:element minOccurs="0" name="machNumber" type="doubleConstraintBaseType">
 						<xsd:annotation>
 							<xsd:documentation>Mach number within the segment</xsd:documentation>
@@ -7165,6 +7170,19 @@ jonas.jepsen@dlr.de
 						<xsd:annotation>
 							<xsd:documentation>Delta in temperature compared to standard ISA conditions</xsd:documentation>
 						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="prioritySetting">
+						<xsd:annotation>
+							<xsd:documentation>priority setting indicating which constraint is preferred within the segment</xsd:documentation>
+						</xsd:annotation>
+						<xsd:complexType>
+								<xsd:simpleContent>
+									<xsd:restriction base="stringBaseType">
+										<xsd:enumeration value="velocity"/>
+										<xsd:enumeration value="flightPath"/>
+									</xsd:restriction>
+								</xsd:simpleContent>
+							</xsd:complexType>
 					</xsd:element>
 				</xsd:all>
 			</xsd:extension>
