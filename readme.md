@@ -1,10 +1,11 @@
+# CPACS
 The Common Parametric Aircraft Configuration Schema (**CPACS**) is a data definition for the air transportation system. CPACS enables engineers to exchange information between their tools. It is therefore a driver for multi-disciplinary and multi-fidelity design in distributed environments. CPACS describes the characteristics of aircraft, rotorcraft, engines, climate impact, fleets and mission in a structured, hierarchical manner. Not only product but also process information is stored in CPACS. The process information helps in setting up workflows for analysis modules. Due to the fact that CPACS follows a central model approach, the number of interfaces is reduced to a minimum
 
-## CPACS 2.3. Available
+![Centralized vs Decentralized](/development/images/centralized.png)
 
-The new CPACS version 2.3 is finished. You can download the new version of CPACS here:
+## CPACS Homepage
 
-[CPACS 2.3](https://github.com/DLR-boeh-da/CPACS/releases/tag/v2.3)
+There is now a webpage for CPACS related content where new developments, releases and other related projects are presented. Checkout the available content at [www.cpacs.de](http://www.cpacs.de)
 
 ## CPACS Tutorial Video: How-to Create a Wing 
 
