@@ -29028,8 +29028,8 @@ jonas.jepsen@dlr.de
 	</xsd:complexType>
 
 
-	<xsd:complexType name="materialType">
 
+	<xsd:complexType name="materialType">
 		<xsd:annotation>
 			<xsd:appinfo>
 				<sd:schemaDoc>
@@ -29037,25 +29037,13 @@ jonas.jepsen@dlr.de
 						<ddue:para>materialType</ddue:para>
 					</ddue:summary>
 					<ddue:remarks>
-						<ddue:para>Material type, conatining data of a material Material
-							orientation: 1: orientation in first preferred direction 2:
-							orientation in second preferred direction 3: remaining orthogonal
-							direction other stiffness components are dependent on the given
-							ones by symmetry relationships. 3 different material behaviours
-							can be defined which is carried out by the 3 branches of the
-							definition.</ddue:para>
+						<ddue:para>Material type, defining the properties for one of the following material types:</ddue:para>
 						<ddue:list>
-							<ddue:listItem>isotropic material like aluminium and steel may be
-								defined</ddue:listItem>
-							<ddue:listItem>transversal isotropic material like
-								uni-directional layers of CFRP may be defined</ddue:listItem>
-							<ddue:listItem>orthotrop material like several layers of CFRP may
-								be defined</ddue:listItem>
+							<ddue:listItem>isotropic materials</ddue:listItem>
+							<ddue:listItem>anisotropic 2D materials</ddue:listItem>
+							<ddue:listItem>orthotropic 2D materials</ddue:listItem>
+							<ddue:listItem>anisotropic 3D materials</ddue:listItem>
 						</ddue:list>
-						<ddue:para>For each material behaviour the minimum number of
-							stiffness parameters are requested. All other stiffness
-							components are dependent by material symmetry relationships.
-						</ddue:para>
 					</ddue:remarks>
 				</sd:schemaDoc>
 			</xsd:appinfo>
@@ -29063,267 +29051,997 @@ jonas.jepsen@dlr.de
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
 				<xsd:sequence>
-					<xsd:element name="name" type="stringBaseType">
-						<xsd:annotation>
-							<xsd:documentation>Name of material</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-					<xsd:element minOccurs="0" name="description" type="stringBaseType">
-						<xsd:annotation>
-							<xsd:documentation>description of material</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-					<xsd:element name="rho" type="doubleBaseType">
-						<xsd:annotation>
-							<xsd:documentation>Density of material in [kg/m^3]
-							</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-					<xsd:element name="k11" type="doubleBaseType">
-						<xsd:annotation>
-							<xsd:documentation>stiffness component in 11-direction in [N/m]
-							</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-					<xsd:element name="k12" type="doubleBaseType">
-						<xsd:annotation>
-							<xsd:documentation>stiffness component in 12-direction in [N/m]
-							</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-					<xsd:choice>
-						<xsd:annotation>
-							<xsd:documentation>choice between 3 different material behaviour
-							</xsd:documentation>
-						</xsd:annotation>
-						<xsd:sequence>
-							<xsd:annotation>
-								<xsd:documentation>mechanical properties for isotropic material
-									other stiffness components are dependent on the given ones by
-									symmetry relationships</xsd:documentation>
-							</xsd:annotation>
-							<xsd:element name="sig11" type="doubleBaseType">
-								<xsd:annotation>
-									<xsd:documentation>tensile strength in 11 direction in [N/m^2]
-									</xsd:documentation>
-								</xsd:annotation>
-							</xsd:element>
-							<xsd:element name="tau12" type="doubleBaseType">
-								<xsd:annotation>
-									<xsd:documentation>shear strength in 12 direction in [N/m^2]
-									</xsd:documentation>
-								</xsd:annotation>
-							</xsd:element>
-							<xsd:element minOccurs="0" name="sig11yieldT" type="doubleBaseType">
-								<xsd:annotation>
-									<xsd:documentation>tensile yield strength in 11 direction in
-										[N/m^2]</xsd:documentation>
-								</xsd:annotation>
-							</xsd:element>
-							<xsd:element minOccurs="0" name="sig11yieldC" type="doubleBaseType">
-								<xsd:annotation>
-									<xsd:documentation>compressive yield strength in 11 direction
-										in [N/m^2]</xsd:documentation>
-								</xsd:annotation>
-							</xsd:element>
-						</xsd:sequence>
-						<xsd:sequence>
-							<xsd:annotation>
-								<xsd:documentation>mechanical properties for transverse
-									isotropic material Material orientation: 1: orientation in
-									fiber direction 2 and 3: orientation orthogonal to fiber
-									direction other stiffness components are dependent on the given
-									ones by symmetry relationships</xsd:documentation>
-							</xsd:annotation>
-							<xsd:element name="k22" type="doubleBaseType">
-								<xsd:annotation>
-									<xsd:documentation>stiffness component in 22-direction
-									</xsd:documentation>
-								</xsd:annotation>
-							</xsd:element>
-							<xsd:element name="k23" type="doubleBaseType">
-								<xsd:annotation>
-									<xsd:documentation>stiffness component in 23-direction
-									</xsd:documentation>
-								</xsd:annotation>
-							</xsd:element>
-							<xsd:element name="k66" type="doubleBaseType">
-								<xsd:annotation>
-									<xsd:documentation>stiffness component in 66-direction
-									</xsd:documentation>
-								</xsd:annotation>
-							</xsd:element>
-							<xsd:element name="sig11t" type="doubleBaseType">
-								<xsd:annotation>
-									<xsd:documentation>tensile strength in 11 direction in [N/m^2]
-									</xsd:documentation>
-								</xsd:annotation>
-							</xsd:element>
-							<xsd:element name="sig11c" type="doubleBaseType">
-								<xsd:annotation>
-									<xsd:documentation>compressive strength in 11 direction in
-										[N/m^2]</xsd:documentation>
-								</xsd:annotation>
-							</xsd:element>
-							<xsd:element name="sig22t" type="doubleBaseType">
-								<xsd:annotation>
-									<xsd:documentation>tensile strength in 22 direction in [N/m^2]
-									</xsd:documentation>
-								</xsd:annotation>
-							</xsd:element>
-							<xsd:element name="sig22c" type="doubleBaseType">
-								<xsd:annotation>
-									<xsd:documentation>compressive strength in 22 direction in
-										[N/m^2]</xsd:documentation>
-								</xsd:annotation>
-							</xsd:element>
-							<xsd:element name="tau12" type="doubleBaseType">
-								<xsd:annotation>
-									<xsd:documentation>shear strength in 12 direction in [N/m^2]
-									</xsd:documentation>
-								</xsd:annotation>
-							</xsd:element>
-							<xsd:element name="tau23" type="doubleBaseType">
-								<xsd:annotation>
-									<xsd:documentation>shear strength in 23 direction in [N/m^2]
-									</xsd:documentation>
-								</xsd:annotation>
-							</xsd:element>
-						</xsd:sequence>
-						<xsd:sequence>
-							<xsd:annotation>
-								<xsd:documentation>mechanical properties for orthotropic
-									material Material orientation: 1: orientation in first
-									preferred direction 2: orientation in second preferred
-									direction 3: remaining orthogonal direction</xsd:documentation>
-							</xsd:annotation>
-							<xsd:element name="k13" type="doubleBaseType">
-								<xsd:annotation>
-									<xsd:documentation>stiffness component in 13-direction
-									</xsd:documentation>
-								</xsd:annotation>
-							</xsd:element>
-							<xsd:element name="k22" type="doubleBaseType">
-								<xsd:annotation>
-									<xsd:documentation>stiffness component in 22-direction
-									</xsd:documentation>
-								</xsd:annotation>
-							</xsd:element>
-							<xsd:element name="k23" type="doubleBaseType">
-								<xsd:annotation>
-									<xsd:documentation>stiffness component in 23-direction
-									</xsd:documentation>
-								</xsd:annotation>
-							</xsd:element>
-							<xsd:element name="k33" type="doubleBaseType">
-								<xsd:annotation>
-									<xsd:documentation>stiffness component in 33-direction
-									</xsd:documentation>
-								</xsd:annotation>
-							</xsd:element>
-							<xsd:element name="k44" type="doubleBaseType">
-								<xsd:annotation>
-									<xsd:documentation>stiffness component in 44-direction
-									</xsd:documentation>
-								</xsd:annotation>
-							</xsd:element>
-							<xsd:element name="k55" type="doubleBaseType">
-								<xsd:annotation>
-									<xsd:documentation>stiffness component in 55-direction
-									</xsd:documentation>
-								</xsd:annotation>
-							</xsd:element>
-							<xsd:element name="k66" type="doubleBaseType">
-								<xsd:annotation>
-									<xsd:documentation>stiffness component in 66-direction
-									</xsd:documentation>
-								</xsd:annotation>
-							</xsd:element>
-							<xsd:element name="sig11t" type="doubleBaseType">
-								<xsd:annotation>
-									<xsd:documentation>tensile strength in 11 direction in [N/m^2]
-									</xsd:documentation>
-								</xsd:annotation>
-							</xsd:element>
-							<xsd:element name="sig11c" type="doubleBaseType">
-								<xsd:annotation>
-									<xsd:documentation>compressive strength in 11 direction in
-										[N/m^2]</xsd:documentation>
-								</xsd:annotation>
-							</xsd:element>
-							<xsd:element name="sig22t" type="doubleBaseType">
-								<xsd:annotation>
-									<xsd:documentation>tensile strength in 22 direction in [N/m^2]
-									</xsd:documentation>
-								</xsd:annotation>
-							</xsd:element>
-							<xsd:element name="sig22c" type="doubleBaseType">
-								<xsd:annotation>
-									<xsd:documentation>compressive strength in 22 direction in
-										[N/m^2]</xsd:documentation>
-								</xsd:annotation>
-							</xsd:element>
-							<xsd:element name="sig33t" type="doubleBaseType">
-								<xsd:annotation>
-									<xsd:documentation>tensile strength in 33 direction in [N/m^2]
-									</xsd:documentation>
-								</xsd:annotation>
-							</xsd:element>
-							<xsd:element name="sig33c" type="doubleBaseType">
-								<xsd:annotation>
-									<xsd:documentation>compressive strength in 33 direction in
-										[N/m^2]</xsd:documentation>
-								</xsd:annotation>
-							</xsd:element>
-							<xsd:element name="tau12" type="doubleBaseType">
-								<xsd:annotation>
-									<xsd:documentation>shear strength in 12 direction in [N/m^2]
-									</xsd:documentation>
-								</xsd:annotation>
-							</xsd:element>
-							<xsd:element name="tau13" type="doubleBaseType">
-								<xsd:annotation>
-									<xsd:documentation>shear strength in 13 direction in [N/m^2]
-									</xsd:documentation>
-								</xsd:annotation>
-							</xsd:element>
-							<xsd:element name="tau23" type="doubleBaseType">
-								<xsd:annotation>
-									<xsd:documentation>shear strength in 23 direction in [N/m^2]
-									</xsd:documentation>
-								</xsd:annotation>
-							</xsd:element>
-						</xsd:sequence>
-					</xsd:choice>
-					<xsd:element minOccurs="0" name="maxStrain" type="doubleBaseType">
-						<xsd:annotation>
-							<xsd:documentation>Maximum strain of the material. This value is
-								intended for layerd material. Thus no orientation is given.
-							</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-					<xsd:element minOccurs="0" name="fatigueFactor" type="doubleBaseType">
-						<xsd:annotation>
-							<xsd:documentation>optional knockdown factor for fatiuqe
-								(defaults to 1)</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-					<xsd:element maxOccurs="unbounded" minOccurs="0" name="postFailure" type="postFailureType"/>
-					<xsd:element minOccurs="0" name="thermalConductivity" type="doubleBaseType">
-						<xsd:annotation>
-							<xsd:documentation>
-								thermal conductivity of the material in [W/(m*K)]
-							</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-					<xsd:element minOccurs="0" name="specificHeatMap" type="specificHeatMapType"/>
-					<xsd:element minOccurs="0" name="emissivityMap" type="emissivityMapType"/>
-				</xsd:sequence>
-				<xsd:attribute name="uID" type="xsd:string" use="required"/>
+					<xsd:element name="name" type="stringBaseType" maxOccurs="1"
+		        		minOccurs="1">
+		        		<xsd:annotation>
+		        			<xsd:documentation>
+		        				Name of the material
+		        			</xsd:documentation>
+		        		</xsd:annotation>
+		        	</xsd:element>
+		        	<xsd:element name="description" type="stringBaseType"
+		        		maxOccurs="1" minOccurs="0">
+		        		<xsd:annotation>
+		        			<xsd:documentation>
+		        				Description of the material
+		        			</xsd:documentation>
+		        		</xsd:annotation>
+		        	</xsd:element>
+		        	<xsd:element name="rho" type="doubleBaseType" maxOccurs="1"
+		        		minOccurs="1">
+		        		<xsd:annotation>
+		        			<xsd:documentation>
+		        				Material density [kg/m^3]
+		        			</xsd:documentation>
+		        		</xsd:annotation>
+		        	</xsd:element>
+		        	<xsd:choice maxOccurs="1" minOccurs="1">
+		        		<xsd:element name="isotropicProperties"
+		        			type="isotropicPropertiesType">
+		        			<xsd:annotation>
+		        				<xsd:documentation>
+		        					material properties for linear
+		        					isotropic materials.
+		        				</xsd:documentation>
+		        			</xsd:annotation>
+		        		</xsd:element>
+		        		<xsd:element name="orthotropicShellProperties"
+		        			type="orthotropicShellPropertiesType">
+		        			<xsd:annotation>
+		        				<xsd:documentation>
+		        					material properties for orthotropic
+		        					2D materials.
+		        				</xsd:documentation>
+		        			</xsd:annotation>
+		        		</xsd:element>
+		        		<xsd:element name="anisotropicShellProperties"
+		        			type="anisotropicShellPropertiesType">
+		        			<xsd:annotation>
+		        				<xsd:documentation>
+		        					material properties for anisotropic
+		        					2D materials.
+		        				</xsd:documentation>
+		        			</xsd:annotation>
+		        		</xsd:element>
+		        		<xsd:element name="orthotropicSolidProperties"
+		        			type="orthotropicSolidPropertiesType">
+		        		</xsd:element>
+		        		<xsd:element name="anisotropicSolidProperties"
+		        			type="anisotropicSolidPropertiesType">
+		        			<xsd:annotation>
+		        				<xsd:documentation>
+		        					material properties for anisotropic
+		        					3D materials.
+		        				</xsd:documentation>
+		        			</xsd:annotation>
+		        		</xsd:element>
+		        	</xsd:choice>
+		        </xsd:sequence>
+		      	<xsd:attribute name="uID" type="xsd:string"></xsd:attribute>
+      		</xsd:extension>
+      	</xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="isotropicPropertiesType">
+        <xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>isotropicPropertiesType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>Isotropic Properties Type, ...</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+        <xsd:complexContent>
+        	<xsd:extension base="complexBaseType">
+		        <xsd:all>
+		        	<xsd:element name="G11" type="doubleBaseType"
+		        		maxOccurs="1" minOccurs="0">
+		        		<xsd:annotation>
+		        			<xsd:documentation>
+		        				Young's modulus [N/m]
+		        			</xsd:documentation>
+		        		</xsd:annotation>
+		        	</xsd:element>
+		        	<xsd:element name="G12" type="doubleBaseType"
+		        		maxOccurs="1" minOccurs="0">
+		        		<xsd:annotation>
+		        			<xsd:documentation>
+		        				shear modulus [N/m^2]
+		        			</xsd:documentation>
+		        		</xsd:annotation>
+		        	</xsd:element>
+		        	<xsd:element name="nu"
+		        		type="doubleBaseType" maxOccurs="1" minOccurs="0">
+		        		<xsd:annotation>
+		        			<xsd:documentation>
+		        				Poisson's ratio
+		        			</xsd:documentation>
+		        		</xsd:annotation>
+		        	</xsd:element>
+		        	<xsd:element name="referenceTemperature"
+		        		type="doubleBaseType" maxOccurs="1" minOccurs="0">
+		        		<xsd:annotation>
+		        			<xsd:documentation>
+		        				reference temperature for thermal
+		        				expansion coefficient [K]
+		        			</xsd:documentation>
+		        		</xsd:annotation>
+		        	</xsd:element>
+		        	<xsd:element name="thermalExpansionCoeff"
+		        		type="doubleBaseType" maxOccurs="1" minOccurs="0">
+		        		<xsd:annotation>
+		        			<xsd:documentation>
+		        				thermal expansion coefficient [1/K]
+		        			</xsd:documentation>
+		        		</xsd:annotation>
+		        	</xsd:element>
+		        	<xsd:element name="sig11t" type="doubleBaseType"
+		        		maxOccurs="1" minOccurs="0">
+		        		<xsd:annotation>
+		        			<xsd:documentation>
+		        				allowable stress for tension [N/m^2]
+		        			</xsd:documentation>
+		        		</xsd:annotation>
+		        	</xsd:element>
+		        	<xsd:element name="sig11c" type="doubleBaseType"
+		        		maxOccurs="1" minOccurs="0">
+		        		<xsd:annotation>
+		        			<xsd:documentation>
+		        				allowable stress for compression [N/m^2]
+		        			</xsd:documentation>
+		        		</xsd:annotation>
+		        	</xsd:element>
+		        	<xsd:element name="tau12" type="doubleBaseType"
+		        		maxOccurs="1" minOccurs="0">
+		        		<xsd:annotation>
+		        			<xsd:documentation>
+		        				allowable stress for shear [N/m^2]
+		        			</xsd:documentation>
+		        		</xsd:annotation>
+		        	</xsd:element>
+		        	<xsd:element name="eps11t" type="doubleBaseType"
+		        		maxOccurs="1" minOccurs="0">
+		        		<xsd:annotation>
+		        			<xsd:documentation>
+		        				allowable strain for tension
+		        			</xsd:documentation>
+		        		</xsd:annotation>
+		        	</xsd:element>
+		        	<xsd:element name="eps11c" type="doubleBaseType"
+		        		maxOccurs="1" minOccurs="0">
+		        		<xsd:annotation>
+		        			<xsd:documentation>
+		        				allowable strain for compression
+		        			</xsd:documentation>
+		        		</xsd:annotation>
+		        	</xsd:element>
+		        	<xsd:element name="gamma12" type="doubleBaseType"
+		        		maxOccurs="1" minOccurs="0">
+		        		<xsd:annotation>
+		        			<xsd:documentation>
+		        				allowable strain for shear
+		        			</xsd:documentation>
+		        		</xsd:annotation>
+		        	</xsd:element>
+		        	<xsd:element name="yieldStrength"
+		        		type="doubleBaseType" maxOccurs="1" minOccurs="0">
+                        <xsd:annotation>
+                        	<xsd:documentation>
+                        		yield strength [N/m^2]
+                        	</xsd:documentation>
+                        </xsd:annotation>
+		        	</xsd:element>
+		        	<xsd:element name="postFailure"
+		        		type="postFailureType" maxOccurs="unbounded"
+		        		minOccurs="0">
+		        		<xsd:annotation>
+		        			<xsd:documentation>
+		        				post failure definition
+		        			</xsd:documentation>
+		        		</xsd:annotation>
+		        	</xsd:element>
+		        </xsd:all>
+        	</xsd:extension>
+    	</xsd:complexContent>
+    </xsd:complexType>
+    
+
+
+
+
+
+    <xsd:complexType name="anisotropicShellPropertiesType">
+      	<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>anisotropicShellPropertiesType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>Anisotropic Shell Properties Type, ...</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+        <xsd:complexContent>
+        	<xsd:extension base="complexBaseType">
+		        <xsd:all>
+		          <xsd:element name="K11" type="doubleBaseType"
+		          	maxOccurs="1" minOccurs="1">
+		          	<xsd:annotation>
+		          		<xsd:documentation>
+		          			... add description ...
+		          		</xsd:documentation>
+		          	</xsd:annotation>
+		          </xsd:element>
+		          <xsd:element name="K12" type="doubleBaseType"
+		          	maxOccurs="1" minOccurs="1">
+		          	<xsd:annotation>
+		          		<xsd:documentation>
+		          			... add description ...
+		          		</xsd:documentation>
+		          	</xsd:annotation>
+		          </xsd:element>
+		          <xsd:element name="K13" type="doubleBaseType"
+		          	maxOccurs="1" minOccurs="1">
+		          	<xsd:annotation>
+		          		<xsd:documentation>
+		          			... add description ...
+		          		</xsd:documentation>
+		          	</xsd:annotation>
+		          </xsd:element>
+		          <xsd:element name="K22" type="doubleBaseType"
+		          	maxOccurs="1" minOccurs="1">
+		          	<xsd:annotation>
+		          		<xsd:documentation>
+		          			... add description ...
+		          		</xsd:documentation>
+		          	</xsd:annotation>
+		          </xsd:element>
+		          <xsd:element name="K23" type="doubleBaseType"
+		          	maxOccurs="1" minOccurs="1">
+		          	<xsd:annotation>
+		          		<xsd:documentation>
+		          			... add description ...
+		          		</xsd:documentation>
+		          	</xsd:annotation>
+		          </xsd:element>
+		          <xsd:element name="K33" type="doubleBaseType"
+		          	maxOccurs="1" minOccurs="1">
+		          	<xsd:annotation>
+		          		<xsd:documentation>
+		          			... add description ...
+		          		</xsd:documentation>
+		          	</xsd:annotation>
+		          </xsd:element>
+		          <xsd:element name="referenceTemperature"
+		          	type="doubleBaseType" maxOccurs="1" minOccurs="0">
+		          	<xsd:annotation>
+		          		<xsd:documentation>
+		          			reference temperature for thermal
+		          			expansion coefficients [K]
+		          		</xsd:documentation>
+		          	</xsd:annotation>
+		          </xsd:element>
+		          <xsd:element name="thermalExpansionCoeff1"
+		          	type="doubleBaseType" maxOccurs="1" minOccurs="0">
+		          	<xsd:annotation>
+		          		<xsd:documentation>
+		          			thermal expansion coefficient in material
+		          			direction 1 [1/K]
+		          		</xsd:documentation>
+		          	</xsd:annotation>
+		          </xsd:element>
+		          <xsd:element name="thermalExpansionCoeff2"
+		          	type="doubleBaseType" maxOccurs="1" minOccurs="0">
+		          	<xsd:annotation>
+		          		<xsd:documentation>
+		          			thermal expansion coefficient in material
+		          			direction 2 [1/K]
+		          		</xsd:documentation>
+		          	</xsd:annotation>
+		          </xsd:element>
+		          <xsd:element name="thermalExpansionCoeff3"
+		          	type="doubleBaseType" maxOccurs="1" minOccurs="0">
+		          	<xsd:annotation>
+		          		<xsd:documentation>
+		          			thermal expansion coefficient in material
+		          			direction 3 [1/K]
+		          		</xsd:documentation>
+		          	</xsd:annotation>
+		          </xsd:element>
+		          <xsd:element name="sig11t" type="doubleBaseType"
+		          	maxOccurs="1" minOccurs="0">
+		          	<xsd:annotation>
+		          		<xsd:documentation>
+		          			allowable stress for tension [N/m^2]
+		          		</xsd:documentation>
+		          	</xsd:annotation>
+		          </xsd:element>
+		          <xsd:element name="sig11c" type="doubleBaseType"
+		          	maxOccurs="1" minOccurs="0">
+		          	<xsd:annotation>
+		          		<xsd:documentation>
+		          			allowable stress for compression [N/m^2]
+		          		</xsd:documentation>
+		          	</xsd:annotation>
+		          </xsd:element>
+		          <xsd:element name="tau12" type="doubleBaseType"
+		          	maxOccurs="1" minOccurs="0">
+		          	<xsd:annotation>
+		          		<xsd:documentation>
+		          			allowable stress for shear [N/m^2]
+		          		</xsd:documentation>
+		          	</xsd:annotation>
+		          </xsd:element>
+		          <xsd:element name="eps11t" type="doubleBaseType"
+		          	maxOccurs="1" minOccurs="0">
+		          	<xsd:annotation>
+		          		<xsd:documentation>
+		          			allowable strain for tension
+		          		</xsd:documentation>
+		          	</xsd:annotation>
+		          </xsd:element>
+		          <xsd:element name="eps11c" type="doubleBaseType"
+		          	maxOccurs="1" minOccurs="0">
+		          	<xsd:annotation>
+		          		<xsd:documentation>
+		          			allowable strain for compression
+		          		</xsd:documentation>
+		          	</xsd:annotation>
+		          </xsd:element>
+		          <xsd:element name="gamma12" type="doubleBaseType"
+		          	maxOccurs="1" minOccurs="0">
+		          	<xsd:annotation>
+		          		<xsd:documentation>
+		          			allowable strain for shear
+		          		</xsd:documentation>
+		          	</xsd:annotation>
+		          </xsd:element>
+		        </xsd:all>
+        	</xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="orthotropicShellPropertiesType">
+    	<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>orthotropicShellPropertiesType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>Orthotropic Shell Properties Type, ...</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+    	<xsd:complexContent>
+        	<xsd:extension base="complexBaseType">
+		        <xsd:all>
+		        <xsd:element name="G11" type="doubleBaseType"
+		        	maxOccurs="1" minOccurs="1">
+		        	<xsd:annotation>
+		        		<xsd:documentation>
+		        			... add description ...
+		        		</xsd:documentation>
+		        	</xsd:annotation>
+		        </xsd:element>
+		        <xsd:element name="G12" type="doubleBaseType"
+		        	maxOccurs="1" minOccurs="0">
+		        	<xsd:annotation>
+		        		<xsd:documentation>
+		        			... add description ...
+		        		</xsd:documentation>
+		        	</xsd:annotation>
+		        </xsd:element>
+		        <xsd:element name="G13" type="doubleBaseType"
+		        	maxOccurs="1" minOccurs="0">
+		        	<xsd:annotation>
+		        		<xsd:documentation>
+		        			... add description ...
+		        		</xsd:documentation>
+		        	</xsd:annotation>
+		        </xsd:element>
+		        <xsd:element name="G22" type="doubleBaseType"
+		        	maxOccurs="1" minOccurs="1">
+		        	<xsd:annotation>
+		        		<xsd:documentation>
+		        			... add description ...
+		        		</xsd:documentation>
+		        	</xsd:annotation>
+		        </xsd:element>
+		        <xsd:element name="G23" type="doubleBaseType"
+		        	maxOccurs="1" minOccurs="0">
+		        	<xsd:annotation>
+		        		<xsd:documentation>
+		        			... add description ...
+		        		</xsd:documentation>
+		        	</xsd:annotation>
+		        </xsd:element>
+		        <xsd:element name="nu" type="doubleBaseType"
+		        	maxOccurs="1" minOccurs="1">
+		        	<xsd:annotation>
+		        		<xsd:documentation>
+		        			Poisson's ratio
+		        		</xsd:documentation>
+		        	</xsd:annotation>
+		        </xsd:element>
+		        <xsd:element name="referenceTemperature"
+		        	type="doubleBaseType" maxOccurs="1" minOccurs="0">
+		        	<xsd:annotation>
+		        		<xsd:documentation>
+		        			reference temperature for thermal expansion
+		        			coefficients [K]
+		        		</xsd:documentation>
+		        	</xsd:annotation>
+		        </xsd:element>
+		        <xsd:element name="thermalExpansionCoeff1"
+		        	type="doubleBaseType" maxOccurs="1" minOccurs="0">
+		        	<xsd:annotation>
+		        		<xsd:documentation>
+		        			thermal expansion coefficient in material
+		        			direction 1 [1/K]
+		        		</xsd:documentation>
+		        	</xsd:annotation>
+		        </xsd:element>
+		        <xsd:element name="thermalExpansionCoeff2"
+		        	type="doubleBaseType" maxOccurs="1" minOccurs="0">
+		        	<xsd:annotation>
+		        		<xsd:documentation>
+		        			thermal expansion coefficient in material
+		        			direction 2 [1/K]
+		        		</xsd:documentation>
+		        	</xsd:annotation>
+		        </xsd:element>
+		        <xsd:element name="sig11t" type="doubleBaseType"
+		        	maxOccurs="1" minOccurs="0">
+		        	<xsd:annotation>
+		        		<xsd:documentation>
+		        			allowable stress for tension in material
+		        			direction 1 [N/m^2]
+		        		</xsd:documentation>
+		        	</xsd:annotation>
+		        </xsd:element>
+		        <xsd:element name="sig11c" type="doubleBaseType"
+		        	maxOccurs="1" minOccurs="0">
+		        	<xsd:annotation>
+		        		<xsd:documentation>
+		        			allowable stress for compression in material
+		        			direction 1 [N/m^2]
+		        		</xsd:documentation>
+		        	</xsd:annotation>
+		        </xsd:element>
+		        <xsd:element name="sig22t" type="doubleBaseType"
+		        	maxOccurs="1" minOccurs="0">
+		        	<xsd:annotation>
+		        		<xsd:documentation>
+		        			allowable stress for tension in material
+		        			direction 2 [N/m^2]
+		        		</xsd:documentation>
+		        	</xsd:annotation>
+		        </xsd:element>
+		        <xsd:element name="sig22c" type="doubleBaseType"
+		        	maxOccurs="1" minOccurs="0">
+		        	<xsd:annotation>
+		        		<xsd:documentation>
+		        			allowable stress for compression in material
+		        			direction 2 [N/m^2]
+		        		</xsd:documentation>
+		        	</xsd:annotation>
+		        </xsd:element>
+		        <xsd:element name="tau12" type="doubleBaseType"
+		        	maxOccurs="1" minOccurs="0">
+		        	<xsd:annotation>
+		        		<xsd:documentation>
+		        			allowable stress for shear [N/m^2]
+		        		</xsd:documentation>
+		        	</xsd:annotation>
+		        </xsd:element>
+		        <xsd:element name="eps11t" type="doubleBaseType"
+		        	maxOccurs="1" minOccurs="0">
+		        	<xsd:annotation>
+		        		<xsd:documentation>
+		        			allowable strain for tension in material
+		        			direction 1
+		        		</xsd:documentation>
+		        	</xsd:annotation>
+		        </xsd:element>
+		        <xsd:element name="eps11c" type="doubleBaseType"
+		        	maxOccurs="1" minOccurs="0">
+		        	<xsd:annotation>
+		        		<xsd:documentation>
+		        			allowable strain for compression in material
+		        			direction 1
+		        		</xsd:documentation>
+		        	</xsd:annotation>
+		        </xsd:element>
+		        <xsd:element name="eps22t" type="doubleBaseType"
+		        	maxOccurs="1" minOccurs="0">
+		        	<xsd:annotation>
+		        		<xsd:documentation>
+		        			allowable strain for tension in material
+		        			direction 2
+		        		</xsd:documentation>
+		        	</xsd:annotation>
+		        </xsd:element>
+		        <xsd:element name="eps22c" type="doubleBaseType"
+		        	maxOccurs="1" minOccurs="0">
+		        	<xsd:annotation>
+		        		<xsd:documentation>
+		        			allowable strain for compression in material
+		        			direction 2
+		        		</xsd:documentation>
+		        	</xsd:annotation>
+		        </xsd:element>
+		        <xsd:element name="gamma12" type="doubleBaseType"
+		        	maxOccurs="1" minOccurs="0">
+		        	<xsd:annotation>
+		        		<xsd:documentation>
+		        			allowable strain for shear
+		        		</xsd:documentation>
+		        	</xsd:annotation>
+		        </xsd:element>
+		        </xsd:all>
 			</xsd:extension>
 		</xsd:complexContent>
-	</xsd:complexType>
+    </xsd:complexType>
 
+    <xsd:complexType name="anisotropicSolidPropertiesType">
+      	<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>anisotropicSolidPropertiesType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>Anisotropic Solid Properties Type, ...</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+    	<xsd:complexContent>
+        	<xsd:extension base="complexBaseType">
+		        <xsd:all>
+		          <xsd:element name="K11" type="doubleBaseType"
+		          	maxOccurs="1" minOccurs="1">
+		          	<xsd:annotation>
+		          		<xsd:documentation>
+		          			... add description ...
+		          		</xsd:documentation>
+		          	</xsd:annotation>
+		          </xsd:element>
+		          <xsd:element name="K12" type="doubleBaseType"
+		          	maxOccurs="1" minOccurs="1">
+		          	<xsd:annotation>
+		          		<xsd:documentation>
+		          			... add description ...
+		          		</xsd:documentation>
+		          	</xsd:annotation>
+		          </xsd:element>
+		          <xsd:element name="K13" type="doubleBaseType"
+		          	maxOccurs="1" minOccurs="1">
+		          	<xsd:annotation>
+		          		<xsd:documentation>
+		          			... add description ...
+		          		</xsd:documentation>
+		          	</xsd:annotation>
+		          </xsd:element>
+		          <xsd:element name="K14" type="doubleBaseType"
+		          	maxOccurs="1" minOccurs="1">
+		          	<xsd:annotation>
+		          		<xsd:documentation>
+		          			... add description ...
+		          		</xsd:documentation>
+		          	</xsd:annotation>
+		          </xsd:element>
+		          <xsd:element name="K15" type="doubleBaseType"
+		          	maxOccurs="1" minOccurs="1">
+		          	<xsd:annotation>
+		          		<xsd:documentation>
+		          			... add description ...
+		          		</xsd:documentation>
+		          	</xsd:annotation>
+		          </xsd:element>
+		          <xsd:element name="K16" type="doubleBaseType"
+		          	maxOccurs="1" minOccurs="1">
+		          	<xsd:annotation>
+		          		<xsd:documentation>
+		          			... add description ...
+		          		</xsd:documentation>
+		          	</xsd:annotation>
+		          </xsd:element>
+		          <xsd:element name="K22" type="doubleBaseType"
+		          	maxOccurs="1" minOccurs="1">
+		          	<xsd:annotation>
+		          		<xsd:documentation>
+		          			... add description ...
+		          		</xsd:documentation>
+		          	</xsd:annotation>
+		          </xsd:element>
+		          <xsd:element name="K23" type="doubleBaseType"
+		          	maxOccurs="1" minOccurs="1">
+		          	<xsd:annotation>
+		          		<xsd:documentation>
+		          			... add description ...
+		          		</xsd:documentation>
+		          	</xsd:annotation>
+		          </xsd:element>
+		          <xsd:element name="K24" type="doubleBaseType"
+		          	maxOccurs="1" minOccurs="1">
+		          	<xsd:annotation>
+		          		<xsd:documentation>
+		          			... add description ...
+		          		</xsd:documentation>
+		          	</xsd:annotation>
+		          </xsd:element>
+		          <xsd:element name="K25" type="doubleBaseType"
+		          	maxOccurs="1" minOccurs="1">
+		          	<xsd:annotation>
+		          		<xsd:documentation>
+		          			... add description ...
+		          		</xsd:documentation>
+		          	</xsd:annotation>
+		          </xsd:element>
+		          <xsd:element name="K26" type="doubleBaseType"
+		          	maxOccurs="1" minOccurs="1">
+		          	<xsd:annotation>
+		          		<xsd:documentation>
+		          			... add description ...
+		          		</xsd:documentation>
+		          	</xsd:annotation>
+		          </xsd:element>
+		          <xsd:element name="K33" type="doubleBaseType"
+		          	maxOccurs="1" minOccurs="1">
+		          	<xsd:annotation>
+		          		<xsd:documentation>
+		          			... add description ...
+		          		</xsd:documentation>
+		          	</xsd:annotation>
+		          </xsd:element>
+		          <xsd:element name="K34" type="doubleBaseType"
+		          	maxOccurs="1" minOccurs="1">
+		          	<xsd:annotation>
+		          		<xsd:documentation>
+		          			... add description ...
+		          		</xsd:documentation>
+		          	</xsd:annotation>
+		          </xsd:element>
+		          <xsd:element name="K35" type="doubleBaseType"
+		          	maxOccurs="1" minOccurs="1">
+		          	<xsd:annotation>
+		          		<xsd:documentation>
+		          			... add description ...
+		          		</xsd:documentation>
+		          	</xsd:annotation>
+		          </xsd:element>
+		          <xsd:element name="K36" type="doubleBaseType"
+		          	maxOccurs="1" minOccurs="1">
+		          	<xsd:annotation>
+		          		<xsd:documentation>
+		          			... add description ...
+		          		</xsd:documentation>
+		          	</xsd:annotation>
+		          </xsd:element>
+		          <xsd:element name="K44" type="doubleBaseType"
+		          	maxOccurs="1" minOccurs="1">
+		          	<xsd:annotation>
+		          		<xsd:documentation>
+		          			... add description ...
+		          		</xsd:documentation>
+		          	</xsd:annotation>
+		          </xsd:element>
+		          <xsd:element name="K45" type="doubleBaseType"
+		          	maxOccurs="1" minOccurs="1">
+		          	<xsd:annotation>
+		          		<xsd:documentation>
+		          			... add description ...
+		          		</xsd:documentation>
+		          	</xsd:annotation>
+		          </xsd:element>
+		          <xsd:element name="K46" type="doubleBaseType"
+		          	maxOccurs="1" minOccurs="1">
+		          	<xsd:annotation>
+		          		<xsd:documentation>
+		          			... add description ...
+		          		</xsd:documentation>
+		          	</xsd:annotation>
+		          </xsd:element>
+		          <xsd:element name="K55" type="doubleBaseType"
+		          	maxOccurs="1" minOccurs="1">
+		          	<xsd:annotation>
+		          		<xsd:documentation>
+		          			... add description ...
+		          		</xsd:documentation>
+		          	</xsd:annotation>
+		          </xsd:element>
+		          <xsd:element name="K56" type="doubleBaseType"
+		          	maxOccurs="1" minOccurs="1">
+		          	<xsd:annotation>
+		          		<xsd:documentation>
+		          			... add description ...
+		          		</xsd:documentation>
+		          	</xsd:annotation>
+		          </xsd:element>
+		          <xsd:element name="K66" type="doubleBaseType"
+		          	maxOccurs="1" minOccurs="1">
+		          	<xsd:annotation>
+		          		<xsd:documentation>
+		          			... add description ...
+		          		</xsd:documentation>
+		          	</xsd:annotation>
+		          </xsd:element>
+		          <xsd:element name="referenceTemperature"
+		          	type="doubleBaseType" maxOccurs="1" minOccurs="0">
+		          	<xsd:annotation>
+		          		<xsd:documentation>
+		          			reference temperature for thermal
+		          			expansion coefficients [K]
+		          		</xsd:documentation>
+		          	</xsd:annotation>
+		          </xsd:element>
+		          <xsd:element name="thermalExpansionCoeff1"
+		          	type="doubleBaseType" maxOccurs="1" minOccurs="0">
+		          	<xsd:annotation>
+		          		<xsd:documentation>
+		          			thermal expansion coefficient in material
+		          			direction 1 [1/K]
+		          		</xsd:documentation>
+		          	</xsd:annotation>
+		          </xsd:element>
+		          <xsd:element name="thermalExpansionCoeff2"
+		          	type="doubleBaseType" maxOccurs="1" minOccurs="0">
+		          	<xsd:annotation>
+		          		<xsd:documentation>
+		          			thermal expansion coefficient in material
+		          			direction 2 [1/K]
+		          		</xsd:documentation>
+		          	</xsd:annotation>
+		          </xsd:element>
+		          <xsd:element name="thermalExpansionCoeff3"
+		          	type="doubleBaseType" maxOccurs="1" minOccurs="0">
+		          	<xsd:annotation>
+		          		<xsd:documentation>
+		          			thermal expansion coefficient in material
+		          			direction 3 [1/K]
+		          		</xsd:documentation>
+		          	</xsd:annotation>
+		          </xsd:element>
+		          <xsd:element name="thermalExpansionCoeff4"
+		          	type="doubleBaseType" maxOccurs="1" minOccurs="0">
+		          	<xsd:annotation>
+		          		<xsd:documentation>
+		          			thermal expansion coefficient in material
+		          			direction 12 [1/K]
+		          		</xsd:documentation>
+		          	</xsd:annotation>
+		          </xsd:element>
+		          <xsd:element name="thermalExpansionCoeff5"
+		          	type="doubleBaseType" maxOccurs="1" minOccurs="0">
+		          	<xsd:annotation>
+		          		<xsd:documentation>
+		          			thermal expansion coefficient in material
+		          			direction 23 [1/K]
+		          		</xsd:documentation>
+		          	</xsd:annotation>
+		          </xsd:element>
+		          <xsd:element name="thermalExpansionCoeff6"
+		          	type="doubleBaseType" maxOccurs="1" minOccurs="0">
+		          	<xsd:annotation>
+		          		<xsd:documentation>
+		          			thermal expansion coefficient in material
+		          			direction 13 [1/K]
+		          		</xsd:documentation>
+		          	</xsd:annotation>
+		          </xsd:element>
+		          <xsd:element name="sig11t" type="doubleBaseType"
+		          	maxOccurs="1" minOccurs="0">
+		          	<xsd:annotation>
+		          		<xsd:documentation>
+		          			allowable stress for tension in material
+		          			direction 1 [N/m^2]
+		          		</xsd:documentation>
+		          	</xsd:annotation>
+		          </xsd:element>
+		          <xsd:element name="sig11c" type="doubleBaseType"
+		          	maxOccurs="1" minOccurs="0">
+		          	<xsd:annotation>
+		          		<xsd:documentation>
+		          			allowable stress for compression in
+		          			material direction 1 [N/m^2]
+		          		</xsd:documentation>
+		          	</xsd:annotation>
+		          </xsd:element>
+		          <xsd:element name="sig22t" type="doubleBaseType"
+		          	maxOccurs="1" minOccurs="0">
+		          	<xsd:annotation>
+		          		<xsd:documentation>
+		          			allowable stress for tension in material
+		          			direction 2 [N/m^2]
+		          		</xsd:documentation>
+		          	</xsd:annotation>
+		          </xsd:element>
+		          <xsd:element name="sig22c" type="doubleBaseType"
+		          	maxOccurs="1" minOccurs="0">
+		          	<xsd:annotation>
+		          		<xsd:documentation>
+		          			allowable stress for compression in
+		          			material direction 2 [N/m^2]
+		          		</xsd:documentation>
+		          	</xsd:annotation>
+		          </xsd:element>
+		          <xsd:element name="sig33t" type="doubleBaseType"
+		          	maxOccurs="1" minOccurs="0">
+		          	<xsd:annotation>
+		          		<xsd:documentation>
+		          			allowable stress for tension in material
+		          			direction 3 [N/m^2]
+		          		</xsd:documentation>
+		          	</xsd:annotation>
+		          </xsd:element>
+		          <xsd:element name="sig33c" type="doubleBaseType"
+		          	maxOccurs="1" minOccurs="0">
+		          	<xsd:annotation>
+		          		<xsd:documentation>
+		          			allowable stress for compression in
+		          			material direction 3 [N/m^2]
+		          		</xsd:documentation>
+		          	</xsd:annotation>
+		          </xsd:element>
+		          <xsd:element name="tau12" type="doubleBaseType"
+		          	maxOccurs="1" minOccurs="0">
+		          	<xsd:annotation>
+		          		<xsd:documentation>
+		          			allowable stress for shear direction 12
+		          			[N/m^2]
+		          		</xsd:documentation>
+		          	</xsd:annotation>
+		          </xsd:element>
+		          <xsd:element name="tau13" type="doubleBaseType"
+		          	maxOccurs="1" minOccurs="0">
+		          	<xsd:annotation>
+		          		<xsd:documentation>
+		          			allowable stress for shear direction 13
+		          			[N/m^2]
+		          		</xsd:documentation>
+		          	</xsd:annotation>
+		          </xsd:element>
+		          <xsd:element name="tau23" type="doubleBaseType"
+		          	maxOccurs="1" minOccurs="0">
+		          	<xsd:annotation>
+		          		<xsd:documentation>
+		          			allowable stress for shear direction 23
+		          			[N/m^2]
+		          		</xsd:documentation>
+		          	</xsd:annotation>
+		          </xsd:element>
+		          <xsd:element name="eps11t" type="doubleBaseType"
+		          	maxOccurs="1" minOccurs="0">
+		          	<xsd:annotation>
+		          		<xsd:documentation>
+		          			allowable strain for tension in material
+		          			direction 1
+		          		</xsd:documentation>
+		          	</xsd:annotation>
+		          </xsd:element>
+		          <xsd:element name="eps11c" type="doubleBaseType"
+		          	maxOccurs="1" minOccurs="0">
+		          	<xsd:annotation>
+		          		<xsd:documentation>
+		          			allowable strain for compression in
+		          			material direction 1
+		          		</xsd:documentation>
+		          	</xsd:annotation>
+		          </xsd:element>
+		          <xsd:element name="eps22t" type="doubleBaseType"
+		          	maxOccurs="1" minOccurs="0">
+		          	<xsd:annotation>
+		          		<xsd:documentation>
+		          			allowable strain for tension in material
+		          			direction 2
+		          		</xsd:documentation>
+		          	</xsd:annotation>
+		          </xsd:element>
+		          <xsd:element name="eps22c" type="doubleBaseType"
+		          	maxOccurs="1" minOccurs="0">
+		          	<xsd:annotation>
+		          		<xsd:documentation>
+		          			allowable strain for compression in
+		          			material direction 2
+		          		</xsd:documentation>
+		          	</xsd:annotation>
+		          </xsd:element>
+		          <xsd:element name="eps33t" type="doubleBaseType"
+		          	maxOccurs="1" minOccurs="0">
+		          	<xsd:annotation>
+		          		<xsd:documentation>
+		          			allowable strain for tension in material
+		          			direction 3
+		          		</xsd:documentation>
+		          	</xsd:annotation>
+		          </xsd:element>
+		          <xsd:element name="eps33c" type="doubleBaseType"
+		          	maxOccurs="1" minOccurs="0">
+		          	<xsd:annotation>
+		          		<xsd:documentation>
+		          			allowable strain for compression in
+		          			material direction 3
+		          		</xsd:documentation>
+		          	</xsd:annotation>
+		          </xsd:element>
+		          <xsd:element name="gamma12" type="doubleBaseType"
+		          	maxOccurs="1" minOccurs="0">
+		          	<xsd:annotation>
+		          		<xsd:documentation>
+		          			allowable strain for shear in meterial
+		          			direction 12
+		          		</xsd:documentation>
+		          	</xsd:annotation>
+		          </xsd:element>
+		          <xsd:element name="gamma13" type="doubleBaseType"
+		          	maxOccurs="1" minOccurs="0">
+		          	<xsd:annotation>
+		          		<xsd:documentation>
+		          			allowable strain for shear in meterial
+		          			direction 13
+		          		</xsd:documentation>
+		          	</xsd:annotation>
+		          </xsd:element>
+		          <xsd:element name="gamma23" type="doubleBaseType"
+		          	maxOccurs="1" minOccurs="0">
+		          	<xsd:annotation>
+		          		<xsd:documentation>
+		          			allowable strain for shear in meterial
+		          			direction 23
+		          		</xsd:documentation>
+		          	</xsd:annotation>
+		          </xsd:element>
+		        </xsd:all>
+			</xsd:extension>
+		</xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="orthotropicSolidPropertiesType">
+      	<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>orthotropicSolidPropertiesType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>Orthotropic Solid Properties Type, ...</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+    	<xsd:complexContent>
+    		<xsd:extension base="complexBaseType">
+    			<xsd:all>
+    				<xsd:element name="G11" type="doubleBaseType"></xsd:element>
+    				<xsd:element name="G22" type="doubleBaseType"></xsd:element>
+    				<xsd:element name="G33" type="doubleBaseType"></xsd:element>
+    				<xsd:element name="G12" type="doubleBaseType"></xsd:element>
+    				<xsd:element name="G13" type="doubleBaseType"></xsd:element>
+    				<xsd:element name="G23" type="doubleBaseType"></xsd:element>
+    				<xsd:element name="nu12" type="doubleBaseType"></xsd:element>
+    				<xsd:element name="nu13" type="doubleBaseType"></xsd:element>
+    				<xsd:element name="nu23" type="doubleBaseType"></xsd:element>
+    				<xsd:element name="referenceTemperature" type="doubleBaseType">
+    					<xsd:annotation>
+    						<xsd:documentation>
+		        			reference temperature for thermal expansion
+		        			coefficients [K]
+		        			</xsd:documentation>
+		        		</xsd:annotation>
+		        	</xsd:element>
+    			</xsd:all>
+    		</xsd:extension>
+    	</xsd:complexContent>
+    </xsd:complexType>
 
 	<xsd:complexType name="materialsType">
 
