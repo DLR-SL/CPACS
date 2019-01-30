@@ -17093,7 +17093,7 @@ jonas.jepsen@dlr.de
                 <xsd:element minOccurs="0" name="floorPanels" type="floorPanelsType"/>
                 <xsd:element minOccurs="0" name="pressureBulkheads" type="pressureBulkheadAssemblyType"/>
                 <xsd:element minOccurs="0" name="windows" type="windowsAssemblyType"/>
-				<xsd:element minOccurs="0" name="walls" type="wallsType" />
+                <xsd:element minOccurs="0" name="walls" type="wallsType"/>
                 <xsd:element minOccurs="0" name="paxDoors" type="paxDoorsAssemblyType"/>
                 <xsd:element minOccurs="0" name="cargoDoors" type="cargoDoorsAssemblyType"/>
                 <xsd:element minOccurs="0" name="intercostals" type="intercostalsAssemblyType"/>
@@ -36925,6 +36925,7 @@ jonas.jepsen@dlr.de
             <xsd:all>
                 <xsd:element minOccurs="0" name="sheetBasedStructuralElements" type="sheetBasedStructuralElementsType"/>
                 <xsd:element minOccurs="0" name="profileBasedStructuralElements" type="profileBasedStructuralElementsType"/>
+                <xsd:element minOccurs="0" name="structuralWallElements" type="structuralWallElementsType"/>
                 <xsd:element minOccurs="0" name="pressureBulkheads" type="pressureBulkheadsType"/>
                 <xsd:element minOccurs="0" name="windows" type="windowsType"/>
                 <xsd:element minOccurs="0" name="doors" type="doorsType"/>
@@ -43546,7 +43547,6 @@ jonas.jepsen@dlr.de
 		</xsd:complexContent>
 	</xsd:complexType>
 
-	
     <xsd:complexType name="wallsType">
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
@@ -43570,18 +43570,12 @@ jonas.jepsen@dlr.de
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="wallReinforcements"
-                        type="wallReinforcementsType" maxOccurs="1"
-                        minOccurs="0">
-                        <xsd:annotation>
-                            <xsd:documentation>List of structural wall reinforcements.</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
                 </xsd:all>
                 
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
+
 
     <xsd:complexType name="wallPositionsType">
         <xsd:annotation>
@@ -43760,12 +43754,12 @@ jonas.jepsen@dlr.de
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="wallReinforcementsType">
+    <xsd:complexType name="structuralWallElementsType">
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:element name="wallReinforcement"
-                        type="wallReinforcementType" maxOccurs="unbounded"
+                    <xsd:element name="structuralWallElement"
+                        type="structuralWallElementType" maxOccurs="unbounded"
                         minOccurs="1">
                         <xsd:annotation>
                             <xsd:documentation>Structural wall reinforcement definition specifying physical properties of a fuselage wall segment.</xsd:documentation>
@@ -43776,7 +43770,7 @@ jonas.jepsen@dlr.de
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="wallReinforcementType">
+    <xsd:complexType name="structuralWallElementType">
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
@@ -43811,7 +43805,7 @@ jonas.jepsen@dlr.de
           </xsd:documentation></xsd:annotation>
                     </xsd:element>
                     <xsd:element name="lateralCaps"
-                        type="lateralCapsType" maxOccurs="1"
+                        type="lateralCapType" maxOccurs="1"
                         minOccurs="0">
                         <xsd:annotation>
                             <xsd:documentation>
@@ -43832,11 +43826,29 @@ jonas.jepsen@dlr.de
         </xsd:complexContent>
     </xsd:complexType>
 
-
-    <xsd:complexType name="lateralCapsType">
+    <xsd:complexType name="lateralCapType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>LateralCapType</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
         <xsd:complexContent>
-            <xsd:extension base="capType">
-                <xsd:sequence>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="area" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Area of the cap.</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="material" type="materialDefinitionType">
+                        <xsd:annotation>
+                            <xsd:documentation>Material properties.</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                     <xsd:element name="placement">
                         <xsd:simpleType>
                             <xsd:restriction base="xsd:string">
@@ -43847,7 +43859,7 @@ jonas.jepsen@dlr.de
                             </xsd:restriction>
                         </xsd:simpleType>
                     </xsd:element>
-                </xsd:sequence>
+                </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
