@@ -43700,7 +43700,7 @@ jonas.jepsen@dlr.de
                 </xsd:simpleType>
             </xsd:element>
             <xsd:element name="boundingElementUIDs"
-                type="boundingElementUIDs" maxOccurs="1" minOccurs="0">
+                type="boundingElementUIDsType" maxOccurs="1" minOccurs="0">
                 <xsd:annotation>
                     <xsd:documentation>
                         A list of uIDs referencing other
@@ -43722,14 +43722,19 @@ jonas.jepsen@dlr.de
                 <xsd:annotation>
                     <xsd:documentation>Reference to the structural property definition of this wall segment.</xsd:documentation></xsd:annotation>
             </xsd:element>
-            <xsd:element name="wallPositionUIDs" type="xsd:string" maxOccurs="1" minOccurs="1">
+            <xsd:element name="wallPositionUIDs"
+                type="wallPositionUIDsType" maxOccurs="1"
+                minOccurs="1">
                 <xsd:annotation>
-                    <xsd:documentation>Reference to the structural property definition of this wall segment.</xsd:documentation></xsd:annotation></xsd:element>
+                    <xsd:documentation>List of wall position uIDs that are used for this wall segment. At least two positions must be defined (for start and end position of wall). If more than two positions are referenced here, the wall is constructed out of several planar faces that connect two consecutive positions (Note: Order of position uIDs defines connectivity).
+          </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
         </xsd:all>
         <xsd:attribute name="uID" type="xsd:string"></xsd:attribute>
     </xsd:complexType>
 
-    <xsd:complexType name="boundingElementUIDs">
+    <xsd:complexType name="boundingElementUIDsType">
         <xsd:annotation>
             <xsd:documentation>
                 A list of uIDs referencing other structural/geometric
@@ -43748,6 +43753,10 @@ jonas.jepsen@dlr.de
                 <xsd:sequence>
                     <xsd:element name="boundingElementUID"
                         type="stringBaseType" maxOccurs="unbounded" minOccurs="1">
+                        <xsd:annotation>
+                            <xsd:documentation>uID referencing another structural/geometric element that shall serve as a boundary of the wall element. Possible references are floor, wall or genericGeometryComponent.
+                            </xsd:documentation>
+						</xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
             </xsd:extension>
@@ -43843,7 +43852,17 @@ jonas.jepsen@dlr.de
                 </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
-  </xsd:complexType>
+    </xsd:complexType>
+
+    <xsd:complexType name="wallPositionUIDsType">
+        <xsd:sequence>
+            <xsd:element name="wallPositionUID" type="stringBaseType"
+                maxOccurs="unbounded" minOccurs="2">
+                <xsd:annotation>
+                    <xsd:documentation>Reference to wall position uID.</xsd:documentation></xsd:annotation>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
 
 	</xsd:schema>
 
