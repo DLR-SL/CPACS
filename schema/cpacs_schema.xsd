@@ -17157,6 +17157,7 @@ jonas.jepsen@dlr.de
 					<xsd:element minOccurs="0" name="positionings" type="positioningsType"/>
 					<xsd:element name="segments" type="fuselageSegmentsType"/>
 					<xsd:element minOccurs="0" name="structure" type="fuselageStructureType"/>
+					<xsd:element minOccurs="0" name="compartments" type="compartmentsType"/>
 					<xsd:element minOccurs="0" name="decks" type="decksType"/>
 					<xsd:element minOccurs="0" name="dynamicAircraftModel" type="dynamicAircraftModelType"/>
 					<xsd:element minOccurs="0" name="fuelTanks" type="fuselageFuelTanksType"/>
@@ -43548,8 +43549,102 @@ jonas.jepsen@dlr.de
 
 
 
+	<xsd:complexType name="compartmentsType">
+        <xsd:annotation>
+            <xsd:documentation></xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexContent>
+	        <xsd:extension base="complexBaseType">
+	            <xsd:sequence>
+	                <xsd:element name="compartment"
+	                    type="compartmentType" maxOccurs="unbounded"
+	                    minOccurs="1">
+                        <xsd:annotation>
+                            <xsd:documentation>The compartment defines an enclosed volume within the fuselage. It is defined by a set of border geometries. This could be pressureBulkheads, walls or floors and they are referred by their uIDs. The volume is closed with the fuselage skin. The geometry tool has to check, if the compartment definition gives a closed geometry.</xsd:documentation></xsd:annotation>
+	                </xsd:element>
+	            </xsd:sequence>
+	        </xsd:extension>
+	    </xsd:complexContent>
+	</xsd:complexType>
 
+	<xsd:complexType name="compartmentType">
+	    <xsd:annotation>
+	        <xsd:documentation>
+	            The compartment defines an enclosed volume in the
+	            fuselage. It is defined by a set of border geometries.
+	            This could be pressureBulkheads, walls or floors and
+	            they are referenced by their uIDs. The volume is closed
+	            with the fuselage skin. The geometry tool has to check,
+	            if the compartment definition gives a closed geometry.
+	        </xsd:documentation>
+	    </xsd:annotation>
+	    <xsd:complexContent>
+	        <xsd:extension base="complexBaseType">
+	            <xsd:sequence>
+	                <xsd:element name="geometry"
+	                    type="compartmentGeometryType" maxOccurs="1"
+	                    minOccurs="1">
+	                    <xsd:annotation>
+	                        <xsd:documentation>
+	                            Compartment geometry uIDs list.
+	                        </xsd:documentation>
+	                    </xsd:annotation>
+	                </xsd:element>
+	                <xsd:element name="name" type="stringBaseType"
+	                    maxOccurs="1" minOccurs="0">
+	                    <xsd:annotation>
+	                        <xsd:documentation>
+	                            Name of the compartment.
+	                        </xsd:documentation>
+	                    </xsd:annotation>
+	                </xsd:element>
+	                <xsd:element name="description"
+	                    type="stringBaseType" maxOccurs="1"
+	                    minOccurs="0">
+	                    <xsd:annotation>
+	                        <xsd:documentation>
+	                            Description of the compartment.
+	                        </xsd:documentation>
+	                    </xsd:annotation>
+	                </xsd:element>
 
+	                <xsd:element name="designVolume" maxOccurs="1"
+	                    minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>Ideal design volume of the compartment.</xsd:documentation>
+                        </xsd:annotation>
+                        <xsd:complexType>
+	                        <xsd:simpleContent>
+                                <xsd:restriction base="doubleBaseType">
+                                    <xsd:minExclusive value="0"></xsd:minExclusive>
+                                </xsd:restriction>
+	                        </xsd:simpleContent>
+	                    </xsd:complexType>
+	                </xsd:element>
+	            </xsd:sequence>
+	            <xsd:attribute name="uID" type="xsd:string"></xsd:attribute>
+	        </xsd:extension>
+	    </xsd:complexContent>
+	</xsd:complexType>
 
-	</xsd:schema>
+	<xsd:complexType name="compartmentGeometryType">
+	    <xsd:complexContent>
+	        <xsd:extension base="complexBaseType">
+	            <xsd:sequence>
+	                <xsd:element name="boundaryElementUID" type="stringUIDBaseType"
+	                    maxOccurs="unbounded" minOccurs="1">
+	                    <xsd:annotation>
+	                        <xsd:documentation>
+	                            UIDs of 2d structural fuselage elements
+	                            (e.g., pressure bulkheads, walls or
+	                            floors). The compartment will be
+	                            enclosed with the fuselage skin
+	                        </xsd:documentation>
+	                    </xsd:annotation>
+	                </xsd:element>
+	            </xsd:sequence>
+	        </xsd:extension>
+	    </xsd:complexContent>
+	</xsd:complexType>
+</xsd:schema>
 
