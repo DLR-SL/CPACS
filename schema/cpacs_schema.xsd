@@ -16608,13 +16608,16 @@ jonas.jepsen@dlr.de
 							</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element minOccurs="0" name="location" type="pointType">
-						<xsd:annotation>
-							<xsd:documentation>The center of gravity of the fuselage fuel
-								tank in the CPACS coordinate system.</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-					<xsd:element minOccurs="0" name="volume" type="wingFuelTankVolumeType"/>
+                    <xsd:element name="compartmentUID" type="stringUIDBaseType" maxOccurs="1" minOccurs="1">
+                        <xsd:annotation>
+                            <xsd:documentation>Link to the tank geometry defined by a compartment.</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="volume" type="fuelTankVolumeType">
+                        <xsd:annotation>
+                            <xsd:documentation></xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
 				</xsd:sequence>
 				<xsd:attribute name="uID" type="xsd:string" use="required"/>
 			</xsd:extension>
@@ -16639,7 +16642,12 @@ jonas.jepsen@dlr.de
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
 				<xsd:sequence>
-					<xsd:element maxOccurs="unbounded" name="fuselageFuelTank" type="fuselageFuelTankType"/>
+					<xsd:element maxOccurs="unbounded" name="fuselageFuelTank" type="fuselageFuelTankType">
+                        <xsd:annotation>
+                            <xsd:documentation>The fuselage fuel tank geometry is defined by a link to a fuselage geometry compartment.
+The fuel tank volume type should also be used for the wing fuel tank</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
@@ -43643,6 +43651,41 @@ jonas.jepsen@dlr.de
 	                    </xsd:annotation>
 	                </xsd:element>
 	            </xsd:sequence>
+	        </xsd:extension>
+	    </xsd:complexContent>
+	</xsd:complexType>
+
+    <xsd:complexType name="fuelTankVolumeType">
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="optimalVolume"
+                        type="doubleBaseType" maxOccurs="1"
+                        minOccurs="0">
+                    </xsd:element>
+                    <xsd:choice>
+                        <xsd:sequence>
+                            <xsd:element name="useableVolumeFactor"
+                                type="doubleBaseType" maxOccurs="1"
+                                minOccurs="0">
+                            </xsd:element>
+                            <xsd:element name="realVolumeFactor"
+                                type="doubleBaseType" maxOccurs="1"
+                                minOccurs="0">
+                            </xsd:element>
+                        </xsd:sequence>
+                        <xsd:sequence>
+                            <xsd:element name="useableVolume"
+                                type="doubleBaseType" maxOccurs="1"
+                                minOccurs="0">
+                            </xsd:element>
+                            <xsd:element name="realVolume"
+                                type="doubleBaseType" maxOccurs="1"
+                                minOccurs="0">
+                            </xsd:element>
+                        </xsd:sequence>
+                    </xsd:choice>
+                </xsd:sequence>
 	        </xsd:extension>
 	    </xsd:complexContent>
 	</xsd:complexType>
