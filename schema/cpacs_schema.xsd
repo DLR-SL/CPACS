@@ -17083,6 +17083,7 @@ jonas.jepsen@dlr.de
             <xsd:all>
                 <xsd:element minOccurs="0" name="skin" type="skinType"/>
                 <xsd:element minOccurs="0" name="stringers" type="stringersAssemblyType"/>
+                <xsd:element minOccurs="0" name="stringersDefinition" type="stringersDefinitionType"/>
                 <xsd:element minOccurs="0" name="frames" type="framesAssemblyType"/>
                 <xsd:element minOccurs="0" name="framesDefinition" type="framesDefinitionType"/>
                 <xsd:element minOccurs="0" name="paxCrossBeams" type="paxCrossBeamsAssemblyType"/>
@@ -43620,6 +43621,128 @@ jonas.jepsen@dlr.de
                         maxOccurs="unbounded" minOccurs="1">
                     </xsd:element>
                 </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+
+    <xsd:complexType name="stringersDefinitionType">
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="stringerDefinition"
+                        type="stringerDefinitionType"
+                        maxOccurs="unbounded" minOccurs="1">
+                        <xsd:annotation>
+                            <xsd:documentation>The stringer definition can be used 
+                                to define one or more fuselage stringer elements. 
+                                One stringer element is defined by two or more positiongs
+                                and can be repeated around the fuselage with a discrete 
+                                number or a spacing value. The spacing can be a radial 
+                                angle or distance. For the distance, an additional x 
+                                position has to be provided to define the fuselage 
+                                circumfirence.
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="stringerDefinitionType">
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+            <xsd:element name="stringerPositions"
+                type="stringerPositionsType" maxOccurs="1" minOccurs="1">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        Set of stringerFramePositionings
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="angleEnd" type="doubleBaseType"
+                maxOccurs="1" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        angleEnd defines the angle of the last stringer
+                        element. The angle starting value is taken from
+                        the first stringer positioning.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:choice>
+                <xsd:element name="numberOfStringer"
+                    type="integerBaseType" maxOccurs="1" minOccurs="0">
+                    <xsd:annotation>
+                        <xsd:documentation>
+                            Number of Stringer
+                        </xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
+                <xsd:element name="spacing"
+                    type="fuselageStringerSpacingType" maxOccurs="1"
+                    minOccurs="0">
+                    <xsd:annotation>
+                        <xsd:documentation>
+                            stringer spacing type The spacing can be
+                            defined by an angular delta value or a
+                            spacing distance and a x reference position
+                        </xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
+            </xsd:choice>
+        </xsd:sequence>
+                <xsd:attribute name="uID" type="xsd:string"></xsd:attribute>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="stringerPositionsType">
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="stringerPosition"
+                        type="stringerFramePositionType"
+                        maxOccurs="unbounded" minOccurs="2">
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="fuselageStringerSpacingType">
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:choice>
+            <xsd:element name="spacingAngle" type="doubleBaseType"
+                maxOccurs="1" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        Angular distance between stringer elements
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:sequence>
+                <xsd:element name="spacingDistance"
+                    type="doubleBaseType" maxOccurs="1" minOccurs="0">
+                    <xsd:annotation>
+                        <xsd:documentation>
+                            Radial difference between stringer elements
+                        </xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
+                <xsd:element name="spacingReferenceXPosition"
+                    type="doubleBaseType" maxOccurs="1" minOccurs="0">
+                    <xsd:annotation>
+                        <xsd:documentation>
+                            X position for circumfirence calculation
+                        </xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
+            </xsd:sequence>
+        </xsd:choice>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
