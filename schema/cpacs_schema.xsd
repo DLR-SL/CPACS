@@ -17084,6 +17084,7 @@ jonas.jepsen@dlr.de
                 <xsd:element minOccurs="0" name="skin" type="skinType"/>
                 <xsd:element minOccurs="0" name="stringers" type="stringersAssemblyType"/>
                 <xsd:element minOccurs="0" name="frames" type="framesAssemblyType"/>
+                <xsd:element minOccurs="0" name="framesDefinition" type="framesDefinitionType"/>
                 <xsd:element minOccurs="0" name="paxCrossBeams" type="paxCrossBeamsAssemblyType"/>
                 <xsd:element minOccurs="0" name="paxCrossBeamStruts" type="paxCrossBeamStrutsAssemblyType"/>
                 <xsd:element minOccurs="0" name="cargoCrossBeams" type="cargoCrossBeamsAssemblyType"/>
@@ -43546,10 +43547,82 @@ jonas.jepsen@dlr.de
 	</xsd:complexType>
 
 
+    <xsd:complexType name="framesDefinitionType">
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="frameDefinition"
+                        type="frameDefinitionType" maxOccurs="unbounded"
+                        minOccurs="1">
+                        <xsd:annotation>
+                            <xsd:documentation>The frame definition can be used to define one or more fuselage frame elements. One frame element is defined by one or more positiongs and can be repeated within a x range ruled by a discrete number or a x spacing value.</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
 
+    <xsd:complexType name="frameDefinitionType">
+        <xsd:annotation>
+            <xsd:documentation></xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element name="framePositions"
+                type="framePositionsType" maxOccurs="1" minOccurs="1">
+                <xsd:annotation>
+                    <xsd:documentation>List of frame positions</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:choice>
+                <xsd:element name="numberOfFrames"
+                    type="integerBaseType" maxOccurs="1" minOccurs="0">
+                    <xsd:annotation>
+                        <xsd:documentation>
+                            This number of frames will be constructed
+                            equally distributed between x from the first
+                            positioning and xEnd.
+                        </xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
+                <xsd:element name="spacing" type="doubleBaseType"
+                    maxOccurs="1" minOccurs="0">
+                    <xsd:annotation>
+                        <xsd:documentation>
+                            Distance between the frames in x direction.
+                            The number of frames between x from the
+                            first positioning and xEnd will be
+                            calculated and constructed.
+                        </xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
+            </xsd:choice>
+            <xsd:element name="xEnd" type="doubleBaseType" maxOccurs="1"
+                minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        xEnd defines the x coordinate of the last frame
+                        element xStart is taken from the first frame
+                        positioning x value.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+        </xsd:sequence>
+        <xsd:attribute name="uID" type="xsd:string" use="required"></xsd:attribute>
+    </xsd:complexType>
 
+    <xsd:complexType name="framePositionsType">
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="framePosition"
+                        type="stringerFramePositionType"
+                        maxOccurs="unbounded" minOccurs="1">
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
 
-
-
-	</xsd:schema>
+</xsd:schema>
 
