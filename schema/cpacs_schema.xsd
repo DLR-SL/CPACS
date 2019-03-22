@@ -43664,51 +43664,27 @@ jonas.jepsen@dlr.de
                     </xsd:simpleContent>
                 </xsd:complexType>
             </xsd:element>
-            <xsd:element name="omega" maxOccurs="1" minOccurs="0"
-                default="0.0">
+            <xsd:element name="negativeExtrusion" maxOccurs="1"
+                minOccurs="0" type="booleanBaseType">
                 <xsd:annotation>
-                    <xsd:documentation>
-                        Defines extrusion direction. Rotation angle of
-                        extrusion direction to be applied AFTER phi
-                        rotation. Rotation angle around rotated y-axis.
-                        A value of 0deg corresponds to rotated z-axis.
-                        Default = 0.0deg.
-                    </xsd:documentation>
+                    <xsd:documentation>By default, the wall is only extruded in positive direction. If negativeExtrusion is selected, the wall is additionaly extruded in negative direction. Default: false.</xsd:documentation>
                 </xsd:annotation>
-                <xsd:complexType>
-                    <xsd:simpleContent>
-                        <xsd:restriction base="doubleBaseType">
-                            <xsd:minInclusive value="0"></xsd:minInclusive>
-                            <xsd:maxInclusive value="360"></xsd:maxInclusive>
-                        </xsd:restriction>
-                    </xsd:simpleContent>
-                </xsd:complexType>
             </xsd:element>
-            <xsd:element name="extrusion" maxOccurs="1" minOccurs="1">
+            <xsd:element name="flushConnectionStart"
+                type="booleanBaseType" maxOccurs="1" minOccurs="0">
                 <xsd:annotation>
-                    <xsd:documentation>
-                        Describes extrusion mode. Either the wall plane
-                        is extruded from the positioning polygon in the
-                        direction of the extrusion direction up to the
-                        first intersection with the fuselage skin
-                        ("positiveDirection"). Or the plane is extruded
-                        bi-directionally (i.e. in extrusion direction
-                        and in negative extrusion direction) up the
-                        first intersection with the fuselage skin
-                        ("biDirectional").
-                    </xsd:documentation>
+                    <xsd:documentation>Rotates the first edge of the wall segment so that it is adjacent with the structural element defined in the first wall position (bulkhead, fuselage section or another plane wall). Default: false.</xsd:documentation>
                 </xsd:annotation>
-                <xsd:complexType>
-                    <xsd:simpleContent>
-                        <xsd:restriction base="stringBaseType">
-                            <xsd:enumeration value="positiveDirection"></xsd:enumeration>
-                            <xsd:enumeration value="biDirectional"></xsd:enumeration>
-                        </xsd:restriction>
-                    </xsd:simpleContent>
-                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="flushConnectionEnd"
+                type="booleanBaseType" maxOccurs="1" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation>Rotates the last edge of the wall segment so that it is adjacent with the structural element defined in the last wall position (bulkhead, fuselage section or another plane wall). Default: false.</xsd:documentation>
+                </xsd:annotation>
             </xsd:element>
             <xsd:element name="boundingElementUIDs"
-                type="boundingElementUIDsType" maxOccurs="1" minOccurs="0">
+                type="boundingElementUIDsType" maxOccurs="1"
+                minOccurs="0">
                 <xsd:annotation>
                     <xsd:documentation>
                         A list of uIDs referencing other
@@ -43728,14 +43704,26 @@ jonas.jepsen@dlr.de
             <xsd:element name="structuralWallElementUID"
                 type="stringBaseType" maxOccurs="1" minOccurs="0">
                 <xsd:annotation>
-                    <xsd:documentation>Reference to the structural property definition of this wall segment.</xsd:documentation></xsd:annotation>
+                    <xsd:documentation>
+                        Reference to the structural property definition
+                        of this wall segment.
+                    </xsd:documentation>
+                </xsd:annotation>
             </xsd:element>
             <xsd:element name="wallPositionUIDs"
                 type="wallPositionUIDsType" maxOccurs="1"
                 minOccurs="1">
                 <xsd:annotation>
-                    <xsd:documentation>List of wall position uIDs that are used for this wall segment. At least two positions must be defined (for start and end position of wall). If more than two positions are referenced here, the wall is constructed out of several planar faces that connect two consecutive positions (Note: Order of position uIDs defines connectivity).
-          </xsd:documentation>
+                    <xsd:documentation>
+                        List of wall position uIDs that are used for
+                        this wall segment. At least two positions must
+                        be defined (for start and end position of wall).
+                        If more than two positions are referenced here,
+                        the wall is constructed out of several planar
+                        faces that connect two consecutive positions
+                        (Note: Order of position uIDs defines
+                        connectivity).
+                    </xsd:documentation>
                 </xsd:annotation>
             </xsd:element>
         </xsd:all>
