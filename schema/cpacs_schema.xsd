@@ -35916,9 +35916,10 @@ jonas.jepsen@dlr.de
 		</xsd:annotation>
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
-				<xsd:all>
-					<xsd:element name="sparPoint" type="etaXsiRelHeightPointType"/>
-				</xsd:all>
+				<xsd:choice minOccurs="1" maxOccurs="1">
+					<xsd:element name="sparPositionRib" type="wingRibPointType"/>
+					<xsd:element name="sparPositionEtaXsi" type="etaXsiPointType"/>
+				</xsd:choice>
 				<xsd:attribute name="uID" type="xsd:string" use="required"/>
 			</xsd:extension>
 		</xsd:complexContent>
@@ -35997,10 +35998,9 @@ jonas.jepsen@dlr.de
 		</xsd:annotation>
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
-				<xsd:choice minOccurs="2" maxOccurs="unbounded">
-					<xsd:element name="sparPositionRib" type="wingRibPointType"/>
-					<xsd:element name="sparPositionEtaXsi" type="etaXsiPointType"/>
-				</xsd:choice>
+				<xsd:sequence>
+					<xsd:element name="sparPosition" type="sparPositionType" minOccurs="2" maxOccurs="unbounded"/>
+				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
@@ -42257,6 +42257,14 @@ jonas.jepsen@dlr.de
 							</xsd:annotation>
 						</xsd:element>
 					</xsd:choice>
+					<xsd:element name="ribReference" type="stringBaseType">
+						<xsd:annotation>
+							<xsd:documentation>
+								The ribReference is the reference line for the computation of the rib set spacing.
+								It can either be a sparUID or "trailingEdge" or "leadingEdge"
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
 					<xsd:element name="ribCrossingBehaviour">
 						<xsd:complexType>
 							<xsd:annotation>
