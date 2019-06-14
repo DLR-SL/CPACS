@@ -29035,14 +29035,23 @@ jonas.jepsen@dlr.de
                         <ddue:para>materialType</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Material type, defining the properties for one of the following
-                            material types:</ddue:para>
-                        <ddue:list>
-                            <ddue:listItem>isotropic materials</ddue:listItem>
-                            <ddue:listItem>anisotropic 2D materials</ddue:listItem>
-                            <ddue:listItem>orthotropic 2D materials</ddue:listItem>
-                            <ddue:listItem>anisotropic 3D materials</ddue:listItem>
-                        </ddue:list>
+                        <ddue:content>
+                            Definition of the material properties for one of the following
+                                material types:
+                            <ddue:list>
+                                <ddue:listItem>isotropic materials</ddue:listItem>
+                                <ddue:listItem>anisotropic 2D and 3D materials</ddue:listItem>
+                                <ddue:listItem>orthotropic 2D and 3D materials</ddue:listItem>
+                            </ddue:list>
+                            The nonemclature is adopted from [1] to define the material properties in an orthotogonal 1-2-3 
+                            coordinate system. This may be illustrated by the stresses of a three-dimensional cube:   
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="material_coordinates"></ddue:image>
+                            </ddue:mediaLink> 
+                            <ddue:list>
+                                <ddue:listItem>[1] R. M. Jones, Mechanics Of Composite Materials, 2 New edition. Philadelphia, PA: Taylor and Francis Inc, 1998.</ddue:listItem>
+                            </ddue:list> 
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -29120,7 +29129,14 @@ jonas.jepsen@dlr.de
                         <ddue:para>isotropicPropertiesType</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Isotropic Properties Type, ...</ddue:para>
+                        <ddue:content>
+                            Defines the material properties for an isotropic material. Note that the shear modulus G 
+                            is defined in terms of the elastic modulus E and the Poisson's ratio nu as:
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="G_E_nu_relation"></ddue:image>
+                            </ddue:mediaLink>
+                            Specifying a value for all three properties E, G and nu therefore results in an overdetermined material definition and must be avoided.
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -29285,10 +29301,22 @@ jonas.jepsen@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>anisotropicShellPropertiesType</ddue:para>
+                        <ddue:para>
+                            anisotropicShellPropertiesType
+                        </ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Anisotropic Shell Properties Type, ...</ddue:para>
+                        <ddue:content>
+                            Defines the material properties for a linear anisotropic material in the plane stress state (i.e., shell). The stress-strain relationship is defined as:
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="stress_strain_anisotropicShell"></ddue:image>
+                            </ddue:mediaLink>
+                            The terminology of this complex type refers to the following literature:
+                            <ddue:list>
+                                <ddue:listItem>[1] R. M. Jones, Mechanics Of Composite Materials, 2 New edition. Philadelphia, PA: Taylor and Francis Inc, 1998.</ddue:listItem>
+                                <ddue:listItem>[2] J. N. Reddy, Mechanics of Laminated Composite Plates and Shells: Theory and Analysis, Second Edition. CRC Press, 2004.</ddue:listItem>
+                            </ddue:list>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -29298,53 +29326,53 @@ jonas.jepsen@dlr.de
                 <xsd:all>
                     <xsd:element name="Q11" type="doubleBaseType" maxOccurs="1" minOccurs="1">
                         <xsd:annotation>
-                            <xsd:documentation>Stiffness in material direction 1 [N/m^2]</xsd:documentation>
+                            <xsd:documentation> Coefficient 11 of reduced stiffness matrix [N/m^2] </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="Q12" type="doubleBaseType" maxOccurs="1" minOccurs="1">
                         <xsd:annotation>
-                            <xsd:documentation>Stiffness in material direction 12 [N/m^2]</xsd:documentation>
+                            <xsd:documentation> Coefficient 12 of reduced stiffness matrix [N/m^2] </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="Q13" type="doubleBaseType" maxOccurs="1" minOccurs="1">
                         <xsd:annotation>
-                            <xsd:documentation>Stiffness in material direction 13 [N/m^2]</xsd:documentation>
+                            <xsd:documentation> Coefficient 13 of reduced stiffness matrix [N/m^2] </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="Q22" type="doubleBaseType" maxOccurs="1" minOccurs="1">
                         <xsd:annotation>
-                            <xsd:documentation>Stiffness in material direction 2 [N/m^2]</xsd:documentation>
+                            <xsd:documentation> Coefficient 22 of reduced stiffness matrix [N/m^2] </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="Q23" type="doubleBaseType" maxOccurs="1" minOccurs="1">
                         <xsd:annotation>
-                            <xsd:documentation>Stiffness in material direction 23 [N/m^2]</xsd:documentation>
+                            <xsd:documentation> Coefficient 23 of reduced stiffness matrix [N/m^2] </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="Q33" type="doubleBaseType" maxOccurs="1" minOccurs="1">
                         <xsd:annotation>
-                            <xsd:documentation>Stiffness in material direction 3 [N/m^2]</xsd:documentation>
+                            <xsd:documentation> Coefficient 33 of reduced stiffness matrix [N/m^2] </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="thermalExpansionCoeff1" type="doubleBaseType" maxOccurs="1"
                         minOccurs="0">
                         <xsd:annotation>
-                            <xsd:documentation> thermal expansion coefficient in material direction
+                            <xsd:documentation> Thermal expansion coefficient in material direction
                                 1 [1/K] </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="thermalExpansionCoeff2" type="doubleBaseType" maxOccurs="1"
                         minOccurs="0">
                         <xsd:annotation>
-                            <xsd:documentation> thermal expansion coefficient in material direction
+                            <xsd:documentation> Thermal expansion coefficient in material direction
                                 2 [1/K] </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="thermalExpansionCoeff3" type="doubleBaseType" maxOccurs="1"
+                    <xsd:element name="thermalExpansionCoeff12" type="doubleBaseType" maxOccurs="1"
                         minOccurs="0">
                         <xsd:annotation>
-                            <xsd:documentation> thermal expansion coefficient in material direction
-                                3 [1/K] </xsd:documentation>
+                            <xsd:documentation> Thermal expansion coefficient in material direction
+                                12 [1/K] </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element minOccurs="0" name="thermalConductivity1" type="doubleBaseType">
@@ -29367,59 +29395,59 @@ jonas.jepsen@dlr.de
                     </xsd:element>
                     <xsd:element name="sig1t" type="doubleBaseType" maxOccurs="1" minOccurs="0">
                         <xsd:annotation>
-                            <xsd:documentation> allowable stress for tension in material direction 1 [N/m^2]
+                            <xsd:documentation> Allowable stress for tension in material direction 1 [N/m^2]
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="sig1c" type="doubleBaseType" maxOccurs="1" minOccurs="0">
                         <xsd:annotation>
-                            <xsd:documentation> allowable stress for compression in material direction 1 [N/m^2]
+                            <xsd:documentation> Allowable stress for compression in material direction 1 [N/m^2]
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="sig2t" type="doubleBaseType" maxOccurs="1" minOccurs="0">
                         <xsd:annotation>
-                            <xsd:documentation> allowable stress for tension in material direction 2 [N/m^2]
+                            <xsd:documentation> Allowable stress for tension in material direction 2 [N/m^2]
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="sig2c" type="doubleBaseType" maxOccurs="1" minOccurs="0">
                         <xsd:annotation>
-                            <xsd:documentation> allowable stress for compression in material direction 2 [N/m^2]
+                            <xsd:documentation> Allowable stress for compression in material direction 2 [N/m^2]
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="tau12" type="doubleBaseType" maxOccurs="1" minOccurs="0">
                         <xsd:annotation>
-                            <xsd:documentation> allowable stress for shear [N/m^2]
+                            <xsd:documentation> Allowable stress for shear [N/m^2]
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="eps1t" type="doubleBaseType" maxOccurs="1" minOccurs="0">
                         <xsd:annotation>
-                            <xsd:documentation> allowable strain for tension in material direction 1 </xsd:documentation>
+                            <xsd:documentation> Allowable strain for tension in material direction 1 </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="eps1c" type="doubleBaseType" maxOccurs="1" minOccurs="0">
                         <xsd:annotation>
-                            <xsd:documentation> allowable strain for compression in material direction 1
+                            <xsd:documentation> Allowable strain for compression in material direction 1
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="eps2t" type="doubleBaseType" maxOccurs="1" minOccurs="0">
                         <xsd:annotation>
-                            <xsd:documentation> allowable strain for tension in material direction 2 </xsd:documentation>
+                            <xsd:documentation> Allowable strain for tension in material direction 2 </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="eps2c" type="doubleBaseType" maxOccurs="1" minOccurs="0">
                         <xsd:annotation>
-                            <xsd:documentation> allowable strain for compression in material direction 2
+                            <xsd:documentation> Allowable strain for compression in material direction 2
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="gamma12" type="doubleBaseType" maxOccurs="1" minOccurs="0">
                         <xsd:annotation>
-                            <xsd:documentation> allowable strain for shear </xsd:documentation>
+                            <xsd:documentation> Allowable strain for shear </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -29432,10 +29460,29 @@ jonas.jepsen@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>orthotropicShellPropertiesType</ddue:para>
+                        <ddue:para>
+                            orthotropicShellPropertiesType
+                        </ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Orthotropic Shell Properties Type, ...</ddue:para>
+                        <ddue:content>
+                            Defines the material properties for an orthotropic material in the plane stress state (i.e., shell). The strain-stress relationship is defined as:
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="strain_stress_orthotropicShell"></ddue:image>
+                            </ddue:mediaLink>
+                            Inverting the strain-stress relation and introducing thermal expansion yields:
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="stress_strain_orthotropicShell"></ddue:image>
+                            </ddue:mediaLink>
+                            with:
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="Q_EngineeringConstants_orthotropicShell"></ddue:image>
+                            </ddue:mediaLink>
+                            The terminology refers to the following literature:
+                            <ddue:list>
+                                <ddue:listItem>[1] R. M. Jones, Mechanics Of Composite Materials, 2 New edition. Philadelphia, PA: Taylor and Francis Inc, 1998.</ddue:listItem>
+                            </ddue:list>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -29453,19 +29500,19 @@ jonas.jepsen@dlr.de
                             <xsd:documentation> Young's modulus in material direction 2 [N/m^2] </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="G12" type="doubleBaseType" maxOccurs="1" minOccurs="0">
-                        <xsd:annotation>
-                            <xsd:documentation> Shear modulus in material direction 12 [N/m^2] </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="G13" type="doubleBaseType" maxOccurs="1" minOccurs="0">
-                        <xsd:annotation>
-                            <xsd:documentation> Shear modulus in material direction 13 [N/m^2] </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
                     <xsd:element name="G23" type="doubleBaseType" maxOccurs="1" minOccurs="0">
                         <xsd:annotation>
-                            <xsd:documentation> Shear modulus in material direction 13 [N/m^2] </xsd:documentation>
+                            <xsd:documentation> Shear modulus in material in 2-3 plane [N/m^2] </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="G31" type="doubleBaseType" maxOccurs="1" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation> Shear modulus in material in 3-1 plane [N/m^2] </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="G12" type="doubleBaseType" maxOccurs="1" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation> Shear modulus in material in 1-2 plane [N/m^2] </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="nu" type="doubleBaseType" maxOccurs="1" minOccurs="0">
@@ -29573,8 +29620,17 @@ jonas.jepsen@dlr.de
                         </ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Detailed explanations can be found in the following literature: R. M. Jones, Mechanics Of Composite Materials, 2 New edition. Philadelphia, PA: Taylor and Francis Inc, 1998.
-						</ddue:para>
+                        <ddue:content>
+                            Defines the material properties for a linear anisotropic material in three spatial directions (i.e., solid). The stress-strain relationship is defined as:
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="stress_strain_anisotropicSolid"></ddue:image>
+                            </ddue:mediaLink>
+                            The terminology of this complex type refers to the following literature:
+                            <ddue:list>
+                                <ddue:listItem>[1] R. M. Jones, Mechanics Of Composite Materials, 2 New edition. Philadelphia, PA: Taylor and Francis Inc, 1998.</ddue:listItem>
+                                <ddue:listItem>[2] J. N. Reddy, Mechanics of Laminated Composite Plates and Shells: Theory and Analysis, Second Edition. CRC Press, 2004.</ddue:listItem>
+                            </ddue:list>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -29584,107 +29640,107 @@ jonas.jepsen@dlr.de
                 <xsd:all>
                     <xsd:element name="C11" type="doubleBaseType" maxOccurs="1" minOccurs="1">
                         <xsd:annotation>
-                            <xsd:documentation>Stiffness in material direction 1 [N/m^2]</xsd:documentation>
+                            <xsd:documentation>Coefficient 11 of stiffness matrix [N/m^2]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="C12" type="doubleBaseType" maxOccurs="1" minOccurs="1">
                         <xsd:annotation>
-                            <xsd:documentation>Stiffness in material direction 12 [N/m^2]</xsd:documentation>
+                            <xsd:documentation>Coefficient 12 of stiffness matrix [N/m^2]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="C13" type="doubleBaseType" maxOccurs="1" minOccurs="1">
                         <xsd:annotation>
-                            <xsd:documentation>Stiffness in material direction 13 [N/m^2]</xsd:documentation>
+                            <xsd:documentation>Coefficient 13 of stiffness matrix [N/m^2]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="C14" type="doubleBaseType" maxOccurs="1" minOccurs="1">
                         <xsd:annotation>
-                            <xsd:documentation>Stiffness in material direction 14 [N/m^2]</xsd:documentation>
+                            <xsd:documentation>Coefficient 14 of stiffness matrix [N/m^2]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="C15" type="doubleBaseType" maxOccurs="1" minOccurs="1">
                         <xsd:annotation>
-                            <xsd:documentation>Stiffness in material direction 15 [N/m^2]</xsd:documentation>
+                            <xsd:documentation>Coefficient 15 of stiffness matrix [N/m^2]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="C16" type="doubleBaseType" maxOccurs="1" minOccurs="1">
                         <xsd:annotation>
-                            <xsd:documentation>Stiffness in material direction 16 [N/m^2]</xsd:documentation>
+                            <xsd:documentation>Coefficient 16 of stiffness matrix [N/m^2]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="C22" type="doubleBaseType" maxOccurs="1" minOccurs="1">
                         <xsd:annotation>
-                            <xsd:documentation>Stiffness in material direction 22 [N/m^2]</xsd:documentation>
+                            <xsd:documentation>Coefficient 22 of stiffness matrix [N/m^2]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="C23" type="doubleBaseType" maxOccurs="1" minOccurs="1">
                         <xsd:annotation>
-                            <xsd:documentation>Stiffness in material direction 23 [N/m^2]</xsd:documentation>
+                            <xsd:documentation>Coefficient 23 of stiffness matrix [N/m^2]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="C24" type="doubleBaseType" maxOccurs="1" minOccurs="1">
                         <xsd:annotation>
-                            <xsd:documentation>Stiffness in material direction 24 [N/m^2]</xsd:documentation>
+                            <xsd:documentation>Coefficient 24 of stiffness matrix [N/m^2]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="C25" type="doubleBaseType" maxOccurs="1" minOccurs="1">
                         <xsd:annotation>
-                            <xsd:documentation>Stiffness in material direction 25 [N/m^2]</xsd:documentation>
+                            <xsd:documentation>Coefficient 25 of stiffness matrix [N/m^2]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="C26" type="doubleBaseType" maxOccurs="1" minOccurs="1">
                         <xsd:annotation>
-                            <xsd:documentation>Stiffness in material direction 26 [N/m^2]</xsd:documentation>
+                            <xsd:documentation>Coefficient 26 of stiffness matrix [N/m^2]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="C33" type="doubleBaseType" maxOccurs="1" minOccurs="1">
                         <xsd:annotation>
-                            <xsd:documentation>Stiffness in material direction 33 [N/m^2]</xsd:documentation>
+                            <xsd:documentation>Coefficient 33 of stiffness matrix [N/m^2]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="C34" type="doubleBaseType" maxOccurs="1" minOccurs="1">
                         <xsd:annotation>
-                            <xsd:documentation>Stiffness in material direction 34 [N/m^2]</xsd:documentation>
+                            <xsd:documentation>Coefficient 34 of stiffness matrix [N/m^2]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="C35" type="doubleBaseType" maxOccurs="1" minOccurs="1">
                         <xsd:annotation>
-                            <xsd:documentation>Stiffness in material direction 35 [N/m^2]</xsd:documentation>
+                            <xsd:documentation>Coefficient 35 of stiffness matrix [N/m^2]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="C36" type="doubleBaseType" maxOccurs="1" minOccurs="1">
                         <xsd:annotation>
-                            <xsd:documentation>Stiffness in material direction 36 [N/m^2]</xsd:documentation>
+                            <xsd:documentation>Coefficient 36 of stiffness matrix [N/m^2]2]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="C44" type="doubleBaseType" maxOccurs="1" minOccurs="1">
                         <xsd:annotation>
-                            <xsd:documentation>Stiffness in material direction 44 [N/m^2]</xsd:documentation>
+                            <xsd:documentation>Coefficient 44 of stiffness matrix [N/m^2]]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="C45" type="doubleBaseType" maxOccurs="1" minOccurs="1">
                         <xsd:annotation>
-                            <xsd:documentation>Stiffness in material direction 45 [N/m^2]</xsd:documentation>
+                            <xsd:documentation>Coefficient 45 of stiffness matrix [N/m^2]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="C46" type="doubleBaseType" maxOccurs="1" minOccurs="1">
                         <xsd:annotation>
-                            <xsd:documentation>Stiffness in material direction 46 [N/m^2]</xsd:documentation>
+                            <xsd:documentation>Coefficient 46 of stiffness matrix [N/m^2]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="C55" type="doubleBaseType" maxOccurs="1" minOccurs="1">
                         <xsd:annotation>
-                            <xsd:documentation>Stiffness in material direction 55 [N/m^2]</xsd:documentation>
+                            <xsd:documentation>Coefficient 55 of stiffness matrix [N/m^2]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="C56" type="doubleBaseType" maxOccurs="1" minOccurs="1">
                         <xsd:annotation>
-                            <xsd:documentation>Stiffness in material direction 56 [N/m^2]</xsd:documentation>
+                            <xsd:documentation>Coefficient 56 of stiffness matrix [N/m^2]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="C66" type="doubleBaseType" maxOccurs="1" minOccurs="1">
                         <xsd:annotation>
-                            <xsd:documentation>Stiffness in material direction 66 [N/m^2]</xsd:documentation>
+                            <xsd:documentation>Coefficient 66 of stiffness matrix [N/m^2]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="thermalExpansionCoeff1" type="doubleBaseType" maxOccurs="1"
@@ -29708,6 +29764,27 @@ jonas.jepsen@dlr.de
                                 3 [1/K] </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
+                    <xsd:element name="thermalExpansionCoeff23" type="doubleBaseType" maxOccurs="1"
+                        minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>Thermal expansion coefficient affecting strain in material direction
+                                23 [1/K] </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="thermalExpansionCoeff31" type="doubleBaseType" maxOccurs="1"
+                        minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>Thermal expansion coefficient affecting strain in material direction
+                                31 [1/K] </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="thermalExpansionCoeff12" type="doubleBaseType" maxOccurs="1"
+                        minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>Thermal expansion coefficient affecting strain in material direction
+                                12 [1/K] </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                     <xsd:element minOccurs="0" name="thermalConductivity1" type="doubleBaseType">
                         <xsd:annotation>
                             <xsd:documentation> Thermal conductivity of the material in material direction 1 [W/(m*K)]
@@ -29723,6 +29800,24 @@ jonas.jepsen@dlr.de
                     <xsd:element minOccurs="0" name="thermalConductivity3" type="doubleBaseType">
                         <xsd:annotation>
                             <xsd:documentation> Thermal conductivity of the material in material direction 3 [W/(m*K)]
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="thermalConductivity23" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation> Thermal conductivity of the material which couples heat flux in material direction 2 with temperature gradient in material direction 3 [W/(m*K)]
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="thermalConductivity31" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation> Thermal conductivity of the material which couples heat flux in material direction 3 with temperature gradient in material direction 1 [W/(m*K)]
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="thermalConductivity12" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation> Thermal conductivity of the material which couples heat flux in material direction 1 with temperature gradient in material direction 2 [W/(m*K)]
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
@@ -29762,22 +29857,20 @@ jonas.jepsen@dlr.de
                                 direction 3 [N/m^2] </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="tau12" type="doubleBaseType" maxOccurs="1" minOccurs="0">
-                        <xsd:annotation>
-                            <xsd:documentation>Allowable stress for shear direction 12 [N/m^2]
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="tau13" type="doubleBaseType" maxOccurs="1" minOccurs="0">
-                        <xsd:annotation>
-                            <xsd:documentation>Allowable stress for shear direction 13 [N/m^2]
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
                     <xsd:element name="tau23" type="doubleBaseType" maxOccurs="1" minOccurs="0">
                         <xsd:annotation>
-                            <xsd:documentation>Allowable stress for shear direction 23 [N/m^2]
+                            <xsd:documentation>Allowable stress for shear in 2-3 plane [N/m^2]</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="tau31" type="doubleBaseType" maxOccurs="1" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>Allowable stress for shear in 3-1 plane [N/m^2]
                             </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="tau12" type="doubleBaseType" maxOccurs="1" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>Allowable stress for shear in 1-2 plane [N/m^2]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="eps1t" type="doubleBaseType" maxOccurs="1" minOccurs="0">
@@ -29816,21 +29909,21 @@ jonas.jepsen@dlr.de
                                 direction 3 </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="gamma12" type="doubleBaseType" maxOccurs="1" minOccurs="0">
-                        <xsd:annotation>
-                            <xsd:documentation>Allowable strain for shear in meterial direction 12
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="gamma13" type="doubleBaseType" maxOccurs="1" minOccurs="0">
-                        <xsd:annotation>
-                            <xsd:documentation>Allowable strain for shear in meterial direction 13
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
                     <xsd:element name="gamma23" type="doubleBaseType" maxOccurs="1" minOccurs="0">
                         <xsd:annotation>
-                            <xsd:documentation>Allowable strain for shear in meterial direction 23
+                            <xsd:documentation>Allowable strain for shear in 2-3 plane
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="gamma31" type="doubleBaseType" maxOccurs="1" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>Allowable strain for shear in 3-1 plane
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="gamma12" type="doubleBaseType" maxOccurs="1" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>Allowable strain for shear in 1-2 plane
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
@@ -29844,10 +29937,25 @@ jonas.jepsen@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>orthotropicSolidPropertiesType</ddue:para>
+                        <ddue:para>
+                            orthotropicSolidPropertiesType
+                        </ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Orthotropic Solid Properties Type, ...</ddue:para>
+                        <ddue:content>
+                            Defines the material properties for an elastic orthotropic material in three spatial directions (i.e., solid). The strain-stress relationship is defined as:
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="strain_stress_orthotropicSolid"></ddue:image>
+                            </ddue:mediaLink>
+                            Note that nuij is related to nuji by: 
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="nu_E_othotropicMaterial"></ddue:image>
+                            </ddue:mediaLink>                                                     
+                            The terminology refers to the following literature:
+                            <ddue:list>
+                                <ddue:listItem>[1] R. M. Jones, Mechanics Of Composite Materials, 2 New edition. Philadelphia, PA: Taylor and Francis Inc, 1998.</ddue:listItem>
+                            </ddue:list>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -29873,50 +29981,37 @@ jonas.jepsen@dlr.de
                             <xsd:documentation> Young's modulus in material direction 3 [N/m^2] </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
+                    <xsd:element name="G23" type="doubleBaseType" maxOccurs="1" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>Shear modulus in the 2-3 plane [N/m^2]</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="G31" type="doubleBaseType" maxOccurs="1" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>Shear modulus in the 3-1 plane [N/m^2]
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                     <xsd:element name="G12" type="doubleBaseType"
                         maxOccurs="1" minOccurs="0">
                         <xsd:annotation>
-                            <xsd:documentation>
-                                ... add description ...
-                            </xsd:documentation>
+                            <xsd:documentation>Shear modulus in the 1-2 plane [N/m^2]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="G13" type="doubleBaseType"
-                        maxOccurs="1" minOccurs="0">
+                    <xsd:element name="nu23" type="doubleBaseType" maxOccurs="1" minOccurs="0">
                         <xsd:annotation>
-                            <xsd:documentation>
-                                ... add description ...
-                            </xsd:documentation>
+                            <xsd:documentation>Poisson's ratio in in 2-3 plane</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="G23" type="doubleBaseType"
-                        maxOccurs="1" minOccurs="0">
+                    <xsd:element name="nu31" type="doubleBaseType" maxOccurs="1" minOccurs="0">
                         <xsd:annotation>
-                            <xsd:documentation>
-                                ... add description ...
-                            </xsd:documentation>
+                            <xsd:documentation>Poisson's ratio in in 3-1 plane</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="nu12" type="doubleBaseType"
                         maxOccurs="1" minOccurs="0">
                         <xsd:annotation>
-                            <xsd:documentation>
-                                Poisson's ratio in material direction 12
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="nu13" type="doubleBaseType"
-                        maxOccurs="1" minOccurs="0">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                Poisson's ratio in material direction 13</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="nu23" type="doubleBaseType"
-                        maxOccurs="1" minOccurs="0">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                Poisson's ratio in material direction 23</xsd:documentation>
+                            <xsd:documentation>Poisson's ratio in in 1-2 plane</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="thermalExpansionCoeff1" type="doubleBaseType" maxOccurs="1"
@@ -29940,21 +30035,20 @@ jonas.jepsen@dlr.de
                                 3 [1/K] </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element minOccurs="0" name="thermalConductivity1" type="doubleBaseType">
+                    <xsd:element minOccurs="0" name="thermalConductivity23" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation> Thermal conductivity of the material in material direction 1 [W/(m*K)]
+                            <xsd:documentation> Thermal conductivity of the material which couples heat flux in material direction 2 with temperature gradient in material direction 3 [W/(m*K)]</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="thermalConductivity31" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation> Thermal conductivity of the material which couples heat flux in material direction 3 with temperature gradient in material direction 1 [W/(m*K)]
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element minOccurs="0" name="thermalConductivity2" type="doubleBaseType">
+                    <xsd:element minOccurs="0" name="thermalConductivity12" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation> Thermal conductivity of the material in material direction 2 [W/(m*K)]
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element minOccurs="0" name="thermalConductivity3" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation> Thermal conductivity of the material in material direction 3 [W/(m*K)]
+                            <xsd:documentation> Thermal conductivity of the material which couples heat flux in material direction 1 with temperature gradient in material direction 2 [W/(m*K)]
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
@@ -29994,21 +30088,20 @@ jonas.jepsen@dlr.de
                                 direction 3 [N/m^2] </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="tau12" type="doubleBaseType" maxOccurs="1" minOccurs="0">
-                        <xsd:annotation>
-                            <xsd:documentation>Allowable stress for shear direction 12 [N/m^2]
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="tau13" type="doubleBaseType" maxOccurs="1" minOccurs="0">
-                        <xsd:annotation>
-                            <xsd:documentation>Allowable stress for shear direction 13 [N/m^2]
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
                     <xsd:element name="tau23" type="doubleBaseType" maxOccurs="1" minOccurs="0">
                         <xsd:annotation>
-                            <xsd:documentation>Allowable stress for shear direction 23 [N/m^2]
+                            <xsd:documentation>Allowable stress for shear in 2-3 plane [N/m^2]
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="tau31" type="doubleBaseType" maxOccurs="1" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>Allowable stress for shear in 3-1 plane [N/m^2]</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="tau12" type="doubleBaseType" maxOccurs="1" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>Allowable stress for shear in 1-2 plane [N/m^2]
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
@@ -30048,21 +30141,21 @@ jonas.jepsen@dlr.de
                                 direction 3 </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="gamma12" type="doubleBaseType" maxOccurs="1" minOccurs="0">
-                        <xsd:annotation>
-                            <xsd:documentation>Allowable strain for shear in meterial direction 12
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="gamma13" type="doubleBaseType" maxOccurs="1" minOccurs="0">
-                        <xsd:annotation>
-                            <xsd:documentation>Allowable strain for shear in meterial direction 13
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
                     <xsd:element name="gamma23" type="doubleBaseType" maxOccurs="1" minOccurs="0">
                         <xsd:annotation>
-                            <xsd:documentation>Allowable strain for shear in meterial direction 23
+                            <xsd:documentation>Allowable strain for shear in 1-3 plane
+                              </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="gamma31" type="doubleBaseType" maxOccurs="1" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>Allowable strain for shear in 1-3 plane
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="gamma12" type="doubleBaseType" maxOccurs="1" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>Allowable strain for shear in 1-2 plane
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
