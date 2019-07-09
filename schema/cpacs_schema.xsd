@@ -10493,6 +10493,15 @@ jonas.jepsen@dlr.de
 		</xsd:complexContent>
 	</xsd:complexType>
 
+	<xsd:complexType name="curveProfilesType">
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="curveProfile" type="profileGeometry2DType" maxOccurs="unbounded"></xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
 
 	<xsd:complexType name="curvePointType">
 
@@ -13531,28 +13540,16 @@ jonas.jepsen@dlr.de
 		</xsd:annotation>
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
-				<xsd:sequence>
-					<xsd:element name="inlet" type="engineInletType"/>
-					<xsd:element minOccurs="0" name="bypassStream" type="engineCasingType"/>
-					<xsd:element name="coreStream" type="engineCasingType"/>
-					<xsd:element name="diameterMax" type="pointXYType">
-						<xsd:annotation>
-							<xsd:documentation>
-								Maximal diameter of the nacelle
-								(x=x-position; y=max diameter).
-							</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-					<xsd:element name="endPos" type="pointXType">
-						<xsd:annotation>
-							<xsd:documentation>
-								Most rearward x-position of the engine
-								nacelle.
-							</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-					<xsd:element name="outerShape" type="nacelleOuterShapeType"/>
-				</xsd:sequence>
+                <xsd:all>
+                	<xsd:element name="fanCowl"
+                		type="nacelleCowlType">
+                	</xsd:element>
+                	<xsd:element minOccurs="0" name="coreCowl"
+                		type="nacelleCowlType">
+                	</xsd:element>
+                	<xsd:element minOccurs="0" name="centerCowl" type="nacelleCenterCowlType"></xsd:element>
+                </xsd:all>
+				<xsd:attribute name="uID" type="xsd:string" use="required"/>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
@@ -13865,10 +13862,19 @@ jonas.jepsen@dlr.de
 					<xsd:element minOccurs="0" name="positionings" type="positioningsType"/>
 					<xsd:element minOccurs="0" name="loadCarryingStructure" type="pylonStructureType"/>
 				</xsd:sequence>
-				<xsd:attribute name="uID" type="xsd:string">
+				<xsd:attribute name="uID" type="xsd:string" use="required">
 					<xsd:annotation>
 						<xsd:documentation>UID of the engine pylon.</xsd:documentation>
 					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="symmetry">
+					<xsd:simpleType>
+						<xsd:restriction base="xsd:string">
+							<xsd:enumeration value="x-y-plane"/>
+							<xsd:enumeration value="x-z-plane"/>
+							<xsd:enumeration value="y-z-plane"/>
+						</xsd:restriction>
+					</xsd:simpleType>
 				</xsd:attribute>
 			</xsd:extension>
 		</xsd:complexContent>
@@ -30933,51 +30939,30 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
 		</xsd:complexContent>
 	</xsd:complexType>
 
-	<xsd:complexType name="nacelleElementType">
-		<xsd:annotation>
-			<xsd:appinfo>
-				<sd:schemaDoc>
-					<ddue:summary>
-						<ddue:para>nacelleElementType</ddue:para>
-					</ddue:summary>
-					<ddue:remarks>
-						<ddue:para/>
-					</ddue:remarks>
-				</sd:schemaDoc>
-			</xsd:appinfo>
-		</xsd:annotation>
+	<xsd:complexType name="nacelleGuideCurveType">
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
-				<xsd:sequence>
-					<xsd:element name="name" type="stringBaseType"/>
-					<xsd:element minOccurs="0" name="description" type="stringBaseType">
+				<xsd:all>
+					<xsd:element name="name" type="stringBaseType"></xsd:element>
+					<xsd:element name="description" type="stringBaseType"></xsd:element>
+					<xsd:element name="guideCurveProfileUID"
+						type="stringUIDBaseType">
 					</xsd:element>
-					<xsd:element name="profileUID" type="stringUIDBaseType"/>
-					<xsd:element name="transformation" type="transformationPolarType">
+					<xsd:element name="startSectionUID"
+						type="stringUIDBaseType">
 					</xsd:element>
-				</xsd:sequence>
-				<xsd:attribute name="uID" type="xsd:string" use="required"/>
+					<xsd:element name="fromZeta" type="doubleBaseType"></xsd:element>
+					<xsd:element name="toZeta" type="doubleBaseType"></xsd:element>
+				</xsd:all>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
 
-	<xsd:complexType name="nacelleElementsType">
-		<xsd:annotation>
-			<xsd:appinfo>
-				<sd:schemaDoc>
-					<ddue:summary>
-						<ddue:para>nacelleElementsType</ddue:para>
-					</ddue:summary>
-					<ddue:remarks>
-						<ddue:para/>
-					</ddue:remarks>
-				</sd:schemaDoc>
-			</xsd:appinfo>
-		</xsd:annotation>
+	<xsd:complexType name="nacelleGuideCurvesType">
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
 				<xsd:sequence>
-					<xsd:element maxOccurs="unbounded" name="element" type="nacelleElementType"/>
+					<xsd:element name="nacelleGuideCurve" type="nacelleGuideCurveType" maxOccurs="unbounded"></xsd:element>
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
@@ -30991,7 +30976,34 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
 						<ddue:para>nacelleOuterShapeType</ddue:para>
 					</ddue:summary>
 					<ddue:remarks>
-						<ddue:para/>
+						<ddue:para>The outer shape of the nacelle is defined using rotationally arranged nacelle sections. The transformation in each nacelle section defines the position at which the section is placed. Sections are combined to segments with neighbouring sections ordered by the translations phi angle.</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:all>
+					<xsd:element name="transformation" type="transformationType"/>
+					<xsd:element name="sections" type="nacelleSectionsType"/>
+
+
+				</xsd:all>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="nacelleProfilesType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>nacelleProfilesType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>Nacelle profiles type, containing nacelle profile geometries.
+							See profileGeometryType for further documentation</ddue:para>
 					</ddue:remarks>
 				</sd:schemaDoc>
 			</xsd:appinfo>
@@ -30999,9 +31011,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
 				<xsd:sequence>
-					<xsd:element name="transformation" type="transformationType">
-					</xsd:element>
-					<xsd:element name="sections" type="nacelleSectionsType"/>
+					<xsd:element maxOccurs="unbounded" name="nacelleProfile" type="profileGeometry2DType"/>
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
@@ -31022,14 +31032,12 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
 		</xsd:annotation>
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
-				<xsd:sequence>
+				<xsd:all>
 					<xsd:element name="name" type="stringBaseType"/>
-					<xsd:element minOccurs="0" name="description" type="stringBaseType">
-					</xsd:element>
-					<xsd:element name="transformation" type="transformationPolarType">
-					</xsd:element>
-					<xsd:element name="elements" type="nacelleElementsType"/>
-				</xsd:sequence>
+					<xsd:element minOccurs="0" name="description" type="stringBaseType"/>
+					<xsd:element name="transformation" type="transformationType"/>
+					<xsd:element name="profileUID" type="stringUIDBaseType"/>
+				</xsd:all>
 				<xsd:attribute name="uID" type="xsd:string" use="required"/>
 			</xsd:extension>
 		</xsd:complexContent>
@@ -32510,6 +32518,44 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
 	</xsd:complexType>
 
 
+	<xsd:complexType name="pointListXYVectorType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>List of 2D points, kept in two coordinate vecors (x, y)</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:content>
+							<ddue:para>This set of vectors contains an ordered list of points
+								for x and y coordinates in the form of stringBased Vectors.
+								The x and y vector elements with the same index specify a 2D
+								point. The coordinates of the x vector of [0, 1].</ddue:para>
+						</ddue:content>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="x" type="stringVectorBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Vector of x coordinates</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="y" type="stringVectorBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Vector of y coordinates</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+
 	<xsd:complexType name="pointListXZType">
 
 		<xsd:annotation>
@@ -33654,6 +33700,88 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
 	</xsd:complexType>
 
 
+	<xsd:complexType name="profileGeometry2DType">
+
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>profileGeometry2DType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:content>
+							<ddue:para>A profile is defined by a profile name, an optional
+								description and a 2-dimensional pointlist with both
+								coordinates mandatory. All point coordinates are transferred 
+								to the global coordinate system depending on the context they
+								are used in. The points have to be ordered in a mathematical
+								positive sense. The x-coordinates of the profile has to be
+								normalized between 0 and 1. First and last point
+								may, but need not to, be identical. Hence, it is possible to
+								include "open" profiles. However, the trailing edge position of
+								the upper and lower point need to be identical. No crooked
+								trailing edges are possible.</ddue:para>
+							<ddue:para>Example 1: For a conventional nacelle profile, the airfoil
+								coordinates are defined in x and y. The points have to be ordered 
+								from the trailing edge along the lower side to the leading
+								edge and then along the upper side back to the trailing edge.
+								When used for a nacelle the profile axis align
+								with the global axes as follows:
+								+x_profile -> +x_global;
+								+y-profile -> -z_global</ddue:para>
+							<ddue:para>Example 2: For a fuselage, the coordinates are
+								also given in x and z with x as the normalized fuselage height.
+								Starting point of the profile sould be the lowest point
+								(typically in the symmetry plane), then upwards on the positive x-side up to the highest
+								point (again, typically in the symmetry plane). Depending on,
+								whether the fuselage shall be specified with symmetry condition
+								or not, the profile either ends there, or continues on the
+								negative x-side back down to the lowest point.</ddue:para>
+							<ddue:para>Alternatively, it is possible to specify the
+								coordinates of a profile via the CST (class function /shape
+								function transformation technique) notation. Please see the
+								cst2DType for further information.</ddue:para>
+							<ddue:para>A profile can be symmetric. In that case the profile
+								is interpreted as being not closed and will be closed by
+								mirroring it on the symmetry plane.</ddue:para>
+						</ddue:content>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element name="name" type="stringBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Name of profile</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="description" type="stringBaseType">
+						<xsd:annotation>
+							<xsd:documentation>Description of profile</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:choice>
+						<xsd:element name="pointList" type="pointListXYVectorType"/>
+						<xsd:element name="cst2D" type="cst2DType"/>
+					</xsd:choice>
+				</xsd:sequence>
+				<xsd:attribute name="symmetry">
+					<xsd:simpleType>
+						<xsd:restriction base="xsd:string">
+							<xsd:enumeration value="x-axis"/>
+							<xsd:enumeration value="y-axis"/>
+						</xsd:restriction>
+					</xsd:simpleType>
+				</xsd:attribute>
+
+				<xsd:attribute name="uID" type="xsd:string" use="required"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+
 	<xsd:complexType name="profilesType">
 
 		<xsd:annotation>
@@ -33677,6 +33805,8 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
 					<xsd:element minOccurs="0" name="guideCurves" type="guideCurveProfilesType"/>
 					<xsd:element minOccurs="0" name="rotorAirfoils" type="rotorAirfoilsType"/>
 					<xsd:element minOccurs="0" name="structuralProfiles" type="structuralProfilesType"/>
+					<xsd:element minOccurs="0" name="nacelleProfiles" type="nacelleProfilesType"/>
+					<xsd:element minOccurs="0" name="curveProfiles" type="curveProfilesType"/>
 				</xsd:all>
 			</xsd:extension>
 		</xsd:complexContent>
@@ -39381,67 +39511,6 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
 	</xsd:complexType>
 
 
-	<xsd:complexType name="transformationPolarType">
-
-		<xsd:annotation>
-			<xsd:appinfo>
-				<sd:schemaDoc>
-					<ddue:summary>
-						<ddue:para>transformationPolarType</ddue:para>
-					</ddue:summary>
-					<ddue:remarks>
-						<ddue:para>Transformation type, containing a set of
-							transformations. The order of the transformations is scaling
-							-&gt; rotation -&gt; translation, and they are executed in this
-							order. Any of them can be omitted; it will be replaced by its
-							defaults.</ddue:para>
-						<ddue:para>Transformations are always executed relative to the
-							child not the parent. I.e. a scaling does not have an influence
-							on the parent item. For example in the outer geometry of a wing
-							the element scaling does not influence the section. Scaling does
-							also not effect rotation and translation.</ddue:para>
-						<ddue:para>For the polar transformation the translation is
-							executed in polar coordinates, relative to the parent element.
-						</ddue:para>
-					</ddue:remarks>
-				</sd:schemaDoc>
-			</xsd:appinfo>
-		</xsd:annotation>
-		<xsd:complexContent>
-			<xsd:extension base="complexBaseType">
-				<xsd:sequence>
-					<xsd:element minOccurs="0" name="scaling" type="pointType">
-						<xsd:annotation>
-							<xsd:documentation>Scaling data default: 1,1,1. Those parameters
-								describe the scaling of the x-, y-, and z-axis.
-							</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-					<xsd:element minOccurs="0" name="rotation" type="pointType">
-						<xsd:annotation>
-							<xsd:documentation>Rotation data default: 0,0,0. The rotation
-								angles are the three Euler angles to describe the orientation of
-								the coordinate system. The order is allways xyz in CPACS.
-								Therefore the first rotation is around the x-axis, the second
-								rotation is around the rotated y-axis (y') and the third
-								rotation is around the two times rotated z-axis (z'').
-							</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-					<xsd:element minOccurs="0" name="translation" type="pointPolarType">
-						<xsd:annotation>
-							<xsd:documentation>Translation data default: 0,0. Please note
-								that this translation is executed in polar coordinates.
-							</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-				</xsd:sequence>
-				<xsd:attribute name="uID" type="xsd:string" use="required"/>
-			</xsd:extension>
-		</xsd:complexContent>
-	</xsd:complexType>
-
-
 	<xsd:complexType name="transformationType">
 
 		<xsd:annotation>
@@ -45129,8 +45198,82 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             </xsd:element>
         </xsd:sequence>
     </xsd:complexType>
-
 	
-</xsd:schema>
+	<xsd:complexType name="nacelleCowlType">
 
+		<xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>nacelleCowlType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>
+							Describes the cowl geometry for nacelles
+							using sections positioned around the
+							rotational center of the engine.
+						</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+                <xsd:all>
+                	<xsd:element name="sections"
+                		type="nacelleSectionsType">
+                	</xsd:element>
+                	<xsd:element name="guideCurves"
+                		type="nacelleGuideCurvesType">
+                	</xsd:element>
+                	<xsd:element name="rotationCurve" type="rotationCurveType"></xsd:element>
+                </xsd:all>
+				<xsd:attribute name="uID" type="xsd:string" use="required"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="rotationCurveType">
+		<xsd:all>
+			<xsd:element name="referenceSectionUID"
+				type="stringUIDBaseType">
+			</xsd:element>
+			<xsd:element name="startZeta" type="doubleBaseType"></xsd:element>
+			<xsd:element name="endZeta" type="doubleBaseType"></xsd:element>
+			<xsd:element name="startZetaBlending"
+				type="doubleBaseType">
+			</xsd:element>
+			<xsd:element name="endZetaBlending" type="doubleBaseType"></xsd:element>
+			<xsd:element name="curveProfileUID" type="stringUIDBaseType"></xsd:element>
+		</xsd:all>
+		<xsd:attribute name="uID" type="xsd:string" use="required"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="nacelleCenterCowlType">
+        <xsd:annotation>
+			<xsd:appinfo>
+				<sd:schemaDoc>
+					<ddue:summary>
+						<ddue:para>nacelleCenterCowlType</ddue:para>
+					</ddue:summary>
+					<ddue:remarks>
+						<ddue:para>
+							Describes the curve for defining rotational center of the engine.
+						</ddue:para>
+					</ddue:remarks>
+				</sd:schemaDoc>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="complexBaseType">
+				<xsd:all>
+					<xsd:element name="xOffset" type="doubleBaseType"></xsd:element>
+					<xsd:element name="curveUID" type="stringUIDBaseType"></xsd:element>
+				</xsd:all>
+				<xsd:attribute name="uID" type="xsd:string" use="required"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+</xsd:schema>
 
