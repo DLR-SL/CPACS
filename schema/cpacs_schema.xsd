@@ -2037,120 +2037,6 @@ jonas.jepsen@dlr.de
 		</xsd:complexContent>
 	</xsd:complexType>
 
-
-	<xsd:complexType name="aeroLandingGearType">
-
-		<xsd:annotation>
-			<xsd:appinfo>
-				<sd:schemaDoc>
-					<ddue:summary>
-						<ddue:para>aeroLandingGearType</ddue:para>
-					</ddue:summary>
-					<ddue:remarks>
-						<ddue:para>LandingGearPerformanceMap type, containing a delta
-							perfomance map with aerodynamic data for a landing gear. This
-							means that the coefficients are deltas to be added to the
-							corresponding coefficients of the base performance map. Array
-							order is (from innermost to outermost loop): relativeDeflection
-							min-&gt;max, then angleOfAttack, then angleOfSideslip, then
-							altitude, then machNumber. AngleOfAttack, angleOfSideslip,
-							altitude and machNumber are taken from the basic performance map
-							one level above. For the definition of the coefficients,
-							please refer to the description of the base performance map</ddue:para>
-						<ddue:para>LandingGearPerformanceMap type, containing a delta
-							perfomance map with aerodynamic data for a landing gear. This
-							means that the coefficients are deltas to be added to the
-							corresponding coefficients of the base performance map for a
-							specific landing gear deflection. Array order is (from innermost
-							to outermost loop): relativeDeflection min-&gt;max, then 
-							angleOfAttack, then angleOfSideslip, then altitude, then
-							machNumber. AngleOfAttack, angleOfSideslip, altitude
-							and machNumber are taken from the base performance map
-							one level above. For the definition of the coefficients,
-							please refer to the description of the base performance map</ddue:para>
-					</ddue:remarks>
-				</sd:schemaDoc>
-			</xsd:appinfo>
-		</xsd:annotation>
-		<xsd:complexContent>
-			<xsd:extension base="complexBaseType">
-				<xsd:sequence>
-					<xsd:element name="landingGearUID" type="stringUIDBaseType">
-						<xsd:annotation>
-							<xsd:documentation>Reference to the landingGear
-							</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-					<xsd:element name="relDeflection" type="stringVectorBaseType">
-						<xsd:annotation>
-							<xsd:documentation>Relative deflection of the landing gear
-							</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-					<xsd:element minOccurs="0" name="dcd" type="stringArrayBaseType">
-						<xsd:annotation>
-							<xsd:documentation>Delta drag coefficient for landing gear
-							</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-					<xsd:element minOccurs="0" name="dcs" type="stringArrayBaseType">
-						<xsd:annotation>
-							<xsd:documentation>Delta coefficient for landing gear side force (perpendicular to lift and drag)
-							</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-					<xsd:element minOccurs="0" name="dcl" type="stringArrayBaseType">
-						<xsd:annotation>
-							<xsd:documentation>Delta lift coefficient for landing gear
-							</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-					<xsd:element minOccurs="0" name="dcmd" type="stringArrayBaseType">
-						<xsd:annotation>
-							<xsd:documentation>Delta moment coefficient around drag axis
-							</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-					<xsd:element minOccurs="0" name="dcms" type="stringArrayBaseType">
-						<xsd:annotation>
-							<xsd:documentation>Delta moment coefficient around side force axis (perpendicular to lift and drag)
-							</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-					<xsd:element minOccurs="0" name="dcml" type="stringArrayBaseType">
-						<xsd:annotation>
-							<xsd:documentation>Delta moment coefficient around lift axis
-							</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-				</xsd:sequence>
-			</xsd:extension>
-		</xsd:complexContent>
-	</xsd:complexType>
-
-	<xsd:complexType name="aeroLandingGearsType">
-
-		<xsd:annotation>
-			<xsd:appinfo>
-				<sd:schemaDoc>
-					<ddue:summary>
-						<ddue:para>aeroLandingGearsType</ddue:para>
-					</ddue:summary>
-					<ddue:remarks>
-						<ddue:para/>
-					</ddue:remarks>
-				</sd:schemaDoc>
-			</xsd:appinfo>
-		</xsd:annotation>
-		<xsd:complexContent>
-			<xsd:extension base="complexBaseType">
-				<xsd:sequence>
-					<xsd:element maxOccurs="unbounded" name="landingGear" type="aeroLandingGearType"/>
-				</xsd:sequence>
-			</xsd:extension>
-		</xsd:complexContent>
-	</xsd:complexType>
-
 	<xsd:complexType name="aeroPerformanceMapRCType">
 
 		<xsd:annotation>
@@ -2170,7 +2056,7 @@ jonas.jepsen@dlr.de
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
 				<xsd:sequence>
-					<xsd:element name="atmosphericModel" type="atmosphericModelType">
+					<xsd:element name="atmosphericModel" type="atmosphericModelOldType">
 						<xsd:annotation>
 							<xsd:documentation>Atmospheric model and temperature offset</xsd:documentation>
 						</xsd:annotation>
@@ -2220,127 +2106,12 @@ jonas.jepsen@dlr.de
 					<xsd:element minOccurs="0" name="cmx" type="stringArrayBaseType"/>
 					<xsd:element minOccurs="0" name="cmy" type="stringArrayBaseType"/>
 					<xsd:element minOccurs="0" name="cmz" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dampingDerivatives" type="dampingDerivativesRatesType"/>
+					<xsd:element minOccurs="0" name="dampingDerivatives" type="dampingDerivativesRatesArrayType"/>
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
 
-
-	<xsd:complexType name="aeroPerformanceMapType">
-
-		<xsd:annotation>
-			<xsd:appinfo>
-				<sd:schemaDoc>
-					<ddue:summary>
-						<ddue:para>aeroPerformanceMapType</ddue:para>
-					</ddue:summary>
-					<ddue:remarks>
-						<ddue:para>AeroPerformanceMap type, containing a perfomance map
-							with aerodynamic data of the complete aircraft in the form of
-							nondimensionalized coefficients. The force coefficients (c?)
-							are nondimensionalized by dynamic pressure and reference area,
-							the moment coefficients (cm?) by dynamic pressure, reference
-							area and reference length. </ddue:para>
-						<ddue:para>All coefficients in the aeroPerformanceMap relate to
-							the aerodynamic coordinate system which is reached from the CPACS coordinate system by the transformations of angle of attack and angle of yaw. See documentation of the
-							CPACS-Element for further information.</ddue:para>
-					</ddue:remarks>
-				</sd:schemaDoc>
-			</xsd:appinfo>
-		</xsd:annotation>
-		<xsd:complexContent>
-			<xsd:extension base="complexBaseType">
-				<xsd:sequence>
-					<xsd:element name="atmosphericModel" type="atmosphericModelType">
-						<xsd:annotation>
-							<xsd:documentation>Atmospheric model and temperature offset</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-					<xsd:element name="machNumber" type="stringVectorBaseType">
-						<xsd:annotation>
-							<xsd:documentation>Mach number</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-					<xsd:element name="altitude" type="stringVectorBaseType">
-						<xsd:annotation>
-							<xsd:documentation>Altitude</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-					<xsd:element name="angleOfSideslip" type="stringVectorBaseType">
-						<xsd:annotation>
-							<xsd:documentation>Sideslip angle</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-					<xsd:element name="angleOfAttack" type="stringVectorBaseType">
-						<xsd:annotation>
-							<xsd:documentation>Angle of attack</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-					<xsd:element minOccurs="0" name="cd" type="stringArrayBaseType">
-						<xsd:annotation>
-							<xsd:documentation>drag coefficient in aerodynamic coordinates</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-					<xsd:element minOccurs="0" name="cs" type="stringArrayBaseType">
-                        <xsd:annotation>
-							<xsd:documentation>coefficient of the side force vector in aerodynamic coordinates (perpendicular to lift and drag)</xsd:documentation>
-						</xsd:annotation>
-                    </xsd:element>
-					<xsd:element minOccurs="0" name="cl" type="stringArrayBaseType">
-                        <xsd:annotation>
-							<xsd:documentation>lift coefficient in aerodynamic coordinates</xsd:documentation>
-						</xsd:annotation>
-                    </xsd:element>
-					<xsd:element minOccurs="0" name="cmd" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="cms" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="cml" type="stringArrayBaseType"/>
-					<xsd:element minOccurs="0" name="dampingDerivatives" type="dampingDerivativesRatesType"/>
-					<xsd:element minOccurs="0" name="controlSurfaces" type="controlSurfacePerformanceMapsType"/>
-					<xsd:element minOccurs="0" name="landingGears" type="aeroLandingGearsType"/>
-					<xsd:element minOccurs="0" name="elastic" type="aeroPerformanceMapElasticType">
-						<xsd:annotation>
-							<xsd:documentation>Conditions specifying an elastic case. Used for
-							performance maps incorporating elastic deformation</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-				</xsd:sequence>
-				<xsd:attribute name="uID" type="xsd:string" use="required"/>
-			</xsd:extension>
-		</xsd:complexContent>
-	</xsd:complexType>
-
-	<xsd:complexType name="aeroPerformanceMapElasticType">
-
-		<xsd:annotation>
-			<xsd:appinfo>
-				<sd:schemaDoc>
-					<ddue:summary>
-						<ddue:para>aeroPerformanceMapElasticType</ddue:para>
-					</ddue:summary>
-					<ddue:remarks>
-						<ddue:para>This node specifies a set of conditions specifying an elastic case</ddue:para>
-					</ddue:remarks>
-				</sd:schemaDoc>
-			</xsd:appinfo>
-		</xsd:annotation>
-		<xsd:complexContent>
-			<xsd:extension base="complexBaseType">
-				<xsd:all>
-					<xsd:element name="weightAndBalanceUID" type="stringUIDBaseType">
-						<xsd:annotation>
-							<xsd:documentation>Reference to a weight and balance case</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-					<xsd:element name="loadFactor" type="pointType">
-						<xsd:annotation>
-							<xsd:documentation>Load factors in CPACS coordinates</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-				</xsd:all>
-			</xsd:extension>
-		</xsd:complexContent>
-	</xsd:complexType>
 
 	<xsd:complexType name="aeroPerformanceMapsRCType">
 
@@ -2366,31 +2137,7 @@ jonas.jepsen@dlr.de
 		</xsd:complexContent>
 	</xsd:complexType>
 
-	<xsd:complexType name="aeroPerformanceMapsType">
-
-		<xsd:annotation>
-			<xsd:appinfo>
-				<sd:schemaDoc>
-					<ddue:summary>
-						<ddue:para>aeroPerformanceMapsType</ddue:para>
-					</ddue:summary>
-					<ddue:remarks>
-						<ddue:para>aeroPerformanceMaps type, containing multiple
-							aeroPerformanceMaps for different cases</ddue:para>
-					</ddue:remarks>
-				</sd:schemaDoc>
-			</xsd:appinfo>
-		</xsd:annotation>
-		<xsd:complexContent>
-			<xsd:extension base="complexBaseType">
-				<xsd:sequence>
-					<xsd:element maxOccurs="unbounded" name="aeroPerformanceMap" type="aeroPerformanceMapType"/>
-				</xsd:sequence>
-			</xsd:extension>
-		</xsd:complexContent>
-	</xsd:complexType>
-
-	<xsd:complexType name="aeroPerformanceType">
+	<xsd:complexType name="aeroPerformanceRCType">
 
 		<xsd:annotation>
 			<xsd:appinfo>
@@ -2426,7 +2173,7 @@ jonas.jepsen@dlr.de
 							</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element minOccurs="0" name="controlSurfacesAeroPerformance" type="controlSurfacePerformanceMapsType">
+					<xsd:element minOccurs="0" name="controlSurfacesAeroPerformance" type="controlSurfacePerformanceMapsOldType">
 						<xsd:annotation>
 							<xsd:documentation>Aerodynamic performance maps of control
 								surfaces</xsd:documentation>
@@ -3306,7 +3053,10 @@ jonas.jepsen@dlr.de
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
 				<xsd:all>
-					<xsd:element minOccurs="0" name="aeroPerformanceMaps" type="aeroPerformanceMapsType"/>
+                    <xsd:element minOccurs="0" name="aeroPerformance" type="aeroPerformanceType" >
+                        <xsd:annotation>
+                            <xsd:documentation>Aerodynamic performance</xsd:documentation>
+                        </xsd:annotation></xsd:element>
 					<xsd:element minOccurs="0" name="aeroelastics" type="aeroelasticsType"/>
 					<xsd:element minOccurs="0" name="dynamicAircraftModel" type="dynamicAircraftModelAnalysisType"/>
                     <xsd:element minOccurs="0" name="flightDynamics" type="flightDynamicsAnalysisType"/>
@@ -4190,7 +3940,7 @@ jonas.jepsen@dlr.de
 		</xsd:complexContent>
 	</xsd:complexType>
 
-	<xsd:complexType name="atmosphericModelType">
+	<xsd:complexType name="atmosphericModelOldType">
 
 		<xsd:annotation>
 			<xsd:appinfo>
@@ -7478,7 +7228,7 @@ jonas.jepsen@dlr.de
 				<xsd:sequence>
 					<xsd:element name="controlUID" type="stringUIDBaseType"/>
 					<xsd:element name="commandInputs" type="stringVectorBaseType"/>
-					<xsd:element minOccurs="0" name="gainTable" type="stringVectorBaseType"/>
+					<xsd:element minOccurs="0" name="relativeDeflections" type="stringVectorBaseType"/>
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
@@ -8599,7 +8349,7 @@ jonas.jepsen@dlr.de
 	</xsd:complexType>
 
 
-	<xsd:complexType name="controlSurfacePerformanceMapType">
+	<xsd:complexType name="controlSurfacePerformanceMapOldType">
 
 		<xsd:annotation>
 			<xsd:appinfo>
@@ -8644,7 +8394,7 @@ jonas.jepsen@dlr.de
 		</xsd:complexContent>
 	</xsd:complexType>
 
-	<xsd:complexType name="controlSurfacePerformanceMapsType">
+	<xsd:complexType name="controlSurfacePerformanceMapsOldType">
 
 		<xsd:annotation>
 			<xsd:appinfo>
@@ -8663,7 +8413,7 @@ jonas.jepsen@dlr.de
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
 				<xsd:sequence>
-					<xsd:element maxOccurs="unbounded" name="controlSurface" type="controlSurfacePerformanceMapType"/>
+					<xsd:element maxOccurs="unbounded" name="controlSurface" type="controlSurfacePerformanceMapOldType"/>
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
@@ -10875,7 +10625,7 @@ jonas.jepsen@dlr.de
 	</xsd:complexType>
 
 
-	<xsd:complexType name="dampingDerivativesRatesType">
+	<xsd:complexType name="dampingDerivativesRatesArrayType">
 
 		<xsd:annotation>
 			<xsd:appinfo>
@@ -10925,7 +10675,7 @@ jonas.jepsen@dlr.de
 	</xsd:complexType>
 
 
-	<xsd:complexType name="dampingDerivativesType">
+	<xsd:complexType name="dampingDerivativesArrayType">
 
 		<xsd:annotation>
 			<xsd:appinfo>
@@ -20702,8 +20452,8 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
 						<xsd:element minOccurs="0" name="cmz" type="stringArrayBaseType"/>
 						<xsd:element minOccurs="0" name="positiveQuasiSteadyRotation" type="quasiSteadyRotationType"/>
 						<xsd:element minOccurs="0" name="negativeQuasiSteadyRotation" type="quasiSteadyRotationType"/>
-						<xsd:element minOccurs="0" name="dampingDerivatives" type="dampingDerivativesRatesType"/>
-						<xsd:element minOccurs="0" name="controlSurfaces" type="controlSurfacePerformanceMapsType"/>
+						<xsd:element minOccurs="0" name="dampingDerivatives" type="dampingDerivativesRatesArrayType"/>
+						<xsd:element minOccurs="0" name="controlSurfaces" type="controlSurfacePerformanceMapsOldType"/>
 					</xsd:sequence>
 				</xsd:choice>
 			</xsd:extension>
@@ -35369,7 +35119,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
 				<xsd:all>
-					<xsd:element minOccurs="0" name="aeroPerformance" type="aeroPerformanceType"/>
+					<xsd:element minOccurs="0" name="aeroPerformance" type="aeroPerformanceRCType"/>
 					<xsd:element minOccurs="0" name="paxFlow" type="xsd:string"/>
 					<xsd:element minOccurs="0" name="aeroelastics" type="aeroelasticsType"/>
 					<xsd:element minOccurs="0" name="massBreakdown" type="rotorcraftMassBreakdownType"/>
@@ -38367,20 +38117,20 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
 				<xsd:all>
-					<xsd:element name="genericSystems" type="genericSystemsType">
+					<xsd:element name="genericSystems" type="genericSystemsType" maxOccurs="1" minOccurs="0">
 						<xsd:annotation>
 							<xsd:documentation>Node for geometrical layout of system components
 								based on simple geometric shapes
 							</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element name="cockpitControls" type="cockpitControlsType">
+					<xsd:element name="cockpitControls" type="cockpitControlsType" maxOccurs="1" minOccurs="0">
 						<xsd:annotation>
 							<xsd:documentation>Cockpit controls, e.g. stickRoll, pedals
 							</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element name="commandCases" type="commandCasesType">
+					<xsd:element name="commandCases" type="commandCasesType" maxOccurs="1" minOccurs="0">
 						<xsd:annotation>
 							<xsd:documentation>Different commandCases that are commanded,
 								e.g. roll, accelerate</xsd:documentation>
@@ -38393,7 +38143,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
 							</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element name="controlLaws" type="controlLawsType">
+					<xsd:element name="controlLaws" type="controlLawsType" maxOccurs="1" minOccurs="0">
 						<xsd:annotation>
 							<xsd:documentation>Control laws, for regulated actuation
 							</xsd:documentation>
@@ -45274,6 +45024,700 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
+
+    <xsd:complexType name="aeroPerformanceType">
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="aeroMap"
+                        type="aeroMapType"
+                        maxOccurs="unbounded" minOccurs="1">
+                        <xsd:annotation>
+                            <xsd:documentation>Aerodynamic map</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="aeroMapType">
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="name" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Name</xsd:documentation>
+                        </xsd:annotation></xsd:element>
+                    <xsd:element name="description"
+                        type="stringBaseType" maxOccurs="1"
+                        minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>Description</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="boundaryConditions"
+                        type="aeroPerformanceBoundaryConditionsType">
+                        <xsd:annotation>
+                            <xsd:documentation>Boundary conditions</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+
+                    <xsd:element name="aeroPerformanceMap"
+                        type="aeroPerformanceMapType">
+                        <xsd:annotation>
+                            <xsd:documentation>Aerodynamic coefficients and derivatives</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="aeroLimitsMap"
+                        type="aeroLimitsMapType">
+                        <xsd:annotation>
+                            <xsd:documentation>Limitations of aerodynamic characteristics</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:all>
+                <xsd:attribute name="uID" type="xsd:string"></xsd:attribute>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="aeroPerformanceBoundaryConditionsType">
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                <xsd:element name="atmosphericModel">
+                        <xsd:annotation>
+                            <xsd:documentation>Atmospheric Model. Available options: ISA. See documentation of  &lt;CPACS&gt; root element for further details.
+                            </xsd:documentation>
+                        </xsd:annotation>
+                        <xsd:complexType>
+                            <xsd:simpleContent>
+                                <xsd:restriction base="stringBaseType">
+                                    <xsd:enumeration value="ISA" />
+                                </xsd:restriction>
+                            </xsd:simpleContent>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="deltaTemperature" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Offset from temperature of the
+                                atmospheric model [K]. For more details
+                                on atmospheric models, please refer to
+                                documentation of the &lt;CPACS&gt; root
+                                element.
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="movableDevices"
+                        type="movableDevicesType" maxOccurs="1"
+                        minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>Movable device settings</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="movableDevicesType">
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="movableDevice"
+                        type="movableDeviceType" maxOccurs="unbounded"
+                        minOccurs="1">
+                        <xsd:annotation>
+                            <xsd:documentation>Movable device setting</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="movableDeviceType">
+       <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:choice>
+                    <xsd:sequence>
+                        <xsd:choice>
+                            <xsd:element name="controlSurfaceUID"
+                                type="stringUIDBaseType">
+                                <xsd:annotation>
+                                    <xsd:documentation>Reference to a control surface uID</xsd:documentation>
+                                </xsd:annotation>
+                            </xsd:element>
+                            <xsd:element name="landingGearUID"
+                                type="stringUIDBaseType">
+                                <xsd:annotation>
+                                    <xsd:documentation>Reference to a landing gear uID</xsd:documentation>
+                                </xsd:annotation>
+                            </xsd:element>
+                        </xsd:choice>
+                        <xsd:element name="relativeDeflection"
+                            type="doubleBaseType">
+                            <xsd:annotation>
+                                <xsd:documentation>Relative deflection of the movable device</xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                    </xsd:sequence>
+                    <xsd:sequence>
+                        <xsd:element name="controlDistributorUID"
+                            type="stringUIDBaseType">
+                            <xsd:annotation>
+                                <xsd:documentation>Reference to a control distributor uID</xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element name="commandInput"
+                            type="doubleBaseType">
+                            <xsd:annotation>
+                                <xsd:documentation>Value of the command input of a control distributor. If not given explicitly in the control distributor, linear interpolation between the neighboring points is required.</xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:choice>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="aeroPerformanceMapType">
+
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>aeroPerformanceMapType</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>The AeroPerformanceMap contains a map
+                            with aerodynamic data of the complete aircraft in the form of
+                            nondimensional coefficients. The force coefficients in i-direction (ci)
+                            are nondimensionalized by dynamic pressure and reference area,
+                            the moment coefficients (cmi) by dynamic pressure, reference
+                            area and reference length. </ddue:para>
+                        <ddue:para>All coefficients in the aeroPerformanceMap relate to
+                            the aerodynamic coordinate system which is deducted from the CPACS coordinate system by 
+                            the transformations of angle of attack and angle of yaw. See the documentation of the
+                            CPACS element for further details.</ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="altitude"
+                        type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Altitude
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="machNumber"
+                        type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Mach number
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="angleOfSideslip"
+                        type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Sideslip angle
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="angleOfAttack"
+                        type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Angle of attack
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="cd"
+                        type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Drag coefficient in aerodynamic
+                                coordinates
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="cs"
+                        type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Coefficient of the side force vector in
+                                aerodynamic coordinates (perpendicular
+                                to lift and drag)
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="cl"
+                        type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Lift coefficient in aerodynamic
+                                coordinates
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="cmd"
+                        type="stringVectorBaseType" />
+                    <xsd:element minOccurs="0" name="cms"
+                        type="stringVectorBaseType" />
+                    <xsd:element minOccurs="0" name="cml"
+                        type="stringVectorBaseType" />
+                    <xsd:element minOccurs="0" name="dampingDerivatives"
+                        type="dampingDerivativesRatesType" >
+                        <xsd:annotation>
+                            <xsd:documentation>Damping derivatives for positive and negative rotation rates</xsd:documentation>
+                        </xsd:annotation></xsd:element>
+                    <xsd:element name="incrementMaps"
+                        type="aeroPerformanceIncrementMapsType" maxOccurs="1"
+                        minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>Increment maps for aerodynamic coefficients due to movable device deflections.</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="aeroPerformanceIncrementMapsType">
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="incrementMap"
+                        type="aeroPerformanceIncrementMapType" maxOccurs="unbounded"
+                        minOccurs="1">
+                        <xsd:annotation>
+                            <xsd:documentation>Increment map from aerodynamic coefficients due to movable device deflections.</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="aeroPerformanceIncrementMapType">
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:choice>
+                    <xsd:sequence>
+                        <xsd:choice>
+                            <xsd:element name="controlSurfaceUID"
+                                type="stringUIDBaseType">
+                                <xsd:annotation>
+                                    <xsd:documentation>Reference to a control surface uID</xsd:documentation>
+                                </xsd:annotation>
+                            </xsd:element>
+                            <xsd:element name="landingGearUID"
+                                type="stringUIDBaseType">
+                                <xsd:annotation>
+                                    <xsd:documentation>Reference to a landing gear uID</xsd:documentation>
+                                </xsd:annotation>
+                            </xsd:element>
+                        </xsd:choice>
+                        <xsd:element name="relativeDeflections"
+                            type="stringVectorBaseType">
+                            <xsd:annotation>
+                                <xsd:documentation>Relative deflections of the movable device given as vector</xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                    </xsd:sequence>
+                    <xsd:sequence>
+                        <xsd:element name="controlDistributorUID"
+                            type="stringUIDBaseType">
+                            <xsd:annotation>
+                                <xsd:documentation>Reference to a control distributor uID</xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element name="commandInputs"
+                            type="stringVectorBaseType">
+                            <xsd:annotation>
+                                <xsd:documentation>Command inputs of a control distributor given as vector. If not given explicitly in the control distributor, linear interpolation between the neighboring points is required.</xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:choice>
+                    <xsd:element name="dcd" type="stringArrayBaseType"
+                        maxOccurs="1" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>Increment of drag coefficient in aerodynamic coordinates</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="dcs" type="stringArrayBaseType"
+                        maxOccurs="1" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>Increment of coefficient of the side force vector in aerodynamic coordinates (perpendicular to lift and drag)</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="dcl" type="stringArrayBaseType"
+                        maxOccurs="1" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>Increment of lift coefficient in aerodynamic coordinates</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="dcmd" type="stringArrayBaseType"
+                        maxOccurs="1" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>Increment of cmd</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="dcms" type="stringArrayBaseType"
+                        maxOccurs="1" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>Increment of cms</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="dcml" type="stringArrayBaseType"
+                        maxOccurs="1" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>Increment of cml</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+                <xsd:attribute name="uID" type="xsd:string"></xsd:attribute>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="aeroLimitsMapType">
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="altitude"
+                        type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Altitude
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="machNumber"
+                        type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Mach number
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="operationLimit"
+                        type="aeroMapOperationLimitType" maxOccurs="1" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>Vehicle operation limit</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="incrementMaps"
+                        type="aeroLimitsIncrementMapsType" maxOccurs="1"
+                        minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>Increment maps for limitation values due to movable device deflections</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+                
+                
+                
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    
+    <xsd:complexType name="aeroLimitsIncrementMapsType">
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:choice>
+                    <xsd:sequence>
+                        <xsd:choice>
+                            <xsd:element name="controlSurfaceUID"
+                                type="stringUIDBaseType">
+                                <xsd:annotation>
+                                    <xsd:documentation>Reference to a control surface uID</xsd:documentation>
+                                </xsd:annotation>
+                            </xsd:element>
+                            <xsd:element name="landingGearUID"
+                                type="stringUIDBaseType">
+                                <xsd:annotation>
+                                    <xsd:documentation>Reference to a landing gear uID</xsd:documentation>
+                                </xsd:annotation>
+                            </xsd:element>
+                        </xsd:choice>
+                        <xsd:element name="relativeDeflections"
+                            type="stringVectorBaseType">
+                            <xsd:annotation>
+                                <xsd:documentation>Relative deflections of the movable device given as vector</xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                    </xsd:sequence>
+                    <xsd:sequence>
+                        <xsd:element name="controlDistributorUID"
+                            type="stringUIDBaseType">
+                            <xsd:annotation>
+                                <xsd:documentation>Reference to a control distributor uID</xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element name="commandInputs"
+                            type="stringVectorBaseType">
+                            <xsd:annotation>
+                                <xsd:documentation>Command inputs of a control distributor given as vector. If not given explicitly in the control distributor, linear interpolation between the neighboring points is required.</xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                    </xsd:sequence>
+                    <xsd:element name="aeroPerformanceIncrementMapUID"
+                        type="stringUIDBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Reference to an increment map of the aeroPerformanceMap</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    </xsd:choice>
+                    <xsd:element name="operationLimitIncrements"
+                        type="operationLimitIncrementsType"
+                        maxOccurs="1" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>Increments of the vehicle operation limits</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    
+                    
+                    
+                </xsd:sequence>
+                <xsd:attribute name="uID" type="xsd:string"></xsd:attribute>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    
+    <xsd:complexType name="dampingDerivativesRatesType">
+
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Damping derivatives for positive and negative rotation
+                            rates</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:section>
+                                <ddue:title>0. General overview</ddue:title>
+                                <ddue:content>
+                                    <ddue:para>This type contains the damping derivatives. They are
+                                        split up into those derivatives for positive rotation rates,
+                                        and those for negative rotation rates.</ddue:para>
+                                </ddue:content>
+                            </ddue:section>
+                            <ddue:section>
+                                <ddue:title>1. &lt;positiveRates&gt; (optional)</ddue:title>
+                                <ddue:content>
+                                    <ddue:para>Damping derivatives, calculated by positive rotation
+                                        rates.</ddue:para>
+                                </ddue:content>
+                            </ddue:section>
+                            <ddue:section>
+                                <ddue:title>2. &lt;negativeRates&gt; (optional)</ddue:title>
+                                <ddue:content>
+                                    <ddue:para>Damping derivatives, calculated by negative rotation
+                                        rates.</ddue:para>
+                                </ddue:content>
+                            </ddue:section>
+                        </ddue:content>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element minOccurs="0" name="positiveRates" type="dampingDerivativesType">
+                        <xsd:annotation>
+                            <xsd:documentation>Damping derivatives for positive rotation rates</xsd:documentation>
+                        </xsd:annotation></xsd:element>
+                    <xsd:element minOccurs="0" name="negativeRates" type="dampingDerivativesType">
+                        <xsd:annotation>
+                            <xsd:documentation>Damping derivatives for negative rotation rates</xsd:documentation>
+                        </xsd:annotation></xsd:element>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+
+    <xsd:complexType name="dampingDerivativesType">
+
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Performane maps with damping derivatives</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:section>
+                                <ddue:content>
+                                    <ddue:para>This type contains aerodynamic performance maps with
+                                        the damping derivatives. The derivatives are calculated using
+                                        rotational rates [rad/s], normalized by:
+                                        Rate*ReferenceLength/flow speed. The rotations are performed
+                                        around the global axis directions with the aircraft model's
+                                        global reference point as origin. The damping derivative
+                                        performance maps are arrays consisting of semicolon separated
+                                        values, simular to the baseline aerodynamic performance maps.
+                                    </ddue:para>
+                                </ddue:content>
+                            </ddue:section>
+                        </ddue:content>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element minOccurs="0" name="dcddpstar" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Change of cd by normalized roll rate</xsd:documentation>
+                        </xsd:annotation></xsd:element>
+                    <xsd:element minOccurs="0" name="dcddqstar" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Change of cd by normalized pitch rate</xsd:documentation></xsd:annotation></xsd:element>
+                    <xsd:element minOccurs="0" name="dcddrstar" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Change of cd by normalized yaw rate
+
+</xsd:documentation></xsd:annotation></xsd:element>
+                    <xsd:element minOccurs="0" name="dcsdpstar" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Change of cs by normalized roll rate</xsd:documentation>
+                        </xsd:annotation></xsd:element>
+                    <xsd:element minOccurs="0" name="dcsdqstar" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Change of cs by normalized pitch rate</xsd:documentation>
+                        </xsd:annotation></xsd:element>
+                    <xsd:element minOccurs="0" name="dcsdrstar" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Change of cs by normalized yaw rate</xsd:documentation></xsd:annotation></xsd:element>
+                    <xsd:element minOccurs="0" name="dcldpstar" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Change of cl by normalized roll rate</xsd:documentation>
+                        </xsd:annotation></xsd:element>
+                    <xsd:element minOccurs="0" name="dcldqstar" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Change of cl by normalized pitch rate</xsd:documentation>
+                        </xsd:annotation></xsd:element>
+                    <xsd:element minOccurs="0" name="dcldrstar" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Change of cl by normalized yaw rate</xsd:documentation></xsd:annotation></xsd:element>
+                    <xsd:element minOccurs="0" name="dcmddpstar" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Change of cmd by normalized roll rate</xsd:documentation></xsd:annotation></xsd:element>
+                    <xsd:element minOccurs="0" name="dcmddqstar" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Change of cmd by normalized pitch rate</xsd:documentation></xsd:annotation></xsd:element>
+                    <xsd:element minOccurs="0" name="dcmddrstar" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Change of cmd by normalized yaw rate
+
+</xsd:documentation></xsd:annotation></xsd:element>
+                    <xsd:element minOccurs="0" name="dcmsdpstar" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Change of cms by normalized roll rate
+
+</xsd:documentation></xsd:annotation></xsd:element>
+                    <xsd:element minOccurs="0" name="dcmsdqstar" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Change of cms by normalized pitch rate</xsd:documentation>
+                        </xsd:annotation></xsd:element>
+                    <xsd:element minOccurs="0" name="dcmsdrstar" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Change of cms by normalized yaw rate</xsd:documentation>
+                        </xsd:annotation></xsd:element>
+                    <xsd:element minOccurs="0" name="dcmldpstar" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Change of cml by normalized roll rate</xsd:documentation>
+                        </xsd:annotation></xsd:element>
+                    <xsd:element minOccurs="0" name="dcmldqstar" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Change of cml by normalized pitch rate</xsd:documentation>
+                        </xsd:annotation></xsd:element>
+                    <xsd:element minOccurs="0" name="dcmldrstar" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Change of cml by normalized yaw rate</xsd:documentation>
+                        </xsd:annotation></xsd:element>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+
+
+
+    <xsd:complexType name="aeroMapOperationLimitType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>aeroPerformanceMapType</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>Vehicle operation limit defined by sets of angleOfSideslip and angleOfAttack for a given 
+            altitude and Mach number. This might be, e.g., a safety margin to the angle of attack at maximum lift or the flight 
+            attitude a fighter aircraft is capable to fly in stalled conditions. The corresponding aerodynamic coefficients must 
+            be extracted from the aeroPerformanceMap.</ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="angleOfSideslip"
+                        type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Sideslip angle defining the operation limit. Must be a vector of the same length as angleOfAttack, machNumber and altitude.</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="angleOfAttack"
+                        type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Angle of attack defining the operation limit. Must be a vector of the same length as angleOfSideslip, machNumber and altitude.</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="operationLimitIncrementsType">
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="angleOfSideslip"
+                        type="stringArrayBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Sideslip angle</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="angleOfAttack"
+                        type="stringArrayBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Angle of attack</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
 
 </xsd:schema>
 
