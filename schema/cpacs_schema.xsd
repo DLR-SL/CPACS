@@ -3053,7 +3053,10 @@ jonas.jepsen@dlr.de
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
 				<xsd:all>
-                    <xsd:element minOccurs="0" name="aeroPerformance" type="aeroPerformanceType" />
+                    <xsd:element minOccurs="0" name="aeroPerformance" type="aeroPerformanceType" >
+                        <xsd:annotation>
+                            <xsd:documentation>Aerodynamic performance</xsd:documentation>
+                        </xsd:annotation></xsd:element>
 					<xsd:element minOccurs="0" name="aeroelastics" type="aeroelasticsType"/>
 					<xsd:element minOccurs="0" name="dynamicAircraftModel" type="dynamicAircraftModelAnalysisType"/>
                     <xsd:element minOccurs="0" name="flightDynamics" type="flightDynamicsAnalysisType"/>
@@ -45029,6 +45032,9 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:element name="aeroMap"
                         type="aeroMapType"
                         maxOccurs="unbounded" minOccurs="1">
+                        <xsd:annotation>
+                            <xsd:documentation>Aerodynamic map</xsd:documentation>
+                        </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
             </xsd:extension>
@@ -45039,29 +45045,34 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element name="name" type="stringBaseType"></xsd:element>
+                    <xsd:element name="name" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Name</xsd:documentation>
+                        </xsd:annotation></xsd:element>
                     <xsd:element name="description"
                         type="stringBaseType" maxOccurs="1"
                         minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>Description</xsd:documentation>
+                        </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="boundaryConditions"
                         type="aeroPerformanceBoundaryConditionsType">
+                        <xsd:annotation>
+                            <xsd:documentation>Boundary conditions</xsd:documentation>
+                        </xsd:annotation>
                     </xsd:element>
 
                     <xsd:element name="aeroPerformanceMap"
                         type="aeroPerformanceMapType">
                         <xsd:annotation>
-                            <xsd:documentation>
-                                ... ToDo ...
-                            </xsd:documentation>
+                            <xsd:documentation>Aerodynamic coefficients and derivatives</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element minOccurs="0" name="aeroLimitsMap"
                         type="aeroLimitsMapType">
                         <xsd:annotation>
-                            <xsd:documentation>
-                                ... ToDo ...
-                            </xsd:documentation>
+                            <xsd:documentation>Limitations of aerodynamic characteristics</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -45076,7 +45087,8 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                 <xsd:all>
                 <xsd:element name="atmosphericModel">
                         <xsd:annotation>
-                            <xsd:documentation>To-Do</xsd:documentation>
+                            <xsd:documentation>Atmospheric Model. Available options: ISA. See documentation of  &lt;CPACS&gt; root element for further details.
+                            </xsd:documentation>
                         </xsd:annotation>
                         <xsd:complexType>
                             <xsd:simpleContent>
@@ -45100,6 +45112,9 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:element name="movableDevices"
                         type="movableDevicesType" maxOccurs="1"
                         minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>Movable device settings</xsd:documentation>
+                        </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
             </xsd:extension>
@@ -45113,6 +45128,9 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:element name="movableDevice"
                         type="movableDeviceType" maxOccurs="unbounded"
                         minOccurs="1">
+                        <xsd:annotation>
+                            <xsd:documentation>Movable device setting</xsd:documentation>
+                        </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
             </xsd:extension>
@@ -45127,21 +45145,36 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         <xsd:choice>
                             <xsd:element name="controlSurfaceUID"
                                 type="stringUIDBaseType">
+                                <xsd:annotation>
+                                    <xsd:documentation>Reference to a control surface uID</xsd:documentation>
+                                </xsd:annotation>
                             </xsd:element>
                             <xsd:element name="landingGearUID"
                                 type="stringUIDBaseType">
+                                <xsd:annotation>
+                                    <xsd:documentation>Reference to a landing gear uID</xsd:documentation>
+                                </xsd:annotation>
                             </xsd:element>
                         </xsd:choice>
-                        <xsd:element name="relDeflection"
+                        <xsd:element name="relativeDeflection"
                             type="doubleBaseType">
+                            <xsd:annotation>
+                                <xsd:documentation>Relative deflection of the movable device</xsd:documentation>
+                            </xsd:annotation>
                         </xsd:element>
                     </xsd:sequence>
                     <xsd:sequence>
                         <xsd:element name="controlDistributorUID"
                             type="stringUIDBaseType">
+                            <xsd:annotation>
+                                <xsd:documentation>Reference to a control distributor uID</xsd:documentation>
+                            </xsd:annotation>
                         </xsd:element>
                         <xsd:element name="commandInput"
                             type="doubleBaseType">
+                            <xsd:annotation>
+                                <xsd:documentation>Value of the command input of a control distributor. If not given explicitly in the control distributor, linear interpolation between the neighboring points is required.</xsd:documentation>
+                            </xsd:annotation>
                         </xsd:element>
                     </xsd:sequence>
                 </xsd:choice>
@@ -45158,15 +45191,16 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         <ddue:para>aeroPerformanceMapType</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>AeroPerformanceMap type, containing a perfomance map
+                        <ddue:para>The AeroPerformanceMap contains a map
                             with aerodynamic data of the complete aircraft in the form of
-                            nondimensionalized coefficients. The force coefficients (c?)
+                            nondimensional coefficients. The force coefficients in i-direction (ci)
                             are nondimensionalized by dynamic pressure and reference area,
-                            the moment coefficients (cm?) by dynamic pressure, reference
+                            the moment coefficients (cmi) by dynamic pressure, reference
                             area and reference length. </ddue:para>
                         <ddue:para>All coefficients in the aeroPerformanceMap relate to
-                            the aerodynamic coordinate system which is reached from the CPACS coordinate system by the transformations of angle of attack and angle of yaw. See documentation of the
-                            CPACS-Element for further information.</ddue:para>
+                            the aerodynamic coordinate system which is deducted from the CPACS coordinate system by 
+                            the transformations of angle of attack and angle of yaw. See the documentation of the
+                            CPACS element for further details.</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -45210,7 +45244,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         type="stringVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
-                                drag coefficient in aerodynamic
+                                Drag coefficient in aerodynamic
                                 coordinates
                             </xsd:documentation>
                         </xsd:annotation>
@@ -45219,7 +45253,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         type="stringVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
-                                coefficient of the side force vector in
+                                Coefficient of the side force vector in
                                 aerodynamic coordinates (perpendicular
                                 to lift and drag)
                             </xsd:documentation>
@@ -45229,7 +45263,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         type="stringVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
-                                lift coefficient in aerodynamic
+                                Lift coefficient in aerodynamic
                                 coordinates
                             </xsd:documentation>
                         </xsd:annotation>
@@ -45241,10 +45275,16 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:element minOccurs="0" name="cml"
                         type="stringVectorBaseType" />
                     <xsd:element minOccurs="0" name="dampingDerivatives"
-                        type="dampingDerivativesRatesType" />
+                        type="dampingDerivativesRatesType" >
+                        <xsd:annotation>
+                            <xsd:documentation>Damping derivatives for positive and negative rotation rates</xsd:documentation>
+                        </xsd:annotation></xsd:element>
                     <xsd:element name="incrementMaps"
                         type="aeroPerformanceIncrementMapsType" maxOccurs="1"
                         minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>Increment maps for aerodynamic coefficients due to movable device deflections.</xsd:documentation>
+                        </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
             </xsd:extension>
@@ -45258,6 +45298,9 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:element name="incrementMap"
                         type="aeroPerformanceIncrementMapType" maxOccurs="unbounded"
                         minOccurs="1">
+                        <xsd:annotation>
+                            <xsd:documentation>Increment map from aerodynamic coefficients due to movable device deflections.</xsd:documentation>
+                        </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
             </xsd:extension>
@@ -45273,41 +45316,74 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         <xsd:choice>
                             <xsd:element name="controlSurfaceUID"
                                 type="stringUIDBaseType">
+                                <xsd:annotation>
+                                    <xsd:documentation>Reference to a control surface uID</xsd:documentation>
+                                </xsd:annotation>
                             </xsd:element>
                             <xsd:element name="landingGearUID"
                                 type="stringUIDBaseType">
+                                <xsd:annotation>
+                                    <xsd:documentation>Reference to a landing gear uID</xsd:documentation>
+                                </xsd:annotation>
                             </xsd:element>
                         </xsd:choice>
-                        <xsd:element name="relDeflections"
+                        <xsd:element name="relativeDeflections"
                             type="stringVectorBaseType">
+                            <xsd:annotation>
+                                <xsd:documentation>Relative deflections of the movable device given as vector</xsd:documentation>
+                            </xsd:annotation>
                         </xsd:element>
                     </xsd:sequence>
                     <xsd:sequence>
                         <xsd:element name="controlDistributorUID"
                             type="stringUIDBaseType">
+                            <xsd:annotation>
+                                <xsd:documentation>Reference to a control distributor uID</xsd:documentation>
+                            </xsd:annotation>
                         </xsd:element>
                         <xsd:element name="commandInputs"
                             type="stringVectorBaseType">
+                            <xsd:annotation>
+                                <xsd:documentation>Command inputs of a control distributor given as vector. If not given explicitly in the control distributor, linear interpolation between the neighboring points is required.</xsd:documentation>
+                            </xsd:annotation>
                         </xsd:element>
                     </xsd:sequence>
                 </xsd:choice>
                     <xsd:element name="dcd" type="stringArrayBaseType"
                         maxOccurs="1" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>Increment of drag coefficient in aerodynamic coordinates</xsd:documentation>
+                        </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="dcs" type="stringArrayBaseType"
                         maxOccurs="1" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>Increment of coefficient of the side force vector in aerodynamic coordinates (perpendicular to lift and drag)</xsd:documentation>
+                        </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="dcl" type="stringArrayBaseType"
                         maxOccurs="1" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>Increment of lift coefficient in aerodynamic coordinates</xsd:documentation>
+                        </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="dcmd" type="stringArrayBaseType"
                         maxOccurs="1" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>Increment of cmd</xsd:documentation>
+                        </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="dcms" type="stringArrayBaseType"
                         maxOccurs="1" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>Increment of cms</xsd:documentation>
+                        </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="dcml" type="stringArrayBaseType"
                         maxOccurs="1" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>Increment of cml</xsd:documentation>
+                        </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
                 <xsd:attribute name="uID" type="xsd:string"></xsd:attribute>
@@ -45336,11 +45412,17 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="operationLimit"
-                        type="aeroMapOperationLimitType">
+                        type="aeroMapOperationLimitType" maxOccurs="1" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>Vehicle operation limit</xsd:documentation>
+                        </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="incrementMaps"
                         type="aeroLimitsIncrementMapsType" maxOccurs="1"
                         minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>Increment maps for limitation values due to movable device deflections</xsd:documentation>
+                        </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
                 
@@ -45360,30 +45442,51 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         <xsd:choice>
                             <xsd:element name="controlSurfaceUID"
                                 type="stringUIDBaseType">
+                                <xsd:annotation>
+                                    <xsd:documentation>Reference to a control surface uID</xsd:documentation>
+                                </xsd:annotation>
                             </xsd:element>
                             <xsd:element name="landingGearUID"
                                 type="stringUIDBaseType">
+                                <xsd:annotation>
+                                    <xsd:documentation>Reference to a landing gear uID</xsd:documentation>
+                                </xsd:annotation>
                             </xsd:element>
                         </xsd:choice>
-                        <xsd:element name="relDeflections"
+                        <xsd:element name="relativeDeflections"
                             type="stringVectorBaseType">
+                            <xsd:annotation>
+                                <xsd:documentation>Relative deflections of the movable device given as vector</xsd:documentation>
+                            </xsd:annotation>
                         </xsd:element>
                     </xsd:sequence>
                     <xsd:sequence>
                         <xsd:element name="controlDistributorUID"
                             type="stringUIDBaseType">
+                            <xsd:annotation>
+                                <xsd:documentation>Reference to a control distributor uID</xsd:documentation>
+                            </xsd:annotation>
                         </xsd:element>
                         <xsd:element name="commandInputs"
                             type="stringVectorBaseType">
+                            <xsd:annotation>
+                                <xsd:documentation>Command inputs of a control distributor given as vector. If not given explicitly in the control distributor, linear interpolation between the neighboring points is required.</xsd:documentation>
+                            </xsd:annotation>
                         </xsd:element>
                     </xsd:sequence>
                     <xsd:element name="aeroPerformanceIncrementMapUID"
                         type="stringUIDBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Reference to an increment map of the aeroPerformanceMap</xsd:documentation>
+                        </xsd:annotation>
                     </xsd:element>
                     </xsd:choice>
                     <xsd:element name="operationLimitIncrements"
                         type="operationLimitIncrementsType"
                         maxOccurs="1" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>Increments of the vehicle operation limits</xsd:documentation>
+                        </xsd:annotation>
                     </xsd:element>
                     
                     
@@ -45436,8 +45539,14 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element minOccurs="0" name="positiveRates" type="dampingDerivativesType"/>
-                    <xsd:element minOccurs="0" name="negativeRates" type="dampingDerivativesType"/>
+                    <xsd:element minOccurs="0" name="positiveRates" type="dampingDerivativesType">
+                        <xsd:annotation>
+                            <xsd:documentation>Damping derivatives for positive rotation rates</xsd:documentation>
+                        </xsd:annotation></xsd:element>
+                    <xsd:element minOccurs="0" name="negativeRates" type="dampingDerivativesType">
+                        <xsd:annotation>
+                            <xsd:documentation>Damping derivatives for negative rotation rates</xsd:documentation>
+                        </xsd:annotation></xsd:element>
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
@@ -45455,7 +45564,6 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <ddue:remarks>
                         <ddue:content>
                             <ddue:section>
-                                <ddue:title>0. General overview</ddue:title>
                                 <ddue:content>
                                     <ddue:para>This type contains aerodynamic performance maps with
                                         the damping derivatives. The derivatives are calculated using
@@ -45468,114 +45576,6 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                                     </ddue:para>
                                 </ddue:content>
                             </ddue:section>
-                            <ddue:section>
-                                <ddue:title>1. &lt;dcddpstar&gt; (optional)</ddue:title>
-                                <ddue:content>
-                                    <ddue:para>Change of cd by normalized roll rate</ddue:para>
-                                </ddue:content>
-                            </ddue:section>
-                            <ddue:section>
-                                <ddue:title>2. &lt;dcddqstar&gt; (optional)</ddue:title>
-                                <ddue:content>
-                                    <ddue:para>Change of cd by normalized pitch rate</ddue:para>
-                                </ddue:content>
-                            </ddue:section>
-                            <ddue:section>
-                                <ddue:title>3. &lt;dcddrstar&gt; (optional)</ddue:title>
-                                <ddue:content>
-                                    <ddue:para>Change of cd by normalized yaw rate</ddue:para>
-                                </ddue:content>
-                            </ddue:section>
-                            <ddue:section>
-                                <ddue:title>4. &lt;dcsdpstar&gt; (optional)</ddue:title>
-                                <ddue:content>
-                                    <ddue:para>Change of cs by normalized roll rate</ddue:para>
-                                </ddue:content>
-                            </ddue:section>
-                            <ddue:section>
-                                <ddue:title>5. &lt;dcsdqstar&gt; (optional)</ddue:title>
-                                <ddue:content>
-                                    <ddue:para>Change of cs by normalized pitch rate</ddue:para>
-                                </ddue:content>
-                            </ddue:section>
-                            <ddue:section>
-                                <ddue:title>6. &lt;dcsdrstar&gt; (optional)</ddue:title>
-                                <ddue:content>
-                                    <ddue:para>Change of cs by normalized yaw rate</ddue:para>
-                                </ddue:content>
-                            </ddue:section>
-                            <ddue:section>
-                                <ddue:title>7. &lt;dcldpstar&gt; (optional)</ddue:title>
-                                <ddue:content>
-                                    <ddue:para>Change of cl by normalized roll rate</ddue:para>
-                                </ddue:content>
-                            </ddue:section>
-                            <ddue:section>
-                                <ddue:title>8. &lt;dcldqstar&gt; (optional)</ddue:title>
-                                <ddue:content>
-                                    <ddue:para>Change of cl by normalized pitch rate</ddue:para>
-                                </ddue:content>
-                            </ddue:section>
-                            <ddue:section>
-                                <ddue:title>9. &lt;dcldrstar&gt; (optional)</ddue:title>
-                                <ddue:content>
-                                    <ddue:para>Change of cl by normalized yaw rate</ddue:para>
-                                </ddue:content>
-                            </ddue:section>
-                            <ddue:section>
-                                <ddue:title>10. &lt;dcmddpstar&gt; (optional)</ddue:title>
-                                <ddue:content>
-                                    <ddue:para>Change of cmd by normalized roll rate</ddue:para>
-                                </ddue:content>
-                            </ddue:section>
-                            <ddue:section>
-                                <ddue:title>11. &lt;dcmddqstar&gt; (optional)</ddue:title>
-                                <ddue:content>
-                                    <ddue:para>Change of cmd by normalized pitch rate</ddue:para>
-                                </ddue:content>
-                            </ddue:section>
-                            <ddue:section>
-                                <ddue:title>12. &lt;dcmddrstar&gt; (optional)</ddue:title>
-                                <ddue:content>
-                                    <ddue:para>Change of cmd by normalized yaw rate</ddue:para>
-                                </ddue:content>
-                            </ddue:section>
-                            <ddue:section>
-                                <ddue:title>13. &lt;dcmsdpstar&gt; (optional)</ddue:title>
-                                <ddue:content>
-                                    <ddue:para>Change of cms by normalized roll rate</ddue:para>
-                                </ddue:content>
-                            </ddue:section>
-                            <ddue:section>
-                                <ddue:title>14. &lt;dcmsdqstar&gt; (optional)</ddue:title>
-                                <ddue:content>
-                                    <ddue:para>Change of cms by normalized pitch rate</ddue:para>
-                                </ddue:content>
-                            </ddue:section>
-                            <ddue:section>
-                                <ddue:title>15. &lt;dcmsdrstar&gt; (optional)</ddue:title>
-                                <ddue:content>
-                                    <ddue:para>Change of cms by normalized yaw rate</ddue:para>
-                                </ddue:content>
-                            </ddue:section>
-                            <ddue:section>
-                                <ddue:title>16. &lt;dcmldpstar&gt; (optional)</ddue:title>
-                                <ddue:content>
-                                    <ddue:para>Change of cml by normalized roll rate</ddue:para>
-                                </ddue:content>
-                            </ddue:section>
-                            <ddue:section>
-                                <ddue:title>17. &lt;dcmldqstar&gt; (optional)</ddue:title>
-                                <ddue:content>
-                                    <ddue:para>Change of cml by normalized pitch rate</ddue:para>
-                                </ddue:content>
-                            </ddue:section>
-                            <ddue:section>
-                                <ddue:title>18. &lt;dcmldrstar&gt; (optional)</ddue:title>
-                                <ddue:content>
-                                    <ddue:para>Change of cml by normalized yaw rate</ddue:para>
-                                </ddue:content>
-                            </ddue:section>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -45584,24 +45584,76 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element minOccurs="0" name="dcddpstar" type="stringVectorBaseType"/>
-                    <xsd:element minOccurs="0" name="dcddqstar" type="stringVectorBaseType"/>
-                    <xsd:element minOccurs="0" name="dcddrstar" type="stringVectorBaseType"/>
-                    <xsd:element minOccurs="0" name="dcsdpstar" type="stringVectorBaseType"/>
-                    <xsd:element minOccurs="0" name="dcsdqstar" type="stringVectorBaseType"/>
-                    <xsd:element minOccurs="0" name="dcsdrstar" type="stringVectorBaseType"/>
-                    <xsd:element minOccurs="0" name="dcldpstar" type="stringVectorBaseType"/>
-                    <xsd:element minOccurs="0" name="dcldqstar" type="stringVectorBaseType"/>
-                    <xsd:element minOccurs="0" name="dcldrstar" type="stringVectorBaseType"/>
-                    <xsd:element minOccurs="0" name="dcmddpstar" type="stringVectorBaseType"/>
-                    <xsd:element minOccurs="0" name="dcmddqstar" type="stringVectorBaseType"/>
-                    <xsd:element minOccurs="0" name="dcmddrstar" type="stringVectorBaseType"/>
-                    <xsd:element minOccurs="0" name="dcmsdpstar" type="stringVectorBaseType"/>
-                    <xsd:element minOccurs="0" name="dcmsdqstar" type="stringVectorBaseType"/>
-                    <xsd:element minOccurs="0" name="dcmsdrstar" type="stringVectorBaseType"/>
-                    <xsd:element minOccurs="0" name="dcmldpstar" type="stringVectorBaseType"/>
-                    <xsd:element minOccurs="0" name="dcmldqstar" type="stringVectorBaseType"/>
-                    <xsd:element minOccurs="0" name="dcmldrstar" type="stringVectorBaseType"/>
+                    <xsd:element minOccurs="0" name="dcddpstar" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Change of cd by normalized roll rate</xsd:documentation>
+                        </xsd:annotation></xsd:element>
+                    <xsd:element minOccurs="0" name="dcddqstar" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Change of cd by normalized pitch rate</xsd:documentation></xsd:annotation></xsd:element>
+                    <xsd:element minOccurs="0" name="dcddrstar" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Change of cd by normalized yaw rate
+
+</xsd:documentation></xsd:annotation></xsd:element>
+                    <xsd:element minOccurs="0" name="dcsdpstar" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Change of cs by normalized roll rate</xsd:documentation>
+                        </xsd:annotation></xsd:element>
+                    <xsd:element minOccurs="0" name="dcsdqstar" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Change of cs by normalized pitch rate</xsd:documentation>
+                        </xsd:annotation></xsd:element>
+                    <xsd:element minOccurs="0" name="dcsdrstar" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Change of cs by normalized yaw rate</xsd:documentation></xsd:annotation></xsd:element>
+                    <xsd:element minOccurs="0" name="dcldpstar" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Change of cl by normalized roll rate</xsd:documentation>
+                        </xsd:annotation></xsd:element>
+                    <xsd:element minOccurs="0" name="dcldqstar" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Change of cl by normalized pitch rate</xsd:documentation>
+                        </xsd:annotation></xsd:element>
+                    <xsd:element minOccurs="0" name="dcldrstar" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Change of cl by normalized yaw rate</xsd:documentation></xsd:annotation></xsd:element>
+                    <xsd:element minOccurs="0" name="dcmddpstar" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Change of cmd by normalized roll rate</xsd:documentation></xsd:annotation></xsd:element>
+                    <xsd:element minOccurs="0" name="dcmddqstar" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Change of cmd by normalized pitch rate</xsd:documentation></xsd:annotation></xsd:element>
+                    <xsd:element minOccurs="0" name="dcmddrstar" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Change of cmd by normalized yaw rate
+
+</xsd:documentation></xsd:annotation></xsd:element>
+                    <xsd:element minOccurs="0" name="dcmsdpstar" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Change of cms by normalized roll rate
+
+</xsd:documentation></xsd:annotation></xsd:element>
+                    <xsd:element minOccurs="0" name="dcmsdqstar" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Change of cms by normalized pitch rate</xsd:documentation>
+                        </xsd:annotation></xsd:element>
+                    <xsd:element minOccurs="0" name="dcmsdrstar" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Change of cms by normalized yaw rate</xsd:documentation>
+                        </xsd:annotation></xsd:element>
+                    <xsd:element minOccurs="0" name="dcmldpstar" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Change of cml by normalized roll rate</xsd:documentation>
+                        </xsd:annotation></xsd:element>
+                    <xsd:element minOccurs="0" name="dcmldqstar" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Change of cml by normalized pitch rate</xsd:documentation>
+                        </xsd:annotation></xsd:element>
+                    <xsd:element minOccurs="0" name="dcmldrstar" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Change of cml by normalized yaw rate</xsd:documentation>
+                        </xsd:annotation></xsd:element>
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
@@ -45611,14 +45663,35 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
 
 
     <xsd:complexType name="aeroMapOperationLimitType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>aeroPerformanceMapType</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>Vehicle operation limit defined by sets of angleOfSideslip and angleOfAttack for a given 
+            altitude and Mach number. This might be, e.g., a safety margin to the angle of attack at maximum lift or the flight 
+            attitude a fighter aircraft is capable to fly in stalled conditions. The corresponding aerodynamic coefficients must 
+            be extracted from the aeroPerformanceMap.</ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
                     <xsd:element name="angleOfSideslip"
                         type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Sideslip angle defining the operation limit. Must be a vector of the same length as angleOfAttack, machNumber and altitude.</xsd:documentation>
+                        </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="angleOfAttack"
                         type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Angle of attack defining the operation limit. Must be a vector of the same length as angleOfSideslip, machNumber and altitude.</xsd:documentation>
+                        </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
             </xsd:extension>
@@ -45631,9 +45704,15 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                 <xsd:sequence>
                     <xsd:element name="angleOfSideslip"
                         type="stringArrayBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Sideslip angle</xsd:documentation>
+                        </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="angleOfAttack"
                         type="stringArrayBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Angle of attack</xsd:documentation>
+                        </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
             </xsd:extension>
