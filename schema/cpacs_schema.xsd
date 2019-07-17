@@ -13,19 +13,24 @@ an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
 either express or implied. See the License for the specific
 language governing permissions and limitations under the License.
 
-Copyright: (c) 2018 Deutsches Zentrum fuer Luft- und Raumfahrt e.V.
+Copyright: (c) 2019 Deutsches Zentrum fuer Luft- und Raumfahrt e.V.
 
 If you have any questions regarding CPACS please feel free to contact:
 
-Jonas Jepsen
-Air Transportations Systems
+Marko Alder
+Institute of System Architectures in Aeronautics 
 German Aerospace Center
-Blohmstrasse 20, 21079 Hamburg
-+49 40 42878 4597
-jonas.jepsen@dlr.de
+Hein-Saß-Weg 22, 21129 Hamburg
++49 40 248 9641339 
+marko.alder@dlr.de
 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:sd="http://schemas.xsddoc.codeplex.com/schemaDoc/2009/3" xmlns:xlink="http://www.w3.org/1999/xlink">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+            xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5" 
+            xmlns:sd="http://schemas.xsddoc.codeplex.com/schemaDoc/2009/3" 
+            xmlns:xlink="http://www.w3.org/1999/xlink">
+            
 	<xsd:element name="cpacs" type="cpacsType"/>
+    
 	<xsd:complexType name="cpacsType">
 		<xsd:annotation>
             <xsd:appinfo>
@@ -38,11 +43,11 @@ jonas.jepsen@dlr.de
                             <ddue:definitionTable>
                                 <ddue:definedTerm>Version</ddue:definedTerm>
                                 <ddue:definition>
-                                    <ddue:para>V3.0</ddue:para>
+                                    <ddue:para>V3.1</ddue:para>
                                 </ddue:definition>
                                 <ddue:definedTerm>Date</ddue:definedTerm>
                                 <ddue:definition>
-                                    <ddue:para>2018-07-31T18:47:00</ddue:para>
+                                    <ddue:para>2019-07-11</ddue:para>
                                 </ddue:definition>
                             </ddue:definitionTable>
                             <ddue:section>
@@ -118,11 +123,11 @@ jonas.jepsen@dlr.de
                                             <ddue:entry>Position, Distance</ddue:entry>
                                         </ddue:row>
                                         <ddue:row>
-                                            <ddue:entry>[m<xsd:superscript>2</xsd:superscript>]</ddue:entry>
+                                            <ddue:entry>[m^2]</ddue:entry>
                                             <ddue:entry>Area</ddue:entry>
                                         </ddue:row>
                                         <ddue:row>
-                                            <ddue:entry>[m<xsd:superscript>3</xsd:superscript>]</ddue:entry>
+                                            <ddue:entry>[m^3]</ddue:entry>
                                             <ddue:entry>Volume</ddue:entry>
                                         </ddue:row>
                                         <ddue:row>
@@ -260,7 +265,7 @@ jonas.jepsen@dlr.de
                                 </ddue:content>
                             </ddue:section>
                             <ddue:section>
-                                <ddue:subtitle>UIDs, references and symmetry</ddue:subtitle>
+                                <ddue:title>UIDs, references and symmetry</ddue:title>
                                 <ddue:content>
                                     <ddue:para>All nodes, e.g. parentUID, in CPACS that refer to a component that holds symmetry attribute, e.g. wing, have to carry the symmetry attribute as well.  </ddue:para>
 									<ddue:para>The symmetry attribute may take three values: symm, def, full: 
@@ -285,84 +290,57 @@ jonas.jepsen@dlr.de
                                 </ddue:content>
                             </ddue:section>
                             <ddue:section>
-                                <ddue:title>7. Arrays and vectors</ddue:title>
+                                <ddue:title>7. Vectors and arrays</ddue:title>
                                 <ddue:content>
-                                    <ddue:para>For bigger datasets (e.g. aerodynamic or engine performance maps), it is better to insert a vector or an array of values instead of providing a single node for each data value. In <ddue:legacyItalic>CPACS</ddue:legacyItalic>, there are <ddue:legacyBold>vectors</ddue:legacyBold> and <ddue:legacyBold>arrays</ddue:legacyBold> for this purpose.</ddue:para>
-                                    <ddue:para>The <ddue:legacyBold>mapType</ddue:legacyBold> attribute specifies the type of data. It can have the following value: <ddue:list class="bullet">
-                                            <ddue:listItem>mapType="vector" <ddue:para>The vector is meant as a one-dimensional-array. In such a node, the values are contained in a semicolon separated list:</ddue:para>
+                                    <ddue:para>For large data sets (e.g. increments of aerodynamic coefficients due to control surface deflections) it is advantageous 
+                                    to map them via vectors and arrays instead of using single nodes for each data value. The following definition of vectors and arrays,
+                                    indicated by the mapType attribute, is therefore introduced in <ddue:legacyItalic>CPACS</ddue:legacyItalic>:
+                                        <ddue:list class="bullet">
+                                            <ddue:listItem>mapType="vector" <ddue:para>The vector is meant as a one-dimensional-array. In such a node, the values are given in a semicolon separated list:</ddue:para>
                                                 <ddue:code language="XML" title=" ">&lt;angleOfAttack mapType="vector"&gt;0.;1.5;3.;4.5;6;7.5;9.&lt;/angleOfAttack&gt;</ddue:code>
                                             </ddue:listItem>
-                                            <ddue:listItem>mapType="array" <ddue:para>The array is meant for multi-dimensional-arrays. Again, the values are contained in a semicolon separated list. An array is always preceded by a sequence of vectors, containing the dimensions and index values of it:</ddue:para>
-                                                <ddue:code language="XML" title=" ">&lt;machNumber mapType="vector"&gt;0.5&lt;/machNumber&gt;
-&lt;altitude mapType="vector"&gt;1000.;2000.&lt;/altitude&gt;
-&lt;angleOfSideslip mapType="vector"&gt;-5.;0.;5.&lt;/angleOfSideslip&gt;
-&lt;angleOfAttack mapType="vector"&gt;1.;2.;3.;4.&lt;/angleOfAttack&gt;
-&lt;cfx mapType="array"&gt;1.;2.;3.;4.;11.;12.;13.;14.;21.;22.;23.;24.;101.;102.;103.;104.;111.;112.;113.;114.;121.;122.;123.;124.&lt;/cfx&gt;</ddue:code>
-                                                <ddue:para>In this example, the values for "cfx" are given in a way to indicate the array order: The last parameter is always varied first, then the pre-last, and then further. The array above is also shown in the following tables:</ddue:para>
+                                            <ddue:listItem>mapType="array"
+                                                <ddue:para>
+                                                    The array is meant for multi-dimensional-arrays. Again, the values are contained in a semicolon separated list. An array is always preceded by a sequence of vectors, containing the dimensions and index values of it:
+                                                </ddue:para>
+                                                <ddue:code language="XML" title=" ">&lt;altitude mapType="vector"&gt;1000.; 2000.; 3000.&lt;/altitude&gt;
+    &lt;incrementMaps&gt;
+        &lt;incrementMap uID="incMap_b3ac2"&gt;
+            &lt;controlSurfaceUID&gt;InnerWingFlap&lt;/controlSurfaceUID&gt;
+            &lt;relativeDeflections mapType="vector"&gt;-1;-0.5;0.5;1&lt;/relativeDeflections&gt;
+                &lt;dcl mapType="array"&gt;11.; 12.; 13.; 14.; 21.; 22.; 23.; 24.; 31.; 32.; 33.; 34.&lt;/dcl&gt;
+                                                </ddue:code>
                                                 <ddue:table>
                                                     <ddue:title>
-                                                        <ddue:legacyBold>Value for cfx, Mach number: 0.5, Altitude: 1000m</ddue:legacyBold>
+                                                        <ddue:legacyBold>Values for cl increments:</ddue:legacyBold>
                                                     </ddue:title>
                                                     <ddue:row>
                                                         <ddue:entry/>
-                                                        <ddue:entry>Angle of attack = 1.°</ddue:entry>
-                                                        <ddue:entry>Angle of attack = 2.°</ddue:entry>
-                                                        <ddue:entry>Angle of attack = 3.°</ddue:entry>
-                                                        <ddue:entry>Angle of attack = 4.°</ddue:entry>
+                                                        <ddue:entry>Relative deflection = -1°</ddue:entry>
+                                                        <ddue:entry>Relative deflection = -0.5°</ddue:entry>
+                                                        <ddue:entry>Relative deflection =  0.5°</ddue:entry>
+                                                        <ddue:entry>Relative deflection =  1°</ddue:entry>
                                                     </ddue:row>
                                                     <ddue:row>
-                                                        <ddue:entry>Angle of Sideslip = -5.°</ddue:entry>
-                                                        <ddue:entry>1.</ddue:entry>
-                                                        <ddue:entry>2.</ddue:entry>
-                                                        <ddue:entry>3.</ddue:entry>
-                                                        <ddue:entry>4.</ddue:entry>
-                                                    </ddue:row>
-                                                    <ddue:row>
-                                                        <ddue:entry>Angle of Sideslip = 0.°</ddue:entry>
+                                                        <ddue:entry>Altitude = 1000m</ddue:entry>
                                                         <ddue:entry>11.</ddue:entry>
                                                         <ddue:entry>12.</ddue:entry>
                                                         <ddue:entry>13.</ddue:entry>
                                                         <ddue:entry>14.</ddue:entry>
                                                     </ddue:row>
                                                     <ddue:row>
-                                                        <ddue:entry>Angle of Sideslip = 5.°</ddue:entry>
+                                                        <ddue:entry>Altitude = 2000m</ddue:entry>
                                                         <ddue:entry>21.</ddue:entry>
                                                         <ddue:entry>22.</ddue:entry>
                                                         <ddue:entry>23.</ddue:entry>
                                                         <ddue:entry>24.</ddue:entry>
                                                     </ddue:row>
-                                                </ddue:table>
-                                                <ddue:table>
-                                                    <ddue:title>
-                                                        <ddue:legacyBold>Value for cfx, Mach number: 0.5, Altitude: 2000m</ddue:legacyBold>
-                                                    </ddue:title>
                                                     <ddue:row>
-                                                        <ddue:entry/>
-                                                        <ddue:entry>Angle of attack = 1.°</ddue:entry>
-                                                        <ddue:entry>Angle of attack = 2.°</ddue:entry>
-                                                        <ddue:entry>Angle of attack = 3.°</ddue:entry>
-                                                        <ddue:entry>Angle of attack = 4.°</ddue:entry>
-                                                    </ddue:row>
-                                                    <ddue:row>
-                                                        <ddue:entry>Angle of Sideslip = -5.°</ddue:entry>
-                                                        <ddue:entry>101.</ddue:entry>
-                                                        <ddue:entry>102.</ddue:entry>
-                                                        <ddue:entry>103.</ddue:entry>
-                                                        <ddue:entry>104.</ddue:entry>
-                                                    </ddue:row>
-                                                    <ddue:row>
-                                                        <ddue:entry>Angle of Sideslip = 0.°</ddue:entry>
-                                                        <ddue:entry>111.</ddue:entry>
-                                                        <ddue:entry>112.</ddue:entry>
-                                                        <ddue:entry>113.</ddue:entry>
-                                                        <ddue:entry>114.</ddue:entry>
-                                                    </ddue:row>
-                                                    <ddue:row>
-                                                        <ddue:entry>Angle of Sideslip = 5.°</ddue:entry>
-                                                        <ddue:entry>121.</ddue:entry>
-                                                        <ddue:entry>122.</ddue:entry>
-                                                        <ddue:entry>123.</ddue:entry>
-                                                        <ddue:entry>124.</ddue:entry>
+                                                        <ddue:entry>Altitude = 3000m</ddue:entry>
+                                                        <ddue:entry>31.</ddue:entry>
+                                                        <ddue:entry>32.</ddue:entry>
+                                                        <ddue:entry>33.</ddue:entry>
+                                                        <ddue:entry>34.</ddue:entry>
                                                     </ddue:row>
                                                 </ddue:table>
                                             </ddue:listItem>
@@ -383,6 +361,21 @@ jonas.jepsen@dlr.de
                                     <ddue:para>Temperature offsets are introduced on top of the definitions in the ISA manual (which does not cover such variations). The offset model
                                       is based upon the idea that the pressure at a fixed geopotential altitude is independent from temperature offset (pressure altitude).
                                       The temperature offset changes only the density (following rho = p / Gas Constant / T) (and viscosity, of course)</ddue:para>
+                                </ddue:content>
+                            </ddue:section>
+                            <ddue:section>
+                                <ddue:title>CPACS 3.1</ddue:title>
+                                <ddue:content>
+                                    <ddue:para>Release in August 2019</ddue:para>
+                                    <ddue:list class="bullet">
+                                        <ddue:listItem>Redefinition of aeroPerformanceMaps</ddue:listItem>
+                                        <ddue:listItem>Added nodes for detailed engine pylons and nacelles</ddue:listItem>
+                                        <ddue:listItem>Added nodes to model generic walls</ddue:listItem>
+                                        <ddue:listItem>Extension of material definition</ddue:listItem>
+                                        <ddue:listItem>Added fuselage compartment definition</ddue:listItem>
+                                        <ddue:listItem>Added fuselage fuel tank definition</ddue:listItem>
+                                        <ddue:listItem>Documentation adaptions</ddue:listItem>
+                                    </ddue:list>
                                 </ddue:content>
                             </ddue:section>
                             <ddue:section>
@@ -2858,9 +2851,7 @@ jonas.jepsen@dlr.de
 								<ddue:content>
 									<ddue:para>
 										This is the reference length, used to calculate all the
-										rolling moment coefficients (C
-										<xsd:subscript>Mx</xsd:subscript>
-										).
+										rolling moment coefficients (C_Mx).
 									</ddue:para>
 								</ddue:content>
 							</ddue:section>
@@ -2872,9 +2863,7 @@ jonas.jepsen@dlr.de
 								<ddue:content>
 									<ddue:para>
 										This is the reference length, used to calculate all the
-										pitching moment coefficients (C
-										<xsd:subscript>My</xsd:subscript>
-										).
+										pitching moment coefficients (C_My).
 									</ddue:para>
 								</ddue:content>
 							</ddue:section>
@@ -2886,9 +2875,7 @@ jonas.jepsen@dlr.de
 								<ddue:content>
 									<ddue:para>
 										This is the reference length, used to calculate all the yawing
-										moment coefficients (C
-										<xsd:subscript>Mz</xsd:subscript>
-										).
+										moment coefficients (C_Mz).
 									</ddue:para>
 								</ddue:content>
 							</ddue:section>
@@ -3053,10 +3040,7 @@ jonas.jepsen@dlr.de
 		<xsd:complexContent>
 			<xsd:extension base="complexBaseType">
 				<xsd:all>
-                    <xsd:element minOccurs="0" name="aeroPerformance" type="aeroPerformanceType" >
-                        <xsd:annotation>
-                            <xsd:documentation>Aerodynamic performance</xsd:documentation>
-                        </xsd:annotation></xsd:element>
+                    <xsd:element minOccurs="0" name="aeroPerformance" type="aeroPerformanceType"/>
 					<xsd:element minOccurs="0" name="aeroelastics" type="aeroelasticsType"/>
 					<xsd:element minOccurs="0" name="dynamicAircraftModel" type="dynamicAircraftModelAnalysisType"/>
                     <xsd:element minOccurs="0" name="flightDynamics" type="flightDynamicsAnalysisType"/>
@@ -3074,7 +3058,6 @@ jonas.jepsen@dlr.de
 					<xsd:element minOccurs="0" name="trajectories" type="trajectoriesType"/>
 					<xsd:element minOccurs="0" name="weightAndBalance" type="weightAndBalanceType"/>
 					<xsd:element minOccurs="0" name="paxFlow" type="xsd:string"/>
-
 				</xsd:all>
 			</xsd:extension>
 		</xsd:complexContent>
@@ -14979,9 +14962,7 @@ jonas.jepsen@dlr.de
 										front-below then. Alternatively, a
 										&lt;targetLiftCoefficient&gt; can be specified. In this case,
 										the &lt;angleOfAttack&gt; is iterated automatically, so that
-										the given lift coefficient (C
-										<xsd:subscript>Fz</xsd:subscript>
-										) is met.
+										the given lift coefficient (C_Fz) is met.
 									</ddue:para>
 								</ddue:content>
 							</ddue:section>
@@ -28798,7 +28779,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>materialType</ddue:para>
+                        <ddue:para>Material</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
@@ -28842,34 +28823,14 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     </xsd:element>
                     <xsd:choice maxOccurs="1" minOccurs="1">
                         <xsd:element name="isotropicProperties" type="isotropicPropertiesType">
-                            <xsd:annotation>
-                                <xsd:documentation> Material properties for linear isotropic
-                                    materials. </xsd:documentation>
-                            </xsd:annotation>
                         </xsd:element>
                         <xsd:element name="orthotropicShellProperties" type="orthotropicShellPropertiesType">
-                            <xsd:annotation>
-                                <xsd:documentation> Material properties for orthotropic 2D
-                                    materials. </xsd:documentation>
-                            </xsd:annotation>
                         </xsd:element>
                         <xsd:element name="anisotropicShellProperties" type="anisotropicShellPropertiesType">
-                            <xsd:annotation>
-                                <xsd:documentation> Material properties for anisotropic 2D
-                                    materials. </xsd:documentation>
-                            </xsd:annotation>
                         </xsd:element>
                         <xsd:element name="orthotropicSolidProperties" type="orthotropicSolidPropertiesType">
-                            <xsd:annotation>
-                                <xsd:documentation> Material properties for orthotropic 
-                                     materials. </xsd:documentation>
-                            </xsd:annotation>
                         </xsd:element>
                         <xsd:element name="anisotropicSolidProperties" type="anisotropicSolidPropertiesType">
-                            <xsd:annotation>
-                                <xsd:documentation> Material properties for anisotropic 3D
-                                    materials. </xsd:documentation>
-                            </xsd:annotation>
                         </xsd:element>
                     </xsd:choice>
                     <xsd:element minOccurs="0" name="referenceTemperature" type="doubleBaseType">
@@ -28892,7 +28853,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>isotropicPropertiesType</ddue:para>
+                        <ddue:para>Isotropic material properties</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
@@ -29068,7 +29029,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                 <sd:schemaDoc>
                     <ddue:summary>
                         <ddue:para>
-                            anisotropicShellPropertiesType
+                            Anisotropic material properties for 2D materials
                         </ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
@@ -29227,7 +29188,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                 <sd:schemaDoc>
                     <ddue:summary>
                         <ddue:para>
-                            orthotropicShellPropertiesType
+                            Orthotropic material properties for 2D materials
                         </ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
@@ -29382,7 +29343,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                 <sd:schemaDoc>
                     <ddue:summary>
                         <ddue:para>
-                            anisotropicSolidPropertiesType
+                            Anisotropic material properties for 3D materials
                         </ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
@@ -29704,7 +29665,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                 <sd:schemaDoc>
                     <ddue:summary>
                         <ddue:para>
-                            orthotropicSolidPropertiesType
+                            Orthotropic material properties for 3D materials
                         </ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
@@ -29936,7 +29897,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
 			<xsd:appinfo>
 				<sd:schemaDoc>
 					<ddue:summary>
-						<ddue:para>materialsType</ddue:para>
+						<ddue:para>Materials</ddue:para>
 					</ddue:summary>
 					<ddue:remarks>
 						<ddue:para>Materials type, containing material and composite data.
@@ -39760,11 +39721,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
 								<ddue:content>
 									<ddue:para>
 										This is the reference length, used to calculate all the
-										rolling and yawing moment coefficients (C
-										<xsd:subscript>Mx</xsd:subscript>
-										and C
-										<xsd:subscript>Mz</xsd:subscript>
-										).
+										rolling and yawing moment coefficients (C_Mx) and C_Mz).
 									</ddue:para>
 								</ddue:content>
 							</ddue:section>
@@ -39776,9 +39733,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
 								<ddue:content>
 									<ddue:para>
 										This is the reference length, used to calculate all the
-										pitching moment coefficients (C
-										<xsd:subscript>My</xsd:subscript>
-										).
+										pitching moment coefficients (C_My).
 									</ddue:para>
 								</ddue:content>
 							</ddue:section>
@@ -45026,15 +44981,26 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
 	</xsd:complexType>
 
     <xsd:complexType name="aeroPerformanceType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Aerodynamic performance</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>
+                            The aerodynamic coefficients and derivatives are stored in aerodynamic maps. Individual maps can be used to
+                            gather the aerodynamic characteristics for specific boundary conditions.
+                        </ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:element name="aeroMap"
-                        type="aeroMapType"
-                        maxOccurs="unbounded" minOccurs="1">
-                        <xsd:annotation>
-                            <xsd:documentation>Aerodynamic map</xsd:documentation>
-                        </xsd:annotation>
+                    <xsd:element name="aeroMap" type="aeroMapType" 
+                    maxOccurs="unbounded" minOccurs="1">
                     </xsd:element>
                 </xsd:sequence>
             </xsd:extension>
@@ -45042,6 +45008,21 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
     </xsd:complexType>
 
     <xsd:complexType name="aeroMapType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Aerodynamic map</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>
+                            The aeroMap contains aerodynamic coefficients and derivatives for a specific set of aerodynamic
+                            and configurative boundary conditions. 
+                        </ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
@@ -45058,22 +45039,12 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     </xsd:element>
                     <xsd:element name="boundaryConditions"
                         type="aeroPerformanceBoundaryConditionsType">
-                        <xsd:annotation>
-                            <xsd:documentation>Boundary conditions</xsd:documentation>
-                        </xsd:annotation>
                     </xsd:element>
-
                     <xsd:element name="aeroPerformanceMap"
                         type="aeroPerformanceMapType">
-                        <xsd:annotation>
-                            <xsd:documentation>Aerodynamic coefficients and derivatives</xsd:documentation>
-                        </xsd:annotation>
                     </xsd:element>
                     <xsd:element minOccurs="0" name="aeroLimitsMap"
                         type="aeroLimitsMapType">
-                        <xsd:annotation>
-                            <xsd:documentation>Limitations of aerodynamic characteristics</xsd:documentation>
-                        </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
                 <xsd:attribute name="uID" type="xsd:string"></xsd:attribute>
@@ -45082,6 +45053,18 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
     </xsd:complexType>
     
     <xsd:complexType name="aeroPerformanceBoundaryConditionsType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Boundary conditions</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>Specification of boundary conditions.</ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
@@ -45112,9 +45095,6 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:element name="movableDevices"
                         type="movableDevicesType" maxOccurs="1"
                         minOccurs="0">
-                        <xsd:annotation>
-                            <xsd:documentation>Movable device settings</xsd:documentation>
-                        </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
             </xsd:extension>
@@ -45122,15 +45102,25 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
     </xsd:complexType>
     
     <xsd:complexType name="movableDevicesType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Movable device settings</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>Specification of movable device settings. Movable devices can be, for example, control surfaces
+                        or landing gears.</ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
                     <xsd:element name="movableDevice"
                         type="movableDeviceType" maxOccurs="unbounded"
                         minOccurs="1">
-                        <xsd:annotation>
-                            <xsd:documentation>Movable device setting</xsd:documentation>
-                        </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
             </xsd:extension>
@@ -45138,6 +45128,19 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
     </xsd:complexType>
     
     <xsd:complexType name="movableDeviceType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Movable device setting</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>Specification of a movable device setting. A movable devices can be, for example, a control surface
+                        or landing gear.</ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
        <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:choice>
@@ -45183,24 +45186,52 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
     </xsd:complexType>
     
     <xsd:complexType name="aeroPerformanceMapType">
-
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>aeroPerformanceMapType</ddue:para>
+                        <ddue:para>Aerodynamic coefficients and derivatives</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>The AeroPerformanceMap contains a map
-                            with aerodynamic data of the complete aircraft in the form of
-                            nondimensional coefficients. The force coefficients in i-direction (ci)
-                            are nondimensionalized by dynamic pressure and reference area,
-                            the moment coefficients (cmi) by dynamic pressure, reference
-                            area and reference length. </ddue:para>
-                        <ddue:para>All coefficients in the aeroPerformanceMap relate to
-                            the aerodynamic coordinate system which is deducted from the CPACS coordinate system by 
-                            the transformations of angle of attack and angle of yaw. See the documentation of the
-                            CPACS element for further details.</ddue:para>
+                        <ddue:content>
+                            <ddue:section>
+                                <ddue:title>Description</ddue:title>
+                                <ddue:content>
+                                    <ddue:para>The aeroPerformanceMap contains a map
+                                        with aerodynamic data of the complete aircraft in the form of
+                                        nondimensional coefficients. The force coefficients in 
+                                        <ddue:legacyItalic>i</ddue:legacyItalic>-direction (<ddue:legacyItalic>ci</ddue:legacyItalic>)
+                                        are nondimensionalized by dynamic pressure and reference area,
+                                        the moment coefficients (<ddue:legacyItalic>cmi</ddue:legacyItalic>) by dynamic pressure, reference
+                                        area and reference length.
+                                    </ddue:para>
+                                    <ddue:para>All coefficients in the aeroPerformanceMap relate to
+                                        the aerodynamic coordinate system which is deducted from the CPACS coordinate system by 
+                                        the transformations of angle of attack and angle of yaw. See the documentation of the
+                                        CPACS element for further details.
+                                    </ddue:para>
+                                    <ddue:para>The dependend parameters of the aeroPerformanceMap are <ddue:legacyItalic>altitude</ddue:legacyItalic>,
+                                        <ddue:legacyItalic>machNumber</ddue:legacyItalic>, <ddue:legacyItalic>angleOfSideslip</ddue:legacyItalic> and
+                                        <ddue:legacyItalic>angleOfAttack</ddue:legacyItalic>. These elements are vectors of equal length, where values
+                                        with identical indices belong together. The solution vectors <ddue:legacyItalic>ci</ddue:legacyItalic> and 
+                                        <ddue:legacyItalic>cmi</ddue:legacyItalic> have the same length as the input vectors. Shown below is an example where
+                                        with 10 values per vector:
+                                    </ddue:para>
+                                    <ddue:code language="XML" title="Example aeroPerformanceMap">&lt;altitude mapType="vector"&gt;12e+02;12e+02;12e+02;12e+02;12e+02;12e+02;12e+02;12e+02;12e+02;12e+02&lt;/altitude&gt;
+&lt;machNumber mapType="vector"&gt;0.2;0.2;0.2;0.2;0.2;0.2;0.2;0.2;0.2;0.2&lt;/machNumber&gt;
+&lt;angleOfSideslip mapType="vector"&gt;0;0;0;0;0;2;2;2;2;2&lt;/angleOfSideslip&gt;
+&lt;angleOfAttack mapType="vector"&gt;-2;0;2;4;6;-2;0;2;4;6&lt;/angleOfAttack&gt;
+&lt;cd mapType="vector"&gt;0.056;0.094;0.132;0.17;0.208;0.072;0.11;0.148;0.186;0.224&lt;/cd&gt;
+&lt;cs mapType="vector"&gt;0.;0.;0.;0.;0.;0.01;0.015;0.02;0.025;0.03&lt;/cs&gt;
+&lt;cl mapType="vector"&gt;-0.1;0.04;0.18;0.32;0.46;-0.08;0.03;0.14;0.25;0.36&lt;/cl&gt;
+                                    </ddue:code>
+                                    <ddue:para>The aerodynamic coefficients for <ddue:legacyItalic>altitude</ddue:legacyItalic>=1200m, <ddue:legacyItalic>machNumber</ddue:legacyItalic>=0.2,
+                                        <ddue:legacyItalic>angleOfSideslip</ddue:legacyItalic>=0° and <ddue:legacyItalic>angleOfAttack</ddue:legacyItalic>=6° can be found at the 5th index:
+                                        <ddue:legacyItalic>cd</ddue:legacyItalic>=0.208, <ddue:legacyItalic>cs</ddue:legacyItalic>=0 and <ddue:legacyItalic>cl</ddue:legacyItalic>=0.46.                                    
+                                    </ddue:para>
+                                </ddue:content>
+                            </ddue:section>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -45212,7 +45243,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         type="stringVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
-                                Altitude
+                                Altitude [m]
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
@@ -45228,7 +45259,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         type="stringVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
-                                Sideslip angle
+                                Sideslip angle [deg]
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
@@ -45236,7 +45267,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         type="stringVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
-                                Angle of attack
+                                Angle of attack [deg]
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
@@ -45275,39 +45306,52 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:element minOccurs="0" name="cml"
                         type="stringVectorBaseType" />
                     <xsd:element minOccurs="0" name="dampingDerivatives"
-                        type="dampingDerivativesRatesType" >
-                        <xsd:annotation>
-                            <xsd:documentation>Damping derivatives for positive and negative rotation rates</xsd:documentation>
-                        </xsd:annotation></xsd:element>
+                        type="dampingDerivativesRatesType"/>
                     <xsd:element name="incrementMaps"
                         type="aeroPerformanceIncrementMapsType" maxOccurs="1"
-                        minOccurs="0">
-                        <xsd:annotation>
-                            <xsd:documentation>Increment maps for aerodynamic coefficients due to movable device deflections.</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
+                        minOccurs="0"/>
                 </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
     
     <xsd:complexType name="aeroPerformanceIncrementMapsType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Increment maps for aerodynamic coefficients </ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
                     <xsd:element name="incrementMap"
                         type="aeroPerformanceIncrementMapType" maxOccurs="unbounded"
-                        minOccurs="1">
-                        <xsd:annotation>
-                            <xsd:documentation>Increment map from aerodynamic coefficients due to movable device deflections.</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
+                        minOccurs="1"/>
                 </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
     
     <xsd:complexType name="aeroPerformanceIncrementMapType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Increment map from aerodynamic coefficients</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>The increment map is composed of two-dimensional arrays. The first dimension is given by the
+                            length of the input vectors of the baseline aeroPerformanceMap and the second dimension by the vector of relative
+                            deflections (or command inputs) of control surfaces (or control distributors). An example is described in the &lt;CPACS&gt; 
+                            root element.</ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
@@ -45392,6 +45436,23 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
     </xsd:complexType>
     
     <xsd:complexType name="aeroLimitsMapType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Aerodynamic limitations</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>This map explicitly specifies limitations of a vehicle in terms of angles of attack and sideslip angles. 
+                        All vectors, i.e. <ddue:legacyItalic>altitude</ddue:legacyItalic>, <ddue:legacyItalic>machNumber</ddue:legacyItalic>, 
+                        <ddue:legacyItalic>angleOfSideslip</ddue:legacyItalic> and <ddue:legacyItalic>angleOfAttack</ddue:legacyItalic>, must have the
+                        same length. To avoid redundancy with the <ddue:legacyItalic>aeroPerformanceMap</ddue:legacyItalic>, this type does not contain
+                        any aerodynamic coefficients. 
+                        </ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
@@ -45399,7 +45460,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         type="stringVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
-                                Altitude
+                                Altitude [m]
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
@@ -45412,28 +45473,30 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="operationLimit"
-                        type="aeroMapOperationLimitType" maxOccurs="1" minOccurs="0">
-                        <xsd:annotation>
-                            <xsd:documentation>Vehicle operation limit</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
+                        type="aeroMapOperationLimitType" maxOccurs="1" minOccurs="0"/>
                     <xsd:element name="incrementMaps"
                         type="aeroLimitsIncrementMapsType" maxOccurs="1"
-                        minOccurs="0">
-                        <xsd:annotation>
-                            <xsd:documentation>Increment maps for limitation values due to movable device deflections</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
+                        minOccurs="0"/>
                 </xsd:sequence>
-                
-                
-                
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
     
     
     <xsd:complexType name="aeroLimitsIncrementMapsType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Increment maps for limitation values due to movable device deflections</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>Specification of aerodynamic coefficient increments due to movable device deflections (e.g., control
+                        surfaces or landing gears).</ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
@@ -45504,8 +45567,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Damping derivatives for positive and negative rotation
-                            rates</ddue:para>
+                        <ddue:para>Damping derivatives for positive and negative rotation rates</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
@@ -45539,14 +45601,8 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element minOccurs="0" name="positiveRates" type="dampingDerivativesType">
-                        <xsd:annotation>
-                            <xsd:documentation>Damping derivatives for positive rotation rates</xsd:documentation>
-                        </xsd:annotation></xsd:element>
-                    <xsd:element minOccurs="0" name="negativeRates" type="dampingDerivativesType">
-                        <xsd:annotation>
-                            <xsd:documentation>Damping derivatives for negative rotation rates</xsd:documentation>
-                        </xsd:annotation></xsd:element>
+                    <xsd:element minOccurs="0" name="positiveRates" type="dampingDerivativesType"/>
+                    <xsd:element minOccurs="0" name="negativeRates" type="dampingDerivativesType"/>
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
@@ -45559,24 +45615,19 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Performane maps with damping derivatives</ddue:para>
+                        <ddue:para>Damping derivatives</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:content>
-                            <ddue:section>
-                                <ddue:content>
-                                    <ddue:para>This type contains aerodynamic performance maps with
-                                        the damping derivatives. The derivatives are calculated using
-                                        rotational rates [rad/s], normalized by:
-                                        Rate*ReferenceLength/flow speed. The rotations are performed
-                                        around the global axis directions with the aircraft model's
-                                        global reference point as origin. The damping derivative
-                                        performance maps are arrays consisting of semicolon separated
-                                        values, simular to the baseline aerodynamic performance maps.
-                                    </ddue:para>
-                                </ddue:content>
-                            </ddue:section>
-                        </ddue:content>
+                        <ddue:para>This type contains aerodynamic performance maps with
+                            the damping derivatives. The derivatives are calculated using
+                            rotational rates [rad/s], normalized by:
+                            Rate*ReferenceLength/flow speed. The rotations are performed
+                            around the global axis directions with the aircraft model's
+                            global reference point as origin. The damping derivative
+                            performance maps are vectors of the same length as the input
+                            vectors of the baseline aerodynamic performance maps, consisting of 
+                            semicolon separated values.
+                        </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -45658,22 +45709,20 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
-    
-
-
 
     <xsd:complexType name="aeroMapOperationLimitType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>aeroPerformanceMapType</ddue:para>
+                        <ddue:para>Vehicle operation limit</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Vehicle operation limit defined by sets of angleOfSideslip and angleOfAttack for a given 
-            altitude and Mach number. This might be, e.g., a safety margin to the angle of attack at maximum lift or the flight 
-            attitude a fighter aircraft is capable to fly in stalled conditions. The corresponding aerodynamic coefficients must 
-            be extracted from the aeroPerformanceMap.</ddue:para>
+                        <ddue:para>Vehicle operation limit defined by sets of <ddue:legacyItalic>angleOfSideslip</ddue:legacyItalic> 
+                        and <ddue:legacyItalic>angleOfAttack</ddue:legacyItalic> for a given altitude and Mach number. 
+                        This might be, e.g., a safety margin to the angle of attack at maximum lift or the flight 
+                        attitude a fighter aircraft is capable to fly in stalled conditions. The corresponding aerodynamic coefficients must 
+                        be extracted from the aeroPerformanceMap.</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -45684,13 +45733,13 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:element name="angleOfSideslip"
                         type="stringVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Sideslip angle defining the operation limit. Must be a vector of the same length as angleOfAttack, machNumber and altitude.</xsd:documentation>
+                            <xsd:documentation>Sideslip angle defining the operation limit. Must be a vector of the same length as angleOfAttack, machNumber and altitude. [deg]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="angleOfAttack"
                         type="stringVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Angle of attack defining the operation limit. Must be a vector of the same length as angleOfSideslip, machNumber and altitude.</xsd:documentation>
+                            <xsd:documentation>Angle of attack defining the operation limit. Must be a vector of the same length as angleOfSideslip, machNumber and altitude. [deg]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -45705,13 +45754,13 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:element name="angleOfSideslip"
                         type="stringArrayBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Sideslip angle</xsd:documentation>
+                            <xsd:documentation>Sideslip angle [deg]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="angleOfAttack"
                         type="stringArrayBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Angle of attack</xsd:documentation>
+                            <xsd:documentation>Angle of attack [deg]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
