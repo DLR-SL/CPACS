@@ -17105,6 +17105,11 @@ marko.alder@dlr.de
                 <xsd:sequence>
                     <xsd:element minOccurs="0" name="name" type="stringBaseType"/>
                     <xsd:element minOccurs="0" name="description" type="stringBaseType"/>
+                    <xsd:element name="commandInputs" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Vector of command inputs. The minimum and maximum value is given by the lowest and highest entry of the vector, respectively.</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                     <xsd:element name="controlElements" type="controlElementsType"/>
                 </xsd:sequence>
                 <xsd:attribute name="uID" type="xsd:string" use="required"/>
@@ -17152,9 +17157,16 @@ marko.alder@dlr.de
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:element name="controlUID" type="stringUIDBaseType"/>
-                    <xsd:element name="commandInputs" type="stringVectorBaseType"/>
-                    <xsd:element minOccurs="0" name="relativeDeflections" type="stringVectorBaseType"/>
+                    <xsd:element name="controlUID" type="stringUIDBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>UID of the control element, e.g. a control surface. It is not permitted to reference another control distributor.</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="relativeDeflections" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Vector of deflections resulting from the input commands. It must be of the same length as the inputCommands element. The minimum and maximum values are defined according to the minimum and maximum values of the input commands.</xsd:documentation>
+                        </xsd:annotation>                    
+                    </xsd:element>
                 </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
