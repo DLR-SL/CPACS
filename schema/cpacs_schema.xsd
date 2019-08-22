@@ -16463,11 +16463,11 @@ marko.alder@dlr.de
         </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element name="relDeflection" type="doubleBaseType">
+                <xsd:all>
+                    <xsd:element name="controlParameter" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Definition of the relativeDeflection. This
-                                value is used to reference this deflection step e.g. in the load
+                            <xsd:documentation>The control parameter is used to reference the 
+                                state of a control device, e.g. in the load
                                 case description. Can have any value and is NOT limited to the
                                 range of -1 to 1.</xsd:documentation>
                         </xsd:annotation>
@@ -16484,7 +16484,7 @@ marko.alder@dlr.de
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                </xsd:sequence>
+                </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -17156,18 +17156,19 @@ marko.alder@dlr.de
         </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element name="controlElementUID" type="stringUIDBaseType">
+                <xsd:all>
+                    <xsd:element name="controlDeviceUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of the control element, e.g. a control surface. It is not permitted to reference another control distributor.</xsd:documentation>
+                            <xsd:documentation>UID of the control device, e.g. a control surface. It is not allowed to reference another control distributor.</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="relativeDeflections" type="stringVectorBaseType">
+                    <xsd:element name="controlParameters" type="stringVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Vector of deflections resulting from the input commands. It must be of the same length as the inputCommands element. The minimum and maximum values are defined according to the minimum and maximum values of the input commands.</xsd:documentation>
+                            <xsd:documentation>Vector of control device states resulting from the input commands. It must be of the same length as the inputCommands element. 
+                            The minimum and maximum values are defined according to the minimum and maximum values of the input commands.</xsd:documentation>
                         </xsd:annotation>                    
                     </xsd:element>
-                </xsd:sequence>
+                </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -18451,15 +18452,15 @@ marko.alder@dlr.de
         </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element name="relDeflection" type="doubleBaseType">
+                <xsd:all>
+                    <xsd:element name="controlParameter" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Relative deflection. This value is an double
+                            <xsd:documentation>Control Parameter. This value is an double
                                 value and must be unique with all steps. Can be seen as a kind
                                 of 'uID' of the step. The value can have any range and is not
                                 limited from 0 to 1. 0 means no deflection. The values of
-                                relDeflection define the order of the different steps (0 to the
-                                highest relDeflection for the positive deflection; 0 to the
+                                controlParameter define the order of the different steps (0 to the
+                                highest value for the positive deflection; 0 to the
                                 lowest (negative) value for the negative deflection (if any).
                             </xsd:documentation>
                         </xsd:annotation>
@@ -18486,7 +18487,7 @@ marko.alder@dlr.de
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                </xsd:sequence>
+                </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -43292,8 +43293,8 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="movableDevices"
-                        type="movableDevicesType" maxOccurs="1"
+                    <xsd:element name="controlElements"
+                        type="aeroPerformanceControlElementsType" maxOccurs="1"
                         minOccurs="0">
                     </xsd:element>
                 </xsd:all>
@@ -43301,16 +43302,16 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="movableDevicesType">
+    <xsd:complexType name="aeroPerformanceControlElementsType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Movable device settings</ddue:para>
+                        <ddue:para>Control elements</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Specification of movable device settings. Movable devices can be, for example, control surfaces
-                        or landing gears.</ddue:para>
+                        <ddue:para>Specification of control element settings. Control elements can be controlDistributors 
+                        or individual control devices, such as control surfaces or landing gears.</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -43318,8 +43319,8 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:element name="movableDevice"
-                        type="movableDeviceType" maxOccurs="unbounded"
+                    <xsd:element name="controlElement"
+                        type="aeroPerformanceControlElementType" maxOccurs="unbounded"
                         minOccurs="1">
                     </xsd:element>
                 </xsd:sequence>
@@ -43327,16 +43328,16 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="movableDeviceType">
+    <xsd:complexType name="aeroPerformanceControlElementType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Movable device setting</ddue:para>
+                        <ddue:para>Control element</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Specification of a movable device setting. A movable devices can be, for example, a control surface
-                        or landing gear.</ddue:para>
+                        <ddue:para>Specification of an control element setting. A control element can be a controlDistributor
+                        or an individual control device, such as a control surface or a landing gear.</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -43345,16 +43346,16 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:extension base="complexBaseType">
                 <xsd:choice>
                     <xsd:sequence>
-                        <xsd:element name="controlElementUID"
+                        <xsd:element name="controlDeviceUID"
                             type="stringUIDBaseType">
                             <xsd:annotation>
-                                <xsd:documentation>Reference to the uID of a control element, e.g. a control surface or a landing gear</xsd:documentation>
+                                <xsd:documentation>Reference to the uID of a control device, e.g. a control surface or a landing gear</xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
-                        <xsd:element name="relativeDeflection"
+                        <xsd:element name="controlParameter"
                             type="doubleBaseType">
                             <xsd:annotation>
-                                <xsd:documentation>Relative deflection of the movable device</xsd:documentation>
+                                <xsd:documentation>Control parameter of the control device</xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
                     </xsd:sequence>
@@ -43368,7 +43369,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         <xsd:element name="commandInput"
                             type="doubleBaseType">
                             <xsd:annotation>
-                                <xsd:documentation>Value of the command input of a control distributor. If not given explicitly in the control distributor, linear interpolation between the neighboring points is required.</xsd:documentation>
+                                <xsd:documentation>Value of the command parameter of a control distributor. If not given explicitly in the control distributor, linear interpolation between the neighboring points is required.</xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
                     </xsd:sequence>
@@ -43549,16 +43550,16 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                 <xsd:sequence>
                     <xsd:choice>
                         <xsd:sequence>
-                            <xsd:element name="controlElementUID"
+                            <xsd:element name="controlDeviceUID"
                             type="stringUIDBaseType">
                                 <xsd:annotation>
-                                    <xsd:documentation>Reference to the uID of a control element, e.g. a control surface or a landing gear</xsd:documentation>
+                                    <xsd:documentation>Reference to the uID of a control device, e.g. a control surface or a landing gear</xsd:documentation>
                                 </xsd:annotation>
                             </xsd:element>
-                            <xsd:element name="relativeDeflections"
+                            <xsd:element name="controlParameters"
                             type="stringVectorBaseType">
                                 <xsd:annotation>
-                                    <xsd:documentation>Relative deflections of the movable device given as vector</xsd:documentation>
+                                    <xsd:documentation>Value of the command parameters of a control distributor. If not given explicitly in the control distributor, linear interpolation between the neighboring points is required.</xsd:documentation>
                                 </xsd:annotation>
                             </xsd:element>
                         </xsd:sequence>
@@ -43685,16 +43686,16 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                 <xsd:sequence>
                     <xsd:choice>
                         <xsd:sequence>
-                            <xsd:element name="controlElementUID"
+                            <xsd:element name="controlDeviceUID"
                             type="stringUIDBaseType">
                                 <xsd:annotation>
-                                    <xsd:documentation>Reference to the uID of a control element, e.g. a control surface or a landing gear</xsd:documentation>
+                                    <xsd:documentation>Reference to the uID of a control device, e.g. a control surface or a landing gear</xsd:documentation>
                                 </xsd:annotation>
                             </xsd:element>
-                            <xsd:element name="relativeDeflections"
+                            <xsd:element name="controlParameters"
                             type="stringVectorBaseType">
                                 <xsd:annotation>
-                                    <xsd:documentation>Relative deflections of the movable device given as vector</xsd:documentation>
+                                    <xsd:documentation>Value of the command parameters of a control distributor. If not given explicitly in the control distributor, linear interpolation between the neighboring points is required.</xsd:documentation>
                                 </xsd:annotation>
                             </xsd:element>
                         </xsd:sequence>
