@@ -35355,7 +35355,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Definition of the rotation of the ribs.</ddue:para>
+                        <ddue:para>Definition of the rib rotation</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>The rotation around z describes the rotation around the
@@ -37361,8 +37361,17 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:choice minOccurs="1" maxOccurs="1">
-                    <xsd:element name="sparPositionRib" type="wingRibPointType"/>
-                    <xsd:element name="sparPositionEtaXsi" type="etaXsiPointType"/>
+                    <xsd:element name="sparPositionRib" type="wingRibPointType">
+                        <xsd:annotation>
+                            <xsd:documentation>Defines a spar position on an existing rib using a relative xsi coordinate
+                            to determine the chord wise position on that rib</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="sparPositionEtaXsi" type="etaXsiPointType">
+                        <xsd:annotation>
+                            <xsd:documentation>Defines a spar position using relative eta/xsi coordinates</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                 </xsd:choice>
                 <xsd:attribute name="uID" type="xsd:string" use="required"/>
             </xsd:extension>
@@ -40885,7 +40894,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>wingRibCrossSectionType</ddue:para>
+                        <ddue:para>Cross section properties of a wing rib</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>wingRibCrossSectionType, containing the definition of
@@ -40937,12 +40946,13 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>wingRibExplicitPositioningType</ddue:para>
+                        <ddue:para>Explicit positioning of a wing rib</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>Use this type for an explicit positioning of every
-                                single rib.</ddue:para>
+                            <ddue:para>Use this type for an explicit positioning of a rib. As opposed to
+                                ribsPositioning, this defines a single rib connecting a specified start
+                                and end point.</ddue:para>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -40955,14 +40965,14 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         <xsd:element name="startEtaXsiPoint" type="etaXsiPointType">
                             <xsd:annotation>
                                 <xsd:documentation>
-                                    startEtaXsiPoint defines the start of the rib defined in eta-xsi coordinates of a reference plane
+                                    Defines the start of the rib defined in eta-xsi coordinates of a reference plane
                                 </xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
                         <xsd:element name="startCurvePoint" type="curvePointType">
                             <xsd:annotation>
                                 <xsd:documentation>
-                                    startCurvePoint defines the start of the rib defined by a point on a reference curve
+                                    Defines the start of the rib defined by a point on a reference curve
                                     such as a spar, but not an explicit sparPosition
                                 </xsd:documentation>
                             </xsd:annotation>
@@ -40979,14 +40989,14 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         <xsd:element name="endEtaXsiPoint" type="etaXsiPointType">
                             <xsd:annotation>
                                 <xsd:documentation>
-                                    endEtaXsiPoint defines the end of the rib defined in eta-xsi coordinates of a reference plane
+                                    Defines the end of the rib defined in eta-xsi coordinates of a reference plane
                                 </xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
                         <xsd:element name="endCurvePoint" type="curvePointType">
                             <xsd:annotation>
                                 <xsd:documentation>
-                                    endCurvePoint defines the end of the rib defined by a point on a reference curve
+                                    Defines the end of the rib given by a point on a reference curve
                                     such as a spar, but not an explicit sparPosition
                                 </xsd:documentation>
                             </xsd:annotation>
@@ -41002,7 +41012,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:element name="ribStart" type="stringBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
-                                RibStart defines the forward beginning of the ribs. It can either be a
+                                Defines the forward beginning of the ribs. It can either be a
                                 sparUID or "trailingEdge" or "leadingEdge".
                             </xsd:documentation>
                         </xsd:annotation>
@@ -41074,7 +41084,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Definition of an rib set.</ddue:para>
+                        <ddue:para>Definition of a set of ribs</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
@@ -41093,12 +41103,12 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                 <xsd:sequence>
                     <xsd:element name="name" type="stringBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Name of the rib set.</xsd:documentation>
+                            <xsd:documentation>Name of the rib set</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element minOccurs="0" name="description" type="stringBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Description of the rib set.
+                            <xsd:documentation>Description of the rib set
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
@@ -41118,7 +41128,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Ribs of the wing.</ddue:para>
+                        <ddue:para>Wing ribs</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>RibDefinitions type, containing the definition of all
@@ -41141,22 +41151,22 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>wingRibsPositioningType</ddue:para>
+                        <ddue:para>Positioning of a set of wing ribs</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>Within the ribsPositioing type the position and the
-                                orientaion of the ribs of the rib set are difend.</ddue:para>
+                            <ddue:para>The ribsPositioning type allows the definition of a set
+                                of ribs which is distributed over a specified spanwise area.</ddue:para>
                             <ddue:para>The positions of the ribs are defined by placing the
                                 ribs on a reference line on the wing (ribReference). The inner
                                 and the outer beginning of the rib set is defined using etaStart
                                 and etaEnd. The position of the forward and rear end of the ribs
-                                is defiend by ribStart and ribEnd. The orientation of the ribs
-                                is defined in ribRotaton. The number of ribs of the current rib
+                                is defined by ribStart and ribEnd. The orientation of the ribs
+                                is defined in ribRotation. The number of ribs of the current rib
                                 set is either defined by ribNumber or by spacing.</ddue:para>
-                            <ddue:para>Three examples how ribs can be placed on the wing can
-                                be found in the picture below. For more detailed information,
-                                pleas refer to the descripion of each parameter.</ddue:para>
+                            <ddue:para>Three examples how ribs can be placed on the wing are
+                                illustrated in the picture below. For more detailed information,
+                                please refer to the description of each parameter.</ddue:para>
                             <ddue:mediaLink>
                                 <ddue:image xlink:href="ribs"/>
                             </ddue:mediaLink>
@@ -41172,14 +41182,14 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         <xsd:element name="startEtaXsiPoint" type="etaXsiPointType">
                             <xsd:annotation>
                                 <xsd:documentation>
-                                    startEtaXsiPoint defines the start of the rib defined in eta-xsi coordinates of a reference plane
+                                    Defines the start of the rib defined in eta-xsi coordinates of a reference plane
                                 </xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
                         <xsd:element name="startCurvePoint" type="curvePointType">
                             <xsd:annotation>
                                 <xsd:documentation>
-                                    startCurvePoint defines the start of the rib defined by a point on a reference curve
+                                    Defines the start of the rib by a point on a reference curve,
                                     such as a spar, but not an explicit sparPosition
                                 </xsd:documentation>
                             </xsd:annotation>
@@ -41187,7 +41197,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         <xsd:element name="startSparPositionUID" type="stringUIDBaseType">
                             <xsd:annotation>
                                 <xsd:documentation>
-                                    Defines the location of the beginning of the rib using a specific sparPosition.
+                                    Defines the location of the beginning of the rib using a specific sparPosition
                                 </xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
@@ -41196,14 +41206,14 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         <xsd:element name="endEtaXsiPoint" type="etaXsiPointType">
                             <xsd:annotation>
                                 <xsd:documentation>
-                                    endEtaXsiPoint defines the end of the rib defined in eta-xsi coordinates of a reference plane
+                                    Defines the end of the rib defined in eta-xsi coordinates of a reference plane
                                 </xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
                         <xsd:element name="endCurvePoint" type="curvePointType">
                             <xsd:annotation>
                                 <xsd:documentation>
-                                    endCurvePoint defines the end of the rib defined by a point on a reference curve
+                                    Defines the end of the rib defined by a point on a reference curve
                                     such as a spar, but not an explicit sparPosition
                                 </xsd:documentation>
                             </xsd:annotation>
@@ -41211,7 +41221,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         <xsd:element name="endSparPositionUID" type="stringUIDBaseType">
                             <xsd:annotation>
                                 <xsd:documentation>
-                                    Defines the location of the end of the rib using a specific sparPosition.
+                                    Defines the location of the end of the rib using a specific sparPosition
                                 </xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
@@ -41219,18 +41229,16 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:element name="ribStart" type="stringBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
-                                RibStart defines the forward beginning of the ribs. It can either be a
-                                sparUID or
-                                "trailingEdge" or "leadingEdge".
+                                Defines the forward beginning of the ribs. It can either be a
+                                sparUID or "trailingEdge" or "leadingEdge".
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="ribEnd" type="stringBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
-                                RibEnd defines the backward ending of the ribs. It can either be a
-                                sparUID or
-                                "trailingEdge" or "leadingEdge".
+                                Defines the backward ending of the ribs. It can either be a
+                                sparUID or "trailingEdge" or "leadingEdge".
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
@@ -41247,7 +41255,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         <xsd:element name="numberOfRibs" type="integerBaseType">
                             <xsd:annotation>
                                 <xsd:documentation>
-                                    RibNumber defines the number of ribs in this ribSet. First rib is at
+                                    Defines the number of ribs in this ribSet. First rib is at
                                     etaStart on the
                                     referenceLine, last rib is at etaEnd. The spacing is constant on the
                                     ribReferenceLine.
@@ -41702,7 +41710,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Shells of the wing.</ddue:para>
+                        <ddue:para>Shells of the wing</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>Within the wingShellType the upper and lower skin of a
@@ -41777,7 +41785,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Definition of the spars of the wing.</ddue:para>
+                        <ddue:para>Wing spars</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
