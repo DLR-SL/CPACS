@@ -13,7 +13,7 @@ Have a look at our first [tutorial](http://www.youtube.com/watch?v=NgYWfc5N-Xw) 
 
 ## Development
 
-Further Information about CPACS development is available in [here](/development/README.md).
+Further information about the CPACS development is available [here](/development/README.md).
 
 ## Cite & Acknowledge
 
