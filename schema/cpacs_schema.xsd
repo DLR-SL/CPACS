@@ -310,8 +310,8 @@ marko.alder@dlr.de
     &lt;incrementMaps&gt;
         &lt;incrementMap uID="incMap_b3ac2"&gt;
             &lt;controlSurfaceUID&gt;InnerWingFlap&lt;/controlSurfaceUID&gt;
-            &lt;relativeDeflections mapType="vector"&gt;-1;-0.5;0.5;1&lt;/relativeDeflections&gt;
-                &lt;dcl mapType="array"&gt;11.; 12.; 13.; 14.; 21.; 22.; 23.; 24.; 31.; 32.; 33.; 34.&lt;/dcl&gt;
+            &lt;controlParameters mapType="vector"&gt;-2;-1;0;1&lt;/controlParameters&gt;
+                &lt;dcl mapType="array"&gt;11.; 12.; 13.; 14.; 15.; 21.; 22.; 23.; 24.; 25.; 31.; 32.; 33.; 34.; 35.&lt;/dcl&gt;
                                                 </ddue:code>
                                                 <ddue:table>
                                                     <ddue:title>
@@ -319,10 +319,10 @@ marko.alder@dlr.de
                                                     </ddue:title>
                                                     <ddue:row>
                                                         <ddue:entry/>
-                                                        <ddue:entry>Relative deflection = -1°</ddue:entry>
-                                                        <ddue:entry>Relative deflection = -0.5°</ddue:entry>
-                                                        <ddue:entry>Relative deflection =  0.5°</ddue:entry>
-                                                        <ddue:entry>Relative deflection =  1°</ddue:entry>
+                                                        <ddue:entry>Control parameter = -2</ddue:entry>
+                                                        <ddue:entry>Control parameter = -1</ddue:entry>
+                                                        <ddue:entry>Control parameter =  0</ddue:entry>
+                                                        <ddue:entry>Control parameter =  1</ddue:entry>
                                                     </ddue:row>
                                                     <ddue:row>
                                                         <ddue:entry>Altitude = 1000m</ddue:entry>
@@ -353,7 +353,51 @@ marko.alder@dlr.de
                                 </ddue:content>
                             </ddue:section>
                             <ddue:section>
-                                <ddue:title>8. Atmosphere</ddue:title>
+                                <ddue:title>8. Control Parameters</ddue:title>
+                                <ddue:content>
+                                    <ddue:para>Control parameters are abstract values linking the output of a control distributor with a
+                                    state change of various control devices. Control devices can be control surfaces (e.g., flaps, ailerons, etc.),
+                                    landing gears or it could be suction devices, brake parachutes, etc. in future CPACS versions.
+                                    A good example is the flap track which extends over multiple steps, where in each step the flap might rotate
+                                    as well as translate. Its corresponding position and orientation at each step is referenced via a 
+                                    unique control parameter (e.g., to reference it in the aeroPerformanceMap as illustrated in the above example). 
+                                    </ddue:para>
+                                    <ddue:para>Control parameters may contain any values and are not limited from -1 to 1. However, the order of the control 
+                                    parameters must be observed. In addition, negative values correlate with negative deflections and positive values correlate
+                                    with positive deflections (in the case of movable devices).</ddue:para>
+                                    <ddue:para>The definition of the control surface provides a mapping between the control parameter and the corresponding 
+                                    rotation and translation. In this way, the control parameters of the inner wing flap in the above example 
+                                    can be translated into deflection angles as follows:</ddue:para>
+                                    <ddue:code language="XML" title=" ">&lt;controlSurfaces&gt;
+  &lt;trailingEdgeDevices&gt;
+    &lt;trailingEdgeDevice uID="InnerWingFlap"&gt;
+      ...
+      &lt;path&gt;
+        ...
+        &lt;steps&gt;
+          &lt;step&gt;
+            &lt;controlParameter&gt;-2&lt;/controlParameter&gt;
+            &lt;hingeLineRotation&gt;-20.&lt;/hingeLineRotation&gt;
+          &lt;/step&gt;
+          &lt;step&gt;
+            &lt;controlParameter&gt;-1&lt;/controlParameter&gt;
+            &lt;hingeLineRotation&gt;-10.&lt;/hingeLineRotation&gt;
+          &lt;/step&gt;
+          &lt;step&gt;
+            &lt;controlParameter&gt;0&lt;/controlParameter&gt;
+            &lt;hingeLineRotation&gt;0.&lt;/hingeLineRotation&gt;
+          &lt;/step&gt;
+          &lt;step&gt;
+            &lt;controlParameter&gt;1&lt;/controlParameter&gt;
+            &lt;hingeLineRotation&gt;5.&lt;/hingeLineRotation&gt;
+          &lt;/step&gt;
+        &lt;/steps&gt;
+        ...
+                                    </ddue:code> 
+                                </ddue:content>
+                            </ddue:section>
+                            <ddue:section>
+                                <ddue:title>9. Atmosphere</ddue:title>
                                 <ddue:content>
                                     <ddue:para>At some places in CPACS, an atmosphere has to be selected (e.g. for connecting an altitude with a certain pressure or density).
                                       Currently, CPACS does only support a single atmospheric model: The ICAO Standard Atmosphere (ISA) from 1993 (see ICAO Doc 7488/3 'MANUAL OF THE ICAO STANDARD ATMOSPHERE', third edition, 1993)
@@ -378,7 +422,11 @@ marko.alder@dlr.de
                                         <ddue:listItem>Added fuselage compartment definition</ddue:listItem>
                                         <ddue:listItem>Added fuselage fuel tank definition</ddue:listItem>
                                         <ddue:listItem>Explicit wing stringer definition integrated into wing stringer definition</ddue:listItem>
+                                        <ddue:listItem>RelativeDeflections renamed to control parameters</ddue:listItem>
+                                        <ddue:listItem>Control distributors modified to only have a single command input vector</ddue:listItem>
                                         <ddue:listItem>"cpacsVersion" restricted to current schema version</ddue:listItem>
+                                        <ddue:listItem>Code cleanup</ddue:listItem>
+                                        <ddue:listItem>Cpacs_schema.xml removed</ddue:listItem>
                                         <ddue:listItem>Documentation adaptions</ddue:listItem>
                                     </ddue:list>
                                 </ddue:content>
@@ -17773,11 +17821,11 @@ marko.alder@dlr.de
                             </ddue:section>
                             <ddue:section>
                                 <ddue:title>2.
-                                    &lt;relDeflection&gt;
+                                    &lt;controlParameter&gt;
                                     <ddue:legacyItalic>(mandatory)</ddue:legacyItalic>
                                 </ddue:title>
                                 <ddue:content>
-                                    <ddue:para>The relative deflection of the selected control
+                                    <ddue:para>The control parameter of the selected control
                                         surface (with respect to the defined deflection path)
                                     </ddue:para>
                                 </ddue:content>
@@ -17796,9 +17844,9 @@ marko.alder@dlr.de
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="relDeflection" type="doubleBaseType">
+                    <xsd:element name="controlParameter" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Relative deflection of the control surface
+                            <xsd:documentation>Control parameter of the control surface
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
@@ -17836,11 +17884,11 @@ marko.alder@dlr.de
                             </ddue:section>
                             <ddue:section>
                                 <ddue:title>2.
-                                    &lt;relDeflection&gt;
+                                    &lt;controlParameters&gt;
                                     <ddue:legacyItalic>(mandatory)</ddue:legacyItalic>
                                 </ddue:title>
                                 <ddue:content>
-                                    <ddue:para>A vector of relative deflections of the selected
+                                    <ddue:para>A vector of controlParameters of the selected
                                         control surface (with respect to the defined deflection path).
                                     </ddue:para>
                                 </ddue:content>
@@ -17859,9 +17907,9 @@ marko.alder@dlr.de
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="relDeflection" type="stringVectorBaseType">
+                    <xsd:element name="controlParameters" type="stringVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Relative deflections of the control surface
+                            <xsd:documentation>Control parameters of the control surface
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
@@ -17962,7 +18010,7 @@ marko.alder@dlr.de
                     <ddue:remarks>
                         <ddue:para>controlSurfaceHingeMomentMap type, containing a moment
                             map with aerodynamic data for a control surface. Array order is:
-                            relativeDeflection min-&gt;max then angleOfAttack then angleOfSideslip
+                            controlParameters min-&gt;max then angleOfAttack then angleOfSideslip
                             then reynoldsNumber then machNumber. AngleOfAttack, angleOfSideslip,
                             reynoldsNumber and machNumber are taken from the basic
                             performance map one level above.</ddue:para>
@@ -17979,9 +18027,9 @@ marko.alder@dlr.de
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="relDeflection" type="stringVectorBaseType">
+                    <xsd:element name="controlParameters" type="stringVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Relative deflection of the control surface
+                            <xsd:documentation>Control parameters of the control surface
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
@@ -24786,11 +24834,11 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             </ddue:section>
                             <ddue:section>
                                 <ddue:title>2.
-                                    &lt;relDeflection&gt;
+                                    &lt;controlParameters&gt;
                                     <ddue:legacyItalic>(mandatory)</ddue:legacyItalic>
                                 </ddue:title>
                                 <ddue:content>
-                                    <ddue:para>A vector of relative deflections of the selected
+                                    <ddue:para>A vector of control parameters of the selected
                                         gear</ddue:para>
                                 </ddue:content>
                             </ddue:section>
@@ -24807,9 +24855,9 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             <xsd:documentation>Reference to a gear</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="relDeflection" type="stringVectorBaseType">
+                    <xsd:element name="controlParameters" type="stringVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Relative deflections of the gear
+                            <xsd:documentation>Control parameters of the gear
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
@@ -26915,9 +26963,9 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             <xsd:documentation>Extended (1=true, 2=false)</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="relDeflection" type="doubleBaseType">
+                    <xsd:element name="controlParameter" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Relative deflection of the landing gear
+                            <xsd:documentation>Control parameter of the landing gear
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
