@@ -15,11 +15,9 @@ The release process is grouped into the following steps:
  
 ## 1. Create documentation                 --> createDocumentation.bat
 
-## 2. Create dummy file
-
-## 3. Create libraries                     --> generateLibraries.bat
+## 2. Create libraries                     --> generateLibraries.bat
 
 Currently, CPACS is supported by TIXI and TIGL as interfaces to CPACS. Additionally, there is the possibility to create bindings for other languages as well. This becomes especially handy once users try to generate CPACS files. Within the CPACS release schedule two binding will be generated: Python and Java. The Python bindings are created using the generateDS library; Java bindings via JAXB, see the tools section. Both calls are listed in the generateLibraries batch file. 
 
-## 4. Upload files 
+## 3. Upload files 
 tbd
