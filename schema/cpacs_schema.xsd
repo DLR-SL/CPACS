@@ -38783,9 +38783,8 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                 <xsd:sequence>
                     <xsd:element minOccurs="0" name="controlSurfaceAttachment" type="materialDefinitionType"/>
                     <xsd:element minOccurs="0" name="car" type="trackCarType"/>
-                    <xsd:element minOccurs="0" name="strut1" type="trackStrut1Type"/>
-                    <xsd:element minOccurs="0" name="strut2" type="trackStrut2Type"/>
-                    <xsd:element minOccurs="0" name="strut3" type="materialDefinitionType"/>
+                    <xsd:element minOccurs="0" name="struts" type="trackStrutsType"/>
+                    <xsd:element minOccurs="0" name="jointCoordinateSets" type="trackJointCoordinateSetsType"/>
                     <xsd:element minOccurs="0" name="sidePanels" type="materialDefinitionType"/>
                     <xsd:element minOccurs="0" name="upperPanel" type="materialDefinitionType"/>
                     <xsd:element minOccurs="0" name="lowerPanel" type="materialDefinitionType"/>
@@ -38797,15 +38796,17 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="trackStrut1Type">
+    <xsd:complexType name="trackStrutsType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>trackStrut1Type</ddue:para>
+                        <ddue:para>Definition of the struts of a control surface track.
+                        </ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para/>
+                        <ddue:para>Definition of the struts of a control surface track.
+                        </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -38813,26 +38814,23 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:element name="material" type="materialDefinitionType">
-                        <xsd:annotation>
-                            <xsd:documentation>Definition of the material properties.
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
+                    <xsd:element maxOccurs="unbounded" name="strut" type="trackStrutType"/>
                 </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="trackStrut2Type">
+    <xsd:complexType name="trackStrutType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>trackStrut2Type</ddue:para>
+                        <ddue:para>Definition of a strut of a control surface track.
+                        </ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para/>
+                        <ddue:para>Definition of a strut of a control surface track.
+                        </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -38840,12 +38838,118 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:element name="material" type="materialDefinitionType">
-                        <xsd:annotation>
-                            <xsd:documentation>Definition of the material properties.
-                            </xsd:documentation>
-                        </xsd:annotation>
+                    <xsd:element name="name">
+                        <xsd:complexType>
+                            <xsd:simpleContent>
+                                <xsd:restriction base="stringBaseType">
+                                    <xsd:enumeration value="strut1"/>
+                                    <xsd:enumeration value="strut2"/>
+                                    <xsd:enumeration value="strut3"/>
+                                    <xsd:enumeration value="strut4"/>
+                                    <xsd:enumeration value="strut5"/>
+                                    <xsd:enumeration value="strut6"/>
+                                    <xsd:enumeration value="strut7"/>
+                                </xsd:restriction>
+                            </xsd:simpleContent>
+                        </xsd:complexType>
                     </xsd:element>
+                    <xsd:element name="materialUID" type="stringUIDBaseType"/>
+                    <xsd:element name="profileUID" type="stringUIDBaseType"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="trackJointCoordinateSetsType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Specification of joint coordinates.
+                        </ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>Specification of joint coordinates.
+                        </ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element maxOccurs="unbounded" name="jointCoordinateSet" type="trackJointCoordinateSetType"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="trackJointCoordinateSetType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Set of joint coordinates
+                        </ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>Definition of a set of joint coordinates.
+                        </ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="controlParameter"
+                            type="stringVectorBaseType">
+                                <xsd:annotation>
+                                    <xsd:documentation>Value of the command parameter of a control distributor. If not given explicitly in the control distributor, linear interpolation between the neighboring points is required.</xsd:documentation>
+                                </xsd:annotation>
+                            </xsd:element>
+                    <xsd:element name="jointCoordinates" type="trackJointCoordinates"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="trackJointCoordinates">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Joint coordinates
+                        </ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>Definition of a joint coordinates.
+                        </ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="name">
+                        <xsd:complexType>
+                            <xsd:simpleContent>
+                                <xsd:restriction base="stringBaseType">
+                                    <xsd:enumeration value="point1"/>
+                                    <xsd:enumeration value="point2"/>
+                                    <xsd:enumeration value="point3"/>
+                                    <xsd:enumeration value="point4"/>
+                                    <xsd:enumeration value="point5"/>
+                                    <xsd:enumeration value="point6"/>
+                                    <xsd:enumeration value="point7"/>
+                                </xsd:restriction>
+                            </xsd:simpleContent>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="x" type="stringBaseType"/>
+                    <xsd:element name="y" type="stringBaseType"/>
+                    <xsd:element name="z" type="stringBaseType"/>
                 </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
