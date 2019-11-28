@@ -32836,8 +32836,29 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         <ddue:para>toolspecificType</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Toolspecific type, containing specific data for the
-                            analysis tools. <ddue:legacyBold>All types defined under this node will be removed from the schema with the next release. Toolspecifics can still be used but should be defined in their own namespaces.</ddue:legacyBold> This way an update of toolspecific types is no longer depending on CPACS releases.</ddue:para>
+                        <ddue:para>
+                            This type contains a list of tools each specifying some basic tool information as well as the actual toolspecific part.
+
+                            The toolspecific elements must be defined in a separate namespace which can be specified and linked with the corresponding XSD file
+                            in the CPACS header: 
+                            <ddue:code language="XML" title="CPACS header">&lt;cpacs xmlns="http://www.cpacs.de" 
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.cpacs.de pathToCpacsSchemaFile/cpacs_schema.xsd
+                           http://www.cpacs.de/myTool pathToToolspecificSchemaFile/toolspecific_myTool.xsd"&gt;</ddue:code>
+
+                           A simple example could look like this:
+                           <ddue:code language="XML" title="Toolspecific node">&lt;toolspecific&gt;
+    &lt;tool toolVersion="1.2.3" schemaVersion="1.0"&gt;
+        &lt;name&gt;myTool&lt;/name&gt;
+        &lt;myTool xmlns="http://www.cpacs.de/myTool"&gt;
+            &lt;parentElement&gt;
+                &lt;childElement1>stringValue&lt;/childElement1&gt;
+                &lt;childElement2>1.0&lt;/childElement2&gt;
+            &lt;/parentElement&gt;
+        &lt;/myTool&gt;
+    &lt;/tool&gt;
+&lt;/toolspecific&gt;</ddue:code>
+                        </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -32860,9 +32881,8 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>
-                            Tool identification, containing the tool name, 
-                            its version as well as the version of a tool schema
-                        </ddue:para>
+                        Tool information as described in the toolspecificType.
+                        </ddue:para>  
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -32877,7 +32897,13 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:any/>
+                    <xsd:any>
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Wildcard for the root element of a toolspecific namespace
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:any>
                 </xsd:sequence>
                 <xsd:attribute name="toolVersion" type="xsd:string" use="required"/>
                 <xsd:attribute name="schemaVersion" type="xsd:string"/>
