@@ -27,7 +27,10 @@ marko.alder@dlr.de
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
             xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5"
             xmlns:sd="http://schemas.xsddoc.codeplex.com/schemaDoc/2009/3"
-            xmlns:xlink="http://www.w3.org/1999/xlink">
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            targetNamespace="http://www.cpacs.de"
+            xmlns="http://www.cpacs.de"
+            elementFormDefault="qualified">
 
     <xsd:element name="cpacs" type="cpacsType"/>
 
@@ -2014,8 +2017,9 @@ marko.alder@dlr.de
         </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element minOccurs="0" name="acCrash" type="acCrashToolType"/>
+                <xsd:sequence>
+                    <xsd:element name="tool" type="toolType" maxOccurs="unbounded" />
+                    <!-- xsd:element minOccurs="0" name="acCrash" type="acCrashToolType"/>
                     <xsd:element minOccurs="0" name="aeroFuse" type="aeroFuseToolType"/>
                     <xsd:element minOccurs="0" name="aeroPole" type="aeroPoleToolType"/>
                     <xsd:element minOccurs="0" name="airportFees" type="airportFeesToolType"/>
@@ -2052,8 +2056,8 @@ marko.alder@dlr.de
                     <xsd:element minOccurs="0" name="trafumo" type="trafumoToolType"/>
                     <xsd:element minOccurs="0" name="tWDat" type="tWDatToolType"/>
                     <xsd:element minOccurs="0" name="vSAero" type="vSAeroToolType"/>
-                    <xsd:element minOccurs="0" name="vampZero" type="vampZeroToolType"/>
-                </xsd:all>
+                    <xsd:element minOccurs="0" name="vampZero" type="vampZeroToolType"/ -->
+                </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -2066,26 +2070,28 @@ marko.alder@dlr.de
                         <ddue:para>Tool identification</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Tool identification, containing name and version of a
-                            tool</ddue:para>
+                        <ddue:para>
+                            Tool identification, containing name and
+                            version of a tool
+                        </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="name" type="stringBaseType">
+                <xsd:sequence>
+                    <xsd:element name="toolName" type="stringBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Name of the tool</xsd:documentation>
+                            <xsd:documentation>
+                                Name of the tool
+                            </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="version" type="stringBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Version of the tool</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:all>
+                    <xsd:any/>
+                </xsd:sequence>
+                <xsd:attribute name="toolVersion" type="xsd:string" use="required"/>
+                <xsd:attribute name="schemaVersion" type="xsd:string"/>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
