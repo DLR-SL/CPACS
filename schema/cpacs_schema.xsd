@@ -262,18 +262,22 @@ marko.alder@dlr.de
                             <ddue:section>
                                 <ddue:title>5. UIDs and references</ddue:title>
                                 <ddue:content>
-                                    <ddue:para>The <ddue:legacyItalic>CPACS</ddue:legacyItalic>-dataset often uses references between nodes. Typically, these references define connections between parts that are located somewhere else in the dataset (e.g. a wing is connected to a fuselage, a specific engine from the "engines"-section is used, ...). These connections are made, using UID attributes. This means, that a node, that shall be referenced (e.g. an engine type, an airfoil geometry, a mission definition, ...), gets an additional UID attribute, consisting of a unique (in the scope of the whole <ddue:legacyItalic>CPACS</ddue:legacyItalic> dataset) text, like:</ddue:para>
-                                    <ddue:code language="XML" title=" ">&lt;fuselage uID="ATTAS fuselage"&gt;...</ddue:code>
-                                    <ddue:para>Such a node with a UID is then typically referred to by a subnode, like:</ddue:para>
-                                    <ddue:code language="XML" title=" ">&lt;wing&gt;
+                                    <ddue:para>The <ddue:legacyItalic>CPACS</ddue:legacyItalic>-dataset often uses references between nodes. Typically, these 
+                                    references define connections between elements which are located somewhere else in the hierarchical dataset (e.g. a <ddue:legacyItalic>wing</ddue:legacyItalic> is connected to a 
+                                    <ddue:legacyItalic>fuselage</ddue:legacyItalic>; a specific <ddue:legacyItalic>engine</ddue:legacyItalic> is connected to a <ddue:legacyItalic>pylon</ddue:legacyItalic>; etc.). These connections are defined by 
+                                    <ddue:legacyBold>unique identifiers</ddue:legacyBold> (uID) which are specified as attributes. Thus, there are elements which can be referenced via a <ddue:legacyItalic>uID</ddue:legacyItalic> attribute, e.g. a fuselage: 
+                                    <ddue:code language="XML" title=" ">&lt;fuselage uID="ATTAS_fuselage"&gt;...</ddue:code></ddue:para>
+                                    <ddue:para>as well as elements which refer to the former, e.g. a wing pointing to its geometrical parent:
+                                    <ddue:code language="XML" title=" ">&lt;wing uID="e382bf5j"&gt;
     &lt;name&gt;ATTAS main wing&lt;/name&gt;
-    &lt;parentUID isLink="True"&gt;ATTAS fuselage&lt;/parentUID&gt;
+    &lt;parentUID isLink="True"&gt;ATTAS_fuselage&lt;/parentUID&gt;
     ...</ddue:code>
-                                    <ddue:para>
-                                        <ddue:legacyBold>It is absolutely essential to ensure that a UID attribute is unique within the whole dataset, as searching for this name is the only way to resolve the reference!</ddue:legacyBold>
+                                    Such referencing elements must carry the <ddue:legacyItalic>isLink="True"</ddue:legacyItalic> attribute.
                                     </ddue:para>
-                                    <ddue:para>This is also important for testing. All nodes that refer to an UID like e.g. parentUID carry an additional attribute "isLink". If this attribute is true the dataset can be tested for valid UIDs.</ddue:para>
-                                    <ddue:para>UID can either be named according to their appearance in the hierarchy e.g. uID="mainWingKinkSection" or by automatically placing identifiers e.g. via processor runtime dates</ddue:para>
+                                    <ddue:para>Since uIDs are only used to link nodes within the XML file, no naming convention is required. <ddue:legacyBold>UIDs, however, must be unique!</ddue:legacyBold> 
+                                    Although a common practice for naming uIDs is their position in the data hierarchy (e.g. <ddue:legacyItalic>uID="mainWingSection3"</ddue:legacyItalic>), 
+                                    uIDs as shown in the above example are absolutely valid as well. It is therefore recommended to use the <ddue:legacyItalic>name</ddue:legacyItalic> element 
+                                    to convey human-readable meanings.</ddue:para>
                                 </ddue:content>
                             </ddue:section>
                             <ddue:section>
