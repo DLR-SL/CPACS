@@ -27,10 +27,7 @@ marko.alder@dlr.de
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
             xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5"
             xmlns:sd="http://schemas.xsddoc.codeplex.com/schemaDoc/2009/3"
-            xmlns:xlink="http://www.w3.org/1999/xlink"
-            targetNamespace="http://www.cpacs.de"
-            xmlns="http://www.cpacs.de"
-            elementFormDefault="qualified">
+            xmlns:xlink="http://www.w3.org/1999/xlink">
 
     <xsd:element name="cpacs" type="cpacsType"/>
 
@@ -68,12 +65,10 @@ marko.alder@dlr.de
                                     Data types can either be <ddue:legacyBold>simple types</ddue:legacyBold> (string, double, boolean, etc.) or 
                                     <ddue:legacyBold>complex types</ddue:legacyBold> (definition of attributes and sub-elements to build a hierarchical 
                                     structure). In addition, the sequence of the elements and their occurrence is documented.</ddue:para>
-                                    <ddue:para>All elements and types documented here belong to the namespace <ddue:legacyItalic>http://www.cpacs.de</ddue:legacyItalic>. 
-                                    To link the XML file to the XSD file, the header of the XML file should specify this namespace and link it to the path of the schema file. 
+                                    <ddue:para>To link the XML file to the XSD file, the header of the XML file should specify the path of the schema file. 
                                     An example could look like this:                                    
-                                    <ddue:code language="XML" title="CPACS header">&lt;cpacs xmlns="http://www.cpacs.de" 
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.cpacs.de pathToCpacsSchemaFile/cpacs_schema.xsd"&gt;</ddue:code>
+                                    <ddue:code language="XML" title="CPACS header">&lt;cpacs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="../schema/cpacs_schema.xsd"&gt;</ddue:code>
                                     </ddue:para>
                                     <ddue:para>CPACS is an open source project published by the German Aerospace Center (DLR e.V.). For further information please visit www.cpacs.de.
                                     </ddue:para>
@@ -198,9 +193,8 @@ marko.alder@dlr.de
                                 <ddue:content>
                                     <ddue:para>To provide a better overview, it is possible to split up a <ddue:legacyItalic>CPACS</ddue:legacyItalic> dataset into several files. This can be done by inserting an <ddue:legacyBold>&lt;externaldata&gt;</ddue:legacyBold> node at an arbitrary position into the datatset. This node contains a <ddue:legacyBold>&lt;path&gt;</ddue:legacyBold> node with a URI to the external file(s), followed by one or more <ddue:legacyBold>&lt;filename&gt;</ddue:legacyBold> nodes, containing each a name of a file to be included at that position. Below, an example of such external data is given:</ddue:para>
                                     <ddue:code language="XML" title=" ">&lt;?xml version="1.0" encoding="utf-8"?&gt;
-&lt;cpacs xmlns="http://www.cpacs.de" 
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.cpacs.de pathToCpacsSchemaFile/cpacs_schema.xsd"&gt;
+&lt;cpacs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="pathToSchemaFile/cpacs_schema.xsd"&gt;
     &lt;vehicles&gt;
         &lt;profiles&gt;
             &lt;wingAirfoils&gt;
@@ -238,9 +232,8 @@ marko.alder@dlr.de
                                     </ddue:list>
                                     <ddue:para>The single tree for the example above would look like:</ddue:para>
                                     <ddue:code language="XML" title=" ">&lt;?xml version="1.0" encoding="utf-8"?&gt;
-&lt;cpacs xmlns="http://www.cpacs.de" 
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.cpacs.de pathToCpacsSchemaFile/cpacs_schema.xsd"&gt;
+&lt;cpacs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="pathToSchemaFile/cpacs_schema.xsd"&gt;
     &lt;vehicles&gt;
         &lt;profiles&gt;
             &lt;wingAirfoils&gt;
@@ -443,7 +436,6 @@ marko.alder@dlr.de
                                     <ddue:para>Release in January 2020</ddue:para>
                                     <ddue:list class="bullet">
                                         <ddue:listItem>Removed tool-specific elements</ddue:listItem>
-                                        <ddue:listItem>Introduced CPACS namespace</ddue:listItem>
                                         <ddue:listItem>UIDs changed to type xsd:ID and xsd:IDREF</ddue:listItem>
                                         <ddue:listItem>cpacsVersion element set to optional</ddue:listItem>
                                         <ddue:listItem>GuideCurves are now optional for nacelleCowlType</ddue:listItem>
@@ -32882,10 +32874,9 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
 
                             The toolspecific elements must be defined in a separate namespace which can be specified and linked with the corresponding XSD file
                             in the CPACS header: 
-                            <ddue:code language="XML" title="CPACS header">&lt;cpacs xmlns="http://www.cpacs.de" 
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.cpacs.de pathToCpacsSchemaFile/cpacs_schema.xsd
-                           http://www.cpacs.de/myTool pathToToolspecificSchemaFile/toolspecific_myTool.xsd"&gt;</ddue:code>
+                            <ddue:code language="XML" title="CPACS header">&lt;cpacs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="../schema/cpacs_schema.xsd"
+       xsi:schemaLocation="http://www.cpacs.de/myTool pathToToolspecificSchemaFile/toolspecific_myTool.xsd"&gt;</ddue:code>
 
                            A simple example could look like this:
                            <ddue:code language="XML" title="Toolspecific node">&lt;toolspecific&gt;
