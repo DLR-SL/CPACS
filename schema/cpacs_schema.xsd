@@ -63,11 +63,11 @@ marko.alder@dlr.de
                                     </ddue:mediaLink>
                                     <ddue:para>This documentation explains the <ddue:legacyBold>elements</ddue:legacyBold> defined in <ddue:legacyItalic>CPACS</ddue:legacyItalic> and its corresponding <ddue:legacyBold>data types</ddue:legacyBold>. 
                                     Data types can either be <ddue:legacyBold>simple types</ddue:legacyBold> (string, double, boolean, etc.) or 
-                                    <ddue:legacyBold>complex types</ddue:legacyBold> (definition of attributes and sub-elements to build a hierarchical 
+                                        <ddue:legacyBold>complex types</ddue:legacyBold> (definition of attributes and sub-elements to build a hierarchical 
                                     structure). In addition, the sequence of the elements and their occurrence is documented.</ddue:para>
                                     <ddue:para>To link the XML file to the XSD file, the header of the XML file should specify the path of the schema file. 
                                     An example could look like this:                                    
-                                    <ddue:code language="XML" title="CPACS header">&lt;cpacs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                                        <ddue:code language="XML" title="CPACS header">&lt;cpacs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="pathToSchemaFile/cpacs_schema.xsd"&gt;</ddue:code>
                                     </ddue:para>
                                     <ddue:para>CPACS is an open source project published by the German Aerospace Center (DLR e.V.). For further information please visit www.cpacs.de.
@@ -257,11 +257,12 @@ marko.alder@dlr.de
                                 <ddue:content>
                                     <ddue:para>The <ddue:legacyItalic>CPACS</ddue:legacyItalic>-dataset often uses references between nodes. Typically, these 
                                     references define connections between elements which are located somewhere else in the hierarchical dataset (e.g. a <ddue:legacyItalic>wing</ddue:legacyItalic> is connected to a 
-                                    <ddue:legacyItalic>fuselage</ddue:legacyItalic>; a specific <ddue:legacyItalic>engine</ddue:legacyItalic> is connected to a <ddue:legacyItalic>pylon</ddue:legacyItalic>; etc.). These connections are defined by 
-                                    <ddue:legacyBold>unique identifiers</ddue:legacyBold> (uID) which are specified as attributes. Thus, there are elements which can be referenced via a <ddue:legacyItalic>uID</ddue:legacyItalic> attribute, e.g. a fuselage: 
-                                    <ddue:code language="XML" title=" ">&lt;fuselage uID="ATTAS_fuselage"&gt;...</ddue:code></ddue:para>
+                                        <ddue:legacyItalic>fuselage</ddue:legacyItalic>; a specific <ddue:legacyItalic>engine</ddue:legacyItalic> is connected to a <ddue:legacyItalic>pylon</ddue:legacyItalic>; etc.). These connections are defined by 
+                                        <ddue:legacyBold>unique identifiers</ddue:legacyBold> (uID) which are specified as attributes. Thus, there are elements which can be referenced via a <ddue:legacyItalic>uID</ddue:legacyItalic> attribute, e.g. a fuselage: 
+                                        <ddue:code language="XML" title=" ">&lt;fuselage uID="ATTAS_fuselage"&gt;...</ddue:code>
+                                    </ddue:para>
                                     <ddue:para>as well as elements which refer to the former, e.g. a wing pointing to its geometrical parent:
-                                    <ddue:code language="XML" title=" ">&lt;wing uID="e382bf5j"&gt;
+                                        <ddue:code language="XML" title=" ">&lt;wing uID="e382bf5j"&gt;
     &lt;name&gt;ATTAS main wing&lt;/name&gt;
     &lt;parentUID isLink="True"&gt;ATTAS_fuselage&lt;/parentUID&gt;
     ...</ddue:code>
@@ -300,17 +301,17 @@ marko.alder@dlr.de
                                                 <ddue:legacyBold>full:</ddue:legacyBold> The element refers to the geometric component that has a symmetry attribute and refers to the complete component. (This is the default behaviour)</ddue:listItem>
                                         </ddue:list>
                                     </ddue:para>
-                                    <ddue:code language="XML" title=" ">&lt;wing uID="ATTAS main wing" symmetry="x-z-plane"&gt;
+                                    <ddue:code language="XML" title=" ">&lt;wing uID="ATTAS_main_wing" symmetry="x-z-plane"&gt;
     ...
     &lt;segments&gt;
-        &lt;segment uID="ATTAS main wing innersegment"&gt;
+        &lt;segment uID="ATTAS_main_wing_innersegment"&gt;
         ...</ddue:code>
                                     <ddue:para>In the example above, to refer to the "other" side of the wing on must use the definition as such:</ddue:para>
                                     <ddue:code language="XML" title=" ">&lt;loadcase&gt;
     ...
     &lt;segments&gt;
         &lt;segment&gt;
-            &lt;segmentUID isLink="True" symmetry="symm"&gt;ATTAS main wing inner segment&lt;/segmentUID&gt;
+            &lt;segmentUID isLink="True" symmetry="symm"&gt;ATTAS_main_wing_inner_segment&lt;/segmentUID&gt;
             &lt;strip&gt;...</ddue:code>
                                 </ddue:content>
                             </ddue:section>
@@ -433,12 +434,17 @@ marko.alder@dlr.de
                             <ddue:section>
                                 <ddue:title>CPACS 3.2</ddue:title>
                                 <ddue:content>
-                                    <ddue:para>Release in January 2020</ddue:para>
+                                    <ddue:para>Release in February 2020</ddue:para>
                                     <ddue:list class="bullet">
-                                        <ddue:listItem>Removed tool-specific elements</ddue:listItem>
-                                        <ddue:listItem>UIDs changed to type xsd:ID and xsd:IDREF</ddue:listItem>
-                                        <ddue:listItem>cpacsVersion element set to optional</ddue:listItem>
+                                        <ddue:listItem>Replaced tool-specific elements with xsd:any element and strict schema request for validation</ddue:listItem>
+                                        <ddue:listItem>UIDs adapted to type xsd:ID and xsd:IDREF</ddue:listItem>
+                                        <ddue:listItem>UIDs optional for transformationType and pointTypes</ddue:listItem>
+                                        <ddue:listItem>Added fuselage frame sets</ddue:listItem>
+                                        <ddue:listItem>Added fuselage stringer sets</ddue:listItem>
+                                        <ddue:listItem>Replaced xsd:sequence elements with xsd:all elements where possible</ddue:listItem>
+                                        <ddue:listItem>CpacsVersion element set to optional</ddue:listItem>
                                         <ddue:listItem>GuideCurves are now optional for nacelleCowlType</ddue:listItem>
+                                        <ddue:listItem>Documentation adaptions</ddue:listItem>
                                     </ddue:list>
                                 </ddue:content>
                             </ddue:section>
@@ -32879,7 +32885,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
        xsi:schemaLocation="http://www.cpacs.de/myTool pathToToolspecificSchemaFile/toolspecific_myTool.xsd"&gt;</ddue:code>
 
                            A simple example could look like this:
-                           <ddue:code language="XML" title="Toolspecific node">&lt;toolspecific&gt;
+                            <ddue:code language="XML" title="Toolspecific node">&lt;toolspecific&gt;
     &lt;tool toolVersion="1.2.3" schemaVersion="1.0"&gt;
         &lt;name&gt;myTool&lt;/name&gt;
         &lt;myTool xmlns="http://www.cpacs.de/myTool"&gt;
@@ -32961,7 +32967,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
 
     <xsd:complexType name="frameSetType">
         <xsd:annotation>
-            <xsd:documentation></xsd:documentation>
+            <xsd:documentation/>
         </xsd:annotation>
         <xsd:sequence>
             <xsd:element name="framePositions"
@@ -33004,7 +33010,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                 </xsd:annotation>
             </xsd:element>
         </xsd:sequence>
-        <xsd:attribute name="uID" type="xsd:ID" use="required"></xsd:attribute>
+        <xsd:attribute name="uID" type="xsd:ID" use="required"/>
     </xsd:complexType>
 
     <xsd:complexType name="framePositionsType">
@@ -33048,47 +33054,47 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-            <xsd:element name="stringerPositions"
+                    <xsd:element name="stringerPositions"
                 type="stringerPositionsType" maxOccurs="1" minOccurs="1">
-                <xsd:annotation>
-                    <xsd:documentation>
+                        <xsd:annotation>
+                            <xsd:documentation>
                         Set of stringerFramePositionings
-                    </xsd:documentation>
-                </xsd:annotation>
-            </xsd:element>
-            <xsd:element name="angleEnd" type="doubleBaseType"
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="angleEnd" type="doubleBaseType"
                 maxOccurs="1" minOccurs="0">
-                <xsd:annotation>
-                    <xsd:documentation>
+                        <xsd:annotation>
+                            <xsd:documentation>
                         angleEnd defines the angle of the last stringer
                         element. The angle starting value is taken from
                         the first stringer positioning.
-                    </xsd:documentation>
-                </xsd:annotation>
-            </xsd:element>
-            <xsd:choice>
-                <xsd:element name="numberOfStringer"
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:choice>
+                        <xsd:element name="numberOfStringer"
                     type="integerBaseType" maxOccurs="1" minOccurs="0">
-                    <xsd:annotation>
-                        <xsd:documentation>
+                            <xsd:annotation>
+                                <xsd:documentation>
                             Number of Stringer
-                        </xsd:documentation>
-                    </xsd:annotation>
-                </xsd:element>
-                <xsd:element name="spacing"
+                                </xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element name="spacing"
                     type="fuselageStringerSpacingType" maxOccurs="1"
                     minOccurs="0">
-                    <xsd:annotation>
-                        <xsd:documentation>
+                            <xsd:annotation>
+                                <xsd:documentation>
                             stringer spacing type The spacing can be
                             defined by an angular delta value or a
                             spacing distance and a x reference position
-                        </xsd:documentation>
-                    </xsd:annotation>
-                </xsd:element>
-            </xsd:choice>
-        </xsd:sequence>
-                <xsd:attribute name="uID" type="xsd:ID"></xsd:attribute>
+                                </xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                    </xsd:choice>
+                </xsd:sequence>
+                <xsd:attribute name="uID" type="xsd:ID"/>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -33110,33 +33116,33 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:choice>
-            <xsd:element name="spacingAngle" type="doubleBaseType"
+                    <xsd:element name="spacingAngle" type="doubleBaseType"
                 maxOccurs="1" minOccurs="0">
-                <xsd:annotation>
-                    <xsd:documentation>
+                        <xsd:annotation>
+                            <xsd:documentation>
                         Angular distance between stringer elements
-                    </xsd:documentation>
-                </xsd:annotation>
-            </xsd:element>
-            <xsd:sequence>
-                <xsd:element name="spacingDistance"
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:sequence>
+                        <xsd:element name="spacingDistance"
                     type="doubleBaseType" maxOccurs="1" minOccurs="0">
-                    <xsd:annotation>
-                        <xsd:documentation>
+                            <xsd:annotation>
+                                <xsd:documentation>
                             Radial difference between stringer elements
-                        </xsd:documentation>
-                    </xsd:annotation>
-                </xsd:element>
-                <xsd:element name="spacingReferenceXPosition"
+                                </xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element name="spacingReferenceXPosition"
                     type="doubleBaseType" maxOccurs="1" minOccurs="0">
-                    <xsd:annotation>
-                        <xsd:documentation>
+                            <xsd:annotation>
+                                <xsd:documentation>
                             X position for circumfirence calculation
-                        </xsd:documentation>
-                    </xsd:annotation>
-                </xsd:element>
-            </xsd:sequence>
-        </xsd:choice>
+                                </xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:choice>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
