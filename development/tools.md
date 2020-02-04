@@ -30,6 +30,5 @@ The python library can be created using the generateDS packacke provided by Dave
 The Java library is generated via JAXB or rather the xjc tool. If you are lucky and you live in a world where there is no outsourced IT-department you might have xjc in your standard java distribution. If not, please feel free to browse to https://jaxb.java.net/ for a download.
 
 ## Documentation
-The documentation for CPACS is generated using the MSBuild command from the .Net framework. For a plain build of the CPACS documentation run MS Build from the corresponding .Net version with the CPACS_doc_project.shfbproj file. For adaptions to the project please use the sandcastle help file builder. It can be found here: https://shfb.codeplex.com/
-Furthermore the XSD plugin needs to be installed: It can be found here: https://github.com/terrajobst/xsddoc/releases
+The documentation for CPACS is generated using the MSBuild command from the .Net framework. For a plain build of the CPACS documentation run MS Build from the corresponding .Net version with the CPACS_doc_project.shfbproj file. For adaptions to the project please use the sandcastle help file builder and the XSD plugin available in [development/3rdparty.zip](../development/3rdparty.zip).
 
