@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+        xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5" 
+        xmlns:html="http://www.w3.org/1999/xhtml" 
+        xmlns:sd="http://schemas.xsddoc.codeplex.com/schemaDoc/2009/3" 
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        targetNamespace="http://www.cpacs.de/myTool"
+        xmlns="http://www.cpacs.de/myTool"
+        elementFormDefault="qualified">
+
+    <!-- This schema is a template that can be used as a starting point for your own 
+         tool-specific schema. We recommend that you use the CPACS base-types (copy 
+         & paste them into this file) and adopt the schema version attribute.  -->
+
+    <!-- Global element -->
+    <xsd:element name="myToolName" type="myToolType"/>
+
+    <!-- Base types -->
+    <xsd:complexType name="complexBaseType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>complexBaseType</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>Base type for complex nodes (including external data
+                            attributes)</ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:attribute name="externalDataNodePath" type="xsd:string"/>
+        <xsd:attribute name="externalFileName" type="xsd:string"/>
+        <xsd:attribute name="externalDataDirectory" type="xsd:string"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="stringBaseType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>stringBaseType</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>Base type for string nodes (including external data
+                            attributes)</ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute name="externalDataNodePath" type="xsd:string"/>
+                <xsd:attribute name="externalFileName" type="xsd:string"/>
+                <xsd:attribute name="externalDataDirectory" type="xsd:string"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="doubleBaseType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>doubleBaseType</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>Base type for double nodes (including external data
+                                attributes)</ddue:para>
+                            <ddue:para>The double base type can include optional uncertainty
+                                information. The description of uncertainties is placed in
+                                addtional attributes. First, it is described by an attribute
+                                that describes the type of uncertainty function called
+                                functionName. The functionName attribute includes the tag name
+                                of the distribution function which is listened in the table
+                                shown below. Each uncertainty function is further describes by a
+                                set of parameters that are described in the table below.
+                            </ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="uncertaintyFunctions"/>
+                            </ddue:mediaLink>
+                        </ddue:content>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:double">
+                <xsd:attribute name="externalDataNodePath" type="xsd:string"/>
+                <xsd:attribute name="externalFileName" type="xsd:string"/>
+                <xsd:attribute name="externalDataDirectory" type="xsd:string"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+    <!-- Type of the global tool element; must be an extension of toolBaseType -->
+    <xsd:complexType name="myToolType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>My example tool</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:section>
+                                <ddue:title>
+                                    1. General overview
+                                </ddue:title>
+                                <ddue:content>
+                                    <ddue:para>
+                                        ... add documentation ...
+                                    </ddue:para>
+                                </ddue:content>
+                            </ddue:section>
+                        </ddue:content>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="parentElement"
+                        type="parentElementBaseType" />
+                </xsd:all>
+                <!-- We recommend to use a "schemaVersion" attribute (or element) to properly document the version of the
+                tool-specific schema and allow XML-processors to validate your data. An example could look like below: -->
+                <xsd:attribute name="schemaVersion">
+                    <xsd:simpleType>
+                        <xsd:restriction base="xsd:string">
+                            <xsd:enumeration value="1.0"/>
+                        </xsd:restriction>
+                    </xsd:simpleType>
+                </xsd:attribute>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="parentElementBaseType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Element with child elements</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>... some explanation ...</ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="childElement1" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>A first element of type double
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="childElement2" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>A second element of type double
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+</xsd:schema>
