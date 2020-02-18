@@ -8,8 +8,12 @@
         xmlns="http://www.cpacs.de/myTool"
         elementFormDefault="qualified">
 
+    <!-- This schema is a template that can be used as a starting point for your own 
+         tool-specific schema. We recommend that you use the CPACS base-types (copy 
+         & paste them into this file) and adopt the schema version attribute.  -->
+
     <!-- Global element -->
-    <xsd:element name="myTool" type="myToolType"/>
+    <xsd:element name="myToolName" type="myToolType"/>
 
     <!-- Base types -->
     <xsd:complexType name="complexBaseType">
@@ -102,9 +106,13 @@
                     <ddue:remarks>
                         <ddue:content>
                             <ddue:section>
-                                <ddue:title>1. General overview</ddue:title>
+                                <ddue:title>
+                                    1. General overview
+                                </ddue:title>
                                 <ddue:content>
-                                    <ddue:para>... add documentation ...</ddue:para>
+                                    <ddue:para>
+                                        ... add documentation ...
+                                    </ddue:para>
                                 </ddue:content>
                             </ddue:section>
                         </ddue:content>
@@ -115,11 +123,21 @@
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element name="parentElement" type="parentElementBaseType"/>
-                </xsd:all>  
-            </xsd:extension>   
+                    <xsd:element name="parentElement"
+                        type="parentElementBaseType" />
+                </xsd:all>
+                <!-- We recommend to use a "schemaVersion" attribute (or element) to properly document the version of the
+                tool-specific schema and allow XML-processors to validate your data. An example could look like below: -->
+                <xsd:attribute name="schemaVersion">
+                    <xsd:simpleType>
+                        <xsd:restriction base="xsd:string">
+                            <xsd:enumeration value="1.0"/>
+                        </xsd:restriction>
+                    </xsd:simpleType>
+                </xsd:attribute>
+            </xsd:extension>
         </xsd:complexContent>
-    </xsd:complexType> 
+    </xsd:complexType>
 
     <xsd:complexType name="parentElementBaseType">
         <xsd:annotation>
