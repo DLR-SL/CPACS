@@ -1908,50 +1908,50 @@ marko.alder@dlr.de
         </xsd:complexContent>
     </xsd:complexType>
 
-	<xsd:complexType name="curveParamPointMapType">
-		<xsd:annotation>
-			<xsd:appinfo>
-				<sd:schemaDoc>
-					<ddue:summary>
-						<ddue:para>Maps points (actually the index in the point list) to a curve parameter.</ddue:para>
-					</ddue:summary>
-					<ddue:remarks>
-						<ddue:content>
-							<ddue:para>Which parameters are allowed depends on the context.
+    <xsd:complexType name="curveParamPointMapType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Maps points (actually the index in the point list) to a curve parameter.</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>Which parameters are allowed depends on the context.
 							For exampple in a wing profile, values between -1 and 1 are valid.</ddue:para>
-						</ddue:content>
-					</ddue:remarks>
-				</sd:schemaDoc>
-			</xsd:appinfo>
-		</xsd:annotation>
-	    <xsd:complexContent>
-			<xsd:extension base="complexBaseType">
-				<xsd:sequence>
-					<xsd:element name="pointIndex" type="stringVectorBaseType">
-						<xsd:annotation>
-							<xsd:documentation>List of indices of points to be mapped. Each index must be in the range 0 ... npoints-1 .</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-					<xsd:element name="paramOnCurve" type="stringVectorBaseType">
-						<xsd:annotation>
-							<xsd:documentation>List of parameters on the curve, that is mapped to the points defined by their index.</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-				</xsd:sequence>
-			</xsd:extension>
-		</xsd:complexContent>
-	</xsd:complexType>
+                        </ddue:content>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="pointIndex" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>List of indices of points to be mapped. Each index must be in the range 0 ... npoints-1 .</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="paramOnCurve" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>List of parameters on the curve, that is mapped to the points defined by their index.</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
 
-	<xsd:complexType name="curvePointListXYZType">
-		<xsd:annotation>
-			<xsd:appinfo>
-				<sd:schemaDoc>
-					<ddue:summary>
-						<ddue:para>A curve that interpolates a list of points.</ddue:para>
-					</ddue:summary>
-					<ddue:remarks>
-						<ddue:content>
-							<ddue:para>The curve interpolates the list of points, typically with a b-spline.
+    <xsd:complexType name="curvePointListXYZType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>A curve that interpolates a list of points.</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>The curve interpolates the list of points, typically with a b-spline.
                             In theory, the interpolation is somewhat ambiguous as it is not defined at which
                             curve parameter a point will be interpolated.
                             </ddue:para>
@@ -1961,13 +1961,13 @@ marko.alder@dlr.de
                             <ddue:para>Kinks can also be modeled by populating the "kinks" array with the
                             indices of points that should be on a kink. As an example, look at the following image:
                             </ddue:para>
-							<ddue:mediaLink>
-								<ddue:image width="300" xlink:href="curve_point_list_xyz"/>
-							</ddue:mediaLink>
-							<ddue:para>In this example, the kinks array will be "2;6".
+                            <ddue:mediaLink>
+                                <ddue:image width="300" xlink:href="curve_point_list_xyz"/>
+                            </ddue:mediaLink>
+                            <ddue:para>In this example, the kinks array will be "2;6".
                             Optionally, the parameters of the kinks can be set in the parameter map.
                             The whole profile looks as follows:
-							</ddue:para>
+                            </ddue:para>
                             <ddue:code language="XML" title=" ">
 &lt;pointList&gt;
 	&lt;x mapType="vector"&gt;...&lt;/x&gt;
@@ -1979,12 +1979,12 @@ marko.alder@dlr.de
 		&lt;paramOnCurve mapType="vector"&gt;0.2;0.5;0.8&lt;/paramOnCurve&gt;
 	&lt;/parameterMap&gt;
 &lt;/pointList&gt;
-                        </ddue:code>
-						</ddue:content>
-					</ddue:remarks>
-				</sd:schemaDoc>
-			</xsd:appinfo>
-		</xsd:annotation>
+                            </ddue:code>
+                        </ddue:content>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="pointListXYZVectorType">
                 <xsd:sequence>
@@ -2002,8 +2002,8 @@ marko.alder@dlr.de
                     </xsd:element>
                 </xsd:sequence>
             </xsd:extension>
-		</xsd:complexContent>
-	</xsd:complexType>
+        </xsd:complexContent>
+    </xsd:complexType>
 
     <xsd:complexType name="pointListXYVectorType">
         <xsd:annotation>
@@ -7525,36 +7525,94 @@ marko.alder@dlr.de
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>A track in general describes the structural link
-                                between the control suface and the parent. Tracks are e.g. the
-                                flap tracks, the revolute joints, where the aileron or spoiler
-                                is attached, or the kinematics, attaching slats to the wing.
-                            </ddue:para>
+                            <ddue:para>A <ddue:legacyItalic>track</ddue:legacyItalic> generally describes the structural connection between a control surface and a wing (or parent element). For example, a track can be a flap track, a revolute joint connecting an aileron or spoiler, or the kinematics of slats on a wing. </ddue:para>
                             <ddue:para>The spanwise position of the track is defined by
-                                'eta', which refers to the control surface dimensions.
+                                <ddue:legacyItalic>etaPosition</ddue:legacyItalic>, which refers to the control surface dimensions.
                             </ddue:para>
                             <ddue:para>The structural properties of the track (e.g.
-                                materials) are defined in 'trackStructure'.</ddue:para>
+                                materials) are defined in <ddue:legacyItalic>trackStructure</ddue:legacyItalic>.</ddue:para>
                             <ddue:para>If an actuator is included into the the track, a
-                                reference is given in 'actuator'.</ddue:para>
+                                reference is given in <ddue:legacyItalic>actuator</ddue:legacyItalic>.</ddue:para>
                             <ddue:para>The principal kinematic of the track is defined by
-                                setting the 'trackType' and 'trackSubType'. Please refer to the
-                                tables below for setting the 'trackType' and 'trackSubType'
+                                setting the <ddue:legacyItalic>trackType</ddue:legacyItalic> and <ddue:legacyItalic>trackSubType</ddue:legacyItalic>. Please refer to the
+                                tables below for setting the <ddue:legacyItalic>trackType</ddue:legacyItalic> and <ddue:legacyItalic>trackSubType</ddue:legacyItalic>
                                 parameter. Note, those tables are not final - they are extended
                                 continuously.</ddue:para>
-                            <ddue:para>For trailing edge devices (TED), the 'trackType' and
-                                'trackSubType' parameter are defined as follows:</ddue:para>
-                            <ddue:mediaLink>
-                                <ddue:image xlink:href="tracks_ted"/>
-                            </ddue:mediaLink>
-                            <ddue:para>For spoiler, the 'trackType' and 'trackSubType'
-                                parameter are defined as follows:</ddue:para>
-                            <ddue:mediaLink>
-                                <ddue:image xlink:href="tracks_spoiler"/>
-                            </ddue:mediaLink>
-                            <ddue:para>For leading edge devices (LED), the 'trackType' and
-                                'trackSubType' parameter are defined as follows: Currently no
-                                definition available.</ddue:para>
+                            <ddue:para>
+                                <ddue:table>
+                                    <ddue:title>
+                                        <ddue:legacyBold>Trailing edge track types</ddue:legacyBold>
+                                    </ddue:title>
+                                    <ddue:row>
+                                        <ddue:entry>trackType</ddue:entry>
+                                        <ddue:entry>picture</ddue:entry>
+                                        <ddue:entry>description</ddue:entry>
+                                        <ddue:entry>trackSubType</ddue:entry>
+                                        <ddue:entry>picture</ddue:entry>
+                                        <ddue:entry>description</ddue:entry>
+                                    </ddue:row>
+                                    <ddue:row>
+                                        <ddue:entry>1</ddue:entry>
+                                        <ddue:entry>..</ddue:entry>
+                                        <ddue:entry>revolute joint; no actuators; the revolute joint is on TED hinge line; just for e.g. ailerons</ddue:entry>
+                                        <ddue:entry>1</ddue:entry>
+                                        <ddue:entry>
+                                            <ddue:mediaLink>
+                                                <ddue:image xlink:href="TrackType1_SubType1"/>
+                                            </ddue:mediaLink>
+                                        </ddue:entry>
+                                        <ddue:entry>revolute attached at the wings rear spar and the ... ?</ddue:entry>
+                                    </ddue:row>
+                                    <ddue:row>
+                                        <ddue:entry>2</ddue:entry>
+                                        <ddue:entry>..</ddue:entry>
+                                        <ddue:entry>..</ddue:entry>
+                                        <ddue:entry>1</ddue:entry>
+                                        <ddue:entry>..</ddue:entry>
+                                        <ddue:entry>..</ddue:entry>
+                                    </ddue:row>
+                                    <ddue:row>
+                                        <ddue:entry>2</ddue:entry>
+                                        <ddue:entry>..</ddue:entry>
+                                        <ddue:entry>..</ddue:entry>
+                                        <ddue:entry>2</ddue:entry>
+                                        <ddue:entry>
+                                            <ddue:mediaLink>
+                                                <ddue:image xlink:href="TrackType2_SubType2"/>
+                                            </ddue:mediaLink>
+                                        </ddue:entry>
+                                        <ddue:entry>..</ddue:entry>
+                                    </ddue:row>
+                                    <ddue:row>
+                                        <ddue:entry>3</ddue:entry>
+                                        <ddue:entry>..</ddue:entry>
+                                        <ddue:entry>..</ddue:entry>
+                                        <ddue:entry>1</ddue:entry>
+                                        <ddue:entry>..</ddue:entry>
+                                        <ddue:entry>..</ddue:entry>
+                                    </ddue:row>
+                                    <ddue:row>
+                                        <ddue:entry>4</ddue:entry>
+                                        <ddue:entry>..</ddue:entry>
+                                        <ddue:entry>..</ddue:entry>
+                                        <ddue:entry>1</ddue:entry>
+                                        <ddue:entry>..</ddue:entry>
+                                        <ddue:entry>..</ddue:entry>
+                                    </ddue:row>
+                                    <ddue:row>
+                                        <ddue:entry>4</ddue:entry>
+                                        <ddue:entry>..</ddue:entry>
+                                        <ddue:entry>..</ddue:entry>
+                                        <ddue:entry>2</ddue:entry>
+                                        <ddue:entry>
+                                            <ddue:mediaLink>
+                                                <ddue:image xlink:href="TrackType4_SubType2"/>
+                                            </ddue:mediaLink>
+                                        </ddue:entry>
+                                        <ddue:entry>..</ddue:entry>
+                                    </ddue:row>
+                                </ddue:table>
+                            </ddue:para>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -7579,6 +7637,9 @@ marko.alder@dlr.de
                             <xsd:simpleContent>
                                 <xsd:restriction base="stringBaseType">
                                     <xsd:enumeration value="trackType1"/>
+                                    <xsd:enumeration value="trackType2"/>
+                                    <xsd:enumeration value="trackType3"/>
+                                    <xsd:enumeration value="trackType4"/>
                                 </xsd:restriction>
                             </xsd:simpleContent>
                         </xsd:complexType>
@@ -7593,6 +7654,7 @@ marko.alder@dlr.de
                             <xsd:simpleContent>
                                 <xsd:restriction base="stringBaseType">
                                     <xsd:enumeration value="trackSubType1"/>
+                                    <xsd:enumeration value="trackSubType2"/>
                                 </xsd:restriction>
                             </xsd:simpleContent>
                         </xsd:complexType>
@@ -27672,7 +27734,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element name="struts" type="trackStrutsType"></xsd:element>
+                    <xsd:element name="struts" type="trackStrutsType"/>
                     <xsd:element name="jointPositions"
                         type="trackJointPositionsType">
                     </xsd:element>
@@ -27758,7 +27820,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
-<xsd:complexType name="trackJointPositionsType">
+    <xsd:complexType name="trackJointPositionsType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
@@ -27781,7 +27843,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
-    
+
     <xsd:complexType name="TrackJointPositionType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -27801,10 +27863,10 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:extension base="complexBaseType">
                 <xsd:all>
                     <xsd:element name="controlParameters" type="stringVectorBaseType">
-                                <xsd:annotation>
-                                    <xsd:documentation>Value of the command parameter of a control distributor. If not given explicitly in the control distributor, linear interpolation between the neighboring points is required.</xsd:documentation>
-                                </xsd:annotation>
-                            </xsd:element>
+                        <xsd:annotation>
+                            <xsd:documentation>Value of the command parameter of a control distributor. If not given explicitly in the control distributor, linear interpolation between the neighboring points is required.</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                     <xsd:element name="jointCoordinates" type="trackJointCoordinatesType" />
                 </xsd:all>
             </xsd:extension>
@@ -27851,7 +27913,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
-    
+
     <xsd:complexType name="trackSecondaryStructureType">
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
