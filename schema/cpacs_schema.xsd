@@ -20397,8 +20397,8 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Definition of the material properties of the structural
-                            profile sheet.</ddue:para>
+                        <ddue:para>Definition of the properties of the structural
+                            profile sheet</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>MaterialDefinitionForProfileBased type, containing a
@@ -20411,12 +20411,39 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:element name="sheetUID" type="stringUIDBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>uID of the sheet to which the material
-                                properties shall be applied.</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
+                    <xsd:choice>
+                        <xsd:element name="sheetUID" type="stringUIDBaseType">
+                            <xsd:annotation>
+                                <xsd:documentation>UID of the sheet to which the material
+                                    properties shall be applied</xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:sequence>
+                            <xsd:element name="standardProfileSheetID">
+                                <xsd:annotation>
+                                    <xsd:documentation>Predefined ID of the sheet of a standard profile</xsd:documentation>
+                                </xsd:annotation>
+                                <xsd:complexType>
+                                    <xsd:simpleContent>
+                                        <xsd:restriction base="stringBaseType">
+                                            <xsd:enumeration value="S1"/>
+                                            <xsd:enumeration value="S2"/>
+                                            <xsd:enumeration value="S3"/>
+                                            <xsd:enumeration value="S4"/>
+                                            <xsd:enumeration value="S5"/>
+                                            <xsd:enumeration value="S6"/>
+                                            <xsd:enumeration value="S7"/>
+                                        </xsd:restriction>
+                                    </xsd:simpleContent>
+                                </xsd:complexType>
+                            </xsd:element>
+                            <xsd:element name="length" type="doubleBaseType">
+                                <xsd:annotation>
+                                    <xsd:documentation>Length of the sheet of a standard profile</xsd:documentation>
+                                </xsd:annotation>
+                            </xsd:element>
+                        </xsd:sequence>
+                    </xsd:choice>
                     <xsd:choice>
                         <xsd:sequence>
                             <xsd:element name="compositeUID" type="stringUIDBaseType">
@@ -23235,32 +23262,57 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Profiles of the aircraft.</ddue:para>
+                        <ddue:para>Structural elements based on profiles</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>ProfileBasedStructuralElement Type, containing the
-                                data of a structural element, that are based on 2-dimensional
-                                profiles.</ddue:para>
-                            <ddue:para>The parameter 'structuralProfileUID' refers to the
-                                definition of the 2-dimensional profile. This profile is defined
-                                by several points in the x-y-space. Always two points are
-                                combined two one sheet. The properties of each sheet are defined
-                                in the 'sheetProperties' section by referencing on the sheetUID
-                                and the material properties. The orthotropy direction of
-                                composite materials equals the x-sheet axis. The orthotropy
-                                direction angle equals a positive rotation around the z-sheet
-                                axis as indicated in the picture below (part 3.), where a wing
-                                stringer is defined as an example:</ddue:para>
-                            <ddue:mediaLink>
-                                <ddue:image xlink:href="stringer2"/>
-                            </ddue:mediaLink>
-                            <ddue:para>In the section 'globalBeamProperties' the properties
-                                of the structural profile in an equivalent beam representation
-                                are defined.</ddue:para>
-                            <ddue:mediaLink>
-                                <ddue:image xlink:href="standard_profile"/>
-                            </ddue:mediaLink>
+                            <ddue:section>
+                                <ddue:title>Short description</ddue:title>
+                                <ddue:content>
+                                    <ddue:para>The ProfileBasedStructuralElement type containins the
+                                data of a structural element, that are based on 2-dimensional profiles.</ddue:para>
+                                    <ddue:para>There are three approaches to model profile based structural elements:
+                                        <ddue:list class="bullet">
+                                                    <ddue:listItem>by specifying global beam properties</ddue:listItem>
+                                                    <ddue:listItem>by referencing a structuralProfile2D element</ddue:listItem>
+                                                    <ddue:listItem>by choosing one of the prescribed standard profiles</ddue:listItem>
+                                        </ddue:list>
+                                    </ddue:para>
+                                </ddue:content>
+                            </ddue:section>
+                            <ddue:section>
+                                <ddue:title>1. Global beam properties</ddue:title>
+                                <ddue:content>
+                                    <ddue:para>In the section <ddue:legacyItalic>globalBeamProperties</ddue:legacyItalic> the properties
+                                        of the structural profile in an equivalent beam representation
+                                        are defined.</ddue:para>
+                                </ddue:content>
+                            </ddue:section>
+                            <ddue:section>
+                                <ddue:title>2. Structural 2D profile</ddue:title>
+                                <ddue:content>
+                                    <ddue:para>The <ddue:legacyItalic>structuralProfileUID</ddue:legacyItalic> element refers to the <ddue:legacyItalic>uID</ddue:legacyItalic> of the <ddue:legacyItalic>structuralProfile2D</ddue:legacyItalic> element.
+                                        As described in the corresponding documentation, this profile is defined by several points in the x-y-space. 
+                                        Two points always form a sheet.
+                                        The properties of each sheet are defined in the <ddue:legacyItalic>sheetProperties</ddue:legacyItalic> element.
+                                        The orthotropy direction of composite materials equals the sheets' x-axis.
+                                        The orthotropy direction angle equals a positive rotation around the sheets' z-axis as indicated in the picture below (part 3), which shows an example of a wing stringer.:</ddue:para>
+                                    <ddue:mediaLink>
+                                        <ddue:image xlink:href="stringer2"/>
+                                    </ddue:mediaLink>
+                                </ddue:content>
+                            </ddue:section>
+                            <ddue:section>
+                                <ddue:title>3. Standard structural 2D profile</ddue:title>
+                                <ddue:content>
+                                    <ddue:para>Instead of referencing a <ddue:legacyItalic>structuralProfile2D</ddue:legacyItalic> element, it is also possible to select a predefined standard profile.
+                                        These profiles are listed in the figure below.
+                                        Under <ddue:legacyItalic>sheetProperties</ddue:legacyItalic>, only the <ddue:legacyItalic>standardProfileSheetID</ddue:legacyItalic> (equals S1, S2, ...) must now be specified along with a corresponding length.</ddue:para>
+                                    <ddue:mediaLink>
+                                        <ddue:image xlink:href="standard_profile"/>
+                                    </ddue:mediaLink>
+                                </ddue:content>
+                            </ddue:section>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -23269,7 +23321,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:element minOccurs="0" name="name" type="stringBaseType">
+                    <xsd:element name="name" type="stringBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Name of the profile based structural element
                             </xsd:documentation>
@@ -23290,8 +23342,8 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             <xsd:choice>
                                 <xsd:annotation>
                                     <xsd:documentation>Choice between general profile element
-                                        description (using structuralProfile definition) and standard
-                                        profiles</xsd:documentation>
+                                        description (referencing a structuralProfile) and predefined
+                                        standard profiles</xsd:documentation>
                                 </xsd:annotation>
                                 <xsd:sequence>
                                     <xsd:annotation>
@@ -23301,7 +23353,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                                     <xsd:element name="structuralProfileUID" type="stringUIDBaseType">
                                         <xsd:annotation>
                                             <xsd:documentation>Reference to the structural profile profile
-                                                uID.</xsd:documentation>
+                                                uID</xsd:documentation>
                                         </xsd:annotation>
                                     </xsd:element>
                                     <xsd:element maxOccurs="unbounded" minOccurs="0" name="pointProperties" type="materialDefinitionForProfileBasedPointType"/>
@@ -23322,7 +23374,10 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                                         <xsd:simpleContent>
                                             <xsd:restriction base="stringBaseType">
                                                 <xsd:enumeration value="C"/>
+                                                <xsd:enumeration value="I"/>
                                                 <xsd:enumeration value="T"/>
+                                                <xsd:enumeration value="T1"/>
+                                                <xsd:enumeration value="T2"/>
                                                 <xsd:enumeration value="Z"/>
                                                 <xsd:enumeration value="L"/>
                                                 <xsd:enumeration value="HAT"/>
@@ -23353,7 +23408,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         <ddue:para>structuralElementType</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>profileBasedStructuralElement type, containing a list
+                        <ddue:para>profileBasedStructuralElements type, containing a list
                             of profile based structural elements</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
