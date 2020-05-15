@@ -11013,130 +11013,72 @@ marko.alder@dlr.de
     </xsd:complexType>
 
     <xsd:complexType name="flightLoadCaseType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>flightLoadCaseType</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:content>
-                            <ddue:section>
-                                <ddue:title>Main class</ddue:title>
-                                <ddue:content>
-                                    <ddue:para>
-                                        <ddue:legacyBold>State</ddue:legacyBold>
-                                    </ddue:para>
-                                    <ddue:para>Includes general definition of aircraft attitude and
-                                        the aircraft environment.</ddue:para>
-                                    <ddue:para>
-                                        <ddue:legacyBold>Aircraft Settings</ddue:legacyBold>
-                                    </ddue:para>
-                                    <ddue:para>Include definition of settings of the aircraft self.
-                                        For example setting of a flap or landinggear.</ddue:para>
-                                    <ddue:para>
-                                        <ddue:legacyBold>MassCase</ddue:legacyBold>
-                                    </ddue:para>
-                                    <ddue:para>Include definition about the massCase and is linked
-                                        by an UID to the massBreakdown, weightAndBalance or direct
-                                        component link. ?!</ddue:para>
-                                </ddue:content>
-                            </ddue:section>
-                            <ddue:section>
-                                <ddue:title>References</ddue:title>
-                                <ddue:content>
-                                    <ddue:para>
-                                        <ddue:legacyBold>Coordinate System(s)</ddue:legacyBold>
-                                        <ddue:list class="bullet">
-                                            <ddue:listItem>Earth Fix coord.sys. (EF) with planar surface
-                                                (x-y-Ebene = Earth surface, x North, y East)</ddue:listItem>
-                                        </ddue:list>
-                                        <ddue:para>
-                                            <ddue:mediaLink>
-                                                <ddue:image xlink:href="earthFixCoordSys"/>
-                                            </ddue:mediaLink>
-                                        </ddue:para>
-                                        <ddue:list class="bullet">
-                                            <ddue:listItem>refCoordUid (e.g. body fix and orientation to
-                                                EF)</ddue:listItem>
-                                            <ddue:listItem>refpointUid</ddue:listItem>
-                                        </ddue:list>
-                                        <ddue:para>
-                                            <ddue:mediaLink>
-                                                <ddue:image xlink:href="bodyFixCoordSys2"/>
-                                            </ddue:mediaLink>
-                                        </ddue:para>
-                                    </ddue:para>
-                                    <ddue:para>
-                                        <ddue:legacyBold>Euler angles</ddue:legacyBold>
-                                        <ddue:list class="bullet">
-                                            <ddue:listItem>Attitude of body fix to earth fix coord.sys.
-                                            </ddue:listItem>
-                                            <ddue:listItem>ψ psi – heading</ddue:listItem>
-                                            <ddue:listItem>θ theta – pitch angle</ddue:listItem>
-                                            <ddue:listItem>Φ phi – bank angle</ddue:listItem>
-                                            <ddue:listItem>Rotation order: ψ, θ, Φ</ddue:listItem>
-                                        </ddue:list>
-                                    </ddue:para>
-                                    <ddue:para>
-                                        <ddue:mediaLink>
-                                            <ddue:image xlink:href="eulerAnglesInCoordSys"/>
-                                        </ddue:mediaLink>
-                                    </ddue:para>
-                                    <ddue:para>
-                                        <ddue:legacyBold>Reference of attitude values
-                                        </ddue:legacyBold>
-                                        <ddue:list class="bullet">
-                                            <ddue:listItem>x,y,z (vector to ref point in EF)
-                                            </ddue:listItem>
-                                            <ddue:listItem>dx,dy,dz (vector in EF)</ddue:listItem>
-                                            <ddue:listItem>u,v,w (vector in refCoord) (body fix)
-                                            </ddue:listItem>
-                                            <ddue:listItem>du,dv,dw (vector in refCoordUid) (body fix)
-                                            </ddue:listItem>
-                                        </ddue:list>
-                                    </ddue:para>
-                                    <ddue:para>
-                                        <ddue:mediaLink>
-                                            <ddue:image xlink:href="bodyFixCoordSys"/>
-                                        </ddue:mediaLink>
-                                    </ddue:para>
-                                    <ddue:para>(dx,dy,dy --&gt; Euler transformation (psi, theta,
-                                        phi) --&gt; u,v,w)</ddue:para>
-                                </ddue:content>
-                            </ddue:section>
-                        </ddue:content>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="name" type="stringBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Load case name</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element minOccurs="0" name="description" type="stringBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Load case description (String)
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element minOccurs="0" name="aeroDataSetUID" type="stringUIDBaseType"/>
-                    <xsd:element minOccurs="0" name="loadCondition" type="loadConditionType"/>
-                    <xsd:element name="state" type="loadCaseStateType"/>
-                    <xsd:element minOccurs="0" name="aircraftSettings" type="loadCaseSettingsType"/>
-                    <xsd:element minOccurs="0" name="mass" type="loadCaseMassType"/>
-                    <xsd:element minOccurs="0" name="nodalLoads" type="nodalLoadsType"/>
-                    <xsd:element minOccurs="0" name="cutLoads" type="cutLoadsType"/>
-                    <xsd:element minOccurs="0" name="externalAmifFile" type="stringBaseType"/>
-                </xsd:all>
-                <xsd:attribute name="uID" type="xsd:ID" use="required"/>
-            </xsd:extension>
-        </xsd:complexContent>
+        <xsd:choice>
+            <xsd:element name="staticLoadCase" type="staticFlightLoadCaseType">
+                <xsd:annotation>
+                    <xsd:documentation>Stationary flight load case.</xsd:documentation>
+                </xsd:annotation></xsd:element>
+            <xsd:element name="dynamicLoadCase" type="dynamicFlightLoadCaseType">
+                <xsd:annotation>
+                    <xsd:documentation>Dynamic flight load case (e.g. flutter)</xsd:documentation>
+                </xsd:annotation></xsd:element>
+            <xsd:element name="transientLoadCase" type="transientFlightLoadCaseType">
+                <xsd:annotation>
+                    <xsd:documentation>Transient flight load case.</xsd:documentation>
+                </xsd:annotation></xsd:element>
+        </xsd:choice>
     </xsd:complexType>
+    
+    <xsd:complexType name="staticFlightLoadCaseType">
+        <xsd:all>
+            <xsd:element name="name" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation>Name of load case.</xsd:documentation>
+                </xsd:annotation></xsd:element>
+            <xsd:element name="description" type="xsd:string" minOccurs="0" maxOccurs="1">
+                <xsd:annotation>
+                    <xsd:documentation>Description of load case.</xsd:documentation>
+                </xsd:annotation></xsd:element>
+            <xsd:element name="loadCaseDefinition" type="staticFlightLoadCaseDefinitionType" minOccurs="0" maxOccurs="1">
+                <xsd:annotation>
+                    <xsd:documentation>Definition of load case parameters.</xsd:documentation>
+                </xsd:annotation></xsd:element>
+            <xsd:element name="loads" type="flightLoadsType" minOccurs="0" maxOccurs="1">
+                <xsd:annotation>
+                    <xsd:documentation>Loads resulting from this load case.</xsd:documentation>
+                </xsd:annotation></xsd:element>
+        </xsd:all>
+        <xsd:attribute name="uID" type="xsd:ID" use="required" />
+    </xsd:complexType>
+    
+    <xsd:complexType name="dynamicFlightLoadCaseType" />
+    
+    <xsd:complexType name="transientFlightLoadCaseType" />
+
+    <xsd:complexType name="staticFlightLoadCaseDefinitionType">
+		<xsd:all>
+			<xsd:element name="mass" type="loadCaseMassType" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>Mass state of aircraft for this load case</xsd:documentation>
+				</xsd:annotation></xsd:element>
+			<xsd:element name="aircraftSettings" type="loadCaseSettingsType" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>General settings of the aircraft during this load case</xsd:documentation>
+				</xsd:annotation></xsd:element>
+			<xsd:element name="loadCondition" type="flightLoadConditionType">
+				<xsd:annotation>
+					<xsd:documentation>Inertia load conditions acting on the aircraft in this load case.</xsd:documentation>
+				</xsd:annotation></xsd:element>
+			<xsd:element name="flightState" type="loadCaseStateType">
+				<xsd:annotation>
+					<xsd:documentation>Description of the aircraft's flight state for this load case.</xsd:documentation>
+				</xsd:annotation></xsd:element>
+			<xsd:element name="superpositionLoadCases" type="superPositionLoadCasesType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Superposition of this load case with other defined load cases.</xsd:documentation>
+				</xsd:annotation></xsd:element>
+		</xsd:all>
+	</xsd:complexType>
 
     <xsd:complexType name="flightLoadCasesType">
         <xsd:annotation>
@@ -11160,6 +11102,207 @@ marko.alder@dlr.de
         </xsd:complexContent>
     </xsd:complexType>
 
+    <xsd:complexType name="flightLoadsType">
+        <xsd:all>
+            <xsd:element name="nodalLoads" type="xsd:string"
+                minOccurs="0" maxOccurs="1" />
+            <xsd:element name="cutLoads" type="xsd:string" minOccurs="0" maxOccurs="1" />
+        </xsd:all>
+    </xsd:complexType>
+    
+    <xsd:complexType name="loadCaseSettingsType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Control elements</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>Specification of control element settings. Control elements can be controlDistributors 
+                        or individual control devices, such as control surfaces or landing gears.</ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="aeroPerformanceControlElementsType">
+                <xsd:sequence>
+                    <xsd:element name="cabinPressure"
+                        type="doubleBaseType" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Pressure in cabin
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="flightLoadConditionType">
+        <xsd:all>
+            <xsd:element name="safetyFactor" type="doubleBaseType"
+                minOccurs="0" maxOccurs="1">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        Safety factor applied on the loads.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="accelerations" type="loadCaseAccelerationsType" minOccurs="0" maxOccurs="1">
+                <xsd:annotation>
+                    <xsd:documentation>Translational or rotational accelerations acting on the aircraft.</xsd:documentation>
+                </xsd:annotation></xsd:element>
+            <xsd:element name="rotationRates" type="pointXYZType" minOccurs="0" maxOccurs="1">
+                <xsd:annotation>
+                    <xsd:documentation>Rotational rates around centre of gravity.</xsd:documentation>
+                </xsd:annotation></xsd:element>
+            <xsd:element name="sizingType" minOccurs="0" maxOccurs="1">
+                <xsd:annotation>
+                    <xsd:documentation>Enumeration flag stating the typ of the load case (i.e. limit or ultimate loads).</xsd:documentation>
+                </xsd:annotation>
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="LimitLoad"></xsd:enumeration>
+                        <xsd:enumeration value="UltimateLoad"></xsd:enumeration>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+        </xsd:all>
+    </xsd:complexType>
+
+    <xsd:complexType name="loadCaseStateType">
+        <xsd:all>
+            <xsd:element name="altitude" type="doubleBaseType">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        Altitude above sea level for evaluation of ISA
+                        atmosphere.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="deltaTemperature" type="doubleBaseType"
+                minOccurs="0" maxOccurs="1">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        Delta temperature to ISA standard day
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="machNumber" type="doubleBaseType">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        Mach number at which the aircraft is flying.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="alpha" type="doubleBaseType"
+                maxOccurs="1" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        Angle of attack
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="beta" type="doubleBaseType" maxOccurs="1"
+                minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        Side slip angle
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="wind" type="pointXYZType" minOccurs="0" maxOccurs="1">
+                <xsd:annotation>
+                    <xsd:documentation>Wind velocities relative to ground.</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="gust" type="loadCaseGustType" maxOccurs="1" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation>Definition of a gust</xsd:documentation>
+                </xsd:annotation></xsd:element>
+        </xsd:all>
+    </xsd:complexType>
+
+    <xsd:complexType name="loadCaseLandingGearsType">
+        <xsd:sequence>
+            <xsd:element name="landingGear" type="loadCaseLandingGearType" minOccurs="1" maxOccurs="unbounded" />
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="loadCaseLandingGearType">
+        <xsd:all>
+            <xsd:element name="landingGearUID" type="xsd:string" />
+            <xsd:element name="extended" type="xsd:boolean" />
+            <xsd:element name="controlParameter" type="xsd:double" />
+        </xsd:all>
+    </xsd:complexType>
+    
+    <xsd:complexType name="loadCaseEnginesType">
+        <xsd:sequence>
+            <xsd:element name="engine" type="loadCaseEngineType" minOccurs="1" maxOccurs="unbounded" />
+        </xsd:sequence>
+    </xsd:complexType>
+    
+    <xsd:complexType name="loadCaseEngineType">
+        <xsd:sequence>
+            <xsd:element name="modelEngineUID" type="xsd:string" />
+            <xsd:element name="inoperative" type="xsd:boolean" />
+            <xsd:element name="thrustLevel" type="xsd:double" />
+        </xsd:sequence>
+    </xsd:complexType>
+    
+    <xsd:complexType name="loadCaseAccelerationsType">
+        <xsd:all>
+            <xsd:element name="translation" type="pointXYZType">
+                <xsd:annotation>
+                    <xsd:documentation>Translatory accelerations acting on aircraft.</xsd:documentation>
+                </xsd:annotation></xsd:element>
+            <xsd:element name="rotation" type="pointXYZType">
+                <xsd:annotation>
+                    <xsd:documentation>Acting rotational accelerations around aircraft centre of gravity.</xsd:documentation>
+                </xsd:annotation></xsd:element>
+        </xsd:all>
+    </xsd:complexType>
+
+    <xsd:complexType name="superPositionLoadCasesType">
+        <xsd:sequence>
+            <xsd:element name="loadCaseUID" type="stringUIDBaseType"
+                minOccurs="1" maxOccurs="unbounded">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        Reference to an existing load case that shall be
+                        superposed over this load case.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="loadCaseGustType">
+        <xsd:all>
+            <xsd:element name="gustShape" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation>Enum describing the shape of the gust</xsd:documentation>
+                </xsd:annotation></xsd:element>
+            <xsd:element name="gustAngle" type="xsd:double">
+                <xsd:annotation>
+                    <xsd:documentation>Angle at which gust hits aircraft</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="gustLength" type="xsd:double">
+                <xsd:annotation>
+                    <xsd:documentation>Length of gust</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="gustVelocity" type="xsd:double">
+                <xsd:annotation>
+                    <xsd:documentation>Velocity of the gust</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+        </xsd:all>
+    </xsd:complexType>
+    
     <xsd:complexType name="flightPathType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -16261,50 +16404,6 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="loadCaseEnginesType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>loadCaseEnginesType</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para/>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element maxOccurs="unbounded" name="engine" type="engineSettingType"/>
-                </xsd:sequence>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="loadCaseLandingGearsType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>loadCaseLandingGearsType</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para/>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element maxOccurs="unbounded" name="landingGear" type="landingGearSettingType"/>
-                </xsd:sequence>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
     <xsd:complexType name="loadCaseMassType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -16413,61 +16512,6 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         </xsd:element>
                     </xsd:sequence>
                 </xsd:choice>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="loadCaseSettingsType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>loadCaseSettingsType</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para/>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element minOccurs="0" name="controlSurfaces" type="controlSurfaceDeflectionsType"/>
-                    <xsd:element minOccurs="0" name="controlInputs" type="controlInputsType"/>
-                    <xsd:element minOccurs="0" name="landingGears" type="loadCaseLandingGearsType"/>
-                    <xsd:element minOccurs="0" name="engines" type="loadCaseEnginesType"/>
-                    <xsd:element minOccurs="0" name="cabinPressure" type="doubleBaseType"/>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="loadCaseStateType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>loadCaseStateType</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para/>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element minOccurs="0" name="atmosphericConditions" type="atmosphericConditionsType"/>
-                    <xsd:element minOccurs="0" name="trimParameters" type="trimParametersType"/>
-                    <xsd:element minOccurs="0" name="wind" type="pointXYZType">
-                        <xsd:annotation>
-                            <xsd:documentation>Wind</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element minOccurs="0" name="attitudeAndMotion" type="attitudeAndMotionType"/>
-                </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
