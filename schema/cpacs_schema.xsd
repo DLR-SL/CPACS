@@ -16522,7 +16522,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:element minOccurs="0" name="aeroLoads" type="subLoadType"/>
                     <xsd:element minOccurs="0" name="propulsionLoads" type="subLoadType"/>
                     <xsd:element minOccurs="0" name="landingGearLoads" type="subLoadType"/>
-                    <xsd:element minOccurs="0" name="calibrationLoads" type="subLoadType"/>
+                    <xsd:element minOccurs="0" name="unspecifiedLoads" type="subLoadType"/>
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
@@ -33362,8 +33362,6 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
          </xsd:complexContent>
      </xsd:complexType>
 
-
-
      <xsd:complexType name="cabinPressureType">
         <xsd:annotation>
              <xsd:appinfo>
@@ -33421,7 +33419,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>nodalLoadType</ddue:para>
+                        <ddue:para>Set of forces and moments</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para/>
@@ -33432,25 +33430,118 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element name="name" type="stringBaseType" />
-                    <xsd:element minOccurs="0" name="description"
-                        type="stringBaseType" />
-                    <xsd:element name="pointSetUID"
-                        type="stringUIDBaseType" />
-                    <xsd:element name="fx" type="stringVectorBaseType" />
-                    <xsd:element name="fy" type="stringVectorBaseType" />
-                    <xsd:element name="fz" type="stringVectorBaseType" />
-                    <xsd:element name="mx" type="stringVectorBaseType" />
-                    <xsd:element name="my" type="stringVectorBaseType" />
-                    <xsd:element name="mz" type="stringVectorBaseType" />
-                    <xsd:element name="dx" type="stringVectorBaseType" minOccurs="0"/>
-                    <xsd:element name="dy" type="stringVectorBaseType" minOccurs="0"/>
-                    <xsd:element name="dz" type="stringVectorBaseType" minOccurs="0"/>
-                    <xsd:element name="mx" type="stringVectorBaseType" minOccurs="0"/>
-                    <xsd:element name="my" type="stringVectorBaseType" minOccurs="0"/>
-                    <xsd:element name="mz" type="stringVectorBaseType" minOccurs="0"/>
-                    <xsd:element minOccurs="0" name="loadBreakdown"
-                        type="loadBreakdownType" />
+                    <xsd:element name="name" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                    Name  
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="description" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                    Description  
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="pointSetUID" type="stringUIDBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                    UID of load application point set (analysis/global/loadApplicationPoints)  
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="fx" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                    Force in x-direction [N]  
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="fy" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                    Force in y-direction [N]  
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="fz" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                    Force in z-direction [N]  
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="mx" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                    Moment around x-axis [Nm]  
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="my" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                    Moment around y-axis [Nm]  
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="mz" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                    Moment around z-axis [Nm]  
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="dx" type="stringVectorBaseType" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                    Nodal displacement in x-direction [m]  
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="dy" type="stringVectorBaseType" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                    Nodal displacement in y-direction [m]  
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="dz" type="stringVectorBaseType" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                    Nodal displacement in z-direction [m]  
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="phix" type="stringVectorBaseType" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                    Nodal rotation around x-axis [deg]  
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="phiy" type="stringVectorBaseType" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                    Nodal rotation around y-axis [deg]  
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="phiz" type="stringVectorBaseType" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                    Nodal rotation around z-axis [deg]  
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="loadBreakdown" type="loadBreakdownType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                    Load brake-down  
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                 </xsd:all>
                 <xsd:attribute name="uID" type="xsd:ID" use="required"/>
             </xsd:extension>
