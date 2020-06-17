@@ -2921,24 +2921,43 @@ marko.alder@dlr.de
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element minOccurs="0" name="aeroPerformance" type="aeroPerformanceType"/>
-                    <xsd:element minOccurs="0" name="aeroelastics" type="aeroelasticsType"/>
-                    <xsd:element minOccurs="0" name="dynamicAircraftModel" type="dynamicAircraftModelAnalysisType"/>
-                    <xsd:element minOccurs="0" name="flightDynamics" type="flightDynamicsAnalysisType"/>
-                    <xsd:element minOccurs="0" name="flyingQualities" type="flyingQualitiesType">
+                    <xsd:element name="global" type="aircraftAnalysesGlobalType" maxOccurs="1" minOccurs="0">
                     </xsd:element>
-                    <xsd:element minOccurs="0" name="flightPerformance" type="flightPerformanceType">
+                    <xsd:element minOccurs="0" name="aeroPerformance"
+                        type="aeroPerformanceType" />
+                    <xsd:element minOccurs="0" name="aeroelastics"
+                        type="aeroelasticsType" />
+                    <xsd:element minOccurs="0"
+                        name="dynamicAircraftModel"
+                        type="dynamicAircraftModelAnalysisType" />
+                    <xsd:element minOccurs="0" name="flightDynamics"
+                        type="flightDynamicsAnalysisType" />
+                    <xsd:element minOccurs="0" name="flyingQualities"
+                        type="flyingQualitiesType">
                     </xsd:element>
-                    <xsd:element minOccurs="0" name="flightSystems" type="flightSystemsType"/>
-                    <xsd:element minOccurs="0" name="landingGearPositionSafetyMargins" type="landingGearPositionSafetyMarginsType"/>
-                    <xsd:element minOccurs="0" name="loadAnalysis" type="loadAnalysisType"/>
-                    <xsd:element minOccurs="0" name="massBreakdown" type="massBreakdownType"/>
-                    <xsd:element minOccurs="0" name="monetaryValues" type="monetaryValuesAnalysisType">
+                    <xsd:element minOccurs="0" name="flightPerformance"
+                        type="flightPerformanceType">
                     </xsd:element>
-                    <xsd:element minOccurs="0" name="noise" type="noiseAnalysisType"/>
-                    <xsd:element minOccurs="0" name="trajectories" type="trajectoriesType"/>
-                    <xsd:element minOccurs="0" name="weightAndBalance" type="weightAndBalanceType"/>
-                    <xsd:element minOccurs="0" name="paxFlow" type="xsd:string"/>
+                    <xsd:element minOccurs="0" name="flightSystems"
+                        type="flightSystemsType" />
+                    <xsd:element minOccurs="0"
+                        name="landingGearPositionSafetyMargins"
+                        type="landingGearPositionSafetyMarginsType" />
+                    <xsd:element minOccurs="0" name="loadAnalysis"
+                        type="loadAnalysisType" />
+                    <xsd:element minOccurs="0" name="massBreakdown"
+                        type="massBreakdownType" />
+                    <xsd:element minOccurs="0" name="monetaryValues"
+                        type="monetaryValuesAnalysisType">
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="noise"
+                        type="noiseAnalysisType" />
+                    <xsd:element minOccurs="0" name="trajectories"
+                        type="trajectoriesType" />
+                    <xsd:element minOccurs="0" name="weightAndBalance"
+                        type="weightAndBalanceType" />
+                    <xsd:element minOccurs="0" name="paxFlow"
+                        type="xsd:string" />
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
@@ -9883,7 +9902,7 @@ marko.alder@dlr.de
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element name="uID" type="xsd:ID"/>
+                    <xsd:element name="pointIDs" type="stringVectorBaseType"/>
                     <xsd:element name="x" type="stringVectorBaseType"/>
                     <xsd:element name="y" type="stringVectorBaseType"/>
                     <xsd:element name="z" type="stringVectorBaseType"/>
@@ -33226,5 +33245,116 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
-</xsd:schema>
+
+    <xsd:complexType name="aircraftAnalysesGlobalType">
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="loadApplicationPoints"
+                        type="loadApplicationPointsType" maxOccurs="1"
+                        minOccurs="0">
+                    </xsd:element>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="loadApplicationPointsType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Load application points</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                    <ddue:para>
+                            Multiple sets of scattered load application points can be defined. However, no specific information about the corresponding loads (e.g. whether aerodynamic or structural loads are involved) or mesh topologies are specified here, as such assumptions are tool-specific.
+                        </ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>                    <xsd:element name="pointSet" type="loadApplicationPointSetType"></xsd:element>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+     <xsd:complexType name="loadApplicationPointSetType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Load application point set</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>
+                            A point set contains discrete spatial points at which loads are applied (e.g., aerodynamic or structural loads). A typical procedure in CPACS is as follows:
+                        </ddue:para>                        
+                        <ddue:para>
+                            <ddue:list class="bullet">
+                                <ddue:listItem>Reference a wing, fuselage or control surface by its <ddue:legacyItalic>uID</ddue:legacyItalic> using the <ddue:legacyItalic>componentUID</ddue:legacyItalic> node.</ddue:listItem>
+                                <ddue:listItem>Define a reference axis through the above component with the <ddue:legacyItalic>loadReferenceAxisPoints</ddue:legacyItalic> element to specify where a load distribution shall be applied.</ddue:listItem>
+                                <ddue:listItem>Compute the intersections with spars, ribs etc. of the referenced component (wing, fuselage or control surface) and write the results into the <ddue:legacyItalic>dynamicAircraftModelPoints</ddue:legacyItalic> element. This procedure results from common practice where the forces in structural analyses are typically introduced at structural elements such as ribs and spars. With respect to preliminary aircraft design a two-dimensional load distribution is preferred. However, an arbitrary distribution of the load application points is possible (without the intersection of structural elements with a reference axis in the previous step), for example to define discrete load distributions on the wing surface in streamwise and spanwise direction.</ddue:listItem>
+                                <ddue:listItem>Specify the location and orientation of cut loads in the <ddue:legacyItalic>cutLoadIntegrationPoints</ddue:legacyItalic> element and the corresponding connectivity information in the <ddue:legacyItalic>connectivities</ddue:legacyItalic> node.</ddue:listItem>
+                            </ddue:list>
+                        </ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="componentUID"
+                            type="stringUIDBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                    UID of a wing, fuselage or control surface
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0"
+                            name="loadReferenceAxisPoints"
+                            type="loadReferenceAxisPointsType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                    Reference axis (line) for load distribution 
+                            </xsd:documentation>
+                        </xsd:annotation>    
+                    </xsd:element>
+                    <xsd:element minOccurs="0"
+                            name="dynamicAircraftModelPoints"
+                            type="dynamicAircraftModelPointsType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                    List of points at which load vectors are applied to  
+                            </xsd:documentation>
+                        </xsd:annotation> 
+                    </xsd:element>
+                    <xsd:element minOccurs="0"
+                            name="cutLoadIntegrationPoints"
+                            type="cutLoadIntegrationPointsType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                    List of points at which cut loads are applied to  
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element> 
+                    <xsd:element minOccurs="0" name="connectivities"
+                            type="connectivitiesType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                    Specification of connectivity properties between points.  
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:all>
+                <xsd:attribute name="uID" type="xsd:ID"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    </xsd:schema>
 
