@@ -3054,7 +3054,7 @@ marko.alder@dlr.de
                     <xsd:element minOccurs="0" name="genericGeometryComponents" type="genericGeometryComponentsType"/>
                     <xsd:element minOccurs="0" name="global" type="aircraftGlobalType"/>
                     <xsd:element minOccurs="0" name="analyses" type="aircraftAnalysesType"/>
-                    <xsd:element minOccurs="0" name="performanceRequirements" type="performanceRequirementsType"/>
+                    <xsd:element minOccurs="0" name="requirements" type="requirementsType"/>
                 </xsd:all>
                 <xsd:attribute name="uID" type="xsd:ID" use="required"/>
             </xsd:extension>
@@ -23040,7 +23040,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             <xsd:documentation>Reference to the considered weightAndBalance case</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="missionUID" type="stringUIDBaseType">
+                    <xsd:element name="missionUID" type="stringUIDBaseType" maxOccurs="1" minOccurs="0">
                         <xsd:annotation>
                             <xsd:documentation>The UID of the mission to be flown</xsd:documentation>
                         </xsd:annotation>
@@ -23089,7 +23089,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="performanceRequirementsType">
+    <xsd:complexType name="requirementsType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
@@ -23105,9 +23105,16 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element minOccurs="0" name="requiredPerformanceCases" type="stringVectorBaseType"/>
-                    <xsd:element minOccurs="0" name="optionalPerformanceCases" type="stringVectorBaseType"/>
-                    <xsd:element name="performanceCases" type="performanceCasesType"/>
+                    <xsd:element name="requiredPerformanceCases"
+                        type="uIDSequenceType" />
+                    <xsd:element minOccurs="0"
+                        name="optionalPerformanceCases"
+                        type="uIDSequenceType" />
+                    <xsd:element name="flightPerformanceCases" type="performanceCasesType" />
+                    <xsd:element name="controllabilityCases"
+                        type="controllabilityCasesType">
+                    </xsd:element>
+                    <xsd:element name="trimCases" type="trimCasesType"></xsd:element>
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
@@ -33487,5 +33494,96 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
+
+    <xsd:complexType name="controllabilityCasesType">
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="controllabilityCase"
+                        type="controllabilityCaseType"
+                        maxOccurs="unbounded" minOccurs="1">
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="trimCasesType">
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="trimCase" type="trimCaseType"
+                        maxOccurs="unbounded" minOccurs="1">
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="controllabilityCaseType">
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="name" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Name</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="description" type="stringBaseType"
+                        maxOccurs="1" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>Description</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="pointPerformanceUID"
+                        type="stringUIDBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>UID of point performance description</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="weightAndBalanceUID"
+                        type="stringUIDBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>UID of weight and balance description</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:all>
+                <xsd:attribute name="uID" type="xsd:ID"
+                    use="required">
+                </xsd:attribute>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="trimCaseType">
+        <xsd:all>
+            <xsd:element name="name" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Name</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+            <xsd:element name="description" type="stringBaseType" maxOccurs="1" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>Description</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+            <xsd:element name="flightCaseUID" type="stringUIDBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>UID of flight case description</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+            <xsd:element name="weightAndBalanceUID" type="stringUIDBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>UID of weight and balance description</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+            <xsd:element name="configurationUID" type="stringUIDBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>UID of configuration description</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+        </xsd:all>
+        <xsd:attribute name="uID" type="xsd:ID"/>
+    </xsd:complexType>
 </xsd:schema>
 
