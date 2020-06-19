@@ -11040,61 +11040,15 @@ marko.alder@dlr.de
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element minOccurs="0" name="flightCases" type="flightDynamicsFlightCasesType"/>
-                    <xsd:element minOccurs="0" name="model" type="flightDynamicsModelType"/>
+                    <xsd:element name="trimCases"
+                        type="analysisTrimCasesType" maxOccurs="1"
+                        minOccurs="0">
+                    </xsd:element>
+                    <xsd:element name="controllabilityCases"
+                        type="analysisControllabilityCasesType"
+                        maxOccurs="1" minOccurs="0">
+                    </xsd:element>
                 </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="flightDynamicsFlightCaseType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>flightDynamicsFlightCaseType</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element minOccurs="0" name="name" type="stringBaseType">
-                    </xsd:element>
-                    <xsd:element minOccurs="0" name="description" type="stringBaseType">
-                    </xsd:element>
-                    <xsd:element name="weightAndBalanceUID" type="stringUIDBaseType">
-                    </xsd:element>
-                    <xsd:element name="standardAltitude" type="doubleBaseType">
-                    </xsd:element>
-                    <xsd:element name="vCAS" type="doubleBaseType"/>
-                    <xsd:element name="configuration" type="integerBaseType"/>
-                    <xsd:element name="gear" type="integerBaseType"/>
-                    <xsd:element minOccurs="0" name="linearModel" type="flightDynamicsLinearModelType">
-                    </xsd:element>
-                    <xsd:element minOccurs="0" name="trimResult" type="flightDynamicsTrimResultType"/>
-                </xsd:all>
-                <xsd:attribute name="uID" type="xsd:ID" use="required"/>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="flightDynamicsFlightCasesType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>flightDynamicsFlightCasesType</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element maxOccurs="unbounded" name="flightCase" type="flightDynamicsFlightCaseType"/>
-                </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -11125,33 +11079,6 @@ marko.alder@dlr.de
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="flightDynamicsModelType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>flightDynamicsModelType</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element minOccurs="0" name="name" type="stringBaseType"/>
-                    <xsd:element minOccurs="0" name="description" type="stringBaseType">
-                    </xsd:element>
-                    <xsd:element name="xLonNames" type="stringVectorBaseType"/>
-                    <xsd:element name="yLonNames" type="stringVectorBaseType"/>
-                    <xsd:element name="uLonNames" type="stringVectorBaseType"/>
-                    <xsd:element name="xLatNames" type="stringVectorBaseType"/>
-                    <xsd:element name="yLatNames" type="stringVectorBaseType"/>
-                    <xsd:element name="uLatNames" type="stringVectorBaseType"/>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
     <xsd:complexType name="flightDynamicsTrimResultType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -11165,7 +11092,7 @@ marko.alder@dlr.de
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element name="mach" type="doubleBaseType"/>
+                    <xsd:element name="machNumber" type="doubleBaseType"/>
                     <xsd:element name="vTAS" type="doubleBaseType"/>
                     <xsd:element name="alpha" type="doubleBaseType"/>
                     <xsd:element name="altitude" type="doubleBaseType"/>
@@ -33585,5 +33512,143 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:all>
         <xsd:attribute name="uID" type="xsd:ID"/>
     </xsd:complexType>
+
+    <xsd:complexType name="analysisControllabilityCasesType">
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="controllabilityCase"
+                        type="analysisControllabilityCaseType"
+                        maxOccurs="unbounded" minOccurs="1">
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="analysisControllabilityCaseType">
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="controllabilityCaseUID" type="stringUIDBaseType">
+                    </xsd:element>
+                    <xsd:element name="l_onset" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>...</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="m_onset" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>...</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="n_onset" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>...</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="cl_onset" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>...</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="cm_onset" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>...</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="cn_onset" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>...</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="l_stop" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>...</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="m_stop" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>...</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="n_stop" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>...</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="cl_stop" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>...</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="cm_stop" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>...</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="cn_stop" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>...</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="analysisTrimCasesType">
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="trimCase"
+                        type="analysisTrimCaseType"
+                        maxOccurs="unbounded" minOccurs="1">
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="analysisTrimCaseType">
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="name" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Name</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="description" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Description</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="trimCaseUID" type="stringUIDBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>UID of trim case</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="trimResult" type="flightDynamicsTrimResultType">
+                        <xsd:annotation>
+                            <xsd:documentation>...</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="linearModel" type="flightDynamicsLinearModelType">
+                        <xsd:annotation>
+                            <xsd:documentation>...</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="linearModelDescription" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Description of the linear model</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+   
 </xsd:schema>
 
