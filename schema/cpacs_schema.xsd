@@ -11314,20 +11314,56 @@ marko.alder@dlr.de
         </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
-                <xsd:choice>
-                    <xsd:element name="takeoff" type="flightPerformanceTakeoffType">
+                <xsd:sequence>
+                    <xsd:element name="performanceCaseUID"
+                        type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Main element containing the results of the
-                                take-off analysis cases.</xsd:documentation>
+                            <xsd:documentation>
+                                UID of flight performance case
+                                description
+                            </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="landing" type="flightPerformanceLandingType">
+                    <xsd:element name="description" type="stringBaseType" maxOccurs="1" minOccurs="0">
                         <xsd:annotation>
-                            <xsd:documentation>Main element containing the results of the
-                                landing analysis cases.</xsd:documentation>
+                            <xsd:documentation>
+                                Description
+                            </xsd:documentation>
                         </xsd:annotation>
+                    </xsd:element>
+                <xsd:choice>
+                    <xsd:element name="takeoff"
+                        type="flightPerformanceTakeoffType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Main element containing the results of
+                                the take-off analysis cases.
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="landing"
+                        type="flightPerformanceLandingType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Main element containing the results of
+                                the landing analysis cases.
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="turn"
+                        type="flightPerformanceTurnType">
+                    </xsd:element>
+                    <xsd:element name="levelFlight"
+                        type="flightPerformanceLevelType">
+                    </xsd:element>
+                    <xsd:element name="climb"
+                        type="flightPerformanceClimbType">
+                    </xsd:element>
+                    <xsd:element name="descent"
+                        type="flightPerformanceDescentType">
                     </xsd:element>
                 </xsd:choice>
+                </xsd:sequence>
                 <xsd:attribute name="uID" type="xsd:ID" use="required"/>
             </xsd:extension>
         </xsd:complexContent>
@@ -33650,5 +33686,50 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
     </xsd:complexType>
 
    
+
+    <xsd:complexType name="flightPerformanceTurnType">
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="sustainableLoadFactor" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>...</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="instantaneousLoadFactor" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>...</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="flightPerformanceLevelType">
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="specificExcessPower" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>...</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="flightPerformanceClimbType">
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType"></xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="flightPerformanceDescentType">
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType"></xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
 </xsd:schema>
 
