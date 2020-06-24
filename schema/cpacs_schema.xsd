@@ -2974,6 +2974,7 @@ marko.alder@dlr.de
                     <xsd:element minOccurs="0" name="airportCompatability" type="airportCompatabilityGlobalType">
                     </xsd:element>
                     <xsd:element minOccurs="0" name="performanceTargets" type="performanceTargetsGlobalType"/>
+                    <xsd:element minOccurs="0" name="configurations" type="aircraftConfigurationsType"/>
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
@@ -33050,6 +33051,128 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
+
+    <xsd:complexType name="aircraftConfigurationsType">
+         <xsd:annotation>
+             <xsd:appinfo>
+                 <sd:schemaDoc>
+                     <ddue:summary>
+                         <ddue:para>Aircraft configurations</ddue:para>
+                     </ddue:summary>
+                     <ddue:remarks>
+                         <ddue:para>
+                             List of aircraft configurations.
+                         </ddue:para>
+                     </ddue:remarks>
+                 </sd:schemaDoc>
+             </xsd:appinfo>
+         </xsd:annotation>
+         <xsd:complexContent>
+             <xsd:extension base="complexBaseType">
+                 <xsd:sequence>
+                     <xsd:element name="configuration"
+                         type="aircraftConfigurationType"
+                         maxOccurs="unbounded" minOccurs="1">
+                     </xsd:element>
+                 </xsd:sequence>
+             </xsd:extension>
+         </xsd:complexContent>
+     </xsd:complexType>
+
+    <xsd:complexType name="aircraftConfigurationType">
+         <xsd:annotation>
+             <xsd:appinfo>
+                 <sd:schemaDoc>
+                     <ddue:summary>
+                         <ddue:para>Aircraft configurations</ddue:para>
+                     </ddue:summary>
+                     <ddue:remarks>
+                         <ddue:para>
+                             List of aircraft configurations.
+                         </ddue:para>
+                     </ddue:remarks>
+                 </sd:schemaDoc>
+             </xsd:appinfo>
+         </xsd:annotation>
+         <xsd:complexContent>
+             <xsd:extension base="complexBaseType">
+                <xsd:all>
+                     <xsd:element name="controlElements" type="controlElementsType" maxOccurs="1" minOccurs="0">
+                     </xsd:element>
+                     <xsd:element name="cabinPressures"
+                         type="cabinPressuresType" maxOccurs="1"
+                         minOccurs="0">
+                     </xsd:element>
+                </xsd:all>
+                 <xsd:attribute name="uID" type="xsd:ID" use="required"></xsd:attribute>
+             </xsd:extension>
+         </xsd:complexContent>
+     </xsd:complexType>
+
+    <xsd:complexType name="cabinPressureType">
+        <xsd:annotation>
+             <xsd:appinfo>
+                 <sd:schemaDoc>
+                     <ddue:summary>
+                         <ddue:para>Cabin pressure</ddue:para>
+                     </ddue:summary>
+                     <ddue:remarks>
+                         <ddue:para>
+                             Internal pressure of a fuselage, cabin or compartment.
+                         </ddue:para>
+                     </ddue:remarks>
+                 </sd:schemaDoc>
+             </xsd:appinfo>
+         </xsd:annotation>
+         <xsd:complexContent>
+             <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="cabinUID" type="stringUIDBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                    UID of a fuselage, cabin or compartment  
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="pressure" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                    Internal pressure [Pa]  
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+
+                 </xsd:all>
+             </xsd:extension>
+         </xsd:complexContent>
+     </xsd:complexType>
+
+     <xsd:complexType name="cabinPressuresType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Set of forces and moments</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>
+                            ...
+                        </ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+         <xsd:complexContent>
+             <xsd:extension base="complexBaseType">
+                 <xsd:sequence>
+                     <xsd:element name="cabinPressure"
+                         type="cabinPressureType" maxOccurs="unbounded"
+                         minOccurs="1">
+                     </xsd:element>
+                 </xsd:sequence>
+             </xsd:extension>
+         </xsd:complexContent>
+     </xsd:complexType>
 
 </xsd:schema>
 
