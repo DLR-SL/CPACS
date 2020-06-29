@@ -16538,7 +16538,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:element minOccurs="0" name="aeroLoads" type="subLoadType"/>
                     <xsd:element minOccurs="0" name="propulsionLoads" type="subLoadType"/>
                     <xsd:element minOccurs="0" name="landingGearLoads" type="subLoadType"/>
-                    <xsd:element minOccurs="0" name="unspecifiedLoads" type="subLoadType"/>
+                    <xsd:element minOccurs="0" name="remainingLoads" type="subLoadType"/>
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
@@ -33685,7 +33685,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="aeroData"
-                            type="aeroCaseAeroDataType">
+                            type="aeroCaseAeroDataType" minOccurs="0">
                         <xsd:annotation>
                             <xsd:documentation>
                                         ...  
@@ -33794,15 +33794,17 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     </xsd:documentation>
                 </xsd:annotation>
             </xsd:element>
-    
-            <xsd:element name="aircraftConfigurationUID"
-                    type="stringUIDBaseType" maxOccurs="1" minOccurs="0">
-                <xsd:annotation>
-                    <xsd:documentation>
-                                        ...  
-                    </xsd:documentation>
-                </xsd:annotation>
-            </xsd:element>
+            <xsd:choice>
+                <xsd:element name="aircraftConfigurationUID"
+                        type="stringUIDBaseType" maxOccurs="1" minOccurs="0">
+                    <xsd:annotation>
+                        <xsd:documentation>
+                                            ...  
+                        </xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
+                <xsd:element name="controlElements" type="controlElementsType" maxOccurs="1" minOccurs="0"/>
+            </xsd:choice>
             <xsd:element name="weightAndBalanceUID"
                     type="stringUIDBaseType" maxOccurs="1" minOccurs="0">
                 <xsd:annotation>
@@ -33930,20 +33932,11 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="coefficients"
-                            type="xsd:string">
+                        type="aeroCaseCoefficientsType">
                         <xsd:annotation>
-                            <xsd:documentation>
-                                        ...  
-                            </xsd:documentation>
+                            <xsd:documentation>...</xsd:documentation>
                         </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="reference" type="coefficientReferenceType">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                        ...  
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
+                    </xsd:element>
                 </xsd:all>
     
             </xsd:extension>
@@ -33976,8 +33969,8 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="coefficientsBrakedown"
-                             type="coefficientsBrakedownType" maxOccurs="1" minOccurs="0">
+                    <xsd:element name="coefficientsBreakdown"
+                             type="coefficientsBreakdownType" maxOccurs="1" minOccurs="0">
                         <xsd:annotation>
                             <xsd:documentation>
                                         ...  
@@ -34041,13 +34034,13 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             type="stringVectorBaseType" />
                     <xsd:element minOccurs="0" name="cml"
                             type="stringVectorBaseType" />
-                    <xsd:element name="dragBrakedown" type="cdBrakedownType" maxOccurs="1" minOccurs="0"/>
+                    <xsd:element name="dragShares" type="dragSharesType" maxOccurs="1" minOccurs="0"/>
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
     
-    <xsd:complexType name="cdBrakedownType">
+    <xsd:complexType name="dragSharesType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
@@ -34064,36 +34057,32 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:choice>
-                        <xsd:element name="cdProfile"
-                                type="doubleBaseType">
-                            <xsd:annotation>
-                                <xsd:documentation>
-                                        Drag component due to the sum of pressure and viscous drag acting on wing-like bodies   
-                                </xsd:documentation>
-                            </xsd:annotation>
-                        </xsd:element>
-                        <xsd:sequence>
-                            <xsd:element name="cdViscous"
-                                    type="doubleBaseType">
-                                <xsd:annotation>
-                                    <xsd:documentation>
-                                        Drag component due to shear forces on surfaces  
-                                    </xsd:documentation>
-                                </xsd:annotation>
-                            </xsd:element>
-                            <xsd:element name="cdPressure"
-                                    type="doubleBaseType">
-                                <xsd:annotation>
-                                    <xsd:documentation>
-                                        Drag component due to the displacement of the flow around a component. Zero for irrotational two-dimensional flows.  
-                                    </xsd:documentation>
-                                </xsd:annotation>
-                            </xsd:element>
-                        </xsd:sequence>
-                    </xsd:choice>
-                    <xsd:element name="cdInduced" type="doubleBaseType">
+                <xsd:all>
+                    <xsd:element name="cdPressure"
+                            type="doubleBaseType" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Drag component due to the displacement of the flow around a component. Zero for irrotational two-dimensional flows.  
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="cdViscous"
+                            type="doubleBaseType" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Drag component due to shear forces on surfaces  
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="cdFriction"
+                            type="doubleBaseType" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                ...  
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="cdInduced" type="doubleBaseType" minOccurs="0">
                         <xsd:annotation>
                             <xsd:documentation>
                                 Drag component due to energy loss through vortex structures caused by the pressure difference between the upper and lower sides of three-dimensional lifting surfaces.  
@@ -34101,28 +34090,28 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="cdInterference"
-                             type="doubleBaseType">
+                             type="doubleBaseType" minOccurs="0">
                     </xsd:element>
-                    <xsd:element name="cdWave" type="doubleBaseType">
+                    <xsd:element name="cdWave" type="doubleBaseType" minOccurs="0">
                         <xsd:annotation>
                             <xsd:documentation>
                                 Drag component due to energy dissipation in shock waves  
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="cdTrim" type="doubleBaseType">
+                    <xsd:element name="cdTrim" type="doubleBaseType" minOccurs="0">
                         <xsd:annotation>
                             <xsd:documentation>
                                 Drag component due to trimmed aircraft configuration  
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                </xsd:sequence>
+                </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
     
-    <xsd:complexType name="coefficientsBrakedownType">
+    <xsd:complexType name="coefficientsBreakdownType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
@@ -34141,7 +34130,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:extension base="complexBaseType">
                 <xsd:all>
                     <xsd:element name="wings"
-                             type="coefficientsBrakedownWingsType" maxOccurs="1" minOccurs="0">
+                             type="coefficientsBreakdownWingsType" maxOccurs="1" minOccurs="0">
                         <xsd:annotation>
                             <xsd:documentation>
                                         ...  
@@ -34149,15 +34138,15 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="otherComponents"
-                             type="coefficientsBrakedownComponentsType" maxOccurs="1" minOccurs="0">
+                             type="coefficientsBreakdownComponentsType" maxOccurs="1" minOccurs="0">
                         <xsd:annotation>
                             <xsd:documentation>
                                         ...  
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="unspecifiedShares"
-                             type="unspecifiedSharesType" maxOccurs="1" minOccurs="0">
+                    <xsd:element name="remaningContributions"
+                             type="remaningContributionsType" maxOccurs="1" minOccurs="0">
                         <xsd:annotation>
                             <xsd:documentation>
                                         ...  
@@ -34169,7 +34158,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
     
-    <xsd:complexType name="coefficientsBrakedownWingsType">
+    <xsd:complexType name="coefficientsBreakdownWingsType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
@@ -34188,7 +34177,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
                     <xsd:element name="wing"
-                             type="coefficientsBrakedownWingType"
+                             type="coefficientsBreakdownWingType"
                              maxOccurs="unbounded" minOccurs="1">
                         <xsd:annotation>
                             <xsd:documentation>
@@ -34201,7 +34190,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
     
-    <xsd:complexType name="coefficientsBrakedownWingType">
+    <xsd:complexType name="coefficientsBreakdownWingType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
@@ -34236,7 +34225,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="segments"
-                             type="coefficientsBrakedownWingSegmentsType"
+                             type="coefficientsBreakdownWingSegmentsType"
                              maxOccurs="1" minOccurs="0">
                         <xsd:annotation>
                             <xsd:documentation>
@@ -34244,8 +34233,8 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="unsecifiedShares"
-                             type="unspecifiedSharesType" maxOccurs="1"
+                    <xsd:element name="remainingContributions"
+                             type="remaningContributionsType" maxOccurs="1"
                              minOccurs="0">
                         <xsd:annotation>
                             <xsd:documentation>
@@ -34258,7 +34247,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
     
-    <xsd:complexType name="coefficientsBrakedownWingSegmentsType">
+    <xsd:complexType name="coefficientsBreakdownWingSegmentsType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
@@ -34277,7 +34266,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
                     <xsd:element name="segment"
-                     type="coefficientsBrakedownSegmentType"
+                     type="coefficientsBreakdownSegmentType"
                      maxOccurs="unbounded" minOccurs="1">
                         <xsd:annotation>
                             <xsd:documentation>
@@ -34290,7 +34279,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
     
-    <xsd:complexType name="coefficientsBrakedownSegmentType">
+    <xsd:complexType name="coefficientsBreakdownSegmentType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
@@ -34325,7 +34314,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="strips"
-                             type="coefficientsBrakedownStripsType"
+                             type="coefficientsBreakdownStripsType"
                              maxOccurs="1" minOccurs="0">
                         <xsd:annotation>
                             <xsd:documentation>
@@ -34333,8 +34322,8 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="unspecifiedShares"
-                             type="unspecifiedSharesType" maxOccurs="1"
+                    <xsd:element name="remaningContributions"
+                             type="remaningContributionsType" maxOccurs="1"
                              minOccurs="0">
                         <xsd:annotation>
                             <xsd:documentation>
@@ -34347,7 +34336,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
     
-    <xsd:complexType name="coefficientsBrakedownStripsType">
+    <xsd:complexType name="coefficientsBreakdownStripsType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
@@ -34366,7 +34355,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
                     <xsd:element name="strip"
-                             type="coefficientsBrakedownStripType"
+                             type="coefficientsBreakdownStripType"
                              maxOccurs="unbounded" minOccurs="1">
                         <xsd:annotation>
                             <xsd:documentation>
@@ -34379,7 +34368,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
     
-    <xsd:complexType name="coefficientsBrakedownStripType">
+    <xsd:complexType name="coefficientsBreakdownStripType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
@@ -34409,7 +34398,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="unspecifiedShares" type="unspecifiedSharesType" maxOccurs="1" minOccurs="0">
+                    <xsd:element name="remaningContributions" type="remaningContributionsType" maxOccurs="1" minOccurs="0">
                         <xsd:annotation>
                             <xsd:documentation>
                                         ...  
@@ -34491,7 +34480,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
     
-    <xsd:complexType name="unspecifiedSharesType">
+    <xsd:complexType name="remaningContributionsType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
@@ -34598,7 +34587,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
     
-    <xsd:complexType name="coefficientsBrakedownComponentsType">
+    <xsd:complexType name="coefficientsBreakdownComponentsType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
@@ -34617,7 +34606,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
                     <xsd:element name="component"
-                             type="coefficientsBrakedownComponentType"
+                             type="coefficientsBreakdownComponentType"
                              maxOccurs="unbounded" minOccurs="1">
                         <xsd:annotation>
                             <xsd:documentation>
@@ -34630,7 +34619,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
     
-    <xsd:complexType name="coefficientsBrakedownComponentType">
+    <xsd:complexType name="coefficientsBreakdownComponentType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
