@@ -5873,7 +5873,7 @@ marko.alder@dlr.de
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="constraintSettingsPointPerformanceType">
+    <xsd:complexType name="pointPerformanceConditionsType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
@@ -5895,7 +5895,7 @@ marko.alder@dlr.de
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
                     <xsd:choice>
-                        <xsd:element minOccurs="0" name="CAS"
+                        <xsd:element minOccurs="0" name="vCAS"
                             type="doubleConstraintBaseType">
                             <xsd:annotation>
                                 <xsd:documentation>
@@ -5989,13 +5989,11 @@ marko.alder@dlr.de
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element minOccurs="0"
-                        name="deltaTemperatureISA"
-                        type="doubleConstraintBaseType">
+                    <xsd:element name="atmosphericModel" type="atmosphericModelType"/>
+                    <xsd:element name="deltaTemperature" type="doubleBaseType" minOccurs="0" maxOccurs="1">
                         <xsd:annotation>
                             <xsd:documentation>
-                                Delta in temperature compared to
-                                standard ISA conditions [K]
+                                Delta temperature to ISA standard day
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
@@ -23269,8 +23267,8 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             </xsd:simpleContent>
                         </xsd:complexType>
                     </xsd:element>
-                    <xsd:element minOccurs="0" name="constraints"
-                        type="constraintSettingsPointPerformanceType">
+                    <xsd:element minOccurs="0" name="conditions"
+                        type="pointPerformanceConditionsType">
                         <xsd:annotation>
                             <xsd:documentation>
                                 Constraint settings for the point
@@ -33682,32 +33680,32 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element name="rollingMoment" type="doubleBaseType">
+                    <xsd:element name="rollingMoment" type="doubleBaseType" minOccurs="0">
                         <xsd:annotation>
                             <xsd:documentation>...</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="pitchingMoment" type="doubleBaseType">
+                    <xsd:element name="pitchingMoment" type="doubleBaseType" minOccurs="0">
                         <xsd:annotation>
                             <xsd:documentation>...</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="yawingMoment" type="doubleBaseType">
+                    <xsd:element name="yawingMoment" type="doubleBaseType" minOccurs="0">
                         <xsd:annotation>
                             <xsd:documentation>...</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="rollingMomentCoeff" type="doubleBaseType">
+                    <xsd:element name="rollingMomentCoeff" type="doubleBaseType" minOccurs="0">
                         <xsd:annotation>
                             <xsd:documentation>...</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="pitchingMomentCoeff" type="doubleBaseType">
+                    <xsd:element name="pitchingMomentCoeff" type="doubleBaseType" minOccurs="0">
                         <xsd:annotation>
                             <xsd:documentation>...</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="yawingMomentCoeff" type="doubleBaseType">
+                    <xsd:element name="yawingMomentCoeff" type="doubleBaseType" minOccurs="0">
                         <xsd:annotation>
                             <xsd:documentation>...</xsd:documentation>
                         </xsd:annotation>
@@ -33716,5 +33714,27 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
+    
+    <xsd:complexType name="atmosphericModelType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>atmosphericModel</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>Atmospheric Model. Available options: ISA. See documentation of  &lt;CPACS&gt; root element for further details.
+                        </ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:simpleContent>
+            <xsd:restriction base="stringBaseType">
+                <xsd:enumeration value="ISA" />
+            </xsd:restriction>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
 </xsd:schema>
 
