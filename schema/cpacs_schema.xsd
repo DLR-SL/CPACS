@@ -2727,6 +2727,7 @@ marko.alder@dlr.de
                     <xsd:element minOccurs="0" name="airportCompatability" type="airportCompatabilityGlobalType">
                     </xsd:element>
                     <xsd:element minOccurs="0" name="performanceTargets" type="performanceTargetsGlobalType"/>
+                    <xsd:element minOccurs="0" name="configurations" type="aircraftConfigurationsType"/>
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
@@ -2761,8 +2762,7 @@ marko.alder@dlr.de
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element minOccurs="0" name="reference" type="referenceType"/>
-                    <xsd:element minOccurs="0" name="configurations" type="aircraftConfigurationsType"/>
+                    <xsd:element minOccurs="0" name="reference" type="referenceType"/>
                     <xsd:element minOccurs="0" name="fuselages" type="fuselagesType"/>
                     <xsd:element minOccurs="0" name="wings" type="wingsType"/>
                     <xsd:element minOccurs="0" name="engines" type="enginePositionsType"/>
@@ -8098,7 +8098,7 @@ marko.alder@dlr.de
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="cutLoadIntegrationPointsType">
+    <xsd:complexType name="cutLoadCoordinatesType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
@@ -9064,12 +9064,12 @@ marko.alder@dlr.de
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="dynamicAircraftModelPointsType">
+    <xsd:complexType name="loadApplicationCoordinatesType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>dynamicAircraftModelPointsType</ddue:para>
+                        <ddue:para>dynamicAircraftModelCoordinatesType</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para/>
@@ -9105,9 +9105,9 @@ marko.alder@dlr.de
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element minOccurs="0" name="loadReferenceAxisPoints" type="loadReferenceAxisPointsType"/>
-                    <xsd:element minOccurs="0" name="dynamicAircraftModelPoints" type="dynamicAircraftModelPointsType"/>
-                    <xsd:element minOccurs="0" name="cutLoadIntegrationPoints" type="cutLoadIntegrationPointsType"/>
+                    <xsd:element minOccurs="0" name="loadReferenceAxis" type="loadReferenceLineType"/>
+                    <xsd:element minOccurs="0" name="loadApplicationCoordinates" type="loadApplicationCoordinatesType"/>
+                    <xsd:element minOccurs="0" name="cutLoadCoordinates" type="cutLoadCoordinatesType"/>
                     <xsd:element minOccurs="0" name="connectivities" type="connectivitiesType"/>
                 </xsd:all>
             </xsd:extension>
@@ -10177,7 +10177,7 @@ marko.alder@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>flightLoadCaseType</ddue:para>
+                        <ddue:para>load case specification</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>This node provides the inputs for a load case analysis.</ddue:para>
@@ -10375,8 +10375,8 @@ marko.alder@dlr.de
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="accelerations"
-                type="loadCaseAccelerationsType" minOccurs="0"
+                    <xsd:element name="accelerationFactors"
+                type="loadCaseAccelerationFactorsType" minOccurs="0"
                 maxOccurs="1">
                         <xsd:annotation>
                             <xsd:documentation>
@@ -10403,8 +10403,8 @@ marko.alder@dlr.de
                         </xsd:annotation>
                         <xsd:simpleType>
                             <xsd:restriction base="xsd:string">
-                                <xsd:enumeration value="LimitLoad"/>
-                                <xsd:enumeration value="UltimateLoad"/>
+                                <xsd:enumeration value="limitLoad"/>
+                                <xsd:enumeration value="ultimateLoad"/>
                             </xsd:restriction>
                         </xsd:simpleType>
                     </xsd:element>
@@ -10502,7 +10502,7 @@ marko.alder@dlr.de
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="loadCaseAccelerationsType">
+    <xsd:complexType name="loadCaseAccelerationFactorsType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
@@ -14902,7 +14902,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="loadReferenceAxisPointType">
+    <xsd:complexType name="loadReferencePointType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
@@ -14923,13 +14923,38 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         <xsd:element minOccurs="0" name="y" type="doubleBaseType"/>
                         <xsd:element minOccurs="0" name="z" type="doubleBaseType"/>
                     </xsd:sequence>
-                    <xsd:element name="refPoint" type="etaXsiRelHeightPointType"/>
+                    <xsd:sequence>
+                        <xsd:element name="eta" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Relative spanwise position. Eta refers to the segment or componentSegment depending on the referenced uID.</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="xsi" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Relative chordwise position. Xsi refers to the segment or componentSegment depending on the referenced uID.</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="relHeight" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Relative height position.
+                                relHeight is relative to the local airfoil thickness.</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="referenceUID" type="stringUIDBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>This reference uID determines the reference coordinate system.
+                            If it points to a segment, then the eta-xsi values are considered to be in segment
+                            eta-xsi coordinates; if it points to a componentSegment,
+                            then componentSegment eta-xsi coordinates are used.</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    </xsd:sequence>
                 </xsd:choice>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="loadReferenceAxisPointsType">
+    <xsd:complexType name="loadReferenceLineType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
@@ -14945,7 +14970,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:element maxOccurs="unbounded" name="loadReferenceAxisPoint" type="loadReferenceAxisPointType"/>
+                    <xsd:element minOccurs="2" maxOccurs="unbounded" name="loadReferencePoint" type="loadReferencePointType"/>
                 </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
@@ -30489,8 +30514,8 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element name="loadApplicationPoints"
-                        type="loadApplicationPointsType" maxOccurs="1"
+                    <xsd:element name="loadApplicationPointSets"
+                        type="loadApplicationPointSetsType" maxOccurs="1"
                         minOccurs="0">
                     </xsd:element>
                 </xsd:all>
@@ -30498,7 +30523,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="loadApplicationPointsType">
+    <xsd:complexType name="loadApplicationPointSetsType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
@@ -30515,7 +30540,10 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
-                <xsd:sequence>                    <xsd:element name="pointSet" type="loadApplicationPointSetType"></xsd:element>
+                <xsd:sequence>                    <xsd:element name="loadApplicationPointSet"
+                        type="loadApplicationPointSetType"
+                        minOccurs="1" maxOccurs="unbounded">
+                    </xsd:element>
                 </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
@@ -30556,8 +30584,8 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element minOccurs="0"
-                            name="loadReferenceAxisPoints"
-                            type="loadReferenceAxisPointsType">
+                            name="loadReferenceLine"
+                            type="loadReferenceLineType">
                         <xsd:annotation>
                             <xsd:documentation>
                                     Reference axis (line) for load distribution 
@@ -30565,8 +30593,8 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         </xsd:annotation>    
                     </xsd:element>
                     <xsd:element minOccurs="0"
-                            name="dynamicAircraftModelPoints"
-                            type="dynamicAircraftModelPointsType">
+                            name="loadApplicationCoordinates"
+                            type="loadApplicationCoordinatesType">
                         <xsd:annotation>
                             <xsd:documentation>
                                     List of points at which load vectors are applied to  
@@ -30574,8 +30602,8 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         </xsd:annotation> 
                     </xsd:element>
                     <xsd:element minOccurs="0"
-                            name="cutLoadIntegrationPoints"
-                            type="cutLoadIntegrationPointsType">
+                            name="cutLoadIntegrationCoordinates"
+                            type="cutLoadCoordinatesType">
                         <xsd:annotation>
                             <xsd:documentation>
                                     List of points at which cut loads are applied to  
@@ -30641,7 +30669,9 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
          <xsd:complexContent>
              <xsd:extension base="complexBaseType">
                 <xsd:all>
-                     <xsd:element name="controlElements" type="controlElementsType" maxOccurs="1" minOccurs="0">
+                     <xsd:element name="controlElements"
+                         type="aircraftControlElementsType"
+                         maxOccurs="1" minOccurs="0">
                      </xsd:element>
                      <xsd:element name="cabinPressures"
                          type="cabinPressuresType" maxOccurs="1"
