@@ -2961,7 +2961,8 @@ marko.alder@dlr.de
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element minOccurs="0" name="designRange" type="requirementType">
+                    <xsd:element minOccurs="0" name="designRange"
+                        type="requirementType">
                         <xsd:annotation>
                             <xsd:documentation>
                                 designRange equals the full payload max
@@ -2970,10 +2971,18 @@ marko.alder@dlr.de
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element minOccurs="0" name="payload" type="payloadGlobalType"/>
-                    <xsd:element minOccurs="0" name="airportCompatability" type="airportCompatabilityGlobalType">
+                    <xsd:element minOccurs="0" name="payload"
+                        type="payloadGlobalType" />
+                    <xsd:element minOccurs="0"
+                        name="airportCompatability"
+                        type="airportCompatabilityGlobalType">
                     </xsd:element>
-                    <xsd:element minOccurs="0" name="performanceTargets" type="performanceTargetsGlobalType"/>
+                    <xsd:element minOccurs="0" name="performanceTargets"
+                        type="performanceTargetsGlobalType" />
+                    <xsd:element name="flightEnvelopes"
+                        type="flightEnvelopesType" maxOccurs="1"
+                        minOccurs="0">
+                    </xsd:element>
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
@@ -33051,5 +33060,105 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
+
+    <xsd:complexType name="flightEnvelopesType">
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="flightEnvelope"
+                        type="flightEnvelopeType" maxOccurs="unbounded"
+                        minOccurs="1">
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="atmosphericModelType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>atmosphericModel</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>Atmospheric Model. Available options: ISA. See documentation of  &lt;CPACS&gt; root element for further details.
+                        </ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:simpleContent>
+            <xsd:restriction base="stringBaseType">
+                <xsd:enumeration value="ISA" />
+            </xsd:restriction>
+        </xsd:simpleContent>
+    </xsd:complexType>
+    
+
+    <xsd:complexType name="flightEnvelopeType">
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="atmosphericModel"
+                        type="atmosphericModelType" />
+                    <xsd:element name="deltaTemperature"
+                        type="doubleBaseType" minOccurs="0"
+                        maxOccurs="1" />
+                    <xsd:element name="speed"
+                        type="flightEnvelopeSpeedType"
+                        maxOccurs="unbounded" minOccurs="1">
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="flightEnvelopeSpeedType">
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="speedName">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Speed name
+                            </xsd:documentation>
+                        </xsd:annotation>
+                        <xsd:complexType>
+                            <xsd:simpleContent>
+                                <xsd:restriction base="stringBaseType">
+                                    <xsd:enumeration value="VA" />
+                                    <xsd:enumeration value="VB" />
+                                    <xsd:enumeration value="VC" />
+                                    <xsd:enumeration value="VD" />
+                                    <xsd:enumeration value="VF" />
+                                    <xsd:enumeration value="VS" />
+                                    <xsd:enumeration value="Vs0" />
+                                    <xsd:enumeration value="Vs1" />
+                                    <xsd:enumeration value="VMC" />
+                                    <xsd:enumeration value="V_NE" />
+                                    <xsd:enumeration value="V_MO" />
+                                </xsd:restriction>
+                            </xsd:simpleContent>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="altitude" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Vector with altitudes
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="trueAirSpeed" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Vector with True Airspeeds
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
 </xsd:schema>
 
