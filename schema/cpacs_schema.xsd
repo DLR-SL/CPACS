@@ -964,6 +964,57 @@ marko.alder@dlr.de
         </xsd:simpleContent>
     </xsd:complexType>
 
+    <xsd:complexType name="doubleVectorBaseType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Vector with semicolon seperated values of type double</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:simpleContent>
+            <xsd:restriction base="stringVectorBaseType">
+                <xsd:pattern value="([-+]?(\d+)?.\d+(([eE][-+]?)?\d+)?|(NaN))(;(([-+]?(\d+)?.\d+(([eE][-+]?)?\d+)?)|(NaN)))*"/>
+            </xsd:restriction>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="uIDReferenceVectorBaseType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Vector with semicolon seperated uID references</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:simpleContent>
+            <xsd:restriction base="stringVectorBaseType">
+                <xsd:pattern value="([\i-[:]][\c-[:]]+)(;([\i-[:]][\c-[:]]+))*"/>
+            </xsd:restriction>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="posIntVectorBaseType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Vector with semicolon seperated positive integer values</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:simpleContent>
+            <xsd:restriction base="stringVectorBaseType">
+                 <xsd:pattern value="\d+(;\d+)*"/>
+            </xsd:restriction>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
     <xsd:complexType name="stringArrayBaseType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -4780,7 +4831,7 @@ marko.alder@dlr.de
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="componentCutLoadsEnvelopeType">
+    <xsd:complexType name="loadEnvelopeType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
@@ -4800,7 +4851,7 @@ marko.alder@dlr.de
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element name="parentUID" type="stringUIDBaseType">
+                    <xsd:element name="componentUID" type="stringUIDBaseType">
                         <xsd:annotation>
                             <xsd:documentation>The parentUID of the corresponding component,
                                 e.g.
@@ -4808,9 +4859,9 @@ marko.alder@dlr.de
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="max" type="subLoadType">
+                    <xsd:element name="maxLoadCaseUIDs" type="loadCaseUIDsType">
                     </xsd:element>
-                    <xsd:element name="min" type="subLoadType">
+                    <xsd:element name="minLoadCaseUIDs" type="loadCaseUIDsType">
                     </xsd:element>
                 </xsd:all>
             </xsd:extension>
@@ -8120,13 +8171,13 @@ marko.alder@dlr.de
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element name="uIDs" type="stringVectorBaseType"/>
-                    <xsd:element name="x" type="stringVectorBaseType"/>
-                    <xsd:element name="y" type="stringVectorBaseType"/>
-                    <xsd:element name="z" type="stringVectorBaseType"/>
-                    <xsd:element minOccurs="0" name="orientationX" type="stringVectorBaseType"/>
-                    <xsd:element minOccurs="0" name="orientationY" type="stringVectorBaseType"/>
-                    <xsd:element minOccurs="0" name="orientationZ" type="stringVectorBaseType"/>
+                    <xsd:element name="pointIDs" type="posIntVectorBaseType"/>
+                    <xsd:element name="x" type="doubleVectorBaseType"/>
+                    <xsd:element name="y" type="doubleVectorBaseType"/>
+                    <xsd:element name="z" type="doubleVectorBaseType"/>
+                    <xsd:element minOccurs="0" name="orientationX" type="doubleVectorBaseType"/>
+                    <xsd:element minOccurs="0" name="orientationY" type="doubleVectorBaseType"/>
+                    <xsd:element minOccurs="0" name="orientationZ" type="doubleVectorBaseType"/>
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
@@ -9055,10 +9106,10 @@ marko.alder@dlr.de
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element name="pointIDs" type="stringVectorBaseType"/>
-                    <xsd:element name="x" type="stringVectorBaseType"/>
-                    <xsd:element name="y" type="stringVectorBaseType"/>
-                    <xsd:element name="z" type="stringVectorBaseType"/>
+                    <xsd:element name="pointIDs" type="posIntVectorBaseType"/>
+                    <xsd:element name="x" type="doubleVectorBaseType"/>
+                    <xsd:element name="y" type="doubleVectorBaseType"/>
+                    <xsd:element name="z" type="doubleVectorBaseType"/>
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
@@ -14870,7 +14921,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:element minOccurs="0" name="groundLoadCases" type="groundLoadCasesType"/>
                     <xsd:element minOccurs="0" name="aeroCases"
                         type="aeroCasesType" />
-                    <xsd:element minOccurs="0" name="loadsEnvelope" type="loadsEnvelopeType">
+                    <xsd:element minOccurs="0" name="loadEnvelopes" type="loadEnvelopesType">
                     </xsd:element>
                 </xsd:all>
             </xsd:extension>
@@ -14951,7 +15002,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="loadsEnvelopeType">
+    <xsd:complexType name="loadEnvelopesType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
@@ -14970,8 +15021,8 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
                     <xsd:element maxOccurs="unbounded"
-                        name="cutLoadsEnvelope"
-                        type="componentCutLoadsEnvelopeType">
+                        name="cutLoadEnvelope"
+                        type="loadEnvelopeType">
                     </xsd:element>
                 </xsd:sequence>
             </xsd:extension>
@@ -25126,12 +25177,69 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                 <xsd:all>
                     <xsd:element name="name" type="stringBaseType"/>
                     <xsd:element minOccurs="0" name="description" type="stringBaseType"/>
-                    <xsd:element name="fx" type="stringVectorBaseType"/>
-                    <xsd:element name="fy" type="stringVectorBaseType"/>
-                    <xsd:element name="fz" type="stringVectorBaseType"/>
-                    <xsd:element name="mx" type="stringVectorBaseType"/>
-                    <xsd:element name="my" type="stringVectorBaseType"/>
-                    <xsd:element name="mz" type="stringVectorBaseType"/>
+                    <xsd:element minOccurs="0" name="fx" type="doubleVectorBaseType"/>
+                    <xsd:element minOccurs="0" name="fy" type="doubleVectorBaseType"/>
+                    <xsd:element minOccurs="0" name="fz" type="doubleVectorBaseType"/>
+                    <xsd:element minOccurs="0" name="mx" type="doubleVectorBaseType"/>
+                    <xsd:element minOccurs="0" name="my" type="doubleVectorBaseType"/>
+                    <xsd:element minOccurs="0" name="mz" type="doubleVectorBaseType"/>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="loadCaseUIDsType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>subLoadReferenceType</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para/>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element minOccurs="0" name="fx" type="uIDReferenceVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>List of load case uID references
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="fy" type="uIDReferenceVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>List of load case uID references
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="fz" type="uIDReferenceVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>List of load case uID references
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="mx" type="uIDReferenceVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>List of load case uID references
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="my" type="uIDReferenceVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>List of load case uID references
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="mz" type="uIDReferenceVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>List of load case uID references
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
@@ -30762,84 +30870,84 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="fx" type="stringVectorBaseType">
+                    <xsd:element name="fx" type="doubleVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
                                     Force in x-direction [N]  
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="fy" type="stringVectorBaseType">
+                    <xsd:element name="fy" type="doubleVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
                                     Force in y-direction [N]  
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="fz" type="stringVectorBaseType">
+                    <xsd:element name="fz" type="doubleVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
                                     Force in z-direction [N]  
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="mx" type="stringVectorBaseType">
+                    <xsd:element name="mx" type="doubleVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
                                     Moment around x-axis [Nm]  
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="my" type="stringVectorBaseType">
+                    <xsd:element name="my" type="doubleVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
                                     Moment around y-axis [Nm]  
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="mz" type="stringVectorBaseType">
+                    <xsd:element name="mz" type="doubleVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
                                     Moment around z-axis [Nm]  
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="dx" type="stringVectorBaseType" minOccurs="0">
+                    <xsd:element name="dx" type="doubleVectorBaseType" minOccurs="0">
                         <xsd:annotation>
                             <xsd:documentation>
                                     Nodal displacement in x-direction [m]  
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="dy" type="stringVectorBaseType" minOccurs="0">
+                    <xsd:element name="dy" type="doubleVectorBaseType" minOccurs="0">
                         <xsd:annotation>
                             <xsd:documentation>
                                     Nodal displacement in y-direction [m]  
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="dz" type="stringVectorBaseType" minOccurs="0">
+                    <xsd:element name="dz" type="doubleVectorBaseType" minOccurs="0">
                         <xsd:annotation>
                             <xsd:documentation>
                                     Nodal displacement in z-direction [m]  
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="phix" type="stringVectorBaseType" minOccurs="0">
+                    <xsd:element name="phix" type="doubleVectorBaseType" minOccurs="0">
                         <xsd:annotation>
                             <xsd:documentation>
                                     Nodal rotation around x-axis [deg]  
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="phiy" type="stringVectorBaseType" minOccurs="0">
+                    <xsd:element name="phiy" type="doubleVectorBaseType" minOccurs="0">
                         <xsd:annotation>
                             <xsd:documentation>
                                     Nodal rotation around y-axis [deg]  
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="phiz" type="stringVectorBaseType" minOccurs="0">
+                    <xsd:element name="phiz" type="doubleVectorBaseType" minOccurs="0">
                         <xsd:annotation>
                             <xsd:documentation>
                                     Nodal rotation around z-axis [deg]  
@@ -31266,7 +31374,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:extension base="complexBaseType">
                 <xsd:all>
                     <xsd:element minOccurs="0" name="cd"
-                            type="stringVectorBaseType">
+                            type="doubleVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
                                     Drag coefficient in aerodynamic
@@ -31275,7 +31383,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element minOccurs="0" name="cs"
-                            type="stringVectorBaseType">
+                            type="doubleVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
                                     Coefficient of the side force vector in
@@ -31285,7 +31393,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element minOccurs="0" name="cl"
-                            type="stringVectorBaseType">
+                            type="doubleVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
                                     Lift coefficient in aerodynamic
@@ -31294,11 +31402,11 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element minOccurs="0" name="cmd"
-                            type="stringVectorBaseType" />
+                            type="doubleVectorBaseType" />
                     <xsd:element minOccurs="0" name="cms"
-                            type="stringVectorBaseType" />
+                            type="doubleVectorBaseType" />
                     <xsd:element minOccurs="0" name="cml"
-                            type="stringVectorBaseType" />
+                            type="doubleVectorBaseType" />
                     <xsd:element name="dragFractions" type="dragFractionsType" maxOccurs="1" minOccurs="0"/>
                 </xsd:all>
             </xsd:extension>
