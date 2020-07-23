@@ -43,11 +43,11 @@ marko.alder@dlr.de
                             <ddue:definitionTable>
                                 <ddue:definedTerm>Version</ddue:definedTerm>
                                 <ddue:definition>
-                                    <ddue:para>V3.2</ddue:para>
+                                    <ddue:para>V3.3-alpha1</ddue:para>
                                 </ddue:definition>
                                 <ddue:definedTerm>Date</ddue:definedTerm>
                                 <ddue:definition>
-                                    <ddue:para>2020-02-18</ddue:para>
+                                    <ddue:para>2020-mm-dd</ddue:para>
                                 </ddue:definition>
                             </ddue:definitionTable>
                             <ddue:section>
@@ -319,22 +319,23 @@ marko.alder@dlr.de
                                 <ddue:title>7. Vectors and arrays</ddue:title>
                                 <ddue:content>
                                     <ddue:para>For large data sets (e.g. increments of aerodynamic coefficients due to control surface deflections) it is advantageous
-                                    to map them via vectors and arrays instead of using single nodes for each data value. The following definition of vectors and arrays,
-                                    indicated by the mapType attribute, is therefore introduced in <ddue:legacyItalic>CPACS</ddue:legacyItalic>:
+                                    to map them via vectors and arrays instead of using a sequence of nodes for each data value. Therefore vectors and arrays are defined as semicolon-separated lists in <ddue:legacyItalic>CPACS</ddue:legacyItalic>. Via the documentation (derived from the XSD) of the corresponding nodes it has to be checked whether it is a vector or an array. 
                                         <ddue:list class="bullet">
-                                            <ddue:listItem>mapType="vector" <ddue:para>The vector is meant as a one-dimensional-array. In such a node, the values are given in a semicolon separated list:</ddue:para>
+                                            <ddue:listItem>Vector
+                                                <ddue:para>The vector is meant as a one-dimensional-array. In such a node, the values are given in a semicolon separated list:</ddue:para>
                                                 <ddue:code language="XML" title=" ">&lt;angleOfAttack mapType="vector"&gt;0.;1.5;3.;4.5;6;7.5;9.&lt;/angleOfAttack&gt;</ddue:code>
                                             </ddue:listItem>
-                                            <ddue:listItem>mapType="array"
+                                            <ddue:listItem>Array
                                                 <ddue:para>
-                                                    The array is meant for multi-dimensional-arrays. Again, the values are contained in a semicolon separated list. An array is always preceded by a sequence of vectors, containing the dimensions and index values of it:
+                                                    As for vectors, multi-dimensional arrays provide values in a semicolon separated list. An array is always preceded by a sequence of vectors, containing the dimensions and index values. Which vectors of an array are dimensioning is specified in the respective documentation of the array. 
                                                 </ddue:para>
-                                                <ddue:code language="XML" title=" ">&lt;altitude mapType="vector"&gt;1000.; 2000.; 3000.&lt;/altitude&gt;
+                                                <ddue:code language="XML" title=" ">&lt;altitude&gt;1000.; 2000.; 3000.&lt;/altitude&gt; &lt;!-- vector element --&gt;
     &lt;incrementMaps&gt;
         &lt;incrementMap uID="incMap_b3ac2"&gt;
             &lt;controlSurfaceUID&gt;InnerWingFlap&lt;/controlSurfaceUID&gt;
-            &lt;controlParameters mapType="vector"&gt;-1;-0.5;0;1&lt;/controlParameters&gt;
-                &lt;dcl mapType="array"&gt;11.; 12.; 13.; 14.; 15.; 21.; 22.; 23.; 24.; 25.; 31.; 32.; 33.; 34.; 35.&lt;/dcl&gt;
+            &lt;controlParameters&gt;-1;-0.5;0;1&lt;/controlParameters&gt; &lt;!-- vector element --&gt;
+                &lt;!-- array of dimension length(altitude) x length(controlParameters): --&gt;
+                &lt;dcl&gt;11.; 12.; 13.; 14.; 15.; 21.; 22.; 23.; 24.; 25.; 31.; 32.; 33.; 34.; 35.&lt;/dcl&gt;
                                                 </ddue:code>
                                                 <ddue:table>
                                                     <ddue:title>
@@ -429,6 +430,16 @@ marko.alder@dlr.de
                                     <ddue:para>Temperature offsets are introduced on top of the definitions in the ISA manual (which does not cover such variations). The offset model
                                       is based upon the idea that the pressure at a fixed geopotential altitude is independent from temperature offset (pressure altitude).
                                       The temperature offset changes only the density (following rho = p / Gas Constant / T) (and viscosity, of course)</ddue:para>
+                                </ddue:content>
+                            </ddue:section>
+                            <ddue:section>
+                                <ddue:title>CPACS 3.3</ddue:title>
+                                <ddue:content>
+                                    <ddue:para>Release in ... 2020</ddue:para>
+                                    <ddue:list class="bullet">
+                                        <ddue:listItem>Set mapType attribute of vector and array elements to optional</ddue:listItem>
+                                        <ddue:listItem>Add vector to specify curve parameters for profiles with kinks</ddue:listItem>
+                                    </ddue:list>
                                 </ddue:content>
                             </ddue:section>
                             <ddue:section>
@@ -803,7 +814,7 @@ marko.alder@dlr.de
                         </xsd:annotation>
                         <xsd:simpleType>
                             <xsd:restriction base="xsd:float">
-                                <xsd:enumeration value="3.2"/>
+                                <xsd:enumeration value="3.3"/>
                             </xsd:restriction>
                         </xsd:simpleType>
                     </xsd:element>
@@ -928,8 +939,7 @@ marko.alder@dlr.de
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>Base type for string vector nodes (including maptype
-                                vector attribute)</ddue:para>
+                            <ddue:para>Base type for string vector nodes</ddue:para>
                             <ddue:para>The vector base type can include optional uncertainty
                                 information. The description of uncertainties is placed in
                                 addtional attributes. First, it is described by an attribute that
@@ -941,6 +951,14 @@ marko.alder@dlr.de
                             <ddue:para>If the uncertainty values change for the elements of
                                 the vector than the attribute may be written as a list of values
                                 separated by semicolons</ddue:para>
+                            <ddue:para>DEPRECATED: As of <ddue:legacyItalic>CPACS</ddue:legacyItalic> 
+                                version 3.3, the <ddue:legacyItalic>mapType</ddue:legacyItalic>
+                                attribute is set to optional to ensure the compatibility of older data sets. 
+                                However, since the type is uniquely defined via the XSD, the attribute is superfluous
+                                and will therefore be completely omitted in the next major release (Note: requires 
+                                TiXI &gt;= 3.3). Please contact the <ddue:legacyItalic>CPACS</ddue:legacyItalic> team 
+                                if for any reason you see a long-term need for the <ddue:legacyItalic>mapType</ddue:legacyItalic> 
+                                attribute.</ddue:para>
                             <ddue:mediaLink>
                                 <ddue:image xlink:href="uncertaintyFunctions"/>
                             </ddue:mediaLink>
@@ -951,7 +969,7 @@ marko.alder@dlr.de
         </xsd:annotation>
         <xsd:simpleContent>
             <xsd:extension base="stringBaseType">
-                <xsd:attribute fixed="vector" name="mapType" type="xsd:string" use="required"/>
+                <xsd:attribute fixed="vector" name="mapType" type="xsd:string"/>
                 <xsd:attribute name="uncertaintyFunctionName" type="uncertaintyFunctionType"/>
                 <xsd:attribute name="mu" type="xsd:string"/>
                 <xsd:attribute name="delta" type="xsd:string"/>
@@ -974,13 +992,14 @@ marko.alder@dlr.de
                     <ddue:remarks>
                         <ddue:para>Base type for string array nodes (including maptype
                             array attribute)</ddue:para>
+                        <ddue:para>DEPRECATED: As of CPACCS version 3.3, the <ddue:legacyItalic>mapType</ddue:legacyItalic> attribute is set to optional to ensure the compatibility of older data records. However, since the type is uniquely defined via the XSD, the attribute is superfluous and will therefore be completely omitted in future versions. </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
         <xsd:simpleContent>
             <xsd:extension base="stringBaseType">
-                <xsd:attribute fixed="array" name="mapType" type="xsd:string" use="required"/>
+                <xsd:attribute fixed="array" name="mapType" type="xsd:string"/>
             </xsd:extension>
         </xsd:simpleContent>
     </xsd:complexType>
