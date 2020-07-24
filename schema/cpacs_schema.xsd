@@ -992,7 +992,7 @@ marko.alder@dlr.de
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>Any entries of type Double separated by semicolons are permitted, e.g.:</ddue:para>
+                            <ddue:para>Any entries of type <ddue:legacyItalic>double</ddue:legacyItalic> separated by semicolons are permitted, e.g.:</ddue:para>
                             <ddue:code language="XML" title="Example 1: valid double vector">
 &lt;doubleVectorTest&gt;123.456;+123.456;-1.234e56;-.45E-6;NaN&lt;/doubleVectorTest&gt;
                        	    </ddue:code>
@@ -1029,7 +1029,7 @@ marko.alder@dlr.de
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>Any uID-references separated by semicolons are permitted, e.g.:</ddue:para>
+                            <ddue:para>Any <ddue:legacyItalic>uID</ddue:legacyItalic>-references separated by semicolons are permitted, e.g.:</ddue:para>
                             <ddue:code language="XML" title="Example 1: valid uID-references vector">
 &lt;uidVectorTest&gt;wing1;wing2;wing3&lt;/uidVectorTest&gt;
                             </ddue:code>
@@ -1061,6 +1061,26 @@ marko.alder@dlr.de
                     <ddue:summary>
                         <ddue:para>Vector with semicolon separated positive integer values</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>Any positive integer values separated by semicolons are permitted, e.g.:</ddue:para>
+                            <ddue:code language="XML" title="Example 1: valid integer vector">
+&lt;uidVectorTest&gt;0;1;2;3;4;5&lt;/uidVectorTest&gt;
+                            </ddue:code>
+                            <ddue:code language="XML" title="Example 2: valid integer vector with only one entry">
+&lt;uidVectorTest&gt;1&lt;/uidVectorTest&gt;
+                            </ddue:code>
+                            <ddue:code language="XML" title="Example 3: invalid integer vector due comma separation">
+&lt;uidVectorTest&gt;0,1,2,3,4,5&lt;/uidVectorTest&gt;
+                            </ddue:code>
+                            <ddue:code language="XML" title="Example 4: invalid integer vector due to invalid integer">
+&lt;uidVectorTest&gt;0.;1.;2.&lt;/uidVectorTest&gt;
+                            </ddue:code>
+                            <ddue:code language="XML" title="Example 5: invalid integer vector due to negative value">
+&lt;uidVectorTest&gt;-1;0;1&lt;/uidVectorTest&gt;
+                            </ddue:code>
+                        </ddue:content>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -1102,22 +1122,42 @@ marko.alder@dlr.de
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>Any entries of type Double separated by semicolons are permitted, e.g.:</ddue:para>
+                            <ddue:para>In <ddue:legacyItalic>CPACS</ddue:legacyItalic> arrays are used to exchange values 
+                            in full-factorial parameter spaces, for example to describe the aerodynamic coefficients depending 
+                            on Mach number and altitude.
+                            </ddue:para>
+                            <ddue:para>Thus, the dimensions of the array are spanned by the input vectors. See the following 
+                            example where two input vectors are defined. For clarification the entries of the array result from 
+                            the multiplication of the index values of the corresponding input vectors:</ddue:para>
+                            <ddue:code language="XML" title="Input vectors">
+&lt;inputVector1&gt;1;2;3&lt;/inputVector1&gt;
+&lt;inputVector2&gt;4;5;6;7&lt;/inputVector2&gt;
+                            </ddue:code>
+                            <ddue:code language="XML" title="Resulting 3x4 array">
+&lt;array&gt;4;5;6;7;8;10;12;14;12;15;18;21&lt;/array&gt;
+                            </ddue:code>                         
+                            <ddue:para>Any entries of type <ddue:legacyItalic>double</ddue:legacyItalic> separated by semicolons are valid, e.g.:</ddue:para>
                             <ddue:code language="XML" title="Example 1: valid double array">
-&lt;doubleVectorTest&gt;123.456;+123.456;-1.234e56;-.45E-6;NaN&lt;/doubleVectorTest&gt;
+&lt;doubleArrayTest&gt;123.456;+123.456;-1.234e56;-.45E-6;NaN;0&lt;/doubleArrayTest&gt;
                             </ddue:code>
                             <ddue:code language="XML" title="Example 2: valid double array with only one entry">
-&lt;doubleVectorTest&gt;123.456&lt;/doubleVectorTest&gt;
+&lt;doubleArrayTest&gt;123.456&lt;/doubleArrayTest&gt;
                             </ddue:code>
                             <ddue:code language="XML" title="Example 3: invalid double array due to comma separation">
-&lt;doubleVectorTest&gt;123.456,+1234.456&lt;/doubleVectorTest&gt;
+&lt;doubleArrayTest&gt;123.456,+1234.456&lt;/doubleArrayTest&gt;
                             </ddue:code>
                             <ddue:code language="XML" title="Example 4: invalid double array due to string entry">
-&lt;doubleVectorTest&gt;123.456;mainWingUID&lt;/doubleVectorTest&gt;
+&lt;doubleArrayTest&gt;123.456;mainWingUID&lt;/doubleArrayTest&gt;
                             </ddue:code>
                             <ddue:code language="XML" title="Example 5: invalid double array due invalid double values">
-&lt;doubleVectorTest&gt;123.456;1234.4E 56;-1.234e5.6&lt;/doubleVectorTest&gt;
+&lt;doubleArrayTest&gt;1234.4E 56;-1.234e5.6&lt;/doubleArrayTest&gt;
                             </ddue:code>
+                            <ddue:para>
+                                Please note that the syntax of arrays in the current <ddue:legacyItalic>CPACS</ddue:legacyItalic> 
+                                version correspond exactly to the syntax of vectors. There is no special character indicating
+                                the dimensions. Thus, the input vectors have to be determined from the documentation of the 
+                                corresponding elements and splitting of the one-dimensional vector has to be done manually.
+                            </ddue:para>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
