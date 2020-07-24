@@ -43,11 +43,11 @@ marko.alder@dlr.de
                             <ddue:definitionTable>
                                 <ddue:definedTerm>Version</ddue:definedTerm>
                                 <ddue:definition>
-                                    <ddue:para>V3.2</ddue:para>
+                                    <ddue:para>V3.3-alpha1</ddue:para>
                                 </ddue:definition>
                                 <ddue:definedTerm>Date</ddue:definedTerm>
                                 <ddue:definition>
-                                    <ddue:para>2020-02-18</ddue:para>
+                                    <ddue:para>2020-mm-dd</ddue:para>
                                 </ddue:definition>
                             </ddue:definitionTable>
                             <ddue:section>
@@ -319,22 +319,23 @@ marko.alder@dlr.de
                                 <ddue:title>7. Vectors and arrays</ddue:title>
                                 <ddue:content>
                                     <ddue:para>For large data sets (e.g. increments of aerodynamic coefficients due to control surface deflections) it is advantageous
-                                    to map them via vectors and arrays instead of using single nodes for each data value. The following definition of vectors and arrays,
-                                    indicated by the mapType attribute, is therefore introduced in <ddue:legacyItalic>CPACS</ddue:legacyItalic>:
+                                    to map them via vectors and arrays instead of using a sequence of nodes for each data value. Therefore vectors and arrays are defined as semicolon-separated lists in <ddue:legacyItalic>CPACS</ddue:legacyItalic>. Via the documentation (derived from the XSD) of the corresponding nodes it has to be checked whether it is a vector or an array. 
                                         <ddue:list class="bullet">
-                                            <ddue:listItem>mapType="vector" <ddue:para>The vector is meant as a one-dimensional-array. In such a node, the values are given in a semicolon separated list:</ddue:para>
+                                            <ddue:listItem>Vector
+                                                <ddue:para>The vector is meant as a one-dimensional-array. In such a node, the values are given in a semicolon separated list:</ddue:para>
                                                 <ddue:code language="XML" title=" ">&lt;angleOfAttack mapType="vector"&gt;0.;1.5;3.;4.5;6;7.5;9.&lt;/angleOfAttack&gt;</ddue:code>
                                             </ddue:listItem>
-                                            <ddue:listItem>mapType="array"
+                                            <ddue:listItem>Array
                                                 <ddue:para>
-                                                    The array is meant for multi-dimensional-arrays. Again, the values are contained in a semicolon separated list. An array is always preceded by a sequence of vectors, containing the dimensions and index values of it:
+                                                    As for vectors, multi-dimensional arrays provide values in a semicolon separated list. An array is always preceded by a sequence of vectors, containing the dimensions and index values. Which vectors of an array are dimensioning is specified in the respective documentation of the array. 
                                                 </ddue:para>
-                                                <ddue:code language="XML" title=" ">&lt;altitude mapType="vector"&gt;1000.; 2000.; 3000.&lt;/altitude&gt;
+                                                <ddue:code language="XML" title=" ">&lt;altitude&gt;1000.;2000.;3000.&lt;/altitude&gt; &lt;!-- vector element --&gt;
     &lt;incrementMaps&gt;
         &lt;incrementMap uID="incMap_b3ac2"&gt;
             &lt;controlSurfaceUID&gt;InnerWingFlap&lt;/controlSurfaceUID&gt;
-            &lt;controlParameters mapType="vector"&gt;-1;-0.5;0;1&lt;/controlParameters&gt;
-                &lt;dcl mapType="array"&gt;11.; 12.; 13.; 14.; 15.; 21.; 22.; 23.; 24.; 25.; 31.; 32.; 33.; 34.; 35.&lt;/dcl&gt;
+            &lt;controlParameters&gt;-1;-0.5;0;1&lt;/controlParameters&gt; &lt;!-- vector element --&gt;
+                &lt;!-- array of dimension length(altitude) x length(controlParameters): --&gt;
+                &lt;dcl&gt;11.;12.;13.;14.;15.;21.;22.;23.;24.;25.;31.;32.;33.;34.;35.&lt;/dcl&gt;
                                                 </ddue:code>
                                                 <ddue:table>
                                                     <ddue:title>
@@ -429,6 +430,18 @@ marko.alder@dlr.de
                                     <ddue:para>Temperature offsets are introduced on top of the definitions in the ISA manual (which does not cover such variations). The offset model
                                       is based upon the idea that the pressure at a fixed geopotential altitude is independent from temperature offset (pressure altitude).
                                       The temperature offset changes only the density (following rho = p / Gas Constant / T) (and viscosity, of course)</ddue:para>
+                                </ddue:content>
+                            </ddue:section>
+                            <ddue:section>
+                                <ddue:title>CPACS 3.3</ddue:title>
+                                <ddue:content>
+                                    <ddue:para>Release in ... 2020</ddue:para>
+                                    <ddue:list class="bullet">
+                                        <ddue:listItem>Add new base types: doubleVectorBaseType, posIntVectorBaseType, uIDReferenceVectorBaseType, doubleArrayBaseType</ddue:listItem>
+                                        <ddue:listItem>Add 'none' and 'inherit' to list of symmetry flags</ddue:listItem>
+                                        <ddue:listItem>Set mapType attribute of vector and array elements to optional (requires TiXI&gt;=3.1)</ddue:listItem>
+                                        <ddue:listItem>Add vector to specify curve parameters for profiles with kinks</ddue:listItem>
+                                    </ddue:list>
                                 </ddue:content>
                             </ddue:section>
                             <ddue:section>
@@ -803,7 +816,7 @@ marko.alder@dlr.de
                         </xsd:annotation>
                         <xsd:simpleType>
                             <xsd:restriction base="xsd:float">
-                                <xsd:enumeration value="3.2"/>
+                                <xsd:enumeration value="3.3"/>
                             </xsd:restriction>
                         </xsd:simpleType>
                     </xsd:element>
@@ -928,8 +941,7 @@ marko.alder@dlr.de
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>Base type for string vector nodes (including maptype
-                                vector attribute)</ddue:para>
+                            <ddue:para>Base type for string vector nodes</ddue:para>
                             <ddue:para>The vector base type can include optional uncertainty
                                 information. The description of uncertainties is placed in
                                 addtional attributes. First, it is described by an attribute that
@@ -941,6 +953,14 @@ marko.alder@dlr.de
                             <ddue:para>If the uncertainty values change for the elements of
                                 the vector than the attribute may be written as a list of values
                                 separated by semicolons</ddue:para>
+                            <ddue:para>DEPRECATED: As of <ddue:legacyItalic>CPACS</ddue:legacyItalic> 
+                                version 3.3, the <ddue:legacyItalic>mapType</ddue:legacyItalic>
+                                attribute is set to optional to ensure the compatibility of older data sets. 
+                                However, since the type is uniquely defined via the XSD, the attribute is superfluous
+                                and will therefore be completely omitted in the next major release (Note: requires 
+                                TiXI &gt;= 3.3). Please contact the <ddue:legacyItalic>CPACS</ddue:legacyItalic> team 
+                                if for any reason you see a long-term need for the <ddue:legacyItalic>mapType</ddue:legacyItalic> 
+                                attribute.</ddue:para>
                             <ddue:mediaLink>
                                 <ddue:image xlink:href="uncertaintyFunctions"/>
                             </ddue:mediaLink>
@@ -951,7 +971,7 @@ marko.alder@dlr.de
         </xsd:annotation>
         <xsd:simpleContent>
             <xsd:extension base="stringBaseType">
-                <xsd:attribute fixed="vector" name="mapType" type="xsd:string" use="required"/>
+                <xsd:attribute fixed="vector" name="mapType" type="xsd:string"/>
                 <xsd:attribute name="uncertaintyFunctionName" type="uncertaintyFunctionType"/>
                 <xsd:attribute name="mu" type="xsd:string"/>
                 <xsd:attribute name="delta" type="xsd:string"/>
@@ -963,31 +983,68 @@ marko.alder@dlr.de
             </xsd:extension>
         </xsd:simpleContent>
     </xsd:complexType>
-
+    
     <xsd:complexType name="doubleVectorBaseType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Vector with semicolon seperated values of type double</ddue:para>
+                        <ddue:para>Vector with semicolon separated values of type double</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>Any entries of type <ddue:legacyItalic>double</ddue:legacyItalic> separated by semicolons are permitted, e.g.:</ddue:para>
+                            <ddue:code language="XML" title="Example 1: valid double vector">
+&lt;doubleVectorTest&gt;123.456;+123.456;-1.234e56;-.45E-6;NaN&lt;/doubleVectorTest&gt;
+                       	    </ddue:code>
+                            <ddue:code language="XML" title="Example 2: valid double vector with only one entry">
+&lt;doubleVectorTest&gt;123.456&lt;/doubleVectorTest&gt;
+                            </ddue:code>
+                            <ddue:code language="XML" title="Example 3: invalid double vector due to comma separation">
+&lt;doubleVectorTest&gt;123.456,+1234.456&lt;/doubleVectorTest&gt;
+                            </ddue:code>
+                            <ddue:code language="XML" title="Example 4: invalid double vector due to string entry">
+&lt;doubleVectorTest&gt;123.456;mainWingUID&lt;/doubleVectorTest&gt;
+                            </ddue:code>
+                            <ddue:code language="XML" title="Example 5: invalid double vector due invalid double values">
+&lt;doubleVectorTest&gt;123.456;1234.4E 56;-1.234e5.6&lt;/doubleVectorTest&gt;
+                            </ddue:code>
+                        </ddue:content>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
         <xsd:simpleContent>
             <xsd:restriction base="stringVectorBaseType">
-                <xsd:pattern value="([-+]?(\d+)?.\d+(([eE][-+]?)?\d+)?|(NaN))(;(([-+]?(\d+)?.\d+(([eE][-+]?)?\d+)?)|(NaN)))*"/>
+                <xsd:pattern value="([-+]?(\d+)?(\.\d+)?(([eE][-+]?)?\d+)?|(NaN))(;(([-+]?(\d+)?(\.\d+)?(([eE][-+]?)?\d+)?)|(NaN)))*"/>
             </xsd:restriction>
         </xsd:simpleContent>
     </xsd:complexType>
-
+    
     <xsd:complexType name="uIDReferenceVectorBaseType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Vector with semicolon seperated uID references</ddue:para>
+                        <ddue:para>Vector with semicolon separated uID references</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>Any <ddue:legacyItalic>uID</ddue:legacyItalic>-references separated by semicolons are permitted, e.g.:</ddue:para>
+                            <ddue:code language="XML" title="Example 1: valid uID-references vector">
+&lt;uidVectorTest&gt;wing1;wing2;wing3&lt;/uidVectorTest&gt;
+                            </ddue:code>
+                            <ddue:code language="XML" title="Example 2: valid uID-references vector with only one entry">
+&lt;uidVectorTest&gt;wing1&lt;/uidVectorTest&gt;
+                            </ddue:code>
+                            <ddue:code language="XML" title="Example 3: invalid uID-references vector due to invalid xs:NCName specification">
+&lt;uidVectorTest&gt;wing:1;wing:2&lt;/uidVectorTest&gt;
+                            </ddue:code>
+                            <ddue:code language="XML" title="Example 4: invalid uID-references vector due to comma separation">
+&lt;uidVectorTest&gt;wing1,wing2,wing3&lt;/uidVectorTest&gt;
+                            </ddue:code>
+                        </ddue:content>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -1003,8 +1060,28 @@ marko.alder@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Vector with semicolon seperated positive integer values</ddue:para>
+                        <ddue:para>Vector with semicolon separated positive integer values</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>Any positive integer values separated by semicolons are permitted, e.g.:</ddue:para>
+                            <ddue:code language="XML" title="Example 1: valid integer vector">
+&lt;uidVectorTest&gt;0;1;2;3;4;5&lt;/uidVectorTest&gt;
+                            </ddue:code>
+                            <ddue:code language="XML" title="Example 2: valid integer vector with only one entry">
+&lt;uidVectorTest&gt;1&lt;/uidVectorTest&gt;
+                            </ddue:code>
+                            <ddue:code language="XML" title="Example 3: invalid integer vector due comma separation">
+&lt;uidVectorTest&gt;0,1,2,3,4,5&lt;/uidVectorTest&gt;
+                            </ddue:code>
+                            <ddue:code language="XML" title="Example 4: invalid integer vector due to invalid integer">
+&lt;uidVectorTest&gt;0.;1.;2.&lt;/uidVectorTest&gt;
+                            </ddue:code>
+                            <ddue:code language="XML" title="Example 5: invalid integer vector due to negative value">
+&lt;uidVectorTest&gt;-1;0;1&lt;/uidVectorTest&gt;
+                            </ddue:code>
+                        </ddue:content>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -1025,14 +1102,72 @@ marko.alder@dlr.de
                     <ddue:remarks>
                         <ddue:para>Base type for string array nodes (including maptype
                             array attribute)</ddue:para>
+                        <ddue:para>DEPRECATED: As of CPACCS version 3.3, the <ddue:legacyItalic>mapType</ddue:legacyItalic> attribute is set to optional to ensure the compatibility of older data records. However, since the type is uniquely defined via the XSD, the attribute is superfluous and will therefore be completely omitted in future versions. </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
         <xsd:simpleContent>
             <xsd:extension base="stringBaseType">
-                <xsd:attribute fixed="array" name="mapType" type="xsd:string" use="required"/>
+                <xsd:attribute fixed="array" name="mapType" type="xsd:string"/>
             </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="doubleArrayBaseType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Array with semicolon separated values of type double</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>In <ddue:legacyItalic>CPACS</ddue:legacyItalic> arrays are used to exchange values 
+                            in full-factorial parameter spaces, for example to describe the aerodynamic coefficients depending 
+                            on Mach number and altitude.
+                            </ddue:para>
+                            <ddue:para>Thus, the dimensions of the array are spanned by the input vectors. See the following 
+                            example where two input vectors are defined. For clarification the entries of the array result from 
+                            the multiplication of the index values of the corresponding input vectors:</ddue:para>
+                            <ddue:code language="XML" title="Input vectors">
+&lt;inputVector1&gt;1;2;3&lt;/inputVector1&gt;
+&lt;inputVector2&gt;4;5;6;7&lt;/inputVector2&gt;
+                            </ddue:code>
+                            <ddue:code language="XML" title="Resulting 3x4 array">
+&lt;array&gt;4;5;6;7;8;10;12;14;12;15;18;21&lt;/array&gt;
+                            </ddue:code>                         
+                            <ddue:para>Any entries of type <ddue:legacyItalic>double</ddue:legacyItalic> separated by semicolons are valid, e.g.:</ddue:para>
+                            <ddue:code language="XML" title="Example 1: valid double array">
+&lt;doubleArrayTest&gt;123.456;+123.456;-1.234e56;-.45E-6;NaN;0&lt;/doubleArrayTest&gt;
+                            </ddue:code>
+                            <ddue:code language="XML" title="Example 2: valid double array with only one entry">
+&lt;doubleArrayTest&gt;123.456&lt;/doubleArrayTest&gt;
+                            </ddue:code>
+                            <ddue:code language="XML" title="Example 3: invalid double array due to comma separation">
+&lt;doubleArrayTest&gt;123.456,+1234.456&lt;/doubleArrayTest&gt;
+                            </ddue:code>
+                            <ddue:code language="XML" title="Example 4: invalid double array due to string entry">
+&lt;doubleArrayTest&gt;123.456;mainWingUID&lt;/doubleArrayTest&gt;
+                            </ddue:code>
+                            <ddue:code language="XML" title="Example 5: invalid double array due invalid double values">
+&lt;doubleArrayTest&gt;1234.4E 56;-1.234e5.6&lt;/doubleArrayTest&gt;
+                            </ddue:code>
+                            <ddue:para>
+                                Please note that the syntax of arrays in the current <ddue:legacyItalic>CPACS</ddue:legacyItalic> 
+                                version correspond exactly to the syntax of vectors. There is no special character indicating
+                                the dimensions. Thus, the input vectors have to be determined from the documentation of the 
+                                corresponding elements and splitting of the one-dimensional vector has to be done manually.
+                            </ddue:para>
+                        </ddue:content>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:simpleContent>
+            <xsd:restriction base="stringArrayBaseType">
+                <xsd:pattern value="([-+]?(\d+)?(\.\d+)?(([eE][-+]?)?\d+)?|(NaN))(;(([-+]?(\d+)?(\.\d+)?(([eE][-+]?)?\d+)?)|(NaN)))*"/>
+            </xsd:restriction>
         </xsd:simpleContent>
     </xsd:complexType>
 
@@ -2711,7 +2846,8 @@ marko.alder@dlr.de
                     <xsd:element minOccurs="0" name="aeroPerformance"
                         type="aeroPerformanceType" />
                     <xsd:element minOccurs="0" name="aeroelastics"
-                        type="aeroelasticsType" />
+                        type="aeroelasticsType" />
+
                     <xsd:element minOccurs="0"
                         name="dynamicAircraftModel"
                         type="dynamicAircraftModelAnalysisType" />
@@ -2742,7 +2878,8 @@ marko.alder@dlr.de
                     <xsd:element minOccurs="0" name="weightAndBalance"
                         type="weightAndBalanceType" />
                     <xsd:element minOccurs="0" name="paxFlow"
-                        type="xsd:string" />
+                        type="xsd:string" />
+
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
@@ -2813,7 +2950,8 @@ marko.alder@dlr.de
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element minOccurs="0" name="reference" type="referenceType"/>
+                    <xsd:element minOccurs="0" name="reference" type="referenceType"/>
+
                     <xsd:element minOccurs="0" name="fuselages" type="fuselagesType"/>
                     <xsd:element minOccurs="0" name="wings" type="wingsType"/>
                     <xsd:element minOccurs="0" name="engines" type="enginePositionsType"/>
@@ -9737,6 +9875,8 @@ marko.alder@dlr.de
                 <xsd:attribute name="symmetry">
                     <xsd:simpleType>
                         <xsd:restriction base="xsd:string">
+                            <xsd:enumeration value="none"/>
+                            <xsd:enumeration value="inherit"/>
                             <xsd:enumeration value="x-y-plane"/>
                             <xsd:enumeration value="x-z-plane"/>
                             <xsd:enumeration value="y-z-plane"/>
@@ -9817,6 +9957,8 @@ marko.alder@dlr.de
                 <xsd:attribute name="symmetry">
                     <xsd:simpleType>
                         <xsd:restriction base="xsd:string">
+                            <xsd:enumeration value="none"/>
+                            <xsd:enumeration value="inherit"/>
                             <xsd:enumeration value="x-y-plane"/>
                             <xsd:enumeration value="x-z-plane"/>
                             <xsd:enumeration value="y-z-plane"/>
@@ -12502,6 +12644,8 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                 <xsd:attribute name="symmetry">
                     <xsd:simpleType>
                         <xsd:restriction base="xsd:string">
+                            <xsd:enumeration value="none"/>
+                            <xsd:enumeration value="inherit"/>
                             <xsd:enumeration value="x-y-plane"/>
                             <xsd:enumeration value="x-z-plane"/>
                             <xsd:enumeration value="y-z-plane"/>
@@ -12893,6 +13037,8 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                 <xsd:attribute name="symmetry">
                     <xsd:simpleType>
                         <xsd:restriction base="xsd:string">
+                            <xsd:enumeration value="none"/>
+                            <xsd:enumeration value="inherit"/>          
                             <xsd:enumeration value="x-y-plane"/>
                             <xsd:enumeration value="x-z-plane"/>
                             <xsd:enumeration value="y-z-plane"/>
@@ -13056,96 +13202,14 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                 <xsd:attribute name="symmetry">
                     <xsd:simpleType>
                         <xsd:restriction base="xsd:string">
+                            <xsd:enumeration value="none"/>
+                            <xsd:enumeration value="inherit"/>
                             <xsd:enumeration value="x-y-plane"/>
                             <xsd:enumeration value="x-z-plane"/>
                             <xsd:enumeration value="y-z-plane"/>
                         </xsd:restriction>
                     </xsd:simpleType>
                 </xsd:attribute>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="geogenWingOutputOptionsType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>geogenWingOutputOptionsType</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>The geogenWingOutputOptionsType contains options used
-                            during the export of a wing from CATIA to CPACS.</ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="destinationWingUID" type="stringBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Destination UID of the wing which will be
-                                written into the CPACS file.</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element minOccurs="0" name="parentUID" type="stringUIDBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>UID of part to which the wing is mounted (if
-                                any). The parent of the wing can e.g. be the fuselage. In each
-                                aircraft model, there is exactly one part without a parent part
-                                (The root of the connection hierarchy).</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element minOccurs="0" name="symmetry">
-                        <xsd:annotation>
-                            <xsd:documentation>If there exists a mirrored counterpart of the
-                                wing: specify the symmetry plane here</xsd:documentation>
-                        </xsd:annotation>
-                        <xsd:complexType>
-                            <xsd:simpleContent>
-                                <xsd:restriction base="stringBaseType">
-                                    <xsd:enumeration value="x-y-plane"/>
-                                    <xsd:enumeration value="x-z-plane"/>
-                                    <xsd:enumeration value="y-z-plane"/>
-                                </xsd:restriction>
-                            </xsd:simpleContent>
-                        </xsd:complexType>
-                    </xsd:element>
-                    <xsd:element minOccurs="0" name="sectionDistributionMode">
-                        <xsd:annotation>
-                            <xsd:documentation>Section distribution mode. If not specified,
-                                the value specified in the global output options is used.
-                            </xsd:documentation>
-                        </xsd:annotation>
-                        <xsd:complexType>
-                            <xsd:simpleContent>
-                                <xsd:restriction base="stringBaseType">
-                                    <xsd:enumeration value="automatic"/>
-                                    <xsd:enumeration value="distributionLawEquidistant"/>
-                                    <xsd:enumeration value="distributionLawFullCosine"/>
-                                    <xsd:enumeration value="distributionLawHalfCosineFront"/>
-                                    <xsd:enumeration value="distributionLawHalfCosineRear"/>
-                                    <xsd:enumeration value="manual"/>
-                                </xsd:restriction>
-                            </xsd:simpleContent>
-                        </xsd:complexType>
-                    </xsd:element>
-                    <xsd:element minOccurs="0" name="numberOfSections" type="integerBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Number of sections. If not specified, the
-                                value specified in the global output options is used.
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element minOccurs="0" name="numberOfPointsPerSection" type="integerBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Number of points per section. If not
-                                specified, the value specified in the global output options is
-                                used.</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -13368,6 +13432,8 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                 <xsd:attribute name="symmetry">
                     <xsd:simpleType>
                         <xsd:restriction base="xsd:string">
+                            <xsd:enumeration value="none"/>
+                            <xsd:enumeration value="inherit"/>
                             <xsd:enumeration value="x-y-plane"/>
                             <xsd:enumeration value="x-z-plane"/>
                             <xsd:enumeration value="y-z-plane"/>
@@ -18053,6 +18119,8 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                 <xsd:attribute name="symmetry">
                     <xsd:simpleType>
                         <xsd:restriction base="xsd:string">
+                            <xsd:enumeration value="none"/>
+                            <xsd:enumeration value="inherit"/>
                             <xsd:enumeration value="x-y-plane"/>
                             <xsd:enumeration value="x-z-plane"/>
                             <xsd:enumeration value="y-z-plane"/>
@@ -20441,6 +20509,8 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                 <xsd:attribute name="symmetry">
                     <xsd:simpleType>
                         <xsd:restriction base="xsd:string">
+                            <xsd:enumeration value="none"/>
+                            <xsd:enumeration value="inherit"/>
                             <xsd:enumeration value="x-y-plane"/>
                             <xsd:enumeration value="x-z-plane"/>
                             <xsd:enumeration value="y-z-plane"/>
@@ -21452,6 +21522,8 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                 <xsd:attribute name="symmetry">
                     <xsd:simpleType>
                         <xsd:restriction base="xsd:string">
+                            <xsd:enumeration value="none"/>
+                            <xsd:enumeration value="inherit"/>
                             <xsd:enumeration value="x-y-plane"/>
                             <xsd:enumeration value="x-z-plane"/>
                             <xsd:enumeration value="y-z-plane"/>
@@ -21533,6 +21605,8 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                 <xsd:attribute name="symmetry">
                     <xsd:simpleType>
                         <xsd:restriction base="xsd:string">
+                            <xsd:enumeration value="none"/>
+                            <xsd:enumeration value="inherit"/>
                             <xsd:enumeration value="x-axis"/>
                             <xsd:enumeration value="y-axis"/>
                         </xsd:restriction>
@@ -22842,6 +22916,8 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                 <xsd:attribute name="symmetry">
                     <xsd:simpleType>
                         <xsd:restriction base="xsd:string">
+                            <xsd:enumeration value="none"/>
+                            <xsd:enumeration value="inherit"/>
                             <xsd:enumeration value="x-y-plane"/>
                             <xsd:enumeration value="x-z-plane"/>
                             <xsd:enumeration value="y-z-plane"/>
@@ -23933,6 +24009,8 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                 <xsd:attribute name="symmetry">
                     <xsd:simpleType>
                         <xsd:restriction base="xsd:string">
+                            <xsd:enumeration value="none"/>
+                            <xsd:enumeration value="inherit"/>
                             <xsd:enumeration value="x-y-plane"/>
                             <xsd:enumeration value="x-z-plane"/>
                             <xsd:enumeration value="y-z-plane"/>
@@ -28610,6 +28688,8 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                 <xsd:attribute name="symmetry">
                     <xsd:simpleType>
                         <xsd:restriction base="xsd:string">
+                            <xsd:enumeration value="none"/>
+                            <xsd:enumeration value="inherit"/>
                             <xsd:enumeration value="x-y-plane"/>
                             <xsd:enumeration value="x-z-plane"/>
                             <xsd:enumeration value="y-z-plane"/>
@@ -29981,7 +30061,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:extension base="complexBaseType">
                 <xsd:all>
                     <xsd:element name="altitude"
-                        type="stringVectorBaseType">
+                        type="doubleVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
                                 Altitude [m]
@@ -29989,7 +30069,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="machNumber"
-                        type="stringVectorBaseType">
+                        type="doubleVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
                                 Mach number
@@ -29997,7 +30077,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="angleOfSideslip"
-                        type="stringVectorBaseType">
+                        type="doubleVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
                                 Sideslip angle [deg]
@@ -30005,7 +30085,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="angleOfAttack"
-                        type="stringVectorBaseType">
+                        type="doubleVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
                                 Angle of attack [deg]
@@ -30013,7 +30093,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element minOccurs="0" name="cd"
-                        type="stringVectorBaseType">
+                        type="doubleVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
                                 Drag coefficient in aerodynamic
@@ -30022,7 +30102,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element minOccurs="0" name="cs"
-                        type="stringVectorBaseType">
+                        type="doubleVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
                                 Coefficient of the side force vector in
@@ -30032,7 +30112,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element minOccurs="0" name="cl"
-                        type="stringVectorBaseType">
+                        type="doubleVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
                                 Lift coefficient in aerodynamic
@@ -30041,11 +30121,11 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element minOccurs="0" name="cmd"
-                        type="stringVectorBaseType" />
+                        type="doubleVectorBaseType" />
                     <xsd:element minOccurs="0" name="cms"
-                        type="stringVectorBaseType" />
+                        type="doubleVectorBaseType" />
                     <xsd:element minOccurs="0" name="cml"
-                        type="stringVectorBaseType" />
+                        type="doubleVectorBaseType" />
                     <xsd:element minOccurs="0" name="dampingDerivatives"
                         type="dampingDerivativesRatesType"/>
                     <xsd:element name="incrementMaps"
@@ -30105,7 +30185,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                                 </xsd:annotation>
                             </xsd:element>
                             <xsd:element name="controlParameters"
-                            type="stringVectorBaseType">
+                            type="doubleVectorBaseType">
                                 <xsd:annotation>
                                     <xsd:documentation>Value of the command parameters of a control distributor. If not given explicitly in the control distributor, linear interpolation between the neighboring points is required.</xsd:documentation>
                                 </xsd:annotation>
@@ -30119,44 +30199,44 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                                 </xsd:annotation>
                             </xsd:element>
                             <xsd:element name="commandInputs"
-                            type="stringVectorBaseType">
+                            type="doubleVectorBaseType">
                                 <xsd:annotation>
                                     <xsd:documentation>Command inputs of a control distributor given as vector. If not given explicitly in the control distributor, linear interpolation between the neighboring points is required.</xsd:documentation>
                                 </xsd:annotation>
                             </xsd:element>
                         </xsd:sequence>
                     </xsd:choice>
-                    <xsd:element name="dcd" type="stringArrayBaseType"
+                    <xsd:element name="dcd" type="doubleArrayBaseType"
                         maxOccurs="1" minOccurs="0">
                         <xsd:annotation>
                             <xsd:documentation>Increment of drag coefficient in aerodynamic coordinates</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="dcs" type="stringArrayBaseType"
+                    <xsd:element name="dcs" type="doubleArrayBaseType"
                         maxOccurs="1" minOccurs="0">
                         <xsd:annotation>
                             <xsd:documentation>Increment of coefficient of the side force vector in aerodynamic coordinates (perpendicular to lift and drag)</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="dcl" type="stringArrayBaseType"
+                    <xsd:element name="dcl" type="doubleArrayBaseType"
                         maxOccurs="1" minOccurs="0">
                         <xsd:annotation>
                             <xsd:documentation>Increment of lift coefficient in aerodynamic coordinates</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="dcmd" type="stringArrayBaseType"
+                    <xsd:element name="dcmd" type="doubleArrayBaseType"
                         maxOccurs="1" minOccurs="0">
                         <xsd:annotation>
                             <xsd:documentation>Increment of cmd</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="dcms" type="stringArrayBaseType"
+                    <xsd:element name="dcms" type="doubleArrayBaseType"
                         maxOccurs="1" minOccurs="0">
                         <xsd:annotation>
                             <xsd:documentation>Increment of cms</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="dcml" type="stringArrayBaseType"
+                    <xsd:element name="dcml" type="doubleArrayBaseType"
                         maxOccurs="1" minOccurs="0">
                         <xsd:annotation>
                             <xsd:documentation>Increment of cml</xsd:documentation>
@@ -30190,7 +30270,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:extension base="complexBaseType">
                 <xsd:all>
                     <xsd:element name="altitude"
-                        type="stringVectorBaseType">
+                        type="doubleVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
                                 Altitude [m]
@@ -30198,7 +30278,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="machNumber"
-                        type="stringVectorBaseType">
+                        type="doubleVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
                                 Mach number
@@ -30241,7 +30321,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                                 </xsd:annotation>
                             </xsd:element>
                             <xsd:element name="controlParameters"
-                            type="stringVectorBaseType">
+                            type="doubleVectorBaseType">
                                 <xsd:annotation>
                                     <xsd:documentation>Value of the command parameters of a control distributor. If not given explicitly in the control distributor, linear interpolation between the neighboring points is required.</xsd:documentation>
                                 </xsd:annotation>
@@ -30255,7 +30335,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                                 </xsd:annotation>
                             </xsd:element>
                             <xsd:element name="commandInputs"
-                            type="stringVectorBaseType">
+                            type="doubleVectorBaseType">
                                 <xsd:annotation>
                                     <xsd:documentation>Command inputs of a control distributor given as vector. If not given explicitly in the control distributor, linear interpolation between the neighboring points is required.</xsd:documentation>
                                 </xsd:annotation>
@@ -30352,92 +30432,92 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element minOccurs="0" name="dcddpstar" type="stringVectorBaseType">
+                    <xsd:element minOccurs="0" name="dcddpstar" type="doubleVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Change of cd by normalized roll rate</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element minOccurs="0" name="dcddqstar" type="stringVectorBaseType">
+                    <xsd:element minOccurs="0" name="dcddqstar" type="doubleVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Change of cd by normalized pitch rate</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element minOccurs="0" name="dcddrstar" type="stringVectorBaseType">
+                    <xsd:element minOccurs="0" name="dcddrstar" type="doubleVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Change of cd by normalized yaw rate</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element minOccurs="0" name="dcsdpstar" type="stringVectorBaseType">
+                    <xsd:element minOccurs="0" name="dcsdpstar" type="doubleVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Change of cs by normalized roll rate</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element minOccurs="0" name="dcsdqstar" type="stringVectorBaseType">
+                    <xsd:element minOccurs="0" name="dcsdqstar" type="doubleVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Change of cs by normalized pitch rate</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element minOccurs="0" name="dcsdrstar" type="stringVectorBaseType">
+                    <xsd:element minOccurs="0" name="dcsdrstar" type="doubleVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Change of cs by normalized yaw rate</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element minOccurs="0" name="dcldpstar" type="stringVectorBaseType">
+                    <xsd:element minOccurs="0" name="dcldpstar" type="doubleVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Change of cl by normalized roll rate</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element minOccurs="0" name="dcldqstar" type="stringVectorBaseType">
+                    <xsd:element minOccurs="0" name="dcldqstar" type="doubleVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Change of cl by normalized pitch rate</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element minOccurs="0" name="dcldrstar" type="stringVectorBaseType">
+                    <xsd:element minOccurs="0" name="dcldrstar" type="doubleVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Change of cl by normalized yaw rate</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element minOccurs="0" name="dcmddpstar" type="stringVectorBaseType">
+                    <xsd:element minOccurs="0" name="dcmddpstar" type="doubleVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Change of cmd by normalized roll rate</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element minOccurs="0" name="dcmddqstar" type="stringVectorBaseType">
+                    <xsd:element minOccurs="0" name="dcmddqstar" type="doubleVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Change of cmd by normalized pitch rate</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element minOccurs="0" name="dcmddrstar" type="stringVectorBaseType">
+                    <xsd:element minOccurs="0" name="dcmddrstar" type="doubleVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Change of cmd by normalized yaw rate</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element minOccurs="0" name="dcmsdpstar" type="stringVectorBaseType">
+                    <xsd:element minOccurs="0" name="dcmsdpstar" type="doubleVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Change of cms by normalized roll rate</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element minOccurs="0" name="dcmsdqstar" type="stringVectorBaseType">
+                    <xsd:element minOccurs="0" name="dcmsdqstar" type="doubleVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Change of cms by normalized pitch rate</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element minOccurs="0" name="dcmsdrstar" type="stringVectorBaseType">
+                    <xsd:element minOccurs="0" name="dcmsdrstar" type="doubleVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Change of cms by normalized yaw rate</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element minOccurs="0" name="dcmldpstar" type="stringVectorBaseType">
+                    <xsd:element minOccurs="0" name="dcmldpstar" type="doubleVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Change of cml by normalized roll rate</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element minOccurs="0" name="dcmldqstar" type="stringVectorBaseType">
+                    <xsd:element minOccurs="0" name="dcmldqstar" type="doubleVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Change of cml by normalized pitch rate</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element minOccurs="0" name="dcmldrstar" type="stringVectorBaseType">
+                    <xsd:element minOccurs="0" name="dcmldrstar" type="doubleVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Change of cml by normalized yaw rate</xsd:documentation>
                         </xsd:annotation>
@@ -30468,13 +30548,13 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:extension base="complexBaseType">
                 <xsd:all>
                     <xsd:element name="angleOfSideslip"
-                        type="stringVectorBaseType">
+                        type="doubleVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Sideslip angle defining the operation limit. Must be a vector of the same length as angleOfAttack, machNumber and altitude. [deg]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="angleOfAttack"
-                        type="stringVectorBaseType">
+                        type="doubleVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Angle of attack defining the operation limit. Must be a vector of the same length as angleOfSideslip, machNumber and altitude. [deg]</xsd:documentation>
                         </xsd:annotation>
@@ -30489,13 +30569,13 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:extension base="complexBaseType">
                 <xsd:all>
                     <xsd:element name="angleOfSideslip"
-                        type="stringArrayBaseType">
+                        type="doubleArrayBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Sideslip angle [deg]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="angleOfAttack"
-                        type="stringArrayBaseType">
+                        type="doubleArrayBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Angle of attack [deg]</xsd:documentation>
                         </xsd:annotation>
@@ -30624,7 +30704,8 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
-                <xsd:sequence>                    <xsd:element name="loadApplicationPointSet"
+                <xsd:sequence>
+                    <xsd:element name="loadApplicationPointSet"
                         type="loadApplicationPointSetType"
                         minOccurs="1" maxOccurs="unbounded">
                     </xsd:element>
@@ -30799,7 +30880,8 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                                     Internal pressure [Pa]  
                             </xsd:documentation>
                         </xsd:annotation>
-                    </xsd:element>
+                    </xsd:element>
+
                  </xsd:all>
              </xsd:extension>
          </xsd:complexContent>
@@ -31301,7 +31383,8 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         <xsd:annotation>
                             <xsd:documentation>...</xsd:documentation>
                         </xsd:annotation>
-                    </xsd:element>
+                    </xsd:element>
+
                 </xsd:all>
     
             </xsd:extension>
