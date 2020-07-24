@@ -437,6 +437,7 @@ marko.alder@dlr.de
                                 <ddue:content>
                                     <ddue:para>Release in ... 2020</ddue:para>
                                     <ddue:list class="bullet">
+                                        <ddue:listItem>Revision of loadAnalysisType (compatibility break)</ddue:listItem>
                                         <ddue:listItem>Add new base types: doubleVectorBaseType, posIntVectorBaseType, uIDReferenceVectorBaseType, doubleArrayBaseType</ddue:listItem>
                                         <ddue:listItem>Add 'none' and 'inherit' to list of symmetry flags</ddue:listItem>
                                         <ddue:listItem>Set mapType attribute of vector and array elements to optional (requires TiXI&gt;=3.1)</ddue:listItem>
@@ -10472,7 +10473,7 @@ marko.alder@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>flight load cases</ddue:para>
+                        <ddue:para>Flight load cases</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para/>
@@ -10496,7 +10497,7 @@ marko.alder@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>flight loads</ddue:para>
+                        <ddue:para>Flight loads</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para/>
@@ -13357,7 +13358,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>groundLoadCasesType</ddue:para>
+                        <ddue:para>Ground load Cases</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para/>
@@ -13369,7 +13370,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
                     <xsd:element maxOccurs="unbounded"
-                        name="groundLoadCase" type="loadCaseType" />
+                        name="groundLoadCase" type="loadCaseType"/>
                 </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
@@ -14986,8 +14987,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:element minOccurs="0" name="crashLoadCases" type="crashLoadCasesType"/>
                     <xsd:element minOccurs="0" name="flightLoadCases" type="flightLoadCasesType"/>
                     <xsd:element minOccurs="0" name="groundLoadCases" type="groundLoadCasesType"/>
-                    <xsd:element minOccurs="0" name="aeroCases"
-                        type="aeroCasesType" />
+                    <xsd:element minOccurs="0" name="aeroCases" type="aeroCasesType"/>
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
@@ -30673,7 +30673,6 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
-
     <xsd:complexType name="aircraftAnalysesGlobalType">
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
@@ -30790,139 +30789,130 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
-     <xsd:complexType name="aircraftConfigurationsType">
-         <xsd:annotation>
-             <xsd:appinfo>
-                 <sd:schemaDoc>
-                     <ddue:summary>
-                         <ddue:para>Aircraft configurations</ddue:para>
-                     </ddue:summary>
-                     <ddue:remarks>
-                         <ddue:para>
-                             List of aircraft configurations.
-                         </ddue:para>
-                     </ddue:remarks>
-                 </sd:schemaDoc>
-             </xsd:appinfo>
-         </xsd:annotation>
-         <xsd:complexContent>
-             <xsd:extension base="complexBaseType">
-                 <xsd:sequence>
-                     <xsd:element name="configuration"
-                         type="aircraftConfigurationType"
-                         maxOccurs="unbounded" minOccurs="1">
-                     </xsd:element>
-                 </xsd:sequence>
-             </xsd:extension>
-         </xsd:complexContent>
-     </xsd:complexType>
-
-     <xsd:complexType name="aircraftConfigurationType">
-         <xsd:annotation>
-             <xsd:appinfo>
-                 <sd:schemaDoc>
-                     <ddue:summary>
-                         <ddue:para>Aircraft configurations</ddue:para>
-                     </ddue:summary>
-                     <ddue:remarks>
-                         <ddue:para>
-                             List of aircraft configurations.
-                         </ddue:para>
-                     </ddue:remarks>
-                 </sd:schemaDoc>
-             </xsd:appinfo>
-         </xsd:annotation>
-         <xsd:complexContent>
-             <xsd:extension base="complexBaseType">
-                <xsd:all>
-                     <xsd:element name="controlElements"
-                         type="aircraftControlElementsType"
-                         maxOccurs="1" minOccurs="0">
-                     </xsd:element>
-                     <xsd:element name="cabinPressures"
-                         type="cabinPressuresType" maxOccurs="1"
-                         minOccurs="0">
-                     </xsd:element>
-                </xsd:all>
-                 <xsd:attribute name="uID" type="xsd:ID" use="required"></xsd:attribute>
-             </xsd:extension>
-         </xsd:complexContent>
-     </xsd:complexType>
-
-     <xsd:complexType name="cabinPressureType">
+    <xsd:complexType name="aircraftConfigurationsType">
         <xsd:annotation>
-             <xsd:appinfo>
-                 <sd:schemaDoc>
-                     <ddue:summary>
-                         <ddue:para>Cabin pressure</ddue:para>
-                     </ddue:summary>
-                     <ddue:remarks>
-                         <ddue:para>
-                             Internal pressure of a fuselage, cabin or compartment.
-                         </ddue:para>
-                     </ddue:remarks>
-                 </sd:schemaDoc>
-             </xsd:appinfo>
-         </xsd:annotation>
-         <xsd:complexContent>
-             <xsd:extension base="complexBaseType">
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Aircraft configurations</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>
+                            List of aircraft configurations
+                        </ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="configuration" type="aircraftConfigurationType" maxOccurs="unbounded" minOccurs="1">
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="aircraftConfigurationType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Aircraft configurations</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>
+                            List of aircraft configurations
+                        </ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="controlElements" type="aircraftControlElementsType" maxOccurs="1" minOccurs="0">
+                    </xsd:element>
+                    <xsd:element name="cabinPressures" type="cabinPressuresType" maxOccurs="1" minOccurs="0">
+                    </xsd:element>
+                </xsd:all>
+                <xsd:attribute name="uID" type="xsd:ID" use="required"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="cabinPressureType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Cabin pressure</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>
+                            Internal pressure of a fuselage, cabin or compartment.
+                        </ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
                 <xsd:all>
                     <xsd:element name="cabinUID" type="stringUIDBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
-                                    UID of a fuselage, cabin or compartment  
+                                UID of a fuselage, cabin or compartment
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="pressure" type="doubleBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
-                                    Internal pressure [Pa]  
+                                Internal pressure [Pa]
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
 
-                 </xsd:all>
-             </xsd:extension>
-         </xsd:complexContent>
-     </xsd:complexType>
-
-     <xsd:complexType name="cabinPressuresType">
+    <xsd:complexType name="cabinPressuresType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Set of forces and moments</ddue:para>
+                        <ddue:para>Cabin pressures</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>
-                            ...
+                            A list of cabins for which the cabin pressure is specified
                         </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
-         <xsd:complexContent>
-             <xsd:extension base="complexBaseType">
-                 <xsd:sequence>
-                     <xsd:element name="cabinPressure"
-                         type="cabinPressureType" maxOccurs="unbounded"
-                         minOccurs="1">
-                     </xsd:element>
-                 </xsd:sequence>
-             </xsd:extension>
-         </xsd:complexContent>
-     </xsd:complexType>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="cabinPressure" type="cabinPressureType" maxOccurs="unbounded" minOccurs="1">
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
 
-    <xsd:complexType name="loadsType">
+    <xsd:complexType name="loadSetType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Set of forces and moments</ddue:para>
+                        <ddue:para>Load set</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>...</ddue:para>
+                        <ddue:para>A set of forces and moments</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -30933,105 +30923,105 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:element minOccurs="0" name="description" type="stringBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
-                                    Description  
+                                Description
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="pointSetUID" type="stringUIDBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
-                                    UID of load application point set (analysis/global/loadApplicationPoints)  
+                                UID of load application point set (analysis/global/loadApplicationPoints)
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="fx" type="doubleVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
-                                    Force in x-direction [N]  
+                                Force in x-direction [N]
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="fy" type="doubleVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
-                                    Force in y-direction [N]  
+                                Force in y-direction [N]
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="fz" type="doubleVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
-                                    Force in z-direction [N]  
+                                Force in z-direction [N]
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="mx" type="doubleVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
-                                    Moment around x-axis [Nm]  
+                                Moment around x-axis [Nm]
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="my" type="doubleVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
-                                    Moment around y-axis [Nm]  
+                                Moment around y-axis [Nm]
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="mz" type="doubleVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
-                                    Moment around z-axis [Nm]  
+                                Moment around z-axis [Nm]
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="dx" type="doubleVectorBaseType" minOccurs="0">
                         <xsd:annotation>
                             <xsd:documentation>
-                                    Nodal displacement in x-direction [m]  
+                                Nodal displacement in x-direction [m]
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="dy" type="doubleVectorBaseType" minOccurs="0">
                         <xsd:annotation>
                             <xsd:documentation>
-                                    Nodal displacement in y-direction [m]  
+                                Nodal displacement in y-direction [m]
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="dz" type="doubleVectorBaseType" minOccurs="0">
                         <xsd:annotation>
                             <xsd:documentation>
-                                    Nodal displacement in z-direction [m]  
+                                Nodal displacement in z-direction [m]
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="phix" type="doubleVectorBaseType" minOccurs="0">
                         <xsd:annotation>
                             <xsd:documentation>
-                                    Nodal rotation around x-axis [deg]  
+                                Nodal rotation around x-axis [deg]
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="phiy" type="doubleVectorBaseType" minOccurs="0">
                         <xsd:annotation>
                             <xsd:documentation>
-                                    Nodal rotation around y-axis [deg]  
+                                Nodal rotation around y-axis [deg]
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="phiz" type="doubleVectorBaseType" minOccurs="0">
                         <xsd:annotation>
                             <xsd:documentation>
-                                    Nodal rotation around z-axis [deg]  
+                                Nodal rotation around z-axis [deg]
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element minOccurs="0" name="loadBreakdown" type="loadBreakdownType">
                         <xsd:annotation>
                             <xsd:documentation>
-                                    Load brake-down  
+                                Load brake-down
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
@@ -31040,43 +31030,17 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
-    
-     <xsd:complexType name="loadSetsType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>...</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>
-                            ...
-                        </ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-         <xsd:complexContent>
-             <xsd:extension base="complexBaseType">
-                 <xsd:sequence>
-                     <xsd:element name="loadSet" type="loadsType"
-                         maxOccurs="unbounded" minOccurs="1">
-                     </xsd:element>
-                 </xsd:sequence>
-             </xsd:extension>
-         </xsd:complexContent>
-     </xsd:complexType>
 
-    <xsd:complexType name="aeroCasesType">
+    <xsd:complexType name="loadSetsType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>...</ddue:para>
+                        <ddue:para>Load sets</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>
-                            ...
+                            A list of load sets
                         </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -31085,29 +31049,47 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:element name="aeroCase" type="aeroCaseType"
-                             maxOccurs="unbounded" minOccurs="1">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                        ...  
-                            </xsd:documentation>
-                        </xsd:annotation>
+                    <xsd:element name="loadSet" type="loadSetType" maxOccurs="unbounded" minOccurs="1">
                     </xsd:element>
                 </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
-    
+
+    <xsd:complexType name="aeroCasesType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Aerodynamic load cases</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>
+                            Combines a set of aerodynamic load cases
+                        </ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="aeroCase" type="aeroCaseType" maxOccurs="unbounded" minOccurs="1"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
     <xsd:complexType name="aeroCaseType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>...</ddue:para>
+                        <ddue:para>Aerodynamic load case</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>
-                            ...
+                            Specification of an aerodynamic load case
                         </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -31119,60 +31101,38 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:element name="name" type="stringBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
-                                        ...  
+                                Name
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="description"
-                            type="stringBaseType" maxOccurs="1" minOccurs="0">
+                    <xsd:element name="description" type="stringBaseType" maxOccurs="1" minOccurs="0">
                         <xsd:annotation>
                             <xsd:documentation>
-                                        ...  
+                                Description
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="environment"
-                            type="aeroCaseEnvironmentType">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                        ...  
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="state"
-                            type="aeroCaseStateType">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                        ...  
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="aeroData"
-                            type="aeroCaseAeroDataType" minOccurs="0">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                        ...  
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
+                    <xsd:element name="environment" type="aeroCaseEnvironmentType"/>
+                    <xsd:element name="state" type="aeroCaseStateType"/>
+                    <!-- TODO: Sollten wir den Begriff "Data" genauer beschreiben, weil Data sehr allgemein klingt? -->
+                    <xsd:element name="aeroData" type="aeroCaseAeroDataType" minOccurs="0"/>
                 </xsd:all>
-                <xsd:attribute name="uID" type="xsd:ID"
-                         use="required">
+                <xsd:attribute name="uID" type="xsd:ID" use="required">
                 </xsd:attribute>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
-    
+
     <xsd:complexType name="aeroCaseEnvironmentType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>...</ddue:para>
+                        <ddue:para>Environmental conditions</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>
-                            ...
+                            Description of environmental conditions
                         </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -31193,86 +31153,117 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
-    
+
     <xsd:complexType name="aeroCaseStateType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>...</ddue:para>
+                        <ddue:para>State description</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>
-                            ...
+                            State description of the vehicle properties and dynamics
                         </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
         <xsd:sequence>
-            <xsd:element name="altitude" type="doubleBaseType"/>
-            <xsd:element name="machNumber" type="doubleBaseType"/>
-            <xsd:element name="angleOfSideslip" type="doubleBaseType"/>
-            <xsd:choice>
-                <xsd:element name="angleOfAttack" type="doubleBaseType"/>
-                <xsd:element name="targetCl" type="doubleBaseType"/>
-            </xsd:choice>
-            <xsd:element name="pStar" type="doubleBaseType" maxOccurs="1"
-                    minOccurs="0">
+            <xsd:element name="altitude" type="doubleBaseType">
                 <xsd:annotation>
                     <xsd:documentation>
-                                        ...  
+                        Altitude
                     </xsd:documentation>
                 </xsd:annotation>
             </xsd:element>
-            <xsd:element name="qStar" type="doubleBaseType" maxOccurs="1"
-                    minOccurs="0">
+            <xsd:element name="machNumber" type="doubleBaseType">
                 <xsd:annotation>
                     <xsd:documentation>
-                                        ...  
+                        Mach number
                     </xsd:documentation>
                 </xsd:annotation>
             </xsd:element>
-            <xsd:element name="rStar" type="doubleBaseType" maxOccurs="1"
-                    minOccurs="0">
+            <xsd:element name="angleOfSideslip" type="doubleBaseType">
                 <xsd:annotation>
                     <xsd:documentation>
-                                        ...  
+                        Angle of sideslip
                     </xsd:documentation>
                 </xsd:annotation>
             </xsd:element>
             <xsd:choice>
-                <xsd:element name="aircraftConfigurationUID"
-                        type="stringUIDBaseType" maxOccurs="1" minOccurs="0">
+                <xsd:element name="angleOfAttack" type="doubleBaseType">
                     <xsd:annotation>
                         <xsd:documentation>
-                                            ...  
+                            Angle of attack
                         </xsd:documentation>
                     </xsd:annotation>
                 </xsd:element>
-                <xsd:element name="controlElements" type="aircraftControlElementsType" maxOccurs="1" minOccurs="0"/>
+                <xsd:element name="targetCl" type="doubleBaseType">
+                    <xsd:annotation>
+                        <xsd:documentation>
+                            Target lift coefficient
+                        </xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
             </xsd:choice>
-            <xsd:element name="weightAndBalanceUID"
-                    type="stringUIDBaseType" maxOccurs="1" minOccurs="0">
+            <xsd:element name="pStar" type="doubleBaseType" maxOccurs="1" minOccurs="0">
                 <xsd:annotation>
                     <xsd:documentation>
-                                        ...  
+                        Roll rate
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="qStar" type="doubleBaseType" maxOccurs="1" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        Pitch rate
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="rStar" type="doubleBaseType" maxOccurs="1" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        Yaw rate
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:choice>
+                <xsd:element name="aircraftConfigurationUID" type="stringUIDBaseType" maxOccurs="1" minOccurs="0">
+                    <xsd:annotation>
+                        <xsd:documentation>
+                            Reference to aircraft configuration node
+                        </xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
+                <xsd:element name="controlElements" type="aircraftControlElementsType" maxOccurs="1" minOccurs="0">
+                    <xsd:annotation>
+                        <xsd:documentation>
+                            State description of the control elements
+                        </xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
+            </xsd:choice>
+            <xsd:element name="weightAndBalanceUID" type="stringUIDBaseType" maxOccurs="1" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        Reference to a weight and balance description
                     </xsd:documentation>
                 </xsd:annotation>
             </xsd:element>
         </xsd:sequence>
     </xsd:complexType>
-    
+
     <xsd:complexType name="aeroCaseAeroDataType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>...</ddue:para>
+                        <ddue:para>Aerodynamic loads</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>
-                            ...
+                            Description of the aerodynamic loads
                         </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -31281,55 +31272,38 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element name="angleOfAttack"
-                            type="doubleBaseType">
+                    <xsd:element name="angleOfAttack" type="doubleBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
-                                        ...  
+                                Angle of attack
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="angleOfSideslip"
-                            type="doubleBaseType">
+                    <xsd:element name="angleOfSideslip" type="doubleBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
-                                        ...  
+                                Angle of sideslip
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="aircraft"
-                            type="aeroDataAircraftType" maxOccurs="1"
-                            minOccurs="0">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                        ...  
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="components"
-                            type="aeroDataComponentsType" maxOccurs="1"
-                            minOccurs="0">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                        ...  
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
+                    <!-- TODO: War vorher Aircraft. Vielleicht vehicle, damit auch für Hubschrauber anwendbar? -->
+                    <xsd:element name="vehicle" type="aeroDataVehicleType" maxOccurs="1" minOccurs="0"/>
+                    <xsd:element name="components" type="aeroDataComponentsType" maxOccurs="1" minOccurs="0"/>
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
-    
+
     <xsd:complexType name="aeroDataComponentsType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>...</ddue:para>
+                        <ddue:para>Aerodynamic loads of components</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>
-                            ...
+                            Specification of the aerodynamic loads of components
                         </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -31338,745 +31312,23 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:element name="component"
-                             type="aeroDataComponentType"
-                             maxOccurs="unbounded" minOccurs="1">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                        ...  
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
+                    <xsd:element name="component" type="aeroDataComponentType" maxOccurs="unbounded" minOccurs="1"/>
                 </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
-    
+
     <xsd:complexType name="aeroDataComponentType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>...</ddue:para>
+                        <ddue:para>Aerodynamic loads of components</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>
-                            ...
-                        </ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="componentUID"
-                            type="stringUIDBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                        ...  
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="coefficients"
-                        type="aeroCaseCoefficientsType">
-                        <xsd:annotation>
-                            <xsd:documentation>...</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-
-                </xsd:all>
-    
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-    
-    <xsd:complexType name="aeroDataAircraftType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>...</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>
-                            ...
-                        </ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="coefficients"
-                             type="aeroCaseCoefficientsType">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                        ...  
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="coefficientsBreakdown"
-                             type="coefficientsBreakdownType" maxOccurs="1" minOccurs="0">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                        ...  
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-    
-    <xsd:complexType name="aeroCaseCoefficientsType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>...</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>
-                            ...
-                        </ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element minOccurs="0" name="cd"
-                            type="doubleVectorBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                    Drag coefficient in aerodynamic
-                                    coordinates
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element minOccurs="0" name="cs"
-                            type="doubleVectorBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                    Coefficient of the side force vector in
-                                    aerodynamic coordinates (perpendicular
-                                    to lift and drag)
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element minOccurs="0" name="cl"
-                            type="doubleVectorBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                    Lift coefficient in aerodynamic
-                                    coordinates
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element minOccurs="0" name="cmd"
-                            type="doubleVectorBaseType" />
-                    <xsd:element minOccurs="0" name="cms"
-                            type="doubleVectorBaseType" />
-                    <xsd:element minOccurs="0" name="cml"
-                            type="doubleVectorBaseType" />
-                    <xsd:element name="dragFractions" type="dragFractionsType" maxOccurs="1" minOccurs="0"/>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-    
-    <xsd:complexType name="dragFractionsType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>...</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>
-                            ...
-                        </ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="cdPressure"
-                            type="doubleBaseType" minOccurs="0">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                Drag component due to the displacement of the flow around a component. Zero for irrotational two-dimensional flows.  
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="cdViscous"
-                            type="doubleBaseType" minOccurs="0">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                Drag component due to shear forces on surfaces  
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="cdFriction"
-                            type="doubleBaseType" minOccurs="0">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                ...  
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="cdInduced" type="doubleBaseType" minOccurs="0">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                Drag component due to energy loss through vortex structures caused by the pressure difference between the upper and lower sides of three-dimensional lifting surfaces.  
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="cdInterference"
-                             type="doubleBaseType" minOccurs="0">
-                    </xsd:element>
-                    <xsd:element name="cdWave" type="doubleBaseType" minOccurs="0">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                Drag component due to energy dissipation in shock waves  
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="cdTrim" type="doubleBaseType" minOccurs="0">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                Drag component due to trimmed aircraft configuration  
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-    
-    <xsd:complexType name="coefficientsBreakdownType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>...</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>
-                            ...
-                        </ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="wings"
-                             type="coefficientsBreakdownWingsType" maxOccurs="1" minOccurs="0">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                        ...  
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="otherComponents"
-                             type="coefficientsBreakdownComponentsType" maxOccurs="1" minOccurs="0">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                        ...  
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="remaningContributions"
-                             type="remaningContributionsType" maxOccurs="1" minOccurs="0">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                        ...  
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-    
-    <xsd:complexType name="coefficientsBreakdownWingsType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>...</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>
-                            ...
-                        </ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element name="wing"
-                             type="coefficientsBreakdownWingType"
-                             maxOccurs="unbounded" minOccurs="1">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                        ...  
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:sequence>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-    
-    <xsd:complexType name="coefficientsBreakdownWingType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>...</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>
-                            ...
-                        </ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="wingUID"
-                             type="stringUIDBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                        ...  
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="coefficients"
-                             type="aeroCaseCoefficientsType">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                        ...  
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="segments"
-                             type="coefficientsBreakdownWingSegmentsType"
-                             maxOccurs="1" minOccurs="0">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                        ...  
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="remainingContributions"
-                             type="remaningContributionsType" maxOccurs="1"
-                             minOccurs="0">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                        ...  
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-    
-    <xsd:complexType name="coefficientsBreakdownWingSegmentsType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>...</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>
-                            ...
-                        </ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element name="segment"
-                     type="coefficientsBreakdownSegmentType"
-                     maxOccurs="unbounded" minOccurs="1">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                        ...  
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:sequence>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-    
-    <xsd:complexType name="coefficientsBreakdownSegmentType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>...</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>
-                            ...
-                        </ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element name="segmentUID"
-                             type="stringUIDBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                        ...  
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="coefficients"
-                             type="aeroCaseCoefficientsType">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                        ...  
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="strips"
-                             type="coefficientsBreakdownStripsType"
-                             maxOccurs="1" minOccurs="0">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                        ...  
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="remaningContributions"
-                             type="remaningContributionsType" maxOccurs="1"
-                             minOccurs="0">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                        ...  
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:sequence>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-    
-    <xsd:complexType name="coefficientsBreakdownStripsType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>...</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>
-                            ...
-                        </ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element name="strip"
-                             type="coefficientsBreakdownStripType"
-                             maxOccurs="unbounded" minOccurs="1">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                        ...  
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:sequence>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-    
-    <xsd:complexType name="coefficientsBreakdownStripType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>...</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>
-                            ...
-                        </ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="coefficients" type="aeroCaseCoefficientsType">
-                    </xsd:element>
-                    <xsd:element name="reference"
-                             type="coefficientReferenceType">
-                    </xsd:element>
-                    <xsd:element name="chordwiseParts" type="chordwisePartsType" maxOccurs="1" minOccurs="0">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                        ...  
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="remaningContributions" type="remaningContributionsType" maxOccurs="1" minOccurs="0">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                        ...  
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-    
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-    
-    <xsd:complexType name="chordwisePartsType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>...</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>
-                            ...
-                        </ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element name="part" type="chordwisePartType" maxOccurs="unbounded" minOccurs="1">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                        ...  
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-    
-                </xsd:sequence>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-    
-    <xsd:complexType name="chordwisePartType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>...</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>
-                            ...
-                        </ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="coefficients"
-                             type="aeroCaseCoefficientsType">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                        ...  
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="reference" type="coefficientReferenceType">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                        ...  
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-    
-    <xsd:complexType name="remaningContributionsType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>...</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>
-                            ...
-                        </ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="name" type="stringBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                        ...  
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="description"
-                             type="stringBaseType" maxOccurs="1" minOccurs="0">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                        ...  
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="coefficients"
-                             type="aeroCaseCoefficientsType">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                        ...  
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-    
-    <xsd:complexType name="coefficientReferenceType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>...</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>
-                            ...
-                        </ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element name="area" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                        ...  
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="length" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                        ...  
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="geometryPoint"
-                             type="pointXYZType">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                        ...  
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="deformationTranslation"
-                             type="pointXYZType" maxOccurs="1" minOccurs="0">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                        ...  
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="deformationRotation"
-                             type="pointXYZType" maxOccurs="1" minOccurs="0">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                        ...  
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:sequence>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-    
-    <xsd:complexType name="coefficientsBreakdownComponentsType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>...</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>
-                            ...
-                        </ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element name="component"
-                             type="coefficientsBreakdownComponentType"
-                             maxOccurs="unbounded" minOccurs="1">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                        ...  
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:sequence>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-    
-    <xsd:complexType name="coefficientsBreakdownComponentType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>...</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>
-                            ...
+                            <!-- TODO: vielleicht bessere Erlaueterung finden :) -->
+                            Aerodynamic loads of any componenents other than the vehicle itself
                         </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -32088,17 +31340,574 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:element name="componentUID" type="stringUIDBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
-                                        ...  
+                                Reference to a component uID
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="coefficients" type="aeroCaseCoefficientsType">
+                    <xsd:element name="coefficients" type="aeroCaseCoefficientsType"/>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="aeroDataVehicleType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Aerodynamic loads of the vehicle</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>
+                            Description of the aerodynamic loads of the vehicle
+                        </ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="coefficients" type="aeroCaseCoefficientsType"/>
+                    <xsd:element name="coefficientsBreakdown" type="coefficientsBreakdownType" maxOccurs="1" minOccurs="0"/>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="aeroCaseCoefficientsType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Aerodynamic coefficients</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>
+                            A set of aerodynamic coefficients in the aerodynamic coordinate system
+                        </ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element minOccurs="0" name="cd" type="doubleVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
-                                        ...  
+                                Drag coefficient in aerodynamic
+                                coordinates
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
+                    <xsd:element minOccurs="0" name="cs" type="doubleVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Coefficient of the side force vector in
+                                aerodynamic coordinates (perpendicular
+                                to lift and drag)
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="cl" type="doubleVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Lift coefficient in aerodynamic
+                                coordinates
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="cmd" type="doubleVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                <!-- TODO: Bitte pruefen -->
+                                Aerodynamic moment around d-axis of the aerodynamic coordinate system
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="cms" type="doubleVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Aerodynamic moment around s-axis of the aerodynamic coordinate system
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="cml" type="doubleVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Aerodynamic moment around l-axis of the aerodynamic coordinate system
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="dragFractions" type="dragFractionsType" maxOccurs="1" minOccurs="0"/>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="dragFractionsType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Drag fractions</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>
+                            The drag fractions relate to different physical mechanisms. The sum of the fractions does not have to be equal to the total drag.
+                        </ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="cdPressure" type="doubleBaseType" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Drag fraction due to the displacement of the flow around a component. Zero for irrotational two-dimensional flows.
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="cdViscous" type="doubleBaseType" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Drag fraction due to shear forces on surfaces
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="cdFriction" type="doubleBaseType" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Drag fraction due to friction
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="cdInduced" type="doubleBaseType" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Drag fraction due to energy loss through vortex structures caused by the pressure difference between the upper and lower sides of three-dimensional lifting surfaces.
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="cdInterference" type="doubleBaseType" minOccurs="0">
+                    </xsd:element>
+                    <xsd:element name="cdWave" type="doubleBaseType" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Drag fraction due to energy dissipation in shock waves
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="cdTrim" type="doubleBaseType" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Drag fraction due to trimmed aircraft configuration
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="coefficientsBreakdownType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Aerodynamic coefficients breakdown</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>
+                            Breakdown of the total aerodynamic coefficients into contributions 
+                            from the various vehicle componenents. A detailed breakdown is only specified 
+                            for the wing. Other components, such as the fuselage, are more generically 
+                            referred to as <ddue:legacyItalic>otherComponents</ddue:legacyItalic>. Since 
+                            the sum of the contributions within a breakdown must equal the total 
+                            coefficients, the remaining contributions must be listed in 
+                            <ddue:legacyItalic>remainingContributions</ddue:legacyItalic>. 
+                        </ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="wings" type="coefficientsBreakdownWingsType" maxOccurs="1" minOccurs="0"/>
+                    <xsd:element name="otherComponents" type="coefficientsBreakdownComponentsType" maxOccurs="1" minOccurs="0"/>
+                    <xsd:element name="remaningContributions" type="remaningContributionsType" maxOccurs="1" minOccurs="0"/>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="coefficientsBreakdownWingsType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Aerodynamic contributions of the wings</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>
+                            Contains a list of wings for which aerodynamic coefficients are specified
+                        </ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="wing" type="coefficientsBreakdownWingType" maxOccurs="unbounded" minOccurs="1"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="coefficientsBreakdownWingType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Aerodynamic contributions of a wing</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>
+                            Describes the contributions of a specific wing to the total aerodynamic coefficients of a vehicle
+                        </ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="wingUID" type="stringUIDBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Reference to a wing uID
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="coefficients" type="aeroCaseCoefficientsType"/>
+                    <xsd:element name="segments" type="coefficientsBreakdownWingSegmentsType" maxOccurs="1" minOccurs="0"/>
+                    <xsd:element name="remainingContributions" type="remaningContributionsType" maxOccurs="1" minOccurs="0"/>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="coefficientsBreakdownWingSegmentsType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Aerodynamic contributions of wing segments</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>
+                            Contains a list of wing segments for which aerodynamic coefficients are specified
+                        </ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="segment" type="coefficientsBreakdownSegmentType" maxOccurs="unbounded" minOccurs="1"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="coefficientsBreakdownSegmentType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Aerodynamic contributions of a wing segment</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>
+                            Describes the contributions of a specific wing segment to the total aerodynamic coefficients of a wing
+                        </ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="segmentUID" type="stringUIDBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Reference to a wing segment uID
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="coefficients" type="aeroCaseCoefficientsType"/>
+                    <xsd:element name="strips" type="coefficientsBreakdownStripsType" maxOccurs="1" minOccurs="0"/>
+                    <xsd:element name="remaningContributions" type="remaningContributionsType" maxOccurs="1" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="coefficientsBreakdownStripsType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Aerodynamic contributions of strips within a wing segment</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>
+                            Contains a list of strips within a wing segment for which aerodynamic coefficients are specified
+                        </ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="strip" type="coefficientsBreakdownStripType" maxOccurs="unbounded" minOccurs="1"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="coefficientsBreakdownStripType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Aerodynamic contributions of a strip within a wing segment</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>
+                            Describes the contributions of a specific strip within a wing segment to the total aerodynamic coefficients of a wing segment
+                        </ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="coefficients" type="aeroCaseCoefficientsType">
+                    </xsd:element>
+                    <xsd:element name="reference" type="coefficientReferenceType"/>
+                    <xsd:element name="chordwiseParts" type="chordwisePartsType" maxOccurs="1" minOccurs="0"/>
+                    <xsd:element name="remaningContributions" type="remaningContributionsType" maxOccurs="1" minOccurs="0"/>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="chordwisePartsType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Aerodynamic contributions of a chrordwise part within a wing segment strip</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>
+                            <!-- TODO: Vielleicht Formulierung ueberarbeiten -->
+                            Contains a list of chordwise parts within a wing segment strip for which aerodynamic coefficients are specified
+                        </ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="part" type="chordwisePartType" maxOccurs="unbounded" minOccurs="1"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="chordwisePartType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Aerodynamic contributions of a chordwise part within a within a wing segment strip</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>
+                            Describes the contributions of a specific par within a wing segment to the total aerodynamic coefficients of a wing segment strip
+                        </ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="coefficients" type="aeroCaseCoefficientsType"/>
+                    <xsd:element name="reference" type="coefficientReferenceType"/>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="remaningContributionsType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Remaining contributions to aerodynamic coefficients</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>
+                            This node lists the remaining contributions which were not specified so that the sum of the coefficients equal to total coefficients.
+                        </ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <!-- TODO: Wollen wir an der Name/Description-Philosophie haengen oder den Knoten hier loeschen? -->
+                    <xsd:element name="name" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Name
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="description" type="stringBaseType" maxOccurs="1" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Description
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="coefficients" type="aeroCaseCoefficientsType"/>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="coefficientReferenceType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Reference values for aerodynamic coefficients</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>
+                            Specification of reference values for aerodynamic coefficients.
+                        </ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="area" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Reference area
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="length" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Reference lengt
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="geometryPoint" type="pointXYZType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Reference point
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="deformationTranslation" type="pointXYZType" maxOccurs="1" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Reference translation
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="deformationRotation" type="pointXYZType" maxOccurs="1" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Reference rotation
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="coefficientsBreakdownComponentsType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Aerodynamic contributions of the components</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>
+                            Contains a list of components for which aerodynamic coefficients are specified
+                        </ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="component" type="coefficientsBreakdownComponentType" maxOccurs="unbounded" minOccurs="1"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="coefficientsBreakdownComponentType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Aerodynamic contributions of a component</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>
+                            Describes the contributions of a specific component to the total aerodynamic coefficients
+                        </ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="componentUID" type="stringUIDBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Reference to a component
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="coefficients" type="aeroCaseCoefficientsType"/>
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
@@ -32109,10 +31918,10 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>atmosphericModel</ddue:para>
+                        <ddue:para>Atmospheric model</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Atmospheric Model. Available options: ISA. See documentation of  &lt;CPACS&gt; root element for further details.
+                        <ddue:para>Available options: ISA. See documentation of  &lt;CPACS&gt; root element for further details.
                         </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -32120,10 +31929,9 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:annotation>
         <xsd:simpleContent>
             <xsd:restriction base="stringBaseType">
-                <xsd:enumeration value="ISA" />
+                <xsd:enumeration value="ISA"/>
             </xsd:restriction>
         </xsd:simpleContent>
     </xsd:complexType>
 
 </xsd:schema>
-
