@@ -39,6 +39,15 @@ class schemaCheck(unittest.TestCase):
         self.assertTrue(result)
         tixi_h.close()
 
+    def test_flightLoadCases(self):
+        xml = '../examples/flightLoadCases.xml'
+        xsd = '../schema/cpacs_schema.xsd'
+        tixi_h.open(xml)
+        if not tixi_h.schemaValidateFromFile(xsd):
+            result = True
+        self.assertTrue(result)
+        tixi_h.close()
+
 if __name__ == '__main__':
     tixi_h = tixi3wrapper.Tixi3()
     unittest.main()
