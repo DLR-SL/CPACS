@@ -437,6 +437,7 @@ marko.alder@dlr.de
                                 <ddue:content>
                                     <ddue:para>Release in ... 2020</ddue:para>
                                     <ddue:list class="bullet">
+                                        <ddue:listItem>Add flight envelope to aircraft global element</ddue:listItem>
                                         <ddue:listItem>Add standard profile types</ddue:listItem>
                                         <ddue:listItem>Add ribPosts element to wingRibCrossSectionType</ddue:listItem>
                                         <ddue:listItem>Set mass inertia Jxy, Jxz and Jyz optional</ddue:listItem>
@@ -2906,7 +2907,8 @@ marko.alder@dlr.de
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element minOccurs="0" name="designRange" type="requirementType">
+                    <xsd:element minOccurs="0" name="designRange"
+                        type="requirementType">
                         <xsd:annotation>
                             <xsd:documentation>
                                 designRange equals the full payload max
@@ -2919,6 +2921,7 @@ marko.alder@dlr.de
                     <xsd:element minOccurs="0" name="airportCompatability" type="airportCompatabilityGlobalType">
                     </xsd:element>
                     <xsd:element minOccurs="0" name="performanceTargets" type="performanceTargetsGlobalType"/>
+                    <xsd:element minOccurs="0" name="flightEnvelopes" type="flightEnvelopesType" />
                     <xsd:element minOccurs="0" name="configurations" type="aircraftConfigurationsType"/>
                 </xsd:all>
             </xsd:extension>
@@ -10601,80 +10604,7 @@ marko.alder@dlr.de
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="gust" type="loadCaseGustType" maxOccurs="1" minOccurs="0"/>
-                    <xsd:element name="designSpeed" maxOccurs="1" minOccurs="0">
-                        <xsd:annotation>
-                            <xsd:documentation>Design speed designators</xsd:documentation>
-                        </xsd:annotation>
-                        <xsd:complexType>
-                            <xsd:simpleContent>
-                                <xsd:restriction base="stringBaseType">
-                                    <xsd:enumeration value="VA">
-                                        <xsd:annotation>
-                                            <xsd:documentation>
-                                                Design maneuvering speed
-                                            </xsd:documentation>
-                                        </xsd:annotation>
-                                    </xsd:enumeration>
-                                    <xsd:enumeration value="VB">
-                                        <xsd:annotation>
-                                            <xsd:documentation>
-                                                Design speed for maximum gust intensity
-                                            </xsd:documentation>
-                                        </xsd:annotation>
-                                    </xsd:enumeration>
-                                    <xsd:enumeration value="VC">
-                                        <xsd:annotation>
-                                            <xsd:documentation>
-                                                Design cruise speed, used to show compliance with gust intensity loading
-                                            </xsd:documentation>
-                                        </xsd:annotation>
-                                    </xsd:enumeration>
-                                    <xsd:enumeration value="VD">
-                                        <xsd:annotation>
-                                            <xsd:documentation>
-                                                Design diving speed, the highest speed planned to be achieved in testing
-                                            </xsd:documentation>
-                                        </xsd:annotation>
-                                    </xsd:enumeration>
-                                    <xsd:enumeration value="VF">
-                                        <xsd:annotation>
-                                            <xsd:documentation>
-                                                Designed flap speed
-                                            </xsd:documentation>
-                                        </xsd:annotation>
-                                    </xsd:enumeration>
-                                    <xsd:enumeration value="VS">
-                                        <xsd:annotation>
-                                            <xsd:documentation>
-                                                Stall speed or minimum steady flight speed for which the aircraft is still controllable
-                                            </xsd:documentation>
-                                        </xsd:annotation>
-                                    </xsd:enumeration>
-                                    <xsd:enumeration value="Vs0">
-                                        <xsd:annotation>
-                                            <xsd:documentation>
-                                                Stall speed or minimum flight speed in landing configuration
-                                            </xsd:documentation>
-                                        </xsd:annotation>
-                                    </xsd:enumeration>
-                                    <xsd:enumeration value="Vs1">
-                                        <xsd:annotation>
-                                            <xsd:documentation>
-                                                Stall speed or minimum steady flight speed for which the aircraft is still controllable in a specific configuration
-                                            </xsd:documentation>
-                                        </xsd:annotation>
-                                    </xsd:enumeration>
-                                    <xsd:enumeration value="VMC">
-                                        <xsd:annotation>
-                                            <xsd:documentation>
-                                                Minimum control speed
-                                            </xsd:documentation>
-                                        </xsd:annotation>
-                                    </xsd:enumeration>
-                                </xsd:restriction>
-                            </xsd:simpleContent>
-                        </xsd:complexType>
-                    </xsd:element>
+                    <xsd:element name="designSpeed" maxOccurs="1" minOccurs="0" type="speedDesignatorsTypes"/>
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
@@ -32045,6 +31975,198 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:simpleContent>
             <xsd:restriction base="stringBaseType">
                 <xsd:enumeration value="ISA"/>
+            </xsd:restriction>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="flightEnvelopesType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Flight Envelopes</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>
+                            Specification of flight envelopes
+                        </ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="flightEnvelope" type="flightEnvelopeType" maxOccurs="unbounded" minOccurs="1">
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="flightEnvelopeType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Flight Envelope</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>
+                            Specification of a flight envelope
+                        </ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="atmosphericModel" type="atmosphericModelType"/>
+                    <xsd:element name="deltaTemperature" type="doubleBaseType" minOccurs="0" >
+                        <xsd:annotation>
+                            <xsd:documentation>Offset from temperature of the atmospheric model [K]
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="speed" type="flightEnvelopeSpeedType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="flightEnvelopeSpeedType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Flight envelope speed</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>
+                            Specification of the V-speed
+                        </ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="speedName" type="speedDesignatorsTypes"/>
+                    <xsd:element name="altitude" type="doubleVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Vector with altitudes
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="trueAirSpeed" type="doubleVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Vector with True Airspeeds
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="speedDesignatorsTypes">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Speed designators</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>
+                            Provides an enumerated list of V-speeds as defined by regulations.
+                        </ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:simpleContent>
+            <xsd:restriction base="stringBaseType">
+                <xsd:enumeration value="VA">
+                    <xsd:annotation>
+                        <xsd:documentation>
+                            Design maneuvering speed
+                        </xsd:documentation>
+                    </xsd:annotation>
+                </xsd:enumeration>
+                <xsd:enumeration value="VB">
+                    <xsd:annotation>
+                        <xsd:documentation>
+                            Design speed for maximum gust intensity
+                        </xsd:documentation>
+                    </xsd:annotation>
+                </xsd:enumeration>
+                <xsd:enumeration value="VC">
+                    <xsd:annotation>
+                        <xsd:documentation>
+                            Design cruise speed, used to show compliance with gust intensity loading
+                        </xsd:documentation>
+                    </xsd:annotation>
+                </xsd:enumeration>
+                <xsd:enumeration value="VD">
+                    <xsd:annotation>
+                        <xsd:documentation>
+                            Design diving speed, the highest speed planned to be achieved in testing
+                        </xsd:documentation>
+                    </xsd:annotation>
+                </xsd:enumeration>
+                <xsd:enumeration value="VF">
+                    <xsd:annotation>
+                        <xsd:documentation>
+                            Designed flap speed
+                        </xsd:documentation>
+                    </xsd:annotation>
+                </xsd:enumeration>
+                <xsd:enumeration value="VS">
+                    <xsd:annotation>
+                        <xsd:documentation>
+                            Stall speed or minimum steady flight speed for which the aircraft is still controllable
+                        </xsd:documentation>
+                    </xsd:annotation>
+                </xsd:enumeration>
+                <xsd:enumeration value="Vs0">
+                    <xsd:annotation>
+                        <xsd:documentation>
+                            Stall speed or minimum flight speed in landing configuration
+                        </xsd:documentation>
+                    </xsd:annotation>
+                </xsd:enumeration>
+                <xsd:enumeration value="Vs1">
+                    <xsd:annotation>
+                        <xsd:documentation>
+                            Stall speed or minimum steady flight speed for which the aircraft is still controllable in a specific configuration
+                        </xsd:documentation>
+                    </xsd:annotation>
+                </xsd:enumeration>
+                <xsd:enumeration value="VMC">
+                    <xsd:annotation>
+                        <xsd:documentation>
+                            Minimum control speed
+                        </xsd:documentation>
+                    </xsd:annotation>
+                </xsd:enumeration>
+                <xsd:enumeration value="VNE">
+                    <xsd:annotation>
+                        <xsd:documentation>
+                            Never exceed speed
+                        </xsd:documentation>
+                    </xsd:annotation>
+                </xsd:enumeration>
+                <xsd:enumeration value="VMO">
+                    <xsd:annotation>
+                        <xsd:documentation>
+                            Maximum operating limit speed
+                        </xsd:documentation>
+                    </xsd:annotation>
+                </xsd:enumeration>
             </xsd:restriction>
         </xsd:simpleContent>
     </xsd:complexType>
