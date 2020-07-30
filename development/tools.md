@@ -3,9 +3,8 @@
 ## Tools
 
 A list of tools connected to CPACS development: 
-- ~~SVN Client~~
-- Eclipse including Web Tools Platform
-- Python (<3.0) including xml libraries
+- [Eclipse](https://www.eclipse.org/downloads/) including Web Tools Platform (e.g., _Eclipse IDE for Java Developers_)
+- Python including xml libraries
   -- generateDS for Python library
 - Saxon
 - .Net environment >4.0
@@ -14,7 +13,7 @@ A list of tools connected to CPACS development:
 
 ## Version management
 -------------------
-~~In DLR SVN is used. Tortoise is probably the most reasonable client. May be exchanged depending on preferences. Daniel Böhnke is host of the repository and may be contacted for access.~~ The (public) version management is now on github. Please note that we can only publish a limited part of CPACS online due to legal reasons. We might stop the hosting on github at any point in time. 
+The (public) version management is via GitHub. 
 
 ## Development
 All handling of XML and hence XSD files is taken care of in "Eclipse" and the "Web Tools Platform". This has proven to be the most reliable and free method to edit XML files. As the CSD file tends to be lengthy and formatting operations are cumbersome one should restrict to one XML tool. Different formatting algorithms will result in different file layouts and make diff operations horrible. 
