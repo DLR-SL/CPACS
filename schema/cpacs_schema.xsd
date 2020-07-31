@@ -3570,30 +3570,6 @@ marko.alder@dlr.de
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="axlesType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Geometrical and material properties definition of the
-                            landing gear axles.</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>Geometrical and material properties definition of the
-                            landing gear axles.</ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element maxOccurs="unbounded" name="axle" type="axleType"/>
-                </xsd:sequence>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
     <xsd:complexType name="beamCrossSectionType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -12689,52 +12665,6 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="gearComponentsType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Detailed description of all components of the
-                            landing gear.</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:content>
-                            <ddue:para>Detailed description of the following components of
-                                the landing gear: mainStrut, piston, dragStrut, pintleStrut,
-                                sideStrut, mainActuator, bogie, axle and wheels.</ddue:para>
-                            <ddue:para>The definition of the components include geometrical
-                                as well as material properties.</ddue:para>
-                            <ddue:para>The definition of the different components can be
-                                found in the pictures below for the main and the nose landing
-                                gear:</ddue:para>
-                            <ddue:mediaLink>
-                                <ddue:image xlink:href="mlg"/>
-                            </ddue:mediaLink>
-                            <ddue:mediaLink>
-                                <ddue:image xlink:href="nlg"/>
-                            </ddue:mediaLink>
-                        </ddue:content>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="mainStrut" type="strutType"/>
-                    <xsd:element name="piston" type="pistonType"/>
-                    <xsd:element name="dragStrut" type="strutWithActuatorType"/>
-                    <xsd:element name="pintleStrut" type="strutType"/>
-                    <xsd:element name="sideStruts" type="sideStrutsType"/>
-                    <xsd:element name="mainActuator" type="mainActuatorType"/>
-                    <xsd:element minOccurs="0" name="bogie" type="bogieType"/>
-                    <xsd:element name="axles" type="axlesType"/>
-                    <xsd:element name="wheels" type="wheelsType"/>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
     <xsd:complexType name="gearDeflectionVectorType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -17953,153 +17883,6 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="mainGearGlobalType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Global description of main landing gear.</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>MainGearGlobal type, containing global parameters of a
-                            main landing gear.</ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="totalLength" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Total length of main landing gear, equals the
-                                distance form the middle of the bogie/axles to the middle of the
-                                pintle strut. Distance is measured while main landing gear is
-                                fully extended.</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="retractAngle" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Retraction angle of the main landing gear.
-                                Equals a rotation around the global z-axis in degrees. 0 =
-                                retraction to the front; 90 = retraction to the left; 180 =
-                                retraction to the rear; 270 = retraction to the right.
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="mainGearSupportBeamPositionType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Definition of the main landing gear support beam
-                            position.</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>Definition of the main landing gear support beam
-                            position.</ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="xsiInside" type="xsiIsoLineType">
-                        <xsd:annotation>
-                            <xsd:documentation>Relative chordwise coordinate (xsi) of the
-                                inner end of the support beam. The eta
-                                position of the inner end is defined by the eta position of the
-                                wing root (=wing-fuselage attachment).</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="etaOutside" type="etaIsoLineType">
-                        <xsd:annotation>
-                            <xsd:documentation>Relative spanwise coordinate (eta) of the
-                                outer end of the support beam. The xsi
-                                coordinate of the outer end is defined by the spar position
-                                (first spar), where the support beam is attached to.
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="mainGearSupportBeamType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Definition of the main landing gear support beam.
-                        </ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>Definition of the main landing gear support beam, if a
-                            support beam is used for the attachment. The defintion includes
-                            cross section properties as well as the position of the support
-                            beam.</ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="position" type="mainGearSupportBeamPositionType"/>
-                    <xsd:element name="structure" type="sparCrossSectionType"/>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="mainGearWingAttachmentType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Definition of the wing attachment.</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>Definition of the wing attachment, if attached to the
-                            wing. The definition includes the position of the landing gear as
-                            well as the information to which spars resp. supportBeam the gear
-                            is attached.</ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element name="firstSparUID" type="stringUIDBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>UID of the first spar, where the landing gear
-                                is attached to.</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="positioning" type="etaXsiRelHeightPointType"/>
-                    <xsd:choice>
-                        <xsd:element minOccurs="0" name="secondSparUID" type="stringUIDBaseType">
-                            <xsd:annotation>
-                                <xsd:documentation>UID of the second spar, where the landing
-                                    gear is attached to. Only used, if the landing gear is attached
-                                    between two spars.</xsd:documentation>
-                            </xsd:annotation>
-                        </xsd:element>
-                        <xsd:element minOccurs="0" name="supportBeam" type="mainGearSupportBeamType"/>
-                    </xsd:choice>
-                </xsd:sequence>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
     <xsd:complexType name="mainGearsType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -20354,64 +20137,6 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:element minOccurs="0" name="noiseLevelTakeOff" type="doubleBaseType">
                         <xsd:annotation>
                             <xsd:documentation>FAR take-off noise level</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="noseGearGlobalType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Definition of global nose landing gear geometry
-                            parameters.</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para/>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="totalLength" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Total length of nose landing gear, equals the
-                                distance form the middle of the bogie/axles to the axis of
-                                rotation of the pintle strut. Distance is measured while nose
-                                landing gear is fully extended.</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="retractAngle" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Retraction angle of the nose landing gear.
-                                Equals a rotation around the global z-axis in degrees. 0 =
-                                retraction to the front; 90 = retraction to the left; 180 =
-                                retraction to the rear; 270 = retraction to the right.
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="extAngle" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Angle between the full extended and the full
-                                retracted main strut.</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="offset" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Distance from the upper end of the main strut
-                                to the axis of rotation of the pintle strut.</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="extractedAngle" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Angle of the main strut in extracted position
-                                around the landing gears y-axis. Defaults to 90 degrees which is
-                                vertal.</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -23816,28 +23541,6 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="sideStrutsType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Side struts of the landing gear.</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>Side struts of the landing gear.</ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element maxOccurs="unbounded" name="sideStrut" type="strutWithActuatorType"/>
-                </xsd:sequence>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
     <xsd:complexType name="singleGenericMassType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -24915,69 +24618,6 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                                 <xsd:annotation>
                                     <xsd:documentation>Reference to structural element definition
                                         for detailed cross section definitions.</xsd:documentation>
-                                </xsd:annotation>
-                            </xsd:element>
-                        </xsd:sequence>
-                    </xsd:choice>
-                </xsd:sequence>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="strutWithActuatorType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Geometrical and material properties definition of one
-                            strut.</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>Geometrical and material properties definition of one
-                            strut.</ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element minOccurs="0" name="actuatorUID" type="stringUIDBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Reference to the actuator uID of the strut.
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="length" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Length of the strut.</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:choice>
-                        <xsd:sequence>
-                            <xsd:element name="radius" type="doubleBaseType">
-                                <xsd:annotation>
-                                    <xsd:documentation>(Outer) radius of the strut.
-                                    </xsd:documentation>
-                                </xsd:annotation>
-                            </xsd:element>
-                            <xsd:element name="materialUID" type="stringUIDBaseType">
-                                <xsd:annotation>
-                                    <xsd:documentation>Material of the strut.</xsd:documentation>
-                                </xsd:annotation>
-                            </xsd:element>
-                            <xsd:element minOccurs="0" name="innerRadius" type="doubleBaseType">
-                                <xsd:annotation>
-                                    <xsd:documentation>Inner radius of the strut.
-                                    </xsd:documentation>
-                                </xsd:annotation>
-                            </xsd:element>
-                        </xsd:sequence>
-                        <xsd:sequence>
-                            <xsd:element name="structuralElementUID" type="stringUIDBaseType">
-                                <xsd:annotation>
-                                    <xsd:documentation>Reference to structural element for a more
-                                        detailed cross section definition.</xsd:documentation>
                                 </xsd:annotation>
                             </xsd:element>
                         </xsd:sequence>
@@ -26633,66 +26273,6 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:element name="coG" type="pointListXYZVectorType"/>
                     <xsd:element name="massInertia" type="massInertiaVectorType"/>
                     <xsd:element maxOccurs="unbounded" minOccurs="0" name="mPax" type="stringUIDBaseType"/>
-                </xsd:sequence>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="wheelType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Definition of the landing gear wheel.</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>Definition of the landing gear wheel.</ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="radius" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Radius of the wheel.</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="width" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Width of the wheel.</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="braked" type="booleanBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Definition if the wheel is braked or not. 0 =
-                                not braked; 1 = braked.</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:all>
-                <xsd:attribute name="uID" type="xsd:ID" use="required"/>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="wheelsType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Definition of the landing gear wheels.</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>Definition of the landing gear wheels.</ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element maxOccurs="unbounded" name="wheel" type="wheelType"/>
                 </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
