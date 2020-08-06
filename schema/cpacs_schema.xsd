@@ -3551,17 +3551,70 @@ marko.alder@dlr.de
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element name="shaft" type="strutType"/>
-                    <xsd:element name="wheelUID" type="stringUIDBaseType">
+                    <xsd:element name="length" type="doubleBaseType"/>
+                    <xsd:element name="shaftProperties" type="strutPropertiesType">
                         <xsd:annotation>
-                            <xsd:documentation>Reference to the wheel, that is attached to
-                                the axle.</xsd:documentation>
+                            <xsd:documentation>Properties of axle shaft.</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="numberOfWheels" type="integerBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Number of wheels, that are attached to the
-                                axle.</xsd:documentation>
+                            <xsd:documentation>Number of wheels, that are attached to this axle.</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="sideOfFirstWheel">
+                        <xsd:annotation>
+                            <xsd:documentation>For odd numbers of wheels on this axle defines the side of the first wheel (inboard or outboard) then each additional wheel is added on the side opposite of the previous wheel.</xsd:documentation>
+                        </xsd:annotation>
+                        <xsd:simpleType>
+                            <xsd:restriction base="xsd:string">
+                                <xsd:enumeration value="inboard"/>
+                                <xsd:enumeration value="outboard"/>
+                                <xsd:enumeration value="centre"/>
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="wheel" type="wheelType">
+                        <xsd:annotation>
+                            <xsd:documentation>Defines the properties of the wheel(s) attached to this axle. If more than one wheel is attached, all wheels on a single axis have the same properties.</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:all>
+                <xsd:attribute name="uID" type="xsd:ID" use="required"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="wheelType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Definition of the landing gear wheel.</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>Definition of the landing gear wheel.</ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="radius" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Radius of the wheel.</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="width" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Width of the wheel.</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="braked" type="booleanBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Definition if the wheel is braked or not. 0 =
+                                not braked; 1 = braked.</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -3719,22 +3772,86 @@ marko.alder@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Geometrical and material properties definition of the
-                            landing gear bogie (including the axle configuration).
+                        <ddue:para>Geometrical and material properties definition of the landing gear bogie (including the axle configuration).</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>Geometrical and material properties definition of the landing gear bogie (including the axle configuration).</ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="length" type="doubleBaseType"/>
+                    <xsd:element name="strutProperties" type="strutPropertiesType"/>
+                    <xsd:element name="axleAssemblies" type="axleAssembliesType"/>
+                </xsd:all>
+                <xsd:attribute name="uID" type="xsd:ID" use="required"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="axleAssemblyType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Definition of one axle attached to the bogie and its
+                            relative position on the bogie.</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>Definition of one axle attached to the bogie and its
+                            relative position on the bogie.</ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="axle" type="axleType">
+                        <xsd:annotation>
+                            <xsd:documentation>Reference to the axle, that is attached to the bogie.</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="posOnBogie">
+                        <xsd:annotation>
+                            <xsd:documentation>Relative position of the axle on the bogie (if more than one axle defined). 0 = forward end of bogie; 1 = rear end of bogie.</xsd:documentation>
+                        </xsd:annotation>
+                        <xsd:simpleType>
+                            <xsd:restriction base="xsd:double">
+                                <xsd:minInclusive value="0"/>
+                                <xsd:maxInclusive value="1"/>
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="axleAssembliesType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Bogie axle configuration, i.e. list of axles attached
+                            to the bogie and their relative positions on the bogie.
                         </ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Geometrical and material properties definition of the
-                            landing gear bogie (including the axle configuration).
+                        <ddue:para>Bogie axle configuration, i.e. list of axles attached
+                            to the bogie and their relative positions on the bogie.
                         </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
         <xsd:complexContent>
-            <xsd:extension base="strutType">
+            <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:element name="axles" type="bogieAxlesType"/>
+                    <xsd:element maxOccurs="unbounded" name="axleAssembly" type="axleAssemblyType"/>
                 </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
@@ -17879,6 +17996,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
+                <xsd:attribute name="uID" type="xsd:ID" use="required"/>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -20605,7 +20723,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                 <sd:schemaDoc>
                     <ddue:summary>
                         <ddue:para>Geometrical and material properties definition of the
-                            landing gear piston.</ddue:para>
+                            landing gear piston</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>Geometrical and material properties definition of the
@@ -20615,16 +20733,26 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             </xsd:appinfo>
         </xsd:annotation>
         <xsd:complexContent>
-            <xsd:extension base="strutType">
-                <xsd:sequence>
-                    <xsd:element name="maxSpringDeflection" type="doubleBaseType">
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="length" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Maximum spring deflection of the piston
-                                (difference between minimum and maximum deflection).
-                            </xsd:documentation>
+                            <xsd:documentation>Length of the piston</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                </xsd:sequence>
+                    <xsd:element name="strutProperties" type="strutPropertiesType"/>
+                    <xsd:element name="maxSpringDeflection" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Maximum spring deflection of the piston (difference between minimum and maximum deflection).</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="compressedExternalLength" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>In fully compressed state defines the length of the piston that remains outside of the main strut.</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:all>
+                <xsd:attribute name="uID" type="xsd:ID" use="required"/>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -24586,43 +24714,15 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             </xsd:appinfo>
         </xsd:annotation>
         <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
+            <xsd:extension base="strutPropertiesType">
                 <xsd:sequence>
                     <xsd:element name="length" type="doubleBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Length of the strut.</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:choice>
-                        <xsd:sequence>
-                            <xsd:element name="radius" type="doubleBaseType">
-                                <xsd:annotation>
-                                    <xsd:documentation>(Outer) radius of the strut.
-                                    </xsd:documentation>
-                                </xsd:annotation>
-                            </xsd:element>
-                            <xsd:element name="materialUID" type="stringUIDBaseType">
-                                <xsd:annotation>
-                                    <xsd:documentation>Material of the strut.</xsd:documentation>
-                                </xsd:annotation>
-                            </xsd:element>
-                            <xsd:element minOccurs="0" name="innerRadius" type="doubleBaseType">
-                                <xsd:annotation>
-                                    <xsd:documentation>Inner radius of the strut.
-                                    </xsd:documentation>
-                                </xsd:annotation>
-                            </xsd:element>
-                        </xsd:sequence>
-                        <xsd:sequence>
-                            <xsd:element name="structuralElementUID" type="stringUIDBaseType">
-                                <xsd:annotation>
-                                    <xsd:documentation>Reference to structural element definition
-                                        for detailed cross section definitions.</xsd:documentation>
-                                </xsd:annotation>
-                            </xsd:element>
-                        </xsd:sequence>
-                    </xsd:choice>
                 </xsd:sequence>
+                <xsd:attribute name="uID" type="xsd:ID" use="required"/>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -31597,7 +31697,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
-                <xsd:attribute name="uID" type="xsd:string" use="required"/>
+                <xsd:attribute name="uID" type="xsd:ID" use="required"/>
                 <xsd:attribute name="symmetry" use="optional">
                     <xsd:simpleType>
                         <xsd:restriction base="xsd:string">
@@ -31784,7 +31884,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     </xsd:element>
                     <xsd:element name="actuatorUID" type="stringUIDBaseType" maxOccurs="1" minOccurs="0"/>
                 </xsd:sequence>
-                <xsd:attribute name="uID" type="xsd:string" use="required"/>
+                <xsd:attribute name="uID" type="xsd:ID" use="required"/>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -31931,6 +32031,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
+
     <xsd:complexType name="stringerFramePositionUIDsType">
         <xsd:annotation>
             <xsd:appinfo>
