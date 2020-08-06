@@ -10,11 +10,16 @@
     </header>
     <vehicles>
         <materials>
-            <material uID="dummyMaterial">
-                <name>dummyMaterial</name>
-                <rho>0.0</rho>
+            <material uID="aluminium">
+                <name>aluminium</name>
+                <description>MAT1 Alu material</description>
+                <rho>2.7e-9</rho>
                 <isotropicProperties>
-                    <E>0.0</E>
+                    <tau12>3.2e+02</tau12>
+                    <sigt>5.5e+2</sigt>
+                    <sigc>5.5e+2</sigc>
+                    <E>7e+4</E>
+                    <nu>0.33</nu>
                 </isotropicProperties>
             </material>
         </materials>
@@ -26,19 +31,19 @@
                     <sheetProperties>
                         <standardProfileSheetID>S1</standardProfileSheetID>
                         <length>0.1</length>
-                        <materialUID>dummyMaterial</materialUID>
+                        <materialUID>aluminium</materialUID>
                         <thickness>0.003</thickness>
                     </sheetProperties>
                     <sheetProperties>
                         <standardProfileSheetID>S2</standardProfileSheetID>
                         <length>0.02</length>
-                        <materialUID>dummyMaterial</materialUID>
+                        <materialUID>aluminium</materialUID>
                         <thickness>0.003</thickness>
                     </sheetProperties>
                     <sheetProperties>
                         <standardProfileSheetID>S2</standardProfileSheetID>
                         <length>0.02</length>
-                        <materialUID>dummyMaterial</materialUID>
+                        <materialUID>aluminium</materialUID>
                         <thickness>0.003</thickness>
                     </sheetProperties>
                     <standardProfileType>T</standardProfileType>
@@ -49,19 +54,19 @@
                     <sheetProperties>
                         <standardProfileSheetID>S1</standardProfileSheetID>
                         <length>0.1</length>
-                        <materialUID>dummyMaterial</materialUID>
+                        <materialUID>aluminium</materialUID>
                         <thickness>0.003</thickness>
                     </sheetProperties>
                     <sheetProperties>
                         <standardProfileSheetID>S2</standardProfileSheetID>
                         <length>0.02</length>
-                        <materialUID>dummyMaterial</materialUID>
+                        <materialUID>aluminium</materialUID>
                         <thickness>0.003</thickness>
                     </sheetProperties>
                     <sheetProperties>
                         <standardProfileSheetID>S2</standardProfileSheetID>
                         <length>0.02</length>
-                        <materialUID>dummyMaterial</materialUID>
+                        <materialUID>aluminium</materialUID>
                         <thickness>0.003</thickness>
                     </sheetProperties>
                     <standardProfileType>T2</standardProfileType>
@@ -71,37 +76,112 @@
         <aircraft>
             <model uID="exampleAircraft">
                 <name>exampleAircraft</name>
-                <description>This example shows a very generic fuselage with one segment and constant diameter. In this example, 
-                    two stringers are defined, one at 0deg and one at 30deg of circumference. Stringer 1 uses a standard T-profile 
-                    and shifts it along the local Z-direction to connect the flange to the fuselage skin. The second stringer uses 
+                <description>This example shows a very generic fuselage with one segment and constant diameter. In this example,
+                    two stringers are defined, one at 0deg and one at 30deg of circumference. Stringer 1 uses a standard T-profile
+                    and shifts it along the local Z-direction to connect the flange to the fuselage skin. The second stringer uses
                     the T2 profile and is rotated 180deg accordingly.
                 </description>
                 <fuselages>
                     <fuselage uID="exampleAircraftFuselage">
                         <name>exampleAircraftFuselage</name>
-                        <transformation/>
+                        <transformation>
+                            <scaling>
+                                <x>1.</x>
+                                <y>1.</y>
+                                <z>1.</z>
+                            </scaling>
+                            <rotation>
+                                <x>0</x>
+                                <y>0</y>
+                                <z>0</z>
+                            </rotation>
+                            <translation>
+                                <x>0</x>
+                                <y>0</y>
+                                <z>0</z>
+                            </translation>
+                        </transformation>
                         <sections>
                             <section uID="fuselageSection1">
                                 <name>fuselageSection1</name>
-                                <transformation/>
+                                <transformation>
+                                    <scaling>
+                                        <x>1.</x>
+                                        <y>1.</y>
+                                        <z>1.</z>
+                                    </scaling>
+                                    <rotation>
+                                        <x>0</x>
+                                        <y>0</y>
+                                        <z>0</z>
+                                    </rotation>
+                                    <translation refType="absLocal">
+                                        <x>0</x>
+                                        <y>0</y>
+                                        <z>0</z>
+                                    </translation>
+                                </transformation>
                                 <elements>
                                     <element uID="fuselageSection1element">
                                         <name>fuselageSection1element</name>
                                         <profileUID>circleProfile</profileUID>
-                                        <transformation/>
+                                        <transformation>
+                                            <scaling>
+                                                <x>1.</x>
+                                                <y>1.</y>
+                                                <z>1.</z>
+                                            </scaling>
+                                            <rotation>
+                                                <x>0</x>
+                                                <y>0</y>
+                                                <z>0</z>
+                                            </rotation>
+                                            <translation refType="absLocal">
+                                                <x>0</x>
+                                                <y>0</y>
+                                                <z>0</z>
+                                            </translation>
+                                        </transformation>
                                     </element>
                                 </elements>
                             </section>
                             <section uID="fuselageSection2">
                                 <name>fuselageSection2</name>
-                                <transformation/>
+                                <transformation uID="fuselageSection2_t">
+                                    <scaling>
+                                        <x>1.</x>
+                                        <y>1.</y>
+                                        <z>1.</z>
+                                    </scaling>
+                                    <rotation>
+                                        <x>0</x>
+                                        <y>0</y>
+                                        <z>0</z>
+                                    </rotation>
+                                    <translation refType="absLocal">
+                                        <x>1.</x>
+                                        <y>0</y>
+                                        <z>0</z>
+                                    </translation>
+                                </transformation>
                                 <elements>
                                     <element uID="fuselageSection2element">
                                         <name>fuselageSection2element</name>
                                         <profileUID>circleProfile</profileUID>
                                         <transformation>
-                                            <translation>
-                                                <x>1</x>
+                                            <scaling>
+                                                <x>1.</x>
+                                                <y>1.</y>
+                                                <z>1.</z>
+                                            </scaling>
+                                            <rotation>
+                                                <y>0</y>
+                                                <z>0</z>
+                                            </rotation>
+                                            <translation refType="absLocal">
+                                                <x>0</x>
+                                                <y>0</y>
+                                                <z>0</z>
                                             </translation>
                                         </transformation>
                                     </element>
@@ -116,11 +196,37 @@
                             </segment>
                         </segments>
                         <structure>
+                            <frames>
+                                <frame uID="frame1">
+                                    <framePosition uID="frame1Position1">
+                                        <structuralElementUID>tProfile</structuralElementUID>
+                                        <positionX>0.1</positionX>
+                                        <referenceY>0.0</referenceY>
+                                        <referenceZ>0.0</referenceZ>
+                                        <referenceAngle>0</referenceAngle>
+                                        <alignment uID="frame1Position1alignment">
+                                            <translationLocY>-0.1</translationLocY>
+                                        </alignment>
+                                    </framePosition>
+                                </frame>
+                                <frame uID="frame2">
+                                    <framePosition uID="frame2Position1">
+                                        <structuralElementUID>tProfile</structuralElementUID>
+                                        <positionX>0.9</positionX>
+                                        <referenceY>0.0</referenceY>
+                                        <referenceZ>0.0</referenceZ>
+                                        <referenceAngle>0</referenceAngle>
+                                        <alignment uID="frame2Position1alignment">
+                                            <translationLocY>-0.1</translationLocY>
+                                        </alignment>
+                                    </framePosition>
+                                </frame>
+                            </frames>
                             <stringers>
                                 <stringer uID="stringer1">
                                     <stringerPosition uID="stringerPosition1">
                                         <structuralElementUID>tProfile</structuralElementUID>
-                                        <positionX>0.0</positionX>
+                                        <positionX>0.1</positionX>
                                         <referenceY>0.0</referenceY>
                                         <referenceZ>0.0</referenceZ>
                                         <referenceAngle>0</referenceAngle>
@@ -130,7 +236,7 @@
                                     </stringerPosition>
                                     <stringerPosition uID="stringerPosition2">
                                         <structuralElementUID>t2Profile</structuralElementUID>
-                                        <positionX>1</positionX>
+                                        <positionX>0.9</positionX>
                                         <referenceY>0.0</referenceY>
                                         <referenceZ>0.0</referenceZ>
                                         <referenceAngle>0</referenceAngle>
@@ -142,7 +248,7 @@
                                 <stringer uID="stringer2">
                                     <stringerPosition uID="stringerPosition3">
                                         <structuralElementUID>t2Profile</structuralElementUID>
-                                        <positionX>0.0</positionX>
+                                        <positionX>0.1</positionX>
                                         <referenceY>0.0</referenceY>
                                         <referenceZ>0.0</referenceZ>
                                         <referenceAngle>30</referenceAngle>
@@ -152,7 +258,7 @@
                                     </stringerPosition>
                                     <stringerPosition uID="stringerPosition4">
                                         <structuralElementUID>t2Profile</structuralElementUID>
-                                        <positionX>1</positionX>
+                                        <positionX>0.9</positionX>
                                         <referenceY>0.0</referenceY>
                                         <referenceZ>0.0</referenceZ>
                                         <referenceAngle>30</referenceAngle>
