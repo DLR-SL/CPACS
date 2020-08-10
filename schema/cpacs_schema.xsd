@@ -3539,11 +3539,11 @@ marko.alder@dlr.de
                 <sd:schemaDoc>
                     <ddue:summary>
                         <ddue:para>Geometrical and material properties definition of the
-                            landing gear axle.</ddue:para>
+                            landing gear axle</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>Geometrical and material properties definition of the
-                            landing gear axle.</ddue:para>
+                            landing gear axle</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -14668,11 +14668,11 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Landing gears of the aircraft model.</ddue:para>
+                        <ddue:para>Landing gears</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>LandingGear type, containing the definition of nose and
-                            main landing gears.</ddue:para>
+                        <ddue:para>LandingGear type, containing the definition of nose,
+                            main and skid gears.</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -18006,11 +18006,10 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Main landing gear of the aircraft model.</ddue:para>
+                        <ddue:para>Main landing gear</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>MainGears type, containing the definition of all main
-                            landing gears.</ddue:para>
+                        <ddue:para>Definition of main gears</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -20267,11 +20266,10 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Definition of all nose landing gears.</ddue:para>
+                        <ddue:para>Nose landing gears</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>NoseGears type, containing the definition of all the
-                            nose gears.</ddue:para>
+                        <ddue:para>Definition of nose gears</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -23696,11 +23694,10 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Definition of all skid landing gears.</ddue:para>
+                        <ddue:para>Skid landing gears</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>skidGears type, containing the definition of all the
-                            skid gears.</ddue:para>
+                        <ddue:para>Definition of skid gears</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -31668,12 +31665,12 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                 <xsd:all>
                     <xsd:element name="name" type="stringBaseType" maxOccurs="1" minOccurs="0">
                         <xsd:annotation>
-                            <xsd:documentation>Name of the landing gear.</xsd:documentation>
+                            <xsd:documentation>Name of the landing gear</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element minOccurs="0" name="description" type="stringBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Description of the landing gear.</xsd:documentation>
+                            <xsd:documentation>Description of the landing gear</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element minOccurs="0" name="parentUID" type="stringUIDBaseType">
@@ -31681,16 +31678,8 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             <xsd:documentation>UID of the parent component. If set, the position of the main strut is defined relative to the parent coordinate system.</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element minOccurs="0" name="global" type="landingGearGlobalType">
-                        <xsd:annotation>
-                            <xsd:documentation>Contains parameters which are responsible for landing gear retraction.</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element minOccurs="1" name="componentAssembly" type="landingGearComponentAssemblyType" maxOccurs="1">
-                        <xsd:annotation>
-                            <xsd:documentation>Defines the assembly of the landing gear from its different components.</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
+                    <xsd:element minOccurs="0" name="global" type="landingGearGlobalType"/>
+                    <xsd:element minOccurs="1" name="componentAssembly" type="landingGearComponentAssemblyType" maxOccurs="1"/>
                     <xsd:element name="transformation" type="transformationType" maxOccurs="1" minOccurs="1">
                         <xsd:annotation>
                             <xsd:documentation>Translation point is the top end of the main strut. It is assumed that by default landing gear is oriented in negative z-direction of global coordinate system from this point.</xsd:documentation>
@@ -31716,12 +31705,12 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Global description of main landing gear</ddue:para>
+                        <ddue:para>Global landing gear parameters</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>
                             LandingGearGlobal type, containing global
-                            parameters of a landing gear.
+                            parameters of a landing gear (e.g., landing gear retraction).
                         </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -31758,50 +31747,42 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
 
     <xsd:complexType name="landingGearComponentAssemblyType">
         <xsd:annotation>
-            <xsd:documentation>Refer the landing gear components which are defined previously.</xsd:documentation>
+            <xsd:documentation>Landing gear component assembly</xsd:documentation>
         </xsd:annotation>
         <xsd:sequence>
             <xsd:element name="mainStrut" type="strutType" maxOccurs="1" minOccurs="1">
                 <xsd:annotation>
-                    <xsd:documentation>Define the main strut properties</xsd:documentation>
+                    <xsd:documentation>Main strut properties</xsd:documentation>
                 </xsd:annotation>
             </xsd:element>
             <xsd:element name="piston" type="pistonType" maxOccurs="1" minOccurs="1">
                 <xsd:annotation>
-                    <xsd:documentation>Define the piston properties</xsd:documentation>
+                    <xsd:documentation>Piston properties</xsd:documentation>
                 </xsd:annotation>
             </xsd:element>
             <xsd:choice>
-                <xsd:element name="axle" type="axleType" maxOccurs="1" minOccurs="1">
-                    <xsd:annotation>
-                        <xsd:documentation>Refer a Axle which has been defined previously.</xsd:documentation>
-                    </xsd:annotation>
-                </xsd:element>
-                <xsd:element name="bogie" type="bogieType" maxOccurs="1" minOccurs="1">
-                    <xsd:annotation>
-                        <xsd:documentation>Refer a Bogie which has been defined previously.</xsd:documentation>
-                    </xsd:annotation>
-                </xsd:element>
+                <xsd:element name="axle" type="axleType" maxOccurs="1" minOccurs="1"/>
+                <xsd:element name="bogie" type="bogieType" maxOccurs="1" minOccurs="1"/>
             </xsd:choice>
             <xsd:element name="dragStrutAssembly" type="strutAssemblyType" maxOccurs="1" minOccurs="0">
                 <xsd:annotation>
-                    <xsd:documentation>Refer a Drag Strut which has been defined previously. And it is assumed that one end of the Strut will connect to the Main Strut and other end will be given as end point.</xsd:documentation>
+                    <xsd:documentation>Refererence to a Drag Strut which has been defined previously. And it is assumed that one end of the Strut will connect to the Main Strut and other end will be given as end point.</xsd:documentation>
                 </xsd:annotation>
             </xsd:element>
             <xsd:element name="pintleStrutAssemblies" type="pintleStrutAssembliesType" maxOccurs="1" minOccurs="0">
                 <xsd:annotation>
-                    <xsd:documentation>Refer a Pintle Strut which has been defined previously. And it is assumed that one end of the Strut will connect to the Main Strut and other end will be given as endPoint.
+                    <xsd:documentation>Refererence to a Pintle Strut which has been defined previously. And it is assumed that one end of the Strut will connect to the Main Strut and other end will be given as endPoint.
                         mainStrutRelativePosition value should match both of the pintle struts. </xsd:documentation>
                 </xsd:annotation>
             </xsd:element>
             <xsd:element name="sideStrutAssemblies" type="sideStrutAssembliesType" maxOccurs="1" minOccurs="0">
                 <xsd:annotation>
-                    <xsd:documentation>Refer a Side Strut which has been defined previously. And it is assumed that one end of the Strut will connect to the Main Strut and other end will be given as endPoint.</xsd:documentation>
+                    <xsd:documentation>Reference to a Side Strut which has been defined previously. And it is assumed that one end of the Strut will connect to the Main Strut and other end will be given as endPoint.</xsd:documentation>
                 </xsd:annotation>
             </xsd:element>
             <xsd:element name="mainActuator" type="mainActuatorType" maxOccurs="1" minOccurs="0">
                 <xsd:annotation>
-                    <xsd:documentation>Refer a Main Actuator which has been defined previously.</xsd:documentation>
+                    <xsd:documentation>Refererence to a Main Actuator</xsd:documentation>
                 </xsd:annotation>
             </xsd:element>
         </xsd:sequence>
@@ -31846,12 +31827,12 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                 <xsd:sequence>
                     <xsd:element name="strutProperties" type="strutPropertiesType" maxOccurs="1" minOccurs="1">
                         <xsd:annotation>
-                            <xsd:documentation>Define properties of this support strut.</xsd:documentation>
+                            <xsd:documentation>Strut properties</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="mainStrutRelativePosition" maxOccurs="1" minOccurs="1">
                         <xsd:annotation>
-                            <xsd:documentation>The start point of the support strut must connect to the main strut. This defines the relative position on the main strut (0 -> top end, 1 -> bottom end).</xsd:documentation>
+                            <xsd:documentation>The starting point of the support strut must connect to the main strut. This element specifies the relative position on the main strut (0 -> top end, 1 -> bottom end).</xsd:documentation>
                         </xsd:annotation>
                         <xsd:simpleType>
                             <xsd:restriction base="xsd:double">
@@ -31882,7 +31863,11 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             <xsd:documentation>Attach this strut to aircraft wing or fuselage component.</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="actuatorUID" type="stringUIDBaseType" maxOccurs="1" minOccurs="0"/>
+                    <xsd:element name="actuatorUID" type="stringUIDBaseType" maxOccurs="1" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>Reference to an actuator uID</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                 </xsd:sequence>
                 <xsd:attribute name="uID" type="xsd:ID" use="required"/>
             </xsd:extension>
@@ -31992,12 +31977,24 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             </xsd:annotation>
                         </xsd:element>
                         <xsd:sequence>
-                            <xsd:element name="ribDefinitionUID" type="stringUIDBaseType"/>
-                            <xsd:element name="ribNumber" type="integerBaseType"/>
+                            <xsd:element name="ribDefinitionUID" type="stringUIDBaseType">
+                                <xsd:annotation>
+                                    <xsd:documentation>UID of a set of ribs (ribDefinition)</xsd:documentation>
+                                </xsd:annotation>
+                            </xsd:element>
+                            <xsd:element name="ribNumber" type="integerBaseType">
+                                <xsd:annotation>
+                                    <xsd:documentation>Number of the rib in the rib set (ribDefinition)</xsd:documentation>
+                                </xsd:annotation>
+                            </xsd:element>
                         </xsd:sequence>
                         <xsd:element name="supportBeam" type="supportBeamType"/>
                         <xsd:element name="stringerFramePositionUIDs" type="stringerFramePositionUIDsType"/>
-                        <xsd:element name="structuralMountUID" type="stringUIDBaseType"/>
+                        <xsd:element name="structuralMountUID" type="stringUIDBaseType">
+                            <xsd:annotation>
+                                <xsd:documentation>UID of the structural mount</xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
                     </xsd:choice>
                     <xsd:element name="positioning" type="wingAttachmentPositioningType" maxOccurs="1" minOccurs="0"/>
                 </xsd:sequence>
