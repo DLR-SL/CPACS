@@ -3541,7 +3541,7 @@ marko.alder@dlr.de
                         <ddue:para>Axle</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Geometrical and material properties definition of the
+                        <ddue:para>Geometrical description and and material properties of the
                             landing gear axle</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -3778,7 +3778,8 @@ marko.alder@dlr.de
                         <ddue:para>Bogie</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Geometrical and material properties definition of the landing gear bogie (including the axle configuration).</ddue:para>
+                        <ddue:para>Geometrical and material properties definition of the
+                            landing gear axle  bogie (including the axle configuration)</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -3786,7 +3787,11 @@ marko.alder@dlr.de
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element name="length" type="doubleBaseType"/>
+                    <xsd:element name="length" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Length of the bogie</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                     <xsd:element name="strutProperties" type="strutPropertiesType"/>
                     <xsd:element name="axleAssemblies" type="axleAssembliesType"/>
                 </xsd:all>
@@ -3800,12 +3805,11 @@ marko.alder@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Definition of one axle attached to the bogie and its
-                            relative position on the bogie.</ddue:para>
+                        <ddue:para>Bogie axle assembly</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Definition of one axle attached to the bogie and its
-                            relative position on the bogie.</ddue:para>
+                        <ddue:para>Description of an axle installed on the bogie and its 
+                            relative position to it</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -3813,14 +3817,10 @@ marko.alder@dlr.de
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:element name="axle" type="axleType">
-                        <xsd:annotation>
-                            <xsd:documentation>Reference to the axle, that is attached to the bogie.</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
+                    <xsd:element name="axle" type="axleType"/>
                     <xsd:element name="posOnBogie">
                         <xsd:annotation>
-                            <xsd:documentation>Relative position of the axle on the bogie (if more than one axle defined). 0 = forward end of bogie; 1 = rear end of bogie.</xsd:documentation>
+                            <xsd:documentation>Relative position of the axle to the bogie (if more than one axle is defined; 0 = forward end of bogie; 1 = rear end of bogie)</xsd:documentation>
                         </xsd:annotation>
                         <xsd:simpleType>
                             <xsd:restriction base="xsd:double">
@@ -3839,13 +3839,12 @@ marko.alder@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Bogie axle configuration, i.e. list of axles attached
-                            to the bogie and their relative positions on the bogie.
+                        <ddue:para>Bogie axle assemblies
                         </ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Bogie axle configuration, i.e. list of axles attached
-                            to the bogie and their relative positions on the bogie.
+                        <ddue:para>A list of axles that are attached to the bogie 
+                            and their relative position to it 
                         </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -24707,13 +24706,8 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Geometrical and material properties definition of one
-                            strut.</ddue:para>
+                        <ddue:para>Geometrical definition and material properties of a strut</ddue:para>
                     </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>Geometrical and material properties definition of one
-                            strut.</ddue:para>
-                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -24722,7 +24716,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                 <xsd:sequence>
                     <xsd:element name="length" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Length of the strut.</xsd:documentation>
+                            <xsd:documentation>Length of the strut</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -31662,9 +31656,8 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     </ddue:summary>                       
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>Landin gear base type, which is commonly used for all landing gears
-                                (i.e. nose gear, main gear and skid gear). An example of a nose and main
-                                gear is shown below:</ddue:para>
+                            <ddue:para>Base type for landing gears (i.e. nose gear, main gear and skid gear). 
+                                An example of a nose and main gear is shown below:</ddue:para>
                             <ddue:mediaLink>
                                 <ddue:image xlink:href="landingGears"/>
                             </ddue:mediaLink>
@@ -31722,8 +31715,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>
-                            LandingGearGlobal type, containing global
-                            parameters of a landing gear (e.g., landing gear retraction).
+                            Global parameters of a landing gear, such as extension and extraction angles
                         </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -31751,7 +31743,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         <xsd:annotation>
                             <xsd:documentation>
                                 Angle between the full extended and the
-                                full retracted main strut.
+                                full retracted main strut
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
@@ -31786,7 +31778,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <ddue:remarks>
                         <ddue:content>
                             <ddue:para> 
-                                Describes an assembly of the various landing gear components.</ddue:para>
+                                Describes an assembly of the various landing gear components</ddue:para>
                             <ddue:mediaLink>
                                 <ddue:image xlink:href="landingGearsComponents"/>
                             </ddue:mediaLink>
@@ -31824,7 +31816,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:sequence>
             <xsd:element name="pintleStrutAssembly" type="strutAssemblyType" minOccurs="1" maxOccurs="2">
                 <xsd:annotation>
-                    <xsd:documentation>Pintle strut. One or two pintle struts are supported.</xsd:documentation>
+                    <xsd:documentation>Pintle strut (one or two pintle struts are supported)</xsd:documentation>
                 </xsd:annotation>
             </xsd:element>
         </xsd:sequence>
@@ -31924,14 +31916,13 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                 <sd:schemaDoc>
                     <ddue:summary>
                         <ddue:para>
-                            Geometrical and material properties
-                            definition of a strut
+                            Strut properties
                         </ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>
-                            Geometrical and material properties
-                            definition of a strut
+                            Geometric description and material properties
+                            of a strut
                         </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -31944,18 +31935,18 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         <xsd:sequence>
                             <xsd:element name="radius" type="doubleBaseType">
                                 <xsd:annotation>
-                                    <xsd:documentation>(Outer) radius of the strut.
+                                    <xsd:documentation>(Outer) radius of the strut
                                     </xsd:documentation>
                                 </xsd:annotation>
                             </xsd:element>
                             <xsd:element name="materialUID" type="stringUIDBaseType">
                                 <xsd:annotation>
-                                    <xsd:documentation>Material of the strut.</xsd:documentation>
+                                    <xsd:documentation>Material of the strut</xsd:documentation>
                                 </xsd:annotation>
                             </xsd:element>
                             <xsd:element minOccurs="0" name="innerRadius" type="doubleBaseType">
                                 <xsd:annotation>
-                                    <xsd:documentation>Inner radius of the strut.
+                                    <xsd:documentation>Inner radius of the strut
                                     </xsd:documentation>
                                 </xsd:annotation>
                             </xsd:element>
@@ -31964,7 +31955,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             <xsd:element name="structuralElementUID" type="stringUIDBaseType">
                                 <xsd:annotation>
                                     <xsd:documentation>Reference to structural element for a more
-                                        detailed cross section definition.</xsd:documentation>
+                                        detailed cross section definition</xsd:documentation>
                                 </xsd:annotation>
                             </xsd:element>
                         </xsd:sequence>
@@ -32035,7 +32026,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Definition of the main landing gear support beam
+                        <ddue:para>Main landing gear support beam
                         </ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
@@ -32093,13 +32084,13 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Definition of the position of the landing gear
+                        <ddue:para>Position of the landing gear on a wing
                         </ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>Definition of the position of the landing gear
-                            (intersection point of main strut and pintle sturt) on the wing,
-                            using relative componentSegment coordinates.</ddue:para>
+                            (intersection point of main strut and pintle sturt) on a wing,
+                            using relative componentSegment coordinates</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -32138,7 +32129,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>Definition of the main landing gear support beam
-                            position.</ddue:para>
+                            position</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
