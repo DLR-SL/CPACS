@@ -30637,7 +30637,6 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     </xsd:element>
                     <xsd:element name="environment" type="aeroCaseEnvironmentType"/>
                     <xsd:element name="state" type="aeroCaseStateType"/>
-                    <!-- TODO (CLiersch): Sollten wir den Begriff "Data" genauer beschreiben, weil Data sehr allgemein klingt? -->
                     <xsd:element name="aeroData" type="aeroCaseAeroDataType" minOccurs="0"/>
                 </xsd:all>
                 <xsd:attribute name="uID" type="xsd:ID" use="required">
@@ -30733,21 +30732,27 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:element name="pStar" type="doubleBaseType" maxOccurs="1" minOccurs="0">
                 <xsd:annotation>
                     <xsd:documentation>
-                        Roll rate
+                        Normalized roll rate [rad/sec]. It is specified around the global x-axis
+                        with the aircraft model's global reference point as origin and
+                        nondimensionalized by: pStar = p * reference length / flow speed.
                     </xsd:documentation>
                 </xsd:annotation>
             </xsd:element>
             <xsd:element name="qStar" type="doubleBaseType" maxOccurs="1" minOccurs="0">
                 <xsd:annotation>
                     <xsd:documentation>
-                        Pitch rate
+                    	Normalized pitch rate [rad/sec]. It is specified around the global y-axis
+                        with the aircraft model's global reference point as origin and
+                        nondimensionalized by: qStar = q * reference length / flow speed.
                     </xsd:documentation>
                 </xsd:annotation>
             </xsd:element>
             <xsd:element name="rStar" type="doubleBaseType" maxOccurs="1" minOccurs="0">
                 <xsd:annotation>
                     <xsd:documentation>
-                        Yaw rate
+                    	Normalized yaw rate [rad/sec]. It is specified around the global z-axis
+                        with the aircraft model's global reference point as origin and
+                        nondimensionalized by: rStar = r * reference length / flow speed.
                     </xsd:documentation>
                 </xsd:annotation>
             </xsd:element>
@@ -30809,7 +30814,6 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <!-- TODO (CLiersch): War vorher Aircraft. Vielleicht vehicle, damit auch für Hubschrauber anwendbar? -->
                     <xsd:element name="vehicle" type="aeroDataVehicleType" maxOccurs="1" minOccurs="0"/>
                     <xsd:element name="components" type="aeroDataComponentsType" maxOccurs="1" minOccurs="0"/>
                 </xsd:all>
@@ -30846,12 +30850,11 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Aerodynamic loads of components</ddue:para>
+                        <ddue:para>Aerodynamic data of components</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>
-                            <!-- TODO (CLiersch): vielleicht bessere Erlaueterung finden :) -->
-                            Aerodynamic loads of any componenents other than the vehicle itself
+                            Aerodynamic data of individual components of the aircraft (e.g. control surface loads and hinge moments)
                         </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -30944,7 +30947,6 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:element minOccurs="0" name="cmd" type="doubleVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
-                                <!-- TODO (CLiersch): Bitte pruefen -->
                                 Aerodynamic moment around d-axis of the aerodynamic coordinate system
                             </xsd:documentation>
                         </xsd:annotation>
@@ -30963,22 +30965,22 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="dragFractions" type="dragFractionsType" maxOccurs="1" minOccurs="0"/>
+                    <xsd:element name="dragContributions" type="dragContributionsType" maxOccurs="1" minOccurs="0"/>
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="dragFractionsType">
+    <xsd:complexType name="dragContributionsType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Drag fractions</ddue:para>
+                        <ddue:para>Drag contributions</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>
-                            The drag fractions relate to different physical mechanisms. The sum of the fractions does not have to be equal to the total drag.
+                            The drag contributions relate to different physical mechanisms. The sum of the contributions does not have to be equal to the total drag.
                         </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -30990,44 +30992,49 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:element name="cdPressure" type="doubleBaseType" minOccurs="0">
                         <xsd:annotation>
                             <xsd:documentation>
-                                Drag fraction due to the displacement of the flow around a component. Zero for irrotational two-dimensional flows.
+                                Drag contributions due to the displacement of the flow around a component. Zero for irrotational two-dimensional flows.
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="cdViscous" type="doubleBaseType" minOccurs="0">
                         <xsd:annotation>
                             <xsd:documentation>
-                                Drag fraction due to shear forces on surfaces
+                                Drag contributions due to shear forces on surfaces
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="cdFriction" type="doubleBaseType" minOccurs="0">
                         <xsd:annotation>
                             <xsd:documentation>
-                                Drag fraction due to friction
+                                Drag contributions due to friction
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="cdInduced" type="doubleBaseType" minOccurs="0">
                         <xsd:annotation>
                             <xsd:documentation>
-                                Drag fraction due to energy loss through vortex structures caused by the pressure difference between the upper and lower sides of three-dimensional lifting surfaces.
+                                Drag contributions due to energy loss through vortex structures caused by the pressure difference between the upper and lower sides of three-dimensional lifting surfaces.
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="cdInterference" type="doubleBaseType" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Drag contributions due to mixing of streamlines between airframe components (e.g., interaction between wing and fuselage or pylon and wing).
+                            </xsd:documentation>
+                        </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="cdWave" type="doubleBaseType" minOccurs="0">
                         <xsd:annotation>
                             <xsd:documentation>
-                                Drag fraction due to energy dissipation in shock waves
+                                Drag contributions due to energy dissipation in shock waves
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="cdTrim" type="doubleBaseType" minOccurs="0">
                         <xsd:annotation>
                             <xsd:documentation>
-                                Drag fraction due to trimmed aircraft configuration
+                                Drag contributions due to trimmed aircraft configuration
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
@@ -31062,7 +31069,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                 <xsd:all>
                     <xsd:element name="wings" type="coefficientsBreakdownWingsType" maxOccurs="1" minOccurs="0"/>
                     <xsd:element name="otherComponents" type="coefficientsBreakdownComponentsType" maxOccurs="1" minOccurs="0"/>
-                    <xsd:element name="remaningContributions" type="remaningContributionsType" maxOccurs="1" minOccurs="0"/>
+                    <xsd:element name="remainingContributions" type="remainingContributionsType" maxOccurs="1" minOccurs="0"/>
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
@@ -31119,7 +31126,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     </xsd:element>
                     <xsd:element name="coefficients" type="aeroCaseCoefficientsType"/>
                     <xsd:element name="segments" type="coefficientsBreakdownWingSegmentsType" maxOccurs="1" minOccurs="0"/>
-                    <xsd:element name="remainingContributions" type="remaningContributionsType" maxOccurs="1" minOccurs="0"/>
+                    <xsd:element name="remainingContributions" type="remainingContributionsType" maxOccurs="1" minOccurs="0"/>
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
@@ -31176,7 +31183,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     </xsd:element>
                     <xsd:element name="coefficients" type="aeroCaseCoefficientsType"/>
                     <xsd:element name="strips" type="coefficientsBreakdownStripsType" maxOccurs="1" minOccurs="0"/>
-                    <xsd:element name="remaningContributions" type="remaningContributionsType" maxOccurs="1" minOccurs="0"/>
+                    <xsd:element name="remaisningContributions" type="remainingContributionsType" maxOccurs="1" minOccurs="0"/>
                 </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
@@ -31228,7 +31235,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     </xsd:element>
                     <xsd:element name="reference" type="coefficientReferenceType"/>
                     <xsd:element name="chordwiseParts" type="chordwisePartsType" maxOccurs="1" minOccurs="0"/>
-                    <xsd:element name="remaningContributions" type="remaningContributionsType" maxOccurs="1" minOccurs="0"/>
+                    <xsd:element name="remainingContributions" type="remainingContributionsType" maxOccurs="1" minOccurs="0"/>
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
@@ -31243,7 +31250,6 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>
-                            <!-- TODO (CLiersch): Vielleicht Formulierung ueberarbeiten -->
                             Contains a list of chordwise parts within a wing segment strip for which aerodynamic coefficients are specified
                         </ddue:para>
                     </ddue:remarks>
@@ -31284,7 +31290,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="remaningContributionsType">
+    <xsd:complexType name="remainingContributionsType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
@@ -31302,7 +31308,6 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <!-- TODO (CLiersch): Wollen wir an der Name/Description-Philosophie haengen oder den Knoten hier loeschen? -->
                     <xsd:element name="name" type="stringBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
