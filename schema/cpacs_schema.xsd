@@ -31750,7 +31750,18 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="offset" type="doubleBaseType"
-                        maxOccurs="1" minOccurs="0" />
+                        maxOccurs="1" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Distance of the center of rotation to the top of the main strut 
+                                for retracting and extending the landing gear. I.e., a value of 
+                                0 means that the landing gear will rotate around the upper end 
+                                of the main strut during retraction. If this value is greater 
+                                than 0, the center of rotation is shifted by this value above 
+                                the main strut end point (translation along the main strut axis).
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                     <xsd:element name="retractControlParameter" type="doubleBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
@@ -31800,23 +31811,23 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                 <xsd:element name="axle" type="axleType"/>
                 <xsd:element name="bogie" type="bogieType"/>
             </xsd:choice>
-            <xsd:element name="dragStrutAssembly" type="strutAssemblyType" minOccurs="0">
+            <xsd:element name="dragStrut" type="strutAssemblyType" minOccurs="0">
                 <xsd:annotation>
                     <xsd:documentation>Drag strut (Assumption: one end of the strut will connect to the main strut and the other end will be given as endPoint)</xsd:documentation>
                 </xsd:annotation>
             </xsd:element>
-            <xsd:element name="pintleStrutAssemblies" type="pintleStrutAssembliesType" minOccurs="0"/>
-            <xsd:element name="sideStrutAssemblies" type="sideStrutAssembliesType" minOccurs="0"/>
+            <xsd:element name="pintleStruts" type="pintleStrutsType" minOccurs="0"/>
+            <xsd:element name="sideStruts" type="sideStrutsType" minOccurs="0"/>
             <xsd:element name="mainActuator" type="mainActuatorType" minOccurs="0"/>
         </xsd:sequence>
     </xsd:complexType>
 
-    <xsd:complexType name="pintleStrutAssembliesType">
+    <xsd:complexType name="pintleStrutsType">
         <xsd:annotation>
             <xsd:documentation>Pintle strut(s) (Assumption: one end of the strut will connect to the main strut and the other end will be given as endPoint)</xsd:documentation>
         </xsd:annotation>
         <xsd:sequence>
-            <xsd:element name="pintleStrutAssembly" type="strutAssemblyType" minOccurs="1" maxOccurs="2">
+            <xsd:element name="pintleStrut" type="strutAssemblyType" minOccurs="1" maxOccurs="2">
                 <xsd:annotation>
                     <xsd:documentation>Pintle strut (one or two pintle struts are supported)</xsd:documentation>
                 </xsd:annotation>
@@ -31824,12 +31835,12 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:sequence>
     </xsd:complexType>
 
-    <xsd:complexType name="sideStrutAssembliesType">
+    <xsd:complexType name="sideStrutsType">
         <xsd:annotation>
             <xsd:documentation>Side strut(s) (Assumption: one end of the strut will connect to the main strut and the other end will be given as endPoint)</xsd:documentation>
         </xsd:annotation>
         <xsd:sequence>
-            <xsd:element name="sideStrutAssembly" type="strutAssemblyType" minOccurs="1" maxOccurs="2"/>
+            <xsd:element name="sideStrut" type="strutAssemblyType" minOccurs="1" maxOccurs="2"/>
         </xsd:sequence>
     </xsd:complexType>
 
