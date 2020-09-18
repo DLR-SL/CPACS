@@ -19953,6 +19953,24 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             <xsd:documentation>UTC time at start of mission</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
+                    <xsd:element minOccurs="0" name="environmentalConditions">
+                    	<xsd:complexType>
+                    		<xsd:complexContent>
+                    			<xsd:extension base="complexBaseType">
+                    				<xsd:all>
+                    					<xsd:element name="atmosphericModel" type="atmosphericModelType"/>
+					                    <xsd:element name="deltaTemperature" type="doubleBaseType" minOccurs="0">
+					                        <xsd:annotation>
+					                            <xsd:documentation>
+					                                Delta temperature
+					                            </xsd:documentation>
+					                        </xsd:annotation>
+                    					</xsd:element>
+                    				</xsd:all>
+                    			</xsd:extension>
+                    		</xsd:complexContent>
+                    	</xsd:complexType>
+                    </xsd:element>
                 </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
@@ -19977,7 +19995,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:element name="name" type="stringBaseType"/>
                     <xsd:element minOccurs="0" name="description" type="stringBaseType"/>
                     <xsd:element name="startCondition" type="missionStartConditionType"/>
-                    <xsd:element name="segmentUIDSequence" type="uIDSequenceType">
+                    <xsd:element name="segmentUIDs" type="uIDReferenceVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
                                 List of segmentBlock or segment uID's forming the mission. Either segments, segmentBlocks or a combination of the both is allowed.
@@ -20556,7 +20574,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element name="requiredPerformanceCases" type="uIDSequenceType"/>
+                    <xsd:element name="requiredPerformanceCases" type="uIDReferenceVectorBaseType"/>
                     <xsd:element minOccurs="0" name="optionalPerformanceCases" type="uIDSequenceType"/>
                     <xsd:element name="flightPerformanceCases" type="performanceCasesType"/>
                     <xsd:element name="controllabilityCases" type="controllabilityCasesType">
@@ -24119,12 +24137,12 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             <xsd:documentation>UID of performance map to be used for mission segments</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element minOccurs="0" name="segmentUIDs" type="stringVectorBaseType">
+                    <xsd:element minOccurs="0" name="segmentUIDs" type="uIDReferenceVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>List of all mission segment UIDs to which the performance map is to be applied</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element minOccurs="0" name="pointPerformanceUIDs" type="stringVectorBaseType">
+                    <xsd:element minOccurs="0" name="pointPerformanceUIDs" type="uIDReferenceVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>List of point performance UIDs to which the  performance map is to be applied</xsd:documentation>
                         </xsd:annotation>
