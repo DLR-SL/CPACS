@@ -1026,6 +1026,40 @@ marko.alder@dlr.de
             </xsd:restriction>
         </xsd:simpleContent>
     </xsd:complexType>
+    
+    <xsd:complexType name="doubleVectorConstraintBaseType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>doubleVectorConstraintBaseType</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>Base type for double vectors including a relational operator attribute indicating valid constraint region.</ddue:para>
+                            <ddue:para>The doubleVectorConstraintBaseType extends the doubleVectorBaseType and thus inherits all its attributes.</ddue:para>
+                        </ddue:content>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:simpleContent>
+            <xsd:extension base="doubleVectorBaseType">
+                <xsd:attribute name="relationalOperator" use="required">
+                    <xsd:simpleType>
+                        <xsd:restriction base="xsd:string">
+                            <xsd:enumeration value="lt"/>
+                            <xsd:enumeration value="le"/>
+                            <xsd:enumeration value="eq"/>
+                            <xsd:enumeration value="ne"/>
+                            <xsd:enumeration value="gt"/>
+                            <xsd:enumeration value="ge"/>
+                        </xsd:restriction>
+                    </xsd:simpleType>
+                </xsd:attribute>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
 
     <xsd:complexType name="uIDReferenceVectorBaseType">
         <xsd:annotation>
@@ -5674,9 +5708,10 @@ marko.alder@dlr.de
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
+                	<xsd:element name="endConditionRatio" type="doubleVectorBaseType" minOccurs="0"/>
                     <xsd:choice minOccurs="0">
                         <xsd:element name="CAS"
-                            type="doubleConstraintBaseType">
+                            type="doubleVectorConstraintBaseType">
                             <xsd:annotation>
                                 <xsd:documentation>
                                     Calibrated airspeed within the
@@ -5685,7 +5720,7 @@ marko.alder@dlr.de
                             </xsd:annotation>
                         </xsd:element>
                         <xsd:element name="machNumber"
-                            type="doubleConstraintBaseType">
+                            type="doubleVectorConstraintBaseType">
                             <xsd:annotation>
                                 <xsd:documentation>
                                     Mach number within the segment
@@ -5695,7 +5730,7 @@ marko.alder@dlr.de
                     </xsd:choice>
                     <xsd:choice minOccurs="0">
                         <xsd:element name="climbAngle"
-                            type="doubleConstraintBaseType">
+                            type="doubleVectorConstraintBaseType">
                             <xsd:annotation>
                                 <xsd:documentation>
                                     Climb angle within the segment
@@ -5703,7 +5738,7 @@ marko.alder@dlr.de
                             </xsd:annotation>
                         </xsd:element>
                         <xsd:element name="descentAngle"
-                            type="doubleConstraintBaseType">
+                            type="doubleVectorConstraintBaseType">
                             <xsd:annotation>
                                 <xsd:documentation>
                                     Descent angle within the segment
@@ -5712,13 +5747,13 @@ marko.alder@dlr.de
                         </xsd:element>
                     </xsd:choice>
                     <xsd:choice minOccurs="0">
-                        <xsd:element name="rateOfClimb" type="doubleConstraintBaseType">
+                        <xsd:element name="rateOfClimb" type="doubleVectorConstraintBaseType">
                             <xsd:annotation>
                                 <xsd:documentation>
                                     Climb angle within the segment
                                 </xsd:documentation>
                             </xsd:annotation>
-                        </xsd:element><xsd:element name="rateOfDescent" type="doubleConstraintBaseType">
+                        </xsd:element><xsd:element name="rateOfDescent" type="doubleVectorConstraintBaseType">
                             <xsd:annotation>
                                 <xsd:documentation>
                                     Rate of descent within the segment
@@ -5726,7 +5761,7 @@ marko.alder@dlr.de
                             </xsd:annotation>
                         </xsd:element>
                     </xsd:choice>
-                        <xsd:element minOccurs="0" name="stepClimbSpecificExcessPower" type="doubleConstraintBaseType">
+                        <xsd:element minOccurs="0" name="stepClimbSpecificExcessPower" type="doubleVectorConstraintBaseType">
                             <xsd:annotation>
                                 <xsd:documentation>
                                     Specific excess power within the segment
@@ -5736,7 +5771,7 @@ marko.alder@dlr.de
                                 </xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
-                        <xsd:element minOccurs="0" name="stepClimbAltitudeDifference" type="doubleConstraintBaseType">
+                        <xsd:element minOccurs="0" name="stepClimbAltitudeDifference" type="doubleVectorConstraintBaseType">
                             <xsd:annotation>
                                 <xsd:documentation>
                                     Altitude difference of each step climb.
@@ -5744,7 +5779,7 @@ marko.alder@dlr.de
                             </xsd:annotation>
                         </xsd:element>
                     <xsd:choice minOccurs="0">
-                        <xsd:element name="heading" type="doubleBaseType">
+                        <xsd:element name="heading" type="doubleVectorConstraintBaseType">
                             <xsd:annotation>
                                 <xsd:documentation>
                                     Flight heading at the end of the
@@ -5753,7 +5788,7 @@ marko.alder@dlr.de
                                 </xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
-                        <xsd:element name="turnAngle" type="doubleConstraintBaseType">
+                        <xsd:element name="turnAngle" type="doubleVectorConstraintBaseType">
                             <xsd:annotation>
                                 <xsd:documentation>
                                     Total change of heading angle during
@@ -5763,7 +5798,7 @@ marko.alder@dlr.de
                             </xsd:annotation>
                         </xsd:element>
                     </xsd:choice>
-                    <xsd:element minOccurs="0" name="rateOfTurn" type="doubleConstraintBaseType">
+                    <xsd:element minOccurs="0" name="rateOfTurn" type="doubleVectorConstraintBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
                                 Rate of turn within the segment
@@ -5771,7 +5806,7 @@ marko.alder@dlr.de
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element minOccurs="0" name="thrustSetting"
-                        type="doubleConstraintBaseType">
+                        type="doubleVectorConstraintBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
                                 Thrust setting for derated engine as
@@ -5782,7 +5817,7 @@ marko.alder@dlr.de
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element minOccurs="0" name="acceleration"
-                        type="doubleConstraintBaseType">
+                        type="doubleVectorConstraintBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
                                 Rate of velocity within the segment
@@ -5790,7 +5825,7 @@ marko.alder@dlr.de
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element minOccurs="0" name="loadFactor"
-                        type="doubleConstraintBaseType">
+                        type="doubleVectorConstraintBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
                                 Load factor experienced during segment
@@ -5798,20 +5833,10 @@ marko.alder@dlr.de
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element minOccurs="0" name="altitude"
-                        type="doubleConstraintBaseType">
+                        type="doubleVectorConstraintBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
                                 Constant altitude for the segment.
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element minOccurs="0"
-                        name="deltaTemperatureISA"
-                        type="doubleConstraintBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                Delta in temperature compared to
-                                standard ISA conditions
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
