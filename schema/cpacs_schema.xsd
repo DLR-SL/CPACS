@@ -25853,11 +25853,18 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             <xsd:documentation>defines uID of the segment having variable conditions</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="variableConditions" type="stringVectorBaseType">
+                    <xsd:element name="variableConditions">
                         <xsd:annotation>
                             <xsd:documentation>defines which condition(s) are variable within the segment (must be one of the defined
                             endConditions for the segmentBlock)</xsd:documentation>
                         </xsd:annotation>
+                        <xsd:complexType>
+                        	<xsd:simpleContent>
+                        		<xsd:restriction base="stringVectorBaseType">
+			                		<xsd:pattern value="(CAS|machNumber|positionXYZ|positionGeo|runway|massFraction|fuelFraction|fuelRemaining|fuelConsumed|heading|turnAngle|range|duration|endTimeUTC|specificExcessPower|rateOfClimb|flightPathAngle)(;(CAS|machNumber|positionXYZ|positionGeo|runway|massFraction|fuelFraction|fuelRemaining|fuelConsumed|heading|turnAngle|range|duration|endTimeUTC|specificExcessPower|rateOfClimb|flightPathAngle))*"/>
+			                	</xsd:restriction>
+                        	</xsd:simpleContent>
+                        </xsd:complexType>
                     </xsd:element>
                 </xsd:all>
                 <xsd:attribute name="uID" type="xsd:ID" use="required"/>
