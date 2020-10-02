@@ -31382,8 +31382,16 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:choice>
                     	<xsd:element minOccurs="1" name="componentAssembly" type="landingGearComponentAssemblyType" maxOccurs="1"/>
                     	<xsd:sequence>
-                    		<xsd:element name="totalLength" type="doubleBaseType"/>
-                    		<xsd:element minOccurs="0" name="totalSpringDeflection" type="doubleBaseType"/>
+                    		<xsd:element name="totalLength" type="doubleBaseType">
+		                        <xsd:annotation>
+		                            <xsd:documentation>Total length of landing gear, equals the distance from the middle of the bogie/axles to the axis of rotation of the pintle strut. Distance is measured while landing gear is fully extended and in airborne condition (i.e., if a spring is present, the totalLength includes the springDeflectionLength)</xsd:documentation>
+		                        </xsd:annotation>
+		                    </xsd:element>
+                    		<xsd:element minOccurs="0" name="totalSpringDeflection" type="doubleBaseType">
+		                        <xsd:annotation>
+		                            <xsd:documentation>Total spring deflection length. Thus, length of the landing gear in fully loaded condition on the ground = totalLength - totalSpringDeflection</xsd:documentation>
+		                        </xsd:annotation>
+		                    </xsd:element>
                     	</xsd:sequence>
                     </xsd:choice>
                     <xsd:element name="transformation" type="transformationType" maxOccurs="1" minOccurs="1">
