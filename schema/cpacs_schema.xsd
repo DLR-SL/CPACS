@@ -4992,8 +4992,7 @@ marko.alder@dlr.de
                         <ddue:para>Load envelope</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Each component is linked to a set of loadcases for
-                            maximum forces and moments.
+                        <ddue:para>List of load cases defining a load envelope
                         </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -5001,75 +5000,28 @@ marko.alder@dlr.de
         </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element name="loadMinimaMaxima" type="loadMinimaMaximaType"/>
-                    <!-- TODO (DLR-AE): Can naming be more meaningful?-->
-                    <xsd:element name="convexHull" type="loadEnvelopeConvexHullType" minOccurs="0" maxOccurs="unbounded"/>
-                </xsd:sequence>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="loadMinimaMaximaType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>UIDs referencing the minimum and maximum load sets</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para/>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
                 <xsd:all>
+                	<xsd:element name="name" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Name</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                	<xsd:element name="description" type="stringBaseType" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>Description</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                     <xsd:element name="pointSetUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>The uID of the corresponding point set
+                            <xsd:documentation>UID of the corresponding point set
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="maxLoadCaseUIDs" type="loadCaseUIDsType"/>
-                    <xsd:element name="minLoadCaseUIDs" type="loadCaseUIDsType"/>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="loadEnvelopeConvexHullType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <!-- TODO (DLR-AE): More meaningfull summary -->
-                        <ddue:para>Convex hull</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para/>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="pointSetUID" type="stringUIDBaseType">
+                    <xsd:element name="loadCaseUIDs" type="uIDReferenceVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>The uID of the corresponding point set
-                            </xsd:documentation>
+                            <xsd:documentation>List of uIDs defining the loads envelope</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="pointID" type="integerBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>ID of a point within the referenced point set
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="maxLoadCaseUIDs" type="loadCase2DUIDsType"/>
-                    <xsd:element name="minLoadCaseUIDs" type="loadCase2DUIDsType"/>
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
@@ -14806,7 +14758,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
                     <xsd:element maxOccurs="unbounded"
-                        name="cutLoadEnvelope"
+                        name="loadEnvelope"
                         type="loadEnvelopeType">
                     </xsd:element>
                 </xsd:sequence>
