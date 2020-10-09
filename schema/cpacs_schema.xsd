@@ -437,6 +437,7 @@ marko.alder@dlr.de
                                 <ddue:content>
                                     <ddue:para>Release in ... 2020</ddue:para>
                                     <ddue:list class="bullet">
+                                    	<ddue:listItem>Add missing singular incrementMap element to incrementMaps in aeroLimitsMap (compatibility break)</ddue:listItem>
                                     	<ddue:listItem>Add fuselage walls to mass breakdown</ddue:listItem>
                                         <ddue:listItem>Revision of landing gears (compatibility break)</ddue:listItem>
                                         <ddue:listItem>Add flight envelope to aircraft global element</ddue:listItem>
@@ -29475,14 +29476,37 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:element name="operationLimit"
                         type="aeroMapOperationLimitType" maxOccurs="1" minOccurs="0"/>
                     <xsd:element name="incrementMaps"
-                        type="aeroLimitsIncrementMapsType" maxOccurs="1"
-                        minOccurs="0"/>
+                    	type="aeroLimitsIncrementMapsType" maxOccurs="1"
+                    	minOccurs="0" />
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
 
     <xsd:complexType name="aeroLimitsIncrementMapsType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Increment maps for limitation values due to movable device deflections</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>Specification of aerodynamic coefficient increments due to movable device deflections (e.g., control
+                        surfaces or landing gears).</ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" name="incrementMap" type="aeroLimitsIncrementMapType"/>
+				</xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="aeroLimitsIncrementMapType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
