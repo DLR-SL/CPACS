@@ -437,6 +437,7 @@ marko.alder@dlr.de
                                 <ddue:content>
                                     <ddue:para>Release in ... 2020</ddue:para>
                                     <ddue:list class="bullet">
+                                    	<ddue:listItem>Add fuselage walls to mass breakdown</ddue:listItem>
                                         <ddue:listItem>Revision of landing gears (compatibility break)</ddue:listItem>
                                         <ddue:listItem>Add flight envelope to aircraft global element</ddue:listItem>
                                         <ddue:listItem>Add standard profile types</ddue:listItem>
@@ -16170,6 +16171,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:element minOccurs="0" name="mWasteWaterSystems" type="mWasteWaterSystemsType"/>
                     <xsd:element minOccurs="0" name="mFreshWaterSystems" type="mFreshWaterSystemsType"/>
                     <xsd:element minOccurs="0" name="mVacuumWasteSystems" type="mVacuumWasteSystemsType"/>
+                    <xsd:element minOccurs="0" name="mMiscellaneous" type="mMiscellaneousType"/>
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
@@ -16199,17 +16201,40 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     </xsd:element>
                     <xsd:element minOccurs="0" name="mSkinPanels" type="mSkinPanelsType"/>
                     <xsd:element minOccurs="0" name="mBulkheads" type="mBulkheadsType"/>
+                    <xsd:element minOccurs="0" name="mWalls" type="mWallsType"/>
                     <xsd:element minOccurs="0" name="mDoors" type="mDoorsType"/>
                     <xsd:element minOccurs="0" name="mWindows" type="mWindowsType"/>
                     <xsd:element minOccurs="0" name="mCabinFloors" type="mCabinFloorsType"/>
                     <xsd:element minOccurs="0" name="mCargoFloors" type="mCargoFloorsType"/>
                     <xsd:element minOccurs="0" name="mSpecialStructures" type="mSpecialStructuresType"/>
                     <xsd:element minOccurs="0" name="mBellyFairings" type="mBellyFairingsType"/>
-                    <xsd:element minOccurs="0" name="mStringers" type="mStringersType">
-                    </xsd:element>
-                    <xsd:element minOccurs="0" name="mFrames" type="mFramesType">
-                    </xsd:element>
+                    <xsd:element minOccurs="0" name="mStringers" type="mStringersType"/>
+                    <xsd:element minOccurs="0" name="mFrames" type="mFramesType"/>
+                    <xsd:element minOccurs="0" name="mMiscellaneous" type="mMiscellaneousType"/>
                 </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="mWallsType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>mWallsType</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para/>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="massDescription" type="genericMassType"/>
+                    <xsd:element maxOccurs="unbounded" minOccurs="0" name="mWall" type="singleGenericMassType"/>
+                </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -16611,7 +16636,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         <ddue:para>mMiscellaneousType</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para/>
+                        <ddue:para>Miscellaneous masses must only specify componenent masses for which NO DEDICATED ELEMENT EXISTS in the mass breakdown list!</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -16983,6 +17008,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:element minOccurs="0" name="mEngineControl" type="mEngineControlType"/>
                     <xsd:element minOccurs="0" name="mFuelSystem" type="mFuelSystemType"/>
                     <xsd:element minOccurs="0" name="mInterGasSystem" type="mInterGasSystemType"/>
+                    <xsd:element minOccurs="0" name="mMiscellaneous" type="mMiscellaneousType"/>
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
@@ -17363,6 +17389,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:element minOccurs="0" name="mIntegratedModularAvionics" type="mIntegratedModularAvionicsType"/>
                     <xsd:element minOccurs="0" name="mMillitarySystems" type="mMillitarySystemsType"/>
                     <xsd:element minOccurs="0" name="mNavigation" type="mNavigationType"/>
+                    <xsd:element minOccurs="0" name="mMiscellaneous" type="mMiscellaneousType"/>
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
