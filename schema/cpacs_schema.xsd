@@ -437,6 +437,7 @@ marko.alder@dlr.de
                                 <ddue:content>
                                     <ddue:para>Release in ... 2020</ddue:para>
                                     <ddue:list class="bullet">
+                                    	<ddue:listItem>Add parametric fuselage profiles</ddue:listItem>
                                     	<ddue:listItem>Add missing singular incrementMap element to incrementMaps in aeroLimitsMap (compatibility break)</ddue:listItem>
                                     	<ddue:listItem>Add fuselage walls to mass breakdown</ddue:listItem>
                                         <ddue:listItem>Revision of landing gears (compatibility break)</ddue:listItem>
@@ -2320,6 +2321,23 @@ marko.alder@dlr.de
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="posExcl0DoubleBaseType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Positive double values larger than 0</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:simpleContent>
+            <xsd:restriction base="doubleBaseType">
+                <xsd:minExclusive value="0"></xsd:minExclusive>
+            </xsd:restriction>
+        </xsd:simpleContent>
     </xsd:complexType>
 
     <!--
@@ -20968,6 +20986,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:choice>
                         <xsd:element name="pointList" type="curvePointListXYZType"/>
                         <xsd:element name="cst2D" type="cst2DType"/>
+                        <xsd:element name="standardProfile" type="standardProfileType"/>
                     </xsd:choice>
                 </xsd:sequence>
                 <xsd:attribute name="symmetry">
@@ -31912,6 +31931,173 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
 	                        </xsd:documentation>
 	                    </xsd:annotation>
 	                </xsd:element>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="standardProfileType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Standard profile</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para/>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:choice>
+                     <xsd:element name="rectangle" type="rectangleProfileType"/>
+                    <xsd:element name="superEllipse" type="superEllipseProfileType"/>
+                </xsd:choice>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="rectangleProfileType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Rectangle</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>The width of the profile is always 1, since scaling is performed after referencing it (e.g., in the fuselage).</ddue:para>
+                            <ddue:para>The resulting profile is defined by the following equation:</ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="eq_roundedRectangle"/>
+                            </ddue:mediaLink>
+                            <ddue:para>with <ddue:legacyItalic>c = cornerRadius</ddue:legacyItalic> and <ddue:legacyItalic>r = heightToWidthRatio</ddue:legacyItalic>.</ddue:para>
+                            <ddue:para>Example: Rectangle with <ddue:legacyItalic>cornerRadius</ddue:legacyItalic>=0.125 and <ddue:legacyItalic>heightToWidthRatio</ddue:legacyItalic>=0.5</ddue:para> 
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="rectangleRoundedCorners"/>
+                            </ddue:mediaLink>
+                        </ddue:content>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="cornerRadius" minOccurs="0">
+                        <xsd:complexType>
+                            <xsd:annotation>
+                                <xsd:appinfo>
+                                    <sd:schemaDoc>
+                                        <ddue:summary>
+                                            <ddue:para>Corner radius</ddue:para>
+                                        </ddue:summary>
+                                    </sd:schemaDoc>
+                                </xsd:appinfo>
+                            </xsd:annotation>
+                            <xsd:simpleContent>
+                                <xsd:restriction base="doubleBaseType">
+                                    <xsd:minInclusive value="0"></xsd:minInclusive>
+                                    <xsd:maxExclusive value="0.5"></xsd:maxExclusive>
+                                </xsd:restriction>
+                            </xsd:simpleContent>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="heightToWidthRatio" type="posExcl0DoubleBaseType">
+                    	<xsd:annotation>
+                                <xsd:appinfo>
+                                    <sd:schemaDoc>
+                                        <ddue:summary>
+                                            <ddue:para>Height-to-width ratio</ddue:para>
+                                        </ddue:summary>
+                                    </sd:schemaDoc>
+                                </xsd:appinfo>
+                            </xsd:annotation>
+                    </xsd:element>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="superEllipseProfileType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Superellipse</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>A profile based on superellipses is composed of an upper and a lower semi-ellipse, which may differ from each other in their parameterization. The total width and height of the profile is always 1, since scaling is performed after referencing (e.g., in the fuselage).</ddue:para>
+                            <ddue:para>This <ddue:legacyItalic>lowerHeightFraction</ddue:legacyItalic> describes the portion of the lower semi-ellipse on the total height.</ddue:para>
+                            <ddue:para>The resulting profile is defined by the following set of equations:</ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="superEllipseUpper"/>
+                            </ddue:mediaLink>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="superEllipseLower"/>
+                            </ddue:mediaLink>
+                            <ddue:para>with</ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="superEllipseLowerZ0"/>
+                            </ddue:mediaLink>
+                            <ddue:para>The following examples indicate the various possibilities of parametric profiles:</ddue:para>
+                            <ddue:para><ddue:legacyBold>Example 1</ddue:legacyBold>: (<ddue:legacyItalic>mUpper,nUpper,mLower,nLower, lowerHeightFraction</ddue:legacyItalic>) = (0.5; 2; 5; 3; 0.25)</ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="superEllipseExample1"/>
+                            </ddue:mediaLink>
+                            <ddue:para><ddue:legacyBold>Example 2</ddue:legacyBold>: (<ddue:legacyItalic>mUpper,nUpper,mLower,nLower, lowerHeightFraction</ddue:legacyItalic>) = (2; 2; 2; 2; 0.5) = a circle</ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="superEllipseExample2"/>
+                            </ddue:mediaLink>
+                            <ddue:para><ddue:legacyBold>Example 3</ddue:legacyBold>: (<ddue:legacyItalic>mUpper,nUpper,mLower,nLower, lowerHeightFraction</ddue:legacyItalic>) = (1; 1; 1; 1; 0.5) = a square / diamond</ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="superEllipseExample3"/>
+                            </ddue:mediaLink>
+                            <ddue:para><ddue:legacyBold>Note</ddue:legacyBold>: For exponents that are infinitely large, the superellipse converges to a rectangle. However, the value <ddue:legacyItalic>Inf</ddue:legacyItalic> is not a valid entry at this point. Use the <ddue:legacyItalic>square</ddue:legacyItalic> element instead.</ddue:para>
+                        </ddue:content>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="mUpper" type="posExcl0DoubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Exponent m for upper semi-ellipse</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="nUpper" type="posExcl0DoubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Exponent n for upper semi-ellipse</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="mLower" type="posExcl0DoubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Exponent m for lower semi-ellipse</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="nLower" type="posExcl0DoubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Exponent n for lower semi-ellipse</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="lowerHeightFraction">
+                        <xsd:complexType>
+                            <xsd:annotation>
+                                <xsd:documentation>Fraction of height of the lower semi-ellipse relative to the total height</xsd:documentation>
+                            </xsd:annotation>
+                            <xsd:simpleContent>
+                                <xsd:restriction base="doubleBaseType">
+                                    <xsd:minExclusive value="0"/>
+                                    <xsd:maxExclusive value="1"/>
+                                </xsd:restriction>
+                            </xsd:simpleContent>
+                        </xsd:complexType>
+                    </xsd:element>
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
