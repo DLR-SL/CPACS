@@ -31952,26 +31952,31 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:choice>
-                     <xsd:element name="square" type="squareProfileType"/>
+                     <xsd:element name="rectangle" type="rectangleProfileType"/>
                     <xsd:element name="superEllipse" type="superEllipseProfileType"/>
                 </xsd:choice>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="squareProfileType">
+    <xsd:complexType name="rectangleProfileType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Square</ddue:para>
+                        <ddue:para>Rectangle</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>The total width and height of the profile is always 1, since scaling is performed after referencing it (e.g., in the fuselage).</ddue:para>
-                            <ddue:para>Example: Square with <ddue:legacyItalic>cornerRadius</ddue:legacyItalic>=0.1</ddue:para>
+                            <ddue:para>The width of the profile is always 1, since scaling is performed after referencing it (e.g., in the fuselage).</ddue:para>
+                            <ddue:para>The resulting profile is defined by the following equation:</ddue:para>
                             <ddue:mediaLink>
-                                <ddue:image xlink:href="squareRoundedCorners"/>
+                                <ddue:image xlink:href="eq_roundedRectangle"/>
+                            </ddue:mediaLink>
+                            <ddue:para>with <ddue:legacyItalic>c = cornerRadius</ddue:legacyItalic> and <ddue:legacyItalic>r = heightToWidthRatio</ddue:legacyItalic>.</ddue:para>
+                            <ddue:para>Example: Rectangle with <ddue:legacyItalic>cornerRadius</ddue:legacyItalic>=0.125 and <ddue:legacyItalic>heightToWidthRatio</ddue:legacyItalic>=0.5</ddue:para> 
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="rectangleRoundedCorners"/>
                             </ddue:mediaLink>
                         </ddue:content>
                     </ddue:remarks>
@@ -31981,7 +31986,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element name="cornerRadius">
+                    <xsd:element name="cornerRadius" minOccurs="0">
                         <xsd:complexType>
                             <xsd:annotation>
                                 <xsd:appinfo>
@@ -31999,6 +32004,17 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                                 </xsd:restriction>
                             </xsd:simpleContent>
                         </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="heightToWidthRatio" type="posExcl0DoubleBaseType">
+                    	<xsd:annotation>
+                                <xsd:appinfo>
+                                    <sd:schemaDoc>
+                                        <ddue:summary>
+                                            <ddue:para>Height-to-width ratio</ddue:para>
+                                        </ddue:summary>
+                                    </sd:schemaDoc>
+                                </xsd:appinfo>
+                            </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
             </xsd:extension>
