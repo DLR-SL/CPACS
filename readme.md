@@ -19,6 +19,6 @@ Further information about the CPACS development is available [here](/development
 
 CPACS is available as Open Source and we encourage anyone to make use of it. If you are applying CPACS in a scientific environment and publish any related work, please cite the following article:
 
-B. Nagel, D. Böhnke, V. Gollnick, P. Schmollgruber, A. Rizzi, G. La Rocca, J.J. Alonso, _Communication in Aircraft Design: Can we establish a Common Language?_, 28th International Congress of the Aeronautical Sciences, Brisbane, Australia, 2012.
+M. Alder, E. Moerland, J. Jepsen and B. Nagel. [_Recent Advances in Establishing a Common Language for Aircraft Design with CPACS_](https://elib.dlr.de/134341/). Aerospace Europe Conference 2020, Bordeaux, France, 2020.
 
 For more publications concerning CPACS, we provide the following link to [Google Scholar](http://scholar.google.de/scholar?start=0&q=CPACS+Common+Parametric+Aircraft+Configuration+Schema&hl=de&as_sdt=0,5).
