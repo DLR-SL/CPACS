@@ -437,6 +437,9 @@ marko.alder@dlr.de
                                 <ddue:content>
                                     <ddue:para>Release in ... 2020</ddue:para>
                                     <ddue:list class="bullet">
+                                    	<ddue:listItem>Add parametric fuselage profiles</ddue:listItem>
+                                    	<ddue:listItem>Add missing singular incrementMap element to incrementMaps in aeroLimitsMap (compatibility break)</ddue:listItem>
+                                    	<ddue:listItem>Add fuselage walls to mass breakdown</ddue:listItem>
                                         <ddue:listItem>Revision of landing gears (compatibility break)</ddue:listItem>
                                         <ddue:listItem>Add flight envelope to aircraft global element</ddue:listItem>
                                         <ddue:listItem>Add standard profile types</ddue:listItem>
@@ -2387,6 +2390,23 @@ marko.alder@dlr.de
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
+    
+    <xsd:complexType name="posExcl0DoubleBaseType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Positive double values larger than 0</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:simpleContent>
+            <xsd:restriction base="doubleBaseType">
+                <xsd:minExclusive value="0"></xsd:minExclusive>
+            </xsd:restriction>
+        </xsd:simpleContent>
+    </xsd:complexType>
 
     <!--
     =================================================================
@@ -2918,7 +2938,6 @@ marko.alder@dlr.de
                     <xsd:element minOccurs="0" name="global" type="aircraftAnalysesGlobalType"/>
                     <xsd:element minOccurs="0" name="aeroPerformance" type="aeroPerformanceType"/>
                     <xsd:element minOccurs="0" name="aeroelastics" type="aeroelasticsType"/>
-                    <xsd:element minOccurs="0" name="dynamicAircraftModel" type="dynamicAircraftModelAnalysisType"/>
                     <xsd:element minOccurs="0" name="flightDynamics" type="flightDynamicsAnalysisType"/>
                     <xsd:element minOccurs="0" name="flyingQualities" type="flyingQualitiesType"/>
                     <xsd:element minOccurs="0" name="flightPerformance" type="flightPerformanceType"/>
@@ -3769,6 +3788,11 @@ marko.alder@dlr.de
                     <xsd:element name="length" type="doubleBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Length of the bogie</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="tiltAngle" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Tilt angle of the bogie in airborne conditions</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="strutProperties" type="strutPropertiesType"/>
@@ -5054,8 +5078,7 @@ marko.alder@dlr.de
                         <ddue:para>Load envelope</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Each component is linked to a set of loadcases for
-                            maximum forces and moments.
+                        <ddue:para>List of load cases defining a load envelope
                         </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -5063,75 +5086,28 @@ marko.alder@dlr.de
         </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element name="loadMinimaMaxima" type="loadMinimaMaximaType"/>
-                    <!-- TODO (DLR-AE): Can naming be more meaningful?-->
-                    <xsd:element name="convexHull" type="loadEnvelopeConvexHullType" minOccurs="0" maxOccurs="unbounded"/>
-                </xsd:sequence>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="loadMinimaMaximaType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>UIDs referencing the minimum and maximum load sets</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para/>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
                 <xsd:all>
+                	<xsd:element name="name" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Name</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                	<xsd:element name="description" type="stringBaseType" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>Description</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                     <xsd:element name="pointSetUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>The uID of the corresponding point set
+                            <xsd:documentation>UID of the corresponding point set
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="maxLoadCaseUIDs" type="loadCaseUIDsType"/>
-                    <xsd:element name="minLoadCaseUIDs" type="loadCaseUIDsType"/>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="loadEnvelopeConvexHullType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <!-- TODO (DLR-AE): More meaningfull summary -->
-                        <ddue:para>Convex hull</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para/>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="pointSetUID" type="stringUIDBaseType">
+                    <xsd:element name="loadCaseUIDs" type="uIDReferenceVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>The uID of the corresponding point set
-                            </xsd:documentation>
+                            <xsd:documentation>List of uIDs defining the loads envelope</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="pointID" type="integerBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>ID of a point within the referenced point set
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="maxLoadCaseUIDs" type="loadCase2DUIDsType"/>
-                    <xsd:element name="minLoadCaseUIDs" type="loadCase2DUIDsType"/>
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
@@ -7202,36 +7178,153 @@ marko.alder@dlr.de
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>A track in general describes the structural link
-                                between the control suface and the parent. Tracks are e.g. the
-                                flap tracks, the revolute joints, where the aileron or spoiler
-                                is attached, or the kinematics, attaching slats to the wing.
-                            </ddue:para>
+                            <ddue:para>A <ddue:legacyItalic>track</ddue:legacyItalic> generally describes the structural connection between a control surface and a wing (or parent element). For example, a track can be a flap track, a revolute joint connecting an aileron or spoiler, or the kinematics of slats on a wing. </ddue:para>
                             <ddue:para>The spanwise position of the track is defined by
-                                'eta', which refers to the control surface dimensions.
+                                <ddue:legacyItalic>etaPosition</ddue:legacyItalic>, which refers to the control surface dimensions.
                             </ddue:para>
                             <ddue:para>The structural properties of the track (e.g.
-                                materials) are defined in 'trackStructure'.</ddue:para>
+                                materials) are defined in <ddue:legacyItalic>trackStructure</ddue:legacyItalic>.</ddue:para>
                             <ddue:para>If an actuator is included into the the track, a
-                                reference is given in 'actuator'.</ddue:para>
+                                reference is given in <ddue:legacyItalic>actuator</ddue:legacyItalic>.</ddue:para>
                             <ddue:para>The principal kinematic of the track is defined by
-                                setting the 'trackType' and 'trackSubType'. Please refer to the
-                                tables below for setting the 'trackType' and 'trackSubType'
+                                setting the <ddue:legacyItalic>trackType</ddue:legacyItalic> and <ddue:legacyItalic>trackSubType</ddue:legacyItalic>. Please refer to the
+                                tables below for setting the <ddue:legacyItalic>trackType</ddue:legacyItalic> and <ddue:legacyItalic>trackSubType</ddue:legacyItalic>
                                 parameter. Note, those tables are not final - they are extended
                                 continuously.</ddue:para>
-                            <ddue:para>For trailing edge devices (TED), the 'trackType' and
-                                'trackSubType' parameter are defined as follows:</ddue:para>
-                            <ddue:mediaLink>
-                                <ddue:image xlink:href="tracks_ted"/>
-                            </ddue:mediaLink>
-                            <ddue:para>For spoiler, the 'trackType' and 'trackSubType'
-                                parameter are defined as follows:</ddue:para>
-                            <ddue:mediaLink>
-                                <ddue:image xlink:href="tracks_spoiler"/>
-                            </ddue:mediaLink>
-                            <ddue:para>For leading edge devices (LED), the 'trackType' and
-                                'trackSubType' parameter are defined as follows: Currently no
-                                definition available.</ddue:para>
+                            <ddue:para>
+                                <ddue:table>
+                                    <ddue:title>
+                                        <ddue:legacyBold>Trailing edge track types</ddue:legacyBold>
+                                    </ddue:title>
+                                    <ddue:row>
+                                        <ddue:entry>trackType</ddue:entry>
+                                        <ddue:entry>picture</ddue:entry>
+                                        <ddue:entry>description</ddue:entry>
+                                        <ddue:entry>trackSubType</ddue:entry>
+                                        <ddue:entry>picture</ddue:entry>
+                                        <ddue:entry>description</ddue:entry>
+                                    </ddue:row>
+                                    <ddue:row>
+                                        <ddue:entry>1</ddue:entry>
+                                        <ddue:entry>
+                                        	<ddue:mediaLink>
+                                                <ddue:image xlink:href="TrackType1"/>
+                                            </ddue:mediaLink>
+                                        </ddue:entry>
+                                        <ddue:entry>Revolute joint; no actuators; the revolute joint is on TED hinge line.</ddue:entry>
+                                        <ddue:entry>1</ddue:entry>
+                                        <ddue:entry>
+                                            <ddue:mediaLink>
+                                                <ddue:image xlink:href="TrackType1"/>
+                                            </ddue:mediaLink>
+                                        </ddue:entry>
+                                        <ddue:entry>Revolute attached at the wings rear spar and the TEDs front spar respectively the load 
+                                        carrying ribs of the TED.</ddue:entry>
+                                    </ddue:row>
+                                    <ddue:row>
+                                        <ddue:entry>2</ddue:entry>
+                                        <ddue:entry>
+                                            <ddue:mediaLink>
+                                                <ddue:image xlink:href="TrackType2"/>
+                                            </ddue:mediaLink>
+                                        </ddue:entry>
+                                        <ddue:entry>Revolute joint; dropped hinge; linear or rotary actuator (subtype-dependent) included. 
+                                        The drive strut (if any) is defined as strut1.</ddue:entry>
+                                        <ddue:entry>1</ddue:entry>
+                                        <ddue:entry>
+                                            <ddue:mediaLink>
+                                                <ddue:image xlink:href="TrackType2"/>
+                                            </ddue:mediaLink>
+                                        </ddue:entry>
+                                        <ddue:entry>Box beam design as wing attachment; rotary drive attached at wing rear spar.</ddue:entry>
+                                    </ddue:row>
+                                    <ddue:row>
+                                        <ddue:entry></ddue:entry>
+                                        <ddue:entry></ddue:entry>
+                                        <ddue:entry></ddue:entry>
+                                        <ddue:entry>2</ddue:entry>
+                                        <ddue:entry>
+                                            <ddue:mediaLink>
+                                                <ddue:image xlink:href="TrackType2_SubType2"/>
+                                            </ddue:mediaLink>
+                                        </ddue:entry>
+                                        <ddue:entry>Wing attachment at wing rear spar; rotary drive attached at wing rear spar</ddue:entry>
+                                    </ddue:row>
+                                    <ddue:row>
+                                        <ddue:entry></ddue:entry>
+                                        <ddue:entry></ddue:entry>
+                                        <ddue:entry></ddue:entry>
+                                        <ddue:entry>3</ddue:entry>
+                                        <ddue:entry></ddue:entry>
+                                        <ddue:entry>Track mounted inside the fuselage at wing root.</ddue:entry>
+                                    </ddue:row>
+                                    <ddue:row>
+                                        <ddue:entry>3</ddue:entry>
+                                        <ddue:entry>
+                                            <ddue:mediaLink>
+                                                <ddue:image xlink:href="TrackType3"/>
+                                            </ddue:mediaLink>
+                                        </ddue:entry>
+                                        <ddue:entry>Upside-down, forward link in conjunction with a straight track on a fixed structure 
+                                        as aft. support; including rotary drive.</ddue:entry>
+                                        <ddue:entry>1</ddue:entry>
+                                        <ddue:entry>
+                                            <ddue:mediaLink>
+                                                <ddue:image xlink:href="TrackType3"/>
+                                            </ddue:mediaLink>
+                                        </ddue:entry>
+                                        <ddue:entry>Wing attachment using a box beam design where track is mounted; rotary actuator mounted 
+                                        at the wing rear spar.</ddue:entry>
+                                    </ddue:row>
+                                    <ddue:row>
+                                        <ddue:entry></ddue:entry>
+                                        <ddue:entry></ddue:entry>
+                                        <ddue:entry></ddue:entry>
+                                        <ddue:entry>2</ddue:entry>
+                                        <ddue:entry></ddue:entry>
+                                        <ddue:entry>Track mounted inside the fuselage at wing root.</ddue:entry>
+                                    </ddue:row>
+                                    <ddue:row>
+                                        <ddue:entry>4</ddue:entry>
+                                        <ddue:entry>
+                                            <ddue:mediaLink>
+                                                <ddue:image xlink:href="TrackType4"/>
+                                            </ddue:mediaLink>
+                                        </ddue:entry>
+                                        <ddue:entry>Straight and sloped track on a fixed structure as forward support and an upright link as 
+                                        aft. support; linear or rotary actuator (subtype-dependent) included.</ddue:entry>
+                                        <ddue:entry>1</ddue:entry>
+                                        <ddue:entry>
+                                            <ddue:mediaLink>
+                                                <ddue:image xlink:href="TrackType4"/>
+                                            </ddue:mediaLink>
+                                        </ddue:entry>
+                                        <ddue:entry>Wing attachment using a box beam design where the track is mounted; rotary actuator at 
+                                        the wing rear spar.</ddue:entry>
+                                    </ddue:row>
+                                    <ddue:row>
+                                        <ddue:entry></ddue:entry>
+                                        <ddue:entry></ddue:entry>
+                                        <ddue:entry></ddue:entry>
+                                        <ddue:entry>2</ddue:entry>
+                                        <ddue:entry>
+                                            <ddue:mediaLink>
+                                                <ddue:image xlink:href="TrackType4_SubType2"/>
+                                            </ddue:mediaLink>
+                                        </ddue:entry>
+                                        <ddue:entry>Wing attachment using a box beam design where track is mounted; rotary actuator mounted 
+                                        on the track.</ddue:entry>
+                                    </ddue:row>
+                                    <ddue:row>
+                                        <ddue:entry></ddue:entry>
+                                        <ddue:entry></ddue:entry>
+                                        <ddue:entry></ddue:entry>
+                                        <ddue:entry>3</ddue:entry>
+                                        <ddue:entry></ddue:entry>
+                                        <ddue:entry>Track mounted inside the fuselage at wing root.</ddue:entry>
+                                    </ddue:row>
+                                </ddue:table>
+                            </ddue:para>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -7240,7 +7333,7 @@ marko.alder@dlr.de
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element name="eta" type="etaIsoLineType">
+                    <xsd:element name="etaPosition" type="etaIsoLineType">
                         <xsd:annotation>
                             <xsd:documentation>Relative chordwise position of the track. Eta
                                 refers to the control surface.</xsd:documentation>
@@ -7259,9 +7352,6 @@ marko.alder@dlr.de
                                     <xsd:enumeration value="trackType2"/>
                                     <xsd:enumeration value="trackType3"/>
                                     <xsd:enumeration value="trackType4"/>
-                                    <xsd:enumeration value="trackType5"/>
-                                    <xsd:enumeration value="trackType6"/>
-                                    <xsd:enumeration value="trackType7"/>
                                 </xsd:restriction>
                             </xsd:simpleContent>
                         </xsd:complexType>
@@ -7278,10 +7368,6 @@ marko.alder@dlr.de
                                     <xsd:enumeration value="trackSubType1"/>
                                     <xsd:enumeration value="trackSubType2"/>
                                     <xsd:enumeration value="trackSubType3"/>
-                                    <xsd:enumeration value="trackSubType4"/>
-                                    <xsd:enumeration value="trackSubType5"/>
-                                    <xsd:enumeration value="trackSubType6"/>
-                                    <xsd:enumeration value="trackSubType7"/>
                                 </xsd:restriction>
                             </xsd:simpleContent>
                         </xsd:complexType>
@@ -9484,31 +9570,6 @@ marko.alder@dlr.de
                     <xsd:element name="x" type="doubleVectorBaseType"/>
                     <xsd:element name="y" type="doubleVectorBaseType"/>
                     <xsd:element name="z" type="doubleVectorBaseType"/>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="dynamicAircraftModelType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>dynamicAircraftModelType</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para/>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element minOccurs="0" name="loadReferenceAxis" type="loadReferenceLineType"/>
-                    <xsd:element minOccurs="0" name="loadApplicationCoordinates" type="loadApplicationPointsType"/>
-                    <xsd:element minOccurs="0" name="cutLoadCoordinates" type="cutLoadPointsType"/>
-                    <xsd:element minOccurs="0" name="connectivities" type="connectivitiesType"/>
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
@@ -12756,7 +12817,6 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:element minOccurs="0" name="structure" type="fuselageStructureType"/>
                     <xsd:element minOccurs="0" name="compartments" type="compartmentsType"/>
                     <xsd:element minOccurs="0" name="decks" type="decksType"/>
-                    <xsd:element minOccurs="0" name="dynamicAircraftModel" type="dynamicAircraftModelType"/>
                     <xsd:element minOccurs="0" name="fuelTanks" type="fuselageFuelTanksType"/>
                     <xsd:element minOccurs="0" name="cutOuts" type="fuselageCutOutsType"/>
                 </xsd:all>
@@ -14927,7 +14987,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
                     <xsd:element maxOccurs="unbounded"
-                        name="cutLoadEnvelope"
+                        name="loadEnvelope"
                         type="loadEnvelopeType">
                     </xsd:element>
                 </xsd:sequence>
@@ -16339,6 +16399,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:element minOccurs="0" name="mWasteWaterSystems" type="mWasteWaterSystemsType"/>
                     <xsd:element minOccurs="0" name="mFreshWaterSystems" type="mFreshWaterSystemsType"/>
                     <xsd:element minOccurs="0" name="mVacuumWasteSystems" type="mVacuumWasteSystemsType"/>
+                    <xsd:element minOccurs="0" name="mMiscellaneous" type="mMiscellaneousType"/>
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
@@ -16368,17 +16429,40 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     </xsd:element>
                     <xsd:element minOccurs="0" name="mSkinPanels" type="mSkinPanelsType"/>
                     <xsd:element minOccurs="0" name="mBulkheads" type="mBulkheadsType"/>
+                    <xsd:element minOccurs="0" name="mWalls" type="mWallsType"/>
                     <xsd:element minOccurs="0" name="mDoors" type="mDoorsType"/>
                     <xsd:element minOccurs="0" name="mWindows" type="mWindowsType"/>
                     <xsd:element minOccurs="0" name="mCabinFloors" type="mCabinFloorsType"/>
                     <xsd:element minOccurs="0" name="mCargoFloors" type="mCargoFloorsType"/>
                     <xsd:element minOccurs="0" name="mSpecialStructures" type="mSpecialStructuresType"/>
                     <xsd:element minOccurs="0" name="mBellyFairings" type="mBellyFairingsType"/>
-                    <xsd:element minOccurs="0" name="mStringers" type="mStringersType">
-                    </xsd:element>
-                    <xsd:element minOccurs="0" name="mFrames" type="mFramesType">
-                    </xsd:element>
+                    <xsd:element minOccurs="0" name="mStringers" type="mStringersType"/>
+                    <xsd:element minOccurs="0" name="mFrames" type="mFramesType"/>
+                    <xsd:element minOccurs="0" name="mMiscellaneous" type="mMiscellaneousType"/>
                 </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="mWallsType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>mWallsType</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para/>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="massDescription" type="genericMassType"/>
+                    <xsd:element maxOccurs="unbounded" minOccurs="0" name="mWall" type="singleGenericMassType"/>
+                </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -16780,7 +16864,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         <ddue:para>mMiscellaneousType</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para/>
+                        <ddue:para>Miscellaneous masses must only specify componenent masses for which NO DEDICATED ELEMENT EXISTS in the mass breakdown list!</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -17152,6 +17236,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:element minOccurs="0" name="mEngineControl" type="mEngineControlType"/>
                     <xsd:element minOccurs="0" name="mFuelSystem" type="mFuelSystemType"/>
                     <xsd:element minOccurs="0" name="mInterGasSystem" type="mInterGasSystemType"/>
+                    <xsd:element minOccurs="0" name="mMiscellaneous" type="mMiscellaneousType"/>
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
@@ -17532,6 +17617,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:element minOccurs="0" name="mIntegratedModularAvionics" type="mIntegratedModularAvionicsType"/>
                     <xsd:element minOccurs="0" name="mMillitarySystems" type="mMillitarySystemsType"/>
                     <xsd:element minOccurs="0" name="mNavigation" type="mNavigationType"/>
+                    <xsd:element minOccurs="0" name="mMiscellaneous" type="mMiscellaneousType"/>
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
@@ -21251,6 +21337,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:choice>
                         <xsd:element name="pointList" type="curvePointListXYZType"/>
                         <xsd:element name="cst2D" type="cst2DType"/>
+                        <xsd:element name="standardProfile" type="standardProfileType"/>
                     </xsd:choice>
                 </xsd:sequence>
                 <xsd:attribute name="symmetry">
@@ -25236,60 +25323,6 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="trackCarType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>trackCarType</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para/>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="material" type="materialDefinitionType">
-                        <xsd:annotation>
-                            <xsd:documentation>Definition of the material properties.
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="trackFairingType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>trackFairingType</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para/>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="material" type="materialDefinitionType">
-                        <xsd:annotation>
-                            <xsd:documentation>Definition of the material properties.
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
     <xsd:complexType name="trackStructureType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -25307,31 +25340,67 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element minOccurs="0" name="controlSurfaceAttachment" type="materialDefinitionType"/>
-                    <xsd:element minOccurs="0" name="car" type="trackCarType"/>
-                    <xsd:element minOccurs="0" name="strut1" type="trackStrut1Type"/>
-                    <xsd:element minOccurs="0" name="strut2" type="trackStrut2Type"/>
-                    <xsd:element minOccurs="0" name="strut3" type="materialDefinitionType"/>
-                    <xsd:element minOccurs="0" name="sidePanels" type="materialDefinitionType"/>
-                    <xsd:element minOccurs="0" name="upperPanel" type="materialDefinitionType"/>
-                    <xsd:element minOccurs="0" name="lowerPanel" type="materialDefinitionType"/>
-                    <xsd:element minOccurs="0" name="rollerTrack" type="materialDefinitionType"/>
-                    <xsd:element minOccurs="0" name="ribs" type="materialDefinitionType"/>
-                    <xsd:element minOccurs="0" name="fairing" type="trackFairingType"/>
+                    <xsd:element name="struts" type="trackStrutsType"/>
+                    <xsd:element name="jointPositions"
+                        type="trackJointPositionsType">
+                    </xsd:element>
+                    <xsd:element minOccurs="0"
+                        name="controlSurfaceAttachment"
+                        type="trackSecondaryStructureType" />
+                    <xsd:element minOccurs="0" name="carriage"
+                        type="trackSecondaryStructureType" />
+                    <xsd:element minOccurs="0" name="sidePanels"
+                        type="trackSecondaryStructureType" />
+                    <xsd:element minOccurs="0" name="upperPanel"
+                        type="trackSecondaryStructureType" />
+                    <xsd:element minOccurs="0" name="lowerPanel"
+                        type="trackSecondaryStructureType" />
+                    <xsd:element minOccurs="0" name="rollerTrack"
+                        type="trackSecondaryStructureType" />
+                    <xsd:element minOccurs="0" name="ribs"
+                        type="trackSecondaryStructureType" />
+                    <xsd:element minOccurs="0" name="fairing"
+                        type="trackSecondaryStructureType" />
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="trackStrut1Type">
+    <xsd:complexType name="trackStrutsType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>trackStrut1Type</ddue:para>
+                        <ddue:para>Definition of the struts of a control surface track.
+                        </ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para/>
+                        <ddue:para>Definition of the struts of a control surface track.
+                        </ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element maxOccurs="unbounded" name="strut" type="trackStrutType"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="trackStrutType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Definition of a strut of a control surface track.
+                        </ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>Definition of a strut of a control surface track.
+                        </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -25339,26 +25408,59 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element name="material" type="materialDefinitionType">
-                        <xsd:annotation>
-                            <xsd:documentation>Definition of the material properties.
-                            </xsd:documentation>
-                        </xsd:annotation>
+                    <xsd:element name="name">
+                        <xsd:complexType>
+                            <xsd:simpleContent>
+                                <xsd:restriction base="stringBaseType">
+                                    <xsd:enumeration value="strut1" />
+                                    <xsd:enumeration value="strut2" />
+                                    <xsd:enumeration value="strut3" />
+                                </xsd:restriction>
+                            </xsd:simpleContent>
+                        </xsd:complexType>
                     </xsd:element>
+                    <xsd:element name="materialUID" type="stringUIDBaseType" />
+                    <xsd:element name="profileUID" type="stringUIDBaseType" />
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="trackStrut2Type">
+    <xsd:complexType name="trackJointPositionsType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>trackStrut2Type</ddue:para>
+                        <ddue:para>Specification of joint coordinates.
+                        </ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para/>
+                        <ddue:para>Specification of joint coordinates.
+                        </ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element maxOccurs="unbounded" name="jointPosition" type="TrackJointPositionType"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="TrackJointPositionType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Set of joint coordinates
+                        </ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>Definition of a set of joint coordinates.
+                        </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -25366,13 +25468,66 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element name="material" type="materialDefinitionType">
+                    <xsd:element name="controlParameters" type="stringVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Definition of the material properties.
-                            </xsd:documentation>
+                            <xsd:documentation>Value of the command parameter of a control distributor. If not given explicitly in the control distributor, linear interpolation between the neighboring points is required.</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
+                    <xsd:element name="jointCoordinates" type="trackJointCoordinatesType" />
                 </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="trackJointCoordinatesType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Joint coordinates
+                        </ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>Definition of a joint coordinates.
+                        </ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="name">
+                        <xsd:complexType>
+                            <xsd:simpleContent>
+                                <xsd:restriction base="stringBaseType">
+                                    <xsd:enumeration value="P1" />
+                                    <xsd:enumeration value="P2" />
+                                    <xsd:enumeration value="P3" />
+                                    <xsd:enumeration value="P4" />
+                                    <xsd:enumeration value="P5" />
+                                    <xsd:enumeration value="P6" />
+                                    <xsd:enumeration value="P7" />
+                                </xsd:restriction>
+                            </xsd:simpleContent>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="x" type="doubleBaseType" />
+                    <xsd:element name="y" type="doubleBaseType" maxOccurs="1" minOccurs="0" />
+                    <xsd:element name="z" type="doubleBaseType" />
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="trackSecondaryStructureType">
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="materialUID"
+                        type="stringUIDBaseType">
+                    </xsd:element>
+                </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -28156,7 +28311,6 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:element minOccurs="0" name="positionings" type="positioningsType"/>
                     <xsd:element name="segments" type="wingSegmentsType"/>
                     <xsd:element minOccurs="0" name="componentSegments" type="componentSegmentsType"/>
-                    <xsd:element minOccurs="0" name="dynamicAircraftModel" type="dynamicAircraftModelType"/>
                 </xsd:all>
                 <xsd:attribute name="uID" type="xsd:ID" use="required"/>
                 <xsd:attribute name="symmetry">
@@ -29395,10 +29549,13 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="controlElements"
-                        type="aircraftControlElementsType" maxOccurs="1"
-                        minOccurs="0">
-                    </xsd:element>
+                    <xsd:element name="configuration" type="configurationType" minOccurs="0">
+		                <xsd:annotation>
+		                    <xsd:documentation>
+		                        Configuration settings
+		                    </xsd:documentation>
+		                </xsd:annotation>
+		            </xsd:element>
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
@@ -29762,14 +29919,37 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:element name="operationLimit"
                         type="aeroMapOperationLimitType" maxOccurs="1" minOccurs="0"/>
                     <xsd:element name="incrementMaps"
-                        type="aeroLimitsIncrementMapsType" maxOccurs="1"
-                        minOccurs="0"/>
+                    	type="aeroLimitsIncrementMapsType" maxOccurs="1"
+                    	minOccurs="0" />
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
 
     <xsd:complexType name="aeroLimitsIncrementMapsType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Increment maps for limitation values due to movable device deflections</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>Specification of aerodynamic coefficient increments due to movable device deflections (e.g., control
+                        surfaces or landing gears).</ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" name="incrementMap" type="aeroLimitsIncrementMapType"/>
+				</xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="aeroLimitsIncrementMapType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
@@ -30712,22 +30892,13 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     </xsd:documentation>
                 </xsd:annotation>
             </xsd:element>
-            <xsd:choice>
-                <xsd:element name="aircraftConfigurationUID" type="stringUIDBaseType" maxOccurs="1" minOccurs="0">
-                    <xsd:annotation>
-                        <xsd:documentation>
-                            Reference to aircraft configuration node
-                        </xsd:documentation>
-                    </xsd:annotation>
-                </xsd:element>
-                <xsd:element name="controlElements" type="aircraftControlElementsType" maxOccurs="1" minOccurs="0">
-                    <xsd:annotation>
-                        <xsd:documentation>
-                            State description of the control elements
-                        </xsd:documentation>
-                    </xsd:annotation>
-                </xsd:element>
-            </xsd:choice>
+            <xsd:element name="configuration" type="configurationType" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        Configuration settings
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
             <xsd:element name="weightAndBalanceUID" type="stringUIDBaseType" maxOccurs="1" minOccurs="0">
                 <xsd:annotation>
                     <xsd:documentation>
@@ -31631,7 +31802,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
-                <xsd:all>
+                <xsd:sequence>
                     <xsd:element name="name" type="stringBaseType" maxOccurs="1" minOccurs="0">
                         <xsd:annotation>
                             <xsd:documentation>Name</xsd:documentation>
@@ -31648,13 +31819,32 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element minOccurs="0" name="global" type="landingGearGlobalType"/>
-                    <xsd:element minOccurs="1" name="componentAssembly" type="landingGearComponentAssemblyType" maxOccurs="1"/>
+                    <xsd:choice>
+                    	<xsd:element minOccurs="1" name="componentAssembly" type="landingGearComponentAssemblyType" maxOccurs="1"/>
+                    	<xsd:sequence>
+                    		<xsd:element name="totalLength" type="doubleBaseType">
+		                        <xsd:annotation>
+		                            <xsd:documentation>Total length of landing gear, equals the distance from the middle of the bogie/axles to the axis of rotation of the pintle strut. Distance is measured while landing gear is fully extended and in airborne condition (i.e., if a spring is present, the totalLength includes the springDeflectionLength)</xsd:documentation>
+		                        </xsd:annotation>
+		                    </xsd:element>
+                    		<xsd:element minOccurs="0" name="staticSuspensionTravel" type="doubleBaseType">
+		                        <xsd:annotation>
+		                            <xsd:documentation>Static suspension travel means the positive distance between the total length in airborne condition and the reduced length due to compression on the ground.</xsd:documentation>
+		                        </xsd:annotation>
+		                    </xsd:element>
+		                    <xsd:element minOccurs="0" name="compressedSuspensionTravel" type="doubleBaseType">
+		                        <xsd:annotation>
+		                            <xsd:documentation>Compressed suspension travel means the positive distance between the total length in airborne condition and the maximum reduced length due to maximum compression on the ground (e.g., landing shock).</xsd:documentation>
+		                        </xsd:annotation>
+		                    </xsd:element>
+                    	</xsd:sequence>
+                    </xsd:choice>
                     <xsd:element name="transformation" type="transformationType" maxOccurs="1" minOccurs="1">
                         <xsd:annotation>
                             <xsd:documentation>Transformation with respect to the uppermost point of the main strut. From this point the landing gear is oriented in negative z-direction by default.</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                </xsd:all>
+                </xsd:sequence>
                 <xsd:attribute name="uID" type="xsd:ID" use="required"/>
                 <xsd:attribute name="symmetry" use="optional">
                     <xsd:simpleType>
@@ -32129,6 +32319,211 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="configurationType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Configuration</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>Contains references to control control devices and (or) the global aircraft configuration node.
+                            </ddue:para>
+                        </ddue:content>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="aircraftConfigurationUID" type="stringUIDBaseType" minOccurs="0">
+	                    <xsd:annotation>
+	                        <xsd:documentation>
+	                            Reference to aircraft configuration node
+	                        </xsd:documentation>
+	                    </xsd:annotation>
+	                </xsd:element>
+	                <xsd:element name="controlElements" type="aircraftControlElementsType" minOccurs="0">
+	                    <xsd:annotation>
+	                        <xsd:documentation>
+	                            State description of the control elements
+	                        </xsd:documentation>
+	                    </xsd:annotation>
+	                </xsd:element>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="standardProfileType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Standard profile</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para/>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:choice>
+                     <xsd:element name="rectangle" type="rectangleProfileType"/>
+                    <xsd:element name="superEllipse" type="superEllipseProfileType"/>
+                </xsd:choice>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="rectangleProfileType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Rectangle</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>The width of the profile is always 1, since scaling is performed after referencing it (e.g., in the fuselage).</ddue:para>
+                            <ddue:para>The resulting profile is defined by the following equation:</ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="eq_roundedRectangle"/>
+                            </ddue:mediaLink>
+                            <ddue:para>with <ddue:legacyItalic>c = cornerRadius</ddue:legacyItalic> and <ddue:legacyItalic>r = heightToWidthRatio</ddue:legacyItalic>.</ddue:para>
+                            <ddue:para>Example: Rectangle with <ddue:legacyItalic>cornerRadius</ddue:legacyItalic>=0.125 and <ddue:legacyItalic>heightToWidthRatio</ddue:legacyItalic>=0.5</ddue:para> 
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="rectangleRoundedCorners"/>
+                            </ddue:mediaLink>
+                        </ddue:content>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="cornerRadius" minOccurs="0">
+                        <xsd:complexType>
+                            <xsd:annotation>
+                                <xsd:appinfo>
+                                    <sd:schemaDoc>
+                                        <ddue:summary>
+                                            <ddue:para>Corner radius</ddue:para>
+                                        </ddue:summary>
+                                    </sd:schemaDoc>
+                                </xsd:appinfo>
+                            </xsd:annotation>
+                            <xsd:simpleContent>
+                                <xsd:restriction base="doubleBaseType">
+                                    <xsd:minInclusive value="0"></xsd:minInclusive>
+                                    <xsd:maxExclusive value="0.5"></xsd:maxExclusive>
+                                </xsd:restriction>
+                            </xsd:simpleContent>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="heightToWidthRatio" type="posExcl0DoubleBaseType">
+                    	<xsd:annotation>
+                                <xsd:appinfo>
+                                    <sd:schemaDoc>
+                                        <ddue:summary>
+                                            <ddue:para>Height-to-width ratio</ddue:para>
+                                        </ddue:summary>
+                                    </sd:schemaDoc>
+                                </xsd:appinfo>
+                            </xsd:annotation>
+                    </xsd:element>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="superEllipseProfileType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Superellipse</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>A profile based on superellipses is composed of an upper and a lower semi-ellipse, which may differ from each other in their parameterization. The total width and height of the profile is always 1, since scaling is performed after referencing (e.g., in the fuselage).</ddue:para>
+                            <ddue:para>This <ddue:legacyItalic>lowerHeightFraction</ddue:legacyItalic> describes the portion of the lower semi-ellipse on the total height.</ddue:para>
+                            <ddue:para>The resulting profile is defined by the following set of equations:</ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="superEllipseUpper"/>
+                            </ddue:mediaLink>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="superEllipseLower"/>
+                            </ddue:mediaLink>
+                            <ddue:para>with</ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="superEllipseLowerZ0"/>
+                            </ddue:mediaLink>
+                            <ddue:para>The following examples indicate the various possibilities of parametric profiles:</ddue:para>
+                            <ddue:para><ddue:legacyBold>Example 1</ddue:legacyBold>: (<ddue:legacyItalic>mUpper,nUpper,mLower,nLower, lowerHeightFraction</ddue:legacyItalic>) = (0.5; 2; 5; 3; 0.25)</ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="superEllipseExample1"/>
+                            </ddue:mediaLink>
+                            <ddue:para><ddue:legacyBold>Example 2</ddue:legacyBold>: (<ddue:legacyItalic>mUpper,nUpper,mLower,nLower, lowerHeightFraction</ddue:legacyItalic>) = (2; 2; 2; 2; 0.5) = a circle</ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="superEllipseExample2"/>
+                            </ddue:mediaLink>
+                            <ddue:para><ddue:legacyBold>Example 3</ddue:legacyBold>: (<ddue:legacyItalic>mUpper,nUpper,mLower,nLower, lowerHeightFraction</ddue:legacyItalic>) = (1; 1; 1; 1; 0.5) = a square / diamond</ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="superEllipseExample3"/>
+                            </ddue:mediaLink>
+                            <ddue:para><ddue:legacyBold>Note</ddue:legacyBold>: For exponents that are infinitely large, the superellipse converges to a rectangle. However, the value <ddue:legacyItalic>Inf</ddue:legacyItalic> is not a valid entry at this point. Use the <ddue:legacyItalic>square</ddue:legacyItalic> element instead.</ddue:para>
+                        </ddue:content>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="mUpper" type="posExcl0DoubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Exponent m for upper semi-ellipse</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="nUpper" type="posExcl0DoubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Exponent n for upper semi-ellipse</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="mLower" type="posExcl0DoubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Exponent m for lower semi-ellipse</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="nLower" type="posExcl0DoubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Exponent n for lower semi-ellipse</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="lowerHeightFraction">
+                        <xsd:complexType>
+                            <xsd:annotation>
+                                <xsd:documentation>Fraction of height of the lower semi-ellipse relative to the total height</xsd:documentation>
+                            </xsd:annotation>
+                            <xsd:simpleContent>
+                                <xsd:restriction base="doubleBaseType">
+                                    <xsd:minExclusive value="0"/>
+                                    <xsd:maxExclusive value="1"/>
+                                </xsd:restriction>
+                            </xsd:simpleContent>
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
