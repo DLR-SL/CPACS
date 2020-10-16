@@ -5684,8 +5684,14 @@ marko.alder@dlr.de
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:element name="referenceEndCondition" type="stringUIDBaseType" minOccurs="0"/>
-                    <xsd:element name="endConditionRatio" type="doubleVectorBaseType" minOccurs="0"/>
+                    <!-- xsd:element name="referenceEndCondition" type="stringUIDBaseType" minOccurs="0"/ -->
+                    <xsd:element name="endConditionRatio" type="doubleVectorBaseType" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Vector indicating the ratios of the constraintSettings profile with respect to the provided referenceEndCondition, ranging from 0 to 1. If this vector is defined, the provided constraintSettings are expected to be vectors with the same length providing ratio-value pairs. Example: for referenceEndCondition &lt;range&gt;&lt;z&gt;  (i.e.: flown distance in z direction of the segment), a vector of &lt;CAS&gt; and &lt;machNumber&gt; is provided to define a climb profile.
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                     <xsd:choice minOccurs="0">
                         <xsd:element name="CAS"
                             type="doubleVectorConstraintBaseType">
@@ -19616,13 +19622,12 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                 <sd:schemaDoc>
                     <ddue:summary>
                         <ddue:para>
-                            missionSegmentEndConditionType
+                            End condition for mission segment
                         </ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>
-                            Conditions which signal the end of a mission
-                            segment
+                            Specific end condition for the segment (e.g.: an altitude or velocity). If a phase has no endCondition, it will base its endCondition on the segmentBlock settings (e.g.: it is the cruise segment, retrieving its total length based on the length of the segmentBlock minus all other segment lengths avaible within the segmentBlock).
                         </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -19636,8 +19641,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             type="doubleConstraintBaseType">
                             <xsd:annotation>
                                 <xsd:documentation>
-                                    Calibrated airspeed at the start of
-                                    the mission [m/s]
+                                    Calibrated airspeed [m/s]
                                 </xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
@@ -19645,8 +19649,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             type="doubleConstraintBaseType">
                             <xsd:annotation>
                                 <xsd:documentation>
-                                    Mach number at the start of the
-                                    mission
+                                    Mach number
                                 </xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
@@ -19656,8 +19659,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             type="pointConstraintType">
                             <xsd:annotation>
                                 <xsd:documentation>
-                                    Global coordinate at the start of
-                                    the mission in xyz coordinates
+                                    Global coordinate in xyz coordinates
                                 </xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
@@ -19665,8 +19667,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             type="geographicPointConstraintType">
                             <xsd:annotation>
                                 <xsd:documentation>
-                                    Global coordinate at the start of
-                                    the mission in geographic
+                                    Global coordinate in geographic
                                     coordinates (longitude, latitude,
                                     altitude)
                                 </xsd:documentation>
@@ -19676,8 +19677,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             type="missionEndRunwayType">
                             <xsd:annotation>
                                 <xsd:documentation>
-                                    UID of the runway at which the
-                                    mission starts
+                                    UID of the runway
                                 </xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
@@ -32884,7 +32884,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             <xsd:documentation>...</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="rollingMomentCoeff" type="doubleBaseType" minOccurs="0">
+                    <xsd:element name="rollingMoFmentCoeff" type="doubleBaseType" minOccurs="0">
                         <xsd:annotation>
                             <xsd:documentation>...</xsd:documentation>
                         </xsd:annotation>
