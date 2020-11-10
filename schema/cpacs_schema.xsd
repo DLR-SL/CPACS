@@ -29915,8 +29915,8 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         <ddue:para>Vehicle operation limit</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Vehicle operation limit defined by sets of <ddue:legacyItalic>angleOfSideslip</ddue:legacyItalic>
-                        and <ddue:legacyItalic>angleOfAttack</ddue:legacyItalic> for a given altitude and Mach number.
+                        <ddue:para>Vehicle operation limit defined by sets of minimum and maximum <ddue:legacyItalic>angleOfSideslip</ddue:legacyItalic>
+                        and minimum and maximum <ddue:legacyItalic>angleOfAttack</ddue:legacyItalic> for a given altitude and Mach number.
                         This might be, e.g., a safety margin to the angle of attack at maximum lift or the flight
                         attitude a fighter aircraft is capable to fly in stalled conditions. The corresponding aerodynamic coefficients must
                         be extracted from the aeroPerformanceMap.</ddue:para>
@@ -29927,16 +29927,28 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element name="angleOfSideslip"
+                    <xsd:element name="angleOfSideslipMin"
                         type="doubleVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Sideslip angle defining the operation limit. Must be a vector of the same length as angleOfAttack, machNumber and altitude. [deg]</xsd:documentation>
+                            <xsd:documentation>Minimum angle of sideslip defining the operation limit. Must be a vector of the same length as angleOfAttack, machNumber and altitude. [deg]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="angleOfAttack"
+                    <xsd:element name="angleOfSideslipMax"
                         type="doubleVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Angle of attack defining the operation limit. Must be a vector of the same length as angleOfSideslip, machNumber and altitude. [deg]</xsd:documentation>
+                            <xsd:documentation>Maximum angle of sideslip defining the operation limit. Must be a vector of the same length as angleOfAttack, machNumber and altitude. [deg]</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="angleOfAttackMin"
+                        type="doubleVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Minimum angle of attack defining the operation limit. Must be a vector of the same length as angleOfSideslip, machNumber and altitude. [deg]</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="angleOfAttackMax"
+                        type="doubleVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Maximum angle of attack defining the operation limit. Must be a vector of the same length as angleOfSideslip, machNumber and altitude. [deg]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -29945,19 +29957,44 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
     </xsd:complexType>
 
     <xsd:complexType name="operationLimitIncrementsType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Operation Limit Increments</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>Changes of the deltas of operation limit angles with respect to the corresponding increment aeroPerformanceMaps.</ddue:para>
+                        <ddue:para>Values are specified as an array with same indices like the corresponding increment map.</ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element name="angleOfSideslip"
+                    <xsd:element name="deltaAngleOfSideslipMin"
                         type="doubleArrayBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Sideslip angle [deg]</xsd:documentation>
+                            <xsd:documentation>Minimum delta angle of sideslip [deg]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="angleOfAttack"
+                    <xsd:element name="deltaAngleOfSideslipMax"
                         type="doubleArrayBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Angle of attack [deg]</xsd:documentation>
+                            <xsd:documentation>Maximum delta angle of sideslip [deg]</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="deltaAngleOfAttackMin"
+                        type="doubleArrayBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Minimum delta angle of attack [deg]</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="deltaAngleOfAttackMax"
+                        type="doubleArrayBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Maximum delta angle of attack [deg]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
