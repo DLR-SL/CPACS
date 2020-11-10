@@ -5684,7 +5684,13 @@ marko.alder@dlr.de
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <!-- xsd:element name="referenceEndCondition" type="stringUIDBaseType" minOccurs="0"/ -->
+                    <xsd:element name="referenceEndCondition" type="stringUIDBaseType" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Reference to the uID of the segment end condition variable.
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                     <xsd:element name="endConditionRatio" type="doubleVectorBaseType" minOccurs="0">
                         <xsd:annotation>
                             <xsd:documentation>
@@ -19617,158 +19623,260 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:element name="CAS"
-                        type="doubleConstraintBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                Calibrated airspeed [m/s]
-                            </xsd:documentation>
-                        </xsd:annotation>
+                    <xsd:element name="CAS" minOccurs="0">
+                        <xsd:complexType>
+                            <xsd:annotation>
+                                <xsd:documentation>
+                                    Calibrated airspeed [m/s]
+                                </xsd:documentation>
+                            </xsd:annotation>
+                            <xsd:complexContent>
+                                <xsd:extension base="doubleConstraintBaseType">
+                                    <xsd:attribute name="uID" type="xsd:ID"/>
+                                </xsd:extension>
+                            </xsd:complexContent>
+                        </xsd:complexType>
                     </xsd:element>
-                    <xsd:element name="machNumber"
-                        type="doubleConstraintBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                Mach number
-                            </xsd:documentation>
-                        </xsd:annotation>
+                    <xsd:element name="machNumber" minOccurs="0">
+                        <xsd:complexType>
+                            <xsd:annotation>
+                                <xsd:documentation>
+                                    Mach number
+                                </xsd:documentation>
+                            </xsd:annotation>
+                            <xsd:complexContent>
+                                <xsd:extension base="doubleConstraintBaseType">
+                                    <xsd:attribute name="uID" type="xsd:ID"/>
+                                </xsd:extension>
+                            </xsd:complexContent>
+                        </xsd:complexType>
                     </xsd:element>
                     <xsd:choice minOccurs="0">
-                        <xsd:element name="positionXYZ"
-                            type="pointConstraintType">
-                            <xsd:annotation>
-                                <xsd:documentation>
-                                    Global coordinate in xyz coordinates
-                                </xsd:documentation>
-                            </xsd:annotation>
+                        <xsd:element name="positionXYZ">
+                            <xsd:complexType>
+                                <xsd:annotation>
+                                    <xsd:documentation>
+                                        Global coordinate in xyz coordinates
+                                    </xsd:documentation>
+                                </xsd:annotation>
+                                <xsd:complexContent>
+                                    <xsd:extension base="pointConstraintType">
+                                        <xsd:attribute name="uID" type="xsd:ID"/>
+                                    </xsd:extension>
+                                </xsd:complexContent>
+                            </xsd:complexType>
                         </xsd:element>
-                        <xsd:element name="positionGeo"
-                            type="geographicPointConstraintType">
-                            <xsd:annotation>
-                                <xsd:documentation>
-                                    Global coordinate in geographic
-                                    coordinates (longitude, latitude,
-                                    altitude)
-                                </xsd:documentation>
-                            </xsd:annotation>
+                        <xsd:element name="positionGeo">
+                            <xsd:complexType>
+                                <xsd:annotation>
+                                    <xsd:documentation>
+                                        Global coordinate in geographic
+                                        coordinates (longitude, latitude,
+                                        altitude)
+                                    </xsd:documentation>
+                                </xsd:annotation>
+                                <xsd:complexContent>
+                                    <xsd:extension base="geographicPointConstraintType">
+                                        <xsd:attribute name="uID" type="xsd:ID"/>
+                                    </xsd:extension>
+                                </xsd:complexContent>
+                            </xsd:complexType>
                         </xsd:element>
-                        <xsd:element name="runway"
-                            type="missionEndRunwayType">
-                            <xsd:annotation>
-                                <xsd:documentation>
-                                    UID of the runway
-                                </xsd:documentation>
-                            </xsd:annotation>
+                        <xsd:element name="runway">
+                            <xsd:complexType>
+                                <xsd:annotation>
+                                    <xsd:documentation>
+                                        Runway
+                                    </xsd:documentation>
+                                </xsd:annotation>
+                                <xsd:complexContent>
+                                    <xsd:extension base="missionEndRunwayType">
+                                        <xsd:attribute name="uID" type="xsd:ID"/>
+                                    </xsd:extension>
+                                </xsd:complexContent>
+                            </xsd:complexType>
                         </xsd:element>
                     </xsd:choice>
                     <xsd:choice minOccurs="0">
-                        <xsd:element name="massFraction"
-                            type="doubleConstraintBaseType">
+                        <xsd:element name="massFraction">
+                            <xsd:complexType>
+                                <xsd:annotation>
+                                    <xsd:documentation>
+                                        MassFraction ending the segment
+                                    </xsd:documentation>
+                                </xsd:annotation>
+                                <xsd:complexContent>
+                                    <xsd:extension base="doubleConstraintBaseType">
+                                        <xsd:attribute name="uID" type="xsd:ID"/>
+                                    </xsd:extension>
+                                </xsd:complexContent>
+                            </xsd:complexType>
+                        </xsd:element>
+                        <xsd:element name="fuelFraction">
+                            <xsd:complexType>
+                                <xsd:annotation>
+                                    <xsd:documentation>
+                                        Fuel mass fraction ending the
+                                        segment, as remaining fuel mass with
+                                        respect to initial segment fuel mass
+                                    </xsd:documentation>
+                                </xsd:annotation>
+                                <xsd:complexContent>
+                                    <xsd:extension base="doubleConstraintBaseType">
+                                        <xsd:attribute name="uID" type="xsd:ID"/>
+                                    </xsd:extension>
+                                </xsd:complexContent>
+                            </xsd:complexType>
+                        </xsd:element>
+                        <xsd:element name="fuelRemaining">
+                            <xsd:complexType>
+                                <xsd:annotation>
+                                    <xsd:documentation>
+                                        Remaining absolute fuel ending the
+                                        segment
+                                    </xsd:documentation>
+                                </xsd:annotation>
+                                <xsd:complexContent>
+                                    <xsd:extension base="doubleConstraintBaseType">
+                                        <xsd:attribute name="uID" type="xsd:ID"/>
+                                    </xsd:extension>
+                                </xsd:complexContent>
+                            </xsd:complexType>
+                        </xsd:element>
+                        <xsd:element name="fuelConsumed">
+                            <xsd:complexType>
+                                <xsd:annotation>
+                                    <xsd:documentation>
+                                        Consumed fuel mass ending the
+                                        segment
+                                    </xsd:documentation>
+                                </xsd:annotation>
+                                <xsd:complexContent>
+                                    <xsd:extension base="doubleConstraintBaseType">
+                                        <xsd:attribute name="uID" type="xsd:ID"/>
+                                    </xsd:extension>
+                                </xsd:complexContent>
+                            </xsd:complexType>
+                        </xsd:element>
+                    </xsd:choice>
+                    <xsd:choice minOccurs="0">
+                        <xsd:element name="heading">
+                            <xsd:complexType>
+                                <xsd:annotation>
+                                    <xsd:documentation>
+                                        Flight heading at the end of the
+                                        segment in compassAngle with
+                                        reference to true North [deg]
+                                    </xsd:documentation>
+                                </xsd:annotation>
+                                <xsd:complexContent>
+                                    <xsd:extension base="doubleConstraintBaseType">
+                                        <xsd:attribute name="uID" type="xsd:ID"/>
+                                    </xsd:extension>
+                                </xsd:complexContent>
+                            </xsd:complexType>
+                        </xsd:element>
+                        <xsd:element name="turnAngle">
+                            <xsd:complexType>
+                                <xsd:annotation>
+                                    <xsd:documentation>
+                                        Total change of heading angle during
+                                        segment (a full turn is 360 degrees)
+                                        [deg]
+                                    </xsd:documentation>
+                                </xsd:annotation>
+                                <xsd:complexContent>
+                                    <xsd:extension base="doubleConstraintBaseType">
+                                        <xsd:attribute name="uID" type="xsd:ID"/>
+                                    </xsd:extension>
+                                </xsd:complexContent>
+                            </xsd:complexType>
+                        </xsd:element>
+                    </xsd:choice>
+                    <xsd:element name="range" minOccurs="0">
+                        <xsd:complexType>
                             <xsd:annotation>
                                 <xsd:documentation>
-                                    MassFraction ending the segment
+                                    Flown distance in the segment (x, y, z)
                                 </xsd:documentation>
                             </xsd:annotation>
-                        </xsd:element>
-                        <xsd:element name="fuelFraction"
-                            type="doubleConstraintBaseType">
+                            <xsd:complexContent>
+                                <xsd:extension base="pointConstraintType">
+                                    <xsd:attribute name="uID" type="xsd:ID"/>
+                                </xsd:extension>
+                            </xsd:complexContent>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="duration" minOccurs="0">
+                        <xsd:complexType>
                             <xsd:annotation>
                                 <xsd:documentation>
-                                    Fuel mass fraction ending the
-                                    segment, as remaining fuel mass with
-                                    respect to initial segment fuel mass
+                                    Duration of the segment [s]
                                 </xsd:documentation>
                             </xsd:annotation>
-                        </xsd:element>
-                        <xsd:element name="fuelRemaining"
-                            type="doubleConstraintBaseType">
+                            <xsd:complexContent>
+                                <xsd:extension base="timeConstraintBaseType">
+                                    <xsd:attribute name="uID" type="xsd:ID"/>
+                                </xsd:extension>
+                            </xsd:complexContent>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="endTimeUTC" minOccurs="0">
+                        <xsd:complexType>
                             <xsd:annotation>
                                 <xsd:documentation>
-                                    Remaining absolute fuel ending the
+                                    UTC time at end of mission
+                                </xsd:documentation>
+                            </xsd:annotation>
+                            <xsd:complexContent>
+                                <xsd:extension base="timeConstraintBaseType">
+                                    <xsd:attribute name="uID" type="xsd:ID"/>
+                                </xsd:extension>
+                            </xsd:complexContent>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="specificExcessPower" minOccurs="0">
+                        <xsd:complexType>
+                            <xsd:annotation>
+                                <xsd:documentation>
+                                    Specific excess power at the end of the
                                     segment
                                 </xsd:documentation>
                             </xsd:annotation>
-                        </xsd:element>
-                        <xsd:element name="fuelConsumed"
-                            type="doubleConstraintBaseType">
+                            <xsd:complexContent>
+                                <xsd:extension base="doubleConstraintBaseType">
+                                    <xsd:attribute name="uID" type="xsd:ID"/>
+                                </xsd:extension>
+                            </xsd:complexContent>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="rateOfClimb" minOccurs="0">
+                        <xsd:complexType>
                             <xsd:annotation>
                                 <xsd:documentation>
-                                    Consumed fuel mass ending the
-                                    segment
+                                    Rate of climb ending the segment
                                 </xsd:documentation>
                             </xsd:annotation>
-                        </xsd:element>
-                    </xsd:choice>
-                    <xsd:choice minOccurs="0">
-                        <xsd:element name="heading" type="doubleConstraintBaseType">
+                            <xsd:complexContent>
+                                <xsd:extension base="doubleConstraintBaseType">
+                                    <xsd:attribute name="uID" type="xsd:ID"/>
+                                </xsd:extension>
+                            </xsd:complexContent>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="flightPathAngle" minOccurs="0">
+                        <xsd:complexType>
                             <xsd:annotation>
                                 <xsd:documentation>
-                                    Flight heading at the end of the
-                                    segment in compassAngle with
-                                    reference to true North [deg]
+                                    Achieved flightPathAngle ending the segment
                                 </xsd:documentation>
                             </xsd:annotation>
-                        </xsd:element>
-                        <xsd:element name="turnAngle" type="doubleConstraintBaseType">
-                            <xsd:annotation>
-                                <xsd:documentation>
-                                    Total change of heading angle during
-                                    segment (a full turn is 360 degrees)
-                                    [deg]
-                                </xsd:documentation>
-                            </xsd:annotation>
-                        </xsd:element>
-                    </xsd:choice>
-                    <xsd:element minOccurs="0" name="range"
-                        type="pointConstraintType">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                Flown distance in the segment (x, y, z)
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element minOccurs="0" name="duration"
-                        type="timeConstraintBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                Duration of the segment [s]
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="endTimeUTC"
-                        type="timeConstraintBaseType" maxOccurs="1"
-                        minOccurs="0">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                UTC time at end of mission
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element minOccurs="0"
-                        name="specificExcessPower"
-                        type="doubleConstraintBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                Specific excess power at the end of the
-                                segment
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element minOccurs="0" name="rateOfClimb"
-                        type="doubleConstraintBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                Rate of climb ending the segment
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element minOccurs="0" name="flightPathAngle"
-                        type="doubleConstraintBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                Achieved flightPathAngle ending the segment
-                            </xsd:documentation>
-                        </xsd:annotation>
+                            <xsd:complexContent>
+                                <xsd:extension base="doubleConstraintBaseType">
+                                    <xsd:attribute name="uID" type="xsd:ID"/>
+                                </xsd:extension>
+                            </xsd:complexContent>
+                        </xsd:complexType>
                     </xsd:element>
                 </xsd:sequence>
             </xsd:extension>
