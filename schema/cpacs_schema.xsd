@@ -20723,6 +20723,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             <xsd:documentation>Selection of performance maps to be used for the evaluation of this model</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
+                    <xsd:element name="configurations" type="performanceCaseConfigurationsType" maxOccurs="1" minOccurs="0"/>
                 </xsd:all>
                 <xsd:attribute name="uID" type="xsd:ID" use="required"/>
             </xsd:extension>
@@ -33047,6 +33048,42 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="performanceCaseConfigurationsType">
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="defaultConfigurationUID" type="stringUIDBaseType">
+                    </xsd:element>
+                    <xsd:element name="specificConfigurations" type="specificConfigurationsType" maxOccurs="1" minOccurs="0">
+                    </xsd:element>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="specificConfigurationsType">
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="specificConfiguration" type="specificConfigurationType" maxOccurs="unbounded" minOccurs="1">
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="specificConfigurationType">
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="configurationUID" type="stringUIDBaseType"/>
+                    <xsd:element name="segmentUIDs" type="stringUIDBaseType"/>
+                    <xsd:element name="pointPerformanceUIDs" type="stringUIDBaseType"/>
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
