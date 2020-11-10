@@ -5679,6 +5679,20 @@ marko.alder@dlr.de
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
+                    <xsd:element name="continuity">
+                        <xsd:annotation>
+                            <xsd:documentation>Defines how to interpret the parameter lapses within the segment: discrete steps (C0 continuity) or linear interpolation (C1 continuity)
+                            </xsd:documentation>
+                        </xsd:annotation>
+                        <xsd:complexType>
+                            <xsd:simpleContent>
+                                <xsd:restriction base="stringBaseType">
+                                    <xsd:enumeration value="discrete"/>
+                                    <xsd:enumeration value="linear"/>
+                                </xsd:restriction>
+                            </xsd:simpleContent>
+                        </xsd:complexType>
+                    </xsd:element>
                     <xsd:element minOccurs="0" name="CAS"
                         type="doubleVectorConstraintBaseType">
                         <xsd:annotation>
@@ -19932,7 +19946,9 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     </xsd:element>
                     <xsd:element minOccurs="0" name="fuelPlanningType">
                         <xsd:annotation>
-                            <xsd:documentation>Entry for defining which type of mass the segment fuel mass should be added.
+                            <xsd:documentation>Defines to which type of mass the segment fuel mass
+                            should be added (blockFuel = designFuel + additionalFuel; Total fuel requirement
+                            = blockFuel + reserveFuel)
                             </xsd:documentation>
                         </xsd:annotation>
                         <xsd:complexType>
