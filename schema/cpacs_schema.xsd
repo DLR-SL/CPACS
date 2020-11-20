@@ -446,7 +446,7 @@ marko.alder@dlr.de
                                         <ddue:listItem>Add ribPosts element to wingRibCrossSectionType</ddue:listItem>
                                         <ddue:listItem>Set mass inertia Jxy, Jxz and Jyz optional</ddue:listItem>
                                         <ddue:listItem>Revision of loadAnalysisType (compatibility break)</ddue:listItem>
-                                        <ddue:listItem>Add new base types: doubleVectorBaseType, posIntVectorBaseType, uIDReferenceVectorBaseType, doubleArrayBaseType</ddue:listItem>
+                                        <ddue:listItem>Add new base types: doubleVectorBaseType, posIntVectorBaseType, doubleArrayBaseType</ddue:listItem>
                                         <ddue:listItem>Add 'none' and 'inherit' to list of symmetry flags</ddue:listItem>
                                         <ddue:listItem>Set mapType attribute of vector and array elements to optional (requires TiXI&gt;=3.1)</ddue:listItem>
                                         <ddue:listItem>Add vector to specify curve parameters for profiles with kinks</ddue:listItem>
@@ -1061,40 +1061,6 @@ marko.alder@dlr.de
                     </xsd:simpleType>
                 </xsd:attribute>
             </xsd:extension>
-        </xsd:simpleContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="uIDReferenceVectorBaseType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Vector with semicolon separated uID references</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:content>
-                            <ddue:para>Any <ddue:legacyItalic>uID</ddue:legacyItalic>-references separated by semicolons are permitted, e.g.:</ddue:para>
-                            <ddue:code language="XML" title="Example 1: valid uID-references vector">
-&lt;uidVectorTest&gt;wing1;wing2;wing3&lt;/uidVectorTest&gt;
-                            </ddue:code>
-                            <ddue:code language="XML" title="Example 2: valid uID-references vector with only one entry">
-&lt;uidVectorTest&gt;wing1&lt;/uidVectorTest&gt;
-                            </ddue:code>
-                            <ddue:code language="XML" title="Example 3: invalid uID-references vector due to invalid xs:NCName specification">
-&lt;uidVectorTest&gt;wing:1;wing:2&lt;/uidVectorTest&gt;
-                            </ddue:code>
-                            <ddue:code language="XML" title="Example 4: invalid uID-references vector due to comma separation">
-&lt;uidVectorTest&gt;wing1,wing2,wing3&lt;/uidVectorTest&gt;
-                            </ddue:code>
-                        </ddue:content>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:simpleContent>
-            <xsd:restriction base="stringVectorBaseType">
-                <xsd:pattern value="([\i-[:]][\c-[:]]+)(;([\i-[:]][\c-[:]]+))*"/>
-            </xsd:restriction>
         </xsd:simpleContent>
     </xsd:complexType>
 
@@ -5119,7 +5085,7 @@ marko.alder@dlr.de
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="loadCaseUIDs" type="uIDReferenceVectorBaseType">
+                    <xsd:element name="loadCaseUIDs" type="uIDSequenceType">
                         <xsd:annotation>
                             <xsd:documentation>List of uIDs defining the loads envelope</xsd:documentation>
                         </xsd:annotation>
