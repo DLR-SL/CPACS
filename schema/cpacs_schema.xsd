@@ -19562,10 +19562,13 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>missionDefinitionsType</ddue:para>
+                        <ddue:para>Mission definitions</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Containing mission and point performance definitions for performance evaluation of aircraft</ddue:para>
+                        <ddue:para>Specifies missions for performance evaluation of aircraft.</ddue:para>
+                        <ddue:para>As the topmost element of the hierarchical mission definition, individual missions are grouped together 
+                        in the <ddue:legacyItalic>missions</ddue:legacyItalic> node. Here, <ddue:legacyItalic>segmentBlocks</ddue:legacyItalic>
+                        are referenced. These again link to a list of <ddue:legacyItalic>segments</ddue:legacyItalic>.</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -19616,12 +19619,12 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                 <sd:schemaDoc>
                     <ddue:summary>
                         <ddue:para>
-                            End condition of a mission segment or segment block.
+                            End condition
                         </ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>
-                            Specific end condition for the segment (e.g.: an altitude or velocity). If a phase has no endCondition, it will base its endCondition on the segmentBlock settings (e.g.: it is the cruise segment, retrieving its total length based on the length of the segmentBlock minus all other segment lengths avaible within the segmentBlock).
+                            Specifies the end conditions for a segment or segment block (e.g.: an altitude or velocity). If a phase has no endCondition, it will base its endCondition on the segmentBlock settings (e.g.: it is the cruise segment, retrieving its total length based on the length of the segmentBlock minus all other segment lengths avaible within the segmentBlock).
                         </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -20014,10 +20017,10 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>missionSegmentType</ddue:para>
+                        <ddue:para>Segment</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Definition of a mission segment which can be used to define missions</ddue:para>
+                        <ddue:para>Definition of a mission segment which can be used to define missions.</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -20025,11 +20028,19 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:element name="name" type="stringBaseType"/>
-                    <xsd:element minOccurs="0" name="description" type="stringBaseType"/>
+                    <xsd:element name="name" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Name</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="description" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Description</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                     <xsd:element name="segmentType">
                         <xsd:annotation>
-                            <xsd:documentation>Indicates the type of mission segment
+                            <xsd:documentation>Type of the mission segment (takeOff, clime, cruse, ...)
                             </xsd:documentation>
                         </xsd:annotation>
                         <xsd:complexType>
@@ -20062,8 +20073,16 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:choice>
-                        <xsd:element name="mass" type="doubleBaseType"/>
-                        <xsd:element name="massFraction" type="massFractionType"/>
+                        <xsd:element name="mass" type="doubleBaseType">
+	                        <xsd:annotation>
+	                            <xsd:documentation>Fuel mass</xsd:documentation>
+	                        </xsd:annotation>
+	                    </xsd:element>
+                        <xsd:element name="massFraction" type="massFractionType">
+	                        <xsd:annotation>
+	                            <xsd:documentation>Fuel mass fraction</xsd:documentation>
+	                        </xsd:annotation>
+	                    </xsd:element>
                         <xsd:sequence>
                             <xsd:element name="endCondition" type="missionSegmentEndConditionType"/>
                             <xsd:element minOccurs="0" name="constraints" type="constraintsType"/>
@@ -20102,10 +20121,10 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>missionSegmentsType</ddue:para>
+                        <ddue:para>Mission segments</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Containing a collection of mission segments which can be reused to define missions</ddue:para>
+                        <ddue:para>A collection of mission segments which can be reused to define missions.</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -20124,7 +20143,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>missionStartConditionType</ddue:para>
+                        <ddue:para>Start conditions</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>Conditions which define the start of a mission</ddue:para>
@@ -20192,10 +20211,10 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>missionType</ddue:para>
+                        <ddue:para>Mission</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Containing a collection of mission segments which can be reused to define missions</ddue:para>
+                        <ddue:para>Contains a list of segmentBlock uID's forming the mission along with additional mission information.</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -20203,8 +20222,16 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element name="name" type="stringBaseType"/>
-                    <xsd:element minOccurs="0" name="description" type="stringBaseType"/>
+                    <xsd:element name="name" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Name</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="description" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Description</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                     <xsd:element name="startCondition" type="missionStartConditionType"/>
                     <xsd:element name="segmentBlockUIDs" type="uIDSequenceType">
                         <xsd:annotation>
@@ -20224,10 +20251,10 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>missionsType</ddue:para>
+                        <ddue:para>Missions</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Containing a collection of missions</ddue:para>
+                        <ddue:para>A list of missions.</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -21030,7 +21057,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>pointPerformancesType</ddue:para>
+                        <ddue:para>Point performance definitions</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>Containing a collection of point performances</ddue:para>
@@ -32707,6 +32734,19 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
     </xsd:complexType>
 
     <xsd:complexType name="globalPerformanceCasesType">
+    	<xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Performance Cases</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>Definition of missions and point performance events to evaluate the performance of a vehicle.</ddue:para>
+                        <ddue:para>The definition of performance cases is independent from a specific vehicle.</ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
