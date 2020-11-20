@@ -5667,13 +5667,35 @@ marko.alder@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>constraintSettingsType</ddue:para>
+                        <ddue:para>Constraint</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>
-                            specific performance settings for the
-                            segment
-                        </ddue:para>
+                    	<ddue:content>
+	                    	<ddue:para>
+	                            Specification of performance constraints.
+	                        </ddue:para>
+	                        <ddue:para>Constraints allow vectors of double values to define parameter lapses within a mission segment. The example below illustrates this by means of an exemplary climb profile of a conventional airliner, in which multiple physical and regulatory speed constraints are simultaneously specified over several altitudes (e.g., to account for the <ddue:legacyItalic>crossover altitude</ddue:legacyItalic>):</ddue:para>
+	                        <ddue:code language="XML" title="Example climb constraints using parameter lapses">&lt;endCondition&gt;
+	&lt;positionGeo&gt;
+		&lt;altitude relationalOperator=&quot;ge&quot; uID=&quot;altClimb&quot;&gt;10058.4&lt;/altitude&gt; &lt;!-- FL330 --&gt;
+	&lt;/positionGeo&gt;
+&lt;/endCondition&gt;
+&lt;constraint&gt;
+	&lt;referenceEndConditionUID&gt;altClimb&lt;/referenceEndConditionUID&gt;
+	&lt;endConditionRatio&gt;0.0;0.303&lt;/endConditionRatio&gt; &lt;!-- FL0, FL100 --&gt;
+	&lt;continuitySetting&gt;discrete&lt;/continuitySetting&gt;
+	&lt;CAS relationalOperator=&quot;le&quot;&gt;128.61;154.33&lt;/CAS&gt; &lt;!-- 250 [kt], 300 [kt]--&gt;
+	&lt;machNumber relationalOperator=&quot;le&quot;&gt;0.78;0.78&lt;/machNumber&gt;
+	&lt;prioritySetting&gt;velocity&lt;/prioritySetting&gt;
+&lt;/constraint&gt;
+							</ddue:code>
+							<ddue:para>
+								From FL0 until FL100, the vehicle should fly at a velocity less than or equal to CAS = 250 kt or M = 0.78. In this first segment at low altitudes, the constraint on CAS is triggered.
+							</ddue:para>
+							<ddue:para>
+								From FL100 until FL330, the vehicle should fly at a velocity less than or equal to CAS = 300 kt or M = 0.78. In this second segment, the vehicle starts by increasing velocity until 300 kt, the constraint on maximum machNumber triggers from the crossover altitude onwards
+							</ddue:para> 
+                    	</ddue:content>    
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -5684,7 +5706,7 @@ marko.alder@dlr.de
                     <xsd:element name="referenceEndCondition" type="stringUIDBaseType" minOccurs="0">
                         <xsd:annotation>
                             <xsd:documentation>
-                                Reference to the uID of the segment end condition variable.
+                                Reference to the uID of the segment end condition variable
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
@@ -5755,7 +5777,7 @@ marko.alder@dlr.de
                     <xsd:element minOccurs="0" name="stepClimbAltitudeDifference" type="doubleVectorConstraintBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
-                                Altitude difference of each step climb.
+                                Altitude difference of each step climb
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
@@ -19565,10 +19587,12 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         <ddue:para>Mission definitions</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Specifies missions for performance evaluation of aircraft.</ddue:para>
-                        <ddue:para>As the topmost element of the hierarchical mission definition, individual missions are grouped together 
-                        in the <ddue:legacyItalic>missions</ddue:legacyItalic> node. Here, <ddue:legacyItalic>segmentBlocks</ddue:legacyItalic>
-                        are referenced. These again link to a list of <ddue:legacyItalic>segments</ddue:legacyItalic>.</ddue:para>
+                    	<ddue:content>
+	                        <ddue:para>Specifies missions for performance evaluation of aircraft.</ddue:para>
+	                        <ddue:para>As the topmost element of the hierarchical mission definition, individual missions are grouped together 
+	                        in the <ddue:legacyItalic>missions</ddue:legacyItalic> node. Here, <ddue:legacyItalic>segmentBlocks</ddue:legacyItalic>
+	                        are referenced. These again link to a list of <ddue:legacyItalic>segments</ddue:legacyItalic>.</ddue:para>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
