@@ -34,6 +34,17 @@ The following questions should be answered:
 - What is the driver for the requested change?
 - If new definitions shall be implemented: Is there an immediate plan to exchange the data between different parties? Don't waste time on the definition of nodes which might not be used for data exchange.
 
+## Release Process
+
+The release process serves to inform all stakeholders and, if necessary, to involve their ideas and requirements in further revisions. For this purpose, preliminary versions are released before the final release. These are:
+
+- **Beta releases**: These releases include all modifications and enhancements from the development process. As a prototype they are intended to be tested in practice. Depending on practical experience, further changes can be flexibly incorporated. 
+- **Release candidates (RC)**: A RC is close to the final version and major adjustments should be avoided. This means that the RC serves as a final review for the official release.   
+
+The following figure illustrates the iterative release process:
+
+![ReleaseProcess](./images/releaseProcess.png)
+
 
 ## Contribution Guidelines
 TODO
