@@ -31605,7 +31605,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="remainingContributionsType">
+	<xsd:complexType name="remainingContributionsType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
@@ -31614,7 +31614,31 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>
-                            This node lists the remaining contributions which were not specified so that the sum of the coefficients equal to total coefficients.
+                            This node lists the remaining contributions which were not specified so that the sum of the coefficients are equal to the total coefficients.
+                        </ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="remainingContribution" type="remainingContributionType" maxOccurs="unbounded" minOccurs="1"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="remainingContributionType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Remaining contribution to aerodynamic coefficients</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>
+                            This node lists a remaining contribution which was not specified so that the sum of the coefficients are equal to the total coefficients.
                         </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -31638,7 +31662,8 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="coefficients" type="aeroCaseCoefficientsType"/>
-                </xsd:all>
+                </xsd:all>      
+                <xsd:attribute name="uID" type="xsd:ID" use="optional"/>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
