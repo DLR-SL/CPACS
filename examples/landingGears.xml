@@ -674,16 +674,43 @@
                         </componentSegments>
                     </wing>
                 </wings>
-                <landingGear>
-                    <noseGears>
-                        <noseGear uID="nGear">
+                <landingGears>
+                    <landingGear uID="nGear">
                         	<parentUID>Fuselage</parentUID>
                         	<global>
-                                <extAngle>100</extAngle>
+                                <retractAngle>0</retractAngle>
                                 <offset>100</offset>
-                                <retractAngle>180</retractAngle>
-                                <extControlParameter>0</extControlParameter>
-                                <retractControlParameter>1</retractControlParameter>
+                                <controlFunctions>
+                                	<extensionPath uID="nGearExtPath">
+                                		<step>
+                                			<stepType>retracted</stepType>
+                                			<controlParameter>0</controlParameter>
+                                			<extensionAngle>0</extensionAngle>
+                                		</step>
+                                		<step>
+                                			<stepType>extracted</stepType>
+                                			<controlParameter>1</controlParameter>
+                                			<extensionAngle>90</extensionAngle>
+                                		</step>
+                                	</extensionPath>
+                                	<steeringPath uID="nGearSteering">
+                                		<step>
+                                			<stepType>fullBackboard</stepType>
+                                			<controlParameter>-1</controlParameter>
+                                			<steeringAngle>-15</steeringAngle>
+                                		</step>
+                                		<step>
+                                			<stepType>centered</stepType>
+                                			<controlParameter>0</controlParameter>
+                                			<steeringAngle>0</steeringAngle>
+                                		</step>
+                                		<step>
+                                			<stepType>fullStarboard</stepType>
+                                			<controlParameter>0</controlParameter>
+                                			<steeringAngle>15</steeringAngle>
+                                		</step>
+                                	</steeringPath>
+                                </controlFunctions>
                             </global>
                             <componentAssembly>
                                 <mainStrut uID="nMainStrut">
@@ -814,17 +841,30 @@
                                     <z>-633.32</z>
                                 </translation>
                             </transformation>
-                        </noseGear>
-                    </noseGears>
-                    <mainGears>
-                        <mainGear uID="mGear" symmetry="x-z-plane">
+                    </landingGear>
+                    <landingGear uID="mGear" symmetry="x-z-plane">
                         	<parentUID>Wing</parentUID>
                         	<global>
-                                <extAngle>125</extAngle>
-                                <offset>80</offset>
                                 <retractAngle>90</retractAngle>
-                                <extControlParameter>0</extControlParameter>
-                                <retractControlParameter>1</retractControlParameter>
+                                <offset>125</offset>
+                                <controlFunctions>
+                                	<extensionPath uID="mGearExtPath">
+                                		<step>
+                                			<stepType>retracted</stepType>
+                                			<controlParameter>0</controlParameter>
+                                			<extensionAngle>0</extensionAngle>
+                                		</step>
+                                		<step>
+                                			<stepType>extracted</stepType>
+                                			<controlParameter>1</controlParameter>
+                                			<extensionAngle>120</extensionAngle>
+                                		</step>
+                                	</extensionPath>
+                                	<brakingState uID="mGearBrakingState">
+                                	    <controlParameterReleased>0</controlParameterReleased>
+                                		<controlParameterBraked>1</controlParameterBraked>
+                                	</brakingState>
+                                </controlFunctions>
                             </global>
                             <componentAssembly>
                                 <mainStrut uID="mMainStrut">
@@ -949,9 +989,8 @@
                                     <z>-40</z>
                                 </translation>
                             </transformation>
-                        </mainGear>
-                    </mainGears>
-                </landingGear>
+                    </landingGear>
+                </landingGears>
             </model>
         </aircraft>
         <profiles>

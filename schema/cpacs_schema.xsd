@@ -3032,7 +3032,7 @@ marko.alder@dlr.de
                     <xsd:element minOccurs="0" name="wings" type="wingsType"/>
                     <xsd:element minOccurs="0" name="engines" type="enginePositionsType"/>
                     <xsd:element minOccurs="0" name="enginePylons" type="enginePylonsType"/>
-                    <xsd:element minOccurs="0" name="landingGear" type="landingGearType"/>
+                    <xsd:element minOccurs="0" name="landingGears" type="landingGearsType"/>
                     <xsd:element minOccurs="0" name="systems" type="systemsType"/>
                     <xsd:element minOccurs="0" name="genericGeometryComponents" type="genericGeometryComponentsType"/>
                     <xsd:element minOccurs="0" name="global" type="aircraftGlobalType"/>
@@ -3628,7 +3628,7 @@ marko.alder@dlr.de
                 <xsd:all>
                     <xsd:element name="length" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Length of the axle</xsd:documentation>
+                            <xsd:documentation>Length of the axle. For a single wheel, the length is equal to the distance between the center of the piston and the center of the wheel. For two wheels, the length is equal to the distance between the centers of the wheels with the axis being centered w.r.t. to the Piston.</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="shaftProperties" type="strutPropertiesType">
@@ -3643,7 +3643,7 @@ marko.alder@dlr.de
                     </xsd:element>
                     <xsd:element name="sideOfFirstWheel">
                         <xsd:annotation>
-                            <xsd:documentation>Defines the side of the first wheel (inboard or outboard) for odd number of wheels on this axis. Each additional wheel is the added on the opposite site of the previous wheel.</xsd:documentation>
+                            <xsd:documentation>Defines the side of the first wheel (inboard or outboard; inboard corresponds to the negative y-direction or in flight direction left) for odd number of wheels on this axis. Each additional wheel is the added on the opposite site of the previous wheel.</xsd:documentation>
                         </xsd:annotation>
                         <xsd:simpleType>
                             <xsd:restriction base="xsd:string">
@@ -3671,6 +3671,9 @@ marko.alder@dlr.de
                     <ddue:summary>
                         <ddue:para>Definition of the landing gear wheel.</ddue:para>
                     </ddue:summary>
+                    <ddue:content>
+                        <ddue:para>The center plane of the wheel is located on the end point of the axle.</ddue:para>
+                    </ddue:content>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -14547,6 +14550,28 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+	<xsd:complexType name="landingGearsType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Landing gears</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>Contains a list of landing gears.</ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element maxOccurs="unbounded" name="landingGear" type="landingGearBaseType"/>
+                </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -32103,15 +32128,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="extAngle" type="doubleBaseType"
-                        maxOccurs="1" minOccurs="0">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                Angle between the full extended and the
-                                full retracted main strut
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
+                    <xsd:element name="controlFunctions" minOccurs="0" type="landingGearControlFunctionsType"/>
                     <xsd:element name="offset" type="doubleBaseType"
                         maxOccurs="1" minOccurs="0">
                         <xsd:annotation>
@@ -32125,23 +32142,217 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="retractControlParameter" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                Control parameter for retracted landing gear (typically 0)
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="extControlParameter" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                Control parameter for extended landing gear (typically 1)
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
+    </xsd:complexType>
+
+	<xsd:complexType name="landingGearControlFunctionsType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Landing gear control functions</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>
+                                A list of functions which can be addressed by the controlDistributor.
+                            </ddue:para>
+                        </ddue:content>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:all>
+            <xsd:element name="extensionPath" minOccurs="0" type="landingGearExtensionFunctionType">
+                <xsd:annotation>
+                    <xsd:documentation>Extension path</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="steeringPath" minOccurs="0" type="landingGearSteeringFunctionType">
+                <xsd:annotation>
+                    <xsd:documentation>Steering path</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="brakingState" minOccurs="0" type="landingGearBrakingStateType">
+                <xsd:annotation>
+                    <xsd:documentation>Braking state</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+        </xsd:all>
+    </xsd:complexType>
+
+    <xsd:complexType name="landingGearBrakingStateType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Braking function</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>
+                                Describes the braking state of the landing gear.
+                            </ddue:para>
+                        </ddue:content>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:all>
+            <xsd:element name="controlParameterBraked" type="doubleBaseType">
+                <xsd:annotation>
+                    <xsd:documentation>Control parameter indicating that the brake is set</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="controlParameterReleased" type="doubleBaseType">
+                <xsd:annotation>
+                    <xsd:documentation>Control parameter indicating that the brake is released</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+        </xsd:all>
+        <xsd:attribute name="uID" type="xsd:ID" use="required"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="landingGearSteeringFunctionType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Steering path</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>
+                                Describes the steering path of the landing gears via a list of steps.
+                            </ddue:para>
+                        </ddue:content>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element name="step" maxOccurs="unbounded" type="landingGearSteeringFunctionStepType">
+                <xsd:annotation>
+                    <xsd:documentation>Step within the steering path</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+        </xsd:sequence>
+        <xsd:attribute name="uID" type="xsd:ID" use="required"/>
+    </xsd:complexType>
+    
+    <xsd:complexType name="landingGearSteeringFunctionStepType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Steering step</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>
+                                Describes a step with the steering path of the landing gear.
+                            </ddue:para>
+                        </ddue:content>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:all>
+            <xsd:element name="stepType">
+                <xsd:annotation>
+                    <xsd:documentation>Step type (centered, fullBackboard or fullStarboard)</xsd:documentation>
+                </xsd:annotation>
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="centered"/>
+                        <xsd:enumeration value="fullBackboard"/>
+                        <xsd:enumeration value="fullStarboard"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="controlParameter" type="doubleBaseType">
+                <xsd:annotation>
+                    <xsd:documentation>Control parameter</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="steeringAngle" type="doubleBaseType">
+                <xsd:annotation>
+                    <xsd:documentation>Steering angle [deg]</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+        </xsd:all>
+    </xsd:complexType>
+    
+    <xsd:complexType name="landingGearExtensionFunctionType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Extension path</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>
+                                Describes the extension path of the landing gears via a list of steps.
+                            </ddue:para>
+                        </ddue:content>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element name="step" maxOccurs="unbounded" type="landingGearExtensionFunctionStepType">
+                <xsd:annotation>
+                    <xsd:documentation>Step within the extension path</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+        </xsd:sequence>
+        <xsd:attribute name="uID" type="xsd:ID" use="required"/>
+    </xsd:complexType>
+
+	<xsd:complexType name="landingGearExtensionFunctionStepType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Extension step</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>
+                                Describes a step with the extension path of the landing gear. Make sure to provide a least one step with stepType=extracted!
+                            </ddue:para>
+                        </ddue:content>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:all>
+            <xsd:element name="stepType">
+                <xsd:annotation>
+                    <xsd:documentation>Step type (retracted or extracted)</xsd:documentation>
+                </xsd:annotation>
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="retracted"/>
+                        <xsd:enumeration value="intermediate"/>
+                        <xsd:enumeration value="extracted"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="controlParameter" type="doubleBaseType">
+                <xsd:annotation>
+                    <xsd:documentation>Control parameter</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="extensionAngle" type="doubleBaseType">
+                <xsd:annotation>
+                    <xsd:documentation>Extension angle of the main strut [deg]</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+        </xsd:all>
     </xsd:complexType>
 
     <xsd:complexType name="landingGearComponentAssemblyType">
