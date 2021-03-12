@@ -30725,7 +30725,12 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     </xsd:element>
                     <xsd:element name="controlElements" type="aircraftControlElementsType" maxOccurs="1" minOccurs="0">
                     </xsd:element>
-                    <xsd:element name="cabinPressures" type="cabinPressuresType" maxOccurs="1" minOccurs="0">
+                    <xsd:element name="internalPressures" type="internalPressuresType" maxOccurs="1" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Deck configurations
+                            </xsd:documentation>
+                        </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
                 <xsd:attribute name="uID" type="xsd:ID" use="required"/>
@@ -30733,7 +30738,32 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="cabinPressureType">
+	<xsd:complexType name="internalPressuresType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Internal pressure of a deck</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="internalPressure" type="internalPressureType" maxOccurs="unbounded">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Internal pressure of a fuselage, deck or compartment
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="internalPressureType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
@@ -30742,7 +30772,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>
-                            Internal pressure of a fuselage, cabin or compartment.
+                            Internal pressure of a fuselage, deck or compartment
                         </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -30751,10 +30781,10 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element name="cabinUID" type="stringUIDBaseType">
+                    <xsd:element name="referenceUID" type="stringUIDBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
-                                UID of a fuselage, cabin or compartment
+                                UID of a fuselage, deck or compartment
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
@@ -30766,31 +30796,6 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="cabinPressuresType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Cabin pressures</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>
-                            A list of cabins for which the cabin pressure is specified
-                        </ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element name="cabinPressure" type="cabinPressureType" maxOccurs="unbounded" minOccurs="1">
-                    </xsd:element>
-                </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
