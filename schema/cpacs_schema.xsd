@@ -24631,27 +24631,39 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         <ddue:para>stringerFramePositionType</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>stringerFramePosition type, containing individual
-                            stringer / frame postion definition (CPACS V2.1+)</ddue:para>
+                    	<ddue:content>
+                    		<ddue:para>Description of individual stringer / frame postions</ddue:para>
+                    		<ddue:mediaLink>
+                                <ddue:image xlink:href="stringerFramePositioning"/>
+                            </ddue:mediaLink>
+                    	</ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
-                <xsd:all>
+                <xsd:sequence>
                     <xsd:element name="structuralElementUID" type="stringUIDBaseType">
                         <xsd:annotation>
                             <xsd:documentation>UID of profile based structural element
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="positionX" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>x position in absolute value
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
+                    <xsd:choice>
+	                    <xsd:element name="positionX" type="doubleBaseType">
+	                        <xsd:annotation>
+	                            <xsd:documentation>x position in absolute value
+	                            </xsd:documentation>
+	                        </xsd:annotation>
+	                    </xsd:element>
+	                    <xsd:element name="sectionElementUID" type="stringUIDBaseType">
+	                        <xsd:annotation>
+	                            <xsd:documentation>UID reference to a fuselageSectionElement
+	                            </xsd:documentation>
+	                        </xsd:annotation>
+	                    </xsd:element>
+                    </xsd:choice>
                     <xsd:element name="referenceY" type="doubleBaseType">
                         <xsd:annotation>
                             <xsd:documentation>y coordinate of reference system
@@ -24701,7 +24713,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             </xsd:simpleContent>
                         </xsd:complexType>
                     </xsd:element>
-                </xsd:all>
+                </xsd:sequence>
                 <xsd:attribute name="uID" type="xsd:ID" use="required"/>
             </xsd:extension>
         </xsd:complexContent>
