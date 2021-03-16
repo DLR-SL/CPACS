@@ -31584,9 +31584,17 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         <ddue:para>Aerodynamic contributions of a strip within a wing segment</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
+                    <ddue:content>
                         <ddue:para>
                             Describes the contributions of a specific strip within a wing segment to the total aerodynamic coefficients of a wing segment
                         </ddue:para>
+                        <ddue:para>
+                        	The strip extends spatially between two <ddue:legacyItalic>eta</ddue:legacyItalic> coordinates (i.e., <ddue:legacyBold>from</ddue:legacyBold> an inner border <ddue:legacyBold>to</ddue:legacyBold> an outer border).
+                        	In order to avoid redundancy, the outer border (denoted by <ddue:legacyBold>to</ddue:legacyBold>) is always identical to the inner border of the subsequent strip (denoted by <ddue:legacyBold>from</ddue:legacyBold>).
+                        	Accordingly, only the <ddue:legacyBold>to</ddue:legacyBold>-border can be specified explicitly, while the <ddue:legacyBold>from</ddue:legacyBold>-border equals implicitly either <ddue:legacyItalic>0</ddue:legacyItalic>
+                        	(for the first strip) or the <ddue:legacyItalic>toSegmentEta</ddue:legacyItalic> value of the previous element. 
+                        </ddue:para>
+                    </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -31594,8 +31602,14 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element name="coefficients" type="aeroCaseCoefficientsType">
+                    <xsd:element name="toSegmentEta" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Spanwise coordinate eta in the segment coordinate system to define the end of the strip
+                            </xsd:documentation>
+                        </xsd:annotation>
                     </xsd:element>
+                    <xsd:element name="coefficients" type="aeroCaseCoefficientsType"/>
                     <xsd:element name="reference" type="coefficientReferenceType"/>
                     <xsd:element name="chordwiseParts" type="chordwisePartsType" maxOccurs="1" minOccurs="0"/>
                     <xsd:element name="remainingContributions" type="remainingContributionsType" maxOccurs="1" minOccurs="0"/>
@@ -31636,9 +31650,16 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         <ddue:para>Aerodynamic contributions of a chordwise part within a within a wing segment strip</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>
-                            Describes the contributions of a specific par within a wing segment to the total aerodynamic coefficients of a wing segment strip
-                        </ddue:para>
+                        <ddue:content>
+	                        <ddue:para>
+	                            Describes the contributions of a specific par within a wing segment to the total aerodynamic coefficients of a wing segment strip
+	                        </ddue:para>
+	                        <ddue:para>
+	                        	The <ddue:legacyItalic>chordwisePart</ddue:legacyItalic> extends spatially between the two <ddue:legacyItalic>eta</ddue:legacyItalic> positions of the parent strip (see <ddue:legacyItalic>strip</ddue:legacyItalic> documentation) as well as four <ddue:legacyItalic>xsi</ddue:legacyItalic> positions in the segment coordinate system.
+	                        	As with the parent stips, only the trailing border (<ddue:legacyItalic>..ToSegmentXsi</ddue:legacyItalic>) of a <ddue:legacyItalic>chordwisePart</ddue:legacyItalic> is defined, while the leading border always equals the trailing border of the preceding <ddue:legacyItalic>chordwisePart</ddue:legacyItalic>.
+	                        	To account for oblique trailing borders (e.g., to match the aileron on a tapered wing) two different <ddue:legacyItalic>toSegmentXsi</ddue:legacyItalic> positions can be defined, one at the inner border (<ddue:legacyItalic>innerBorderToSegmentXsi</ddue:legacyItalic>) and one at the outer border (<ddue:legacyItalic>innerBorderToSegmentXsi</ddue:legacyItalic>) of the parent strip.  
+	                        </ddue:para>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -31646,6 +31667,20 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
+                	<xsd:element name="innerBorderToSegmentXsi" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                               Chordwise coordinate xsi in the segment coordinate system to define the end position of the chordwisePart at the inner eta border
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="outerBorderToSegmentXsi" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                               Chordwise coordinate xsi in the segment coordinate system to define the end position of the chordwisePart at the outer eta border
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                     <xsd:element name="coefficients" type="aeroCaseCoefficientsType"/>
                     <xsd:element name="reference" type="coefficientReferenceType"/>
                 </xsd:all>
