@@ -10775,7 +10775,7 @@ marko.alder@dlr.de
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="accelerationFactors" type="loadCaseAccelerationFactorsType" minOccurs="0" maxOccurs="1"/>
+                    <xsd:element name="accelerations" type="loadCaseAccelerationsType" minOccurs="0" maxOccurs="1"/>
                     <xsd:element name="rotationRates" type="pointXYZType" minOccurs="0" maxOccurs="1">
                         <xsd:annotation>
                             <xsd:documentation>
@@ -10862,15 +10862,15 @@ marko.alder@dlr.de
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="loadCaseAccelerationFactorsType">
+    <xsd:complexType name="loadCaseAccelerationsType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Load case acceleration factors</ddue:para>
+                        <ddue:para>Accelerations</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Translational or rotational acceleration factors acting
+                        <ddue:para>Translational or rotational accelerations acting
                         on the aircraft</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -10879,14 +10879,52 @@ marko.alder@dlr.de
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element name="translation" type="pointXYZType">
-                        <xsd:annotation>
-                            <xsd:documentation>Translatory accelerations acting on aircraft.</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
+                    <xsd:element name="loadFactors" type="loadCaseLoadFactorsType"/>
                     <xsd:element name="rotation" type="pointXYZType">
                         <xsd:annotation>
-                            <xsd:documentation>Acting rotational accelerations around aircraft centre of gravity.</xsd:documentation>
+                            <xsd:documentation>Rotational accelerations acting around aircraft centre of gravity [deg/s^2]</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="loadCaseLoadFactorsType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Load factors</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para/>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="nX" type="doubleBaseType" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Load factor in x-direction
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="nY" type="doubleBaseType" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Load factor in y-direction
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="nZ" type="doubleBaseType" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Load factor in z-direction
+                            </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
