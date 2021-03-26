@@ -770,7 +770,6 @@ marko.alder@dlr.de
         <xsd:all>
             <xsd:element name="header" type="headerType"/>
             <xsd:element minOccurs="0" name="vehicles" type="vehiclesType"/>
-            <xsd:element minOccurs="0" name="performanceCases" type="globalPerformanceCasesType"/>
             <xsd:element minOccurs="0" name="airports" type="airportsType"/>
             <xsd:element minOccurs="0" name="flights" type="flightsType"/>
             <xsd:element minOccurs="0" name="airlines" type="airlinesType"/>
@@ -2931,8 +2930,6 @@ marko.alder@dlr.de
                     <xsd:element minOccurs="0" name="aeroPerformance" type="aeroPerformanceType"/>
                     <xsd:element minOccurs="0" name="aeroelastics" type="aeroelasticsType"/>
                     <xsd:element minOccurs="0" name="flightDynamics" type="flightDynamicsAnalysisType"/>
-                    <xsd:element minOccurs="0" name="flyingQualities" type="flyingQualitiesType"/>
-                    <xsd:element minOccurs="0" name="flightPerformance" type="flightPerformanceType"/>
                     <xsd:element minOccurs="0" name="flightSystems" type="flightSystemsType"/>
                     <xsd:element minOccurs="0" name="landingGearPositionSafetyMargins" type="landingGearPositionSafetyMarginsType"/>
                     <xsd:element minOccurs="0" name="loadAnalysis" type="loadAnalysisType"/>
@@ -10526,8 +10523,9 @@ marko.alder@dlr.de
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element minOccurs="0" name="trimCases" type="analysisTrimCasesType">
-                    </xsd:element>
+                    <xsd:element minOccurs="0" name="trim" type="trimType"/>
+                    <xsd:element minOccurs="0" name="flyingQualities" type="flyingQualitiesCasesType"/>
+                    <xsd:element minOccurs="0" name="flightPerformance" type="flightPerformanceCasesType"/>
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
@@ -11083,11 +11081,10 @@ marko.alder@dlr.de
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:element name="performanceCaseUID" type="stringUIDBaseType">
+                	<xsd:element name="name" type="stringBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
-                                UID of flight performance case
-                                description
+                                Name
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
@@ -11095,6 +11092,13 @@ marko.alder@dlr.de
                         <xsd:annotation>
                             <xsd:documentation>
                                 Description
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="flightPerformanceReqUID" type="stringUIDBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                UID of flight performance requirement
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
@@ -11128,7 +11132,7 @@ marko.alder@dlr.de
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:element maxOccurs="unbounded" name="performanceCase" type="flightPerformanceCaseType">
+                    <xsd:element maxOccurs="unbounded" name="flightPerformanceCase" type="flightPerformanceCaseType">
                     </xsd:element>
                 </xsd:sequence>
             </xsd:extension>
@@ -11197,29 +11201,6 @@ marko.alder@dlr.de
                                 take-off calculations optimized for min-imum safety speed V2min.
                             </xsd:documentation>
                         </xsd:annotation>
-                    </xsd:element>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="flightPerformanceType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Flight performance</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para/>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element minOccurs="0" name="performanceCases" type="flightPerformanceCasesType">
                     </xsd:element>
                 </xsd:all>
             </xsd:extension>
@@ -11463,7 +11444,7 @@ marko.alder@dlr.de
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="flyingQualitiesType">
+    <xsd:complexType name="flyingQualitiesCasesType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
@@ -11471,7 +11452,8 @@ marko.alder@dlr.de
                         <ddue:para>Flying qualities</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para/>
+                        <ddue:para>Provides a list of flying qualities cases
+                        </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -11479,19 +11461,19 @@ marko.alder@dlr.de
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:element maxOccurs="unbounded" name="fqCase" type="fqCaseType">
+                    <xsd:element maxOccurs="unbounded" name="flyingQualitiesCase" type="flyingQualitiesCaseType">
                     </xsd:element>
                 </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="fqCaseType">
+    <xsd:complexType name="flyingQualitiesCaseType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>fqCaseType</ddue:para>
+                        <ddue:para>Flying qualities case</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para/>
@@ -11502,6 +11484,16 @@ marko.alder@dlr.de
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
+                	<xsd:element name="name" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Name</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="description" minOccurs="0" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Description</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                     <xsd:element name="class" type="integerBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Aircraft Class; Class 1 small light aircraft;
@@ -20774,15 +20766,15 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="performanceCasesType">
+    <xsd:complexType name="flightPerformanceReqsType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>performanceCasesType</ddue:para>
+                        <ddue:para>Flight performance requirements</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Contains a list of performance case definitions for the aircraft model
+                        <ddue:para>Contains a list of flight performance requirements
                         </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -20791,18 +20783,18 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:element maxOccurs="unbounded" minOccurs="1" name="flightPerformanceCase" type="performanceCaseType"/>
+                    <xsd:element maxOccurs="unbounded" minOccurs="1" name="flightPerformanceReq" type="flightPerformanceReqType"/>
                 </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="performanceCaseType">
+    <xsd:complexType name="flightPerformanceReqType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>performanceCaseType</ddue:para>
+                        <ddue:para>Flight performance requirement</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para/>
@@ -20812,7 +20804,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
-                <xsd:all>
+                <xsd:sequence>
                     <xsd:element name="name" type="stringBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Name of the performance case</xsd:documentation>
@@ -20823,27 +20815,38 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             <xsd:documentation>Description of the performance case</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="weightAndBalanceUID" type="stringUIDBaseType">
+                    <xsd:element name="usage">
+                        <xsd:annotation>
+                            <xsd:documentation>Type of usage (required or optional)</xsd:documentation>
+                        </xsd:annotation>
+                        <xsd:complexType>
+                            <xsd:simpleContent>
+                                <xsd:restriction base="stringBaseType">
+                                    <xsd:enumeration value="required" />
+                                    <xsd:enumeration value="optional" />
+                                </xsd:restriction>
+                            </xsd:simpleContent>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="weightAndBalanceUID" minOccurs="0" type="stringUIDBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Reference to the considered weightAndBalance case</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="missionUID" type="stringUIDBaseType" minOccurs="0">
-                        <xsd:annotation>
-                            <xsd:documentation>The UID of the mission to be flown</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element minOccurs="0" name="pointPerformanceUIDs" type="uIDSequenceType">
-                        <xsd:annotation>
-                            <xsd:documentation>Optional list of point performance UID's serving as constraints for the mission</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element minOccurs="0" name="performanceMaps" type="performanceMapSelectionType">
-                        <xsd:annotation>
-                            <xsd:documentation>Selection of performance maps to be used for the evaluation of this model</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:all>
+                    <xsd:choice>
+	                    <xsd:element name="missionUID" type="stringUIDBaseType">
+	                        <xsd:annotation>
+	                            <xsd:documentation>The UID of the mission to be flown</xsd:documentation>
+	                        </xsd:annotation>
+	                    </xsd:element>
+	                    <xsd:element name="pointPerformanceUID" type="stringUIDBaseType">
+	                        <xsd:annotation>
+	                            <xsd:documentation>Point performance uID constraining the mission</xsd:documentation>
+	                        </xsd:annotation>
+	                    </xsd:element>
+                    </xsd:choice>
+                    <xsd:element minOccurs="0" name="performanceMaps" type="performanceMapSelectionType"/>
+                </xsd:sequence>
                 <xsd:attribute name="uID" type="xsd:ID" use="required"/>
             </xsd:extension>
         </xsd:complexContent>
@@ -20854,7 +20857,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Selection of performance maps which are being applied for missions</ddue:para>
+                        <ddue:para>Selection of performance maps</ddue:para>
                     </ddue:summary>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -20893,11 +20896,11 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element name="requiredPerformanceCases" type="uIDSequenceType"/>
-                    <xsd:element minOccurs="0" name="optionalPerformanceCases" type="uIDSequenceType"/>
-                    <xsd:element minOccurs="0" name="flightPerformanceCases" type="performanceCasesType"/>
-                    <xsd:element minOccurs="0" name="controllabilityCases" type="controllabilityCasesType"/>
-                    <xsd:element minOccurs="0" name="trimCases" type="trimCasesType"/>
+                    <!-- xsd:element name="requiredPerformanceCases" type="uIDSequenceType"/  -->
+                    <!-- xsd:element minOccurs="0" name="optionalPerformanceCases" type="uIDSequenceType"/  -->
+                    <xsd:element minOccurs="0" name="flightPerformanceReqs" type="flightPerformanceReqsType"/>
+                    <xsd:element minOccurs="0" name="controllabilityReqs" type="controllabilityReqsType"/>
+                    <xsd:element minOccurs="0" name="trimReqs" type="trimReqsType"/>
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
@@ -26291,6 +26294,8 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                 <xsd:all>
                     <xsd:element minOccurs="0" name="aircraft" type="aircraftType"/>
                     <xsd:element minOccurs="0" name="rotorcraft" type="rotorcraftType"/>
+                    <xsd:element minOccurs="0" name="performanceCases" type="globalPerformanceCasesType"/>
+                    <xsd:element minOccurs="0" name="flightPoints" type="flightPointsType"/>
                     <xsd:element minOccurs="0" name="engines" type="enginesType"/>
                     <xsd:element minOccurs="0" name="profiles" type="profilesType"/>
                     <xsd:element minOccurs="0" name="structuralElements" type="structuralElementsType"/>
@@ -33198,29 +33203,63 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="controllabilityCasesType">
+    <xsd:complexType name="controllabilityReqsType">
+    	<xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Controllability requirements</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>Contains a list of controllability requirements
+                        </ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:element name="controllabilityCase" type="controllabilityCaseType" maxOccurs="unbounded" minOccurs="1">
+                    <xsd:element name="controllabilityReq" type="controllabilityReqType" maxOccurs="unbounded" minOccurs="1"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="trimReqsType">
+    	 <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Trim requirements</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>Contains a list of trim requirements
+                        </ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="trimReq" type="trimReqType" maxOccurs="unbounded" minOccurs="1">
                     </xsd:element>
                 </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="trimCasesType">
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element name="trimCase" type="trimCaseType" maxOccurs="unbounded" minOccurs="1">
-                    </xsd:element>
-                </xsd:sequence>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="controllabilityCaseType">
+    <xsd:complexType name="controllabilityReqType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Controllability requirement</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
@@ -33239,16 +33278,17 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             <xsd:documentation>UID of point performance description</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="weightAndBalanceUID" type="stringUIDBaseType">
+                    <xsd:element name="weightAndBalanceUID" minOccurs="0" type="stringUIDBaseType">
                         <xsd:annotation>
                             <xsd:documentation>UID of weight and balance description</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="configurationUID" type="stringUIDBaseType">
+                    <xsd:element name="configurationUID" minOccurs="0" type="stringUIDBaseType">
                         <xsd:annotation>
                             <xsd:documentation>UID of aircraft model configuration (aircraft/model/configurations/configuration)</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
+                    <xsd:element minOccurs="0" name="performanceMaps" type="performanceMapSelectionType"/>
                 </xsd:all>
                 <xsd:attribute name="uID" type="xsd:ID" use="required">
                 </xsd:attribute>
@@ -33256,7 +33296,16 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="trimCaseType">
+    <xsd:complexType name="trimReqType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Trim requirement</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
         <xsd:all>
             <xsd:element name="name" type="stringBaseType">
                 <xsd:annotation>
@@ -33268,36 +33317,38 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:documentation>Description</xsd:documentation>
                 </xsd:annotation>
             </xsd:element>
-            <xsd:element name="flightCaseUID" type="stringUIDBaseType">
+            <xsd:element name="flightPointUID" type="stringUIDBaseType">
                 <xsd:annotation>
-                    <xsd:documentation>UID of flight case description</xsd:documentation>
+                    <xsd:documentation>UID of a predefined flight point</xsd:documentation>
                 </xsd:annotation>
             </xsd:element>
-            <xsd:element name="weightAndBalanceUID" type="stringUIDBaseType">
+            <xsd:element name="weightAndBalanceUID" minOccurs="0" type="stringUIDBaseType">
                 <xsd:annotation>
                     <xsd:documentation>UID of weight and balance description</xsd:documentation>
                 </xsd:annotation>
             </xsd:element>
-            <xsd:element name="configurationUID" type="stringUIDBaseType">
+            <xsd:element name="configurationUID" minOccurs="0" type="stringUIDBaseType">
                 <xsd:annotation>
                     <xsd:documentation>UID of configuration description</xsd:documentation>
                 </xsd:annotation>
             </xsd:element>
+            <xsd:element minOccurs="0" name="performanceMaps" type="performanceMapSelectionType"/>
         </xsd:all>
         <xsd:attribute name="uID" type="xsd:ID"/>
     </xsd:complexType>
 
-    <xsd:complexType name="analysisTrimCasesType">
+    <xsd:complexType name="trimType">
     	<xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
                         <ddue:para>
-                            Trim cases
+                            Trim
                         </ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para/>
+                        <ddue:para>Provides a list of trim cases
+                        </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -33305,14 +33356,14 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:element name="trimCase" type="analysisTrimCaseType" maxOccurs="unbounded" minOccurs="1">
+                    <xsd:element name="trimCase" type="trimCaseType" maxOccurs="unbounded" minOccurs="1">
                     </xsd:element>
                 </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="analysisTrimCaseType">
+    <xsd:complexType name="trimCaseType">
     	<xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
@@ -33335,14 +33386,14 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             <xsd:documentation>Name</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="description" type="stringBaseType">
+                    <xsd:element name="description" minOccurs="0" type="stringBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Description</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="trimCaseUID" type="stringUIDBaseType">
+                    <xsd:element name="trimReqUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of trim case</xsd:documentation>
+                            <xsd:documentation>UID of trim requirement</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element minOccurs="0" name="trimResult" type="flightDynamicsTrimResultType"/>
@@ -33353,6 +33404,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
+                <xsd:attribute name="uID" type="xsd:ID" use="required"/>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -33483,6 +33535,81 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="flightPointsType">
+    	<xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Flight Cases</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                    	<ddue:content>
+                    		<ddue:para/>
+                    	</ddue:content>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="flightPoint" type="globalFlightPointType" maxOccurs="unbounded" minOccurs="1"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+	<xsd:complexType name="globalFlightPointType">
+    	<xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Flight point</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                    	<ddue:content>
+                    		<ddue:para/>
+                    	</ddue:content>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                	<xsd:element name="name" type="stringBaseType"/>
+                	<xsd:element name="description" type="stringBaseType" minOccurs="0"/>
+                    <xsd:element name="altitude" type="doubleBaseType"/>
+                    <xsd:choice>
+                    	<xsd:element name="machNumber" type="doubleBaseType">
+	                        <xsd:annotation>
+	                            <xsd:documentation>
+	                                Mach number
+	                            </xsd:documentation>
+	                        </xsd:annotation>
+	                    </xsd:element>
+                    	<xsd:element name="calibratedAirSpeed" type="doubleBaseType">
+	                        <xsd:annotation>
+	                            <xsd:documentation>
+	                                Calibrated air speed
+	                            </xsd:documentation>
+	                        </xsd:annotation>
+	                    </xsd:element>
+                    	<xsd:element name="trueAirSpeed" type="doubleBaseType">
+	                        <xsd:annotation>
+	                            <xsd:documentation>
+	                                True air speed
+	                            </xsd:documentation>
+	                        </xsd:annotation>
+	                    </xsd:element>
+                    </xsd:choice>
+                    <xsd:element name="environmentalConditions" type="environmentalConditionsType"/>
+                </xsd:sequence>
+                <xsd:attribute name="uID" type="xsd:ID" use="required"/>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
