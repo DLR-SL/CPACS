@@ -20773,15 +20773,15 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="performanceCasesType">
+    <xsd:complexType name="flightPerformanceReqsType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>performanceCasesType</ddue:para>
+                        <ddue:para>Flight performance requirements</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Contains a list of performance case definitions for the aircraft model
+                        <ddue:para>Contains a list of flight performance requirements
                         </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -20790,18 +20790,18 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:element maxOccurs="unbounded" minOccurs="1" name="flightPerformanceCase" type="performanceCaseType"/>
+                    <xsd:element maxOccurs="unbounded" minOccurs="1" name="flightPerformanceReq" type="flightPerformanceReqType"/>
                 </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="performanceCaseType">
+    <xsd:complexType name="flightPerformanceReqType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>performanceCaseType</ddue:para>
+                        <ddue:para>Flight performance requirement</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para/>
@@ -20909,9 +20909,9 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                 <xsd:all>
                     <!-- xsd:element name="requiredPerformanceCases" type="uIDSequenceType"/  -->
                     <!-- xsd:element minOccurs="0" name="optionalPerformanceCases" type="uIDSequenceType"/  -->
-                    <xsd:element minOccurs="0" name="flightPerformanceCases" type="performanceCasesType"/>
-                    <xsd:element minOccurs="0" name="controllabilityCases" type="controllabilityCasesType"/>
-                    <xsd:element minOccurs="0" name="trimCases" type="trimCasesType"/>
+                    <xsd:element minOccurs="0" name="flightPerformanceReqs" type="flightPerformanceReqsType"/>
+                    <xsd:element minOccurs="0" name="controllabilityReqs" type="controllabilityReqsType"/>
+                    <xsd:element minOccurs="0" name="trimReqs" type="trimReqsType"/>
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
@@ -33213,29 +33213,63 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="controllabilityCasesType">
+    <xsd:complexType name="controllabilityReqsType">
+    	<xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Controllability requirements</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>Contains a list of controllability requirements
+                        </ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:element name="controllabilityCase" type="controllabilityCaseType" maxOccurs="unbounded" minOccurs="1">
+                    <xsd:element name="controllabilityReq" type="controllabilityReqType" maxOccurs="unbounded" minOccurs="1"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="trimReqsType">
+    	 <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Trim requirements</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>Contains a list of trim requirements
+                        </ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="trimReq" type="trimReqType" maxOccurs="unbounded" minOccurs="1">
                     </xsd:element>
                 </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="trimCasesType">
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element name="trimCase" type="trimCaseType" maxOccurs="unbounded" minOccurs="1">
-                    </xsd:element>
-                </xsd:sequence>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="controllabilityCaseType">
+    <xsd:complexType name="controllabilityReqType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Controllability requirement</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
@@ -33271,7 +33305,16 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="trimCaseType">
+    <xsd:complexType name="trimReqType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Trim requirement</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
         <xsd:all>
             <xsd:element name="name" type="stringBaseType">
                 <xsd:annotation>
