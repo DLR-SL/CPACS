@@ -2930,8 +2930,6 @@ marko.alder@dlr.de
                     <xsd:element minOccurs="0" name="aeroPerformance" type="aeroPerformanceType"/>
                     <xsd:element minOccurs="0" name="aeroelastics" type="aeroelasticsType"/>
                     <xsd:element minOccurs="0" name="flightDynamics" type="flightDynamicsAnalysisType"/>
-                    <xsd:element minOccurs="0" name="flyingQualities" type="flyingQualitiesType"/>
-                    <xsd:element minOccurs="0" name="flightPerformance" type="flightPerformanceType"/>
                     <xsd:element minOccurs="0" name="flightSystems" type="flightSystemsType"/>
                     <xsd:element minOccurs="0" name="landingGearPositionSafetyMargins" type="landingGearPositionSafetyMarginsType"/>
                     <xsd:element minOccurs="0" name="loadAnalysis" type="loadAnalysisType"/>
@@ -10525,8 +10523,9 @@ marko.alder@dlr.de
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element minOccurs="0" name="trimCases" type="analysisTrimCasesType">
-                    </xsd:element>
+                    <xsd:element minOccurs="0" name="trim" type="trimType"/>
+                    <xsd:element minOccurs="0" name="flyingQualities" type="flyingQualitiesCasesType"/>
+                    <xsd:element minOccurs="0" name="flightPerformance" type="flightPerformanceCasesType"/>
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
@@ -11082,11 +11081,10 @@ marko.alder@dlr.de
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:element name="performanceCaseUID" type="stringUIDBaseType">
+                	<xsd:element name="name" type="stringBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
-                                UID of flight performance case
-                                description
+                                Name
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
@@ -11094,6 +11092,13 @@ marko.alder@dlr.de
                         <xsd:annotation>
                             <xsd:documentation>
                                 Description
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="flightPerformanceReqUID" type="stringUIDBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                UID of flight performance requirement
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
@@ -11127,7 +11132,7 @@ marko.alder@dlr.de
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:element maxOccurs="unbounded" name="performanceCase" type="flightPerformanceCaseType">
+                    <xsd:element maxOccurs="unbounded" name="flightPerformanceCase" type="flightPerformanceCaseType">
                     </xsd:element>
                 </xsd:sequence>
             </xsd:extension>
@@ -11196,29 +11201,6 @@ marko.alder@dlr.de
                                 take-off calculations optimized for min-imum safety speed V2min.
                             </xsd:documentation>
                         </xsd:annotation>
-                    </xsd:element>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="flightPerformanceType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Flight performance</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para/>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element minOccurs="0" name="performanceCases" type="flightPerformanceCasesType">
                     </xsd:element>
                 </xsd:all>
             </xsd:extension>
@@ -11462,7 +11444,7 @@ marko.alder@dlr.de
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="flyingQualitiesType">
+    <xsd:complexType name="flyingQualitiesCasesType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
@@ -11470,7 +11452,8 @@ marko.alder@dlr.de
                         <ddue:para>Flying qualities</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para/>
+                        <ddue:para>Provides a list of flying qualities cases
+                        </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -11478,19 +11461,19 @@ marko.alder@dlr.de
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:element maxOccurs="unbounded" name="fqCase" type="fqCaseType">
+                    <xsd:element maxOccurs="unbounded" name="flyingQualitiesCase" type="flyingQualitiesCaseType">
                     </xsd:element>
                 </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="fqCaseType">
+    <xsd:complexType name="flyingQualitiesCaseType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>fqCaseType</ddue:para>
+                        <ddue:para>Flying qualities case</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para/>
@@ -11501,6 +11484,16 @@ marko.alder@dlr.de
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
+                	<xsd:element name="name" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Name</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="description" minOccurs="0" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Description</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                     <xsd:element name="class" type="integerBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Aircraft Class; Class 1 small light aircraft;
@@ -33344,17 +33337,18 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:attribute name="uID" type="xsd:ID"/>
     </xsd:complexType>
 
-    <xsd:complexType name="analysisTrimCasesType">
+    <xsd:complexType name="trimType">
     	<xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
                         <ddue:para>
-                            Trim cases
+                            Trim
                         </ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para/>
+                        <ddue:para>Provides a list of trim cases
+                        </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -33362,14 +33356,14 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:element name="trimCase" type="analysisTrimCaseType" maxOccurs="unbounded" minOccurs="1">
+                    <xsd:element name="trimCase" type="trimCaseType" maxOccurs="unbounded" minOccurs="1">
                     </xsd:element>
                 </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="analysisTrimCaseType">
+    <xsd:complexType name="trimCaseType">
     	<xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
@@ -33392,14 +33386,14 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             <xsd:documentation>Name</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="description" type="stringBaseType">
+                    <xsd:element name="description" minOccurs="0" type="stringBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Description</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="trimCaseUID" type="stringUIDBaseType">
+                    <xsd:element name="trimReqUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of trim case</xsd:documentation>
+                            <xsd:documentation>UID of trim requirement</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element minOccurs="0" name="trimResult" type="flightDynamicsTrimResultType"/>
@@ -33410,6 +33404,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
+                <xsd:attribute name="uID" type="xsd:ID" use="required"/>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
