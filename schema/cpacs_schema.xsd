@@ -26306,6 +26306,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:element minOccurs="0" name="aircraft" type="aircraftType"/>
                     <xsd:element minOccurs="0" name="rotorcraft" type="rotorcraftType"/>
                     <xsd:element minOccurs="0" name="performanceCases" type="globalPerformanceCasesType"/>
+                    <xsd:element minOccurs="0" name="flightPoints" type="flightPointsType"/>
                     <xsd:element minOccurs="0" name="engines" type="enginesType"/>
                     <xsd:element minOccurs="0" name="profiles" type="profilesType"/>
                     <xsd:element minOccurs="0" name="structuralElements" type="structuralElementsType"/>
@@ -33326,17 +33327,17 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:documentation>Description</xsd:documentation>
                 </xsd:annotation>
             </xsd:element>
-            <xsd:element name="flightCaseUID" type="stringUIDBaseType">
+            <xsd:element name="flightPointUID" type="stringUIDBaseType">
                 <xsd:annotation>
-                    <xsd:documentation>UID of flight case description</xsd:documentation>
+                    <xsd:documentation>UID of a predefined flight point</xsd:documentation>
                 </xsd:annotation>
             </xsd:element>
-            <xsd:element name="weightAndBalanceUID" type="stringUIDBaseType">
+            <xsd:element name="weightAndBalanceUID" minOccurs="0" type="stringUIDBaseType">
                 <xsd:annotation>
                     <xsd:documentation>UID of weight and balance description</xsd:documentation>
                 </xsd:annotation>
             </xsd:element>
-            <xsd:element name="configurationUID" type="stringUIDBaseType">
+            <xsd:element name="configurationUID" minOccurs="0" type="stringUIDBaseType">
                 <xsd:annotation>
                     <xsd:documentation>UID of configuration description</xsd:documentation>
                 </xsd:annotation>
@@ -33541,6 +33542,81 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="flightPointsType">
+    	<xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Flight Cases</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                    	<ddue:content>
+                    		<ddue:para/>
+                    	</ddue:content>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="flightPoint" type="globalFlightPointType" maxOccurs="unbounded" minOccurs="1"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+	<xsd:complexType name="globalFlightPointType">
+    	<xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Flight point</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                    	<ddue:content>
+                    		<ddue:para/>
+                    	</ddue:content>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                	<xsd:element name="name" type="stringBaseType"/>
+                	<xsd:element name="description" type="stringBaseType" minOccurs="0"/>
+                    <xsd:element name="altitude" type="doubleBaseType"/>
+                    <xsd:choice>
+                    	<xsd:element name="machNumber" type="doubleBaseType">
+	                        <xsd:annotation>
+	                            <xsd:documentation>
+	                                Mach number
+	                            </xsd:documentation>
+	                        </xsd:annotation>
+	                    </xsd:element>
+                    	<xsd:element name="calibratedAirSpeed" type="doubleBaseType">
+	                        <xsd:annotation>
+	                            <xsd:documentation>
+	                                Calibrated air speed
+	                            </xsd:documentation>
+	                        </xsd:annotation>
+	                    </xsd:element>
+                    	<xsd:element name="trueAirSpeed" type="doubleBaseType">
+	                        <xsd:annotation>
+	                            <xsd:documentation>
+	                                True air speed
+	                            </xsd:documentation>
+	                        </xsd:annotation>
+	                    </xsd:element>
+                    </xsd:choice>
+                    <xsd:element name="environmentalConditions" type="environmentalConditionsType"/>
+                </xsd:sequence>
+                <xsd:attribute name="uID" type="xsd:ID" use="required"/>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
