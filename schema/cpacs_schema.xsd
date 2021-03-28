@@ -20804,7 +20804,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
-                <xsd:sequence>
+                <xsd:all>
                     <xsd:element name="name" type="stringBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Name of the performance case</xsd:documentation>
@@ -20833,20 +20833,19 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             <xsd:documentation>Reference to the considered weightAndBalance case</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:choice>
-	                    <xsd:element name="missionUID" type="stringUIDBaseType">
-	                        <xsd:annotation>
-	                            <xsd:documentation>The UID of the mission to be flown</xsd:documentation>
-	                        </xsd:annotation>
-	                    </xsd:element>
-	                    <xsd:element name="pointPerformanceUID" type="stringUIDBaseType">
-	                        <xsd:annotation>
-	                            <xsd:documentation>Point performance uID constraining the mission</xsd:documentation>
-	                        </xsd:annotation>
-	                    </xsd:element>
-                    </xsd:choice>
+                    <xsd:element name="missionUID" minOccurs="0"  type="stringUIDBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>The UID of the mission to be flown</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="pointPerformanceUIDs" minOccurs="0" type="uIDSequenceType">
+                        <xsd:annotation>
+                            <xsd:documentation>List of point performance uIDs constraining the mission</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="configurations" minOccurs="0" type="flightPerformanceConfigurationsType"/>
                     <xsd:element minOccurs="0" name="performanceMaps" type="performanceMapSelectionType"/>
-                </xsd:sequence>
+                </xsd:all>
                 <xsd:attribute name="uID" type="xsd:ID" use="required"/>
             </xsd:extension>
         </xsd:complexContent>
@@ -33610,6 +33609,154 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:element name="environmentalConditions" type="environmentalConditionsType"/>
                 </xsd:sequence>
                 <xsd:attribute name="uID" type="xsd:ID" use="required"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="flightPerformanceConfigurationsType">
+    	<xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Configurations which apply for this flight performance requirement</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                    	<ddue:content>
+                    		<ddue:para/>
+                    	</ddue:content>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                	<xsd:element name="defaultConfigurationUID" minOccurs="0" type="stringUIDBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Default configuration uID
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                	<xsd:element name="specificConfigurationUIDs" minOccurs="0" type="specificConfigurationUIDsType"/>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="specificConfigurationUIDsType">
+    	<xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Specific configuration uIDs</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                    	<ddue:content>
+                    		<ddue:para/>
+                    	</ddue:content>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                	<xsd:element name="specificConfigurationsUID" maxOccurs="unbounded" type="specificConfigurationUIDType"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="specificConfigurationUIDType">
+    	<xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Connection between segments, pointPerformances and a configurationUID</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                    	<ddue:content>
+                    		<ddue:para/>
+                    	</ddue:content>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                	<xsd:element name="configurationUID" type="stringUIDBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Configuration uID
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                	<xsd:element name="segments" type="specificConfigurationSegmentsType"/>
+                	<xsd:element name="pointPerformanceUIDs" minOccurs="0" type="uIDSequenceType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                List of pointPerformanceUIDs
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="specificConfigurationSegmentsType">
+    	<xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Segments</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                    	<ddue:content>
+                    		<ddue:para/>
+                    	</ddue:content>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                	<xsd:element name="segment" maxOccurs="unbounded" type="specificConfigurationSegmentType"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="specificConfigurationSegmentType">
+    	<xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Specification of a segment uID and index of the parameter lapses</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                    	<ddue:content>
+                    		<ddue:para/>
+                    	</ddue:content>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                	<xsd:element name="uID" type="stringUIDBaseType"/>
+                	<xsd:element name="indexIDs" minOccurs="0" type="posIntVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Vector with semicolon separated indices of the parameters within a segment. If not given then the complete segment is applied.
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
