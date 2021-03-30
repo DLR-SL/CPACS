@@ -30109,12 +30109,25 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         <ddue:para>Aerodynamic limitations</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>This map explicitly specifies limitations of a vehicle in terms of angles of attack and sideslip angles.
-                        All vectors, i.e. <ddue:legacyItalic>altitude</ddue:legacyItalic>, <ddue:legacyItalic>machNumber</ddue:legacyItalic>,
-                            <ddue:legacyItalic>angleOfSideslip</ddue:legacyItalic> and <ddue:legacyItalic>angleOfAttack</ddue:legacyItalic>, must have the
-                        same length. To avoid redundancy with the <ddue:legacyItalic>aeroPerformanceMap</ddue:legacyItalic>, this type does not contain
-                        any aerodynamic coefficients.
-                        </ddue:para>
+                        <ddue:content>
+                            <ddue:para>This map explicitly specifies limitations of a vehicle in terms of angles of attack and sideslip angles.
+	                        All vectors, i.e. <ddue:legacyItalic>altitude</ddue:legacyItalic>, <ddue:legacyItalic>machNumber</ddue:legacyItalic>,
+	                        <ddue:legacyItalic>angleOfSideslip</ddue:legacyItalic> and <ddue:legacyItalic>angleOfAttack</ddue:legacyItalic>, must have the
+	                        same length. To avoid redundancy with the <ddue:legacyItalic>aeroPerformanceMap</ddue:legacyItalic>, this type does not contain
+	                        any aerodynamic coefficients.</ddue:para>
+	                        <ddue:para>Since <ddue:legacyItalic>angleOfSideslip</ddue:legacyItalic> and <ddue:legacyItalic>angleOfAttack</ddue:legacyItalic> 
+	                        are closely interdependent for a given <ddue:legacyItalic>machNumber</ddue:legacyItalic> and <ddue:legacyItalic>altitude</ddue:legacyItalic> 
+	                        combination, a positive and negative maximum <ddue:legacyItalic>angleOfAttack</ddue:legacyItalic> is defined for a given combination of 
+	                        <ddue:legacyItalic>machNumber</ddue:legacyItalic>, <ddue:legacyItalic>altitude</ddue:legacyItalic> and 
+	                        <ddue:legacyItalic>angleOfSideslip</ddue:legacyItalic>. The limits of <ddue:legacyItalic>angleOfSideslip</ddue:legacyItalic> 
+	                        can be determined by evaluating the nominal decrease of <ddue:legacyItalic>angleOfAttack</ddue:legacyItalic> values or by
+	                        agreeint with the data supplier that the minimum and maximum value of the <ddue:legacyItalic>angleOfSideslip</ddue:legacyItalic>
+	                        vector corresponds with physical limits.</ddue:para>
+	                        <ddue:para>In order to avoid data redundancy, the operational limits should not reflect the extrema of aerodynamic 
+	                        coefficients as these can be extracted from the performanceMap via interpolation.</ddue:para>
+	                        <ddue:para><ddue:legacyBold>Note:</ddue:legacyBold> In future CPACS versions, a revision of the <ddue:legacyItalic>aeroLimitsMap</ddue:legacyItalic> 
+	                        will be targeted, since operational limits are not a purely aerodynamic issue.</ddue:para>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -30135,6 +30148,14 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         <xsd:annotation>
                             <xsd:documentation>
                                 Mach number
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="angleOfSideslip"
+                        type="doubleVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Angle of sideslip
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
@@ -30423,18 +30444,6 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element name="angleOfSideslipMin"
-                        type="doubleVectorBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Minimum angle of sideslip defining the operation limit. Must be a vector of the same length as angleOfAttack, machNumber and altitude. [deg]</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="angleOfSideslipMax"
-                        type="doubleVectorBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Maximum angle of sideslip defining the operation limit. Must be a vector of the same length as angleOfAttack, machNumber and altitude. [deg]</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
                     <xsd:element name="angleOfAttackMin"
                         type="doubleVectorBaseType">
                         <xsd:annotation>
@@ -30469,18 +30478,6 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element name="deltaAngleOfSideslipMin"
-                        type="doubleArrayBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Minimum delta angle of sideslip [deg]</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="deltaAngleOfSideslipMax"
-                        type="doubleArrayBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Maximum delta angle of sideslip [deg]</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
                     <xsd:element name="deltaAngleOfAttackMin"
                         type="doubleArrayBaseType">
                         <xsd:annotation>
