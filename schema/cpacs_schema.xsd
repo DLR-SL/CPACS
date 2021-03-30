@@ -31465,26 +31465,39 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         <ddue:para>Aerodynamic coefficients breakdown</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>
-                            Breakdown of the total aerodynamic coefficients into contributions
-                            from the various vehicle componenents. A detailed breakdown is only specified
-                            for the wing. Other components, such as the fuselage, are more generically
-                            referred to as <ddue:legacyItalic>otherComponents</ddue:legacyItalic>. Since
-                            the sum of the contributions within a breakdown must equal the total
-                            coefficients, the remaining contributions must be listed in
-                            <ddue:legacyItalic>remainingContributions</ddue:legacyItalic>.
-                        </ddue:para>
+                        <ddue:content>
+	                        <ddue:para>
+	                            Breakdown of the total aerodynamic coefficients into contributions
+	                            from the various vehicle componenents. A detailed breakdown is only specified
+	                            for the wing. Other components, such as the fuselage, are more generically
+	                            referred to as <ddue:legacyItalic>otherComponents</ddue:legacyItalic>. Since
+	                            the sum of the contributions within a breakdown must equal the total
+	                            coefficients, the remaining contributions must be listed in
+	                            <ddue:legacyItalic>remainingContributions</ddue:legacyItalic>.
+	                        </ddue:para>
+	                        <ddue:para>
+	                        	The <ddue:legacyItalic>remainingContributions</ddue:legacyItalic> cannot be defined alone. Either the 
+	                        	definition of a <ddue:legacyItalic>wing</ddue:legacyItalic>, <ddue:legacyItalic>otherComponents</ddue:legacyItalic> 
+	                        	or both together is valid and can be combined with <ddue:legacyItalic>remainingContributions</ddue:legacyItalic>.
+	                        </ddue:para>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="wings" type="coefficientsBreakdownWingsType" maxOccurs="1" minOccurs="0"/>
-                    <xsd:element name="otherComponents" type="coefficientsBreakdownComponentsType" maxOccurs="1" minOccurs="0"/>
-                    <xsd:element name="remainingContributions" type="remainingContributionsType" maxOccurs="1" minOccurs="0"/>
-                </xsd:all>
+                <xsd:choice>
+            		<xsd:sequence>
+            			<xsd:element name="wings" type="coefficientsBreakdownWingsType"/>
+				        <xsd:element name="otherComponents" minOccurs="0" type="coefficientsBreakdownComponentsType"/>
+                        <xsd:element name="remainingContributions" type="remainingContributionsType" minOccurs="0"/>
+                    </xsd:sequence>
+                    <xsd:sequence>
+            			<xsd:element name="otherComponents" type="coefficientsBreakdownComponentsType"/>
+            		    <xsd:element name="remainingContributions" type="remainingContributionsType" minOccurs="0"/>
+            		</xsd:sequence>
+            	</xsd:choice>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -31521,16 +31534,24 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         <ddue:para>Aerodynamic contributions of a wing</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>
-                            Describes the contributions of a specific wing to the total aerodynamic coefficients of a vehicle
-                        </ddue:para>
+                    	<ddue:content>
+                    	    <ddue:para>
+                                Describes the contributions of a specific wing to the total aerodynamic coefficients of a vehicle
+                            </ddue:para>
+                            <ddue:para>
+                            	It is obligatory to reference a wing via its <ddue:legacyItalic>uID</ddue:legacyItalic> and to provide its
+                            	<ddue:legacyItalic>coefficients</ddue:legacyItalic>. The breakdown of the coefficients comprises the <ddue:legacyItalic>segments</ddue:legacyItalic>
+                            	and <ddue:legacyItalic>remainingContributions</ddue:legacyItalic>. The latter must only be specified if <ddue:legacyItalic>segments</ddue:legacyItalic>
+                            	is given.
+                            </ddue:para>
+                    	</ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
-                <xsd:all>
+                <xsd:sequence>
                     <xsd:element name="wingUID" type="stringUIDBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
@@ -31539,9 +31560,11 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="coefficients" type="aeroCaseCoefficientsType"/>
-                    <xsd:element name="segments" type="coefficientsBreakdownWingSegmentsType" maxOccurs="1" minOccurs="0"/>
-                    <xsd:element name="remainingContributions" type="remainingContributionsType" maxOccurs="1" minOccurs="0"/>
-                </xsd:all>
+                    <xsd:sequence minOccurs="0">
+                    	<xsd:element name="segments" type="coefficientsBreakdownWingSegmentsType"/>
+                    	<xsd:element name="remainingContributions" type="remainingContributionsType" maxOccurs="1" minOccurs="0"/>
+                    </xsd:sequence>
+                </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -31578,9 +31601,17 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         <ddue:para>Aerodynamic contributions of a wing segment</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>
-                            Describes the contributions of a specific wing segment to the total aerodynamic coefficients of a wing
-                        </ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                Describes the contributions of a specific wing segment to the total aerodynamic coefficients of a wing
+                            </ddue:para>
+                            <ddue:para>
+                            	It is obligatory to reference a segment via its <ddue:legacyItalic>uID</ddue:legacyItalic> and to provide its
+                            	<ddue:legacyItalic>coefficients</ddue:legacyItalic>. The breakdown of the coefficients comprises the <ddue:legacyItalic>strips</ddue:legacyItalic>
+                            	and <ddue:legacyItalic>remainingContributions</ddue:legacyItalic>. The latter must only be specified if <ddue:legacyItalic>strips</ddue:legacyItalic>
+                            	is given.
+                            </ddue:para>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -31596,8 +31627,10 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="coefficients" type="aeroCaseCoefficientsType"/>
-                    <xsd:element name="strips" type="coefficientsBreakdownStripsType" maxOccurs="1" minOccurs="0"/>
-                    <xsd:element name="remainingContributions" type="remainingContributionsType" maxOccurs="1" minOccurs="0"/>
+                    <xsd:sequence minOccurs="0">
+                        <xsd:element name="strips" type="coefficientsBreakdownStripsType"/>
+                        <xsd:element name="remainingContributions" type="remainingContributionsType" minOccurs="0"/>
+                    </xsd:sequence>
                 </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
@@ -31645,6 +31678,11 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         	Accordingly, only the <ddue:legacyBold>to</ddue:legacyBold>-border can be specified explicitly, while the <ddue:legacyBold>from</ddue:legacyBold>-border equals implicitly either <ddue:legacyItalic>0</ddue:legacyItalic>
                         	(for the first strip) or the <ddue:legacyItalic>toSegmentEta</ddue:legacyItalic> value of the previous element. 
                         </ddue:para>
+                        <ddue:para>
+                           	It is obligatory to provide the <ddue:legacyItalic>coefficients</ddue:legacyItalic> of the <ddue:legacyItalic>strip</ddue:legacyItalic>. The breakdown comprises the <ddue:legacyItalic>chordwiseParts</ddue:legacyItalic>
+                           	and <ddue:legacyItalic>remainingContributions</ddue:legacyItalic>. The latter must only be specified if <ddue:legacyItalic>chordwiseParts</ddue:legacyItalic>
+                           	is given.
+                        </ddue:para>
                     </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -31652,7 +31690,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
-                <xsd:all>
+                <xsd:sequence>
                     <xsd:element name="toSegmentEta" type="doubleBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
@@ -31662,9 +31700,11 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     </xsd:element>
                     <xsd:element name="coefficients" type="aeroCaseCoefficientsType"/>
                     <xsd:element name="reference" type="coefficientReferenceType"/>
-                    <xsd:element name="chordwiseParts" type="chordwisePartsType" maxOccurs="1" minOccurs="0"/>
-                    <xsd:element name="remainingContributions" type="remainingContributionsType" maxOccurs="1" minOccurs="0"/>
-                </xsd:all>
+                    <xsd:sequence minOccurs="0">
+                        <xsd:element name="chordwiseParts" type="chordwisePartsType"/>
+                        <xsd:element name="remainingContributions" type="remainingContributionsType" minOccurs="0"/>
+                    </xsd:sequence>
+                </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -31794,6 +31834,23 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                                 Description
                             </xsd:documentation>
                         </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="type" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>Type (numerical/unspecified): "numerical", for example, describes rounding errors to clearly 
+                            separate them from other effects currently labeld as "unspecified".
+                            The latter usually summarizes physical effects such as viscosity and should be further described via "description".
+                            The approach is currently being tested in practice in order to derive a robust definition of categories in the future.
+                            </xsd:documentation>
+                        </xsd:annotation>
+                        <xsd:complexType>
+                            <xsd:simpleContent>
+                                <xsd:restriction base="stringBaseType">
+                                    <xsd:enumeration value="numerical" />
+                                    <xsd:enumeration value="unspecified" />
+                                </xsd:restriction>
+                            </xsd:simpleContent>
+                        </xsd:complexType>
                     </xsd:element>
                     <xsd:element name="coefficients" type="aeroCaseCoefficientsType"/>
                 </xsd:all>      
