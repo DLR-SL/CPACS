@@ -58,7 +58,12 @@ First loose collection:
 - Always use SI and accepted derived units
 - Use the CPACS coordinate system for describing data (Do not introduce new coordinate systems if not absolutely neccessary)
 
+### Naming conventions
 
+- **..Point**: a fixed point in a finite parameter space; usually in spatial dimensions (e.g., `hingePoint`) or limited flight parameters (e.g., `flightPoint` comprising altitude and velocity). 
+- **..Case**: used to describe combinations of complex parameter combinations such as analysis inputs/outputs (e.g., `loadCase`, `aeroCase`, `flyingQualityCase`...)
+- **..State**/**..CaseDefinition**: can be used within a *case* description to enrich a *point* with more complex, individual information (e.g., `aeroCase/state`)
+- **..Requirement**: used for requirements, but can be reduced to **req** to avoid very long element names
 
 
 ## Additional Development Guidelines by Example
