@@ -5926,8 +5926,20 @@ marko.alder@dlr.de
                         <ddue:para>controlDistributorType</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>single controlDistributor bundling several
+                        <ddue:content>
+                            <ddue:para>single controlDistributor bundling several
                             controlElements</ddue:para>
+                            <ddue:para>Within some analyses, it might occur that overlapping control element settings are specified. In this case, 
+                                it is assumed that a cumulative setting is built by summing up the individual settings. As the behavior of these settings 
+                                is not necessarily linear, a certain order of summation has to be followed:</ddue:para>
+                            <ddue:list class="bullet">
+                                <ddue:listItem>The  command inputs for each <ddue:legacyItalic>controlDistributor</ddue:legacyItalic>, coming from the <ddue:legacyItalic>configurationUID</ddue:legacyItalic>, as well as from separate settings have to be summed up to a total <ddue:legacyItalic>commandInput</ddue:legacyItalic>.</ddue:listItem>
+                                <ddue:listItem>With this total <ddue:legacyItalic>commandInput</ddue:legacyItalic>, each corresponding <ddue:legacyItalic>controlDistributor</ddue:legacyItalic> definition has to be evaluated, in order to get <ddue:legacyItalic>controlParameter</ddue:legacyItalic> settings for a number of <ddue:legacyItalic>controlDevices</ddue:legacyItalic>.</ddue:listItem>
+                                <ddue:listItem>All <ddue:legacyItalic>controlParameter</ddue:legacyItalic> settings for a <ddue:legacyItalic>controlDevice</ddue:legacyItalic>, coming from the <ddue:legacyItalic>configurationUID</ddue:legacyItalic>, from the <ddue:legacyItalic>controlDistributors</ddue:legacyItalic> and from separate <ddue:legacyItalic>controlDevice</ddue:legacyItalic> settings have to be summed up to get a total <ddue:legacyItalic>controlParameter</ddue:legacyItalic> for each controlDevice.</ddue:listItem>
+                                <ddue:listItem>With this total <ddue:legacyItalic>controlParameter</ddue:legacyItalic>, each corresponding <ddue:legacyItalic>controlDevice</ddue:legacyItalic> definition has to be evaluated, in order to find out what the control device finally is doing.</ddue:listItem>
+                                <ddue:listItem>During the summation process (depending on the order of processing within step 1 to 4), <ddue:legacyItalic>commandInputs</ddue:legacyItalic> or <ddue:legacyItalic>controlParameters</ddue:legacyItalic> might exceed the specified limits for that <ddue:legacyItalic>controlDistributor</ddue:legacyItalic> or <ddue:legacyItalic>controlDevices</ddue:legacyItalic>. As an intermediate result, this should be accepted – however, when it comes to evaluation in step 2 and 4, all <ddue:legacyItalic>commandInputs</ddue:legacyItalic> and <ddue:legacyItalic>controlParameters</ddue:legacyItalic> have to be within the specified limits.</ddue:listItem>
+                            </ddue:list>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -29702,10 +29714,17 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         <ddue:para>Aerodynamic map</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>
-                            The aeroMap contains aerodynamic coefficients and derivatives for a specific set of aerodynamic
-                            and configurative boundary conditions.
-                        </ddue:para>
+                    	<ddue:content>
+                    	    <ddue:para>
+	                            The aeroMap contains aerodynamic coefficients and derivatives for a specific set of aerodynamic
+	                            and configurative boundary conditions.
+	                        </ddue:para>
+	                        <ddue:para>The <ddue:legacyItalic>aeroMap</ddue:legacyItalic> allows for the simultaneous specification of multiple 
+	                            <ddue:legacyItalic>controlDevice</ddue:legacyItalic> settings. 
+	                            In this case, it is assumed that a cumulative setting is built by summing up the individual settings. The correct
+	                            sequence of this summation is described in the <ddue:legacyItalic>controlDistributorType</ddue:legacyItalic> documentation. 
+	                        </ddue:para>
+                    	</ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
