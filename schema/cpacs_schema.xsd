@@ -10645,7 +10645,7 @@ marko.alder@dlr.de
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="loadCaseDefinition" type="loadCaseDefinitionType"/>
+                    <xsd:element name="specification" type="loadCaseSpecificationType"/>
                     <xsd:element name="loads" type="flightLoadsType" minOccurs="0" maxOccurs="1"/>
                 </xsd:all>
                 <xsd:attribute name="uID" type="xsd:ID" use="required"/>
@@ -10653,12 +10653,12 @@ marko.alder@dlr.de
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="loadCaseDefinitionType">
+    <xsd:complexType name="loadCaseSpecificationType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Load case definition</ddue:para>
+                        <ddue:para>Load case specification</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>Input values defining a load case</ddue:para>
@@ -10676,13 +10676,14 @@ marko.alder@dlr.de
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="configurationUID" type="stringUIDBaseType" minOccurs="0" maxOccurs="1">
+                    <!--xsd:element name="configurationUID" type="stringUIDBaseType" minOccurs="0" maxOccurs="1">
                         <xsd:annotation>
                             <xsd:documentation>
                                 UID referencing the aircraft configuration (aircraft/model/configurations/configuration)
                             </xsd:documentation>
                         </xsd:annotation>
-                    </xsd:element>
+                    </xsd:element-->
+                    <xsd:element name="configuration" type="configurationType" minOccurs="0"/>
                     <xsd:element name="controllerDescription" type="stringBaseType" maxOccurs="1" minOccurs="0">
                         <xsd:annotation>
                             <xsd:documentation>
@@ -10690,7 +10691,28 @@ marko.alder@dlr.de
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="flightPoint" type="loadCaseFlightPointType"/>
+                    <!-- xsd:element name="flightPoint" type="loadCaseFlightPointType"/-->
+                    <xsd:element name="environment" type="environmentType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Environment
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="altitude" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Altitude above sea level
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="machNumber" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Mach number
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                     <xsd:element name="loadCaseSuperposition" type="loadCaseSuperpositionType" minOccurs="0"/>
                     <xsd:element name="loadConditions" type="flightLoadConditionsType"/>
                     <xsd:element name="weightAndBalanceUID" type="stringUIDBaseType">
@@ -31167,13 +31189,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     </xsd:documentation>
                 </xsd:annotation>
             </xsd:element>
-            <xsd:element name="configuration" type="configurationType" minOccurs="0">
-                <xsd:annotation>
-                    <xsd:documentation>
-                        Configuration settings
-                    </xsd:documentation>
-                </xsd:annotation>
-            </xsd:element>
+            <xsd:element name="configuration" type="configurationType" minOccurs="0"/>
             <xsd:element name="weightAndBalanceUID" type="stringUIDBaseType" maxOccurs="1" minOccurs="0">
                 <xsd:annotation>
                     <xsd:documentation>
