@@ -51,12 +51,6 @@ TODO
 
 
 ## Development Guidelines
-We will try to find/define some guidelines for decisions on how to structure CPACS.
-
-First loose collection:
-
-- Always use SI and accepted derived units
-- Use the CPACS coordinate system for describing data (Do not introduce new coordinate systems if not absolutely neccessary)
 
 ### Redundancy
 What do we mean by *redundancy*? Is the repeated specification of data such as `cpacs/vehicles/flightPoints/flightPoint` (atmosphere, altitude, velocity) critical if it would be included in an analysis node itself? A set of velocity/altitude itself is not a property dedicated to a specific `aircraft`/`rotorcraft` per se, thus making it a vehicle independent information would be reasonable. Therefore, (1st) the information could theoretically be outsourced to higher hierarchy levels (`cpacs` or `cpacs/vehicles`) and (2nd) a multiple specification of this information does not fall within the scope of data redundancy. Although the above example fulfills both requirements, should we always split the data into different hierarchical levels? To guide these decisions the following development guidelines should be applied: 
@@ -92,6 +86,10 @@ Furthermore, we should avoid using mathematical symbols or abbreviations as thei
 
 - **§5: Element names should be descriptive avoiding abbreviations or mathematical symbols if possible.**
 
+### Units and coordinate systems
+
+- **§6: Always use SI and accepted derived units.***
+- **§7: Use the CPACS coordinate system for describing data (do not introduce new coordinate systems if not absolutely neccessary).**
 
 ### Development Guidelines by Example
 
