@@ -31677,15 +31677,16 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         </ddue:para>
                         <ddue:para>
                         	The strip extends spatially between two <ddue:legacyItalic>eta</ddue:legacyItalic> coordinates (i.e., <ddue:legacyBold>from</ddue:legacyBold> an inner border <ddue:legacyBold>to</ddue:legacyBold> an outer border).
-                        	In order to avoid redundancy, the outer border (denoted by <ddue:legacyBold>to</ddue:legacyBold>) is always identical to the inner border of the subsequent strip (denoted by <ddue:legacyBold>from</ddue:legacyBold>).
-                        	Accordingly, only the <ddue:legacyBold>to</ddue:legacyBold>-border can be specified explicitly, while the <ddue:legacyBold>from</ddue:legacyBold>-border equals implicitly either <ddue:legacyItalic>0</ddue:legacyItalic>
+                        	In order to avoid redundancy, the inner border (denoted as <ddue:legacyBold>from</ddue:legacyBold>) is always identical to the outer border of the previous strip (denoted by <ddue:legacyBold>to</ddue:legacyBold>).
+                        	Accordingly, only the <ddue:legacyBold>to</ddue:legacyBold>-border can be specified explicitly, while the <ddue:legacyBold>from</ddue:legacyBold>-border equals implicitly either to <ddue:legacyItalic>0</ddue:legacyItalic>
                             (for the first strip) or the <ddue:legacyItalic>toSegmentEta</ddue:legacyItalic> value of the previous element. The <ddue:legacyItalic>toSegmentEta</ddue:legacyItalic> of the last <ddue:legacyItalic>strip</ddue:legacyItalic> 
                             must be equal to 1!
                         </ddue:para>
                         <ddue:para>
                            	It is obligatory to provide the <ddue:legacyItalic>coefficients</ddue:legacyItalic> of the <ddue:legacyItalic>strip</ddue:legacyItalic>. The breakdown comprises the <ddue:legacyItalic>chordwiseParts</ddue:legacyItalic>
-                           	and <ddue:legacyItalic>remainingContributions</ddue:legacyItalic>. The latter must only be specified if <ddue:legacyItalic>chordwiseParts</ddue:legacyItalic>
-                           	is given.
+                           	and <ddue:legacyItalic>remainingContributions</ddue:legacyItalic>. The latter must only be specified if the breakdown into <ddue:legacyItalic>chordwiseParts</ddue:legacyItalic>
+                           	is given. This breakdown is optional. If it is specified, but the sum of all chordwiseParts does not match the strip coefficients, one or more <ddue:legacyItalic>remainingContributions</ddue:legacyItalic> may be applied
+                           	to ensure consistency (sum of all <ddue:legacyItalic>chordwiseParts</ddue:legacyItalic> + sum of all <ddue:legacyItalic>remainingContributions</ddue:legacyItalic> must be equal to total strip coefficients).
                         </ddue:para>
                     </ddue:content>
                     </ddue:remarks>
@@ -31750,8 +31751,10 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
 	                            Describes the contributions of a specific par within a wing segment to the total aerodynamic coefficients of a wing segment strip
 	                        </ddue:para>
 	                        <ddue:para>
-	                        	The <ddue:legacyItalic>chordwisePart</ddue:legacyItalic> extends spatially between the two <ddue:legacyItalic>eta</ddue:legacyItalic> positions of the parent strip (see <ddue:legacyItalic>strip</ddue:legacyItalic> documentation) as well as four <ddue:legacyItalic>xsi</ddue:legacyItalic> positions in the segment coordinate system.
-	                        	As with the parent stips, only the trailing border (<ddue:legacyItalic>..ToSegmentXsi</ddue:legacyItalic>) of a <ddue:legacyItalic>chordwisePart</ddue:legacyItalic> is defined, while the leading border always equals the trailing border of the preceding <ddue:legacyItalic>chordwisePart</ddue:legacyItalic>.
+	                        	A <ddue:legacyItalic>chordwisePart</ddue:legacyItalic> aescribes the contributions of a specific chordwise part within a wing <ddue:legacyItalic>strip</ddue:legacyItalic> 
+	                        	to the total aerodynamic coefficients of this <ddue:legacyItalic>strip</ddue:legacyItalic>. It extends spatially between the two <ddue:legacyItalic>eta</ddue:legacyItalic> 
+	                        	positions of the parent <ddue:legacyItalic>strip</ddue:legacyItalic> (see <ddue:legacyItalic>strip</ddue:legacyItalic> documentation) and four <ddue:legacyItalic>xsi</ddue:legacyItalic> positions in the segment coordinate system.
+	                        	As with the parent stips, only the trailing border (<ddue:legacyItalic>..ToSegmentXsi</ddue:legacyItalic>) of a <ddue:legacyItalic>chordwisePart</ddue:legacyItalic> is defined, while the leading border always equals the trailing border of the preceding <ddue:legacyItalic>chordwisePart</ddue:legacyItalic> (or <ddue:legacyItalic>0</ddue:legacyItalic> for the first part).
 	                        	To account for oblique trailing borders (e.g., to match the aileron on a tapered wing) two different <ddue:legacyItalic>toSegmentXsi</ddue:legacyItalic> positions can be defined, one at the inner border (<ddue:legacyItalic>innerBorderToSegmentXsi</ddue:legacyItalic>) and one at the outer border (<ddue:legacyItalic>innerBorderToSegmentXsi</ddue:legacyItalic>) of the parent strip.  
 	                            The <ddue:legacyItalic>innerBorderToSegmentXsi</ddue:legacyItalic> and <ddue:legacyItalic>outerBorderToSegmentXsi</ddue:legacyItalic> of the last <ddue:legacyItalic>chordwisePart</ddue:legacyItalic> must be equal to 1.
 	                        </ddue:para>
