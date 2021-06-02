@@ -24544,11 +24544,11 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>specificPerformanceMapType</ddue:para>
+                        <ddue:para>Specific performance map</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>Applying a specific performance map to selected mission segments</ddue:para>
+                            <ddue:para>Applying a specific performance map to selected mission segments. In addition to the obligatory <ddue:legacyItalic>defaultPerformanceMapUID</ddue:legacyItalic> at least a <ddue:legacyItalic>segmentUID</ddue:legacyItalic> or <ddue:legacyItalic>pointPerformanceUID</ddue:legacyItalic> must be given.</ddue:para>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -24556,23 +24556,32 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
-                <xsd:all>
+                <xsd:sequence>
                     <xsd:element name="performanceMapUID" type="stringUIDBaseType">
                         <xsd:annotation>
                             <xsd:documentation>UID of performance map to be used for mission segments</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element minOccurs="0" name="segmentUIDs" type="uIDSequenceType">
-                        <xsd:annotation>
-                            <xsd:documentation>List of all mission segment UIDs to which the performance map is to be applied</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element minOccurs="0" name="pointPerformanceUIDs" type="uIDSequenceType">
-                        <xsd:annotation>
-                            <xsd:documentation>List of point performance UIDs to which the  performance map is to be applied</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:all>
+                    <xsd:choice>
+                        <xsd:sequence>
+                            <xsd:element name="segmentUIDs" type="uIDSequenceType">
+		                        <xsd:annotation>
+		                            <xsd:documentation>List of all mission segment UIDs to which the performance map is to be applied</xsd:documentation>
+		                        </xsd:annotation>
+		                    </xsd:element>
+		                    <xsd:element minOccurs="0" name="pointPerformanceUIDs" type="uIDSequenceType">
+		                        <xsd:annotation>
+		                            <xsd:documentation>List of point performance UIDs to which the  performance map is to be applied</xsd:documentation>
+		                        </xsd:annotation>
+		                    </xsd:element>
+                        </xsd:sequence>
+	                    <xsd:element name="pointPerformanceUIDs" type="uIDSequenceType">
+	                        <xsd:annotation>
+	                            <xsd:documentation>List of point performance UIDs to which the  performance map is to be applied</xsd:documentation>
+	                        </xsd:annotation>
+	                    </xsd:element>
+                    </xsd:choice>
+                </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
