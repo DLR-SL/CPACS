@@ -1972,10 +1972,46 @@ marko.alder@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>pointConstraintType</ddue:para>
+                        <ddue:para>Point constraint</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>Point constraint type, containing an xyz data triplet.</ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element minOccurs="0" name="x" type="doubleConstraintBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>X-Component</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="y" type="doubleConstraintBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Y-Component</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="z" type="doubleConstraintBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Z-Component</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="pointConstraintXZObligatoryType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Point constraint</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>Point constraint type, containing an xyz data triplet with x and z being obligatory values.</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -1993,7 +2029,7 @@ marko.alder@dlr.de
                             <xsd:documentation>Y-Component</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element minOccurs="0" name="z" type="doubleConstraintBaseType">
+                    <xsd:element name="z" type="doubleConstraintBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Z-Component</xsd:documentation>
                         </xsd:annotation>
@@ -19783,7 +19819,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                                     </xsd:documentation>
                                 </xsd:annotation>
                                 <xsd:complexContent>
-                                    <xsd:extension base="pointConstraintType">
+                                    <xsd:extension base="pointConstraintXZObligatoryType">
                                         <xsd:attribute name="uID" type="xsd:ID"/>
                                     </xsd:extension>
                                 </xsd:complexContent>
