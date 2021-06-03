@@ -43,11 +43,11 @@ marko.alder@dlr.de
                             <ddue:definitionTable>
                                 <ddue:definedTerm>Version</ddue:definedTerm>
                                 <ddue:definition>
-                                    <ddue:para>V3.3-beta1</ddue:para>
+                                    <ddue:para>V3.3</ddue:para>
                                 </ddue:definition>
                                 <ddue:definedTerm>Date</ddue:definedTerm>
                                 <ddue:definition>
-                                    <ddue:para>2020-11-27</ddue:para>
+                                    <ddue:para>2020-06-03</ddue:para>
                                 </ddue:definition>
                             </ddue:definitionTable>
                             <ddue:section>
@@ -75,7 +75,17 @@ marko.alder@dlr.de
                                 </ddue:content>
                             </ddue:section>
                             <ddue:section>
-                                <ddue:title>2. Coordinate Systems</ddue:title>
+                            	<ddue:title>2. Data hierarchy</ddue:title>
+                            	<ddue:content>
+                            		<ddue:para>CPACS data is modeled in a hierarchical structure whose underlying concept follows a top-down description of a system-of-systems which decomposes a generic concept (e.g., an <ddue:legacyItalic>aircraft</ddue:legacyItalic> or <ddue:legacyItalic>rotorcraft</ddue:legacyItalic>)  into  a  more  detailed  description  of  its  components.  This originates from the conceptual and preliminary design of aircraft, where the level of detail is initially low and continues to increase as the design process progresses.</ddue:para>
+                            		<ddue:para>For some concepts within CPACS, however, a bottom-up approach is applied where the components are first defined in detail (sometimes referred to as <ddue:legacyItalic>library</ddue:legacyItalic>) and then linked within an instantiated higher-level concept. This is advantageous when used multiple times within complex systems, such as <ddue:legacyItalic>engines</ddue:legacyItalic>, which only have to be defined once in order to be referenced several times on the <ddue:legacyItalic>aircraft</ddue:legacyItalic>. The combination of these two methodologies is known as middle-out  approach  and  enables  the  goal  to  fully  parametrize aeronautical systems.</ddue:para>
+                            		<ddue:mediaLink>
+                                        <ddue:image xlink:href="dataHierarchy"/>
+                                    </ddue:mediaLink>
+                            	</ddue:content>
+                            </ddue:section>
+                            <ddue:section>
+                                <ddue:title>3. Coordinate Systems</ddue:title>
                                 <ddue:content>
                                     <ddue:para>Coordinate systems are a regular cause for ambiguous interpretation of data. In CPACS, the reference coordinate system is the CPACS-coordinate system. This coordinate system is used for most of the data. A single exception is made in order to keep aerodynamic data in an aerodynamic coordinate system. The following paragraphs outline the determination to known coordinate systems.</ddue:para>
                                     <ddue:para>The CPACS coordinate system is the coordinate system identified by TIGL, CPACS's geometric library. It is a right-handed coordinate system. If an aircraft is defined in the CPACS coordinate system it will usually follow the directions listed in the table below.</ddue:para>
@@ -130,7 +140,7 @@ marko.alder@dlr.de
                                 </ddue:content>
                             </ddue:section>
                             <ddue:section>
-                                <ddue:title>3. Units</ddue:title>
+                                <ddue:title>4. Units</ddue:title>
                                 <ddue:content>
                                     <ddue:para>There are no explicit attributes describing units in CPACS. The general convention is that all values must be given in the following SI-units:</ddue:para>
                                     <ddue:table>
@@ -189,7 +199,7 @@ marko.alder@dlr.de
                                 </ddue:content>
                             </ddue:section>
                             <ddue:section>
-                                <ddue:title>4. Splitting up a CPACS dataset into several files</ddue:title>
+                                <ddue:title>5. Splitting up a CPACS dataset into several files</ddue:title>
                                 <ddue:content>
                                     <ddue:para>To provide a better overview, it is possible to split up a <ddue:legacyItalic>CPACS</ddue:legacyItalic> dataset into several files. This can be done by inserting an <ddue:legacyBold>&lt;externaldata&gt;</ddue:legacyBold> node at an arbitrary position into the datatset. This node contains a <ddue:legacyBold>&lt;path&gt;</ddue:legacyBold> node with a URI to the external file(s), followed by one or more <ddue:legacyBold>&lt;filename&gt;</ddue:legacyBold> nodes, containing each a name of a file to be included at that position. Below, an example of such external data is given:</ddue:para>
                                     <ddue:code language="XML" title=" ">&lt;?xml version="1.0" encoding="utf-8"?&gt;
@@ -253,7 +263,7 @@ marko.alder@dlr.de
                                 </ddue:content>
                             </ddue:section>
                             <ddue:section>
-                                <ddue:title>5. UIDs and references</ddue:title>
+                                <ddue:title>6. UIDs and references</ddue:title>
                                 <ddue:content>
                                     <ddue:para>The <ddue:legacyItalic>CPACS</ddue:legacyItalic>-dataset often uses references between nodes. Typically, these
                                     references define connections between elements which are located somewhere else in the hierarchical dataset (e.g. a <ddue:legacyItalic>wing</ddue:legacyItalic> is connected to a
@@ -275,7 +285,7 @@ marko.alder@dlr.de
                                 </ddue:content>
                             </ddue:section>
                             <ddue:section>
-                                <ddue:title>6. Symmetry</ddue:title>
+                                <ddue:title>7. Symmetry</ddue:title>
                                 <ddue:content>
                                     <ddue:para>Sometimes it might be useful to specify a part of the aircraft as symmetric instead of holding all the data twice in nearly identical form in the dataset (e.g. left and right wing are usually identical, except for the sign of the y-coordinate). Hence, some parts offer the option to set a symmetry attribute for them, like:</ddue:para>
                                     <ddue:code language="XML" title=" ">&lt;wing symmetry="x-z-plane"&gt;...</ddue:code>
@@ -316,7 +326,7 @@ marko.alder@dlr.de
                                 </ddue:content>
                             </ddue:section>
                             <ddue:section>
-                                <ddue:title>7. Vectors and arrays</ddue:title>
+                                <ddue:title>8. Vectors and arrays</ddue:title>
                                 <ddue:content>
                                     <ddue:para>For large data sets (e.g. increments of aerodynamic coefficients due to control surface deflections) it is advantageous
                                     to map them via vectors and arrays instead of using a sequence of nodes for each data value. Therefore vectors and arrays are defined as semicolon-separated lists in <ddue:legacyItalic>CPACS</ddue:legacyItalic>. Via the documentation (derived from the XSD) of the corresponding nodes it has to be checked whether it is a vector or an array.
@@ -377,7 +387,7 @@ marko.alder@dlr.de
                                 </ddue:content>
                             </ddue:section>
                             <ddue:section>
-                                <ddue:title>8. Control Parameters</ddue:title>
+                                <ddue:title>9. Control Parameters</ddue:title>
                                 <ddue:content>
                                     <ddue:para>Control parameters are abstract parameters, linking a generic floating point value to a certain status of a control device
                                     (e.g. control surface, landing gear, suction system, brake parachute, ...). For control surfaces, such a data pair (control parameter
@@ -419,7 +429,7 @@ marko.alder@dlr.de
                                 </ddue:content>
                             </ddue:section>
                             <ddue:section>
-                                <ddue:title>9. Atmosphere</ddue:title>
+                                <ddue:title>10. Atmosphere</ddue:title>
                                 <ddue:content>
                                     <ddue:para>At some places in CPACS, an atmosphere has to be selected (e.g. for connecting an altitude with a certain pressure or density).
                                       Currently, CPACS does only support a single atmospheric model: The ICAO Standard Atmosphere (ISA) from 1993 (see ICAO Doc 7488/3 'MANUAL OF THE ICAO STANDARD ATMOSPHERE', third edition, 1993)
@@ -433,12 +443,13 @@ marko.alder@dlr.de
                                 </ddue:content>
                             </ddue:section>
                             <ddue:section>
-                                <ddue:title>CPACS 3.3-RC</ddue:title>
+                                <ddue:title>CPACS 3.3</ddue:title>
                                 <ddue:content>
-                                    <ddue:para>Release in April 2021</ddue:para>
+                                    <ddue:para>Release in June 2021</ddue:para>
                                     <ddue:list class="bullet">
                                         <ddue:listItem>Revision of the mission definition including parameter lapses within segments (<ddue:legacyBold>compatibility break</ddue:legacyBold>)</ddue:listItem>
                                         <ddue:listItem>Revision of the point performance definition (<ddue:legacyBold>compatibility break</ddue:legacyBold>)</ddue:listItem>
+                                        <ddue:listItem>Revision of performance requirements (<ddue:legacyBold>compatibility break</ddue:legacyBold>)</ddue:listItem>
                                         <ddue:listItem>Revision of landing gears (<ddue:legacyBold>compatibility break</ddue:legacyBold>)</ddue:listItem>
                                         <ddue:listItem>Revision of control surface tracks definition (<ddue:legacyBold>compatibility break</ddue:legacyBold>)</ddue:listItem>
                                         <ddue:listItem>Load analysis: Revision of flightLoadCasesType (<ddue:legacyBold>compatibility break</ddue:legacyBold>)</ddue:listItem>
@@ -452,7 +463,7 @@ marko.alder@dlr.de
                                         <ddue:listItem>Internal structure: Added standard profiles to profile based structural elements</ddue:listItem>
                                         <ddue:listItem>Internal structure: Added ribPosts element to wingRibCrossSectionType</ddue:listItem>
                                         <ddue:listItem>Internal structure: Upper and lowerCap now optional in sparCellType</ddue:listItem>
-                                        <ddue:listItem>Internal structure: Frames can be referenced at sections</ddue:listItem>
+                                        <ddue:listItem>Internal structure: Stringers and frames can reference sections </ddue:listItem>
                                         <ddue:listItem>MassBreakdown: Set mass inertia Jxy, Jxz and Jyz optional</ddue:listItem>
                                         <ddue:listItem>MassBreakdown: Added mMiscellaneous element</ddue:listItem>
                                         <ddue:listItem>MassBreakdown: Added fuselage walls</ddue:listItem>
@@ -464,6 +475,7 @@ marko.alder@dlr.de
                                         <ddue:listItem>AeroMaps: Added missing singular incrementMap element to incrementMaps in aeroLimitsMap (<ddue:legacyBold>compatibility break</ddue:legacyBold>)</ddue:listItem>
                                         <ddue:listItem>AeroMaps: Adopted the camelCase style for damping derivatives (<ddue:legacyBold>compatibility break</ddue:legacyBold>)</ddue:listItem>
                                         <ddue:listItem>Introduced common nomenclature for speeds and altitudes (<ddue:legacyBold>compatibility break</ddue:legacyBold>)</ddue:listItem>
+                                        <ddue:listItem>Control distributors are set to optional</ddue:listItem>
                                         <ddue:listItem>Added instructions for superposition of control surface deflections</ddue:listItem>
                                         <ddue:listItem>Further elaboration of development standards</ddue:listItem>
                                         <ddue:listItem>General improvements of the documentation</ddue:listItem>
@@ -1571,7 +1583,7 @@ marko.alder@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>transformationType</ddue:para>
+                        <ddue:para>Transformation</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>Transformation type, containing a set of
@@ -1629,7 +1641,7 @@ marko.alder@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>transformation2DType</ddue:para>
+                        <ddue:para>2D transformation</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para/>
@@ -1669,7 +1681,7 @@ marko.alder@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>pointType</ddue:para>
+                        <ddue:para>Point: x,y,z</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>Point type, containing an xyz data triplet.</ddue:para>
@@ -1706,7 +1718,7 @@ marko.alder@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>pointXType</ddue:para>
+                        <ddue:para>Point: x</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>Point type, containing a x data.</ddue:para>
@@ -1733,7 +1745,7 @@ marko.alder@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>pointYType</ddue:para>
+                        <ddue:para>Point: y</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>Point type, containing a y data.</ddue:para>
@@ -1760,7 +1772,7 @@ marko.alder@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>pointZType</ddue:para>
+                        <ddue:para>Point: z</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>Point type, containing a z data.</ddue:para>
@@ -1787,7 +1799,7 @@ marko.alder@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Data points in x-y-space.</ddue:para>
+                        <ddue:para>Point: x,y</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>Point type, containing an xy data doublet.</ddue:para>
@@ -1819,7 +1831,7 @@ marko.alder@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>pointXZType</ddue:para>
+                        <ddue:para>Point: x, z</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>Point type, containing an xz data doublet.</ddue:para>
@@ -1851,7 +1863,7 @@ marko.alder@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>pointYZType</ddue:para>
+                        <ddue:para>Point: y, z</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>Point type, containing an yz data doublet.</ddue:para>
@@ -1883,10 +1895,10 @@ marko.alder@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>pointXYZType</ddue:para>
+                        <ddue:para>Point: x,y,z</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Point type, containing an xyz data triplet.</ddue:para>
+                        <ddue:para>Point type, containing an obligatory xyz data triplet.</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -1920,7 +1932,7 @@ marko.alder@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>pointAbsRelType</ddue:para>
+                        <ddue:para>Point with global/local reference</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>PointAbsRel type, containing an xyz data triplet. Each
@@ -1970,7 +1982,7 @@ marko.alder@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>pointConstraintType</ddue:para>
+                        <ddue:para>Point with constraints</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>Point constraint type, containing an xyz data triplet.</ddue:para>
@@ -2062,7 +2074,7 @@ marko.alder@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>pointListType</ddue:para>
+                        <ddue:para>List of points</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>PointList type, containing an ordered list of points
@@ -2089,7 +2101,7 @@ marko.alder@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Points, only x and y.</ddue:para>
+                        <ddue:para>List of points in x,y</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>PointList type, containing an ordered list of points
@@ -2290,7 +2302,7 @@ marko.alder@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>etaXsiPointType</ddue:para>
+                        <ddue:para>Point in eta and xsi coordinates</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>Point described by eta-xsi coordinates.
@@ -2330,7 +2342,7 @@ marko.alder@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>etaXsiRelHeightPointType</ddue:para>
+                        <ddue:para>Relative height at eta, xsi position</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>Point described by eta-xsi and a relative height coordinate.
@@ -2390,6 +2402,15 @@ marko.alder@dlr.de
     </xsd:complexType>
 
     <xsd:complexType name="uIDSequenceType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>List of uIDs</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
@@ -2466,7 +2487,7 @@ marko.alder@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>actuatorAttachmentType</ddue:para>
+                        <ddue:para>Actuator attachment</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para/>
@@ -5716,7 +5737,7 @@ marko.alder@dlr.de
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="continuity">
+                    <xsd:element minOccurs="0" name="continuity">
                         <xsd:annotation>
                             <xsd:documentation>Defines how to interpret the parameter lapses within the segment: discrete steps (C0 continuity) or linear interpolation (C1 continuity)
                             </xsd:documentation>
@@ -18225,12 +18246,12 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="massFractionType">
+    <xsd:complexType name="fuelMassFractionType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>massFractionType</ddue:para>
+                        <ddue:para>Fuel Mass Fraction</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>Describing the mass fraction considered for a mission segment sequence</ddue:para>
@@ -19687,9 +19708,9 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
+                	<xsd:element name="missions" type="missionsType"/>
+                	<xsd:element name="segmentBlocks" type="missionSegmentBlocksType"/>
                     <xsd:element name="segments" type="missionSegmentsType"/>
-                    <xsd:element name="missions" type="missionsType"/>
-                    <xsd:element name="segmentBlocks" type="missionSegmentBlocksType"/>
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
@@ -19744,34 +19765,36 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:element name="calibratedAirSpeed" minOccurs="0">
-                        <xsd:complexType>
-                            <xsd:annotation>
-                                <xsd:documentation>
-                                    Calibrated airspeed [m/s]
-                                </xsd:documentation>
-                            </xsd:annotation>
-                            <xsd:complexContent>
-                                <xsd:extension base="doubleConstraintBaseType">
-                                    <xsd:attribute name="uID" type="xsd:ID"/>
-                                </xsd:extension>
-                            </xsd:complexContent>
-                        </xsd:complexType>
-                    </xsd:element>
-                    <xsd:element name="machNumber" minOccurs="0">
-                        <xsd:complexType>
-                            <xsd:annotation>
-                                <xsd:documentation>
-                                    Mach number
-                                </xsd:documentation>
-                            </xsd:annotation>
-                            <xsd:complexContent>
-                                <xsd:extension base="doubleConstraintBaseType">
-                                    <xsd:attribute name="uID" type="xsd:ID"/>
-                                </xsd:extension>
-                            </xsd:complexContent>
-                        </xsd:complexType>
-                    </xsd:element>
+                    <xsd:choice minOccurs="0">
+                        <xsd:element name="calibratedAirSpeed">
+	                        <xsd:complexType>
+	                            <xsd:annotation>
+	                                <xsd:documentation>
+	                                    Calibrated airspeed [m/s]
+	                                </xsd:documentation>
+	                            </xsd:annotation>
+	                            <xsd:complexContent>
+	                                <xsd:extension base="doubleConstraintBaseType">
+	                                    <xsd:attribute name="uID" type="xsd:ID"/>
+	                                </xsd:extension>
+	                            </xsd:complexContent>
+	                        </xsd:complexType>
+	                    </xsd:element>
+	                    <xsd:element name="machNumber">
+	                        <xsd:complexType>
+	                            <xsd:annotation>
+	                                <xsd:documentation>
+	                                    Mach number
+	                                </xsd:documentation>
+	                            </xsd:annotation>
+	                            <xsd:complexContent>
+	                                <xsd:extension base="doubleConstraintBaseType">
+	                                    <xsd:attribute name="uID" type="xsd:ID"/>
+	                                </xsd:extension>
+	                            </xsd:complexContent>
+	                        </xsd:complexType>
+	                    </xsd:element>
+                    </xsd:choice>
                     <xsd:choice minOccurs="0">
                         <xsd:element name="positionXYZ">
                             <xsd:complexType>
@@ -19922,7 +19945,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                                 </xsd:documentation>
                             </xsd:annotation>
                             <xsd:complexContent>
-                                <xsd:extension base="pointConstraintType">
+                                <xsd:extension base="doubleConstraintBaseType">
                                     <xsd:attribute name="uID" type="xsd:ID"/>
                                 </xsd:extension>
                             </xsd:complexContent>
@@ -19933,7 +19956,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             <xsd:complexType>
                                 <xsd:annotation>
                                     <xsd:documentation>
-                                        Duration of the segment [s]
+                                        Duration of the segment [hh:mm:ss]
                                     </xsd:documentation>
                                 </xsd:annotation>
                                 <xsd:complexContent>
@@ -20001,6 +20024,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             </xsd:complexContent>
                         </xsd:complexType>
                     </xsd:element>
+                    <xsd:element name="releasedStores" minOccurs="0" type="releasedStoresType"/>
                 </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
@@ -20172,10 +20196,20 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                                     <xsd:enumeration value="holding"/>
                                     <xsd:enumeration value="storeRelease"/>
                                     <xsd:enumeration value="taxi"/>
+                                    <xsd:enumeration value="warmUp"/>
+                                    <xsd:enumeration value="loiter"/>
+                                    <xsd:enumeration value="massFraction"/>
+                                    <xsd:enumeration value="mass"/>
                                     <xsd:enumeration value="other"/>
                                 </xsd:restriction>
                             </xsd:simpleContent>
                         </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="creditDistance" minOccurs="0" type="booleanBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Indication whether the distance flown during the segment is to be taken into account in the segmentBlock's distance calculation.
+                            </xsd:documentation>
+                        </xsd:annotation>
                     </xsd:element>
                     <xsd:element minOccurs="0" name="environment" type="environmentType">
                         <xsd:annotation>
@@ -20185,17 +20219,13 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:choice>
-                        <xsd:element name="mass" type="doubleBaseType">
+                    <xsd:choice minOccurs="0">
+                        <xsd:element name="fuelMass" type="doubleBaseType">
                             <xsd:annotation>
                                 <xsd:documentation>Fuel mass</xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
-                        <xsd:element name="massFraction" type="massFractionType">
-                            <xsd:annotation>
-                                <xsd:documentation>Fuel mass fraction</xsd:documentation>
-                            </xsd:annotation>
-                        </xsd:element>
+                        <xsd:element name="fuelMassFraction" type="fuelMassFractionType"/>
                         <xsd:sequence>
                             <xsd:element name="endCondition" type="missionSegmentEndConditionType"/>
                             <xsd:element minOccurs="0" name="constraints" type="constraintsType"/>
@@ -20280,7 +20310,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         </xsd:element>
                     </xsd:choice>
                     <xsd:choice>
-                        <xsd:element name="positionXYZ" type="pointType">
+                        <xsd:element name="positionXYZ" type="pointXYZType">
                             <xsd:annotation>
                                 <xsd:documentation>Global coordinate at the start of the mission in xyz coordinates</xsd:documentation>
                             </xsd:annotation>
@@ -20806,7 +20836,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="flightPerformanceReqsType">
+    <xsd:complexType name="flightPerformanceRequirementsType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
@@ -20823,13 +20853,13 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:element maxOccurs="unbounded" minOccurs="1" name="flightPerformanceReq" type="flightPerformanceReqType"/>
+                    <xsd:element maxOccurs="unbounded" minOccurs="1" name="flightPerformanceRequirement" type="flightPerformanceRequirementType"/>
                 </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="flightPerformanceReqType">
+    <xsd:complexType name="flightPerformanceRequirementType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
@@ -20885,7 +20915,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             <xsd:documentation>List of point performance uIDs constraining the mission</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="configurations" minOccurs="0" type="flightPerformanceConfigurationsType"/>
+                    <xsd:element name="configurations" minOccurs="0" type="performanceRequirementConfigurationsType"/>
                     <xsd:element minOccurs="0" name="performanceMaps" type="performanceMapSelectionType"/>
                 </xsd:all>
                 <xsd:attribute name="uID" type="xsd:ID" use="required"/>
@@ -20939,9 +20969,9 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                 <xsd:all>
                     <!-- xsd:element name="requiredPerformanceCases" type="uIDSequenceType"/  -->
                     <!-- xsd:element minOccurs="0" name="optionalPerformanceCases" type="uIDSequenceType"/  -->
-                    <xsd:element minOccurs="0" name="flightPerformanceReqs" type="flightPerformanceReqsType"/>
-                    <xsd:element minOccurs="0" name="controllabilityReqs" type="controllabilityReqsType"/>
-                    <xsd:element minOccurs="0" name="trimReqs" type="trimReqsType"/>
+                    <xsd:element minOccurs="0" name="flightPerformanceRequirements" type="flightPerformanceRequirementsType"/>
+                    <xsd:element minOccurs="0" name="controllabilityRequirements" type="controllabilityReqsType"/>
+                    <xsd:element minOccurs="0" name="trimRequirements" type="trimRequirementsType"/>
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
@@ -21159,6 +21189,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                                     <xsd:enumeration value="instantaneous turn" />
                                     <xsd:enumeration value="service ceiling" />
                                     <xsd:enumeration value="combat ceiling" />
+                                    <xsd:enumeration value="level flight" />
                                 </xsd:restriction>
                             </xsd:simpleContent>
                         </xsd:complexType>
@@ -24498,11 +24529,11 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>specificPerformanceMapType</ddue:para>
+                        <ddue:para>Specific performance map</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>Applying a specific performance map to selected mission segments</ddue:para>
+                            <ddue:para>Applying a specific performance map to selected mission segments. In addition to the obligatory <ddue:legacyItalic>defaultPerformanceMapUID</ddue:legacyItalic> at least a <ddue:legacyItalic>segmentUID</ddue:legacyItalic> or <ddue:legacyItalic>pointPerformanceUID</ddue:legacyItalic> must be given.</ddue:para>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -24510,24 +24541,32 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
-                <xsd:all>
+                <xsd:sequence>
                     <xsd:element name="performanceMapUID" type="stringUIDBaseType">
                         <xsd:annotation>
                             <xsd:documentation>UID of performance map to be used for mission segments</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element minOccurs="0" name="segmentUIDs" type="uIDSequenceType">
-                        <xsd:annotation>
-                            <xsd:documentation>List of all mission segment UIDs to which the performance map is to be applied</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element minOccurs="0" name="pointPerformanceUIDs" type="uIDSequenceType">
-                        <xsd:annotation>
-                            <xsd:documentation>List of point performance UIDs to which the  performance map is to be applied</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:all>
-                <xsd:attribute name="uID" type="xsd:ID" use="required"/>
+                    <xsd:choice>
+                        <xsd:sequence>
+                            <xsd:element name="segmentUIDs" type="uIDSequenceType">
+		                        <xsd:annotation>
+		                            <xsd:documentation>List of all mission segment UIDs to which the performance map is to be applied</xsd:documentation>
+		                        </xsd:annotation>
+		                    </xsd:element>
+		                    <xsd:element minOccurs="0" name="pointPerformanceUIDs" type="uIDSequenceType">
+		                        <xsd:annotation>
+		                            <xsd:documentation>List of point performance UIDs to which the  performance map is to be applied</xsd:documentation>
+		                        </xsd:annotation>
+		                    </xsd:element>
+                        </xsd:sequence>
+	                    <xsd:element name="pointPerformanceUIDs" type="uIDSequenceType">
+	                        <xsd:annotation>
+	                            <xsd:documentation>List of point performance UIDs to which the  performance map is to be applied</xsd:documentation>
+	                        </xsd:annotation>
+	                    </xsd:element>
+                    </xsd:choice>
+                </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -26270,13 +26309,12 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         <xsd:complexType>
                             <xsd:simpleContent>
                                 <xsd:restriction base="stringVectorBaseType">
-                                    <xsd:pattern value="(CAS|machNumber|positionXYZ|positionGeo|runway|massFraction|fuelFraction|fuelRemaining|fuelConsumed|heading|turnAngle|range|duration|endTimeUTC|specificExcessPower|rateOfClimb|flightPathAngle)(;(CAS|machNumber|positionXYZ|positionGeo|runway|massFraction|fuelFraction|fuelRemaining|fuelConsumed|heading|turnAngle|range|duration|endTimeUTC|specificExcessPower|rateOfClimb|flightPathAngle))*"/>
+                                    <xsd:pattern value="(CAS|machNumber|positionXYZ|positionGeo|runway|massFraction|fuelFraction|fuelRemaining|fuelConsumed|heading|turnAngle|range|range/x|range/y|range/z|positionXYZ/x|positionXYZ/y|positionXYZ/z|positionGeo/latitude|positionGeo/longitude|positionGeo/altitude|duration|endTimeUTC|specificExcessPower|rateOfClimb|flightPathAngle)(;(CAS|machNumber|positionXYZ|positionGeo|runway|massFraction|fuelFraction|fuelRemaining|fuelConsumed|heading|turnAngle|range|range/x|range/y|range/z|positionXYZ/x|positionXYZ/y|positionXYZ/z|positionGeo/latitude|positionGeo/longitude|positionGeo/altitude|duration|endTimeUTC|specificExcessPower|rateOfClimb|flightPathAngle))*"/>
                                 </xsd:restriction>
                             </xsd:simpleContent>
                         </xsd:complexType>
                     </xsd:element>
                 </xsd:all>
-                <xsd:attribute name="uID" type="xsd:ID" use="required"/>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -30448,7 +30486,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             <xsd:documentation>Change of cms by normalized pitch rate</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element minOccurs="0" name="dcmsdrsStar" type="doubleVectorBaseType">
+                    <xsd:element minOccurs="0" name="dcmsdrStar" type="doubleVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Change of cms by normalized yaw rate</xsd:documentation>
                         </xsd:annotation>
@@ -33173,7 +33211,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="runwayStartPosition" type="pointXYZType" minOccurs="0">
+                    <xsd:element name="runwayStartPosition" type="runwayStartPositionType" minOccurs="0">
                         <xsd:annotation>
                             <xsd:documentation>
                                 Offset from runway threshold in cartesian coordinates in the runway coordinate system
@@ -33290,13 +33328,13 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:element name="controllabilityReq" type="controllabilityReqType" maxOccurs="unbounded" minOccurs="1"/>
+                    <xsd:element name="controllabilityRequirement" type="controllabilityRequirementType" maxOccurs="unbounded" minOccurs="1"/>
                 </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="trimReqsType">
+    <xsd:complexType name="trimRequirementsType">
          <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
@@ -33313,14 +33351,14 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:element name="trimReq" type="trimReqType" maxOccurs="unbounded" minOccurs="1">
+                    <xsd:element name="trimRequirement" type="trimRequirementType" maxOccurs="unbounded" minOccurs="1">
                     </xsd:element>
                 </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="controllabilityReqType">
+    <xsd:complexType name="controllabilityRequirementType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
@@ -33345,7 +33383,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     </xsd:element>
                     <xsd:element name="pointPerformanceUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of point performance description</xsd:documentation>
+                            <xsd:documentation>UID of point performance definition</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="weightAndBalanceUID" minOccurs="0" type="stringUIDBaseType">
@@ -33353,11 +33391,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             <xsd:documentation>UID of weight and balance description</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="configurationUID" minOccurs="0" type="stringUIDBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>UID of aircraft model configuration (aircraft/model/configurations/configuration)</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
+                    <xsd:element name="configurations" minOccurs="0" type="performanceRequirementConfigurationsType"/>
                     <xsd:element minOccurs="0" name="performanceMaps" type="performanceMapSelectionType"/>
                 </xsd:all>
                 <xsd:attribute name="uID" type="xsd:ID" use="required">
@@ -33366,7 +33400,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="trimReqType">
+    <xsd:complexType name="trimRequirementType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
@@ -33397,11 +33431,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:documentation>UID of weight and balance description</xsd:documentation>
                 </xsd:annotation>
             </xsd:element>
-            <xsd:element name="configurationUID" minOccurs="0" type="stringUIDBaseType">
-                <xsd:annotation>
-                    <xsd:documentation>UID of configuration description</xsd:documentation>
-                </xsd:annotation>
-            </xsd:element>
+            <xsd:element name="configurations" minOccurs="0" type="performanceRequirementConfigurationsType"/>
             <xsd:element minOccurs="0" name="performanceMaps" type="performanceMapSelectionType"/>
         </xsd:all>
         <xsd:attribute name="uID" type="xsd:ID"/>
@@ -33684,12 +33714,12 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="flightPerformanceConfigurationsType">
+    <xsd:complexType name="performanceRequirementConfigurationsType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Configurations which apply for this flight performance requirement</ddue:para>
+                        <ddue:para>Configurations which apply for this performance requirement</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
@@ -33828,6 +33858,131 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="releasedStoresType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Released stores</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para/>
+                        </ddue:content>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="releasedStore" maxOccurs="unbounded" type="releasedStoreType"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="releasedStoreType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Released store</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para/>
+                        </ddue:content>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="uID" type="stringUIDBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                UID of the released store.
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="quantity" type="integerBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Quantity of the released store.
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+	<xsd:complexType name="runwayStartPositionType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Runway start position</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>
+                                Description of the vehicle on the runway relative to the runway threshold.
+                            </ddue:para>
+                        </ddue:content>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:choice>
+                    <xsd:sequence>
+                        <xsd:element name="x" type="doubleBaseType">
+	                        <xsd:annotation>
+	                            <xsd:documentation>
+	                                X-position in cartesian coordinates in the runway coordinate system
+	                            </xsd:documentation>
+	                        </xsd:annotation>
+	                    </xsd:element>
+                        <xsd:element name="y" type="doubleBaseType">
+	                        <xsd:annotation>
+	                            <xsd:documentation>
+	                                Y-position in cartesian coordinates in the runway coordinate system
+	                            </xsd:documentation>
+	                        </xsd:annotation>
+	                    </xsd:element>
+                        <xsd:element name="z" type="doubleBaseType">
+	                        <xsd:annotation>
+	                            <xsd:documentation>
+	                                Z-position in cartesian coordinates in the runway coordinate system
+	                            </xsd:documentation>
+	                        </xsd:annotation>
+	                    </xsd:element>
+                    </xsd:sequence>
+                    <xsd:sequence>
+                        <xsd:element name="distance" type="doubleBaseType">
+	                        <xsd:annotation>
+	                            <xsd:documentation>
+	                                Lengthwise distance along the runway centerline from the runway threshold
+	                            </xsd:documentation>
+	                        </xsd:annotation>
+	                    </xsd:element>
+						<xsd:element name="lateralOffset" minOccurs="0" type="doubleBaseType">
+	                        <xsd:annotation>
+	                            <xsd:documentation>
+	                                Lateral offset from the runway centerline. Positive values on the starboard side.
+	                            </xsd:documentation>
+	                        </xsd:annotation>
+	                    </xsd:element>
+                    </xsd:sequence>
+                </xsd:choice>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
