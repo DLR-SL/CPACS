@@ -33245,7 +33245,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="runwayStartPosition" type="pointXYZType" minOccurs="0">
+                    <xsd:element name="runwayStartPosition" type="runwayStartPositionType" minOccurs="0">
                         <xsd:annotation>
                             <xsd:documentation>
                                 Offset from runway threshold in cartesian coordinates in the runway coordinate system
@@ -33953,6 +33953,70 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+	<xsd:complexType name="runwayStartPositionType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Runway start position</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>
+                                Description of the vehicle on the runway relative to the runway threshold.
+                            </ddue:para>
+                        </ddue:content>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:choice>
+                    <xsd:sequence>
+                        <xsd:element name="x" type="doubleBaseType">
+	                        <xsd:annotation>
+	                            <xsd:documentation>
+	                                X-position in cartesian coordinates in the runway coordinate system
+	                            </xsd:documentation>
+	                        </xsd:annotation>
+	                    </xsd:element>
+                        <xsd:element name="y" type="doubleBaseType">
+	                        <xsd:annotation>
+	                            <xsd:documentation>
+	                                Y-position in cartesian coordinates in the runway coordinate system
+	                            </xsd:documentation>
+	                        </xsd:annotation>
+	                    </xsd:element>
+                        <xsd:element name="z" type="doubleBaseType">
+	                        <xsd:annotation>
+	                            <xsd:documentation>
+	                                Z-position in cartesian coordinates in the runway coordinate system
+	                            </xsd:documentation>
+	                        </xsd:annotation>
+	                    </xsd:element>
+                    </xsd:sequence>
+                    <xsd:sequence>
+                        <xsd:element name="distance" type="doubleBaseType">
+	                        <xsd:annotation>
+	                            <xsd:documentation>
+	                                Lengthwise distance along the runway centerline from the runway threshold
+	                            </xsd:documentation>
+	                        </xsd:annotation>
+	                    </xsd:element>
+						<xsd:element name="lateralOffset" minOccurs="0" type="doubleBaseType">
+	                        <xsd:annotation>
+	                            <xsd:documentation>
+	                                Lateral offset from the runway centerline. Positive values on the starboard side.
+	                            </xsd:documentation>
+	                        </xsd:annotation>
+	                    </xsd:element>
+                    </xsd:sequence>
+                </xsd:choice>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
