@@ -2406,7 +2406,7 @@ marko.alder@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Positive double values larger than 0</ddue:para>
+                        <ddue:para>Positive integer values larger than 0</ddue:para>
                     </ddue:summary>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -3966,7 +3966,7 @@ marko.alder@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>cabinAislesType</ddue:para>
+                        <ddue:para>Cabin aisles</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para/>
@@ -4282,7 +4282,7 @@ marko.alder@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>cabinSpaceType</ddue:para>
+                        <ddue:para>Space</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>spaces describe areas in the cabin that need to be
@@ -4297,17 +4297,25 @@ marko.alder@dlr.de
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element name="name" type="stringBaseType"/>
-                    <xsd:element minOccurs="0" name="description" type="stringBaseType"/>
+                    <xsd:element name="name" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Name</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="description" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Description</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                     <xsd:element name="x" type="stringVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>x-coordinates. These describe an area, so they
+                            <xsd:documentation>Vector with x-coordinates. These describe an area, so they
                                 are not monotonous ascending.</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="y" type="stringVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>y-coordinates at given x-coordinates. Warning:
+                            <xsd:documentation>Vector with y-coordinates at given x-coordinates. Warning:
                                 x-y do not represent a function as single x-positions can have
                                 multiple y-coordinates. Hence, no interpolation is possible.
                             </xsd:documentation>
@@ -4315,8 +4323,8 @@ marko.alder@dlr.de
                     </xsd:element>
                     <xsd:element name="height" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>the height above the floor that is required to
-                                be empty of any objects.</xsd:documentation>
+                            <xsd:documentation>Height above the floor that is required to
+                                be empty of any objects</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -4330,7 +4338,7 @@ marko.alder@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>cabinSpacesType</ddue:para>
+                        <ddue:para>Cabin spaces</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para/>
@@ -8932,10 +8940,10 @@ marko.alder@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>deckType</ddue:para>
+                        <ddue:para>Deck</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Deck type, containing the data of a deck</ddue:para>
+                        <ddue:para>Data of an aircraft or rotorcraft deck</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -8945,18 +8953,22 @@ marko.alder@dlr.de
                 <xsd:all>
                     <xsd:element name="name" type="stringBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Name of the deck.</xsd:documentation>
+                            <xsd:documentation>Name</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element minOccurs="0" name="description" type="stringBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Description of the deck.</xsd:documentation>
+                            <xsd:documentation>Description</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element minOccurs="0" name="parentUID" type="stringUIDBaseType"/>
+                    <xsd:element minOccurs="0" name="parentUID" type="stringUIDBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>UID of the object used as parent coordinate system (typically the fuselage uID)</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                     <xsd:element name="transformation" type="transformationType">
                         <xsd:annotation>
-                            <xsd:documentation>The starting point of the deck/cabin. In a
+                            <xsd:documentation>The reference point of the deck/cabin. In a
                                 conventional aircraft like the A320, it would be the rear wall
                                 of the cockpit. The transformation is relative to the parent object
                                 defined by “parentUID”, which should be the fuselage.
@@ -8964,6 +8976,9 @@ marko.alder@dlr.de
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="deckType">
+                        <xsd:annotation>
+                            <xsd:documentation>Deck type: passanger, VIP, cargo or livestock</xsd:documentation>
+                        </xsd:annotation>
                         <xsd:complexType>
                             <xsd:simpleContent>
                                 <xsd:restriction base="stringBaseType">
@@ -8975,18 +8990,66 @@ marko.alder@dlr.de
                             </xsd:simpleContent>
                         </xsd:complexType>
                     </xsd:element>
-                    <xsd:element minOccurs="0" name="cabinGeometry" type="cabinGeometryType" />
-                    <xsd:element minOccurs="0" name="seatModules" type="seatModulesType" />
-                    <xsd:element minOccurs="0" name="aisles" type="cabinAislesType" />
-                    <xsd:element minOccurs="0" name="spaces" type="cabinSpacesType" />
-                    <xsd:element minOccurs="0" name="sidewallPanels" type="sidewallPanelsType" />
-                    <xsd:element minOccurs="0" name="luggageCompartments" type="luggageCompartmentsType" />
-                    <xsd:element minOccurs="0" name="ceilingPanels" type="ceilingPanelsType" />
-                    <xsd:element minOccurs="0" name="galleys" type="lavatoriesType" />
-                    <xsd:element minOccurs="0" name="lavatories" type="lavatoriesType" />
-                    <xsd:element minOccurs="0" name="classDividers" type="classDividersType" />
-                    <xsd:element minOccurs="0" name="cargoContainers" type="cargoContainersType" />
-                    <xsd:element minOccurs="0" name="deckDoors" type="deckDoorsType"/>
+                    <xsd:element minOccurs="0" name="cabinGeometry" type="cabinGeometryType">
+                        <xsd:annotation>
+                            <xsd:documentation>Geometry</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="seatModules" type="seatModulesType">
+                        <xsd:annotation>
+                            <xsd:documentation>Seat modules</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="aisles" type="cabinAislesType">
+                        <xsd:annotation>
+                            <xsd:documentation>Aisles</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="spaces" type="cabinSpacesType">
+                        <xsd:annotation>
+                            <xsd:documentation>Spaces</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="sidewallPanels" type="sidewallPanelsType">
+                        <xsd:annotation>
+                            <xsd:documentation>Sidewall panels</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="luggageCompartments" type="luggageCompartmentsType">
+                        <xsd:annotation>
+                            <xsd:documentation>Luggage compartments</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="ceilingPanels" type="ceilingPanelsType">
+                        <xsd:annotation>
+                            <xsd:documentation>Ceiling panels</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="galleys" type="galleysType">
+                        <xsd:annotation>
+                            <xsd:documentation>Galleys</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="lavatories" type="lavatoriesType">
+                        <xsd:annotation>
+                            <xsd:documentation>Lavatories</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="classDividers" type="classDividersType">
+                        <xsd:annotation>
+                            <xsd:documentation>Class dividers</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="cargoContainers" type="cargoContainersType">
+                        <xsd:annotation>
+                            <xsd:documentation>Cargo containers</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="deckDoors" type="deckDoorsType">
+                        <xsd:annotation>
+                            <xsd:documentation>Doors</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                 </xsd:all>
                 <xsd:attribute name="uID" type="xsd:ID" use="required"/>
             </xsd:extension>
@@ -8998,10 +9061,10 @@ marko.alder@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>decksType</ddue:para>
+                        <ddue:para>Decks</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Decks type, containing the decks of the fuselage
+                        <ddue:para>List of decks
                         </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -14894,7 +14957,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>linkToFile</ddue:para>
+                        <ddue:para>Link to file (Step, Iges or Stl)</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>Please provide a link to the additional file that shall
@@ -33879,7 +33942,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>cabinGeometryType</ddue:para>
+                        <ddue:para>Cabin geometry</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>[WARNING: This type is known to be susceptible to inconsistencies and might therefore be removed in a future version of CPACS]
@@ -33898,12 +33961,20 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                 <xsd:all>
                     <xsd:element name="name" type="stringBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Name of the cabin geometry.</xsd:documentation>
+                            <xsd:documentation>Name</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element minOccurs="0" name="description" type="stringBaseType" />
+                    <xsd:element minOccurs="0" name="description" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Description</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                     <xsd:element name="contours" type="cabinGeometryContoursType" />
-                    <xsd:element name="x" type="stringVectorBaseType" />
+                    <xsd:element name="x" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Vector of x coordinates</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
@@ -33914,7 +33985,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>cabinGeometryContoursType</ddue:para>
+                        <ddue:para>Cabin geometry contours</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>Cabin geometry contour line collection type. By providing more than one entry,
@@ -33938,7 +34009,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>cabinGeometryContourType</ddue:para>
+                        <ddue:para>Cabin geometry contour</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>Type to define a lateral position value "y" at a given height "z" (in the parent deck coordinate system)
@@ -33951,8 +34022,16 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element name="y" type="stringVectorBaseType" />
-                    <xsd:element name="z" type="doubleBaseType" />
+                    <xsd:element name="y" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Vector with y-coordinates</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="z" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Height z</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
@@ -33963,10 +34042,10 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>cabinAisleType</ddue:para>
+                        <ddue:para>Aisle</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>aisles has as many entries as there are aisles in the
+                        <ddue:para>Aisles has as many entries as there are aisles in the
                             cabin. In a normal single aisle there are two aisles: the cabin
                             aisle and the aisle leading to the cockpit.</ddue:para>
                     </ddue:remarks>
@@ -33976,11 +34055,19 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element name="name" type="stringBaseType"/>
-                    <xsd:element minOccurs="0" name="description" type="stringBaseType"/>
+                    <xsd:element name="name" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Name</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="description" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Description</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                     <xsd:element name="x" type="stringVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Provides the longitudinal coordinates. The
+                            <xsd:documentation>Longitudinal coordinates. The
                                 number of coordinates can be chosen as appropriate, the minimum
                                 number is two. The coordinates are relative to the cabin origin.
                             </xsd:documentation>
@@ -33988,7 +34075,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     </xsd:element>
                     <xsd:element name="y" type="stringVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Provides the center points of the aisle. The
+                            <xsd:documentation>Center points of the aisle. The
                                 y-vector has to have same length as the x-vector. The aisle
                                 stretches equally left and right of the provided y-coordinate.
                             </xsd:documentation>
@@ -33996,8 +34083,8 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     </xsd:element>
                     <xsd:element name="widthY" type="stringVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>the width of the aisle at floor level at each
-                                y-coordinate.</xsd:documentation>
+                            <xsd:documentation>Width of the aisle at floor level at each
+                                y-coordinate</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -34095,7 +34182,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>deckDoorType</ddue:para>
+                        <ddue:para>Deck door</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>doors describe all doors of the cabin. They are linked
@@ -34112,8 +34199,16 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element name="name" type="stringBaseType"/>
-                    <xsd:element minOccurs="0" name="description" type="stringBaseType"/>
+                    <xsd:element name="name" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Name</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="description" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Description</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                     <xsd:element name="paxCapacity" type="integerBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Number of passengers this door adds to the
@@ -34122,10 +34217,13 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     </xsd:element>
                     <xsd:element name="opening" type="doorOpeningType">
                         <xsd:annotation>
-                            <xsd:documentation>Specifies the opening geometry of the door.</xsd:documentation>
+                            <xsd:documentation>Opening geometry of the door</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element minOccurs="0" name="doorType">
+                        <xsd:annotation>
+                            <xsd:documentation>Door type (boarding, cargo, evacuation or service)</xsd:documentation>
+                        </xsd:annotation>
                         <xsd:complexType>
                             <xsd:simpleContent>
                                 <xsd:restriction base="stringBaseType">
@@ -34148,7 +34246,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>cabinDoorsType</ddue:para>
+                        <ddue:para>Deck doors</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para/>
@@ -34170,7 +34268,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>cargoContainersType</ddue:para>
+                        <ddue:para>Cargo containers</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>Cargo container instance collection type.</ddue:para>
@@ -34192,7 +34290,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>cargoContainerType</ddue:para>
+                        <ddue:para>Cargo container</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>Cargo container type for placing an instance of a cargo container in the parent deck.</ddue:para>
@@ -34203,11 +34301,31 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element minOccurs="0" name="name"  type="stringBaseType" />
-                    <xsd:element minOccurs="0" name="description"  type="stringBaseType" />
-                    <xsd:element name="cargoContainerElementUID" type="stringUIDBaseType" />
-                    <xsd:element name="x" type="doubleBaseType" />
-                    <xsd:element name="y" type="doubleBaseType" />
+                    <xsd:element minOccurs="0" name="name"  type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Name</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="description"  type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Description</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="cargoContainerElementUID" type="stringUIDBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>UID of the cargo container element in the cpacs/vehicles/deckElements node</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="x" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Position in x</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="y" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Position in y</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                 </xsd:all>
                 <xsd:attribute name="uID" type="xsd:ID" use="required"/>
             </xsd:extension>
@@ -34219,7 +34337,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>seatModulesType</ddue:para>
+                        <ddue:para>Seat modules</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>Seat module instance collection type.</ddue:para>
@@ -34230,35 +34348,12 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:element maxOccurs="unbounded" name="seatModule" type="seatModuleType" />
+                    <xsd:element maxOccurs="unbounded" name="seatModule" type="deckComponentBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Seat module</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                 </xsd:sequence>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="seatModuleType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>seatModuleType</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>Seat module type for placing an instance of a seat module in the parent deck.</ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="name"  type="stringBaseType" />
-                    <xsd:element minOccurs="0" name="description"  type="stringBaseType" />
-                    <xsd:element name="seatElementUID" type="stringUIDBaseType" />
-                    <xsd:element minOccurs="0" name="structuralMounts" type="deckStructuralMountsType" />
-                    <xsd:element name="transformation" type="transformation2DType" />
-                </xsd:all>
-                <xsd:attribute name="uID" type="xsd:ID" use="required"/>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -34268,7 +34363,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>galleysType</ddue:para>
+                        <ddue:para>Galleys</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>Galley instance collection type.</ddue:para>
@@ -34290,7 +34385,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>galleyType</ddue:para>
+                        <ddue:para>Galley</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>Galley type for placing an instance of a galley in the parent deck.</ddue:para>
@@ -34301,9 +34396,21 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element name="name"  type="stringBaseType" />
-                    <xsd:element minOccurs="0" name="description"  type="stringBaseType" />
-                    <xsd:element name="galleyElementUID" type="stringUIDBaseType" />
+                    <xsd:element name="name"  type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Name</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="description"  type="stringBaseType" >
+                        <xsd:annotation>
+                            <xsd:documentation>Description</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="galleyElementUID" type="stringUIDBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>UID of the galley element in the cpacs/vehicles/deckElements node</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                     <xsd:element minOccurs="0" name="structuralMounts" type="deckStructuralMountsType" />
                     <xsd:element name="transformation" type="transformation2DType" />
                 </xsd:all>
@@ -34317,7 +34424,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>lavatoriesType</ddue:para>
+                        <ddue:para>Lavatories</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>Lavatory instance collection type.</ddue:para>
@@ -34330,8 +34437,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                 <xsd:sequence>
                     <xsd:element maxOccurs="unbounded" name="lavatory" type="deckComponentBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Lavatory
-                            </xsd:documentation>
+                            <xsd:documentation>Lavatory</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -34344,7 +34450,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>classDividersType</ddue:para>
+                        <ddue:para>Class dividers</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>Class divider instance collection type.</ddue:para>
@@ -34371,7 +34477,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>sidewallPanelsType</ddue:para>
+                        <ddue:para>Sidewall panels</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>Sidewall panel instance collection type.</ddue:para>
@@ -34398,11 +34504,8 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>ceilingPanelsType</ddue:para>
+                        <ddue:para>Luggage compartments</ddue:para>
                     </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>Ceiling panel instance collection type.</ddue:para>
-                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -34425,7 +34528,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>ceilingPanelsType</ddue:para>
+                        <ddue:para>Ceiling panels</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>Ceiling panel instance collection type.</ddue:para>
@@ -34452,7 +34555,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>structuralMountsType</ddue:para>
+                        <ddue:para>Structural mounts</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>Structural mount type containing the structural connections of cabin elements</ddue:para>
@@ -34474,7 +34577,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>structuralMountType</ddue:para>
+                        <ddue:para>Structural mount</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>Structural mount type containing the structural connections of cabin elements</ddue:para>
@@ -34485,9 +34588,21 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element name="name"  type="stringBaseType" />
-                    <xsd:element minOccurs="0" name="description"  type="stringBaseType" />
-                    <xsd:element name="componentUID" type="stringUIDBaseType" />
+                    <xsd:element name="name"  type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Name</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="description"  type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Description</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="componentUID" type="stringUIDBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>UID of the component to connect to</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                 </xsd:all>
                 <xsd:attribute name="uID" type="xsd:ID" use="required"/>
             </xsd:extension>
@@ -34495,13 +34610,38 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
     </xsd:complexType>
 
     <xsd:complexType name="boundingBoxType">
+    	<xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Bounding Box</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element name="deltaX"  type="doubleBaseType" />
-                    <xsd:element name="deltaY"  type="doubleBaseType" />
-                    <xsd:element name="deltaZ" type="doubleBaseType" />
-                    <xsd:element minOccurs="0" name="origin" type="pointType" />
+                    <xsd:element name="deltaX"  type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Length in x</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="deltaY"  type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Length in y</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="deltaZ" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Length in z</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="origin" type="pointType">
+                        <xsd:annotation>
+                            <xsd:documentation>Origin</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
@@ -34535,10 +34675,14 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>cargoContainerElementType</ddue:para>
+                        <ddue:para>Cargo container element for use in the decks</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Cargo container element type, containing the base elements of the cabin</ddue:para>
+	                    <ddue:content>
+	                        <ddue:mediaLink>
+	                            <ddue:image xlink:href="cargoContainer"/>
+	                        </ddue:mediaLink>
+	                    </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -34546,8 +34690,15 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element minOccurs="0" name="description" type="stringBaseType"/>
+                    <xsd:element minOccurs="0" name="description" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Description</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                     <xsd:element name="contour">
+                    	<xsd:annotation>
+                            <xsd:documentation>Contour: single or double</xsd:documentation>
+                        </xsd:annotation>
                         <xsd:complexType>
                             <xsd:simpleContent>
                                 <xsd:restriction base="stringBaseType">
@@ -34557,11 +34708,36 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             </xsd:simpleContent>
                         </xsd:complexType>
                     </xsd:element>
-                    <xsd:element name="deltaX" type="doubleBaseType"/>
-                    <xsd:element name="deltaY" type="doubleBaseType"/>
-                    <xsd:element minOccurs="0" name="deltaYBase" type="doubleBaseType"/>
-                    <xsd:element name="deltaZ" type="doubleBaseType"/>
-                    <xsd:element minOccurs="0" name="deltaZKink" type="doubleBaseType"/>
+                    <xsd:element name="deltaX" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Delta x
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="deltaY" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Delta y
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="deltaYBase" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Delta y of the base
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="deltaZ" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Delta z
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="deltaZKink" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Delta z kink
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                 </xsd:all>
                 <xsd:attribute name="uID" type="xsd:ID" use="required"/>
             </xsd:extension>
@@ -34573,7 +34749,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>cargoContainerElementsType</ddue:para>
+                        <ddue:para>Cargo container elements</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>Cargo container element collection type</ddue:para>
@@ -34584,11 +34760,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                <xsd:element maxOccurs="unbounded" name="cargoContainerElement" type="cargoContainerElementType">
-                        <xsd:annotation>
-                            <xsd:documentation>Cargo container element for use in the decks</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
+                <xsd:element maxOccurs="unbounded" name="cargoContainerElement" type="cargoContainerElementType"/>
                 </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
@@ -34599,7 +34771,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>ceilingPanelElementsType</ddue:para>
+                        <ddue:para>Ceiling panel</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>Ceiling panel element collection type</ddue:para>
@@ -34625,7 +34797,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>classDividerElementsType</ddue:para>
+                        <ddue:para>Class divider</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>Class divider element collection type</ddue:para>
@@ -34651,10 +34823,10 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>deckElementsType</ddue:para>
+                        <ddue:para>Deck elements</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Deck elements type, containing the base elements of the cabin</ddue:para>
+                        <ddue:para>A list of predefined elements which can be linked in the actual deck of the aircraft or rotorcraft model via referencing its uID.</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -34712,7 +34884,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>galleyElementType</ddue:para>
+                        <ddue:para>Galley element</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>Galley element type, containing the base elements of the cabin</ddue:para>
@@ -34738,7 +34910,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>galleyElementsType</ddue:para>
+                        <ddue:para>Galley elements</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>Galley element collection type</ddue:para>
@@ -34764,7 +34936,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>lavatoryElementsType</ddue:para>
+                        <ddue:para>Lavatory elements</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>Lavatory element collection type</ddue:para>
@@ -34790,7 +34962,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>luggageCompartmentElementsType</ddue:para>
+                        <ddue:para>Luggage compartment elements</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>Luggage compartment element collection type</ddue:para>
@@ -34816,7 +34988,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>seatElementType</ddue:para>
+                        <ddue:para>Seat element</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>Seat element type, containing the base elements of the cabin</ddue:para>
@@ -34842,7 +35014,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>seatElementsType</ddue:para>
+                        <ddue:para>Seat elements</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>Seat element collection type</ddue:para>
@@ -34868,7 +35040,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>sidewallPanelElementsType</ddue:para>
+                        <ddue:para>Sidewall panel elements</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>Sidewall panel element collection type</ddue:para>
@@ -34919,16 +35091,27 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <ddue:summary>
                         <ddue:para>Deck component</ddue:para>
                     </ddue:summary>
-                    <ddue:remarks/>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element name="name"  type="stringBaseType" />
-                    <xsd:element minOccurs="0" name="description"  type="stringBaseType" />
-                    <xsd:element name="deckElementUID" type="stringUIDBaseType" />
+                    <xsd:element name="name"  type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Name</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="description"  type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Description</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="deckElementUID" type="stringUIDBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>UID of the corresponding element in the cpacs/vehicles/deckElemets node</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                     <xsd:element name="structuralMounts" type="deckStructuralMountsType" />
                     <xsd:element name="transformation" type="transformationType" />
                 </xsd:all>
@@ -34944,14 +35127,17 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <ddue:summary>
                         <ddue:para>Deck element</ddue:para>
                     </ddue:summary>
-                    <ddue:remarks/>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:element minOccurs="0" name="description" type="stringBaseType"/>
+                    <xsd:element minOccurs="0" name="description" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Description</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                     <xsd:element name="geometry" type="deckElementGeometryType"/>
                 </xsd:sequence>
                 <xsd:attribute name="uID" type="xsd:ID" use="required"/>
