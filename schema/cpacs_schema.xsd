@@ -13456,7 +13456,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             <xsd:documentation>Description</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="subSystems" type="subSystemsType"/>
+                    <xsd:element name="components" type="systemComponentsType"/>
                     <xsd:element name="transformation" type="transformationType"/>
                 </xsd:all>
                 <xsd:attribute name="uID" type="xsd:ID" use="required"/>
@@ -35419,31 +35419,31 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="subSystemsType">
+    <xsd:complexType name="systemComponentsType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Sub-systems</ddue:para>
+                        <ddue:para>Components</ddue:para>
                     </ddue:summary>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="subSystem" minOccurs="0" type="subSystemType"/>
-                </xsd:all>
+                <xsd:sequence>
+                    <xsd:element name="component" maxOccurs="unbounded" type="systemComponentType"/>
+                </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="subSystemType">
+    <xsd:complexType name="systemComponentType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Sub-system</ddue:para>
+                        <ddue:para>Component</ddue:para>
                     </ddue:summary>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -35461,11 +35461,11 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             <xsd:documentation>Description</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="systemElementUID" type="stringUIDBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>UID of a system element (vehicles/systemElements)</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
+	                <xsd:element name="systemElementUID" type="stringUIDBaseType">
+	                    <xsd:annotation>
+	                        <xsd:documentation>UID of a system element (vehicles/systemElements)</xsd:documentation>
+	                    </xsd:annotation>
+	                </xsd:element>
                     <xsd:element name="transformation" minOccurs="0" type="transformationType">
                         <xsd:annotation>
                             <xsd:documentation>Geometric (!) transformation</xsd:documentation>
