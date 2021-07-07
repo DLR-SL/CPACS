@@ -8966,6 +8966,11 @@ marko.alder@dlr.de
                             <xsd:documentation>UID of the object used as parent coordinate system (typically the fuselage uID)</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
+                    <xsd:element minOccurs="0" name="floorStructureUID" type="stringUIDBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>UID of the floor structure which supports this deck</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                     <xsd:element name="transformation" type="transformationType">
                         <xsd:annotation>
                             <xsd:documentation>The reference point of the deck/cabin. In a
@@ -8990,11 +8995,7 @@ marko.alder@dlr.de
                             </xsd:simpleContent>
                         </xsd:complexType>
                     </xsd:element>
-                    <xsd:element minOccurs="0" name="cabinGeometry" type="cabinGeometryType">
-                        <xsd:annotation>
-                            <xsd:documentation>Geometry</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
+                    <xsd:element minOccurs="0" name="cabinGeometry" type="cabinGeometryType"/>
                     <xsd:element minOccurs="0" name="seatModules" type="seatModulesType">
                         <xsd:annotation>
                             <xsd:documentation>Seat modules</xsd:documentation>
@@ -9028,6 +9029,11 @@ marko.alder@dlr.de
                     <xsd:element minOccurs="0" name="galleys" type="galleysType">
                         <xsd:annotation>
                             <xsd:documentation>Galleys</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="genericFloorModules" type="genericFloorModulesType">
+                        <xsd:annotation>
+                            <xsd:documentation>Generic floor modules</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element minOccurs="0" name="lavatories" type="lavatoriesType">
@@ -33947,16 +33953,27 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Cabin geometry</ddue:para>
+                        <ddue:para>Geometry</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>[WARNING: This type is known to be susceptible to inconsistencies and might therefore be removed in a future version of CPACS]
-                        The geometry of the cabin roughly corresponds to the available design space in the cabin.
-                        It is given in terms of constant height contour lines.
-                        The lines all share a common x-vector. The vector y provides the lateral
-                        contour at Z-coordinate provided by the value z. One or more contour lines can be given.
-                        The cabin geometry is assumed to be symmetric.
-                        </ddue:para>
+                    	<ddue:content>
+                    		<ddue:para>[<ddue:legacyBold>WARNING:</ddue:legacyBold> This type is known to be susceptible to 
+                    		    inconsistencies and might therefore be removed in a future version of CPACS]
+		                    </ddue:para>
+		                    <ddue:para>
+		                    	The geometry of the cabin roughly corresponds to the available design space in the cabin.
+		                        It is given in terms of constant height contour lines.
+		                        The lines all share a common <ddue:legacyItalic>x</ddue:legacyItalic>-vector.
+		                        The <ddue:legacyItalic>y</ddue:legacyItalic> vector provides the lateral
+		                        contour at Z-coordinate provided by the constant value <ddue:legacyItalic>z</ddue:legacyItalic>.
+		                        One or more contour lines can be given.
+		                        The cabin geometry is assumed to be symmetric.
+		                    </ddue:para>
+	                        <ddue:mediaLink>
+	                            <ddue:image xlink:href="deckContours"/>
+	                        </ddue:mediaLink>
+                        </ddue:content>
+                        
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -34382,6 +34399,32 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:element maxOccurs="unbounded" name="galley" type="deckComponent2DBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Galley</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="genericFloorModulesType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Generic floor modules</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>Generic floor module instance collection type.</ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element maxOccurs="unbounded" name="genericFloorModule" type="deckComponent2DBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Generic floor module</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -34819,6 +34862,11 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             <xsd:documentation>Galley elements for use in the decks</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
+                    <xsd:element minOccurs="0" name="genericFloorElements" type="genericFloorElementsType">
+                        <xsd:annotation>
+                            <xsd:documentation>Generic floor elements for use in the decks</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                     <xsd:element minOccurs="0" name="lavatoryElements" type="lavatoryElementsType">
                         <xsd:annotation>
                             <xsd:documentation>Lavatory elements for use in the decks</xsd:documentation>
@@ -35012,6 +35060,32 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                 <xsd:element maxOccurs="unbounded" name="seatElement" type="seatElementType">
                         <xsd:annotation>
                             <xsd:documentation>Seat element for use in the decks</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="genericFloorElementsType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Generic floor elements</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>Generic floor element collection type</ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                <xsd:element maxOccurs="unbounded" name="genericFloorElement" type="deckElementBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Generic floor element for use in the decks</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
