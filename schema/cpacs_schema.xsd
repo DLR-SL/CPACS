@@ -18323,7 +18323,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>massInertiaType</ddue:para>
+                        <ddue:para>Mass intertia</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>massInertiaType</ddue:para>
@@ -34708,6 +34708,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             <xsd:documentation>Description</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
+                    <xsd:element name="mass" minOccurs="0" type="deckElementMassType"/>
                     <xsd:element name="contour">
                         <xsd:annotation>
                             <xsd:documentation>Contour: single or double</xsd:documentation>
@@ -34919,6 +34920,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="geometry" type="deckElementGeometryType"/>
+                    <xsd:element name="mass" minOccurs="0" type="deckElementMassType"/>
                     <xsd:element minOccurs="0" name="numberOfTrolleys" type="posExcl0IntBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Number of trolleys</xsd:documentation>
@@ -35030,6 +35032,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="geometry" type="deckElementGeometryType"/>
+                    <xsd:element name="mass" minOccurs="0" type="deckElementMassType"/>
                     <xsd:element minOccurs="0" name="numberOfSeats" type="posExcl0IntBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Number of seats</xsd:documentation>
@@ -35233,6 +35236,41 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="geometry" type="deckElementGeometryType"/>
+                    <xsd:element name="mass" minOccurs="0" type="deckElementMassType"/>
+                </xsd:all>
+                <xsd:attribute name="uID" type="xsd:ID" use="required"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="deckElementMassType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Mass</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>Description of mass, center of gravity and inertia
+                        </ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="mass" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Mass value</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="location" type="pointType">
+                        <xsd:annotation>
+                            <xsd:documentation>Center of gravity (x,y,z)</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="massInertia" type="massInertiaType"/>
                 </xsd:all>
                 <xsd:attribute name="uID" type="xsd:ID" use="required"/>
             </xsd:extension>
