@@ -2981,6 +2981,7 @@ marko.alder@dlr.de
                     <xsd:element minOccurs="0" name="monetaryValues" type="monetaryValuesAnalysisType"/>
                     <xsd:element minOccurs="0" name="noise" type="noiseAnalysisType"/>
                     <xsd:element minOccurs="0" name="trajectories" type="trajectoriesType"/>
+                    <xsd:element minOccurs="0" name="systemAnalyses" type="systemAnalysesType"/>
                     <xsd:element minOccurs="0" name="weightAndBalance" type="weightAndBalanceType"/>
                     <xsd:element minOccurs="0" name="paxFlow" type="xsd:string"/>
                 </xsd:all>
@@ -35482,4 +35483,316 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
+    <xsd:complexType name="systemAnalysesType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>System analyses</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+	                <xsd:element name="nominalLoads" minOccurs="0" type="stringBaseType"/>
+	                <xsd:element name="systemTrajectories" minOccurs="0" type="stringBaseType"/>
+	                <xsd:element name="ataSystemOfftakes" minOccurs="0" type="ataSystemOfftakesType"/>                    
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="ataSystemOfftakesType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>System offtakes w.r.t. ATA chapters along a trajectory</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+	                <xsd:element name="specification" type="ataSystemOfftakesSpecificationType"/>
+	                <xsd:element name="trajectoryOfftakesData" type="ataSystemOfftakesDataType"/>               
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+	<xsd:complexType name="ataSystemOfftakesSpecificationType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Specification</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+	                <xsd:element name="trajectoryUID" type="stringUIDBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>UID of the base trajectory (../analyses/trajectories/trajectory)</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>              
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="ataSystemOfftakesDataType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Offtakes along a trajectory</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+	                <xsd:element name="offtakesTotal" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Sum of all offtakes</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="ata21" minOccurs="0" type="ataSystemOfftakeType">
+                        <xsd:annotation>
+                            <xsd:documentation>Offtakes of ATA-21 systems</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="ata22" minOccurs="0" type="ataSystemOfftakeType">
+                        <xsd:annotation>
+                            <xsd:documentation>Offtakes of ATA-22 systems</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="ata23" minOccurs="0" type="ataSystemOfftakeType">
+                        <xsd:annotation>
+                            <xsd:documentation>Offtakes of ATA-23 systems</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="ata24" minOccurs="0" type="ataSystemOfftakeType">
+                        <xsd:annotation>
+                            <xsd:documentation>Offtakes of ATA-24 systems</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="ata25" minOccurs="0" type="ataSystemOfftakeType">
+                        <xsd:annotation>
+                            <xsd:documentation>Offtakes of ATA-25 systems</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="ata26" minOccurs="0" type="ataSystemOfftakeType">
+                        <xsd:annotation>
+                            <xsd:documentation>Offtakes of ATA-26 systems</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="ata27" minOccurs="0" type="ataSystemOfftakeType">
+                        <xsd:annotation>
+                            <xsd:documentation>Offtakes of ATA-27 systems</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="ata28" minOccurs="0" type="ataSystemOfftakeType">
+                        <xsd:annotation>
+                            <xsd:documentation>Offtakes of ATA-28 systems</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="ata29" minOccurs="0" type="ataSystemOfftakeType">
+                        <xsd:annotation>
+                            <xsd:documentation>Offtakes of ATA-29 systems</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="ata30" minOccurs="0" type="ataSystemOfftakeType">
+                        <xsd:annotation>
+                            <xsd:documentation>Offtakes of ATA-30 systems</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="ata31" minOccurs="0" type="ataSystemOfftakeType">
+                        <xsd:annotation>
+                            <xsd:documentation>Offtakes of ATA-31 systems</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="ata32" minOccurs="0" type="ataSystemOfftakeType">
+                        <xsd:annotation>
+                            <xsd:documentation>Offtakes of ATA-32 systems</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="ata33" minOccurs="0" type="ataSystemOfftakeType">
+                        <xsd:annotation>
+                            <xsd:documentation>Offtakes of ATA-33 systems</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="ata34" minOccurs="0" type="ataSystemOfftakeType">
+                        <xsd:annotation>
+                            <xsd:documentation>Offtakes of ATA-34 systems</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="ata35" minOccurs="0" type="ataSystemOfftakeType">
+                        <xsd:annotation>
+                            <xsd:documentation>Offtakes of ATA-35 systems</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="ata36" minOccurs="0" type="ataSystemOfftakeType">
+                        <xsd:annotation>
+                            <xsd:documentation>Offtakes of ATA-36 systems</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="ata37" minOccurs="0" type="ataSystemOfftakeType">
+                        <xsd:annotation>
+                            <xsd:documentation>Offtakes of ATA-37 systems</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="ata38" minOccurs="0" type="ataSystemOfftakeType">
+                        <xsd:annotation>
+                            <xsd:documentation>Offtakes of ATA-38 systems</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="ata45" minOccurs="0" type="ataSystemOfftakeType">
+                        <xsd:annotation>
+                            <xsd:documentation>Offtakes of ATA-45 systems</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="ata46" minOccurs="0" type="ataSystemOfftakeType">
+                        <xsd:annotation>
+                            <xsd:documentation>Offtakes of ATA-46 systems</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="ata49" minOccurs="0" type="ataSystemOfftakeType">
+                        <xsd:annotation>
+                            <xsd:documentation>Offtakes of ATA-49 systems</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="ata52" minOccurs="0" type="ataSystemOfftakeType">
+                        <xsd:annotation>
+                            <xsd:documentation>Offtakes of ATA-52 systems</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="ata73" minOccurs="0" type="ataSystemOfftakeType">
+                        <xsd:annotation>
+                            <xsd:documentation>Offtakes of ATA-73 systems</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="ata74" minOccurs="0" type="ataSystemOfftakeType">
+                        <xsd:annotation>
+                            <xsd:documentation>Offtakes of ATA-74 systems</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="ata76" minOccurs="0" type="ataSystemOfftakeType">
+                        <xsd:annotation>
+                            <xsd:documentation>Offtakes of ATA-76 systems</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="ata77" minOccurs="0" type="ataSystemOfftakeType">
+                        <xsd:annotation>
+                            <xsd:documentation>Offtakes of ATA-77 systems</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="ata78" minOccurs="0" type="ataSystemOfftakeType">
+                        <xsd:annotation>
+                            <xsd:documentation>Offtakes of ATA-78 systems</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="ata80" minOccurs="0" type="ataSystemOfftakeType">
+                        <xsd:annotation>
+                            <xsd:documentation>Offtakes of ATA-80 systems</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="remainingContributions" minOccurs="0" type="ataSystemOfftakeRemainingContributionsType">
+                        <xsd:annotation>
+                            <xsd:documentation>Remaining contributions</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="ataSystemOfftakeType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Offtake of an ATA-system</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                	<xsd:element name="electric" minOccurs="0" type="doubleVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Electric power [W]</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                	<xsd:element name="hydraulic" minOccurs="0" type="doubleVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Hydraulic power [W]</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                	<xsd:element name="bleed" minOccurs="0" type="doubleVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Bleed air [kg/s]</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="ataSystemOfftakeRemainingContributionsType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Remaining contributions</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                	<xsd:element name="remainingContribution" maxOccurs="unbounded" type="ataSystemOfftakeRemainingContributionType"></xsd:element>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="ataSystemOfftakeRemainingContributionType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Remaining contribution</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="systemAnalysesType">
+                <xsd:sequence>
+                	<xsd:element name="name" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Name</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="description" minOccurs="0" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Description</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
 </xsd:schema>
