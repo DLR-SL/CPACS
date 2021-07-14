@@ -3081,6 +3081,7 @@ marko.alder@dlr.de
                     <xsd:element minOccurs="0" name="analyses" type="aircraftAnalysesType"/>
                     <xsd:element minOccurs="0" name="performanceRequirements" type="performanceRequirementsType"/>
                     <xsd:element minOccurs="0" name="configurations" type="vehicleConfigurationsType"/>
+                    <xsd:element minOccurs="0" name="systemArchitectures" type="systemArchitecturesType"/>
                 </xsd:all>
                 <xsd:attribute name="uID" type="xsd:ID" use="required"/>
             </xsd:extension>
@@ -26379,6 +26380,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:element minOccurs="0" name="structuralElements" type="structuralElementsType"/>
                     <xsd:element minOccurs="0" name="deckElements" type="deckElementsType"/>
                     <xsd:element minOccurs="0" name="systemElements" type="systemElementsType"/>
+                    <xsd:element minOccurs="0" name="systemAssumptions" type="systemAssumptionsType"/>
                     <xsd:element minOccurs="0" name="materials" type="materialsType"/>
                     <xsd:element minOccurs="0" name="fuels" type="fuelsType"/>
                 </xsd:all>
@@ -35414,12 +35416,85 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
 	                        </xsd:annotation>
 	                    </xsd:element>
                     </xsd:choice>
+                    <xsd:element name="properties" minOccurs="0" type="systemElementPropertiesType"/>
                 </xsd:sequence>
                 <xsd:attribute name="uID" type="xsd:ID" use="required"/>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
 
+	<xsd:complexType name="systemElementPropertiesType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Properties</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="origin" minOccurs="0" type="originType"/>
+                    <xsd:element name="parameters" type="systemElementParametersType"/>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="systemElementParametersType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Parameters</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                	<xsd:element name="parameter" maxOccurs="unbounded" type="systemElementParameterType"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="systemElementParameterType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Parameter</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                	<xsd:element name="name" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Name</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="description" minOccurs="0" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Description</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="systemAssumptionParameterUID" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>UID of a pre-defined system assumption parameter</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
     <xsd:complexType name="systemComponentsType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -35560,7 +35635,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-	                <xsd:element name="offtakesTotal" type="stringBaseType">
+	                <xsd:element name="offtakesTotal" type="ataSystemOfftakeType">
                         <xsd:annotation>
                             <xsd:documentation>Sum of all offtakes</xsd:documentation>
                         </xsd:annotation>
@@ -36636,6 +36711,389 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
+
+    <xsd:complexType name="systemArchitecturesType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>System architectures</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+	                <xsd:element name="genericSystemArchitectures" minOccurs="0" type="genericSystemArchitecturesType"/>
+	                <xsd:element name="environmentalControlSystem" minOccurs="0" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Explicit dummy for illustration: environmental control system</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
     
+    <xsd:complexType name="genericSystemArchitecturesType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Generic system architectures</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+	                <xsd:element name="genericSystemArchitecture" maxOccurs="unbounded" type="genericSystemArchitectureType"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="genericSystemArchitectureType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Generic system architecture</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                	<xsd:element name="name" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Name</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="description" minOccurs="0" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Description</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="architecture" type="systemArchitectureType"/>
+                </xsd:all>
+                <xsd:attribute name="uID" type="xsd:ID" use="required"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="systemArchitectureType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Graph description</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                	<xsd:element name="blocks" type="systemArchitectureBlocksType"/>
+                    <xsd:element name="edges" minOccurs="0" type="systemArchitectureEdgesType"/>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="systemArchitectureBlocksType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Blocks</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                	<xsd:element name="block" maxOccurs="unbounded" type="systemArchitectureBlockType"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="systemArchitectureBlockType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Block</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                	<xsd:element name="name" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Name</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="description" minOccurs="0" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Description</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:choice>
+                    	<xsd:element name="componentUID" type="stringUIDBaseType">
+	                        <xsd:annotation>
+	                            <xsd:documentation>Reference to uID of a geometric component installed in the vehicle (e.g., .../vehicles/aircraft/model/systems/genericSystems/genericSystem/components/component)</xsd:documentation>
+	                        </xsd:annotation>
+	                    </xsd:element>
+                    	<xsd:element name="systemArchitectureUID" type="stringUIDBaseType"/>
+                    </xsd:choice>                	
+                </xsd:sequence>
+                <xsd:attribute name="uID" type="xsd:ID" use="optional"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="systemArchitectureEdgesType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Edges</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                	<xsd:element name="edge" maxOccurs="unbounded" type="systemArchitectureEdgeType"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="systemArchitectureEdgeType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Edge</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                   	<xsd:element name="fromBlock" type="stringUIDBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>UID of the block from which the edge begins</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                   	<xsd:element name="toBlock" type="stringUIDBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>UID of the block to which the edge goes</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>            	
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="systemAssumptionsType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>System assumptions</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                	<xsd:element name="systemAssumption" maxOccurs="unbounded" type="systemAssumptionType"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+ 
+    <xsd:complexType name="systemAssumptionType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>System assumption</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>
+                            Examples:
+                            <ddue:code language="XML" title="Example 1">&lt;systemAssumption uID=&quot;someRandomUID1&quot;&gt;
+    &lt;name&gt;Draft lumped cooling system mass penalty&lt;/name&gt;
+    &lt;technologyStage&gt;all&lt;/technologyStage&gt;
+    &lt;origin&gt;
+        &lt;externalFile fileFormat=&quot;xls&quot;&gt;https://emdesk.eu/cms/?p=abc&lt;/externalFile&gt;
+    &lt;/origin&gt;
+    &lt;parameters&gt;
+        &lt;parameter uID=&quot;someRandomUID2&quot;&gt;
+            &lt;name&gt;powerSpecificMassPenalty&lt;/name&gt;
+            &lt;value&gt;680&lt;/value&gt;
+            &lt;unit&gt;W_{th}/kg&lt;/unit&gt;
+        &lt;/parameter&gt;
+    &lt;/parameters&gt;
+&lt;/systemAssumption&gt;</ddue:code>
+                        </ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                	<xsd:element name="name" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Name</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="description" minOccurs="0" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Description</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="technologyStage" minOccurs="0" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Description of the technology stage</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="origin" minOccurs="0" type="originType">
+                        <xsd:annotation>
+                            <xsd:documentation>Origin of the assumption</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="parameters" type="systemAssumptionsParametersType"/>
+                </xsd:all>
+                <xsd:attribute name="uID" type="xsd:ID" use="required"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="originType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Origin</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:choice>
+                	<xsd:element name="externalFile">
+                		<xsd:annotation>
+                            <xsd:documentation>Link to external file</xsd:documentation>
+                        </xsd:annotation>
+                		<xsd:complexType>
+                			<xsd:simpleContent>
+                				<xsd:extension base="stringBaseType">
+                					<xsd:attribute name="fileFormat" type="xsd:string" use="optional"/>
+                				</xsd:extension>
+                			</xsd:simpleContent>
+                		</xsd:complexType>
+                	</xsd:element>
+                	<xsd:element name="toolName">
+                		<xsd:annotation>
+                            <xsd:documentation>Name of a tool which was applied to derive this assumption</xsd:documentation>
+                        </xsd:annotation>
+                		<xsd:complexType>
+                			<xsd:simpleContent>
+                				<xsd:extension base="stringBaseType">
+                					<xsd:attribute name="toolOwner" type="xsd:string" use="optional"/>
+                					<xsd:attribute name="toolVersion" type="xsd:string" use="optional"/>
+                				</xsd:extension>
+                			</xsd:simpleContent>
+                		</xsd:complexType>
+                	</xsd:element>
+                </xsd:choice>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+	<xsd:complexType name="systemAssumptionsParametersType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Parameters</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                	<xsd:element name="parameter" maxOccurs="unbounded" type="systemAssumptionsParameterType"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+	<xsd:complexType name="systemAssumptionsParameterType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Parameter</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                	<xsd:element name="name" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Name</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="description" minOccurs="0" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Description</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:choice>
+						<xsd:sequence>
+							<xsd:element name="value" type="doubleBaseType">
+	                            <xsd:annotation>
+	                                <xsd:documentation>Value</xsd:documentation>
+	                            </xsd:annotation>
+	                        </xsd:element>
+							<xsd:element name="unit" type="stringBaseType">
+	                            <xsd:annotation>
+	                                <xsd:documentation>Unit</xsd:documentation>
+	                            </xsd:annotation>
+	                        </xsd:element>
+						</xsd:sequence>
+                    	<xsd:element name="parameterUID" type="stringUIDBaseType">
+	                        <xsd:annotation>
+	                            <xsd:documentation>UID of another assumption parameter</xsd:documentation>
+	                        </xsd:annotation>
+	                    </xsd:element>
+                    </xsd:choice>
+                </xsd:sequence>
+                 <xsd:attribute name="uID" type="xsd:ID" use="required"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
 
 </xsd:schema>
