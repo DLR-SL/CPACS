@@ -34429,6 +34429,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                 <xsd:all>
                     <xsd:element name="pylons" minOccurs="0" type="paylonsType"/>
                     <xsd:element name="deployables" minOccurs="0" type="deployablesType"/>
+                    <xsd:element name="externalTanks" minOccurs="0" type="externalTanksType"/>
                     <xsd:element name="operationalItems" minOccurs="0" type="operationalItemsType"/>
                 </xsd:all>
             </xsd:extension>
@@ -34454,27 +34455,6 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="deployablesType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>...</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="externalTanks" minOccurs="0" type="externalTanksType"/>
-                    <xsd:element name="bombs" minOccurs="0" type="bombsType"/>
-                    <xsd:element name="missiles" minOccurs="0" type="missilesType"/>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
     <xsd:complexType name="externalTanksType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -34494,7 +34474,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="bombsType">
+    <xsd:complexType name="deployablesType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
@@ -34507,26 +34487,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:element name="bomb" maxOccurs="unbounded" type="bombMissileType"/>
-                </xsd:sequence>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="missilesType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>...</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element name="missile" maxOccurs="unbounded" type="bombMissileType"/>
+                    <xsd:element name="deployable" maxOccurs="unbounded" type="deployableType"/>
                 </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
@@ -34580,13 +34541,18 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             <xsd:documentation>Fuel volume [m^3]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
+                    <xsd:element name="releasable" minOccurs="0" type="booleanBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Releasable (true|false or 0|1)</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                 </xsd:all>
                 <xsd:attribute name="uID" type="xsd:ID" use="required"/>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="bombMissileType">
+    <xsd:complexType name="deployableType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
@@ -34733,7 +34699,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     </xsd:element>
                     <xsd:element name="releasable" minOccurs="0" type="booleanBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Releasable (true|false)</xsd:documentation>
+                            <xsd:documentation>Releasable (true|false or 0|1)</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
