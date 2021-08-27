@@ -56,7 +56,7 @@ marko.alder@dlr.de
                                     <ddue:para>The <ddue:legacyBold>C</ddue:legacyBold>ommon <ddue:legacyBold>P</ddue:legacyBold>arametric <ddue:legacyBold>A</ddue:legacyBold>ircraft <ddue:legacyBold>C</ddue:legacyBold>onfiguration <ddue:legacyBold>S</ddue:legacyBold>cheme <ddue:legacyItalic>(CPACS)</ddue:legacyItalic> is an XML-based data format for describing aircraft configurations and their corresponding data.</ddue:para>
                                     <ddue:para>This XML-Schema document (<ddue:legacyBold>XSD</ddue:legacyBold>) serves two purposes: (1) it defines the <ddue:legacyItalic>CPACS</ddue:legacyItalic>
                                     data structure used in the <ddue:legacyBold>XML</ddue:legacyBold> file (e.g., aircraft.xml) and
-                                    (2) it provides the corresponding documentation (see picture below). An XML processor (e.g., Tixi or
+                                    (2) it provides the corresponding documentation (see picture below). An XML processor (e.g., <ddue:externalLink><ddue:linkText>TiXI</ddue:linkText><ddue:linkUri>https://github.com/DLR-SC/tixi</ddue:linkUri></ddue:externalLink> or
                                     XML tools in Eclipse) parses the XSD and XML files and validates whether the data set defined by the user (or tool) conforms to the given structure defined by the schema.</ddue:para>
                                     <ddue:mediaLink>
                                         <ddue:image xlink:href="basicPrinciple"/>
@@ -67,10 +67,14 @@ marko.alder@dlr.de
                                     structure). In addition, the sequence of the elements and their occurrence is documented.</ddue:para>
                                     <ddue:para>To link the XML file to the XSD file, the header of the XML file should specify the path of the schema file.
                                     An example could look like this:
-                                        <ddue:code language="XML" title="CPACS header">&lt;cpacs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:noNamespaceSchemaLocation="pathToSchemaFile/cpacs_schema.xsd"&gt;</ddue:code>
+                                        <ddue:code language="XML" title="CPACS header">
+                                            <![CDATA[
+<cpacs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="pathToSchemaFile/cpacs_schema.xsd">                                            
+                                            ]]>
+                                        </ddue:code>
                                     </ddue:para>
-                                    <ddue:para>CPACS is an open source project published by the German Aerospace Center (DLR e.V.). For further information please visit www.cpacs.de.
+                                    <ddue:para>CPACS is an open source project published by the <ddue:externalLink><ddue:linkText>German Aerospace Center (DLR e.V.)</ddue:linkText><ddue:linkUri>https://www.dlr.de/</ddue:linkUri></ddue:externalLink>. For further information please visit <ddue:externalLink><ddue:linkText>www.cpacs.de</ddue:linkText><ddue:linkUri>https://www.cpacs.de</ddue:linkUri></ddue:externalLink>.
                                     </ddue:para>
                                 </ddue:content>
                             </ddue:section>
@@ -78,7 +82,7 @@ marko.alder@dlr.de
                             	<ddue:title>2. Data hierarchy</ddue:title>
                             	<ddue:content>
                             		<ddue:para>CPACS data is modeled in a hierarchical structure whose underlying concept follows a top-down description of a system-of-systems which decomposes a generic concept (e.g., an <ddue:legacyItalic>aircraft</ddue:legacyItalic> or <ddue:legacyItalic>rotorcraft</ddue:legacyItalic>)  into  a  more  detailed  description  of  its  components.  This originates from the conceptual and preliminary design of aircraft, where the level of detail is initially low and continues to increase as the design process progresses.</ddue:para>
-                            		<ddue:para>For some concepts within CPACS, however, a bottom-up approach is applied where the components are first defined in detail (sometimes referred to as <ddue:legacyItalic>library</ddue:legacyItalic>) and then linked within an instantiated higher-level concept. This is advantageous when used multiple times within complex systems, such as <ddue:legacyItalic>engines</ddue:legacyItalic>, which only have to be defined once in order to be referenced several times on the <ddue:legacyItalic>aircraft</ddue:legacyItalic>. The combination of these two methodologies is known as middle-out  approach  and  enables  the  goal  to  fully  parametrize aeronautical systems.</ddue:para>
+                            		<ddue:para>For some concepts within <ddue:legacyItalic>CPACS</ddue:legacyItalic>, however, a bottom-up approach is applied where the components are first defined in detail (sometimes referred to as <ddue:legacyItalic>library</ddue:legacyItalic>) and then linked within an instantiated higher-level concept. This is advantageous when used multiple times within complex systems, such as <ddue:legacyItalic>engines</ddue:legacyItalic>, which only have to be defined once in order to be referenced several times on the <ddue:legacyItalic>aircraft</ddue:legacyItalic>. The combination of these two methodologies is known as middle-out  approach  and  enables  the  goal  to  fully  parametrize aeronautical systems.</ddue:para>
                             		<ddue:mediaLink>
                                         <ddue:image xlink:href="dataHierarchy"/>
                                     </ddue:mediaLink>
@@ -87,11 +91,11 @@ marko.alder@dlr.de
                             <ddue:section>
                                 <ddue:title>3. Coordinate Systems</ddue:title>
                                 <ddue:content>
-                                    <ddue:para>Coordinate systems are a regular cause for ambiguous interpretation of data. In CPACS, the reference coordinate system is the CPACS-coordinate system. This coordinate system is used for most of the data. A single exception is made in order to keep aerodynamic data in an aerodynamic coordinate system. The following paragraphs outline the determination to known coordinate systems.</ddue:para>
-                                    <ddue:para>The CPACS coordinate system is the coordinate system identified by TIGL, CPACS's geometric library. It is a right-handed coordinate system. If an aircraft is defined in the CPACS coordinate system it will usually follow the directions listed in the table below.</ddue:para>
-                                    <ddue:para>Therefore, the CPACS coordinate system can be confused with the body-fixed coordinate system. While often the CPACS coordinate system and the body-fixed coordinate system overlap, this must not always be true. Several definitions for body-fixed coordinate systems exist (x-axis through nose and tail, x-axis perpendicular to nose plane). For non-symmetric aircraft, body-fixed coordinate systems become even more complicated. Hence, analysis tools should stick to the CPACS-Coordinate system. It remains to the designer to model the geometry accordingly.</ddue:para>
-                                    <ddue:para>The CPACS coordinate system does not rotate with flow. Hence, aerodynamic calculations do rotate their flow relative to the CPACS-coordinate system. If not stated explicitly different, e.g. for target lift-coefficients, results are returned in the CPACS coordinate system, i.e. the cfx-coefficient is parallel to the CPACS x-Coordinate, regardless of the way the geometry is defined.</ddue:para>
-                                    <ddue:para>The following table gives a "best-practice" advice on how to locate a geometry within CPACS. Different approaches are, of course, valid as well.</ddue:para>
+                                    <ddue:para>Coordinate systems are a regular cause for ambiguous interpretation of data. In <ddue:legacyItalic>CPACS</ddue:legacyItalic>, the reference coordinate system is the <ddue:legacyItalic>CPACS</ddue:legacyItalic>-coordinate system. This coordinate system is used for most of the data. A single exception is made in order to keep aerodynamic data in an aerodynamic coordinate system. The following paragraphs outline the determination to known coordinate systems.</ddue:para>
+                                    <ddue:para>The <ddue:legacyItalic>CPACS</ddue:legacyItalic> coordinate system is the coordinate system identified by <ddue:externalLink><ddue:linkText>TiGL</ddue:linkText><ddue:linkUri>https://dlr-sc.github.io/tigl</ddue:linkUri></ddue:externalLink>, <ddue:legacyItalic>CPACS</ddue:legacyItalic>'s geometric library. It is a right-handed coordinate system. If an aircraft is defined in the <ddue:legacyItalic>CPACS</ddue:legacyItalic> coordinate system it will usually follow the directions listed in the table below.</ddue:para>
+                                    <ddue:para>Therefore, the <ddue:legacyItalic>CPACS</ddue:legacyItalic> coordinate system can be confused with the body-fixed coordinate system. While often the <ddue:legacyItalic>CPACS</ddue:legacyItalic> coordinate system and the body-fixed coordinate system overlap, this must not always be true. Several definitions for body-fixed coordinate systems exist (x-axis through nose and tail, x-axis perpendicular to nose plane). For non-symmetric aircraft, body-fixed coordinate systems become even more complicated. Hence, analysis tools should stick to the <ddue:legacyItalic>CPACS</ddue:legacyItalic>-Coordinate system. It remains to the designer to model the geometry accordingly.</ddue:para>
+                                    <ddue:para>The <ddue:legacyItalic>CPACS</ddue:legacyItalic> coordinate system does not rotate with flow. Hence, aerodynamic calculations do rotate their flow relative to the <ddue:legacyItalic>CPACS</ddue:legacyItalic>-coordinate system. If not stated explicitly different, e.g. for target lift-coefficients, results are returned in the <ddue:legacyItalic>CPACS</ddue:legacyItalic> coordinate system, i.e. the cfx-coefficient is parallel to the <ddue:legacyItalic>CPACS</ddue:legacyItalic> x-Coordinate, regardless of the way the geometry is defined.</ddue:para>
+                                    <ddue:para>The following table gives a "best-practice" advice on how to locate a geometry within <ddue:legacyItalic>CPACS</ddue:legacyItalic>. Different approaches are, of course, valid as well.</ddue:para>
                                     <ddue:table>
                                         <ddue:row>
                                             <ddue:entry>
@@ -120,40 +124,40 @@ marko.alder@dlr.de
                                             <ddue:entry>from landing gear to tip of vertical tailplane</ddue:entry>
                                         </ddue:row>
                                     </ddue:table>
-                                    <ddue:para>The following figures show an example of a geometry that is aligned with the CPACS coordinate system, i.e. the body-fixed coordinate system corresponds to the CPACS coordinate system.</ddue:para>
+                                    <ddue:para>The following figures show an example of a geometry that is aligned with the <ddue:legacyItalic>CPACS</ddue:legacyItalic> coordinate system, i.e. the body-fixed coordinate system corresponds to the <ddue:legacyItalic>CPACS</ddue:legacyItalic> coordinate system.</ddue:para>
                                     <ddue:mediaLink>
                                         <ddue:image xlink:href="cosys01"/>
                                     </ddue:mediaLink>
-                                    <ddue:para>The aerodynamic analysis is relative to the CPACS coordinate system. That is, the angle of attack is represented by the dashed orange line. Results of the aerodynamic calculation are given in the CPACS coordinate system.</ddue:para>
+                                    <ddue:para>The aerodynamic analysis is relative to the <ddue:legacyItalic>CPACS</ddue:legacyItalic> coordinate system. That is, the angle of attack is represented by the dashed orange line. Results of the aerodynamic calculation are given in the <ddue:legacyItalic>CPACS</ddue:legacyItalic> coordinate system.</ddue:para>
                                     <ddue:mediaLink>
                                         <ddue:image xlink:href="cosys02"/>
                                     </ddue:mediaLink>
-                                    <ddue:para>The following figures give an example of a geometry that is not defined in alignment with the CPACS coordinate system. It is a valid CPACS file, but only used in this example for demonstrative purposes.</ddue:para>
+                                    <ddue:para>The following figures give an example of a geometry that is not defined in alignment with the <ddue:legacyItalic>CPACS</ddue:legacyItalic> coordinate system. It is a valid <ddue:legacyItalic>CPACS</ddue:legacyItalic> file, but only used in this example for demonstrative purposes.</ddue:para>
                                     <ddue:mediaLink>
                                         <ddue:image xlink:href="cosys1"/>
                                     </ddue:mediaLink>
-                                    <ddue:para>The body axes and the CPACS coordinate system do not align. That is, the origin of the geometry is not at CPACS (0,0,0) but at a point in positive x- and z-direction.</ddue:para>
+                                    <ddue:para>The body axes and the <ddue:legacyItalic>CPACS</ddue:legacyItalic> coordinate system do not align. That is, the origin of the geometry is not at <ddue:legacyItalic>CPACS</ddue:legacyItalic> (0,0,0) but at a point in positive x- and z-direction.</ddue:para>
                                     <ddue:mediaLink>
                                         <ddue:image xlink:href="cosys2"/>
                                     </ddue:mediaLink>
-                                    <ddue:para>Again, the aerodynamic analysis is relative to the CPACS coordinate system. That is, the angle of attack is represented by the dashed orange line. Results of the aerodynamic calculation are given in the CPACS coordinate system.</ddue:para>
+                                    <ddue:para>Again, the aerodynamic analysis is relative to the <ddue:legacyItalic>CPACS</ddue:legacyItalic> coordinate system. That is, the angle of attack is represented by the dashed orange line. Results of the aerodynamic calculation are given in the <ddue:legacyItalic>CPACS</ddue:legacyItalic> coordinate system.</ddue:para>
                                 </ddue:content>
                             </ddue:section>
                             <ddue:section>
                                 <ddue:title>4. Units</ddue:title>
                                 <ddue:content>
-                                    <ddue:para>There are no explicit attributes describing units in CPACS. The general convention is that all values must be given in the following SI-units:</ddue:para>
+                                    <ddue:para>There are no explicit attributes describing units in <ddue:legacyItalic>CPACS</ddue:legacyItalic>. The general convention is that all values must be given in the following SI-units:</ddue:para>
                                     <ddue:table>
                                         <ddue:row>
                                             <ddue:entry>[m]</ddue:entry>
                                             <ddue:entry>Position, Distance</ddue:entry>
                                         </ddue:row>
                                         <ddue:row>
-                                            <ddue:entry>[m^2]</ddue:entry>
+                                            <ddue:entry>[m<ddue:superscript>2</ddue:superscript>]</ddue:entry>
                                             <ddue:entry>Area</ddue:entry>
                                         </ddue:row>
                                         <ddue:row>
-                                            <ddue:entry>[m^3]</ddue:entry>
+                                            <ddue:entry>[m<ddue:superscript>3</ddue:superscript>]</ddue:entry>
                                             <ddue:entry>Volume</ddue:entry>
                                         </ddue:row>
                                         <ddue:row>
@@ -188,7 +192,7 @@ marko.alder@dlr.de
                                             <ddue:entry>Energy</ddue:entry>
                                         </ddue:row>
                                     </ddue:table>
-                                    <ddue:para>The only non SI unit used throughout CPACS is the angle in degrees [°].
+                                    <ddue:para>The only non SI unit used throughout <ddue:legacyItalic>CPACS</ddue:legacyItalic> is the angle in degrees [°].
                                     For the sake of an intuitive use the angles are given in degrees rather than in radian [rad].</ddue:para>
                                     <ddue:table>
                                         <ddue:row>
@@ -199,67 +203,80 @@ marko.alder@dlr.de
                                 </ddue:content>
                             </ddue:section>
                             <ddue:section>
-                                <ddue:title>5. Splitting up a CPACS dataset into several files</ddue:title>
+                                <ddue:title>5. Splitting up a <ddue:legacyItalic>CPACS</ddue:legacyItalic> dataset into several files</ddue:title>
                                 <ddue:content>
-                                    <ddue:para>To provide a better overview, it is possible to split up a <ddue:legacyItalic>CPACS</ddue:legacyItalic> dataset into several files. This can be done by inserting an <ddue:legacyBold>&lt;externaldata&gt;</ddue:legacyBold> node at an arbitrary position into the datatset. This node contains a <ddue:legacyBold>&lt;path&gt;</ddue:legacyBold> node with a URI to the external file(s), followed by one or more <ddue:legacyBold>&lt;filename&gt;</ddue:legacyBold> nodes, containing each a name of a file to be included at that position. Below, an example of such external data is given:</ddue:para>
-                                    <ddue:code language="XML" title=" ">&lt;?xml version="1.0" encoding="utf-8"?&gt;
-&lt;cpacs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:noNamespaceSchemaLocation="pathToSchemaFile/cpacs_schema.xsd"&gt;
-    &lt;vehicles&gt;
-        &lt;profiles&gt;
-            &lt;wingAirfoils&gt;
-                &lt;externaldata&gt;
-                    &lt;path&gt;file:://airfoils&lt;/path&gt;
-                    &lt;filename&gt;NACA0010.xml&lt;/filename&gt;
-                    &lt;filename&gt;NACA2412.xml&lt;/filename&gt;
-                &lt;/externaldata&gt;
-                &lt;airfoil uID="NACA0012"&gt;
-                    &lt;name&gt;NACA 0012 Airfoil&lt;/name&gt;
-                    &lt;pointList&gt;...&lt;/pointList&gt;
-                &lt;/airfoil&gt;
-            &lt;/wingAirfoils&gt;
-        &lt;/profiles&gt;
-    &lt;/vehicles&gt;
-&lt;cpacs&gt;</ddue:code>
+                                    <ddue:para>To provide a better overview, it is possible to split up a <ddue:legacyItalic>CPACS</ddue:legacyItalic> dataset into several files. This can be done by inserting an <ddue:codeInline>&lt;externaldata&gt;</ddue:codeInline> node at an arbitrary position into the datatset. This node contains a <ddue:codeInline>&lt;path&gt;</ddue:codeInline> node with a URI to the external file(s), followed by one or more <ddue:codeInline>&lt;filename&gt;</ddue:codeInline> nodes, containing each a name of a file to be included at that position. Below, an example of such external data is given:</ddue:para>
+                                    <ddue:code language="XML" title="Example of linking external data">
+                                        <![CDATA[
+<?xml version="1.0" encoding="utf-8"?>
+<cpacs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="pathToSchemaFile/cpacs_schema.xsd">
+    <vehicles>
+        <profiles>
+            <wingAirfoils>
+                <externaldata>
+                    <path>file:://airfoils</path>
+                    <filename>NACA0010.xml</filename>
+                    <filename>NACA2412.xml</filename>
+                </externaldata>
+                <airfoil uID="NACA0012">
+                    <name>NACA 0012 Airfoil</name>
+                    <pointList>...</pointList>
+                </airfoil>
+            </wingAirfoils>
+        </profiles>
+    </vehicles>
+<cpacs>                                           
+                                        ]]>
+                                    
+                                    </ddue:code>
                                     <ddue:para>Such an external file would look like:</ddue:para>
-                                    <ddue:code language="XML" title=" ">&lt;?xml version="1.0" encoding="utf-8"?&gt;
-&lt;airfoil uID="NACA0010"&gt;
-    &lt;name&gt;NACA 0010 Airfoil&lt;/name&gt;
-    &lt;pointList&gt;...&lt;/pointList&gt;
-&lt;/airfoil&gt;</ddue:code>
-                                    <ddue:para>The file would be included completely, except for its title line <ddue:legacyItalic>&lt;?xml version="1.0" encoding="utf-8"?&gt;</ddue:legacyItalic> . This concept can also be used recursively (external files of external files), then it is important to prevent circle connections (file "A" loading file "B" loading file "C" loading again file "A" ...).</ddue:para>
+                                    <ddue:code language="XML" title="External data for linking in CPACS">
+                                        <![CDATA[
+<?xml version="1.0" encoding="utf-8"?>
+<airfoil uID="NACA0010">
+    <name>NACA 0010 Airfoil</name>
+    <pointList>...</pointList>
+</airfoil>                                         
+                                        ]]>
+                                    </ddue:code>
+                                    <ddue:para>The file would be included completely, except for its title line <ddue:codeInline>&lt;?xml version="1.0" encoding="utf-8"?&gt;</ddue:codeInline> . This concept can also be used recursively (external files of external files), but it is important to prevent circle connections (file "A" loading file "B" loading file "C" loading again file "A" ...).</ddue:para>
                                     <ddue:para>For path URI addresses, the trailing file separator "/" may be omitted. Below, some examples for path URIs are given:</ddue:para>
                                     <ddue:list class="bullet">
-                                        <ddue:listItem>Absolute local path: "file:///tmp" or "file:///c:/windows/tmp"</ddue:listItem>
-                                        <ddue:listItem>Relative local direcotry: "file://relativeDirectory" or "file://../anotherRelativeDirectory"</ddue:listItem>
-                                        <ddue:listItem>Remote net ressource: "http://www.someurl.de"</ddue:listItem>
+                                        <ddue:listItem>Absolute local path: <ddue:codeInline>file:///tmp</ddue:codeInline> or <ddue:codeInline>file:///c:/windows/tmp</ddue:codeInline></ddue:listItem>
+                                        <ddue:listItem>Relative local direcotry: <ddue:codeInline>file://relativeDirectory</ddue:codeInline> or <ddue:codeInline>file://../anotherRelativeDirectory</ddue:codeInline></ddue:listItem>
+                                        <ddue:listItem>Remote net ressource: <ddue:codeInline>http://www.someurl.de</ddue:codeInline></ddue:listItem>
                                     </ddue:list>
-                                    <ddue:para>A <ddue:legacyItalic>CPACS</ddue:legacyItalic> dataset with external files, being loaded by a special library like the <ddue:legacyBold>TI</ddue:legacyBold>VA <ddue:legacyBold>X</ddue:legacyBold>ML <ddue:legacyBold>I</ddue:legacyBold>nterface <ddue:legacyItalic>TIXI</ddue:legacyItalic>, shall collect all its external datafiles and build up a single tree from them. A validation against this schema is only possible for such a single tree file; the &lt;externaldata&gt;nodes are not recognized by it. To preserve the information, necessary to split the file up into external files again later, externaldata information is maintained within three attributes of the former external top node:</ddue:para>
+                                    <ddue:para>With the help of the <ddue:legacyBold>Ti</ddue:legacyBold>XI <ddue:legacyBold>X</ddue:legacyBold>ML <ddue:legacyBold>I</ddue:legacyBold>nterface <ddue:legacyItalic><ddue:externalLink><ddue:linkText>TiXI</ddue:linkText><ddue:linkUri>https://github.com/DLR-SC/tixi</ddue:linkUri></ddue:externalLink></ddue:legacyItalic>, a <ddue:legacyItalic>CPACS</ddue:legacyItalic> dataset that is split into multiple files can be reassembled into a single tree structure for subsequent validation against the <ddue:legacyItalic>CPACS</ddue:legacyItalic> schema. The following commands are used to link external data sets:</ddue:para>
                                     <ddue:list class="bullet">
-                                        <ddue:listItem>externalFileName - Name of the file where the external data shall be saved</ddue:listItem>
-                                        <ddue:listItem>externalDataDirectory - Directory of the external data file. Its content is analogous to the &lt;externaldata&gt;'s &lt;path&gt;node described above.</ddue:listItem>
-                                        <ddue:listItem>externalDataNodePath - XPATH of the node which is replaced with the content of the external file. In case that it is an external file of an external file, then it is the XPATH in the outer external file. If, e.g., in the example above the &lt;pointList&gt;node would have also been loaded from an external file, then the entry would just be: externalDataNodePath="/airfoil". This is used primarily for loop-detection.</ddue:listItem>
+                                        <ddue:listItem><ddue:legacyItalic>&lt;externalFileName&gt;</ddue:legacyItalic>: Name of the external data file</ddue:listItem>
+                                        <ddue:listItem><ddue:legacyItalic>&lt;externalDataDirectory&gt;</ddue:legacyItalic>: Directory of the external data file. Its content is analogous to the <ddue:legacyBold>externaldata</ddue:legacyBold>'s <ddue:legacyBold>path</ddue:legacyBold>-element described above.</ddue:listItem>
+                                        <ddue:listItem><ddue:legacyItalic>&lt;externalDataNodePath&gt;</ddue:legacyItalic>: <ddue:externalLink><ddue:linkText>XPath</ddue:linkText><ddue:linkUri>https://www.w3schools.com/xml/xpath_intro.asp</ddue:linkUri></ddue:externalLink> of the node which is replaced with the content of the external file. In case that it is an external file of an external file, then it is the <ddue:legacyItalic>XPath</ddue:legacyItalic> in the outer external file. If, e.g., in the example above the <ddue:legacyItalic>pointList</ddue:legacyItalic> element would have also been loaded from an external file, then the entry would just be: <ddue:codeInline>externalDataNodePath="/airfoil"</ddue:codeInline>. This is used primarily for loop-detection.</ddue:listItem>
                                     </ddue:list>
-                                    <ddue:para>The single tree for the example above would look like:</ddue:para>
-                                    <ddue:code language="XML" title=" ">&lt;?xml version="1.0" encoding="utf-8"?&gt;
-&lt;cpacs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:noNamespaceSchemaLocation="pathToSchemaFile/cpacs_schema.xsd"&gt;
-    &lt;vehicles&gt;
-        &lt;profiles&gt;
-            &lt;wingAirfoils&gt;
-                &lt;airfoil uID="NACA0010" externalFileName="NACA0010.xml" externalDataDirectory="file://airfoils" externalDataNodePath="/cpacs/vehicles/profiles/wingAirfoils"&gt;
-                    &lt;name&gt;NACA 0010 Airfoil&lt;/name&gt;
-                    &lt;pointList&gt;...&lt;/pointList&gt;
-                &lt;/airfoil&gt;
+                                    <ddue:para>The merged data tree for the example above would look like:</ddue:para>
+                                    <ddue:code language="XML" title="External data merged into the main dataset using TiXI">
+                                        <![CDATA[
+<?xml version="1.0" encoding="utf-8"?>
+<cpacs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="pathToSchemaFile/cpacs_schema.xsd">
+    <vehicles>
+        <profiles>
+            <wingAirfoils>
+                <airfoil uID="NACA0010" externalFileName="NACA0010.xml" externalDataDirectory="file://airfoils" externalDataNodePath="/cpacs/vehicles/profiles/wingAirfoils">
+                    <name>NACA 0010 Airfoil</name>
+                    <pointList>...</pointList>
+                </airfoil>
                 ...
-                &lt;airfoil uID="NACA0012"&gt;
-                    &lt;name&gt;NACA 0012 Airfoil&lt;/name&gt;
-                    &lt;pointList&gt;...&lt;/pointList&gt;
-                &lt;/airfoil&gt;
-            &lt;/wingAirfoils&gt;
-        &lt;/profiles&gt;
-    &lt;/vehicles&gt;
-&lt;cpacs&gt;</ddue:code>
+                <airfoil uID="NACA0012">
+                    <name>NACA 0012 Airfoil</name>
+                    <pointList>...</pointList>
+                </airfoil>
+            </wingAirfoils>
+        </profiles>
+    </vehicles>
+<cpacs>                                   
+                                        ]]>
+                                    </ddue:code>
                                 </ddue:content>
                             </ddue:section>
                             <ddue:section>
@@ -269,18 +286,26 @@ marko.alder@dlr.de
                                     references define connections between elements which are located somewhere else in the hierarchical dataset (e.g. a <ddue:legacyItalic>wing</ddue:legacyItalic> is connected to a
                                         <ddue:legacyItalic>fuselage</ddue:legacyItalic>; a specific <ddue:legacyItalic>engine</ddue:legacyItalic> is connected to a <ddue:legacyItalic>pylon</ddue:legacyItalic>; etc.). These connections are defined by
                                         <ddue:legacyBold>unique identifiers</ddue:legacyBold> (uID) which are specified as attributes. Thus, there are elements which can be referenced via a <ddue:legacyItalic>uID</ddue:legacyItalic> attribute, e.g. a fuselage:
-                                        <ddue:code language="XML" title=" ">&lt;fuselage uID="ATTAS_fuselage"&gt;...</ddue:code>
+                                        <ddue:code language="XML" title="CPACS element with uID attribute">
+                                        <![CDATA[
+<fuselage uID="ATTAS_fuselage">...   
+                                        ]]>
+                                    </ddue:code>
                                     </ddue:para>
                                     <ddue:para>as well as elements which refer to the former, e.g. a wing pointing to its geometrical parent:
-                                        <ddue:code language="XML" title=" ">&lt;wing uID="e382bf5j"&gt;
-    &lt;name&gt;ATTAS main wing&lt;/name&gt;
-    &lt;parentUID isLink="True"&gt;ATTAS_fuselage&lt;/parentUID&gt;
-    ...</ddue:code>
-                                    Such referencing elements must carry the <ddue:legacyItalic>isLink="True"</ddue:legacyItalic> attribute.
+                                    <ddue:code language="XML" title="Referencing a uID via the parentUID element">
+                                        <![CDATA[
+<wing uID="e382bf5j">
+    <name>ATTAS main wing</name>
+    <parentUID isLink="True">ATTAS_fuselage</parentUID>
+    ...            
+                                        ]]>
+                                    </ddue:code>
                                     </ddue:para>
-                                    <ddue:para>Since uIDs are only used to link nodes within the XML file, no naming convention is required. <ddue:legacyBold>UIDs, however, must be unique!</ddue:legacyBold>
-                                    Although a common practice for naming uIDs is their position in the data hierarchy (e.g. <ddue:legacyItalic>uID="mainWingSection3"</ddue:legacyItalic>),
-                                    uIDs as shown in the above example are absolutely valid as well. It is therefore recommended to use the <ddue:legacyItalic>name</ddue:legacyItalic> element
+                                    <ddue:para>In previous <ddue:legacyItalic>CPACS</ddue:legacyItalic> versions, referencing elements were identified via the <ddue:codeInline>isLink="True"</ddue:codeInline> attribute. Since this is superfluous due to the explicit definition of the element properties via the <ddue:legacyItalic>CPACS</ddue:legacyItalic> schema, this attribute no longer needs to be listed. It is nevertheless a valid optional attribute to ensure compatibility with older datasets, but might be removed in future versions.</ddue:para>
+                                    <ddue:para>Since <ddue:legacyItalic>uID</ddue:legacyItalic>s are only used to link nodes within the XML file, no naming convention is required. The characters only have to conform to the conventions of the <ddue:externalLink><ddue:linkText>xsd:ID</ddue:linkText><ddue:linkUri>http://books.xmlschemata.org/relaxng/ch19-77151.html</ddue:linkUri></ddue:externalLink> type standardized by the <ddue:externalLink><ddue:linkText>W3C</ddue:linkText><ddue:linkUri>https://www.w3.org/</ddue:linkUri></ddue:externalLink>. <ddue:legacyBold>UIDs, however, must be unique!</ddue:legacyBold>
+                                    Although a common practice for naming <ddue:legacyItalic>uID</ddue:legacyItalic>s is their position in the data hierarchy (e.g. <ddue:codeInline>uID="mainWingSection3"</ddue:codeInline>),
+                                    <ddue:legacyItalic>uID</ddue:legacyItalic>s as shown in the above example are absolutely valid as well. It is therefore recommended to use the <ddue:legacyItalic>name</ddue:legacyItalic> element
                                     to convey human-readable meanings.</ddue:para>
                                 </ddue:content>
                             </ddue:section>
@@ -288,7 +313,11 @@ marko.alder@dlr.de
                                 <ddue:title>7. Symmetry</ddue:title>
                                 <ddue:content>
                                     <ddue:para>Sometimes it might be useful to specify a part of the aircraft as symmetric instead of holding all the data twice in nearly identical form in the dataset (e.g. left and right wing are usually identical, except for the sign of the y-coordinate). Hence, some parts offer the option to set a symmetry attribute for them, like:</ddue:para>
-                                    <ddue:code language="XML" title=" ">&lt;wing symmetry="x-z-plane"&gt;...</ddue:code>
+                                    <ddue:code language="XML" title="Symmetry attribute applied to a wing">
+                                        <![CDATA[
+<wing symmetry="x-z-plane">
+                                        ]]>
+                                    </ddue:code>
                                     <ddue:para>This attribute explains that the whole part with all its subnodes is symmetric to the given plane. Possible planes are: <ddue:list class="bullet">
                                             <ddue:listItem>x-y-plane</ddue:listItem>
                                             <ddue:listItem>x-z-plane</ddue:listItem>
@@ -300,8 +329,8 @@ marko.alder@dlr.de
                             <ddue:section>
                                 <ddue:title>UIDs, references and symmetry</ddue:title>
                                 <ddue:content>
-                                    <ddue:para>All nodes, e.g. parentUID, in CPACS that refer to a component that holds symmetry attribute, e.g. wing, have to carry the symmetry attribute as well.  </ddue:para>
-                                    <ddue:para>The symmetry attribute may take three values: symm, def, full:
+                                    <ddue:para>All nodes (e.g., <ddue:legacyItalic>parentUID</ddue:legacyItalic>) in <ddue:legacyItalic>CPACS</ddue:legacyItalic> that refer to a component holding the symmetry attribute (e.g., wing) might also have a <ddue:legacyItalic>symmetry</ddue:legacyItalic> attribute to specify how symmetry is propagated through the resulting element hierarchy.</ddue:para>
+                                    <ddue:para>The symmetry attribute may take three values: <ddue:legacyItalic>symm</ddue:legacyItalic>, <ddue:legacyItalic>def</ddue:legacyItalic>, <ddue:legacyItalic>full</ddue:legacyItalic>:
                                         <ddue:list class="bullet">
                                             <ddue:listItem>
                                                 <ddue:legacyBold>def: </ddue:legacyBold> The element refers to the geometric component that has a symmetry attribute and refers only to the defined side of the geometric component.</ddue:listItem>
@@ -311,18 +340,18 @@ marko.alder@dlr.de
                                                 <ddue:legacyBold>full:</ddue:legacyBold> The element refers to the geometric component that has a symmetry attribute and refers to the complete component. (This is the default behaviour)</ddue:listItem>
                                         </ddue:list>
                                     </ddue:para>
-                                    <ddue:code language="XML" title=" ">&lt;wing uID="ATTAS_main_wing" symmetry="x-z-plane"&gt;
-    ...
-    &lt;segments&gt;
-        &lt;segment uID="ATTAS_main_wing_innersegment"&gt;
-        ...</ddue:code>
-                                    <ddue:para>In the example above, to refer to the "other" side of the wing on must use the definition as such:</ddue:para>
-                                    <ddue:code language="XML" title=" ">&lt;loadcase&gt;
-    ...
-    &lt;segments&gt;
-        &lt;segment&gt;
-            &lt;segmentUID isLink="True" symmetry="symm"&gt;ATTAS_main_wing_inner_segment&lt;/segmentUID&gt;
-            &lt;strip&gt;...</ddue:code>
+                                    <ddue:mediaLink>
+                                        <ddue:image xlink:href="symmetry"/>
+                                    </ddue:mediaLink>
+                                    <ddue:para>For example, to refer to the "other" side of a mirrored wing the following the following syntax might be used:</ddue:para>
+                                    <ddue:code language="XML" title="Example of an engine pylon located only on the mirrored side of the wing.">
+                                        <![CDATA[
+<enginePylons>
+    <enginePylon uID="pylon">
+        <parentUID symmetry="symm">wing</parentUID>
+                                        ]]>
+                                    </ddue:code>
+                                    <ddue:para><ddue:legacyItalic>Note: This feature is not implemented in TiGL. The upper figure is manually processed to illustrate the principle. In addition, there is an ongoing debate whether the approach is suitable for CPACS due to rapidly increasing complexity and unresolved implicit assumptions as to whether it is one or two components after mirroring. Therefore, it is advised to avoid using the symmetry attribute if possible.</ddue:legacyItalic></ddue:para>
                                 </ddue:content>
                             </ddue:section>
                             <ddue:section>
@@ -333,20 +362,27 @@ marko.alder@dlr.de
                                         <ddue:list class="bullet">
                                             <ddue:listItem>Vector
                                                 <ddue:para>The vector is meant as a one-dimensional-array. In such a node, the values are given in a semicolon separated list:</ddue:para>
-                                                <ddue:code language="XML" title=" ">&lt;angleOfAttack&gt;0.;1.5;3.;4.5;6;7.5;9.&lt;/angleOfAttack&gt;</ddue:code>
+                                                <ddue:code language="XML" title="CPACS vector element">
+			                                        <![CDATA[
+<angleOfAttack>0.;1.5;3.;4.5;6;7.5;9.</angleOfAttack>
+			                                        ]]>
+			                                    </ddue:code>
                                             </ddue:listItem>
                                             <ddue:listItem>Array
                                                 <ddue:para>
                                                     As for vectors, multi-dimensional arrays provide values in a semicolon separated list. An array is always preceded by a sequence of vectors, containing the dimensions and index values. Which vectors of an array are dimensioning is specified in the respective documentation of the array.
                                                 </ddue:para>
-                                                <ddue:code language="XML" title=" ">&lt;altitude&gt;1000.;2000.;3000.&lt;/altitude&gt; &lt;!-- vector element --&gt;
-    &lt;incrementMaps&gt;
-        &lt;incrementMap uID="incMap_b3ac2"&gt;
-            &lt;controlSurfaceUID&gt;InnerWingFlap&lt;/controlSurfaceUID&gt;
-            &lt;controlParameters&gt;-1;-0.5;0;1&lt;/controlParameters&gt; &lt;!-- vector element --&gt;
-                &lt;!-- array of dimension length(altitude) x length(controlParameters): --&gt;
-                &lt;dcl&gt;11.;12.;13.;14.;21.;22.;23.;24.;31.;32.;33.;34.&lt;/dcl&gt;
-                                                </ddue:code>
+                                                <ddue:code language="XML" title="Usage of a CPACS array element">
+			                                        <![CDATA[
+<altitude>1000.;2000.;3000.</altitude> <!-- vector element -->
+    <incrementMaps>
+        <incrementMap uID="incMap_b3ac2">
+            <controlSurfaceUID>InnerWingFlap</controlSurfaceUID>
+            <controlParameters>-1;-0.5;0;1</controlParameters> <!-- vector element -->
+                <!-- array of dimension length(altitude) x length(controlParameters): -->
+                <dcl>11.;12.;13.;14.;21.;22.;23.;24.;31.;32.;33.;34.</dcl>
+			                                        ]]>
+			                                    </ddue:code>
                                                 <ddue:table>
                                                     <ddue:title>
                                                         <ddue:legacyBold>Values for cl increments:</ddue:legacyBold>
@@ -400,41 +436,44 @@ marko.alder@dlr.de
                                     mandatory to specify a &lt;step&gt; with a &lt;controlParameter&gt; of 0. Consequently, no &lt;controlParameter&gt; must be used twice within
                                     a single &lt;path&gt; definition. Deflection values between two specified steps are handled by linear interpolation.</ddue:para>
                                     <ddue:para>The following example shows the usage of control parameters within a control surface deflection path definition:</ddue:para>
-                                    <ddue:code language="XML" title=" ">&lt;controlSurfaces&gt;
-  &lt;trailingEdgeDevices&gt;
-    &lt;trailingEdgeDevice uID="InnerWingFlap"&gt;
+                                    <ddue:code language="XML" title="Control parameter example">
+                                        <![CDATA[
+<controlSurfaces>
+  <trailingEdgeDevices>
+    <trailingEdgeDevice uID="InnerWingFlap">
       ...
-      &lt;path&gt;
+      <path>
         ...
-        &lt;steps&gt;
-          &lt;step&gt;
-            &lt;controlParameter&gt;-1&lt;/controlParameter&gt;
-            &lt;hingeLineRotation&gt;-20.&lt;/hingeLineRotation&gt;
-          &lt;/step&gt;
-          &lt;step&gt;
-            &lt;controlParameter&gt;-0.5&lt;/controlParameter&gt;
-            &lt;hingeLineRotation&gt;-10.&lt;/hingeLineRotation&gt;
-          &lt;/step&gt;
-          &lt;step&gt;
-            &lt;controlParameter&gt;0&lt;/controlParameter&gt;
-            &lt;hingeLineRotation&gt;0.&lt;/hingeLineRotation&gt;
-          &lt;/step&gt;
-          &lt;step&gt;
-            &lt;controlParameter&gt;1&lt;/controlParameter&gt;
-            &lt;hingeLineRotation&gt;5.&lt;/hingeLineRotation&gt;
-          &lt;/step&gt;
-        &lt;/steps&gt;
+        <steps>
+          <step>
+            <controlParameter>-1</controlParameter>
+            <hingeLineRotation>-20.</hingeLineRotation>
+          </step>
+          <step>
+            <controlParameter>-0.5</controlParameter>
+            <hingeLineRotation>-10.</hingeLineRotation>
+          </step>
+          <step>
+            <controlParameter>0</controlParameter>
+            <hingeLineRotation>0.</hingeLineRotation>
+          </step>
+          <step>
+            <controlParameter>1</controlParameter>
+            <hingeLineRotation>5.</hingeLineRotation>
+          </step>
+        </steps>
         ...
+                                        ]]>
                                     </ddue:code>
                                 </ddue:content>
                             </ddue:section>
                             <ddue:section>
                                 <ddue:title>10. Atmosphere</ddue:title>
                                 <ddue:content>
-                                    <ddue:para>At some places in CPACS, an atmosphere has to be selected (e.g. for connecting an altitude with a certain pressure or density).
-                                      Currently, CPACS does only support a single atmospheric model: The ICAO Standard Atmosphere (ISA) from 1993 (see ICAO Doc 7488/3 'MANUAL OF THE ICAO STANDARD ATMOSPHERE', third edition, 1993)
+                                    <ddue:para>At some places in <ddue:legacyItalic>CPACS</ddue:legacyItalic>, an atmosphere has to be selected (e.g. for connecting an altitude with a certain pressure or density).
+                                      Currently, <ddue:legacyItalic>CPACS</ddue:legacyItalic> does only support a single atmospheric model: The ICAO Standard Atmosphere (ISA) from 1993 (see ICAO Doc 7488/3 'MANUAL OF THE ICAO STANDARD ATMOSPHERE', third edition, 1993)
                                       It covers temperature, pressure, density, speed of sound, dynamic viscosity and kinematic viscosity with respect to altitude.
-                                      In CPACS, 'altitude' means what is called 'geopotential altitude' (H) in the ISA reference document and is given in [m].
+                                      In <ddue:legacyItalic>CPACS</ddue:legacyItalic>, 'altitude' means what is called 'geopotential altitude' (H) in the ISA reference document and is given in [m].
                                       For details, see ISA manual, section 2.3, page E-viii f.
                                       ISA covers a range from -5000 m to 80000 m.</ddue:para>
                                     <ddue:para>Temperature offsets are introduced on top of the definitions in the ISA manual (which does not cover such variations). The offset model
