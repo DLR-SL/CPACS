@@ -447,7 +447,9 @@ marko.alder@dlr.de
                                 <ddue:content>
                                     <ddue:para>Release in September 2021</ddue:para>
                                     <ddue:list class="bullet">
-                                        <ddue:listItem>Rename deployable(s) to store(s) (<ddue:legacyBold>compatibility break</ddue:legacyBold>)</ddue:listItem>
+                                        <ddue:listItem>Stores: add optional reference to aircraftModel to be used as store</ddue:listItem>
+                                        <ddue:listItem>Stores: add typeOfStore string</ddue:listItem>
+                                        <ddue:listItem>Stores: rename deployable(s) to store(s) (<ddue:legacyBold>compatibility break</ddue:legacyBold>)</ddue:listItem>
                                         <ddue:listItem>Rename stationType to typeOfStation and assign the values: internal, external, conformal (<ddue:legacyBold>compatibility break</ddue:legacyBold>)</ddue:listItem>
                                         <ddue:listItem>Extend station by wetStation boolean element</ddue:listItem>
                                         <ddue:listItem>Remove massFraction element from pointPerformanceDefinition and flightPoint</ddue:listItem>
@@ -34098,13 +34100,27 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                 <xsd:sequence>
                     <xsd:element name="name" type="stringBaseType"/>
                     <xsd:element name="description" type="stringBaseType" minOccurs="0"/>
-                    <xsd:element name="segmentUID" type="stringUIDBaseType">
+                    <xsd:sequence minOccurs="0">
                         <xsd:annotation>
                             <xsd:documentation>
-                                Defines at which part of the mission the point performance should be considered - at the end of indicated segment of the mission as defined in <ddue:legacyItalic>performanceCase</ddue:legacyItalic>
+                                Defines at which part of a mission the flightPoint should be considered - at the end of indicated segment of a given mission. Alternatively, a fuelFraction can be defined at the performanceRequirements-node of a vehicle. In the latter case, the flightPoint consideration is mission-independent.
                             </xsd:documentation>
                         </xsd:annotation>
-                    </xsd:element>
+	                    <xsd:element name="missionUID" type="stringUIDBaseType">
+	                        <xsd:annotation>
+	                            <xsd:documentation>
+	                                Mission uID
+	                            </xsd:documentation>
+	                        </xsd:annotation>
+	                    </xsd:element>
+	                    <xsd:element name="segmentUID" type="stringUIDBaseType">
+	                        <xsd:annotation>
+	                            <xsd:documentation>
+	                                Segment uID
+	                            </xsd:documentation>
+	                        </xsd:annotation>
+	                    </xsd:element>
+                    </xsd:sequence>
                     <xsd:element name="altitude" type="doubleBaseType"/>
                     <xsd:choice>
                         <xsd:element name="machNumber" type="doubleBaseType">
@@ -34449,7 +34465,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:extension base="complexBaseType">
                 <xsd:all>
                     <xsd:element name="pylons" minOccurs="0" type="paylonsType"/>
-                    <xsd:element name="deployables" minOccurs="0" type="deployablesType"/>
+                    <xsd:element name="stores" minOccurs="0" type="storesType"/>
                     <xsd:element name="externalTanks" minOccurs="0" type="externalTanksType"/>
                     <xsd:element name="operationalItems" minOccurs="0" type="operationalItemsType"/>
                 </xsd:all>
@@ -34495,7 +34511,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="deployablesType">
+    <xsd:complexType name="storesType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
@@ -34508,7 +34524,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:element name="deployable" maxOccurs="unbounded" type="deployableType"/>
+                    <xsd:element name="store" maxOccurs="unbounded" type="storeType"/>
                 </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
@@ -34573,7 +34589,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="deployableType">
+    <xsd:complexType name="storeType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
@@ -34585,7 +34601,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
-                <xsd:all>
+                <xsd:sequence>
                     <xsd:element name="name" type="stringBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Name</xsd:documentation>
@@ -34596,27 +34612,41 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             <xsd:documentation>Description</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="length" minOccurs="0" type="doubleBaseType">
+                    <xsd:element name="typeOfStore" minOccurs="0" type="stringBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Length [m]</xsd:documentation>
+                            <xsd:documentation>This string describes the type of the store. Be creative and cross fingers the data receiver can interpret it ;-)</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="diameter" minOccurs="0" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Diameter [m]</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="wingSpan" minOccurs="0" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Wing span [m]</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
+                    <xsd:choice>
+                        <xsd:sequence>
+                            <xsd:element name="length" minOccurs="0" type="doubleBaseType">
+                                <xsd:annotation>
+                                    <xsd:documentation>Length [m]</xsd:documentation>
+                                </xsd:annotation>
+                            </xsd:element>
+                            <xsd:element name="diameter" minOccurs="0" type="doubleBaseType">
+                                <xsd:annotation>
+                                    <xsd:documentation>Diameter [m]</xsd:documentation>
+                                </xsd:annotation>
+                            </xsd:element>
+                            <xsd:element name="wingSpan" minOccurs="0" type="doubleBaseType">
+                                <xsd:annotation>
+                                    <xsd:documentation>Wing span [m]</xsd:documentation>
+                                </xsd:annotation>
+                            </xsd:element>
+                        </xsd:sequence>
+                        <xsd:element name="aircraftModelUID" type="stringUIDBaseType">
+                                <xsd:annotation>
+                                    <xsd:documentation>UID reference to a detailed store modeled as aircraft/model</xsd:documentation>
+                                </xsd:annotation>
+                            </xsd:element>
+                    </xsd:choice>
                     <xsd:element name="mass" minOccurs="0" type="doubleBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Mass [kg]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                </xsd:all>
+                </xsd:sequence>
                 <xsd:attribute name="uID" type="xsd:ID" use="required"/>
             </xsd:extension>
         </xsd:complexContent>
