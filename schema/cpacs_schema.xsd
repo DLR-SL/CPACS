@@ -447,7 +447,9 @@ marko.alder@dlr.de
                                 <ddue:content>
                                     <ddue:para>Release in September 2021</ddue:para>
                                     <ddue:list class="bullet">
-                                        <ddue:listItem>remove massFraction element from pointPerformanceDefinition and flightPoint</ddue:listItem>
+                                        <ddue:listItem>Rename stationType to typeOfStation and assign the values: internal, external, conformal (<ddue:legacyBold>compatibility break</ddue:legacyBold>)</ddue:listItem>
+                                        <ddue:listItem>Extend station by wetStation boolean element</ddue:listItem>
+                                        <ddue:listItem>Remove massFraction element from pointPerformanceDefinition and flightPoint</ddue:listItem>
                                         <ddue:listItem>payload stations: add "none" and "inherit" to symmetry attribute</ddue:listItem>
                                         <ddue:listItem>payload: Extend element names by UID if referring to a uID in deployableReferenceType</ddue:listItem>
                                         <ddue:listItem>pointPerformanceDefinition: add pullUp</ddue:listItem>
@@ -34815,20 +34817,26 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             <xsd:documentation>Internal (true|false or 0|1)</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="stationType">
+                    <xsd:element name="typeOfStation">
                         <xsd:annotation>
                             <xsd:documentation>
-                                Station type (dry|wet)
+                                Station type (internal|extrenal|conformal)
                             </xsd:documentation>
                         </xsd:annotation>
                         <xsd:complexType>
                             <xsd:simpleContent>
                                 <xsd:restriction base="stringBaseType">
-                                    <xsd:enumeration value="dry"/>
-                                    <xsd:enumeration value="wet"/>
+                                    <xsd:enumeration value="internal"/>
+                                    <xsd:enumeration value="external"/>
+                                    <xsd:enumeration value="conformal"/>
                                 </xsd:restriction>
                             </xsd:simpleContent>
                         </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="wetStation" minOccurs="0" type="booleanBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Wet station (True|False) or (0|1)</xsd:documentation>
+                        </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="relativeLocation" minOccurs="0" type="pointXYZType">
                         <xsd:annotation>
