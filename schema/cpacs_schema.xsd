@@ -453,9 +453,12 @@ marko.alder@dlr.de
                                         <ddue:listItem>Stores: rename deployable(s) to store(s) (<ddue:legacyBold>compatibility break</ddue:legacyBold>)</ddue:listItem>
                                         <ddue:listItem>Rename stationType to typeOfStation and assign the values: internal, external, conformal (<ddue:legacyBold>compatibility break</ddue:legacyBold>)</ddue:listItem>
                                         <ddue:listItem>Extend station by wetStation boolean element</ddue:listItem>
-                                        <ddue:listItem>Remove massFraction element from pointPerformanceDefinition and flightPoint</ddue:listItem>
                                         <ddue:listItem>payload stations: add "none" and "inherit" to symmetry attribute</ddue:listItem>
                                         <ddue:listItem>payload: Extend element names by UID if referring to a uID in deployableReferenceType</ddue:listItem>
+                                        <ddue:listItem>flightPoints: replace segmentUID with sequence of missionUID and segmentUID</ddue:listItem>
+                                        <ddue:listItem>flightPoints: remove massFraction</ddue:listItem>
+                                        <ddue:listItem>pointPerformanceDefinition: remove massFraction</ddue:listItem>
+                                        <ddue:listItem>pointPerformanceDefinition: replace segmentUID with sequence of missionUID and segmentUID</ddue:listItem>
                                         <ddue:listItem>pointPerformanceDefinition: add pullUp</ddue:listItem>
                                         <ddue:listItem>pointPerformanceDefinition: remove takeOff, climb, cruise, descent, landing and acceleration  (<ddue:legacyBold>compatibility break</ddue:legacyBold>)</ddue:listItem>
                                         <ddue:listItem>pointPerformanceDefinition: use camelCase-style for all typeOfPointPerformance elements (<ddue:legacyBold>compatibility break</ddue:legacyBold>)</ddue:listItem>
@@ -21516,7 +21519,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
-                <xsd:all>
+                <xsd:sequence>
                     <xsd:element name="name" type="stringBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Name</xsd:documentation>
@@ -21527,18 +21530,23 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             <xsd:documentation>Description</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="segmentUID"
-                        type="stringUIDBaseType">
+                    <xsd:sequence minOccurs="0">
                         <xsd:annotation>
                             <xsd:documentation>
-                                Defines at which part of the mission
-                                the point performance should be
-                                considered - after indicated segment
-                                of the mission as defined in
-                                performanceCase
+                                Defines at which part of a mission the point performance should be considered - at the end of indicated segment of a given mission. Alternatively, a fuelFraction can be defined at the performanceRequirements-node of a vehicle. In the latter case, the flightPoint consideration is pointPerformance-independent.
                             </xsd:documentation>
                         </xsd:annotation>
-                    </xsd:element>
+                        <xsd:element name="missionUID" type="stringUIDBaseType">
+	                        <xsd:annotation>
+	                            <xsd:documentation>Mission uID</xsd:documentation>
+	                        </xsd:annotation>
+	                    </xsd:element>
+	                    <xsd:element name="segmentUID" type="stringUIDBaseType">
+	                        <xsd:annotation>
+	                            <xsd:documentation>Segment uID</xsd:documentation>
+	                        </xsd:annotation>
+	                    </xsd:element>
+	                </xsd:sequence>
                     <xsd:element name="typeOfPointPerformance">
                         <xsd:annotation>
                             <xsd:documentation>
@@ -21564,7 +21572,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:element minOccurs="0" name="constraints"  type="pointPerformanceConstraintsType"/>
                     <xsd:element minOccurs="0" name="requirements"  type="pointPerformanceRequirementsType"/>
                     <xsd:element name="environment" type="environmentType" minOccurs="0"/>
-                </xsd:all>
+                </xsd:sequence>
                 <xsd:attribute name="uID" type="xsd:ID" use="required"/>
             </xsd:extension>
         </xsd:complexContent>
