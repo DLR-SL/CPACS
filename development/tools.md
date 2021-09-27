@@ -3,7 +3,7 @@
 ## Tools
 
 A list of tools connected to CPACS development: 
-- [Eclipse](https://www.eclipse.org/downloads/) including Web Tools Platform (e.g., _Eclipse IDE for Java Developers_)
+- [Eclipse](https://www.eclipse.org/downloads/) including Web Tools Platform (e.g., _Eclipse IDE for Java Developers and Web Developers_)
 - Python including xml libraries
   -- generateDS for Python library
 - Saxon
