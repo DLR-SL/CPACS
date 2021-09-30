@@ -35571,20 +35571,19 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-	                <xsd:element name="nominalLoads" minOccurs="0" type="designPowerCaseType"/>
-	                <xsd:element name="systemTrajectories" minOccurs="0" type="systemTrajectoriesType"/>
-	                <xsd:element name="ataSystemOfftakes" minOccurs="0" type="ataSystemOfftakesType"/>                    
+	                <xsd:element name="powerBreakdown" minOccurs="0" type="powerBreakdownType"/>
+	                <xsd:element name="systemTrajectories" minOccurs="0" type="systemTrajectoriesType"/>                 
                 </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="ataSystemOfftakesType">
+    <xsd:complexType name="powerOfftakeCaseType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>System offtakes w.r.t. ATA chapters along a trajectory</ddue:para>
+                        <ddue:para>Power offtake case</ddue:para>
                     </ddue:summary>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -35592,14 +35591,24 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-	                <xsd:element name="specification" type="ataSystemOfftakesSpecificationType"/>
-	                <xsd:element name="trajectoryOfftakesBreakdown" type="ataSystemOfftakesBreakdownType"/>               
+                    <xsd:element name="name" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Name</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="description" minOccurs="0" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Description</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+	                <xsd:element name="specification" type="trajectoryOfftakesSpecificationType"/>
+	                <xsd:element name="trajectoryOfftakesData" type="trajectoryOfftakesDataType"/>               
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
 
-	<xsd:complexType name="ataSystemOfftakesSpecificationType">
+	<xsd:complexType name="trajectoryOfftakesSpecificationType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
@@ -35622,7 +35631,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="ataSystemOfftakesBreakdownType">
+    <xsd:complexType name="trajectoryOfftakesDataType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
@@ -35635,152 +35644,162 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-	                <xsd:element name="offtakesTotal" type="ataSystemOfftakeType">
+	                <xsd:element name="offtakesTotal" type="trajectoryOfftakeDataType">
                         <xsd:annotation>
                             <xsd:documentation>Sum of all offtakes</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="ata21" minOccurs="0" type="ataSystemOfftakeType">
+                    <xsd:element name="airConditioningAndPressurization" minOccurs="0" type="trajectoryOfftakeDataType">
                         <xsd:annotation>
-                            <xsd:documentation>Offtakes of ATA-21 systems</xsd:documentation>
+                            <xsd:documentation>ATA 21: Air conditioning and pressurization</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="ata22" minOccurs="0" type="ataSystemOfftakeType">
+                    <xsd:element name="autoFlight" minOccurs="0" type="trajectoryOfftakeDataType">
                         <xsd:annotation>
-                            <xsd:documentation>Offtakes of ATA-22 systems</xsd:documentation>
+                            <xsd:documentation>ATA 22: Auto flight</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="ata23" minOccurs="0" type="ataSystemOfftakeType">
+                    <xsd:element name="communications" minOccurs="0" type="trajectoryOfftakeDataType">
                         <xsd:annotation>
-                            <xsd:documentation>Offtakes of ATA-23 systems</xsd:documentation>
+                            <xsd:documentation>ATA 23: Communications</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="ata24" minOccurs="0" type="ataSystemOfftakeType">
+                    <xsd:element name="electricalPower" minOccurs="0" type="trajectoryOfftakeDataType">
                         <xsd:annotation>
-                            <xsd:documentation>Offtakes of ATA-24 systems</xsd:documentation>
+                            <xsd:documentation>ATA 24: Electrical power</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="ata25" minOccurs="0" type="ataSystemOfftakeType">
+                    <xsd:element name="equipmentFurnishings" minOccurs="0" type="trajectoryOfftakeDataType">
                         <xsd:annotation>
-                            <xsd:documentation>Offtakes of ATA-25 systems</xsd:documentation>
+                            <xsd:documentation>ATA 25: Equipment/furnishings</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="ata26" minOccurs="0" type="ataSystemOfftakeType">
+                    <xsd:element name="fireProtection" minOccurs="0" type="trajectoryOfftakeDataType">
                         <xsd:annotation>
-                            <xsd:documentation>Offtakes of ATA-26 systems</xsd:documentation>
+                            <xsd:documentation>ATA 26: Fire protection</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="ata27" minOccurs="0" type="ataSystemOfftakeType">
+                    <xsd:element name="flightControls" minOccurs="0" type="trajectoryOfftakeDataType">
                         <xsd:annotation>
-                            <xsd:documentation>Offtakes of ATA-27 systems</xsd:documentation>
+                            <xsd:documentation>ATA 27: Flight controls</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="ata28" minOccurs="0" type="ataSystemOfftakeType">
+                    <xsd:element name="fuel" minOccurs="0" type="trajectoryOfftakeDataType">
                         <xsd:annotation>
-                            <xsd:documentation>Offtakes of ATA-28 systems</xsd:documentation>
+                            <xsd:documentation>ATA 28: Fuel</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="ata29" minOccurs="0" type="ataSystemOfftakeType">
+                    <xsd:element name="hydraulicPower" minOccurs="0" type="trajectoryOfftakeDataType">
                         <xsd:annotation>
-                            <xsd:documentation>Offtakes of ATA-29 systems</xsd:documentation>
+                            <xsd:documentation>ATA 29: Hydraulic power</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="ata30" minOccurs="0" type="ataSystemOfftakeType">
+                    <xsd:element name="iceAndRainProtection" minOccurs="0" type="trajectoryOfftakeDataType">
                         <xsd:annotation>
-                            <xsd:documentation>Offtakes of ATA-30 systems</xsd:documentation>
+                            <xsd:documentation>ATA 30: Ice andn rain protection</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="ata31" minOccurs="0" type="ataSystemOfftakeType">
+                    <xsd:element name="indicatingRecordingSystems" minOccurs="0" type="trajectoryOfftakeDataType">
                         <xsd:annotation>
-                            <xsd:documentation>Offtakes of ATA-31 systems</xsd:documentation>
+                            <xsd:documentation>ATA 31: Indicating/recording systems</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="ata32" minOccurs="0" type="ataSystemOfftakeType">
+                    <xsd:element name="landingGear" minOccurs="0" type="trajectoryOfftakeDataType">
                         <xsd:annotation>
-                            <xsd:documentation>Offtakes of ATA-32 systems</xsd:documentation>
+                            <xsd:documentation>ATA 32: Landing gear</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="ata33" minOccurs="0" type="ataSystemOfftakeType">
+                    <xsd:element name="lights" minOccurs="0" type="trajectoryOfftakeDataType">
                         <xsd:annotation>
-                            <xsd:documentation>Offtakes of ATA-33 systems</xsd:documentation>
+                            <xsd:documentation>ATA 33: Lights</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="ata34" minOccurs="0" type="ataSystemOfftakeType">
+                    <xsd:element name="navigation" minOccurs="0" type="trajectoryOfftakeDataType">
                         <xsd:annotation>
-                            <xsd:documentation>Offtakes of ATA-34 systems</xsd:documentation>
+                            <xsd:documentation>ATA 34: Navigation</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="ata35" minOccurs="0" type="ataSystemOfftakeType">
+                    <xsd:element name="oxygen" minOccurs="0" type="trajectoryOfftakeDataType">
                         <xsd:annotation>
-                            <xsd:documentation>Offtakes of ATA-35 systems</xsd:documentation>
+                            <xsd:documentation>ATA 35: Oxygen</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="ata36" minOccurs="0" type="ataSystemOfftakeType">
+                    <xsd:element name="pneumatic" minOccurs="0" type="trajectoryOfftakeDataType">
                         <xsd:annotation>
-                            <xsd:documentation>Offtakes of ATA-36 systems</xsd:documentation>
+                            <xsd:documentation>ATA 36: Pneumatic</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="ata37" minOccurs="0" type="ataSystemOfftakeType">
+                    <xsd:element name="vacuum" minOccurs="0" type="trajectoryOfftakeDataType">
                         <xsd:annotation>
-                            <xsd:documentation>Offtakes of ATA-37 systems</xsd:documentation>
+                            <xsd:documentation>ATA 37: Vacuum</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="ata38" minOccurs="0" type="ataSystemOfftakeType">
+                    <xsd:element name="waterWaste" minOccurs="0" type="trajectoryOfftakeDataType">
                         <xsd:annotation>
-                            <xsd:documentation>Offtakes of ATA-38 systems</xsd:documentation>
+                            <xsd:documentation>ATA 38: Water/waste</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="ata45" minOccurs="0" type="ataSystemOfftakeType">
+                    <xsd:element name="cabinSystems" minOccurs="0" type="trajectoryOfftakeDataType">
                         <xsd:annotation>
-                            <xsd:documentation>Offtakes of ATA-45 systems</xsd:documentation>
+                            <xsd:documentation>ATA 44: Cabin systems</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="ata46" minOccurs="0" type="ataSystemOfftakeType">
+                    <xsd:element name="centralMaintenanceSystem" minOccurs="0" type="trajectoryOfftakeDataType">
                         <xsd:annotation>
-                            <xsd:documentation>Offtakes of ATA-46 systems</xsd:documentation>
+                            <xsd:documentation>ATA 45: Central maintenance system</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="ata49" minOccurs="0" type="ataSystemOfftakeType">
+                    <xsd:element name="systemsIntegrationAndDisplay" minOccurs="0" type="trajectoryOfftakeDataType">
                         <xsd:annotation>
-                            <xsd:documentation>Offtakes of ATA-49 systems</xsd:documentation>
+                            <xsd:documentation>ATA 46: Systems integration and display, Information system</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="ata52" minOccurs="0" type="ataSystemOfftakeType">
+                    <xsd:element name="airborneAuxiliaryPower" minOccurs="0" type="trajectoryOfftakeDataType">
                         <xsd:annotation>
-                            <xsd:documentation>Offtakes of ATA-52 systems</xsd:documentation>
+                            <xsd:documentation>ATA 49: Airborne auxiliary power</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="ata73" minOccurs="0" type="ataSystemOfftakeType">
+                    <xsd:element name="cargoAndAcessoryCompartments" minOccurs="0" type="trajectoryOfftakeDataType">
                         <xsd:annotation>
-                            <xsd:documentation>Offtakes of ATA-73 systems</xsd:documentation>
+                            <xsd:documentation>ATA 50: Cargo and accessory compartment</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="ata74" minOccurs="0" type="ataSystemOfftakeType">
+                    <xsd:element name="doors" minOccurs="0" type="trajectoryOfftakeDataType">
                         <xsd:annotation>
-                            <xsd:documentation>Offtakes of ATA-74 systems</xsd:documentation>
+                            <xsd:documentation>ATA 52: Doors</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="ata76" minOccurs="0" type="ataSystemOfftakeType">
+                    <xsd:element name="engineFuelAndControl" minOccurs="0" type="trajectoryOfftakeDataType">
                         <xsd:annotation>
-                            <xsd:documentation>Offtakes of ATA-76 systems</xsd:documentation>
+                            <xsd:documentation>ATA 73: Engine fuel and control</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="ata77" minOccurs="0" type="ataSystemOfftakeType">
+                    <xsd:element name="ignition" minOccurs="0" type="trajectoryOfftakeDataType">
                         <xsd:annotation>
-                            <xsd:documentation>Offtakes of ATA-77 systems</xsd:documentation>
+                            <xsd:documentation>ATA 74: Ignition</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="ata78" minOccurs="0" type="ataSystemOfftakeType">
+                    <xsd:element name="engineControls" minOccurs="0" type="trajectoryOfftakeDataType">
                         <xsd:annotation>
-                            <xsd:documentation>Offtakes of ATA-78 systems</xsd:documentation>
+                            <xsd:documentation>ATA 76: Engine controls</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="ata80" minOccurs="0" type="ataSystemOfftakeType">
+                    <xsd:element name="engineIndicating" minOccurs="0" type="trajectoryOfftakeDataType">
                         <xsd:annotation>
-                            <xsd:documentation>Offtakes of ATA-80 systems</xsd:documentation>
+                            <xsd:documentation>ATA 77: Engine indicating</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="remainingContributions" minOccurs="0" type="ataSystemOfftakeRemainingContributionsType">
+                    <xsd:element name="exhaust" minOccurs="0" type="trajectoryOfftakeDataType">
+                        <xsd:annotation>
+                            <xsd:documentation>ATA 78: Exhaust</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="starting" minOccurs="0" type="trajectoryOfftakeDataType">
+                        <xsd:annotation>
+                            <xsd:documentation>ATA 80: Starting</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="remainingContributions" minOccurs="0" type="trajectoryOfftakeRemainingContributionsType">
                         <xsd:annotation>
                             <xsd:documentation>Remaining contributions</xsd:documentation>
                         </xsd:annotation>
@@ -35790,7 +35809,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="ataSystemOfftakeType">
+    <xsd:complexType name="trajectoryOfftakeDataType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
@@ -35803,17 +35822,17 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                	<xsd:element name="electric" minOccurs="0" type="doubleVectorBaseType">
+                	<xsd:element name="electricPower" minOccurs="0" type="doubleVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Electric power [W]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                	<xsd:element name="hydraulic" minOccurs="0" type="doubleVectorBaseType">
+                	<xsd:element name="hydraulicPower" minOccurs="0" type="doubleVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Hydraulic power [W]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                	<xsd:element name="bleed" minOccurs="0" type="doubleVectorBaseType">
+                	<xsd:element name="bleedAir" minOccurs="0" type="doubleVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Bleed air [kg/s]</xsd:documentation>
                         </xsd:annotation>
@@ -35823,7 +35842,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="ataSystemOfftakeRemainingContributionsType">
+    <xsd:complexType name="trajectoryOfftakeRemainingContributionsType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
@@ -35836,13 +35855,13 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                	<xsd:element name="remainingContribution" maxOccurs="unbounded" type="ataSystemOfftakeRemainingContributionType"></xsd:element>
+                	<xsd:element name="remainingContribution" maxOccurs="unbounded" type="trajectoryOfftakeRemainingContributionType"></xsd:element>
                 </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="ataSystemOfftakeRemainingContributionType">
+    <xsd:complexType name="trajectoryOfftakeRemainingContributionType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
@@ -35853,8 +35872,8 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             </xsd:appinfo>
         </xsd:annotation>
         <xsd:complexContent>
-            <xsd:extension base="systemAnalysesType">
-                <xsd:sequence>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
                 	<xsd:element name="name" type="stringBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Name</xsd:documentation>
@@ -35865,737 +35884,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             <xsd:documentation>Description</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                </xsd:sequence>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-    
-    <xsd:complexType name="powerBreakdownType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Nominal power values</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>
-                        A breakdown of nominal power values of systems.
-                        </ddue:para>  
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="designPowerCases" minOccurs="0" type="nominalLoadsType"/>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-	<xsd:complexType name="nominalLoadsType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Nominal (design) loads</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element name="designPowerCase" maxOccurs="unbounded" type="designPowerCaseType"/>
-                </xsd:sequence>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="designPowerCaseType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Design power case</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>
-                        Design power case
-                        </ddue:para>  
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="specification" type="stringBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Specifcation (tbd)</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="nominalLoadsBreakdown" type="nominalLoadsBreakdownType"/>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-	<xsd:complexType name="nominalLoadsBreakdownType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Breakdown of nominal loads (currently only for secondary power systems)</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="powerValues" type="powerValuesType"/>
-                    <xsd:element name="actuation" minOccurs="0" type="powerBreakdownActuationType"/>
-                    <xsd:element name="environmentalControlProtection" minOccurs="0" type="powerBreakdownEnvContProtType"/>
-                    <xsd:element name="avionics" minOccurs="0" type="powerBreakdownAvionicsType"/>
-                    <xsd:element name="payload" minOccurs="0" type="powerBreakdownPayloadType"/>
-                    <xsd:element name="fuel" minOccurs="0" type="powerBreakdownFuelType"/>
-                    <xsd:element name="electricSystem" minOccurs="0" type="powerBreakdownGenDistType">
-                        <xsd:annotation>
-                            <xsd:documentation>Electric system</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="hydraulicSystem" minOccurs="0" type="powerBreakdownGenDistType">
-                        <xsd:annotation>
-                            <xsd:documentation>Hydraulic system</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="pneumaticSystem" minOccurs="0" type="powerBreakdownGenDistType">
-                        <xsd:annotation>
-                            <xsd:documentation>Pneumatic system</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="remainingContributions" minOccurs="0" type="powerBreakdownRemainingContributionsType"/>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-    
-    <xsd:complexType name="powerBreakdownRemainingContributionsType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Remaining contributions</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element name="remainingContribution" maxOccurs="unbounded" type="powerBreakdownRemainingContributionType"/>
-                </xsd:sequence>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-    
-    <xsd:complexType name="powerBreakdownRemainingContributionType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Remaining contribution</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="name" type="stringBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Name</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="description" minOccurs="0" type="stringBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Description</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="powerValues" type="powerValuesType"/>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-    
-    <xsd:complexType name="powerBreakdownFuelType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Fuel</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="powerValues" type="powerValuesType"/>
-                    <xsd:element name="distribution" minOccurs="0" type="powerBreakdownGenericType">
-                        <xsd:annotation>
-                            <xsd:documentation>Distribution</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="conditioning" minOccurs="0" type="powerBreakdownGenericType">
-                        <xsd:annotation>
-                            <xsd:documentation>Conditioning</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="remainingContributions" minOccurs="0" type="powerBreakdownRemainingContributionsType"/>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-    
-    <xsd:complexType name="powerBreakdownPayloadType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Payload</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="powerValues" type="powerValuesType"/>
-                    <xsd:element name="cabin" minOccurs="0" type="powerBreakdownCabinType"/>
-                    <xsd:element name="cargo" minOccurs="0" type="powerBreakdownCargoType"/>
-                    <xsd:element name="remainingContributions" minOccurs="0" type="powerBreakdownRemainingContributionsType"/>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-    
-    <xsd:complexType name="powerBreakdownCabinType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Cabin</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="powerValues" type="powerValuesType"/>
-                    <xsd:element name="galleys" minOccurs="0" type="powerBreakdownGenericType">
-                        <xsd:annotation>
-                            <xsd:documentation>Galleys</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="lavatories" minOccurs="0" type="powerBreakdownGenericType">
-                        <xsd:annotation>
-                            <xsd:documentation>Lavatories</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="inflightEntertainment" minOccurs="0" type="powerBreakdownGenericType">
-                        <xsd:annotation>
-                            <xsd:documentation>Inflight entertainment</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="passengers" minOccurs="0" type="powerBreakdownGenericType">
-                        <xsd:annotation>
-                            <xsd:documentation>Passengers</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="remainingContributions" minOccurs="0" type="powerBreakdownRemainingContributionsType"/>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-    
-    <xsd:complexType name="powerBreakdownCargoType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Cargo</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="powerValues" type="powerValuesType"/>
-                    <xsd:element name="cargoHandling" minOccurs="0" type="powerBreakdownGenericType">
-                        <xsd:annotation>
-                            <xsd:documentation>Cargo Handling</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="waterWaste" minOccurs="0" type="powerBreakdownGenericType">
-                        <xsd:annotation>
-                            <xsd:documentation>Water waste</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="inflightEntertainment" minOccurs="0" type="powerBreakdownGenericType">
-                        <xsd:annotation>
-                            <xsd:documentation>Inflight entertainment</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="passengers" minOccurs="0" type="powerBreakdownGenericType">
-                        <xsd:annotation>
-                            <xsd:documentation>Passengers</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="remainingContributions" minOccurs="0" type="powerBreakdownRemainingContributionsType"/>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-    
-    <xsd:complexType name="powerBreakdownAvionicsType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Avionics</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="powerValues" type="powerValuesType"/>
-                    <xsd:element name="indicatingRecording" minOccurs="0" type="powerBreakdownGenericType">
-                        <xsd:annotation>
-                            <xsd:documentation>Indicating recording</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="autoFlight" minOccurs="0" type="powerBreakdownGenericType">
-                        <xsd:annotation>
-                            <xsd:documentation>Auto flight</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="nav" minOccurs="0" type="powerBreakdownGenericType">
-                        <xsd:annotation>
-                            <xsd:documentation>Navigation</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="com" minOccurs="0" type="powerBreakdownGenericType">
-                        <xsd:annotation>
-                            <xsd:documentation>Communication</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="remainingContributions" minOccurs="0" type="powerBreakdownRemainingContributionsType"/>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-    
-    <xsd:complexType name="powerBreakdownActuationType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Actuation</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="powerValues" type="powerValuesType"/>
-                    <xsd:element name="flightControls" minOccurs="0" type="powerBreakdownFlightControlsType"/>
-                    <xsd:element name="landingGears" minOccurs="0" type="powerBreakdownLandingGearsType"/>
-                    <xsd:element name="doors" minOccurs="0" type="powerBreakdownDoorsType"/>
-                    <xsd:element name="remainingContributions" minOccurs="0" type="powerBreakdownRemainingContributionsType"/>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-    
-    <xsd:complexType name="powerBreakdownEnvContProtType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Environmental control protection</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="powerValues" type="powerValuesType"/>
-                    <xsd:element name="airConditionPressurization" minOccurs="0" type="powerBreakdownGenDistType">
-                        <xsd:annotation>
-                            <xsd:documentation>Air conditioning pressurization</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="iceRainProtection" minOccurs="0" type="powerBreakdownIceRainProtectionType"/>
-                    <xsd:element name="lighting" minOccurs="0" type="powerBreakdownLightingType"/>
-                    <xsd:element name="remainingContributions" minOccurs="0" type="powerBreakdownRemainingContributionsType"/>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-    
-    <xsd:complexType name="powerBreakdownGenDistType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Power breakdown into generation and distribution</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="powerValues" type="powerValuesType"/>
-                    <xsd:element name="generation" minOccurs="0" type="powerBreakdownGenericType">
-                        <xsd:annotation>
-                            <xsd:documentation>Generation</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="distribution" minOccurs="0" type="powerBreakdownGenericType">
-                        <xsd:annotation>
-                            <xsd:documentation>Distribution</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="remainingContributions" minOccurs="0" type="powerBreakdownRemainingContributionsType"/>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-    
-    <xsd:complexType name="powerBreakdownIceRainProtectionType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Ice and rain protection</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="powerValues" type="powerValuesType"/>
-                    <xsd:element name="wing" minOccurs="0" type="powerBreakdownGenericType">
-                        <xsd:annotation>
-                            <xsd:documentation>Wing</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="airIntakes" minOccurs="0" type="powerBreakdownGenericType">
-                        <xsd:annotation>
-                            <xsd:documentation>Air intakes</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="remainingContributions" minOccurs="0" type="powerBreakdownRemainingContributionsType"/>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-    
-    <xsd:complexType name="powerBreakdownLightingType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Lighting</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="powerValues" type="powerValuesType"/>
-                    <xsd:element name="flightDeck" minOccurs="0" type="powerBreakdownGenericType">
-                        <xsd:annotation>
-                            <xsd:documentation>Flight decks</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="cabin" minOccurs="0" type="powerBreakdownGenericType">
-                        <xsd:annotation>
-                            <xsd:documentation>Cabin</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="cargo" minOccurs="0" type="powerBreakdownGenericType">
-                        <xsd:annotation>
-                            <xsd:documentation>Cargo</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="exterior" minOccurs="0" type="powerBreakdownGenericType">
-                        <xsd:annotation>
-                            <xsd:documentation>Exterior</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="emergency" minOccurs="0" type="powerBreakdownGenericType">
-                        <xsd:annotation>
-                            <xsd:documentation>Emergency</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="remainingContributions" minOccurs="0" type="powerBreakdownRemainingContributionsType"/>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-    
-    <xsd:complexType name="powerBreakdownFlightControlsType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Flight controls</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="powerValues" type="powerValuesType"/>
-                    <xsd:element name="pitch" minOccurs="0" type="powerBreakdownGenericType">
-                        <xsd:annotation>
-                            <xsd:documentation>Pitch</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="roll" minOccurs="0" type="powerBreakdownGenericType">
-                        <xsd:annotation>
-                            <xsd:documentation>Roll</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="yaw" minOccurs="0" type="powerBreakdownGenericType">
-                        <xsd:annotation>
-                            <xsd:documentation>Yaw</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="highLift" minOccurs="0" type="powerBreakdownGenericType">
-                        <xsd:annotation>
-                            <xsd:documentation>High lift</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="airBraking" minOccurs="0" type="powerBreakdownGenericType">
-                        <xsd:annotation>
-                            <xsd:documentation>Air braking</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="remainingContributions" minOccurs="0" type="powerBreakdownRemainingContributionsType"/>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-    
-    <xsd:complexType name="powerBreakdownLandingGearsType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Landing gears</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="powerValues" type="powerValuesType"/>
-                    <xsd:element name="extractionRetraction" minOccurs="0" type="powerBreakdownGenericType">
-                        <xsd:annotation>
-                            <xsd:documentation>Extraction and Retraction</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="steering" minOccurs="0" type="powerBreakdownGenericType">
-                        <xsd:annotation>
-                            <xsd:documentation>Steering</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="braking" minOccurs="0" type="powerBreakdownGenericType">
-                        <xsd:annotation>
-                            <xsd:documentation>Braking</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="remainingContributions" minOccurs="0" type="powerBreakdownRemainingContributionsType"/>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-    
-    <xsd:complexType name="powerBreakdownDoorsType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Doors</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="powerValues" type="powerValuesType"/>
-                    <xsd:element name="cargo" minOccurs="0" type="powerBreakdownGenericType">
-                        <xsd:annotation>
-                            <xsd:documentation>Cargo</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="landingGearBay" minOccurs="0" type="powerBreakdownGenericType">
-                        <xsd:annotation>
-                            <xsd:documentation>Landing gear bay</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="remainingContributions" minOccurs="0" type="powerBreakdownRemainingContributionsType"/>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-    
-    <xsd:complexType name="powerBreakdownGenericType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Generic power breakdown</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="powerValues" type="powerValuesType"/>
-                    <xsd:element name="components" minOccurs="0" type="powerBreakdownComponentsType"/>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-   
-    <xsd:complexType name="powerBreakdownComponentsType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Components</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element name="component" maxOccurs="unbounded" type="powerBreakdownComponentType"/>
-                </xsd:sequence>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-     
-    <xsd:complexType name="powerBreakdownComponentType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Component</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element name="name" type="stringBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Name</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="description" minOccurs="0"  type="stringBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Description</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="powerValues" type="powerValuesType">
-                        <xsd:annotation>
-                            <xsd:documentation>Nominal power values on component level</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:choice minOccurs="0">
-                    	<xsd:element name="componentUID" type="stringUIDBaseType">
-	                        <xsd:annotation>
-	                            <xsd:documentation>Reference to component uID</xsd:documentation>
-	                        </xsd:annotation>
-	                    </xsd:element>
-	                    <xsd:sequence>
-	                    	<xsd:element minOccurs="0" name="parentUID" type="stringUIDBaseType">
-	                        <xsd:annotation>
-	                            <xsd:documentation>Parent uID (default: coordinate system of the highest level element)</xsd:documentation>
-	                        </xsd:annotation>
-	                    </xsd:element>
-	                    <xsd:element name="location" type="pointType">
-	                        <xsd:annotation>
-	                            <xsd:documentation>Location</xsd:documentation>
-	                        </xsd:annotation>
-	                    </xsd:element>
-	                    </xsd:sequence>
-                    </xsd:choice>
-                </xsd:sequence>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="powerValuesType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Sum of nominal power values</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="electricPower" minOccurs="0" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Electric power [W]</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="hydraulicPower" minOccurs="0" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Hydraulic power [W]</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="pneumaticPower" minOccurs="0" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Hydraulic power [W]</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="mechanicPower" minOccurs="0" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Hydraulic power [W]</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="thermalPower" minOccurs="0" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Hydraulic power [W]</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
+                    <xsd:element name="offtakeValues" type="trajectoryOfftakeDataType"/>
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
@@ -37092,6 +36381,440 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     </xsd:choice>
                 </xsd:sequence>
                  <xsd:attribute name="uID" type="xsd:ID" use="required"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="powerBreakdownType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Breakdown of nominal power values</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>
+                        A breakdown of nominal power values of systems.
+                        </ddue:para>  
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="designPowerCases" minOccurs="0" type="designPowerCasesType"/>
+                    <xsd:element name="powerOfftakeCases" minOccurs="0" type="powerOfftakeCasesType"/>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+	<xsd:complexType name="powerOfftakeCasesType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Power offtake cases</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="powerOfftakeCase" maxOccurs="unbounded" type="powerOfftakeCaseType"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+	<xsd:complexType name="designPowerCasesType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Design power cases</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>
+                        Design power cases
+                        </ddue:para>  
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="designPowerCase" maxOccurs="unbounded" type="designPowerCaseType"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="designPowerCaseType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Design power case</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>
+                        Design power case
+                        </ddue:para>  
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="name" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Name</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="description" minOccurs="0"  type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Description</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="specification" type="designPowerCaseSpecification"/>
+                    <xsd:element name="airframeSystemsData" type="airframeSystemsDataType"/>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+	<xsd:complexType name="designPowerCaseSpecification">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Specification of the design power case</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="trajectoryUID" minOccurs="0" type="stringUIDBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>UID of the corresponding trajectory</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+	<xsd:complexType name="airframeSystemsDataType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Airframe systems data</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="airConditioningAndPressurization" minOccurs="0" type="airframeSystemsBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>ATA 21: Air conditioning and pressurization (Environmental control)</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="autoFlight" minOccurs="0" type="airframeSystemsBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>ATA 22: Auto flight</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="communications" minOccurs="0" type="airframeSystemsBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>ATA 23: Communications</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="electricalPower" minOccurs="0" type="airframeSystemsBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>ATA 24: Electrical power</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="equipmentFurnishings" minOccurs="0" type="airframeSystemsBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>ATA 25: Equipment/furnishings</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="fireProtection" minOccurs="0" type="airframeSystemsBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>ATA 26: Fire protection</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="flightControls" minOccurs="0" type="airframeSystemsBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>ATA 27: Flight controls</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="fuel" minOccurs="0" type="airframeSystemsBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>ATA 28: Fuel</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="hydraulicPower" minOccurs="0" type="airframeSystemsBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>ATA 29: Hydraulic power</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="iceAndRainProtection" minOccurs="0" type="airframeSystemsBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>ATA 30: Ice and rain protection</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="indicatingRecordingSystem" minOccurs="0" type="airframeSystemsBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>ATA 31: Indicating/recording systems </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="landingGear" minOccurs="0" type="airframeSystemsBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>ATA 32: Landing gear</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="lights" minOccurs="0" type="airframeSystemsBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>ATA 33: Lights</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="navigation" minOccurs="0" type="airframeSystemsBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>ATA 34: Navigation</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="oxygen" minOccurs="0" type="airframeSystemsBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>ATA 35: Oxygen</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="pneumatic" minOccurs="0" type="airframeSystemsBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>ATA 36: Pneumatic</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="waterWaste" minOccurs="0" type="airframeSystemsBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>ATA 38: Water/waste</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="cabinSystems" minOccurs="0" type="airframeSystemsBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>ATA 44: Cabin systems</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="airborneAuxiliaryPower" minOccurs="0" type="airframeSystemsBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>ATA 49: Airborne auxiliary power</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="cargoAndAcessoryCompartments" minOccurs="0" type="airframeSystemsBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>ATA 50: Cargo and accessory compartment</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="remainingContributions" minOccurs="0" type="powerBreakdownContributionsType">
+                        <xsd:annotation>
+                            <xsd:documentation>Remaining contributions</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="powerBreakdownContributionsType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Airframe systems basic description</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="remainingContribuion" maxOccurs="unbounded" type="airframeSystemsBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Remaining contribution</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+	<xsd:complexType name="airframeSystemsBaseType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Airframe systems basic description</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="description" minOccurs="0"  type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Description</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="powerValues" type="powerValuesType"/>
+                    <xsd:element name="components" type="airframeSystemsComponentsType"/>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+ 
+    <xsd:complexType name="powerValuesType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Power values</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="electricPower" minOccurs="0" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Electric power [W]</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="hydraulicPower" minOccurs="0" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Hydraulic power [W]</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="pneumaticPower" minOccurs="0" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Pneumatic power [W]</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="mechanicalPower" minOccurs="0" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Mechanical power [W]</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="thermalPower" minOccurs="0" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Thermal power [W]</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>	
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="airframeSystemsComponentsType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Components</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="component" maxOccurs="unbounded" type="airframeSystemsComponentType"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="airframeSystemsComponentType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Component</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="name" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Name</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="description" minOccurs="0"  type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Description</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="powerValues" type="powerValuesType"/>
+                    <xsd:element name="location" minOccurs="0" type="componentLocationType"/>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="componentLocationType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Location</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:choice>
+                    <xsd:element name="componentUID" type="stringUIDBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>UID of the component as specified in [..]/model/systems/genericSystems/genericSystem</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:sequence>
+                    	<xsd:element minOccurs="0" name="parentUID" type="stringUIDBaseType">
+	                        <xsd:annotation>
+	                            <xsd:documentation>UID of the geometric parent (e.g., fuselage, wing, deck) to which the coordinates apply. If the element is not specified, the coordinates refer to the CPACS global coordinate system.</xsd:documentation>
+	                        </xsd:annotation>
+	                    </xsd:element>
+                    	<xsd:element name="x" type="doubleBaseType">
+	                        <xsd:annotation>
+	                            <xsd:documentation>Position in x-direction</xsd:documentation>
+	                        </xsd:annotation>
+	                    </xsd:element>
+                    	<xsd:element name="y" minOccurs="0" type="doubleBaseType">
+	                        <xsd:annotation>
+	                            <xsd:documentation>Position in y-direction</xsd:documentation>
+	                        </xsd:annotation>
+	                    </xsd:element>
+                    	<xsd:element name="z" minOccurs="0" type="doubleBaseType">
+	                        <xsd:annotation>
+	                            <xsd:documentation>Position in z-direction</xsd:documentation>
+	                        </xsd:annotation>
+	                    </xsd:element>
+                    </xsd:sequence>
+                </xsd:choice>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
