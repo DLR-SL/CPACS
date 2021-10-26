@@ -310,7 +310,47 @@ marko.alder@dlr.de
                                 </ddue:content>
                             </ddue:section>
                             <ddue:section>
-                                <ddue:title>7. Symmetry</ddue:title>
+                                <ddue:title>7. Usage of <ddue:legacyItalic>name</ddue:legacyItalic>, <ddue:legacyItalic>description</ddue:legacyItalic> and <ddue:legacyItalic>uID</ddue:legacyItalic></ddue:title>
+                                <ddue:content>
+                                    <ddue:para>CPACS is designed to serve as a central data exchange format in fully automated process chains.
+                                        A key requirement is therefore that tools can automatically read and process an incoming CPACS file.
+                                        A second requirement is that users can interpret the data set.
+                                        To address both requirements, the following usage of the <ddue:codeInline>name</ddue:codeInline> and <ddue:codeInline>description</ddue:codeInline> elements in combination with the <ddue:codeInline>uID</ddue:codeInline> attribute is proposed:</ddue:para>
+                                       <ddue:list class="bullet">
+                                           <ddue:listItem>
+                                               <ddue:para><ddue:legacyBold>name</ddue:legacyBold>: A specification of the <ddue:codeInline>name</ddue:codeInline> element is usually mandatory for sequences of elements (e.g., if max occurence is unbounded <ddue:legacyItalic>[1..*]</ddue:legacyItalic>).
+                                                   Typical examples are <ddue:codeInline>wings/wing</ddue:codeInline>, <ddue:codeInline>aeroPerformance/aeroMap</ddue:codeInline> or <ddue:codeInline>missions/mission</ddue:codeInline>.
+                                                   Such elements must be able to be listed by tools, especially for visualization and reporting purposes, where the <ddue:codeInline>name</ddue:codeInline> element serves as a <ddue:legacyBold>concise and human-readable</ddue:legacyBold> indicator of the actual meaning of the corresponding element in the list (e.g., which <ddue:legacyItalic>wing</ddue:legacyItalic>, which <ddue:legacyItalic>aeroMap</ddue:legacyItalic>, which <ddue:legacyItalic>mission</ddue:legacyItalic>).
+                                                   This is usually a single word or a small number of words.
+                                               </ddue:para>
+                                           </ddue:listItem>
+                                           <ddue:listItem>
+                                               <ddue:para>
+                                                   <ddue:legacyBold>description</ddue:legacyBold>: This element is usually optional and is used to add <ddue:legacyBold>comprehensive and human-readable</ddue:legacyBold> explanations. This is usually at least one explanatory sentence.
+                                               </ddue:para>
+                                           </ddue:listItem>
+                                           <ddue:listItem>
+                                               <ddue:para>
+                                                   <ddue:legacyBold>uID</ddue:legacyBold>: As described in more detail in Section 6, the <ddue:codeInline>uID</ddue:codeInline> attribute is mainly used for internal referencing of CPACS elements.
+                                                   Further processing software, e.g. <ddue:legacyItalic>TiXI</ddue:legacyItalic> and <ddue:legacyItalic>TiGL</ddue:legacyItalic>, also use the <ddue:codeInline>uID</ddue:codeInline>s to improve the robustness of the data query.
+                                                   Consequently, the <ddue:codeInline>uID</ddue:codeInline> attribute serves as a <ddue:legacyBold>machine-readable</ddue:legacyBold> indicator and does not claim to be interpretable by human users.
+                                                   In some practical use cases, the same string is chosen for <ddue:codeInline>uID</ddue:codeInline> and <ddue:codeInline>name</ddue:codeInline>.
+                                                   However, restrictions on the choice of characters for the <ddue:codeInline>uID</ddue:codeInline> attribute must be considered, for example that no spaces may be used and the <ddue:codeInline>uID</ddue:codeInline> must be unique.
+                                               </ddue:para>
+                                           </ddue:listItem>
+                                       </ddue:list>
+                                    <ddue:code language="XML" title="Example usage of name, description and uID">
+                                        <![CDATA[
+<wing uID="main_wing">
+    <name>Main wing</name>
+    <description>This is the main wing which was designed by my awesome wing sizing design tool. Your tool should not try to read and interpret what I'm writing here as typos are not recognized by XML processors.</description>
+</wing>
+                                        ]]>
+                                    </ddue:code>
+                                </ddue:content>
+                            </ddue:section>
+                            <ddue:section>
+                                <ddue:title>8. Symmetry</ddue:title>
                                 <ddue:content>
                                     <ddue:para>Sometimes it might be useful to specify a part of the aircraft as symmetric instead of holding all the data twice in nearly identical form in the dataset (e.g. left and right wing are usually identical, except for the sign of the y-coordinate). Hence, some parts offer the option to set a symmetry attribute for them, like:</ddue:para>
                                     <ddue:code language="XML" title="Symmetry attribute applied to a wing">
@@ -355,7 +395,7 @@ marko.alder@dlr.de
                                 </ddue:content>
                             </ddue:section>
                             <ddue:section>
-                                <ddue:title>8. Vectors and arrays</ddue:title>
+                                <ddue:title>9. Vectors and arrays</ddue:title>
                                 <ddue:content>
                                     <ddue:para>For large data sets (e.g. increments of aerodynamic coefficients due to control surface deflections) it is advantageous
                                     to map them via vectors and arrays instead of using a sequence of nodes for each data value. Therefore vectors and arrays are defined as semicolon-separated lists in <ddue:legacyItalic>CPACS</ddue:legacyItalic>. Via the documentation (derived from the XSD) of the corresponding nodes it has to be checked whether it is a vector or an array.
@@ -423,7 +463,7 @@ marko.alder@dlr.de
                                 </ddue:content>
                             </ddue:section>
                             <ddue:section>
-                                <ddue:title>9. Control Parameters</ddue:title>
+                                <ddue:title>10. Control Parameters</ddue:title>
                                 <ddue:content>
                                     <ddue:para>Control parameters are abstract parameters, linking a generic floating point value to a certain status of a control device
                                     (e.g. control surface, landing gear, suction system, brake parachute, ...). For control surfaces, such a data pair (control parameter
@@ -468,7 +508,7 @@ marko.alder@dlr.de
                                 </ddue:content>
                             </ddue:section>
                             <ddue:section>
-                                <ddue:title>10. Atmosphere</ddue:title>
+                                <ddue:title>11. Atmosphere</ddue:title>
                                 <ddue:content>
                                     <ddue:para>At some places in <ddue:legacyItalic>CPACS</ddue:legacyItalic>, an atmosphere has to be selected (e.g. for connecting an altitude with a certain pressure or density).
                                       Currently, <ddue:legacyItalic>CPACS</ddue:legacyItalic> does only support a single atmospheric model: The ICAO Standard Atmosphere (ISA) from 1993 (see ICAO Doc 7488/3 'MANUAL OF THE ICAO STANDARD ATMOSPHERE', third edition, 1993)
