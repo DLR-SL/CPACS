@@ -13432,11 +13432,104 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>mass</ddue:para>
+                        <ddue:para>Mass description</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>genericMassType, describing mass, inertia and CoG data.
-                        </ddue:para>
+                        <ddue:content>
+                            <ddue:code language="XML" title="Example 1: all values in global coordinate system">
+                                <![CDATA[
+<massDescription>
+    <mass>
+        ...
+    </mass>
+    <location refType="absGlobal">
+        ...
+    </location>
+    <orientation>
+        ...
+    </orientation>
+    <massInertia>
+        ...
+    </massInertia>
+</massDescription>
+                                ]]>
+                            </ddue:code>
+                            <ddue:code language="XML" title="Example 2: all values in local coordinate system of the parentElement. Since parentUID is not specified, the next higher element in the CPACS hierarchy automatically applies. If this is not given as well, the global coordinate system is applied.">
+                                <![CDATA[
+<massDescription>
+    <mass>
+        ...
+    </mass>
+    <location refType="absLocal">
+        ...
+    </location>
+    <orientation>
+        ...
+    </orientation>
+    <massInertia>
+        ...
+    </massInertia>
+</massDescription>
+                                ]]>
+                            </ddue:code>
+                            <ddue:code language="XML" title="Example 3: all values in local coordinate system of the wing with uID=wingUID">
+                                <![CDATA[
+<massDescription>
+    <parentUID>wingUID</parentUID>
+    <mass>
+        ...
+    </mass>
+    <location refType="absLocal">
+        ...
+    </location>
+    <orientation>
+        ...
+    </orientation>
+    <massInertia>
+        ...
+    </massInertia>
+</massDescription>
+                                ]]>
+                            </ddue:code>
+                            <ddue:code language="XML" title="Example 4: all values in global coordinate system">
+                                <![CDATA[
+<massDescription>
+    <parentUID>wingUID</parentUID>
+    <mass>
+        ...
+    </mass>
+    <location>
+        ...
+    </location>
+    <orientation>
+        ...
+    </orientation>
+    <massInertia>
+        ...
+    </massInertia>
+</massDescription>
+                                ]]>
+                            </ddue:code>
+                            <ddue:code language="XML" title="Example 5: all values in global coordinate system">
+                                <![CDATA[
+<massDescription>
+    <parentUID>wingUID</parentUID>
+    <mass>
+        ...
+    </mass>
+    <location refType="absGlobal">
+        ...
+    </location>
+    <orientation>
+        ...
+    </orientation>
+    <massInertia>
+        ...
+    </massInertia>
+</massDescription>
+                                ]]>
+                            </ddue:code>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -13446,36 +13539,45 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                 <xsd:sequence>
                     <xsd:element minOccurs="0" name="name" type="stringBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>name</xsd:documentation>
+                            <xsd:documentation>Name</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element minOccurs="0" name="description" type="stringBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>description</xsd:documentation>
+                            <xsd:documentation>Description</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element minOccurs="0" name="parentUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>parentUID</xsd:documentation>
+                            <xsd:documentation>UID of the component which serves as parent element, i.e. whose coordinate system is to be used as a reference for the mass properties (CoG location, orientation and massInertia).
+                                If specified (note that this element is optional), it replaces the parent element given by the CPACS hierarchy.
+                            </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="mass" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>mass value</xsd:documentation>
+                            <xsd:documentation>Mass value</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element minOccurs="0" name="location" type="pointType">
+                    <xsd:element minOccurs="0" name="location" type="pointAbsRelType">
                         <xsd:annotation>
-                            <xsd:documentation>mass loaction values (x,y,z)
+                            <xsd:documentation>Mass loaction.
+                                If the optional refType attribute is set, it explicitly specifies whether the location of the mass refers to the global CPACS coordinate system (absGobal) or the local coordinate system of the parent element (absLocal, given by the CPACS hierarchy OR by parentUID).
+                                If refType attribute is not given, then all values refer to the global coordinate system, even though a parentUID might be specified!
+                                To ensure consistency, the same settings apply as well to orientation and massInertia.
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element minOccurs="0" name="orientation" type="pointType">
                         <xsd:annotation>
-                            <xsd:documentation>mass orientation values</xsd:documentation>
+                            <xsd:documentation>Orientation. The reference coordinate system (absGlobal or absLocal) is identical to location.</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element minOccurs="0" name="massInertia" type="massInertiaType"/>
+                    <xsd:element minOccurs="0" name="massInertia" type="massInertiaType">
+                        <xsd:annotation>
+                            <xsd:documentation>Mass intertia. The reference coordinate system (absGlobal or absLocal) is identical to location.</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                 </xsd:sequence>
                 <xsd:attribute name="uID" type="xsd:ID" use="required"/>
             </xsd:extension>
