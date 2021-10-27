@@ -60,11 +60,11 @@ The `name` and `description` elements as well as the `uID` attribute are availab
 
 - **description**: This element should be used as optional occurence to allow users to add **comprehensive and human-readable** explanations. This is usually at least one explanatory sentence.
 
-    - Example usage of a `name` and `description` element, since it is an indefinite sequence of elements. A tool might parse and generate a human-readable list from this:
+    - Example usage of a `name` and `description` element, since it is an indefinite sequence of elements. A tool might then parse and generate a human-readable list from this:
       
-      ![Name_Description](./images/develop_guide_name_description_usage.png)
+      <img src="./images/develop_guide_name_description_usage.png" width="85%">
 
-    - No use of the `name` element, because the meaning is explicitly shown by the node name. The use of the `description` element can nevertheless be useful in some cases:
+    - No for not using of the `name` element, because the meaning is explicitly given by the node name. The use of the `description` element can nevertheless be useful in some cases:
        
       ![No_Name_Description](./images/develop_guide_name_description_usage2.png)
       
