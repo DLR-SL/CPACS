@@ -44,13 +44,34 @@ Furthermore, we should avoid using mathematical symbols or abbreviations as thei
 
 ### Example analysis node
 
-The figure below shows an example of a typical analysis node. A complete analysis case is summarized with `case`. There is no need for a plural parent element `..Cases` if there exists no alternatives. In other words, if `myDiscipline` groups different analysis cases, a plural parent element should be applied (e.g., `flightDynamics`: `trimCases`, `controllabilityCases`, etc.). In addition to a `uID` attribute as well as the usual `name` (obligatory) and `description` (optinoal) elements, a `case` consists of two parts. 
+The figure below shows an example of a typical analysis node. A complete analysis case is summarized with `case`. There is no need for a plural parent element `..Cases` if there exists no alternatives. In other words, if `myDiscipline` groups different analysis cases, a plural parent element should be applied (e.g., `flightDynamics`, `trimCases`, `controllabilityCases`, etc.). In addition to a `uID` attribute as well as the usual `name` (obligatory) and `description` (optinoal) elements, a `case` consists of two parts. 
 
 The first part should be labeld as `specification` and contains the input parameters for the corresponding analysis (since these may represent an output for other disciplines, the name `input` should be avoided at this point; also the term `definition` is a bit too imprecise). There are a few typical elements which should be reused for the specification if it makes sense. This includes an `environment` element of type `environmentType`, which provides an `atmosphericModel` and a corresponding `deltaTemperature`. A node named `configuration` of type `configurationType` provides a `uID` reference to predefined configurations as well as additional individual control devices that can be superposed to this configuration. This set of inputs might be further enriched by own parameters such as `uID` references to existing components or individual parameters based on the simple `baseTypes`. 
 
 The second part contains the actual analysis data and its name should distinguish between `Data` (e.g., `aeroData`, `loadData`) and `Map` (e.g., `aeroPerformanceMap`, `enginePerformanceMap`). 
 
 ![analysisTemplate](./images/analysisTemplate.png)
+
+### "name", "description" and "uID"
+
+The `name` and `description` elements as well as the `uID` attribute are available for referencing and describing new CPACS nodes. The basic meaning of these elements is as follows:
+
+- **name**: A specification of a mandatory name element should be used for sequences of elements (e.g., if max occurence is unbounded [1..\*]). Typical examples are `wings/wing`, `aeroPerformance/aeroMap` or `missions/mission`. Tools should be able to list these nodes, especially for visualization and reporting purposes. Here, the `name` element serves as a **concise and human-readable** indicator of the actual meaning of the corresponding element in the list (e.g., which `wing`, which `aeroMap`, which `mission`). This is usually a single word or a small number of words.
+
+- **description**: This element should be used as optional occurence to allow users to add **comprehensive and human-readable** explanations. This is usually at least one explanatory sentence.
+
+    - Example usage of a `name` and `description` element, since it is an indefinite sequence of elements. A tool might parse and generate a human-readable list from this:
+      
+      ![Name_Description](./images/develop_guide_name_description_usage.png)
+
+    - No use of the `name` element, because the meaning is explicitly shown by the node name. The use of the `description` element can nevertheless be useful in some cases:
+       
+      ![No_Name_Description](./images/develop_guide_name_description_usage2.png)
+      
+
+- **uID**: The `uID` attribute should be mainly used for internal referencing of CPACS elements. Nevertheless, further processing software, e.g. *TiXI* and *TiGL*, also use the uIDs to improve the robustness of the data query. Consequently, the uID attribute should serve as a **machine-readable** indicator and does not claim to be interpretable by human users. It should be mandatory whenever it is clear that the node is highly likely to be linked CPACS internally. If linking via `uID` should potentially be possible but will not use this very often, then the `uID` attribute should be set as optional.
+
+
 
 ### Duplication vs Single Type Reference vs Hidden Changes
 Let us discuss different approaches at the example of introducing a second option for specifying internal wing points by using segment eta xsi coordinates.
