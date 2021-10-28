@@ -62,7 +62,7 @@ The `name` and `description` elements as well as the `uID` attribute are availab
 
     - Example 1: The loadCases are an indefinite sequence of elements and should therefore contain a `name` and `description` element. A tool might parse and generate a human-readable list from this:
       
-      ![Name_Description](./images/develop_guide_name_description_usage.png)
+      <img src="./images/develop_guide_name_description_usage.png" width="85%">
 
     - Example 2: In cases like the `massBreakdown`, the parent element (e.g., `mOEM`) exists only once. An additional `name` element is superfluous at this point, since this is explicitly given via the parameter name (`mOEM`). The use of the `description` element can nevertheless be useful in some cases (not existing in the following example figure; not to be confused with `massDescription`). 
        
