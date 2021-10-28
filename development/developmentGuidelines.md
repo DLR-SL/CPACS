@@ -60,11 +60,11 @@ The `name` and `description` elements as well as the `uID` attribute are availab
 
 - **description**: This element should be used as optional occurence to allow users to add **comprehensive and human-readable** explanations. This is usually at least one explanatory sentence.
 
-    - Example usage of a `name` and `description` element, since it is an indefinite sequence of elements. A tool might parse and generate a human-readable list from this:
+    - Example 1: The loadCases are an indefinite sequence of elements and should therefore contain a `name` and `description` element. A tool might parse and generate a human-readable list from this:
       
       ![Name_Description](./images/develop_guide_name_description_usage.png)
 
-    - No use of the `name` element, because the meaning is explicitly shown by the node name. The use of the `description` element can nevertheless be useful in some cases:
+    - Example 2: In cases like the `massBreakdown`, the parent element (e.g., `mOEM`) exists only once. An additional `name` element is superfluous at this point, since this is explicitly given via the parameter name (`mOEM`). The use of the `description` element can nevertheless be useful in some cases (not existing in the following example figure; not to be confused with `massDescription`). 
        
       ![No_Name_Description](./images/develop_guide_name_description_usage2.png)
       
