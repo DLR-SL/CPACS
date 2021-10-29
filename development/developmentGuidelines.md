@@ -41,7 +41,6 @@ Furthermore, we should avoid using mathematical symbols or abbreviations as thei
 
 ## Development Guidelines by Example
 
-
 ### Example analysis node
 
 The figure below shows an example of a typical analysis node. A complete analysis case is summarized with `case`. There is no need for a plural parent element `..Cases` if there exists no alternatives. In other words, if `myDiscipline` groups different analysis cases, a plural parent element should be applied (e.g., `flightDynamics`, `trimCases`, `controllabilityCases`, etc.). In addition to a `uID` attribute as well as the usual `name` (obligatory) and `description` (optinoal) elements, a `case` consists of two parts. 
@@ -71,6 +70,23 @@ The `name` and `description` elements as well as the `uID` attribute are availab
 
 - **uID**: The `uID` attribute should be mainly used for internal referencing of CPACS elements. Nevertheless, further processing software, e.g. *TiXI* and *TiGL*, also use the uIDs to improve the robustness of the data query. Consequently, the uID attribute should serve as a **machine-readable** indicator and does not claim to be interpretable by human users. It should be mandatory whenever it is clear that the node is highly likely to be linked CPACS internally. If linking via `uID` should potentially be possible but will not use this very often, then the `uID` attribute should be set as optional. It is important to note that the content of the `uID` string is not standardized for the reasons mentioned previously, and tool developers should therefore be advised to refrain from hard-wired `uID` parsing routines (e.g., routines that search for `uID="htp"`). 
 
+### ParentUID
+
+CPACS is a hierarchical data model. There are two approaches to setting up this hierarchy: (1) by the native parent-child relationship of elements in XML and (2) by specifying the hierarchy using the `parentUID` element. 
+
+
+| (1) XML hierarchy | (2) Hierarchy via `parentUID` |
+| ---------- | ---------- |
+| <img src="https://user-images.githubusercontent.com/43143741/139392885-2cd06498-36fa-4acf-b863-5c44c5f6d923.png" width="452"> | <img src="https://user-images.githubusercontent.com/43143741/139392854-a0725308-6e09-4f9d-8c66-e790aa7adf0b.png" width="200">|
+| <ul><li>(+) exlicit and clear data structure</li><li>(+) user-friendly, as intuitive concept</li><li>(-) a different hierarchy can only be realized by choices between explicit hierarches</li></ul> | <ul><li>(+) flexibility for the user </li><li>(-) high risk of incorrect use, since there must always be a top-level main element in a hierarchy. Consequently, the user must specify exactly one element without parentUID, but all others with parentUID. This condition cannot be checked via XSD. </li></ul> |
+| **prefer if**: the hierarchy is clear in advance and should not be changed by the user | **prefer if**: the hierarchy cannot be defined in advance and the flexibility should be left to the user |
+
+#### Combination of `parentUID` and `transformation`
+From a geometric point of view, the goal of the hierarchical representation is also the placement of the local coordinate systems. Therefore, the `parentUID` element is usually used in combination with the `transformation` node. The latter should contain the `refType` attribute, which explicitly specifies whether the transformation of the local coordinate system refers to the global coordinate system (`absGlobal`) or the local (parent) coordinate system (`absLocal`) as an absolute value.
+
+**Note**: In current CPACS releases the `refType` attribute can only be used for the `translation` node. For new developments, it should be checked whether the `transformation` element itself can carry the `refType` attribute, since it not only contains `translation` but also `rotation`.
+
+**Important**: Make sure that it is described in detail via the documentation how to interpret the specification of the hierarchical coordinate system placement (e.g., what is default value; describe different cases, etc.)!
 
 
 ### Duplication vs Single Type Reference vs Hidden Changes
