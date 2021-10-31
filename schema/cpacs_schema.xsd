@@ -164,10 +164,34 @@ marko.alder@dlr.de
                                             </ddue:para>
                                         </ddue:listItem>
                                     </ddue:list>
+                                    <ddue:para>The following table summarizes the possible combinations of <ddue:codeInline>parentUID</ddue:codeInline> and <ddue:codeInline>transformation</ddue:codeInline> and the resulting coordinate system (local or global):</ddue:para>
+                                    <ddue:table>
+		                                <ddue:row>
+		                                    <ddue:entry></ddue:entry>
+		                                    <ddue:entry><ddue:codeInline>parentUID</ddue:codeInline> not set</ddue:entry>
+		                                    <ddue:entry><ddue:codeInline>parentUID</ddue:codeInline> set</ddue:entry>
+		                                </ddue:row>
+		                                <ddue:row>
+		                                    <ddue:entry><ddue:codeInline>transformation</ddue:codeInline> without <ddue:codeInline>refType</ddue:codeInline></ddue:entry>
+		                                    <ddue:entry>global</ddue:entry>
+		                                    <ddue:entry>local</ddue:entry>
+		                                </ddue:row>
+		                                <ddue:row>
+		                                    <ddue:entry><ddue:codeInline>transformation</ddue:codeInline> with <ddue:codeInline>refType="absLocal"</ddue:codeInline></ddue:entry>
+		                                    <ddue:entry>global</ddue:entry>
+		                                    <ddue:entry>local</ddue:entry>
+		                                </ddue:row>
+		                                <ddue:row>
+		                                    <ddue:entry><ddue:codeInline>transformation</ddue:codeInline> with <ddue:codeInline>refType="absGlobal"</ddue:codeInline></ddue:entry>
+		                                    <ddue:entry>global</ddue:entry>
+		                                    <ddue:entry>global</ddue:entry>
+		                                </ddue:row>
+	                                </ddue:table>
+	                                <ddue:para><ddue:legacyBold>Note:</ddue:legacyBold> Why is the combination of <ddue:codeInline>transformation</ddue:codeInline> with <ddue:codeInline>refType="absLocal"</ddue:codeInline> and <ddue:codeInline>parentUID</ddue:codeInline> not being set global? Because if <ddue:codeInline>parentUID</ddue:codeInline> is not set, the local coordinate system the transformation is referring to via <ddue:codeInline>refType</ddue:codeInline> equals the global coordinate system (see fuselage in the following example).</ddue:para>
                                     <ddue:para>
-                                        An exemplary use case illustrates this concept.
-                                        <ddue:legacyItalic>CPACS</ddue:legacyItalic> shall not specify in advance that a wing is always be part of the fuselage and engines must always be part of the wing.
-                                        In other cases the engine is attached to the fuselage, which would not be possible via a predefined XML tree.
+                                        An exemplary use case further illustrates the concept of the coordinate system hierarchy.
+                                        The <ddue:legacyItalic>CPACS</ddue:legacyItalic> schema shall not specify in advance that a wing is always be part of the fuselage and engines must always be part of the wing.
+                                        In other cases the engine could be attached to the fuselage, which would not be possible via a predefined XML tree.
                                         The following figure shows how components of the aircraft are related to each other via the <ddue:codeInline>parentUID</ddue:codeInline>.
                                         The fairing is a child of the wing and is therefore automatically translated when the wing is translated.
                                         Likewise, the horizontal tailplane is a part of the vertical tailplane and is therefore affected by translation of the latter:
@@ -13477,7 +13501,66 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:code language="XML" title="Example 1: all values in global coordinate system">
+                            <ddue:table>
+                                <ddue:row>
+                                    <ddue:entry></ddue:entry>
+                                    <ddue:entry><ddue:codeInline>parentUID</ddue:codeInline> not set</ddue:entry>
+                                    <ddue:entry><ddue:codeInline>parentUID</ddue:codeInline> set</ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry><ddue:codeInline>location</ddue:codeInline> without <ddue:codeInline>refType</ddue:codeInline></ddue:entry>
+                                    <ddue:entry>global</ddue:entry>
+                                    <ddue:entry>local</ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry><ddue:codeInline>location</ddue:codeInline> with <ddue:codeInline>refType="absLocal"</ddue:codeInline></ddue:entry>
+                                    <ddue:entry>global</ddue:entry>
+                                    <ddue:entry>local</ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry><ddue:codeInline>location</ddue:codeInline> with <ddue:codeInline>refType="absGlobal"</ddue:codeInline></ddue:entry>
+                                    <ddue:entry>global</ddue:entry>
+                                    <ddue:entry>global</ddue:entry>
+                                </ddue:row>
+                            </ddue:table>
+                            <ddue:para><ddue:legacyBold>Note:</ddue:legacyBold> Why is the combination of <ddue:codeInline>location</ddue:codeInline> with <ddue:codeInline>refType="absLocal"</ddue:codeInline> and <ddue:codeInline>parentUID</ddue:codeInline> not being set global? Because if <ddue:codeInline>parentUID</ddue:codeInline> is not set, the local coordinate system the location is referring to via <ddue:codeInline>refType</ddue:codeInline> equals the global coordinate system.</ddue:para>
+                            <ddue:code language="XML" title="Example 1: parentUID not set and location without refType --> global coordinates">
+                                <![CDATA[
+<massDescription>
+    <mass>
+        ...
+    </mass>
+    <location>
+        ...
+    </location>
+    <orientation>
+        ...
+    </orientation>
+    <massInertia>
+        ...
+    </massInertia>
+</massDescription>
+                                ]]>
+                            </ddue:code>
+                            <ddue:code language="XML" title="Example 2: parentUID not set and location with refType=absLocal --> global">
+                                <![CDATA[
+<massDescription>
+    <mass>
+        ...
+    </mass>
+    <location refType="absLocal">
+        ...
+    </location>
+    <orientation>
+        ...
+    </orientation>
+    <massInertia>
+        ...
+    </massInertia>
+</massDescription>
+                                ]]>
+                            </ddue:code>
+                            <ddue:code language="XML" title="Example 3: parentUID not set and location with refType=absGlobal --> global">
                                 <![CDATA[
 <massDescription>
     <mass>
@@ -13495,44 +13578,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
 </massDescription>
                                 ]]>
                             </ddue:code>
-                            <ddue:code language="XML" title="Example 2: all values in local coordinate system of the parentElement. Since parentUID is not specified, the next higher element in the CPACS hierarchy automatically applies. If this is not given as well, the global coordinate system is applied.">
-                                <![CDATA[
-<massDescription>
-    <mass>
-        ...
-    </mass>
-    <location refType="absLocal">
-        ...
-    </location>
-    <orientation>
-        ...
-    </orientation>
-    <massInertia>
-        ...
-    </massInertia>
-</massDescription>
-                                ]]>
-                            </ddue:code>
-                            <ddue:code language="XML" title="Example 3: all values in local coordinate system of the wing with uID=wingUID">
-                                <![CDATA[
-<massDescription>
-    <parentUID>wingUID</parentUID>
-    <mass>
-        ...
-    </mass>
-    <location refType="absLocal">
-        ...
-    </location>
-    <orientation>
-        ...
-    </orientation>
-    <massInertia>
-        ...
-    </massInertia>
-</massDescription>
-                                ]]>
-                            </ddue:code>
-                            <ddue:code language="XML" title="Example 4: all values in global coordinate system">
+                            <ddue:code language="XML" title="Example 4: parentUID set and location without refType --> local">
                                 <![CDATA[
 <massDescription>
     <parentUID>wingUID</parentUID>
@@ -13551,7 +13597,26 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
 </massDescription>
                                 ]]>
                             </ddue:code>
-                            <ddue:code language="XML" title="Example 5: all values in global coordinate system">
+                            <ddue:code language="XML" title="Example 5: parentUID set and location with refType=absLocal --> local">
+                                <![CDATA[
+<massDescription>
+    <parentUID>wingUID</parentUID>
+    <mass>
+        ...
+    </mass>
+    <location refType="absLocal">
+        ...
+    </location>
+    <orientation>
+        ...
+    </orientation>
+    <massInertia>
+        ...
+    </massInertia>
+</massDescription>
+                                ]]>
+                            </ddue:code>
+                            <ddue:code language="XML" title="Example 6: parentUID set and location with refType=absGlobal --> global">
                                 <![CDATA[
 <massDescription>
     <parentUID>wingUID</parentUID>
@@ -13590,8 +13655,8 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     </xsd:element>
                     <xsd:element minOccurs="0" name="parentUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of the component which serves as parent element, i.e. whose coordinate system is to be used as a reference for the mass properties (CoG location, orientation and massInertia).
-                                If specified (note that this element is optional), it replaces the parent element given by the CPACS hierarchy.
+                            <xsd:documentation>UID of the component which serves as parent element, i.e. whose coordinate system is to be used as a reference for the mass properties (CoG location, orientation and massInertia). Thus, two cases can occur: (1) 
+                                it is set: local coordinate system of the parent; (2) it is not set: global CPACS coordinate system.
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
@@ -13604,7 +13669,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         <xsd:annotation>
                             <xsd:documentation>Mass location.
                                 If the optional refType attribute is set, it explicitly specifies whether the location of the mass refers to the global CPACS coordinate system (absGobal) or the local coordinate system of the parent element (absLocal, given by the CPACS hierarchy OR by parentUID).
-                                If refType attribute is not given, then all values refer to the global coordinate system, even though a parentUID might be specified!
+                                If it is not set, the global CPACS coordinate system is considered as default.
                                 To ensure consistency, the same settings apply as well to orientation and massInertia.
                             </xsd:documentation>
                         </xsd:annotation>
