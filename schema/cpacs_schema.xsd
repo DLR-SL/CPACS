@@ -79,7 +79,7 @@ marko.alder@dlr.de
                                 </ddue:content>
                             </ddue:section>
                             <ddue:section>
-                            	<ddue:title>2. Data hierarchy</ddue:title>
+                                <ddue:title>2. Data structure</ddue:title>
                             	<ddue:content>
                             		<ddue:para>CPACS data is modeled in a hierarchical structure whose underlying concept follows a top-down description of a system-of-systems which decomposes a generic concept (e.g., an <ddue:legacyItalic>aircraft</ddue:legacyItalic> or <ddue:legacyItalic>rotorcraft</ddue:legacyItalic>)  into  a  more  detailed  description  of  its  components.  This originates from the conceptual and preliminary design of aircraft, where the level of detail is initially low and continues to increase as the design process progresses.</ddue:para>
                             		<ddue:para>For some concepts within <ddue:legacyItalic>CPACS</ddue:legacyItalic>, however, a bottom-up approach is applied where the components are first defined in detail (sometimes referred to as <ddue:legacyItalic>library</ddue:legacyItalic>) and then linked within an instantiated higher-level concept. This is advantageous when used multiple times within complex systems, such as <ddue:legacyItalic>engines</ddue:legacyItalic>, which only have to be defined once in order to be referenced several times on the <ddue:legacyItalic>aircraft</ddue:legacyItalic>. The combination of these two methodologies is known as middle-out  approach  and  enables  the  goal  to  fully  parametrize aeronautical systems.</ddue:para>
@@ -91,6 +91,7 @@ marko.alder@dlr.de
                             <ddue:section>
                                 <ddue:title>3. Coordinate Systems</ddue:title>
                                 <ddue:content>
+                                    <ddue:para><ddue:legacyBold>3.1. CPACS coordinate system</ddue:legacyBold></ddue:para>
                                     <ddue:para>Coordinate systems are a regular cause for ambiguous interpretation of data. In <ddue:legacyItalic>CPACS</ddue:legacyItalic>, the reference coordinate system is the <ddue:legacyItalic>CPACS</ddue:legacyItalic>-coordinate system. This coordinate system is used for most of the data. A single exception is made in order to keep aerodynamic data in an aerodynamic coordinate system. The following paragraphs outline the determination to known coordinate systems.</ddue:para>
                                     <ddue:para>The <ddue:legacyItalic>CPACS</ddue:legacyItalic> coordinate system is the coordinate system identified by <ddue:externalLink><ddue:linkText>TiGL</ddue:linkText><ddue:linkUri>https://dlr-sc.github.io/tigl</ddue:linkUri></ddue:externalLink>, <ddue:legacyItalic>CPACS</ddue:legacyItalic>'s geometric library. It is a right-handed coordinate system. If an aircraft is defined in the <ddue:legacyItalic>CPACS</ddue:legacyItalic> coordinate system it will usually follow the directions listed in the table below.</ddue:para>
                                     <ddue:para>Therefore, the <ddue:legacyItalic>CPACS</ddue:legacyItalic> coordinate system can be confused with the body-fixed coordinate system. While often the <ddue:legacyItalic>CPACS</ddue:legacyItalic> coordinate system and the body-fixed coordinate system overlap, this must not always be true. Several definitions for body-fixed coordinate systems exist (x-axis through nose and tail, x-axis perpendicular to nose plane). For non-symmetric aircraft, body-fixed coordinate systems become even more complicated. Hence, analysis tools should stick to the <ddue:legacyItalic>CPACS</ddue:legacyItalic>-Coordinate system. It remains to the designer to model the geometry accordingly.</ddue:para>
@@ -141,6 +142,39 @@ marko.alder@dlr.de
                                         <ddue:image xlink:href="cosys2"/>
                                     </ddue:mediaLink>
                                     <ddue:para>Again, the aerodynamic analysis is relative to the <ddue:legacyItalic>CPACS</ddue:legacyItalic> coordinate system. That is, the angle of attack is represented by the dashed orange line. Results of the aerodynamic calculation are given in the <ddue:legacyItalic>CPACS</ddue:legacyItalic> coordinate system.</ddue:para>
+                                    <ddue:para>
+                                        <ddue:legacyBold>3.2. Local coordinate systems via parentUID and transformation</ddue:legacyBold>
+                                    </ddue:para>
+                                    <ddue:para>Some elements in <ddue:legacyItalic>CPACS</ddue:legacyItalic>, in particular geometric components, are described in local coordinates.
+                                               The hierarchical data structure allows to define a local coordinate system either with respect to the coordinate system of the parent element or with respect to the global <ddue:legacyItalic>CPACS</ddue:legacyItalic> coordinate system.
+                                               This is achieved by combining the two elements <ddue:codeInline>parentUID</ddue:codeInline> and <ddue:codeInline>transformation</ddue:codeInline>:</ddue:para>
+                                    <ddue:list class="bullet">
+                                        <ddue:listItem>
+                                            <ddue:para>
+                                                <ddue:legacyBold>parentUID</ddue:legacyBold>: An individual data hierarchy can be set up using the optional <ddue:codeInline>parentUID</ddue:codeInline> element.
+                                                Here it is <ddue:legacyBold>important that exactly one element does not contain the <ddue:codeInline>parentUID</ddue:codeInline></ddue:legacyBold> in order to identify the top element of this user-specific hierarchy.
+                                                As soon as the <ddue:codeInline>parentUID</ddue:codeInline> (which refers to the <ddue:codeInline>uID</ddue:codeInline> of the parent element) is set, a local coordinate system of the corresponding node is instantiated.
+                                            </ddue:para>
+                                        </ddue:listItem>
+                                        <ddue:listItem>
+                                            <ddue:para>
+                                                <ddue:legacyBold>transformation</ddue:legacyBold>: This allows the coordinate system to be transformed via <ddue:codeInline>translation</ddue:codeInline>, <ddue:codeInline>rotation</ddue:codeInline> and <ddue:codeInline>scaling</ddue:codeInline>.
+                                                As soon as the <ddue:codeInline>parentUID</ddue:codeInline> is set, this transformation refers to the local coordinate system (in the current <ddue:legacyItalic>CPACS</ddue:legacyItalic> version this only affects <ddue:codeInline>translation</ddue:codeInline>).
+                                                An attribute <ddue:codeInline>refType</ddue:codeInline> is used to either make this explicit (<ddue:codeInline>refType="absLocal"</ddue:codeInline>) or to override this and reference the global CPACS coordinate system instead (<ddue:codeInline>refType="absGlobal"</ddue:codeInline>).
+                                            </ddue:para>
+                                        </ddue:listItem>
+                                    </ddue:list>
+                                    <ddue:para>
+                                        An exemplary use case illustrates this concept.
+                                        <ddue:legacyItalic>CPACS</ddue:legacyItalic> shall not specify in advance that a wing is always be part of the fuselage and engines must always be part of the wing.
+                                        In other cases the engine is attached to the fuselage, which would not be possible via a predefined XML tree.
+                                        The following figure shows how components of the aircraft are related to each other via the <ddue:codeInline>parentUID</ddue:codeInline>.
+                                        The fairing is a child of the wing and is therefore automatically translated when the wing is translated.
+                                        Likewise, the horizontal tailplane is a part of the vertical tailplane and is therefore affected by translation of the latter:
+                                    </ddue:para>
+                                    <ddue:mediaLink>
+                                        <ddue:image xlink:href="parentUID_transformations"/>
+                                    </ddue:mediaLink>
                                 </ddue:content>
                             </ddue:section>
                             <ddue:section>
