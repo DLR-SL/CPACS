@@ -410,36 +410,49 @@ marko.alder@dlr.de
                             <ddue:section>
                                 <ddue:title>8. Symmetry</ddue:title>
                                 <ddue:content>
-                                    <ddue:para>Sometimes it might be useful to specify a part of the aircraft as symmetric instead of holding all the data twice in nearly identical form in the dataset (e.g. left and right wing are usually identical, except for the sign of the y-coordinate). Hence, some parts offer the option to set a symmetry attribute for them, like:</ddue:para>
+                                    <ddue:para><ddue:legacyBold>8.1. Specification of symmetric elements</ddue:legacyBold></ddue:para>
+                                    <ddue:para>Sometimes it might be useful to specify a part of the aircraft as symmetric instead of holding all the data twice in nearly identical form in the dataset (e.g. left and right wing are usually identical, except for the sign of the y-coordinate).
+                                    Hence, some parts offer the option to set a <ddue:codeInline>symmetry</ddue:codeInline> attribute:</ddue:para>
                                     <ddue:code language="XML" title="Symmetry attribute applied to a wing">
                                         <![CDATA[
 <wing symmetry="x-z-plane">
                                         ]]>
                                     </ddue:code>
-                                    <ddue:para>This attribute explains that the whole part with all its subnodes is symmetric to the given plane. Possible planes are: <ddue:list class="bullet">
-                                            <ddue:listItem>x-y-plane</ddue:listItem>
-                                            <ddue:listItem>x-z-plane</ddue:listItem>
-                                            <ddue:listItem>y-z-plane</ddue:listItem>
+                                    <ddue:para>There are six possible attribute values:
+                                        <ddue:list class="bullet">
+                                            <ddue:listItem><ddue:legacyBold>x-y-plane</ddue:legacyBold>: Symmetry w.r.t. the x-y plane of the <ddue:legacyItalic>CPACS</ddue:legacyItalic> coordinate system</ddue:listItem>
+                                            <ddue:listItem><ddue:legacyBold>x-z-plane</ddue:legacyBold>: Symmetry w.r.t. the x-z plane of the <ddue:legacyItalic>CPACS</ddue:legacyItalic> coordinate system</ddue:listItem>
+                                            <ddue:listItem><ddue:legacyBold>y-z-plane</ddue:legacyBold>: Symmetry w.r.t. the y-z plane of the <ddue:legacyItalic>CPACS</ddue:legacyItalic> coordinate system</ddue:listItem>
+                                            <ddue:listItem><ddue:legacyBold>inherit</ddue:legacyBold>: Symmetry inherited from parent element (default behavior, i.e. also applies if attribute not set)</ddue:listItem>
+                                            <ddue:listItem><ddue:legacyBold>none</ddue:legacyBold>: Symmetry inheritance from parent element disabled</ddue:listItem>
                                         </ddue:list>
+                                        <ddue:legacyBold>Note</ddue:legacyBold>: It must be taken from the documentation of the respective element which of these attribute values may be set.
                                     </ddue:para>
-                                </ddue:content>
-                            </ddue:section>
-                            <ddue:section>
-                                <ddue:title>UIDs, references and symmetry</ddue:title>
-                                <ddue:content>
-                                    <ddue:para>All nodes (e.g., <ddue:legacyItalic>parentUID</ddue:legacyItalic>) in <ddue:legacyItalic>CPACS</ddue:legacyItalic> that refer to a component holding the symmetry attribute (e.g., wing) might also have a <ddue:legacyItalic>symmetry</ddue:legacyItalic> attribute to specify how symmetry is propagated through the resulting element hierarchy.</ddue:para>
-                                    <ddue:para>The symmetry attribute may take three values: <ddue:legacyItalic>symm</ddue:legacyItalic>, <ddue:legacyItalic>def</ddue:legacyItalic>, <ddue:legacyItalic>full</ddue:legacyItalic>:
+                                    <ddue:para>One example of how to apply the <ddue:codeInline>symmetry</ddue:codeInline> attribute is shown in Sec. 3.2. Another simplified example shown below illustrates the combination of different symmetry properties of 4 wings:</ddue:para>
+                                    <ddue:mediaLink>
+                                        <ddue:image xlink:href="symmetry1"/>
+                                    </ddue:mediaLink>
+                                    <ddue:list class="bullet">
+                                        <ddue:listItem><ddue:legacyBold>Wing 1</ddue:legacyBold> is mirrored on the x-z plane.</ddue:listItem>
+                                        <ddue:listItem><ddue:legacyBold>Wing 2</ddue:legacyBold> has wing 1 as parent element, but suppresses its symmetry inheritance.</ddue:listItem>
+                                        <ddue:listItem><ddue:legacyBold>Wing 3</ddue:legacyBold> has wing 2 as parent element and sets a new symmetry at the x-y plane.</ddue:listItem>
+                                        <ddue:listItem><ddue:legacyBold>Wing 4</ddue:legacyBold> has wing 3 as parent element and no symmetry attribute specified. Thus, it inherits the symmetry at the x-y plane from wing 3.</ddue:listItem>
+                                    </ddue:list>
+                                    <ddue:para><ddue:legacyBold>Note</ddue:legacyBold>: The corresponding transformations are not shown here.</ddue:para>
+                                    <ddue:para><ddue:legacyBold>8.2. Referencing symmetric elements</ddue:legacyBold></ddue:para>
+                                    <ddue:para>All nodes (e.g., <ddue:codeInline>parentUID</ddue:codeInline>) in <ddue:legacyItalic>CPACS</ddue:legacyItalic> that refer to a component holding the symmetry attribute (e.g., wing) might also have a <ddue:codeInline>symmetry</ddue:codeInline> attribute to specify how symmetry is propagated through the resulting element hierarchy.</ddue:para>
+                                    <ddue:para>The <ddue:codeInline>symmetry</ddue:codeInline> attribute of a referencing element may take three values: <ddue:legacyItalic>symm</ddue:legacyItalic>, <ddue:legacyItalic>def</ddue:legacyItalic>, <ddue:legacyItalic>full</ddue:legacyItalic>:
                                         <ddue:list class="bullet">
                                             <ddue:listItem>
-                                                <ddue:legacyBold>def: </ddue:legacyBold> The element refers to the geometric component that has a symmetry attribute and refers only to the defined side of the geometric component.</ddue:listItem>
+                                                <ddue:legacyBold>def: </ddue:legacyBold> The element refers to the geometric component that has a <ddue:codeInline>symmetry</ddue:codeInline> attribute and refers only to the defined side of the geometric component.</ddue:listItem>
                                             <ddue:listItem>
-                                                <ddue:legacyBold>symm:</ddue:legacyBold> The element refers to the geometric component that has a symmetry attribute and refers only to the symmetric side of the geometric component. (Similar to the previous _symm solution)</ddue:listItem>
+                                                <ddue:legacyBold>symm:</ddue:legacyBold> The element refers to the geometric component that has a <ddue:codeInline>symmetry</ddue:codeInline> attribute and refers only to the symmetric side of the geometric component. (Similar to the previous _symm solution)</ddue:listItem>
                                             <ddue:listItem>
-                                                <ddue:legacyBold>full:</ddue:legacyBold> The element refers to the geometric component that has a symmetry attribute and refers to the complete component. (This is the default behaviour)</ddue:listItem>
+                                                <ddue:legacyBold>full:</ddue:legacyBold> The element refers to the geometric component that has a <ddue:codeInline>symmetry</ddue:codeInline> attribute and refers to the complete component. (This is the default behaviour)</ddue:listItem>
                                         </ddue:list>
                                     </ddue:para>
                                     <ddue:mediaLink>
-                                        <ddue:image xlink:href="symmetry"/>
+                                        <ddue:image xlink:href="symmetry2"/>
                                     </ddue:mediaLink>
                                     <ddue:para>For example, to refer to the "other" side of a mirrored wing the following the following syntax might be used:</ddue:para>
                                     <ddue:code language="XML" title="Example of an engine pylon located only on the mirrored side of the wing.">
@@ -10402,17 +10415,7 @@ marko.alder@dlr.de
                     <xsd:element name="transformation" type="transformationType"/>
                 </xsd:all>
                 <xsd:attribute name="uID" type="xsd:ID" use="required"/>
-                <xsd:attribute name="symmetry">
-                    <xsd:simpleType>
-                        <xsd:restriction base="xsd:string">
-                            <xsd:enumeration value="none"/>
-                            <xsd:enumeration value="inherit"/>
-                            <xsd:enumeration value="x-y-plane"/>
-                            <xsd:enumeration value="x-z-plane"/>
-                            <xsd:enumeration value="y-z-plane"/>
-                        </xsd:restriction>
-                    </xsd:simpleType>
-                </xsd:attribute>
+                <xsd:attribute name="symmetry" type="symmetry_xy_xz_yz_Type"/>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -10484,17 +10487,7 @@ marko.alder@dlr.de
                         <xsd:documentation>UID of the engine pylon.</xsd:documentation>
                     </xsd:annotation>
                 </xsd:attribute>
-                <xsd:attribute name="symmetry">
-                    <xsd:simpleType>
-                        <xsd:restriction base="xsd:string">
-                            <xsd:enumeration value="none"/>
-                            <xsd:enumeration value="inherit"/>
-                            <xsd:enumeration value="x-y-plane"/>
-                            <xsd:enumeration value="x-z-plane"/>
-                            <xsd:enumeration value="y-z-plane"/>
-                        </xsd:restriction>
-                    </xsd:simpleType>
-                </xsd:attribute>
+                <xsd:attribute name="symmetry" type="symmetry_xy_xz_yz_Type"/>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -13108,17 +13101,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:element minOccurs="0" name="cutOuts" type="fuselageCutOutsType"/>
                 </xsd:all>
                 <xsd:attribute name="uID" type="xsd:ID" use="required"/>
-                <xsd:attribute name="symmetry">
-                    <xsd:simpleType>
-                        <xsd:restriction base="xsd:string">
-                            <xsd:enumeration value="none"/>
-                            <xsd:enumeration value="inherit"/>
-                            <xsd:enumeration value="x-y-plane"/>
-                            <xsd:enumeration value="x-z-plane"/>
-                            <xsd:enumeration value="y-z-plane"/>
-                        </xsd:restriction>
-                    </xsd:simpleType>
-                </xsd:attribute>
+                <xsd:attribute name="symmetry" type="symmetry_xy_xz_yz_Type"/>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -13455,17 +13438,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:element name="linkToFile" type="linkToFileType"/>
                 </xsd:all>
                 <xsd:attribute name="uID" type="xsd:ID" use="required"/>
-                <xsd:attribute name="symmetry">
-                    <xsd:simpleType>
-                        <xsd:restriction base="xsd:string">
-                            <xsd:enumeration value="none"/>
-                            <xsd:enumeration value="inherit"/>
-                            <xsd:enumeration value="x-y-plane"/>
-                            <xsd:enumeration value="x-z-plane"/>
-                            <xsd:enumeration value="y-z-plane"/>
-                        </xsd:restriction>
-                    </xsd:simpleType>
-                </xsd:attribute>
+                <xsd:attribute name="symmetry" type="symmetry_xy_xz_yz_Type"/>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -13763,17 +13736,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:element name="transformation" type="transformationType"/>
                 </xsd:all>
                 <xsd:attribute name="uID" type="xsd:ID" use="required"/>
-                <xsd:attribute name="symmetry">
-                    <xsd:simpleType>
-                        <xsd:restriction base="xsd:string">
-                            <xsd:enumeration value="none"/>
-                            <xsd:enumeration value="inherit"/>
-                            <xsd:enumeration value="x-y-plane"/>
-                            <xsd:enumeration value="x-z-plane"/>
-                            <xsd:enumeration value="y-z-plane"/>
-                        </xsd:restriction>
-                    </xsd:simpleType>
-                </xsd:attribute>
+                <xsd:attribute name="symmetry" type="symmetry_xy_xz_yz_Type"/>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -13993,17 +13956,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     </xsd:element>
                     <xsd:element name="pointList" type="pointListRelXYZVectorType"/>
                 </xsd:all>
-                <xsd:attribute name="symmetry">
-                    <xsd:simpleType>
-                        <xsd:restriction base="xsd:string">
-                            <xsd:enumeration value="none"/>
-                            <xsd:enumeration value="inherit"/>
-                            <xsd:enumeration value="x-y-plane"/>
-                            <xsd:enumeration value="x-z-plane"/>
-                            <xsd:enumeration value="y-z-plane"/>
-                        </xsd:restriction>
-                    </xsd:simpleType>
-                </xsd:attribute>
+                <xsd:attribute name="symmetry" type="symmetry_xy_xz_yz_Type"/>
                 <xsd:attribute name="uID" type="xsd:ID" use="required"/>
             </xsd:extension>
         </xsd:complexContent>
@@ -22008,18 +21961,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         <xsd:element name="standardProfile" type="standardProfileType"/>
                     </xsd:choice>
                 </xsd:sequence>
-                <xsd:attribute name="symmetry">
-                    <xsd:simpleType>
-                        <xsd:restriction base="xsd:string">
-                            <xsd:enumeration value="none"/>
-                            <xsd:enumeration value="inherit"/>
-                            <xsd:enumeration value="x-y-plane"/>
-                            <xsd:enumeration value="x-z-plane"/>
-                            <xsd:enumeration value="y-z-plane"/>
-                        </xsd:restriction>
-                    </xsd:simpleType>
-                </xsd:attribute>
-
+                <xsd:attribute name="symmetry" type="symmetry_xy_xz_yz_Type"/>
                 <xsd:attribute name="uID" type="xsd:ID" use="required"/>
             </xsd:extension>
         </xsd:complexContent>
@@ -23402,17 +23344,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     </xsd:element>
                 </xsd:all>
                 <xsd:attribute name="uID" type="xsd:ID" use="required"/>
-                <xsd:attribute name="symmetry">
-                    <xsd:simpleType>
-                        <xsd:restriction base="xsd:string">
-                            <xsd:enumeration value="none"/>
-                            <xsd:enumeration value="inherit"/>
-                            <xsd:enumeration value="x-y-plane"/>
-                            <xsd:enumeration value="x-z-plane"/>
-                            <xsd:enumeration value="y-z-plane"/>
-                        </xsd:restriction>
-                    </xsd:simpleType>
-                </xsd:attribute>
+                <xsd:attribute name="symmetry" type="symmetry_xy_xz_yz_Type"/>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -28906,17 +28838,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:element minOccurs="0" name="componentSegments" type="componentSegmentsType"/>
                 </xsd:all>
                 <xsd:attribute name="uID" type="xsd:ID" use="required"/>
-                <xsd:attribute name="symmetry">
-                    <xsd:simpleType>
-                        <xsd:restriction base="xsd:string">
-                            <xsd:enumeration value="none"/>
-                            <xsd:enumeration value="inherit"/>
-                            <xsd:enumeration value="x-y-plane"/>
-                            <xsd:enumeration value="x-z-plane"/>
-                            <xsd:enumeration value="y-z-plane"/>
-                        </xsd:restriction>
-                    </xsd:simpleType>
-                </xsd:attribute>
+                <xsd:attribute name="symmetry" type="symmetry_xy_xz_yz_Type"/>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -32596,15 +32518,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     </xsd:element>
                 </xsd:sequence>
                 <xsd:attribute name="uID" type="xsd:ID" use="required"/>
-                <xsd:attribute name="symmetry" use="optional">
-                    <xsd:simpleType>
-                        <xsd:restriction base="xsd:string">
-                            <xsd:enumeration value="x-y-plane"/>
-                            <xsd:enumeration value="x-z-plane"/>
-                            <xsd:enumeration value="y-z-plane"/>
-                        </xsd:restriction>
-                    </xsd:simpleType>
-                </xsd:attribute>
+                <xsd:attribute name="symmetry" use="optional" type="symmetry_xy_xz_yz_Type"/>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -35606,5 +35520,44 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
+
+    <xsd:simpleType name="symmetry_xy_xz_yz_Type">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Symmetry (see CPACS root node documentation for details)</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="none">
+                <xsd:annotation>
+                    <xsd:documentation>Symmetry inheritance from parent element disabled</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="inherit">
+                <xsd:annotation>
+                    <xsd:documentation>Symmetry inherited from parent element (default behavior, i.e. also applies if attribute not set)</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="x-y-plane">
+                <xsd:annotation>
+                    <xsd:documentation>Symmetry w.r.t. the x-y plane of the CPACS coordinate system</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="x-z-plane">
+                <xsd:annotation>
+                    <xsd:documentation>Symmetry w.r.t. the x-z plane of the CPACS coordinate system</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="y-z-plane">
+                <xsd:annotation>
+                    <xsd:documentation>Symmetry w.r.t. the y-z plane of the CPACS coordinate system</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+        </xsd:restriction>
+    </xsd:simpleType>
  
 </xsd:schema>
