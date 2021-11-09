@@ -2204,7 +2204,7 @@ marko.alder@dlr.de
                     <xsd:element name="rX" type="stringVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Vector of rX coordinates. Relative
-                                circumferential coordinate on wing / fuselage profile
+                                circumferential coordinate on wing, fuselage or nacelle profile
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
@@ -10156,20 +10156,26 @@ marko.alder@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Definition of the engine nacelle type.</ddue:para>
+                        <ddue:para>Engine nacelle</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>The engine nacelle is currently located together with
-                                the engine. It gives a simple description of the outer shell of
-                                the engine. All values are defined according to the base area,
-                                center point of the fan(i.e. negative values can occur in the
-                                definition) In most cases there will be a bypass engine. For
-                                non-bypass or mixed engines ignore the bypass nozzle. For further
-                                information on the geometric setup, please refer to the picture
-                                below.</ddue:para>
+                            <ddue:para>The engine nacelle is part of an engine.
+                                It allows to define the outer geometry of the following engine components:</ddue:para>
+                            <ddue:list class="bullet">
+                                <ddue:listItem>Fan cowl</ddue:listItem>
+                                <ddue:listItem>Core cowl</ddue:listItem>
+                                <ddue:listItem>Center cowl</ddue:listItem>
+                            </ddue:list>
+                            <ddue:para>
+                                All geometric values refer to the fan position.
+                            </ddue:para>
+                            <ddue:para>
+                                The common use case for this definition includes bypass engines.
+                                In the case of non-bypass engines, the core cowl should be omitted.
+                            </ddue:para>
                             <ddue:mediaLink>
-                                <ddue:image xlink:href="engineNacelle"/>
+                                <ddue:image xlink:href="nacelle"/>
                             </ddue:mediaLink>
                         </ddue:content>
                     </ddue:remarks>
@@ -10179,13 +10185,17 @@ marko.alder@dlr.de
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element name="fanCowl"
-                        type="nacelleCowlType">
+                    <xsd:element name="fanCowl" type="nacelleCowlType">
+                        <xsd:annotation>
+                            <xsd:documentation>Fan cowl</xsd:documentation>
+                        </xsd:annotation>
                     </xsd:element>
-                    <xsd:element minOccurs="0" name="coreCowl"
-                        type="nacelleCowlType">
+                    <xsd:element name="coreCowl" minOccurs="0" type="nacelleCowlType">
+                        <xsd:annotation>
+                            <xsd:documentation>Core cowl</xsd:documentation>
+                        </xsd:annotation>
                     </xsd:element>
-                    <xsd:element minOccurs="0" name="centerCowl" type="nacelleCenterCowlType"/>
+                    <xsd:element name="centerCowl" minOccurs="0" type="nacelleCenterCowlType"/>
                 </xsd:all>
                 <xsd:attribute name="uID" type="xsd:ID" use="required"/>
             </xsd:extension>
@@ -14085,7 +14095,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             <xsd:annotation>
                                 <xsd:documentation>The relative circumference
                                     position at which the guide curve shall end. Valid values
-                                    are in the interval -1.0...1.0.
+                                    are in the interval -1,..,1.
                                 </xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
@@ -20755,21 +20765,93 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
     </xsd:complexType>
 
     <xsd:complexType name="nacelleGuideCurveType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Guide curve</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>
+                                The following figure shows the basic setup of the guide curves.
+                                They always start at a given &#950;-position (<ddue:codeInline>fromZeta</ddue:codeInline>) on the profile of the specified start section (<ddue:codeInline>startSectionUID</ddue:codeInline>) and end at the &#950;-position (<ddue:codeInline>toZeta</ddue:codeInline>) on the profile of the subsequent section.
+                                The relative coordinates of the guide curves are specified in <ddue:codeInline>cpacs/vehicles/profiles/guideCurves</ddue:codeInline> and referenced via its <ddue:codeInline>uID</ddue:codeInline>.
+                            </ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="nacelle_guideCurves"/>
+                            </ddue:mediaLink>
+                            <ddue:para>
+                                <ddue:legacyBold>Note</ddue:legacyBold>: A set of guide curves must always form a closed curve.
+                            </ddue:para>
+                        </ddue:content>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element name="name" type="stringBaseType"/>
-                    <xsd:element name="description" type="stringBaseType"/>
-                    <xsd:element name="guideCurveProfileUID" type="stringUIDBaseType"/>
-                    <xsd:element name="startSectionUID" type="stringUIDBaseType"/>
-                    <xsd:element name="fromZeta" type="doubleBaseType"/>
-                    <xsd:element name="toZeta" type="doubleBaseType"/>
+                    <xsd:element name="name" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Name
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="description" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Description
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="guideCurveProfileUID" type="stringUIDBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                UID of the guide curve profile
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="startSectionUID" type="stringUIDBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                UID of the start section
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="fromZeta" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Curve coordinate of the referenced section profile at which the guide curve shall start.
+                                Valid values are in the interval -1,..,1.
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="toZeta" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Curve coordinate of the profile following the referenced section profile.
+                                It defines where the guide curve ends.
+                                Valid values are in the interval -1,..,1.
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
 
     <xsd:complexType name="nacelleGuideCurvesType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Guide curves</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
@@ -20807,10 +20889,122 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>nacelleSectionType</ddue:para>
+                        <ddue:para>Section</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para/>
+                        <ddue:content>
+                            <ddue:para>
+                                An engine nacelle is defined by sections, where at least one and up to an infinite number of sections can be specified.
+                                Lofting of the nacelle surface along the sections is done in cylindrical coordinates.
+                                The <ddue:legacyBold>coordinate origin refers to the center of the fan</ddue:legacyBold>, i.e. the sections and their profiles are typically shifted in negative x-direction.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Note</ddue:legacyBold>: In the current CPACS release, transformations are still labeled as Cartesian coordinates.
+                                It is current work in progress to explicitly introduce cylindrical coordinates.
+                                Until this is implemented in a future CPACS release, the implicit conventions listed below apply:
+                            </ddue:para>
+                            <ddue:table>
+                                <ddue:row>
+                                    <ddue:entry>Translation component</ddue:entry>
+                                    <ddue:entry>Cylindrical coordinate equivalent</ddue:entry>
+                                    <ddue:entry>Description</ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry><ddue:legacyItalic>x</ddue:legacyItalic></ddue:entry>
+                                    <ddue:entry><ddue:legacyItalic>&#977;</ddue:legacyItalic></ddue:entry>
+                                    <ddue:entry>Rotation angle around <ddue:legacyItalic>x</ddue:legacyItalic></ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry><ddue:legacyItalic>y</ddue:legacyItalic></ddue:entry>
+                                    <ddue:entry><ddue:legacyItalic>h</ddue:legacyItalic></ddue:entry>
+                                    <ddue:entry>Horizontal translation</ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry><ddue:legacyItalic>z</ddue:legacyItalic></ddue:entry>
+                                    <ddue:entry><ddue:legacyItalic>r</ddue:legacyItalic></ddue:entry>
+                                    <ddue:entry>Radial translation</ddue:entry>
+                                </ddue:row>
+                            </ddue:table>
+                            <ddue:para>
+                                The following example illustrates the setup of a nacelle with 4 sections.
+                                These are rotated by 0, 120, 180 and 240 degrees around the <ddue:legacyItalic>x</ddue:legacyItalic>-axis (given by <ddue:codeInline>translation/x</ddue:codeInline>).
+                                To illustrate the possible transformations, the profile of the upper section is shifted slightly further in the negative <ddue:legacyItalic>x</ddue:legacyItalic>-direction (<ddue:codeInline>translation/y</ddue:codeInline>), while the lower section has a smaller radial distance from the rotation axis (<ddue:codeInline>translation/z</ddue:codeInline>).
+                                In addition, the sections are scaled differently (<ddue:codeInline>transformation/scaling</ddue:codeInline>; not shown in the example figures) in order to create a straight trailing edge and to realize a flattened profile near the ground.
+                            </ddue:para>
+                            <ddue:para>
+                                The following example also shows the profile cut-outs due to the radially symmetric inner region of the nacelle defined by the <ddue:codeInline>rotationCurve</ddue:codeInline>. For detailed information, please refer to the documentation of the <ddue:codeInline>rotationCurve</ddue:codeInline> element.
+                            </ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="nacelle_sections"/>
+                            </ddue:mediaLink>
+                            <ddue:para>The first section is not rotated (<ddue:legacyItalic>x=&#977;=0</ddue:legacyItalic>), but shifted vertically in negative direction (<ddue:legacyItalic>y=h=-0.257</ddue:legacyItalic>).
+                                The radial distance is given by <ddue:legacyItalic>z=r=0.365</ddue:legacyItalic>:
+                            </ddue:para>
+                            <ddue:code language="XML" title="Upper section at 0°">
+                                <![CDATA[
+<section uID="fanCowl_upperSection">
+    <name>Upper section</name>
+    <transformation>
+        <scaling>
+            <x>1.055</x>
+            <y>1</y>
+            <z>1</z>
+        </scaling>
+        <translation>
+            <x>0.0</x>
+            <y>-0.257</y>
+            <z>0.365</z>
+        </translation>
+    </transformation>
+    <profileUID>fanCowlUpperSectionProfile</profileUID>
+</section>
+                                ]]>
+                            </ddue:code>
+                            <ddue:para>The second section is rotated around the <ddue:legacyItalic>x</ddue:legacyItalic>-axis (<ddue:legacyItalic>x=&#977;=120</ddue:legacyItalic>) as well as scaled by a factor of 1.1 in its profile height:
+                            </ddue:para>
+                            <ddue:code language="XML" title="Inboard section at 120° (identical to outboard section at 240°)">
+                                <![CDATA[
+<section uID="fanCowl_inboardSection">
+    <name>Inboard section</name>
+    <transformation>
+        <scaling>
+            <x>1</x>
+            <y>1</y>
+            <z>1.1</z>
+        </scaling>
+        <translation>
+            <x>120.0</x>
+            <y>-0.2</y>
+            <z>0.365</z>
+        </translation>
+    </transformation>
+    <profileUID>fanCowlUpperSectionProfile</profileUID>
+</section>
+                                ]]>
+                            </ddue:code>
+                            <ddue:para>The third section is rotated around the <ddue:legacyItalic>x</ddue:legacyItalic>-axis by 180° and scaled by a factor of 0.8 in its profile height:
+                            </ddue:para>
+                            <ddue:code language="XML" title="Lower section at 180°">
+                                <![CDATA[
+<section uID="fanCowl_lowerSection">
+    <name>Lower section</name>
+    <transformation>
+        <scaling>
+            <x>1</x>
+            <y>1</y>
+            <z>0.8</z>
+        </scaling>
+        <translation>
+            <x>180.0</x>
+            <y>-0.2</y>
+            <z>0.33</z>
+        </translation>
+    </transformation>
+    <profileUID>fanCowlUpperSectionProfile</profileUID>
+</section>
+                                ]]>
+                            </ddue:code>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -20818,10 +21012,22 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element name="name" type="stringBaseType"/>
-                    <xsd:element minOccurs="0" name="description" type="stringBaseType"/>
+                    <xsd:element name="name" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Name</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="description" minOccurs="0" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Description</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                     <xsd:element name="transformation" type="transformationType"/>
-                    <xsd:element name="profileUID" type="stringUIDBaseType"/>
+                    <xsd:element name="profileUID" type="stringUIDBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>UID of the profile</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                 </xsd:all>
                 <xsd:attribute name="uID" type="xsd:ID" use="required"/>
             </xsd:extension>
@@ -20833,7 +21039,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>nacelleSectionsType</ddue:para>
+                        <ddue:para>Sections</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para/>
@@ -29890,7 +30096,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>nacelleCowlType</ddue:para>
+                        <ddue:para>Nacelle cowl</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>
@@ -29905,12 +30111,8 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element name="sections"
-                        type="nacelleSectionsType">
-                    </xsd:element>
-                    <xsd:element minOccurs="0" name="guideCurves"
-                        type="nacelleGuideCurvesType">
-                    </xsd:element>
+                    <xsd:element name="sections" type="nacelleSectionsType"/>
+                    <xsd:element minOccurs="0" name="guideCurves" type="nacelleGuideCurvesType"/>
                     <xsd:element name="rotationCurve" type="rotationCurveType"/>
                 </xsd:all>
                 <xsd:attribute name="uID" type="xsd:ID" use="required"/>
@@ -29919,17 +30121,95 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
     </xsd:complexType>
 
     <xsd:complexType name="rotationCurveType">
+         <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Rotation curve</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>
+                                The figure below shows an example of a rotation curve.
+                                Together with the corresponding XML code, the definition is explained in more detail.
+                            </ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="nacelle_rotationCurve"/>
+                            </ddue:mediaLink>
+                            <ddue:para>
+                                First, the reference system is defined via <ddue:codeInline>referenceSectionUID</ddue:codeInline>, for which in this example the section with <ddue:codeInline>uID="engine_nacelle_fanCowl_section1"</ddue:codeInline> is referenced.
+                                This in turn contains a <ddue:codeInline>transformation</ddue:codeInline> (not shown here), for example a translation by <ddue:legacyItalic>z=0.4</ddue:legacyItalic> and a scaling, where the <ddue:legacyItalic>x</ddue:legacyItalic>-direction is stretched by a factor of two.
+                            </ddue:para>
+                            <ddue:para>
+                                The rotation curve is now described in this reference system.
+                                It is predefined in the profile library and referenced via a its <ddue:codeInline>uID</ddue:codeInline>.
+                                Note that the curve is defined in the range <ddue:legacyItalic>x=[0,..,1]</ddue:legacyItalic> in order to be reasonably transformed by the reference system.
+                            </ddue:para>
+                            <ddue:para>
+                                Next, the blending from the rotated profile of the nacelle segment to the rotation curve is defined.
+                                The corresponding start and end points are given in curve coordinates <ddue:codeInline>zeta</ddue:codeInline> of the corresponding profiles.
+                                Note that the lower part of the segment profile counts from <ddue:legacyItalic>zeta=[-1,..,0]</ddue:legacyItalic> and the upper part counts from <ddue:legacyItalic>zeta=[0,..,1]</ddue:legacyItalic>.
+                                In between, the blending is linear.
+                            </ddue:para>
+                            <ddue:code language="XML" title="Rotation curve in a fan cowl">
+                                <![CDATA[
+<rotationCurve uID="rotationCurve">
+    <referenceSectionUID>engine_nacelle_fanCowl_section1</referenceSectionUID>
+    <curveProfileUID>fanCowl_upperSection</curveProfileUID>
+    <startZetaBlending>-0.6</startZetaBlending>
+    <startZeta>-0.5</startZeta>
+    <endZeta>-0.2</endZeta>s
+    <endZetaBlending>-0.1</endZetaBlending>
+</rotationCurve>
+                                ]]>
+                            </ddue:code>
+                            <ddue:code language="XML" title="Definition of the rotation curve profile">
+                                <![CDATA[
+<curveProfile uID="fanCowlRotationCurve">
+    <name>Fan cowl rotation curve profile</name>
+    <pointList>
+        <x mapType="vector">0;0.5;1</x>
+        <y mapType="vector">-0.1;-0.2;-0.05</y>
+    </pointList>
+</curveProfile>
+                                ]]>
+                            </ddue:code>
+                        </ddue:content>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
         <xsd:all>
-            <xsd:element name="referenceSectionUID"
-                type="stringUIDBaseType">
+            <xsd:element name="referenceSectionUID" type="stringUIDBaseType">
+                <xsd:annotation>
+                    <xsd:documentation>UID of the section which serves as reference</xsd:documentation>
+                </xsd:annotation>
             </xsd:element>
-            <xsd:element name="startZeta" type="doubleBaseType"/>
-            <xsd:element name="endZeta" type="doubleBaseType"/>
-            <xsd:element name="startZetaBlending"
-                type="doubleBaseType">
+            <xsd:element name="startZeta" type="doubleBaseType">
+                <xsd:annotation>
+                    <xsd:documentation>Start zeta [-1,..,1]; relative curve coordante along the rotation curve from which it will be inserted in the nacelle.</xsd:documentation>
+                </xsd:annotation>
             </xsd:element>
-            <xsd:element name="endZetaBlending" type="doubleBaseType"/>
-            <xsd:element name="curveProfileUID" type="stringUIDBaseType"/>
+            <xsd:element name="endZeta" type="doubleBaseType">
+                <xsd:annotation>
+                    <xsd:documentation>End zeta [-1,..,1]; relative curve coordante along the rotation curve up to which it will be inserted in the nacelle.</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="startZetaBlending" type="doubleBaseType">
+                <xsd:annotation>
+                    <xsd:documentation>Start zeta for blending [-1..1]; relative curve coordinate along the nacelle profile at which blending from the nacelle profile to the rotation curve will begin.</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="endZetaBlending" type="doubleBaseType">
+                <xsd:annotation>
+                    <xsd:documentation>End zeta for blending; relative curve coordinate along the nacelle profile at which blending from the rotation curve to the nacelle profile will end.</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="curveProfileUID" type="stringUIDBaseType">
+                <xsd:annotation>
+                    <xsd:documentation>UID of the rotation curve profile; the profile should be defined in x=[0..1] to be transformed by the section which is referenced by referenceSectionUID.</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
         </xsd:all>
         <xsd:attribute name="uID" type="xsd:ID" use="required"/>
     </xsd:complexType>
@@ -29939,21 +30219,34 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>nacelleCenterCowlType</ddue:para>
+                        <ddue:para>Center cowl</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>
-                            Describes the curve for defining rotational center of the engine.
-                        </ddue:para>
-                    </ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>
+	                            The <ddue:codeInline>centerCowl</ddue:codeInline> is defined by the rotation of a given curve profile (referenced via <ddue:codeInline>curveUID</ddue:codeInline>) around the <ddue:legacyItalic>x</ddue:legacyItalic>-axis.
+	                        </ddue:para>
+	                        <ddue:mediaLink>
+	                            <ddue:image xlink:href="nacelle_centerCowl"/>
+	                        </ddue:mediaLink>
+	                    </ddue:content>
+	                </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element name="xOffset" type="doubleBaseType"/>
-                    <xsd:element name="curveUID" type="stringUIDBaseType"/>
+                    <xsd:element name="xOffset" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Offset of the rotation curve in x-direction</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="curveUID" type="stringUIDBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>UID of the curve profile (vehicles/profiles/curveProfiles/..)</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                 </xsd:all>
                 <xsd:attribute name="uID" type="xsd:ID" use="required"/>
             </xsd:extension>
