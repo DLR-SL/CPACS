@@ -5851,10 +5851,10 @@ marko.alder@dlr.de
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:element name="referenceEndCondition" type="stringUIDBaseType" minOccurs="0">
+                    <xsd:element name="referenceEndConditionUID" type="stringUIDBaseType" minOccurs="0">
                         <xsd:annotation>
                             <xsd:documentation>
-                                Reference to the uID of the segment end condition variable
+                                Reference to the uID of the segment end condition variable to which a profile of constraintSettings is provided
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
@@ -5883,8 +5883,7 @@ marko.alder@dlr.de
                         type="doubleVectorConstraintBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
-                                Calibrated airspeed within the
-                                segment
+                                Calibrated airspeed within the segment. If a vector is provided, a constraint profile is defined with respect to the &lt;referenceEndCondition&gt; using the &lt;endConditionRatio&gt; vector.
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
@@ -5892,7 +5891,7 @@ marko.alder@dlr.de
                         type="doubleVectorConstraintBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
-                                Mach number within the segment
+                                Mach number within the segment. If a vector is provided, a constraint profile is defined with respect to the &lt;referenceEndCondition&gt; using the &lt;endConditionRatio&gt; vector.
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
@@ -5900,19 +5899,19 @@ marko.alder@dlr.de
                         type="doubleVectorConstraintBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
-                                Climb angle within the segment
+                               Climb angle within the segment. If a vector is provided, a constraint profile is defined with respect to the &lt;referenceEndCondition&gt; using the &lt;endConditionRatio&gt; vector.
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element minOccurs="0" name="rateOfClimb"
-                        type="doubleVectorConstraintBaseType">
+                        type="doubleConstraintBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
-                                Climb angle within the segment
+                                Rate of climb within the segment. If a vector is provided, a constraint profile is defined with respect to the &lt;referenceEndCondition&gt; using the &lt;endConditionRatio&gt; vector.
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element minOccurs="0" name="stepClimbSpecificExcessPower" type="doubleVectorConstraintBaseType">
+                    <xsd:element minOccurs="0" name="stepClimbSpecificExcessPower" type="doubleConstraintBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
                                 Specific excess power within the segment
@@ -5933,18 +5932,14 @@ marko.alder@dlr.de
                         <xsd:element name="heading" type="doubleVectorConstraintBaseType">
                             <xsd:annotation>
                                 <xsd:documentation>
-                                    Flight heading at the end of the
-                                    segment in compassAngle with
-                                    reference to true North [deg]
+                                    Flight heading at the end of the segment in compassAngle with reference to true North [deg]. If a vector is provided, a constraint profile is defined with respect to the &lt;referenceEndCondition&gt; using the &lt;endConditionRatio&gt; vector.
                                 </xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
                         <xsd:element name="turnAngle" type="doubleVectorConstraintBaseType">
                             <xsd:annotation>
                                 <xsd:documentation>
-                                    Total change of heading angle during
-                                    segment (a full turn is 360 degrees)
-                                    [deg]
+                                    Total change of heading angle during segment (a full turn is 360 degrees) [deg]. If a vector is provided, a constraint profile is defined with respect to the &lt;referenceEndCondition&gt; using the &lt;endConditionRatio&gt; vector.
                                 </xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
@@ -5952,7 +5947,7 @@ marko.alder@dlr.de
                     <xsd:element minOccurs="0" name="rateOfTurn" type="doubleVectorConstraintBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
-                                Rate of turn within the segment
+                                Rate of turn within the segment [deg/s]. If a vector is provided, a constraint profile is defined with respect to the &lt;referenceEndCondition&gt; using the &lt;endConditionRatio&gt; vector.
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
@@ -5960,10 +5955,7 @@ marko.alder@dlr.de
                         type="doubleVectorConstraintBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
-                                Thrust setting for derated engine as
-                                fraction of max. Thrust (e.g.: for
-                                powered descents, deceleration not at
-                                IDLE, manoevres).
+                                Thrust setting for derated engine as fraction of max. Thrust (e.g.: for powered descents, deceleration not at IDLE, manoevres). If a vector is provided, a constraint profile is defined with respect to the &lt;referenceEndCondition&gt; using the &lt;endConditionRatio&gt; vector.
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
@@ -5971,7 +5963,7 @@ marko.alder@dlr.de
                         type="doubleVectorConstraintBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
-                                Rate of velocity within the segment
+                                Rate of velocity within the segment. If a vector is provided, a constraint profile is defined with respect to the &lt;referenceEndCondition&gt; using the &lt;endConditionRatio&gt; vector.
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
@@ -5979,7 +5971,7 @@ marko.alder@dlr.de
                         type="doubleVectorConstraintBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
-                                Load factor experienced during segment
+                                Load factor experienced during segment. If a vector is provided, a constraint profile is defined with respect to the &lt;referenceEndCondition&gt; using the &lt;endConditionRatio&gt; vector.
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
@@ -5987,23 +5979,20 @@ marko.alder@dlr.de
                         type="doubleVectorConstraintBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
-                                Constant altitude for the segment.
+                                Constant altitude of the segment. If a vector is provided, a constraint profile is defined with respect to the &lt;referenceEndCondition&gt; using the &lt;endConditionRatio&gt; vector.
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element minOccurs="0" name="prioritySetting">
                         <xsd:annotation>
                             <xsd:documentation>
-                                priority setting indicating which
-                                constraint is preferred within the
-                                segment
+                                Priority setting indicating which constraint is preferred within the segment. If a vector is provided, a constraint profile is defined with respect to the &lt;referenceEndCondition&gt; using the &lt;endConditionRatio&gt; vector.
                             </xsd:documentation>
                         </xsd:annotation>
                         <xsd:complexType>
                             <xsd:simpleContent>
-                                <xsd:restriction base="stringBaseType">
-                                    <xsd:enumeration value="velocity" />
-                                    <xsd:enumeration value="flightPath" />
+                                <xsd:restriction base="stringVectorBaseType">
+                                    <xsd:pattern value="(velocity|flightPath)(;(velocity|flightPath))*"/>
                                 </xsd:restriction>
                             </xsd:simpleContent>
                         </xsd:complexType>
@@ -13766,20 +13755,41 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element minOccurs="0" name="longitude" type="doubleConstraintBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Longitude coordinate 0-360</xsd:documentation>
-                        </xsd:annotation>
+                    <xsd:element minOccurs="0" name="longitude">
+                        <xsd:complexType>
+                            <xsd:annotation>
+                                <xsd:documentation>Longitude coordinate 0-360</xsd:documentation>
+                            </xsd:annotation>
+                            <xsd:complexContent>
+                                <xsd:extension base="doubleConstraintBaseType">
+                                    <xsd:attribute name="uID" type="xsd:ID"/>
+                                </xsd:extension>
+                            </xsd:complexContent>
+                        </xsd:complexType>
                     </xsd:element>
-                    <xsd:element minOccurs="0" name="latitude" type="doubleConstraintBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Latitude coordinate 0-360</xsd:documentation>
-                        </xsd:annotation>
+                    <xsd:element minOccurs="0" name="latitude">
+                        <xsd:complexType>
+                            <xsd:annotation>
+                                <xsd:documentation>Latitude coordinate 0-360</xsd:documentation>
+                            </xsd:annotation>
+                            <xsd:complexContent>
+                                <xsd:extension base="doubleConstraintBaseType">
+                                    <xsd:attribute name="uID" type="xsd:ID"/>
+                                </xsd:extension>
+                            </xsd:complexContent>
+                        </xsd:complexType>
                     </xsd:element>
-                    <xsd:element minOccurs="0" name="altitude" type="doubleConstraintBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Altitude in meters</xsd:documentation>
-                        </xsd:annotation>
+                    <xsd:element minOccurs="0" name="altitude">
+                        <xsd:complexType>
+                            <xsd:annotation>
+                                <xsd:documentation>Altitude in meters</xsd:documentation>
+                            </xsd:annotation>
+                            <xsd:complexContent>
+                                <xsd:extension base="doubleConstraintBaseType">
+                                    <xsd:attribute name="uID" type="xsd:ID"/>
+                                </xsd:extension>
+                            </xsd:complexContent>
+                        </xsd:complexType>
                     </xsd:element>
                 </xsd:all>
             </xsd:extension>
@@ -20023,10 +20033,272 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>Specifies missions for performance evaluation of aircraft.</ddue:para>
-                            <ddue:para>As the topmost element of the hierarchical mission definition, individual missions are grouped together
-                            in the <ddue:legacyItalic>missions</ddue:legacyItalic> node. Here, <ddue:legacyItalic>segmentBlocks</ddue:legacyItalic>
-                            are referenced. These again link to a list of <ddue:legacyItalic>segments</ddue:legacyItalic>.</ddue:para>
+                            <ddue:section>
+                                <ddue:title>General description</ddue:title>
+                                <ddue:para>Specifies mission profiles required for the performance evaluation of air vehicles (aircraft, rotorcraft, etc.). The missionDefininitions node is constructed in such a way, that all civil aircraft missions and missions from MIL-STD-3013A can be specified.</ddue:para>>
+                            </ddue:section>
+                            <ddue:section>
+                                <ddue:title>Hierarchical buildup of the mission definition</ddue:title>
+                                <ddue:content>
+                                    <ddue:para>The mission definition is built-up in a hierarchical way. As the topmost element of the hierarchical mission definition, missions are created within the missions node. Here, one or more segmentBlocks are referenced. These again link to a sequence of segments, making up parts of the missions:</ddue:para>
+                                    <ddue:mediaLink>
+                                        <ddue:image xlink:href="missionDefinition"/>
+                                    </ddue:mediaLink>
+                                    <ddue:table>
+                                        <ddue:row>
+                                            <ddue:entry><ddue:legacyItalic>&lt;missions&gt;</ddue:legacyItalic></ddue:entry>
+                                            <ddue:entry>containing the <ddue:legacyItalic>&lt;startCondition&gt;</ddue:legacyItalic> and a sequence of <ddue:legacyItalic>&lt;segmentBlockUIDs&gt;</ddue:legacyItalic></ddue:entry>
+                                        </ddue:row>
+                                        <ddue:row>
+                                            <ddue:entry><ddue:legacyItalic>&lt;segmentBlocks&gt;</ddue:legacyItalic></ddue:entry>
+                                            <ddue:entry>
+                                                <ddue:para>
+                                                    grouping multiple <ddue:legacyItalic>&lt;segments&gt;</ddue:legacyItalic> and providing overall information concerning the block of segments:
+                                                </ddue:para>
+                                                <ddue:para>
+                                                    <ddue:list class="ordered">
+                                                        <ddue:listItem>constraints in the form of an <ddue:legacyItalic>endCondition</ddue:legacyItalic> or given <ddue:legacyItalic>flightPath</ddue:legacyItalic>,</ddue:listItem>
+                                                        <ddue:listItem><ddue:legacyItalic>variableSegments</ddue:legacyItalic> and the corresponding <ddue:legacyItalic>variableConditions</ddue:legacyItalic> in case a segment should be adjusted such to meet the <ddue:legacyItalic>segmentBlock</ddue:legacyItalic>'s <ddue:legacyItalic>endCondition</ddue:legacyItalic>,</ddue:listItem>
+                                                        <ddue:listItem><ddue:legacyItalic>fuelPlanningType</ddue:legacyItalic> (<ddue:legacyItalic>designFuel</ddue:legacyItalic>, <ddue:legacyItalic>reserveFuel</ddue:legacyItalic>, <ddue:legacyItalic>additionalFuel</ddue:legacyItalic>),</ddue:listItem>
+                                                        <ddue:listItem><ddue:legacyItalic>segmentDirection</ddue:legacyItalic> and <ddue:legacyItalic>numberOfRepetitions</ddue:legacyItalic>.</ddue:listItem>
+                                                     </ddue:list>
+                                                </ddue:para>
+                                            </ddue:entry>
+                                        </ddue:row>
+                                        <ddue:row>
+                                            <ddue:entry><ddue:legacyItalic>&lt;segments&gt;</ddue:legacyItalic></ddue:entry>
+                                            <ddue:entry>
+                                                <ddue:para>
+                                                    containing detailed information per segment:
+                                                </ddue:para>
+                                                <ddue:para>
+                                                    <ddue:legacyBold>EITHER</ddue:legacyBold>
+                                                </ddue:para>
+                                                <ddue:para>
+                                                    <ddue:list class="ordered">
+                                                        <ddue:listItem><ddue:legacyItalic>segmentType</ddue:legacyItalic>,</ddue:listItem>
+                                                        <ddue:listItem><ddue:legacyItalic>endConditions</ddue:legacyItalic>,</ddue:listItem>
+                                                        <ddue:listItem><ddue:legacyItalic>constraints</ddue:legacyItalic>,</ddue:listItem>
+                                                        <ddue:listItem><ddue:legacyItalic>environmentalConditions</ddue:legacyItalic></ddue:listItem>
+                                                     </ddue:list>
+                                                </ddue:para>
+                                                <ddue:para>
+                                                    <ddue:legacyBold>OR</ddue:legacyBold>&#160;<ddue:legacyItalic>massFraction</ddue:legacyItalic>
+                                                </ddue:para>
+                                                <ddue:para>
+                                                    <ddue:legacyBold>OR</ddue:legacyBold>&#160;<ddue:legacyItalic>mass</ddue:legacyItalic>
+                                                </ddue:para>
+                                            </ddue:entry>
+                                        </ddue:row>
+                                    </ddue:table>
+                                </ddue:content>
+                            </ddue:section>
+                            <ddue:section>
+                                <ddue:title>startConditions, constraints, endConditions and the relationalOperator attribute</ddue:title>
+                                <ddue:content>
+                                    <ddue:para>the startCondition is provided at the mission node. Each subsequent segmentBlock/segment ends by the provided endCondition.</ddue:para>
+                                    <ddue:table>
+                                        <ddue:row>
+                                            <ddue:entry><ddue:legacyItalic>&lt;startCondition&gt;</ddue:legacyItalic></ddue:entry>
+                                            <ddue:entry>start condition of the mission (can be an airfield or mid-air condition)</ddue:entry>
+                                        </ddue:row>
+                                        <ddue:row>
+                                            <ddue:entry><ddue:legacyItalic>&lt;endCondition&gt;</ddue:legacyItalic></ddue:entry>
+                                            <ddue:entry>specific end condition for a <ddue:legacyItalic>segmentBlock</ddue:legacyItalic> or <ddue:legacyItalic>segment</ddue:legacyItalic> (e.g.: an altitude or velocity)</ddue:entry>
+                                        </ddue:row>
+                                        <ddue:row>
+                                            <ddue:entry><ddue:legacyItalic>&lt;constraint&gt;</ddue:legacyItalic></ddue:entry>
+                                            <ddue:entry>specific performance settings for a <ddue:legacyItalic>segmentBlock</ddue:legacyItalic> or <ddue:legacyItalic>segment</ddue:legacyItalic> (e.g.: a cruise Mach number)</ddue:entry>
+                                        </ddue:row>
+                                        <ddue:row>
+                                            <ddue:entry>attribute&#160;<ddue:legacyItalic>&#64;relationalOperator</ddue:legacyItalic></ddue:entry>
+                                            <ddue:entry>
+                                                <ddue:para>Indicate how conditions should be interpreted:</ddue:para>
+                                                <ddue:para>
+                                                    <ddue:list class="bullet">
+                                                        <ddue:listItem><ddue:legacyItalic>enum: „lt“, „le“, „eq“, „ne“, „ge“, „gt“</ddue:legacyItalic>,</ddue:listItem>
+                                                        <ddue:listItem>
+                                                            <ddue:para>Examples:</ddue:para>
+                                                            <ddue:para>
+                                                                <ddue:code language="XML">
+                                                                    <![CDATA[
+<machNumber relationalOperator="le">0.78</machNumber>
+<duration relationalOperator="eq">1800</duration>
+                                                                    ]]>
+                                                                </ddue:code>
+                                                            </ddue:para>
+                                                            <ddue:para></ddue:para>
+                                                        </ddue:listItem>
+                                                     </ddue:list>
+                                                </ddue:para>
+                                            </ddue:entry>
+                                        </ddue:row>
+                                    </ddue:table>
+                                </ddue:content>
+                            </ddue:section>
+                            <ddue:section>
+                                <ddue:title>Example implementation for a civil transport mission</ddue:title>
+                                <ddue:content>
+                                    <ddue:mediaLink>
+                                        <ddue:image xlink:href="missionProfile"/>
+                                    </ddue:mediaLink>
+                                    <ddue:para>
+                                        In the figure above, an example for a civil aircraft transport mission is provided.
+                                    </ddue:para>
+                                    <ddue:para>
+                                        The mission starts at a position of 0, 0, 0 with 0 velocity, as provided by the <ddue:legacyItalic>startCondition</ddue:legacyItalic> of the <ddue:legacyItalic>mission</ddue:legacyItalic> node. Furthermore, the environmental conditions are provided: ISA atmosphere with a <ddue:legacyItalic>deltaTemperature</ddue:legacyItalic> of 0 [K]. The mission consists of three <ddue:legacyItalic>segmentBlocks</ddue:legacyItalic>: a designMission, reserves and the taxiIn <ddue:legacyItalic>segmentBlock</ddue:legacyItalic>.
+                                    </ddue:para>
+                                    <ddue:code language="XML">
+                                        <![CDATA[
+<mission uID="exampleMission">
+    <name>example mission</name>
+    <description>this is an example mission</description>
+    <startCondition>
+        <calibratedAirSpeed>0.0</calibratedAirSpeed>
+        <positionXYZ>
+            <x>0.0</x>
+            <y>0.0</y>
+            <z>0.0</z>
+        </positionXYZ>
+        <environment>
+            <atmosphericModel>ISA</atmosphericModel>
+            <deltaTemperature>0.0</deltaTemperature>
+        </environment>
+    </startCondition>
+    <segmentBlockUIDs>
+        <uID>designMission</uID>
+        <uID>reserves</uID>
+        <uID>endPhase</uID>
+    </segmentBlockUIDs>
+</mission>
+                                        ]]>
+                                    </ddue:code>
+                                    <ddue:para>
+                                        The designMission <ddue:legacyItalic>segmentBlock</ddue:legacyItalic> is shown below. It provides a set of five segments, together making up a mission with a range of 1000 [nm] or 1852 [km]. The “cruise” segment is the variable segment, which thereby should have a range of: <ddue:math>1852000 – range(climb) – range(descent)</ddue:math>, provided the taxiOut and takeOff segments are not providing any range credit. The fuel burned during this <ddue:legacyItalic>segmentBlock</ddue:legacyItalic> should be added to the <ddue:legacyItalic>designFuel</ddue:legacyItalic>, the <ddue:legacyItalic>segmentDirection</ddue:legacyItalic> is provided for illustration purposes.
+                                    </ddue:para>
+                                    <ddue:code language="XML">
+                                        <![CDATA[
+<segmentBlocks>
+    <segmentBlock uID="designMission">
+        <name>design mission</name>
+        <description>segment block for the design mission</description>
+        <segmentBlockConstraints>
+            <endCondition>
+                <range relationalOperator="eq">1852000</range>
+            </endCondition>
+        </segmentBlockConstraints>
+        <variableSegments>
+            <variableSegment>
+                <segmentUID>cruise</segmentUID>
+                <variableConditions>range</variableConditions>
+            </variableSegment>
+        </variableSegments>
+        <fuelPlanningType>designFuel</fuelPlanningType>
+        <segmentDirection>outbound</segmentDirection>
+        <segmentUIDs>
+            <uID>taxiOut</uID>
+            <uID>takeOff</uID>
+            <uID>climb</uID>
+            <uID>cruise</uID>
+            <uID>descent</uID>
+        </segmentUIDs>
+    </segmentBlock>
+</segmentBlocks>
+
+                                        ]]>
+                                    </ddue:code>
+                                    <ddue:para>
+                                        The first and second segment are providing input for the part of the <ddue:legacyItalic>segmentBlock</ddue:legacyItalic> that doesn’t need simulation. During the taxiOut phase, 50 [kg] of fuel is burned. The takeOff phase has a duration of 30 [sec].
+                                    </ddue:para>
+                                    <ddue:code language="XML">
+                                        <![CDATA[
+<segment uID="taxiOut">
+    <name>taxi out</name>
+    <description>taxi out segment</description>
+    <segmentType>massFraction</segmentType>
+    <fuelMass>50</fuelMass>
+</segment>
+<segment uID="takeOff">
+    <name>take off</name>
+    <description>take off segment</description>
+    <segmentType>takeOff</segmentType>
+    <endCondition>
+        <duration relationalOperator="eq">00:00:30</duration>
+    </endCondition>
+</segment>
+                                        ]]>
+                                    </ddue:code>
+                                    <ddue:para>The rest of the segments make-up the flying part of the <ddue:legacyItalic>designMission</ddue:legacyItalic>. The climb phase, ending at an altitude of FL330 or 10058.4 [m], provides a constraint-lapse having discrete steps, typical for transport aircraft (a 250 kt / 300 kt / M 0.78 climb profile). Through the <ddue:legacyItalic>referenceEndconditionUID</ddue:legacyItalic> “altClimb”, a link to the altitude <ddue:legacyItalic>endCondition</ddue:legacyItalic> of the segment at the basis of this climb profile is provided.</ddue:para>
+                                    <ddue:para>
+                                        <ddue:table>
+                                            <ddue:row>
+                                                <ddue:entry><ddue:legacyBold>Altitude from</ddue:legacyBold></ddue:entry>
+                                                <ddue:entry><ddue:legacyBold>Altitude to</ddue:legacyBold></ddue:entry>
+                                                <ddue:entry><ddue:legacyBold>calibratedAirspeed</ddue:legacyBold></ddue:entry>
+                                                <ddue:entry><ddue:legacyBold>machNumber</ddue:legacyBold></ddue:entry>
+                                            </ddue:row>
+                                            <ddue:row>
+                                                <ddue:entry>0.0 [m]</ddue:entry>
+                                                <ddue:entry>0.303 * 10058.4 = 3047.7 [m]</ddue:entry>
+                                                <ddue:entry>&#8804; 128.61 [m/s]</ddue:entry>
+                                                <ddue:entry>&#8804; 0.78 [-]</ddue:entry>
+                                            </ddue:row>
+                                            <ddue:row>
+                                                <ddue:entry>0.303 * 10058.4 = 3047.7 [m]</ddue:entry>
+                                                <ddue:entry>10058.4 [m]</ddue:entry>
+                                                <ddue:entry>&#8804; 154.33 [m/s]</ddue:entry>
+                                                <ddue:entry>&#8804; 0.78 [-]</ddue:entry>
+                                            </ddue:row>
+                                        </ddue:table>
+                                    </ddue:para>
+                                    <ddue:para>
+                                        The cruise phase is not fixed to a certain altitude and has no <ddue:legacyItalic>endCondition</ddue:legacyItalic>, since its range is determined by the <ddue:legacyItalic>segmentBlock</ddue:legacyItalic> information. The descent phase makes sure the vehicle lands at an altitude of 0 [m]. In this case, since the values are not explicitly provided, it is up to the mission simulation software to determine, when the cruise phase ends and the descent phase starts.
+                                    </ddue:para>
+                                    <ddue:code language="XML">
+                                        <![CDATA[
+<segment uID="climb">
+    <name>climb</name>
+    <description>climb with: speed @ MFCS (set to machNumber le 0.78 [-]), altitude @ FL330</description>
+    <segmentType>climb</segmentType>
+    <endCondition>
+        <positionGeo>
+            <altitude relationalOperator="ge" uID="altClimb">10058.4</altitude> <!-- FL330 -->
+        </positionGeo>
+    </endCondition>
+    <constraints>
+        <constraint>
+            <referenceEndConditionUID>altitude</referenceEndConditionUID>
+            <endConditionRatio>0.0;0.303</endConditionRatio> <!-- FL0, FL100 -->
+            <continuity>discrete</continuity>
+            <calibratedAirSpeed relationalOperator="le">128.61;154.33</calibratedAirSpeed><!-- 250 [kt], 300 [kt]-->
+            <machNumber relationalOperator="le">0.78;0.78</machNumber>
+            <prioritySetting>velocity</prioritySetting>
+        </constraint>
+    </constraints>
+</segment>
+<segment uID="cruise">
+    <name>cruise</name>
+    <description>cruise with: speed @ optimum cruise speed, altitude @ optimum cruise altitude</description>
+    <segmentType>cruise</segmentType>
+    <endCondition/>
+</segment>
+<segment uID="descent">
+    <name>descent to MSL</name>
+    <description>descent to MSL altitude</description>
+    <segmentType>descent</segmentType>
+    <endCondition>
+        <positionGeo>
+            <altitude relationalOperator="eq">0</altitude>
+        </positionGeo>
+    </endCondition>
+</segment>
+                                        ]]>
+                                    </ddue:code>
+                                    <ddue:para>
+                                        Two more <ddue:legacyItalic>segmentBlocks</ddue:legacyItalic> make up the mission. The “reserves” <ddue:legacyItalic>segmentBlock</ddue:legacyItalic> provides information for the cruise to alternate airport and loitering phase and the corresponding burnt fuel is considered <ddue:legacyItalic>reserveFuel</ddue:legacyItalic>. The mission ends with a landing and taxiIn phase within the “endPhase” <ddue:legacyItalic>segmentBlock</ddue:legacyItalic>, of which the burnt fuel is considered <ddue:legacyItalic>additionalFuel</ddue:legacyItalic>. The following then holds: <ddue:legacyItalic>blockFuel</ddue:legacyItalic> = <ddue:legacyItalic>designFuel</ddue:legacyItalic> + <ddue:legacyItalic>additionalFuel</ddue:legacyItalic>.
+                                    </ddue:para>
+                                </ddue:content>
+                            </ddue:section>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -20035,8 +20307,8 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                	<xsd:element name="missions" type="missionsType"/>
-                	<xsd:element name="segmentBlocks" type="missionSegmentBlocksType"/>
+                    <xsd:element name="missions" type="missionsType"/>
+                    <xsd:element name="segmentBlocks" type="missionSegmentBlocksType"/>
                     <xsd:element name="segments" type="missionSegmentsType"/>
                 </xsd:all>
             </xsd:extension>
@@ -20064,7 +20336,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     </xsd:element>
                     <xsd:element minOccurs="0" name="specificPerformanceMaps" type="specificPerformanceMapsType">
                         <xsd:annotation>
-                            <xsd:documentation>List of specific performance maps used on dedicated mission segments</xsd:documentation>
+                            <xsd:documentation>List of specific performance maps used on dedicated mission segments or pointPerformance requirements</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -20094,70 +20366,54 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                 <xsd:sequence>
                     <xsd:choice minOccurs="0">
                         <xsd:element name="calibratedAirSpeed">
-	                        <xsd:complexType>
-	                            <xsd:annotation>
-	                                <xsd:documentation>
-	                                    Calibrated airspeed [m/s]
-	                                </xsd:documentation>
-	                            </xsd:annotation>
-	                            <xsd:complexContent>
-	                                <xsd:extension base="doubleConstraintBaseType">
-	                                    <xsd:attribute name="uID" type="xsd:ID"/>
-	                                </xsd:extension>
-	                            </xsd:complexContent>
-	                        </xsd:complexType>
-	                    </xsd:element>
-	                    <xsd:element name="machNumber">
-	                        <xsd:complexType>
-	                            <xsd:annotation>
-	                                <xsd:documentation>
-	                                    Mach number
-	                                </xsd:documentation>
-	                            </xsd:annotation>
-	                            <xsd:complexContent>
-	                                <xsd:extension base="doubleConstraintBaseType">
-	                                    <xsd:attribute name="uID" type="xsd:ID"/>
-	                                </xsd:extension>
-	                            </xsd:complexContent>
-	                        </xsd:complexType>
-	                    </xsd:element>
-                    </xsd:choice>
-                    <xsd:choice minOccurs="0">
-                        <xsd:element name="positionXYZ">
                             <xsd:complexType>
                                 <xsd:annotation>
                                     <xsd:documentation>
-                                        Global coordinate in xyz coordinates
+                                        Calibrated airspeed at the end of the segment [m/s]
                                     </xsd:documentation>
                                 </xsd:annotation>
                                 <xsd:complexContent>
-                                    <xsd:extension base="pointConstraintType">
+                                    <xsd:extension base="doubleConstraintBaseType">
                                         <xsd:attribute name="uID" type="xsd:ID"/>
                                     </xsd:extension>
                                 </xsd:complexContent>
                             </xsd:complexType>
                         </xsd:element>
-                        <xsd:element name="positionGeo">
+                        <xsd:element name="machNumber">
                             <xsd:complexType>
                                 <xsd:annotation>
                                     <xsd:documentation>
-                                        Global coordinate in geographic
-                                        coordinates (longitude, latitude,
-                                        altitude)
+                                        Mach number at the end of the segment
                                     </xsd:documentation>
                                 </xsd:annotation>
                                 <xsd:complexContent>
-                                    <xsd:extension base="geographicPointConstraintType">
+                                    <xsd:extension base="doubleConstraintBaseType">
                                         <xsd:attribute name="uID" type="xsd:ID"/>
                                     </xsd:extension>
                                 </xsd:complexContent>
                             </xsd:complexType>
+                        </xsd:element>
+                    </xsd:choice>
+                    <xsd:choice minOccurs="0">
+                        <xsd:element name="positionXYZ" type="pointConstraintType">
+                            <xsd:annotation>
+                                <xsd:documentation>
+                                    Position at the end of the segment in xyz coordinates
+                                </xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element name="positionGeo" type="geographicPointConstraintType">
+                            <xsd:annotation>
+                                <xsd:documentation>
+                                    Position at the end of the segment in geo coordinates
+                                </xsd:documentation>
+                            </xsd:annotation>
                         </xsd:element>
                         <xsd:element name="runway">
                             <xsd:complexType>
                                 <xsd:annotation>
                                     <xsd:documentation>
-                                        Runway
+                                        Reference to the runway on which the segment ends
                                     </xsd:documentation>
                                 </xsd:annotation>
                                 <xsd:complexContent>
@@ -20173,7 +20429,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             <xsd:complexType>
                                 <xsd:annotation>
                                     <xsd:documentation>
-                                        MassFraction ending the segment
+                                        massFraction ending the segment [-]
                                     </xsd:documentation>
                                 </xsd:annotation>
                                 <xsd:complexContent>
@@ -20187,9 +20443,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             <xsd:complexType>
                                 <xsd:annotation>
                                     <xsd:documentation>
-                                        Fuel mass fraction ending the
-                                        segment, as remaining fuel mass with
-                                        respect to initial segment fuel mass
+                                        massFraction of remaining fuel ending the segment [-]
                                     </xsd:documentation>
                                 </xsd:annotation>
                                 <xsd:complexContent>
@@ -20203,8 +20457,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             <xsd:complexType>
                                 <xsd:annotation>
                                     <xsd:documentation>
-                                        Remaining absolute fuel ending the
-                                        segment
+                                        Absolute mass of remaining fuel ending the segment [kg]
                                     </xsd:documentation>
                                 </xsd:annotation>
                                 <xsd:complexContent>
@@ -20218,8 +20471,49 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             <xsd:complexType>
                                 <xsd:annotation>
                                     <xsd:documentation>
-                                        Consumed fuel mass ending the
-                                        segment
+                                        Consumed fuel ending the segment [kg]
+                                    </xsd:documentation>
+                                </xsd:annotation>
+                                <xsd:complexContent>
+                                    <xsd:extension base="doubleConstraintBaseType">
+                                        <xsd:attribute name="uID" type="xsd:ID"/>
+                                    </xsd:extension>
+                                </xsd:complexContent>
+                            </xsd:complexType>
+                        </xsd:element>
+                        <xsd:element name="powerFraction">
+                            <xsd:complexType>
+                                <xsd:annotation>
+                                    <xsd:documentation>
+                                        Power fraction of remaining at the end of the segment
+                                    </xsd:documentation>
+                                </xsd:annotation>
+                                <xsd:complexContent>
+                                    <xsd:extension base="doubleConstraintBaseType">
+                                        <xsd:attribute name="uID" type="xsd:ID"/>
+                                    </xsd:extension>
+                                </xsd:complexContent>
+                            </xsd:complexType>
+                        </xsd:element>
+                        <xsd:element name="powerRemaining">
+                            <xsd:complexType>
+                                <xsd:annotation>
+                                    <xsd:documentation>
+                                        Absolute power left ending the segment [W]
+                                    </xsd:documentation>
+                                </xsd:annotation>
+                                <xsd:complexContent>
+                                    <xsd:extension base="doubleConstraintBaseType">
+                                        <xsd:attribute name="uID" type="xsd:ID"/>
+                                    </xsd:extension>
+                                </xsd:complexContent>
+                            </xsd:complexType>
+                        </xsd:element>
+                        <xsd:element name="powerConsumed">
+                            <xsd:complexType>
+                                <xsd:annotation>
+                                    <xsd:documentation>
+                                        Consumed power ending the segment [W]
                                     </xsd:documentation>
                                 </xsd:annotation>
                                 <xsd:complexContent>
@@ -20235,9 +20529,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             <xsd:complexType>
                                 <xsd:annotation>
                                     <xsd:documentation>
-                                        Flight heading at the end of the
-                                        segment in compassAngle with
-                                        reference to true North [deg]
+                                        Flight heading at the end of the segment in compassAngle with reference to true North [deg]
                                     </xsd:documentation>
                                 </xsd:annotation>
                                 <xsd:complexContent>
@@ -20251,9 +20543,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             <xsd:complexType>
                                 <xsd:annotation>
                                     <xsd:documentation>
-                                        Total change of heading angle during
-                                        segment (a full turn is 360 degrees)
-                                        [deg]
+                                        Total change of heading angle during segment (a full turn is 360 degrees) [deg]
                                     </xsd:documentation>
                                 </xsd:annotation>
                                 <xsd:complexContent>
@@ -20268,7 +20558,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         <xsd:complexType>
                             <xsd:annotation>
                                 <xsd:documentation>
-                                    Flown distance in the segment (x, y, z)
+                                    Flown distance ending the segment
                                 </xsd:documentation>
                             </xsd:annotation>
                             <xsd:complexContent>
@@ -20297,7 +20587,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             <xsd:complexType>
                                 <xsd:annotation>
                                     <xsd:documentation>
-                                        UTC time at end of mission
+                                        UTC time at end of segment [hh:mm:ss]
                                     </xsd:documentation>
                                 </xsd:annotation>
                                 <xsd:complexContent>
@@ -20312,8 +20602,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         <xsd:complexType>
                             <xsd:annotation>
                                 <xsd:documentation>
-                                    Specific excess power at the end of the
-                                    segment
+                                    Specific excess power at the end of the segment
                                 </xsd:documentation>
                             </xsd:annotation>
                             <xsd:complexContent>
@@ -20327,7 +20616,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         <xsd:complexType>
                             <xsd:annotation>
                                 <xsd:documentation>
-                                    Rate of climb ending the segment
+                                    Rate of climb ending the segment [m/s]
                                 </xsd:documentation>
                             </xsd:annotation>
                             <xsd:complexContent>
@@ -20341,7 +20630,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         <xsd:complexType>
                             <xsd:annotation>
                                 <xsd:documentation>
-                                    Achieved flightPathAngle ending the segment
+                                    Achieved flightPathAngle ending the segment [deg]
                                 </xsd:documentation>
                             </xsd:annotation>
                             <xsd:complexContent>
@@ -20351,7 +20640,12 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             </xsd:complexContent>
                         </xsd:complexType>
                     </xsd:element>
-                    <xsd:element name="releasedStores" minOccurs="0" type="releasedStoresType"/>
+                    <xsd:element name="releasedStores" minOccurs="0" type="releasedStoresType">
+                        <xsd:annotation>
+                            <xsd:documentation>List of stores released in the segment. The corresponding weightAndBalance vector for retrieving the new state as well as a potential change in aerodynamicPerformanceMap (if external stores are released) should be reflected within the configuration node at model level.
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                 </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
@@ -20362,11 +20656,8 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Mission block constraints</ddue:para>
+                        <ddue:para>Specific performance settings for the segmentBlock (e.g.: a cruise Mach number)</ddue:para>
                     </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>Definition of constraints for the mission segment block</ddue:para>
-                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -20421,7 +20712,12 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             </xsd:simpleContent>
                         </xsd:complexType>
                     </xsd:element>
-                    <xsd:element name="segmentUIDs" type="uIDSequenceType" />
+                    <xsd:element name="segmentUIDs" type="uIDSequenceType">
+                        <xsd:annotation>
+                            <xsd:documentation>List of segment uID's making up the segmentBlock. These should be ordered, such that the segment connections are correct.
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                     <xsd:element minOccurs="0" name="variableSegments" type="variableSegmentsType"/>
                     <xsd:element minOccurs="0" name="fuelPlanningType">
                         <xsd:annotation>
@@ -21408,21 +21704,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             <xsd:documentation>Description of the performance case</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="reqClassification">
-                        <xsd:annotation>
-                            <xsd:documentation>Requirement classification based on the MoSCoW method (must, should, could or wont)</xsd:documentation>
-                        </xsd:annotation>
-                        <xsd:complexType>
-                            <xsd:simpleContent>
-                                <xsd:restriction base="stringBaseType">
-                                    <xsd:enumeration value="must" />
-                                    <xsd:enumeration value="should" />
-                                    <xsd:enumeration value="could" />
-                                    <xsd:enumeration value="wont" />
-                                </xsd:restriction>
-                            </xsd:simpleContent>
-                        </xsd:complexType>
-                    </xsd:element>
+                    <xsd:element name="requirementClassification" minOccurs="0" type="requirementClassificationType"/>
                     <xsd:element name="weightAndBalanceUID" minOccurs="0" type="stringUIDBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Reference to the considered weightAndBalance case</xsd:documentation>
@@ -33679,8 +33961,8 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>Definition of missions and point performance events to evaluate the performance of a vehicle.</ddue:para>
-                            <ddue:para>The definition of performance cases is independent from a specific vehicle.</ddue:para>
+                            <ddue:para>Specification of performance cases required for the performance evaluation of air vehicles (aircraft, rotorcraft, etc.).</ddue:para>
+                            <ddue:para>The information in this node is <ddue:legacyItalic>generally</ddue:legacyItalic> applicable to any kind of vehicle. <ddue:legacyItalic>Vehicle-specific</ddue:legacyItalic> information is provided through the performanceRequirements node found under: <ddue:legacyItalic>/cpacs/vehicles/../model/performanceCases</ddue:legacyItalic>.</ddue:para>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -33689,8 +33971,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element name="missionDefinitions" type="missionDefinitionsType" maxOccurs="1" minOccurs="0">
-                    </xsd:element>
+                    <xsd:element name="missionDefinitions" type="missionDefinitionsType" maxOccurs="1" minOccurs="0"/>
                     <xsd:element minOccurs="0" name="pointPerformanceDefinitions" type="pointPerformanceDefinitionsType"/>
                 </xsd:all>
             </xsd:extension>
@@ -33711,7 +33992,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:element name="runwayStartPosition" type="runwayStartPositionType" minOccurs="0">
                         <xsd:annotation>
                             <xsd:documentation>
-                                Offset from runway threshold in cartesian coordinates in the runway coordinate system
+                                Offset from runway threshold in the runway coordinate system
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
@@ -34127,7 +34408,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:element name="deltaTemperature" type="doubleBaseType" minOccurs="0">
                         <xsd:annotation>
                             <xsd:documentation>
-                                Delta temperature
+                                Delta temperature with respect to the standard temperature of the selected atmosphere [K]
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
@@ -34309,7 +34590,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Segments</ddue:para>
+                        <ddue:para>List of segment uIDs to which the configuration is to be applied</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
@@ -34346,11 +34627,17 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element name="uID" type="stringUIDBaseType"/>
+                    <xsd:element name="uID" type="stringUIDBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                UID of the segment for which the specific configuration holds.
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                     <xsd:element name="indexIDs" minOccurs="0" type="posIntVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
-                                Vector with semicolon separated indices of the parameters within a segment. If not given then the complete segment is applied.
+                                Vector with semicolon separated indices of the parts of the respective segment within the mission definition for which the specific configuration setting holds. Example: scheduling configurations for a climb or descent segment (different settings of moveables and gears) on altitudes/velocities
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
@@ -34404,14 +34691,14 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:element name="uID" type="stringUIDBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
-                                UID of the released store.
+                                uID of the released store(s).
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="quantity" type="integerBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
-                                Quantity of the released store.
+                                Quantity of  released stores
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
@@ -34420,7 +34707,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
-	<xsd:complexType name="runwayStartPositionType">
+    <xsd:complexType name="runwayStartPositionType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
@@ -34442,42 +34729,42 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                 <xsd:choice>
                     <xsd:sequence>
                         <xsd:element name="x" type="doubleBaseType">
-	                        <xsd:annotation>
-	                            <xsd:documentation>
-	                                X-position in cartesian coordinates in the runway coordinate system
-	                            </xsd:documentation>
-	                        </xsd:annotation>
-	                    </xsd:element>
+                            <xsd:annotation>
+                                <xsd:documentation>
+                                    X-position in cartesian coordinates in the runway coordinate system
+                                </xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
                         <xsd:element name="y" type="doubleBaseType">
-	                        <xsd:annotation>
-	                            <xsd:documentation>
-	                                Y-position in cartesian coordinates in the runway coordinate system
-	                            </xsd:documentation>
-	                        </xsd:annotation>
-	                    </xsd:element>
+                            <xsd:annotation>
+                                <xsd:documentation>
+                                    Y-position in cartesian coordinates in the runway coordinate system
+                                </xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
                         <xsd:element name="z" type="doubleBaseType">
-	                        <xsd:annotation>
-	                            <xsd:documentation>
-	                                Z-position in cartesian coordinates in the runway coordinate system
-	                            </xsd:documentation>
-	                        </xsd:annotation>
-	                    </xsd:element>
+                            <xsd:annotation>
+                                <xsd:documentation>
+                                    Z-position in cartesian coordinates in the runway coordinate system
+                                </xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
                     </xsd:sequence>
                     <xsd:sequence>
                         <xsd:element name="distance" type="doubleBaseType">
-	                        <xsd:annotation>
-	                            <xsd:documentation>
-	                                Lengthwise distance along the runway centerline from the runway threshold
-	                            </xsd:documentation>
-	                        </xsd:annotation>
-	                    </xsd:element>
-						<xsd:element name="lateralOffset" minOccurs="0" type="doubleBaseType">
-	                        <xsd:annotation>
-	                            <xsd:documentation>
-	                                Lateral offset from the runway centerline. Positive values on the starboard side.
-	                            </xsd:documentation>
-	                        </xsd:annotation>
-	                    </xsd:element>
+                            <xsd:annotation>
+                                <xsd:documentation>
+                                    Lengthwise distance along the runway centerline from the runway threshold
+                                </xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element name="lateralOffset" minOccurs="0" type="doubleBaseType">
+                            <xsd:annotation>
+                                <xsd:documentation>
+                                    Lateral offset from the runway centerline. Positive values on the starboard side.
+                                </xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
                     </xsd:sequence>
                 </xsd:choice>
             </xsd:extension>
@@ -35851,5 +36138,25 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             </xsd:enumeration>
         </xsd:restriction>
     </xsd:simpleType>
- 
+
+    <xsd:complexType name="requirementClassificationType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Requirement classification based on the MoSCoW method (must, should, could or wont)</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:simpleContent>
+            <xsd:restriction base="stringBaseType">
+               <xsd:enumeration value="must" />
+               <xsd:enumeration value="should" />
+               <xsd:enumeration value="could" />
+               <xsd:enumeration value="wont" />
+            </xsd:restriction>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
 </xsd:schema>
