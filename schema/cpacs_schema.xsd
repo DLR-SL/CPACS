@@ -2972,6 +2972,7 @@ marko.alder@dlr.de
                 <xsd:all>
                     <xsd:element minOccurs="0" name="global" type="aircraftAnalysesGlobalType"/>
                     <xsd:element minOccurs="0" name="aeroPerformance" type="aeroPerformanceType"/>
+                    <xsd:element minOccurs="0" name="propulsionPerformance" type="propulsionPerformanceType"/>
                     <xsd:element minOccurs="0" name="aeroelastics" type="aeroelasticsType"/>
                     <xsd:element minOccurs="0" name="flightDynamics" type="flightDynamicsAnalysisType"/>
                     <xsd:element minOccurs="0" name="flightSystems" type="flightSystemsType"/>
@@ -3076,6 +3077,7 @@ marko.alder@dlr.de
                     <xsd:element minOccurs="0" name="enginePylons" type="enginePylonsType"/>
                     <xsd:element minOccurs="0" name="landingGears" type="landingGearsType"/>
                     <xsd:element minOccurs="0" name="systems" type="systemsType"/>
+                    <xsd:element minOccurs="0" name="propulsionSystem" type="propulsionSystemType"/>
                     <xsd:element minOccurs="0" name="genericGeometryComponents" type="genericGeometryComponentsType"/>
                     <xsd:element minOccurs="0" name="global" type="aircraftGlobalType"/>
                     <xsd:element minOccurs="0" name="analyses" type="aircraftAnalysesType"/>
@@ -3920,49 +3922,6 @@ marko.alder@dlr.de
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="cabGeometryType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>cabGeometryType</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>cabGeometry provides the geometry of the cabin in terms
-                            of constant height contour lines. The lines all share a common
-                            x-vector. The vectors yZ[N] provide the lateral contour at
-                            Z-coordinate provided in the vector z. The number of contour
-                            lines can differ and is given by the length of the vector z
-                        </ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="name" type="stringBaseType"/>
-                    <xsd:element minOccurs="0" name="description" type="stringBaseType"/>
-                    <xsd:element name="x" type="stringVectorBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>x-coordinates for all contour lines, relative
-                                to cabin origin.</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="z" type="stringVectorBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>z-coordinate of contour lines. Contour lines
-                                are constant z, so each entry in this vector belongs to a single
-                                contour line.</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="y" type="stringArrayBaseType"/>
-                </xsd:all>
-                <xsd:attribute name="uID" type="xsd:ID" use="required"/>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
     <xsd:complexType name="cabinAislesType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -3980,300 +3939,6 @@ marko.alder@dlr.de
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
                     <xsd:element maxOccurs="unbounded" name="aisle" type="cabinAisleType"/>
-                </xsd:sequence>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="cabinDoorType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>cabinDoorType</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>doors describe all doors of the cabin. They are linked
-                            to a structural door description. The cabin door is usually equal
-                            in size to the door, but does not need to be. The structural door
-                            might describe a wider cut-out, while the cabin door is primarily
-                            intended for evacuation modeling and cabin layout. In order to
-                            obtain a 3-dimensional door representation, the local cabin
-                            geometry shall be used.</ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="name" type="stringBaseType"/>
-                    <xsd:element minOccurs="0" name="description" type="stringBaseType"/>
-                    <xsd:element name="structuralUID" type="stringUIDBaseType"/>
-                    <xsd:element name="paxCapacity" type="integerBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Number of passengers this door adds to the
-                                overall exit capacity limit of the aircraft.</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="x" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>This is the forward x-coordinate of the door
-                                relative to the cabin origin.</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="z" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>the door sill height relative to cabin origin.
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="width" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>The width of the door in x-direction.
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="height" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>the effective height of the door.
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="side">
-                        <xsd:complexType>
-                            <xsd:simpleContent>
-                                <xsd:restriction base="stringBaseType">
-                                    <xsd:enumeration value="port"/>
-                                    <xsd:enumeration value="starboard"/>
-                                </xsd:restriction>
-                            </xsd:simpleContent>
-                        </xsd:complexType>
-                    </xsd:element>
-                    <xsd:element minOccurs="0" name="type">
-                        <xsd:complexType>
-                            <xsd:simpleContent>
-                                <xsd:restriction base="stringBaseType">
-                                    <xsd:enumeration value="boarding"/>
-                                    <xsd:enumeration value="evacuation"/>
-                                </xsd:restriction>
-                            </xsd:simpleContent>
-                        </xsd:complexType>
-                    </xsd:element>
-                </xsd:all>
-                <xsd:attribute name="uID" type="xsd:ID" use="required"/>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="cabinDoorsType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>cabinDoorsType</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para/>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element maxOccurs="unbounded" name="door" type="cabinDoorType"/>
-                </xsd:sequence>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="cabinFloorElementType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>cabinFloorElementType</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>floorElement describes objects like monuments or other
-                            installations inside the cabin.</ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="name" type="xsd:string"/>
-                    <xsd:element minOccurs="0" name="description" type="xsd:string"/>
-                    <xsd:element name="type">
-                        <xsd:complexType>
-                            <xsd:simpleContent>
-                                <xsd:restriction base="stringBaseType">
-                                    <xsd:enumeration value="toilet"/>
-                                    <xsd:enumeration value="kitchen"/>
-                                    <xsd:enumeration value="miscellaneous"/>
-                                </xsd:restriction>
-                            </xsd:simpleContent>
-                        </xsd:complexType>
-                    </xsd:element>
-                    <xsd:element name="x" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>forward center coordinate of object relative
-                                to cabin origin.</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="y" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>center y-coordinate relative to cabin origin.
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="length" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>length of the object</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="width" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>length of the object</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="height" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>length of the object</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element minOccurs="0" name="number" type="doubleBaseType"/>
-                </xsd:all>
-                <xsd:attribute name="uID" type="xsd:ID" use="required"/>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="cabinFloorElementsType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>cabinFloorElementsType</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para/>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element maxOccurs="unbounded" name="floorElement" type="cabinFloorElementType"/>
-                </xsd:sequence>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="cabinSeatElementType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>cabinSeatElementType</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>seats describe all seats inside the aircraft. They are
-                            – strictly speaking – also objects mounted on the floor, hence
-                            floor objects. But the specific characteristics of seats justify
-                            a differentiation between seats and other objects on the floor.
-                            Seats are seat group, for example a triple seat. Therefore they
-                            have multiple seats.</ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="name" type="stringBaseType"/>
-                    <xsd:element minOccurs="0" name="description" type="stringBaseType"/>
-                    <xsd:element name="nSeats" type="integerBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Number of seats</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="type">
-                        <xsd:complexType>
-                            <xsd:simpleContent>
-                                <xsd:restriction base="stringBaseType">
-                                    <xsd:enumeration value="first"/>
-                                    <xsd:enumeration value="buisness"/>
-                                    <xsd:enumeration value="economy"/>
-                                </xsd:restriction>
-                            </xsd:simpleContent>
-                        </xsd:complexType>
-                    </xsd:element>
-                    <xsd:element name="x" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>x-coordinate relative to cabin origin.
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="y" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>y-coordinate relative to cabin origin.
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="dySeats" type="stringVectorBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>delta-y-coordinate of the individual seat
-                                center points from the y-coordinate of the seat object. This is
-                                important to locate passengers. It is assumed that seats have no
-                                angle.</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="length" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>length of the seat group.</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="width" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>width of the seat group.</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="height" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>height of the seat group.</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="seatModuleElementUID" type="stringUIDBaseType"/>
-                    <xsd:element name="longFloorBeam1UID" type="stringUIDBaseType"/>
-                    <xsd:element name="longFloorBeam2UID" type="stringUIDBaseType"/>
-                </xsd:all>
-                <xsd:attribute name="uID" type="xsd:ID" use="required"/>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="cabinSeatElementsType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>cabinSeatElementsType</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para/>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element maxOccurs="unbounded" name="seatElement" type="cabinSeatElementType"/>
                 </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
@@ -9700,12 +9365,12 @@ marko.alder@dlr.de
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="engineAnalysisType">
+    <xsd:complexType name="turbofanEngineAnalysisType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>engineAnalysisType</ddue:para>
+                        <ddue:para>Turbofan engine analysis</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para/>
@@ -9761,7 +9426,45 @@ marko.alder@dlr.de
                             <xsd:documentation>DryMass of engine</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element minOccurs="0" name="performanceMaps" type="enginePerformanceMapsType"/>
+                    <xsd:element minOccurs="0" name="performanceMaps" type="turbofanEnginePerformanceMapsType"/>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="turbopropEngineAnalysisType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Turboprop engine analysis</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para/>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element minOccurs="0" name="thrust00" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Thrust at takeoff</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="tipMachNumber" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Design tip relative mach number (FAN)
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="mass" type="genericMassType">
+                        <xsd:annotation>
+                            <xsd:documentation>Dry-mass of engine</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="performanceMaps" type="turbopropEnginePerformanceMapsType"/>
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
@@ -9784,7 +9487,7 @@ marko.alder@dlr.de
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element name="innerRadius" type="doubleBaseType">
+                    <xsd:element name="innerRadius" minOccurs="0" type="doubleBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Inner radius of the fan.</xsd:documentation>
                         </xsd:annotation>
@@ -9794,12 +9497,28 @@ marko.alder@dlr.de
                             <xsd:documentation>Outer radius of the fan.</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
+                	<xsd:element name="chordLength" minOccurs="0" type="doubleBaseType">
+                    	<xsd:annotation>
+                        	<xsd:documentation>Chord length of a fan blade</xsd:documentation>
+                      	</xsd:annotation>
+                  	</xsd:element>
+                  	<xsd:element minOccurs="0" name="hub2TipRatio" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Hub to tip ratio</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="numberOfFanBlades" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Number of rotor blades of fan
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="engineGeometryType">
+    <xsd:complexType name="turbofanEngineGeometryType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
@@ -9820,75 +9539,44 @@ marko.alder@dlr.de
         </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element minOccurs="0" name="length" type="doubleBaseType">
+                <xsd:sequence>
+                	<xsd:choice minOccurs="0" >
+                		<xsd:sequence>
+                			<xsd:element name="length" type="doubleBaseType">
+		                        <xsd:annotation>
+		                            <xsd:documentation>length of engine</xsd:documentation>
+		                        </xsd:annotation>
+		                    </xsd:element>
+		                    <xsd:element name="diameterNacelle" minOccurs="0" type="doubleBaseType">
+		                        <xsd:annotation>
+		                            <xsd:documentation>diameter of engine</xsd:documentation>
+		                        </xsd:annotation>
+		                    </xsd:element>
+                		</xsd:sequence>
+                		<xsd:element name="nacelleShape" type="engineNacelleType"/>
+                	</xsd:choice>
+                    <xsd:choice minOccurs="0">
+                    	<xsd:sequence>
+		                    <xsd:element name="fan" type="engineFanType"/>
+		                    <xsd:element name="spinner" minOccurs="0" type="engineSpinnerType"/>
+                    	</xsd:sequence>
+                    	<xsd:element name="rotorUID" type="stringUIDBaseType"/>
+                    </xsd:choice>
+                    <xsd:element name="engineMounts" minOccurs="0" type="engineMountsType"/>
+                    <xsd:element name="liner" minOccurs="0" type="linerType"/>
+                    <xsd:element name="numberOfOutletGuideVanes" minOccurs="0" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>length of engine</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element minOccurs="0" name="diameter" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>diameter of engine</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element minOccurs="0" name="diameterProp" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>dProp</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element minOccurs="0" name="chordlength" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Chordlength of a fan blade</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element minOccurs="0" name="fan" type="engineFanType"/>
-                    <xsd:element minOccurs="0" name="spinner" type="engineSpinnerType"/>
-                    <xsd:element minOccurs="0" name="engineMounts" type="engineMountsType"/>
-                    <xsd:element minOccurs="0" name="liner" type="linerType"/>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="engineGlobalType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>engineGlobalType</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>EngineGlobal type, containing global engine data
-                        </ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element minOccurs="0" name="engineConcept">
-                        <xsd:annotation>
-                            <xsd:documentation>Concept of engine</xsd:documentation>
-                        </xsd:annotation>
-                        <xsd:complexType>
-                            <xsd:simpleContent>
-                                <xsd:restriction base="stringBaseType">
-                                    <xsd:enumeration value="2SpoolUnmixedTurbofan"/>
-                                    <xsd:enumeration value="2SpoolMixedTurbofan"/>
-                                    <xsd:enumeration value="3SpoolUnmixedTurbofan"/>
-                                    <xsd:enumeration value="turboProp"/>
-                                </xsd:restriction>
-                            </xsd:simpleContent>
-                        </xsd:complexType>
-                    </xsd:element>
-                    <xsd:element minOccurs="0" name="certificationYear" type="integerBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Year of first certification
+                            <xsd:documentation>Number of outlet guiding vanes
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element minOccurs="0" name="rotDirection">
+                    <xsd:element minOccurs="0" name="rotorStatorSpacing" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Rotor stator spacing (relative to chordlength)
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="rotationDirection">
                         <xsd:annotation>
                             <xsd:documentation>Rotation direction of the engine if looking at
                                 it from the front, i.e. from propeller/fan to exhaust
@@ -9903,30 +9591,7 @@ marko.alder@dlr.de
                             </xsd:simpleContent>
                         </xsd:complexType>
                     </xsd:element>
-                    <xsd:element minOccurs="0" name="h2tR" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Hub to tip ratio</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element minOccurs="0" name="noBla" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Number of rotor blades of fan
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element minOccurs="0" name="noOGV" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Number of outlet guiding vanes
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element minOccurs="0" name="rSS" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Rotor stator spacing (relative to chordlength)
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:all>
+                </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -10037,17 +9702,13 @@ marko.alder@dlr.de
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="enginePerformanceMapType">
+    <xsd:complexType name="turbofanEnginePerformanceMapType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>enginePerformanceMapType</ddue:para>
+                        <ddue:para>Turbofan engine performance map</ddue:para>
                     </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>EnginePerformanceMap type, containing a perfomance map
-                            with engine data</ddue:para>
-                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -10195,13 +9856,121 @@ marko.alder@dlr.de
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
-
-    <xsd:complexType name="enginePerformanceMapsType">
+    
+    <xsd:complexType name="turbopropEnginePerformanceMapType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>enginePerformanceMapsType</ddue:para>
+                        <ddue:para>Turbofan engine performance map</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="name" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Name of the engine</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="description" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Description of the engine</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="bleedAirOfftake" type="doubleBaseType"/>
+                    <xsd:element name="powerOfftake" type="doubleBaseType"/>
+                    <xsd:element minOccurs="0" name="flightLevel" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Flight Level</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="machNumber" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Mach number</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="thrust" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Absolute thrust [N]</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="mDotFuel" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Fuel mass flow</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="tET" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Turbine entry total temperature
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="eiCO" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Emission index Carbon Monoxide
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="eiNOx" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Emission index Nitrogen Oxide
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="eiSOx" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Emission index Sulfur Oxide
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="eiSoot" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Emission index Soot</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="eiHC" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Emission index unburned hydrocarbon
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="rho8" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>air density at core outlet 8
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="rho18" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>air density at bypass outlet 18
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="nozzA8" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>area at core outlet</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="nozzA18" type="stringVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>area at bypass outlet</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:all>
+                <xsd:attribute name="uID" type="xsd:ID" use="required"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="turbofanEnginePerformanceMapsType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Turbofan engine performance maps</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para/>
@@ -10212,7 +9981,29 @@ marko.alder@dlr.de
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:element maxOccurs="unbounded" name="performanceMap" type="enginePerformanceMapType"/>
+                    <xsd:element maxOccurs="unbounded" name="performanceMap" type="turbofanEnginePerformanceMapType"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="turbopropEnginePerformanceMapsType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Turboprop engine performance maps</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para/>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element maxOccurs="unbounded" name="performanceMap" type="turbopropEnginePerformanceMapType"/>
                 </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
@@ -10418,12 +10209,12 @@ marko.alder@dlr.de
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="engineType">
+    <xsd:complexType name="turbofanEngineType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>engineType</ddue:para>
+                        <ddue:para>Turbofan engine</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>Engine type, containing engine data.</ddue:para>
@@ -10444,41 +10235,30 @@ marko.alder@dlr.de
                             <xsd:documentation>Description of engine</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element minOccurs="0" name="thrust00Scaling" type="doubleBaseType">
+                    <xsd:element minOccurs="0" name="geometry" type="turbofanEngineGeometryType"/>
+                    <xsd:element minOccurs="0" name="engineConcept">
                         <xsd:annotation>
-                            <xsd:documentation>Scaling of engine take-off thrust
+                            <xsd:documentation>Concept of engine</xsd:documentation>
+                        </xsd:annotation>
+                        <xsd:complexType>
+                            <xsd:simpleContent>
+                                <xsd:restriction base="stringBaseType">
+                                    <xsd:enumeration value="2SpoolUnmixedTurbofan"/>
+                                    <xsd:enumeration value="2SpoolMixedTurbofan"/>
+                                    <xsd:enumeration value="3SpoolUnmixedTurbofan"/>
+                                </xsd:restriction>
+                            </xsd:simpleContent>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="certificationYear" type="integerBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Year of first certification
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element minOccurs="0" name="geometry" type="engineGeometryType"/>
-                    <xsd:element minOccurs="0" name="nacelle" type="engineNacelleType"/>
-                    <xsd:element minOccurs="0" name="global" type="engineGlobalType"/>
-                    <xsd:element minOccurs="0" name="analysis" type="engineAnalysisType"/>
+                    <xsd:element minOccurs="0" name="analysis" type="turbofanEngineAnalysisType"/>
                 </xsd:all>
                 <xsd:attribute name="uID" type="xsd:ID" use="required"/>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="enginesType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Engines</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>Engines type, containing complete engine configurations
-                        </ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element maxOccurs="unbounded" name="engine" type="engineType"/>
-                </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -26375,11 +26155,11 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:element minOccurs="0" name="rotorcraft" type="rotorcraftType"/>
                     <xsd:element minOccurs="0" name="performanceCases" type="globalPerformanceCasesType"/>
                     <xsd:element minOccurs="0" name="flightPoints" type="flightPointsType"/>
-                    <xsd:element minOccurs="0" name="engines" type="enginesType"/>
                     <xsd:element minOccurs="0" name="profiles" type="profilesType"/>
                     <xsd:element minOccurs="0" name="structuralElements" type="structuralElementsType"/>
                     <xsd:element minOccurs="0" name="deckElements" type="deckElementsType"/>
                     <xsd:element minOccurs="0" name="systemElements" type="systemElementsType"/>
+                    <xsd:element minOccurs="0" name="propulsionElements" type="propulsionElementsType"/>
                     <xsd:element minOccurs="0" name="systemAssumptions" type="systemAssumptionsType"/>
                     <xsd:element minOccurs="0" name="materials" type="materialsType"/>
                     <xsd:element minOccurs="0" name="fuels" type="fuelsType"/>
@@ -35571,120 +35351,8 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-	                <xsd:element name="powerBreakdowns" minOccurs="0" type="powerBreakdownsType"/>
-	                <xsd:element name="systemTrajectories" minOccurs="0" type="systemTrajectoriesType"/>                 
+	                <xsd:element name="powerBreakdowns" minOccurs="0" type="powerBreakdownsType"/>               
                 </xsd:sequence>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-    
-    <xsd:complexType name="systemTrajectoriesType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>System trajectories</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-	                <xsd:element name="systemTrajectory" maxOccurs="unbounded" type="systemTrajectoryType"/>           
-                </xsd:sequence>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="systemTrajectoryType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>System trajectory</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-	                <xsd:element name="specification" type="systemTrajectorySpecificationType"/>   
-	                <xsd:element name="trajectoryData" type="systemTrajectoryDataType"/>        
-                </xsd:all>
-                <xsd:attribute name="uID" type="xsd:ID" use="required"/>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-    
-    <xsd:complexType name="systemTrajectorySpecificationType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Specification</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-	                <xsd:element name="trajectoryUID" type="stringUIDBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>UID of the base trajectory (.../analyses/trajectories/trajectory)</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-	                <xsd:element name="systemComponentUIDs" type="uIDSequenceType">
-                        <xsd:annotation>
-                            <xsd:documentation>List of uIDs of a system or system components (.../aircraft/model/systems/...)</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>           
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-    
-    <xsd:complexType name="systemTrajectoryDataType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>System trajectory values</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-	                <xsd:element name="mechanicalPower" minOccurs="0" type="doubleVectorBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Mechanical power [W]</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="thermalPower" minOccurs="0" type="doubleVectorBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Thermal power [W]</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="apparentPowerIn" minOccurs="0" type="doubleVectorBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Apparent power input [W]</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="apparentPowerOut" minOccurs="0" type="doubleVectorBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Apparent power output [W]</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="current" minOccurs="0" type="doubleVectorBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Current [A]</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -35702,15 +35370,51 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-	                <xsd:element name="genericSystemArchitectures" minOccurs="0" type="genericSystemArchitecturesType"/>
-	                <xsd:element name="environmentalControlSystem" minOccurs="0" type="stringBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Explicit dummy for illustration: environmental control system</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
+                    <xsd:element name="energyStorages" minOccurs="0" type="energyStoragesType"/>
+	                <!-- xsd:element name="genericSystemArchitectures" minOccurs="0" type="genericSystemArchitecturesType"/ -->
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="energyStoragesType">
+    	<xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Energy storages</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+    	<xsd:complexContent>
+    		<xsd:extension base="complexBaseType">
+    			<xsd:sequence>
+    				<xsd:element name="energyStorage" maxOccurs="unbounded" type="energyStorageType"></xsd:element>
+    			</xsd:sequence>
+    		</xsd:extension>
+    	</xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="energyStorageType">
+    	<xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Energy storage</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+    	<xsd:complexContent>
+    		<xsd:extension base="complexBaseType">
+    			<xsd:all>
+    				<xsd:element name="energyCarrierUID" type="stringUIDBaseType"/>
+    				<xsd:element name="storageGeometries" type="uIDSequenceType"/>
+    			</xsd:all>
+    			<xsd:attribute name="uID" type="xsd:ID"/>
+    		</xsd:extension>
+    	</xsd:complexContent>
     </xsd:complexType>
     
     <xsd:complexType name="genericSystemArchitecturesType">
@@ -36086,7 +35790,46 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
+                    <xsd:element name="powerBreakdownCases" minOccurs="0" type="powerBreakdownCasesType"/>
+                    <xsd:element name="powerBreakdownTrajectoryCases" minOccurs="0" type="powerBreakdownTrajectoryCasesType"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="powerBreakdownCasesType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Power breakdowns</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
                     <xsd:element name="powerBreakdownCase" maxOccurs="unbounded" type="powerBreakdownCaseType"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="powerBreakdownTrajectoryCasesType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Power breakdowns</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="powerBreakdownCase" maxOccurs="unbounded" type="powerBreakdownTrajectoryCaseType"/>
                 </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
@@ -36122,6 +35865,37 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
+    
+    <xsd:complexType name="powerBreakdownTrajectoryCaseType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Power breakdown case along a trajectory</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="name" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Name</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="description" minOccurs="0" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Description</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="specification" type="powerBreakdownTrajectorySpecification"/>
+                    <xsd:element name="powerBreakdownData" type="breakdownDataTrajectoryType"/>
+                </xsd:all>
+                <xsd:attribute name="uID" type="xsd:ID"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
 
     <xsd:complexType name="powerBreakdownSpecification">
         <xsd:annotation>
@@ -36135,13 +35909,42 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="trajectoryUID" minOccurs="0" type="stringUIDBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>UID of the corresponding trajectory</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:all>
+	            <xsd:sequence>
+	            	<xsd:element name="environment" type="environmentType"/>
+	             	<xsd:element name="altitude" type="environmentType">
+	                 <xsd:annotation>
+	                     <xsd:documentation>Altitude [m]</xsd:documentation>
+	                 </xsd:annotation>
+	             </xsd:element>
+	             <xsd:element name="machNumber" type="environmentType">
+	                 <xsd:annotation>
+	                     <xsd:documentation>Mach number</xsd:documentation>
+	                 </xsd:annotation>
+	             </xsd:element>
+	            </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="powerBreakdownTrajectorySpecification">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Specification of the power breakdown case</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+            	<xsd:sequence>
+            		<xsd:element name="trajectoryUID" type="stringUIDBaseType">
+	                    <xsd:annotation>
+	                        <xsd:documentation>UID of the corresponding trajectory</xsd:documentation>
+	                    </xsd:annotation>
+	                </xsd:element>
+            	</xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -36158,64 +35961,82 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="totalValues" minOccurs="0" type="systemBreakdownTotalValuesType"/>
-                    <xsd:element name="systems" type="systemBreakdownSystemsType"/>
-                </xsd:all>
+            	<xsd:sequence>
+            		<xsd:element name="powerFlow" maxOccurs="unbounded" type="powerFlowType"/>
+            	</xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
-
-    <xsd:complexType name="systemBreakdownTotalValuesType">
+    
+    <xsd:complexType name="breakdownDataTrajectoryType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Total values</ddue:para>
+                        <ddue:para>System breakdown data</ddue:para>
                     </ddue:summary>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
-                   <xsd:choice>
-                       <xsd:sequence>
-                           <xsd:element name="nominalValues" type="nominalValuesType"/>
-                           <xsd:element name="trajectoryValues" minOccurs="0" type="trajectoryValuesType"/>
-                       </xsd:sequence>
-                       <xsd:sequence>
-                           <xsd:element name="trajectoryValues" type="trajectoryValuesType"/>
-                       </xsd:sequence>
-                   </xsd:choice>
+            	<xsd:sequence>
+            		<xsd:element name="powerFlow" maxOccurs="unbounded" type="powerFlowTrajectoryType"/>
+            	</xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
-
-    <xsd:complexType name="systemBreakdownSystemsType">
+    
+    <xsd:complexType name="powerFlowType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Systems</ddue:para>
+                        <ddue:para>Power flow</ddue:para>
                     </ddue:summary>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
         <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element name="system" maxOccurs="unbounded" type="breakdownSystemValuesType"/>
-                </xsd:sequence>
+            <xsd:extension base="powerFlowBaseType">
+                    <xsd:choice>
+                    	<xsd:element name="massFlow" type="massFlowType"/>
+                    	<xsd:element name="heatFlow" type="heatFlowType"/>
+                    	<xsd:element name="electricPower" type="electricPowerType"/>
+                    	<xsd:element name="mechanicalPower" type="mechanicalPowerType"/>
+                    </xsd:choice>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
-
-    <xsd:complexType name="breakdownSystemValuesType">
+    
+    <xsd:complexType name="powerFlowTrajectoryType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>System values</ddue:para>
+                        <ddue:para>Power flow</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="powerFlowBaseType">
+                    <xsd:choice>
+                    	<xsd:element name="massFlow" type="massFlowTrajectoryType"/>
+                    	<xsd:element name="heatFlow" type="heatFlowTrajectoryType"/>
+                    	<xsd:element name="electricPower" type="electricPowerTrajectoryType"/>
+                    	<xsd:element name="mechanicalPower" type="mechanicalPowerTrajectoryType"/>
+                    </xsd:choice>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="powerFlowBaseType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Power flow</ddue:para>
                     </ddue:summary>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -36225,40 +36046,79 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                 <xsd:sequence>
                     <xsd:element name="name" type="stringBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Description</xsd:documentation>
+                            <xsd:documentation>
+                                Name
+                            </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="category" type="ataChapterListType"/>
                     <xsd:element name="description" minOccurs="0" type="stringBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Description</xsd:documentation>
+                            <xsd:documentation>
+                                Description
+                            </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:choice>
-                           <xsd:sequence>
-                               <xsd:element name="nominalValues" type="nominalValuesType"/>
-                               <xsd:element name="trajectoryValues" minOccurs="0" type="trajectoryValuesType"/>
-                           </xsd:sequence>
-                           <xsd:sequence>
-                               <xsd:element name="trajectoryValues" type="trajectoryValuesType"/>
-                           </xsd:sequence>
-                       </xsd:choice>
-                    <xsd:element name="componentUIDs" minOccurs="0" type="uIDSequenceType">
-                        <xsd:annotation>
-                            <xsd:documentation>List of uIDs of involved components or sub-systems (specified at .../aircraft/model/systems/...)</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
+                    	<xsd:element name="sourceUID" type="stringUIDBaseType">
+	                        <xsd:annotation>
+	                            <xsd:documentation>
+	                                UID of the source element
+	                            </xsd:documentation>
+	                        </xsd:annotation>
+	                    </xsd:element>
+	                    <xsd:element name="sourceSystem" type="ataChapterListType">
+	                        <xsd:annotation>
+	                            <xsd:documentation>
+	                                Source system according to ATA chapter
+	                            </xsd:documentation>
+	                        </xsd:annotation>
+	                    </xsd:element>
+	                    <xsd:element name="source" type="sourceSinkType"/>
+                    </xsd:choice>
+                    <xsd:choice>
+                    	<xsd:element name="sinkUID" type="stringUIDBaseType">
+	                        <xsd:annotation>
+	                            <xsd:documentation>
+	                                UID of the sink element
+	                            </xsd:documentation>
+	                        </xsd:annotation>
+	                    </xsd:element>
+	                    <xsd:element name="sinkSystem" type="ataChapterListType">
+	                        <xsd:annotation>
+	                            <xsd:documentation>
+	                                Sink system according to ATA chapter
+	                            </xsd:documentation>
+	                        </xsd:annotation>
+	                    </xsd:element>
+	                    <xsd:element name="sink" type="sourceSinkType"/>
+                    </xsd:choice>
                 </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
-
-    <xsd:complexType name="nominalValuesType">
+    
+    <xsd:simpleType name="sourceSinkType">
+    	<xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Source / Sink</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+    	<xsd:restriction base="xsd:string">
+    		<xsd:enumeration value="ambient"/>
+    		<xsd:enumeration value="passengers"/>
+    	</xsd:restriction>
+    </xsd:simpleType>
+    
+    <xsd:complexType name="massFlowTrajectoryType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Nominal values</ddue:para>
+                        <ddue:para>Mass flow</ddue:para>
                     </ddue:summary>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -36266,47 +36126,291 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element name="electricPower" minOccurs="0" type="doubleBaseType">
+                    <xsd:element name="massFLowValue" type="doubleVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Electric power [W]</xsd:documentation>
+                            <xsd:documentation>
+                                Mass flow value
+                            </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="hydraulicPower" minOccurs="0" type="doubleBaseType">
+                    <xsd:element name="massFlowSpecification" minOccurs="0" type="massFlowSpecificationTrajectoryType"/>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="massFlowType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Mass flow</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="massFLowValue" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Hydraulic power [W]</xsd:documentation>
+                            <xsd:documentation>
+                                Mass flow value
+                            </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="pneumaticPower" minOccurs="0" type="doubleBaseType">
+                    <xsd:element name="massFlowSpecification" minOccurs="0" type="massFlowSpecificationType"/>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="heatFlowType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Heat flow</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="heatFLowValue" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Pneumatic power [W]</xsd:documentation>
+                            <xsd:documentation>
+                                Heat flow value
+                            </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="mechanicalPower" minOccurs="0" type="doubleBaseType">
+                    <xsd:element name="heatFlowSpecification" minOccurs="0" type="heatFlowSpecificationType"/>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="heatFlowTrajectoryType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Heat flow</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="heatFLowValue" type="doubleVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Mechanical power [W]</xsd:documentation>
+                            <xsd:documentation>
+                                Heat flow value
+                            </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="thermalPower" minOccurs="0" type="doubleBaseType">
+                    <xsd:element name="heatFlowSpecification" minOccurs="0" type="heatFlowSpecificationTrajectoryType"/>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="mechanicalPowerType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Mechanical power</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="mechanicalPowerValue" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Thermal power [W]</xsd:documentation>
+                            <xsd:documentation>
+                                Mechanical power value [W]
+                            </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="bleedAir" minOccurs="0" type="doubleBaseType">
+                    <xsd:element name="mechanicalPowerSpecification" minOccurs="0" type="mechanicalPowerSpecificationType"/>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="mechanicalPowerTrajectoryType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Mechanical power</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="mechanicalPowerValue" type="doubleVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Bleed air [kg/s]</xsd:documentation>
+                            <xsd:documentation>
+                                Mechanical power value [W]
+                            </xsd:documentation>
                         </xsd:annotation>
-                    </xsd:element>    
+                    </xsd:element>
+                    <xsd:element name="mechanicalPowerSpecification" minOccurs="0" type="mechanicalPowerSpecificationTrajectoryType"/>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="mechanicalPowerSpecificationType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Mechanical power specification</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:choice>
+                    <xsd:element name="rotationalTransmission" type="rotationalTransmissionType"/>
+                    <xsd:element name="translationalTransmission" type="translationalTransmissionType"/>
+                </xsd:choice>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="mechanicalPowerSpecificationTrajectoryType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Mechanical power specification</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:choice>
+                    <xsd:element name="rotationalTransmission" type="rotationalTransmissionTrajectoryType"/>
+                    <xsd:element name="translationalTransmission" type="translationalTransmissionTrajectoryType"/>
+                </xsd:choice>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="rotationalTransmissionType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Rotational transmission</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="torque" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Torque [Nm]
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="rotationsPerSecond" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Rotations per second [1/s]
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="rotationalTransmissionTrajectoryType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Rotational transmission</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="torque" type="doubleVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Torque [Nm]
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="rotationsPerSecond" type="doubleVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Rotations per second [1/s]
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="translationalTransmissionType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Translational transmission</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="force" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Force [N]
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="velocity" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Velocity [m/s]
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="trajectoryValuesType">
+	<xsd:complexType name="translationalTransmissionTrajectoryType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Trajectory values</ddue:para>
+                        <ddue:para>Translational transmission</ddue:para>
                     </ddue:summary>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -36314,35 +36418,459 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element name="electricPower" minOccurs="0" type="doubleVectorBaseType">
+                    <xsd:element name="force" type="doubleVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Electric power [W]</xsd:documentation>
+                            <xsd:documentation>
+                                Force [N]
+                            </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="hydraulicPower" minOccurs="0" type="doubleVectorBaseType">
+                    <xsd:element name="velocity" type="doubleVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Hydraulic power [W]</xsd:documentation>
+                            <xsd:documentation>
+                                Velocity [m/s]
+                            </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="pneumaticPower" minOccurs="0" type="doubleVectorBaseType">
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+        
+    <xsd:complexType name="electricPowerType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Electric power</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="electricPowerValue" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Pneumatic power [W]</xsd:documentation>
+                            <xsd:documentation>
+                                Electric power value
+                            </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="mechanicalPower" minOccurs="0" type="doubleVectorBaseType">
+                    <xsd:element name="electricPowerSpecification" minOccurs="0" type="electricPowerSpecificationType"/>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="electricPowerTrajectoryType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Electric power</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="electricPowerValue" type="doubleVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Mechanical power [W]</xsd:documentation>
+                            <xsd:documentation>
+                                Electric power values
+                            </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="thermalPower" minOccurs="0" type="doubleVectorBaseType">
+                    <xsd:element name="electricPowerSpecification" minOccurs="0" type="electricPowerSpecificationTrajectoryType"/>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="electricPowerSpecificationType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Electric power specification</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:choice>
+                    <xsd:element name="directCurrent" type="directCurrentType"/>
+                    <xsd:element name="alternatingCurrent" type="alternatingCurrentType"/>
+                </xsd:choice>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="electricPowerSpecificationTrajectoryType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Electric power specification</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:choice>
+                    <xsd:element name="directCurrent" type="directCurrentTrajectoryType"/>
+                    <xsd:element name="alternatingCurrent" type="alternatingCurrentTrajectoryType"/>
+                </xsd:choice>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="directCurrentType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Direct current</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="voltage" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Thermal power [W]</xsd:documentation>
+                            <xsd:documentation>
+                                Voltage [V]
+                            </xsd:documentation>
                         </xsd:annotation>
-                    </xsd:element>    
-                    <xsd:element name="bleedAir" minOccurs="0" type="doubleVectorBaseType">
+                    </xsd:element>
+                    <xsd:element name="current" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Bleed air [kg/s]</xsd:documentation>
+                            <xsd:documentation>
+                                Current [A]
+                            </xsd:documentation>
                         </xsd:annotation>
+                    </xsd:element>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="directCurrentTrajectoryType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Direct current</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="voltage" type="doubleVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Voltage [V]
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="current" type="doubleVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Current [A]
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="alternatingCurrentType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Alternating current</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="voltage" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Voltage [V]
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="current" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Current [A]
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="frequency" minOccurs="0" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Frequency [Hz]
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="phase" minOccurs="0" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Frequency [Rad]
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="alternatingCurrentTrajectoryType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Alternating current</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="voltage" type="doubleVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Voltage [V]
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="current" type="doubleVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Current [A]
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="frequency" minOccurs="0" type="doubleVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Frequency [Hz]
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="phase" minOccurs="0" type="doubleVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Frequency [Rad]
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="massFlowSpecificationType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Mass flow specification</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="pressure" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Pressure
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="temperature" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Temperature
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="massComposition" minOccurs="0" type="massCompositionType"/>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="massFlowSpecificationTrajectoryType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Mass flow specification</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="pressure" type="doubleVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Pressure
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="temperature" type="doubleVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Temperature
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="massComposition" minOccurs="0" type="massCompositionType"/>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="heatFlowSpecificationType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Heat flow specification</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:choice>
+					<xsd:element name="convectiveHeatTransfer" type="generalHeatTransferType"/>
+					<xsd:element name="conductiveHeatTransfer" type="generalHeatTransferType"/>
+					<xsd:element name="radiativeHeatTransfer" type="radiativeHeatTransferType"/>
+					<xsd:element name="combinedHeatTransfer" type="generalHeatTransferType"/>
+                </xsd:choice>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="heatFlowSpecificationTrajectoryType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Heat flow specification</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:choice>
+					<xsd:element name="convectiveHeatTransfer" type="generalHeatTransferTrajectoryType"/>
+					<xsd:element name="conductiveHeatTransfer" type="generalHeatTransferTrajectoryType"/>
+					<xsd:element name="radiativeHeatTransfer" type="radiativeHeatTransferTrajectoryType"/>
+					<xsd:element name="combinedHeatTransfer" type="generalHeatTransferTrajectoryType"/>
+                </xsd:choice>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="generalHeatTransferType">
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                	<xsd:element name="sourceTemperature" type="doubleBaseType"/>
+                	<xsd:element name="sinkTemperature" type="doubleBaseType"/>
+                	<xsd:element name="thermalResistance" type="doubleBaseType"/>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="generalHeatTransferTrajectoryType">
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                	<xsd:element name="sourceTemperature" type="doubleVectorBaseType"/>
+                	<xsd:element name="sinkTemperature" type="doubleVectorBaseType"/>
+                	<xsd:element name="thermalResistance" type="doubleVectorBaseType"/>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="radiativeHeatTransferType">
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                	<xsd:element name="sourceTemperature" type="doubleBaseType"/>
+                	<xsd:element name="sinkTemperature" type="doubleBaseType"/>
+                	<xsd:element name="sourceEmissivity" type="doubleBaseType"/>
+                	<xsd:element name="sinkEmissivity" type="doubleBaseType"/>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="radiativeHeatTransferTrajectoryType">
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                	<xsd:element name="sourceTemperature" type="doubleVectorBaseType"/>
+                	<xsd:element name="sinkTemperature" type="doubleVectorBaseType"/>
+                	<xsd:element name="sourceEmissivity" type="doubleBaseType"/>
+                	<xsd:element name="sinkEmissivity" type="doubleVectorBaseType"/>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="massCompositionType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Mass composition</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="fluidType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Fluid type
+                            </xsd:documentation>
+                        </xsd:annotation>
+                        <xsd:complexType>
+                        	<xsd:simpleContent>
+                        		<xsd:restriction base="stringBaseType">
+	                            	<xsd:enumeration value="air"/>
+	                        	</xsd:restriction>
+                        	</xsd:simpleContent>
+                        </xsd:complexType>
                     </xsd:element>
                 </xsd:all>
             </xsd:extension>
@@ -36435,17 +36963,423 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:documentation>Cargo and accessory compartment</xsd:documentation>
                 </xsd:annotation>
             </xsd:enumeration>
-            <xsd:enumeration value="unspecified">
-                <xsd:annotation>
-                    <xsd:documentation>Unspecified: used for systems which cannot be assigned to an ATA adapter (e.g., unconventional system)</xsd:documentation>
-                </xsd:annotation>
-            </xsd:enumeration>
-            <xsd:enumeration value="remainingContribution">
-                <xsd:annotation>
-                    <xsd:documentation>Remaining contribution: ATA systems + unspecified systems + remaining contributions = total values</xsd:documentation>
-                </xsd:annotation>
-            </xsd:enumeration>
         </xsd:restriction>
     </xsd:simpleType>
+
+    <xsd:complexType name="propulsionElementsType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Propulsion elements</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                	<xsd:element name="turbofanEngines" minOccurs="0" type="turbofanEnginesType"/>
+                	<xsd:element name="turbopropEngines" minOccurs="0" type="turbopropEnginesType"/>
+                	<xsd:element name="electricMotors" minOccurs="0" type="stringBaseType"/>
+                	<xsd:element name="turbogenerators" minOccurs="0" type="stringBaseType"/>
+                    <xsd:element name="powerCables" minOccurs="0" type="stringBaseType"/>
+                    <xsd:element name="gasTurbines" minOccurs="0" type="stringBaseType"/>
+                    <xsd:element name="rotors" minOccurs="0" type="rotorsType"/>
+                    <xsd:element name="rotorBlades" minOccurs="0" type="rotorBladesType"/>
+                    <xsd:element name="gearBoxes" minOccurs="0" type="stringBaseType"/>
+                    <xsd:element name="tanks" minOccurs="0" type="propulsionElementsTanksType"/>
+                    <xsd:element name="genericComponents" minOccurs="0" type="stringBaseType"/>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="turbofanEnginesType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Turbofan engines</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="torbofanEngine" maxOccurs="unbounded" type="turbofanEngineType"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="turbopropEnginesType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Turboprop engines</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="torbopropEngine" maxOccurs="unbounded" type="turbopropEngineType"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="propulsionSystemType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Propulsion system</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="propulsionComponent" maxOccurs="unbounded" type="propulsionComponent"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="propulsionComponent">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Propulsion system component</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="name" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Name</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="description" minOccurs="0" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Description</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="propulsionElementUID" type="stringUIDBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Reference to the pre-defined propulsion element</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="parentUID" type="stringUIDBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>UID of the parent element</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="transformation" type="transformationType"/>
+                </xsd:all>
+                <xsd:attribute name="uID" type="xsd:ID" use="required"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="propulsionPerformanceType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Performance of propulsion system</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="propulsionMap" maxOccurs="unbounded" type="propulsionMapType"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="propulsionMapType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Propulsion map</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="name" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Name</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="description" type="stringBaseType" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>Description</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="specification" type="propulsionMapSpecifictionType"/>
+                    <xsd:element name="propulsionPerformanceMap" type="propulsionPerformanceMapType"/>
+                </xsd:all>
+                <xsd:attribute name="uID" type="xsd:ID"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>   
+    
+    <xsd:complexType name="propulsionMapSpecifictionType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Propulsion performance map</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                	<xsd:element name="environment" type="environmentType"/>
+                	<xsd:element name="configuration" type="configurationType"/>
+                	<xsd:element name="performanceData" type="stringBaseType"/>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>  
+
+    <xsd:complexType name="propulsionPerformanceMapType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Propulsion performance map</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="turbopropEngineType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Turbofan engine</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>Engine type, containing engine data.</ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="name" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Name</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="description" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Description</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="geometry" type="turbopropEngineGeometryType"/>
+                    <xsd:element minOccurs="0" name="certificationYear" type="integerBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Year of first certification
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="analysis" type="turbopropEngineAnalysisType"/>
+                </xsd:all>
+                <xsd:attribute name="uID" type="xsd:ID" use="required"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="turbopropEngineGeometryType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Definition of the global engine geometry.</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>All engine geometry definitions refer to the engine
+                                coordinate system. The engine coordinate system has its orgine
+                                in the middle of the fan plan. The positive x-axis is heading to
+                                the rear, the positive z-axis to the top and the y-axis
+                                according to the right hand rule.</ddue:para>
+                        </ddue:content>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                	<xsd:element minOccurs="0" name="totalLength" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Length of engine</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+	                <xsd:element minOccurs="0" name="rotationDirection">
+                        <xsd:annotation>
+                            <xsd:documentation>Rotation direction of the engine if looking at
+                                it from the front, i.e. from propeller/fan to exhaust
+                            </xsd:documentation>
+                        </xsd:annotation>
+                        <xsd:complexType>
+                            <xsd:simpleContent>
+                                <xsd:restriction base="stringBaseType">
+                                    <xsd:enumeration value="clockwise"/>
+                                    <xsd:enumeration value="counterclockwise"/>
+                                </xsd:restriction>
+                            </xsd:simpleContent>
+                        </xsd:complexType>
+                    </xsd:element>
+                	<xsd:choice>
+                		<xsd:sequence>
+                			<xsd:element name="nacelleLength" type="doubleBaseType">
+		                        <xsd:annotation>
+		                            <xsd:documentation>Length of engine</xsd:documentation>
+		                        </xsd:annotation>
+		                    </xsd:element>
+		                    <xsd:element minOccurs="0" name="nacelleHeight" type="doubleBaseType">
+		                        <xsd:annotation>
+		                            <xsd:documentation>Length of engine</xsd:documentation>
+		                        </xsd:annotation>
+		                    </xsd:element>
+		                    <xsd:element minOccurs="0" name="nacelleWidth" type="doubleBaseType">
+		                        <xsd:annotation>
+		                            <xsd:documentation>Length of engine</xsd:documentation>
+		                        </xsd:annotation>
+		                    </xsd:element>
+                		</xsd:sequence>
+                		<xsd:element name="nacelle" type="turbopropNacelleType"/>
+                	</xsd:choice>
+                    <xsd:choice>
+                    	<xsd:sequence>
+                    		<xsd:element name="propellerDiameter" type="doubleBaseType">
+		                        <xsd:annotation>
+		                            <xsd:documentation>Propeller diameter</xsd:documentation>
+		                        </xsd:annotation>
+		                    </xsd:element>
+		                    <xsd:element minOccurs="0" name="numberOfBlades" type="integerBaseType">
+		                        <xsd:annotation>
+		                            <xsd:documentation>Number of propeller blades</xsd:documentation>
+		                        </xsd:annotation>
+		                    </xsd:element>
+		                    <xsd:element minOccurs="0" name="hub2TipRatio" type="doubleBaseType">
+		                        <xsd:annotation>
+		                            <xsd:documentation>Hub to tip ratio</xsd:documentation>
+		                        </xsd:annotation>
+		                    </xsd:element>
+                    	</xsd:sequence>
+                    	<xsd:sequence>
+                    		<xsd:element name="rotorUID" type="stringUIDBaseType"/>
+                    		<xsd:element minOccurs="0" name="spinner" type="nacelleCenterCowlType"/>
+                    	</xsd:sequence>
+                    </xsd:choice>
+                    <xsd:element minOccurs="0" name="engineMounts" type="engineMountsType"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+   <xsd:complexType name="turbopropNacelleType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Turboprop nacelle</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>Turboprop nacelle</ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="geomBlock"/>
+                            </ddue:mediaLink>
+                        </ddue:content>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="transformation" type="transformationType"/>
+                    <xsd:element name="sections" type="fuselageSectionsType"/>
+                    <xsd:element name="positionings" minOccurs="0" type="positioningsType"/>
+                    <xsd:element name="segments" type="fuselageSegmentsType"/>
+                </xsd:all>
+                <xsd:attribute name="uID" type="xsd:ID" use="required"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="propulsionElementsTanksType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Tanks</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="tank" maxOccurs="unbounded" type="propulsionElementsTankType"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="propulsionElementsTankType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Tank</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="tbd" type="stringBaseType"/>
+                </xsd:all>
+                <xsd:attribute name="uID" type="xsd:ID" use="required"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
 
 </xsd:schema>
