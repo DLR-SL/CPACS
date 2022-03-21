@@ -36502,7 +36502,13 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:choice>
-                    <xsd:element name="directCurrent" type="directCurrentType"/>
+                    <xsd:element name="directCurrent" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Direct current voltage [V]
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                     <xsd:element name="alternatingCurrent" type="alternatingCurrentType"/>
                 </xsd:choice>
             </xsd:extension>
@@ -36522,73 +36528,15 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:choice>
-                    <xsd:element name="directCurrent" type="directCurrentTrajectoryType"/>
+                    <xsd:element name="directCurrent" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Direct current voltage [V]
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                     <xsd:element name="alternatingCurrent" type="alternatingCurrentTrajectoryType"/>
                 </xsd:choice>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-    
-    <xsd:complexType name="directCurrentType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Direct current</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="voltage" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                Voltage [V]
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="current" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                Current [A]
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-    
-    <xsd:complexType name="directCurrentTrajectoryType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Direct current</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="voltage" type="doubleVectorBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                Voltage [V]
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="current" type="doubleVectorBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                Current [A]
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -36606,17 +36554,10 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element name="voltage" type="doubleBaseType">
+                    <xsd:element name="effectiveVoltage" type="doubleBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
-                                Voltage [V]
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="current" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                Current [A]
+                                Effective voltage (also peak voltage) [V]
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
@@ -36652,17 +36593,10 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element name="voltage" type="doubleVectorBaseType">
+                    <xsd:element name="effectiveVoltage" type="doubleVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
-                                Voltage [V]
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="current" type="doubleVectorBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                Current [A]
+                                Effective voltage (also peak voltage) [V]
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
@@ -36697,7 +36631,113 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
-                <xsd:all>
+                <xsd:choice>
+            		<xsd:element name="singlePhaseMassFlow" type="singlePhaseMassFlowType"/>
+            		<xsd:element name="multiPhaseMassFlow" type="multiPhaseMassFlowType"/>
+            	</xsd:choice>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="massFlowSpecificationTrajectoryType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Mass flow specification</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+            	<xsd:choice>
+            		<xsd:element name="singlePhaseMassFlow" type="singlePhaseMassFlowTrajectoryType"/>
+            		<xsd:element name="multiPhaseMassFlow" type="multiPhaseMassFlowTrajectoryType"/>
+            	</xsd:choice>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="singlePhaseMassFlowTrajectoryType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Single-phase mass flow</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+            	<xsd:all>
+                    <xsd:element name="pressure" type="doubleVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Pressure
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="temperature" type="doubleVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Temperature
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="massComposition" minOccurs="0" type="massCompositionType"/>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="multiPhaseMassFlowTrajectoryType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Multi-phase mass flow</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+            	<xsd:all>
+                    <xsd:element name="pressure" type="doubleVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Pressure
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="enthalpy" type="doubleVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Enthalpy
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="massComposition" minOccurs="0" type="massCompositionType"/>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="singlePhaseMassFlowType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Single-phase mass flow</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+            	<xsd:all>
                     <xsd:element name="pressure" type="doubleBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
@@ -36718,30 +36758,30 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
     
-    <xsd:complexType name="massFlowSpecificationTrajectoryType">
+    <xsd:complexType name="multiPhaseMassFlowType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Mass flow specification</ddue:para>
+                        <ddue:para>Multi-phase mass flow</ddue:para>
                     </ddue:summary>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="pressure" type="doubleVectorBaseType">
+            	<xsd:all>
+                    <xsd:element name="pressure" type="doubleBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
                                 Pressure
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="temperature" type="doubleVectorBaseType">
+                    <xsd:element name="enthalpy" type="doubleBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
-                                Temperature
+                                Enthalpy
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
@@ -36763,12 +36803,10 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
-                <xsd:choice>
-					<xsd:element name="convectiveHeatTransfer" type="generalHeatTransferType"/>
-					<xsd:element name="conductiveHeatTransfer" type="generalHeatTransferType"/>
-					<xsd:element name="radiativeHeatTransfer" type="radiativeHeatTransferType"/>
-					<xsd:element name="combinedHeatTransfer" type="generalHeatTransferType"/>
-                </xsd:choice>
+                <xsd:all>
+					<xsd:element name="sourceTemperature" type="doubleBaseType"/>
+					<xsd:element name="sinkTemperature" type="doubleBaseType"/>
+                </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -36785,61 +36823,9 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
-                <xsd:choice>
-					<xsd:element name="convectiveHeatTransfer" type="generalHeatTransferTrajectoryType"/>
-					<xsd:element name="conductiveHeatTransfer" type="generalHeatTransferTrajectoryType"/>
-					<xsd:element name="radiativeHeatTransfer" type="radiativeHeatTransferTrajectoryType"/>
-					<xsd:element name="combinedHeatTransfer" type="generalHeatTransferTrajectoryType"/>
-                </xsd:choice>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-    
-    <xsd:complexType name="generalHeatTransferType">
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
                 <xsd:all>
-                	<xsd:element name="sourceTemperature" type="doubleBaseType"/>
-                	<xsd:element name="sinkTemperature" type="doubleBaseType"/>
-                	<xsd:element name="thermalResistance" type="doubleBaseType"/>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-    
-    <xsd:complexType name="generalHeatTransferTrajectoryType">
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                	<xsd:element name="sourceTemperature" type="doubleVectorBaseType"/>
-                	<xsd:element name="sinkTemperature" type="doubleVectorBaseType"/>
-                	<xsd:element name="thermalResistance" type="doubleVectorBaseType"/>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="radiativeHeatTransferType">
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                	<xsd:element name="sourceTemperature" type="doubleBaseType"/>
-                	<xsd:element name="sinkTemperature" type="doubleBaseType"/>
-                	<xsd:element name="sourceEmissivity" type="doubleBaseType"/>
-                	<xsd:element name="sinkEmissivity" type="doubleBaseType"/>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-    
-    <xsd:complexType name="radiativeHeatTransferTrajectoryType">
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                	<xsd:element name="sourceTemperature" type="doubleVectorBaseType"/>
-                	<xsd:element name="sinkTemperature" type="doubleVectorBaseType"/>
-                	<xsd:element name="sourceEmissivity" type="doubleBaseType"/>
-                	<xsd:element name="sinkEmissivity" type="doubleVectorBaseType"/>
+					<xsd:element name="sourceTemperature" type="doubleVectorBaseType"/>
+					<xsd:element name="sinkTemperature" type="doubleVectorBaseType"/>
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
