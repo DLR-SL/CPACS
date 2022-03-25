@@ -36125,7 +36125,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
-                <xsd:all>
+                <xsd:sequence>
                     <xsd:element name="massFLowValue" type="doubleVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
@@ -36133,8 +36133,11 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="massFlowSpecification" minOccurs="0" type="massFlowSpecificationTrajectoryType"/>
-                </xsd:all>
+                    <xsd:choice minOccurs="0">
+	            		<xsd:element name="singlePhaseMassFlow" type="singlePhaseMassFlowTrajectoryType"/>
+	            		<xsd:element name="multiPhaseMassFlow" type="multiPhaseMassFlowTrajectoryType"/>
+	            	</xsd:choice>
+                </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -36151,7 +36154,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
-                <xsd:all>
+                <xsd:sequence>
                     <xsd:element name="massFLowValue" type="doubleBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
@@ -36159,8 +36162,11 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="massFlowSpecification" minOccurs="0" type="massFlowSpecificationType"/>
-                </xsd:all>
+                    <xsd:choice minOccurs="0">
+	            		<xsd:element name="singlePhaseMassFlow" type="singlePhaseMassFlowTrajectoryType"/>
+	            		<xsd:element name="multiPhaseMassFlow" type="multiPhaseMassFlowTrajectoryType"/>
+	            	</xsd:choice>
+                </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -36177,7 +36183,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
-                <xsd:all>
+                <xsd:sequence>
                     <xsd:element name="heatFLowValue" type="doubleBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
@@ -36185,8 +36191,11 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="heatFlowSpecification" minOccurs="0" type="heatFlowSpecificationType"/>
-                </xsd:all>
+                    <xsd:sequence minOccurs="0">
+                    	<xsd:element name="sourceTemperature" type="doubleBaseType"/>
+						<xsd:element name="sinkTemperature" type="doubleBaseType"/>
+                    </xsd:sequence>
+                </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -36203,7 +36212,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
-                <xsd:all>
+                <xsd:sequence>
                     <xsd:element name="heatFLowValue" type="doubleVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
@@ -36211,8 +36220,11 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="heatFlowSpecification" minOccurs="0" type="heatFlowSpecificationTrajectoryType"/>
-                </xsd:all>
+                    <xsd:sequence minOccurs="0">
+                    	<xsd:element name="sourceTemperature" type="doubleVectorBaseType"/>
+						<xsd:element name="sinkTemperature" type="doubleVectorBaseType"/>
+                    </xsd:sequence>
+                </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -36229,7 +36241,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
-                <xsd:all>
+                <xsd:sequence>
                     <xsd:element name="mechanicalPowerValue" type="doubleBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
@@ -36237,8 +36249,23 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="mechanicalPowerSpecification" minOccurs="0" type="mechanicalPowerSpecificationType"/>
-                </xsd:all>
+                    <xsd:choice minOccurs="0">
+	                    <xsd:element name="torque" type="doubleBaseType">
+	                        <xsd:annotation>
+	                            <xsd:documentation>
+	                                Torque [Nm]
+	                            </xsd:documentation>
+	                        </xsd:annotation>
+	                    </xsd:element>
+	                    <xsd:element name="force" type="doubleBaseType">
+	                        <xsd:annotation>
+	                            <xsd:documentation>
+	                                Force [N]
+	                            </xsd:documentation>
+	                        </xsd:annotation>
+	                    </xsd:element>
+	                </xsd:choice>
+                </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -36255,7 +36282,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
-                <xsd:all>
+                <xsd:sequence>
                     <xsd:element name="mechanicalPowerValue" type="doubleVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
@@ -36263,8 +36290,23 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="mechanicalPowerSpecification" minOccurs="0" type="mechanicalPowerSpecificationTrajectoryType"/>
-                </xsd:all>
+                    <xsd:choice minOccurs="0">
+	                    <xsd:element name="torque" type="doubleBaseType">
+	                        <xsd:annotation>
+	                            <xsd:documentation>
+	                                Torque [Nm]
+	                            </xsd:documentation>
+	                        </xsd:annotation>
+	                    </xsd:element>
+	                    <xsd:element name="force" type="doubleBaseType">
+	                        <xsd:annotation>
+	                            <xsd:documentation>
+	                                Force [N]
+	                            </xsd:documentation>
+	                        </xsd:annotation>
+	                    </xsd:element>
+	                </xsd:choice>
+                </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -36282,8 +36324,20 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:choice>
-                    <xsd:element name="rotationalTransmission" type="rotationalTransmissionType"/>
-                    <xsd:element name="translationalTransmission" type="translationalTransmissionType"/>
+                    <xsd:element name="torque" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Torque [Nm]
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="force" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Force [N]
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                 </xsd:choice>
             </xsd:extension>
         </xsd:complexContent>
@@ -36302,58 +36356,6 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:choice>
-                    <xsd:element name="rotationalTransmission" type="rotationalTransmissionTrajectoryType"/>
-                    <xsd:element name="translationalTransmission" type="translationalTransmissionTrajectoryType"/>
-                </xsd:choice>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-    
-    <xsd:complexType name="rotationalTransmissionType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Rotational transmission</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="torque" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                Torque [Nm]
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="rotationsPerSecond" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                Rotations per second [1/s]
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-    
-    <xsd:complexType name="rotationalTransmissionTrajectoryType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Rotational transmission</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
                     <xsd:element name="torque" type="doubleVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
@@ -36361,63 +36363,6 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="rotationsPerSecond" type="doubleVectorBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                Rotations per second [1/s]
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-    
-    <xsd:complexType name="translationalTransmissionType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Translational transmission</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="force" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                Force [N]
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="velocity" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                Velocity [m/s]
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-	<xsd:complexType name="translationalTransmissionTrajectoryType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Translational transmission</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
                     <xsd:element name="force" type="doubleVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
@@ -36425,18 +36370,11 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="velocity" type="doubleVectorBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                Velocity [m/s]
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:all>
+                </xsd:choice>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
-        
+
     <xsd:complexType name="electricPowerType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -36449,7 +36387,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
-                <xsd:all>
+                <xsd:sequence>
                     <xsd:element name="electricPowerValue" type="doubleBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
@@ -36457,8 +36395,17 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="electricPowerSpecification" minOccurs="0" type="electricPowerSpecificationType"/>
-                </xsd:all>
+                    <xsd:choice minOccurs="0">
+	                    <xsd:element name="directCurrent" type="doubleBaseType">
+	                        <xsd:annotation>
+	                            <xsd:documentation>
+	                                Direct current voltage [V]
+	                            </xsd:documentation>
+	                        </xsd:annotation>
+	                    </xsd:element>
+	                    <xsd:element name="alternatingCurrent" type="alternatingCurrentType"/>
+	                </xsd:choice>
+                </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -36475,7 +36422,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
-                <xsd:all>
+                <xsd:sequence>
                     <xsd:element name="electricPowerValue" type="doubleVectorBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
@@ -36483,8 +36430,17 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="electricPowerSpecification" minOccurs="0" type="electricPowerSpecificationTrajectoryType"/>
-                </xsd:all>
+                    <xsd:choice minOccurs="0">
+	                    <xsd:element name="directCurrent" type="doubleVectorBaseType">
+	                        <xsd:annotation>
+	                            <xsd:documentation>
+	                                Direct current voltage [V]
+	                            </xsd:documentation>
+	                        </xsd:annotation>
+	                    </xsd:element>
+	                    <xsd:element name="alternatingCurrent" type="alternatingCurrentTrajectoryType"/>
+	                </xsd:choice>
+                </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
