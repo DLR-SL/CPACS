@@ -35895,12 +35895,56 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:element name="duct" maxOccurs="unbounded" type="ductType"/>
+                    <xsd:element name="ductAssembly" maxOccurs="unbounded" type="ductAssemblyType"/>
                 </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
 
+	<xsd:complexType name="ductAssemblyType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Duct assembly</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="name" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Name
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="description" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Description
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="parentUID" type="stringUIDBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                UID of part to which the duct is
+                                mounted (if any)
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="transformation" minOccurs="0" type="transformationType"/>
+                    <xsd:element name="excludeObjectUIs" minOccurs="0" type="uIDSequenceType"/>
+                    <xsd:element name="duct" maxOccurs="unbounded" type="ductType"/>
+                </xsd:sequence>
+                <xsd:attribute name="uID" type="xsd:ID" use="required"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
     <xsd:complexType name="ductType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -35928,16 +35972,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element minOccurs="0" name="parentUID" type="stringUIDBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                UID of part to which the duct is
-                                mounted (if any)
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="transformation" type="transformationType"/>
-                    <xsd:element name="sections" type="fuselageSectionsType"/>
+                    <xsd:element name="transformation" minOccurs="0" type="transformationType"/>
                     <xsd:element name="positionings" minOccurs="0" type="positioningsType"/>
                     <xsd:element name="segments" type="fuselageSegmentsType"/>
                     <xsd:element minOccurs="0" name="structure" type="ductStructureType"/>
