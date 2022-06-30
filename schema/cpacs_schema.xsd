@@ -3073,16 +3073,15 @@ marko.alder@dlr.de
                     <xsd:element minOccurs="0" name="reference" type="referenceType"/>
                     <xsd:element minOccurs="0" name="fuselages" type="fuselagesType"/>
                     <xsd:element minOccurs="0" name="wings" type="wingsType"/>
-                    <xsd:element minOccurs="0" name="engines" type="enginePositionsType"/>
                     <xsd:element minOccurs="0" name="enginePylons" type="enginePylonsType"/>
                     <xsd:element minOccurs="0" name="landingGears" type="landingGearsType"/>
                     <xsd:element minOccurs="0" name="systems" type="systemsType"/>
-                    <xsd:element minOccurs="0" name="propulsionSystem" type="propulsionSystemType"/>
                     <xsd:element minOccurs="0" name="genericGeometryComponents" type="genericGeometryComponentsType"/>
                     <xsd:element minOccurs="0" name="global" type="aircraftGlobalType"/>
                     <xsd:element minOccurs="0" name="analyses" type="aircraftAnalysesType"/>
                     <xsd:element minOccurs="0" name="performanceRequirements" type="performanceRequirementsType"/>
                     <xsd:element minOccurs="0" name="configurations" type="vehicleConfigurationsType"/>
+                    <xsd:element minOccurs="0" name="propulsionArchitecture" type="propulsionArchitectureType"/>
                     <xsd:element minOccurs="0" name="systemArchitectures" type="systemArchitecturesType"/>
                 </xsd:all>
                 <xsd:attribute name="uID" type="xsd:ID" use="required"/>
@@ -12104,66 +12103,6 @@ marko.alder@dlr.de
                 <xsd:all>
                     <xsd:element name="massDescription" type="genericMassType"/>
                 </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="fuelType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Fuels</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>fuelType containing data for fuels</ddue:para>
-                        <ddue:para>Can be used as a catalog for different (liquid) fuel
-                            types</ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="name" type="stringBaseType"/>
-                    <xsd:element minOccurs="0" name="description" type="stringBaseType"/>
-                    <xsd:element name="lowerHeatingValue" type="doubleBaseType"/>
-                    <xsd:element name="density" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>at 15deg C</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="freezingPoint" type="doubleBaseType"/>
-                    <xsd:element name="boilingPoint" type="doubleBaseType"/>
-                    <xsd:element name="flashPoint" type="doubleBaseType"/>
-                    <xsd:element name="autoFlammability" type="doubleBaseType"/>
-                    <xsd:element name="kinematicViscosity" type="doubleBaseType"/>
-                    <xsd:element name="avgSulfurLevel" type="doubleBaseType"/>
-                </xsd:all>
-                <xsd:attribute name="uID" type="xsd:ID" use="required"/>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="fuelsType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Fuels</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>fuelType containing data for fuels</ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element maxOccurs="unbounded" name="fuel" type="fuelType"/>
-                </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -26162,7 +26101,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:element minOccurs="0" name="propulsionElements" type="propulsionElementsType"/>
                     <xsd:element minOccurs="0" name="systemAssumptions" type="systemAssumptionsType"/>
                     <xsd:element minOccurs="0" name="materials" type="materialsType"/>
-                    <xsd:element minOccurs="0" name="fuels" type="fuelsType"/>
+                    <xsd:element minOccurs="0" name="energyCarriers" type="energyCarriersType"/>
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
@@ -35112,13 +35051,13 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element name="batteries" minOccurs="0" type="sysElemsBatteriesType"/>
+                    <xsd:element name="batteries" minOccurs="0" type="batteriesType"/>
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="sysElemsBatteriesType">
+    <xsd:complexType name="batteriesType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
@@ -35131,9 +35070,28 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:element name="battery" maxOccurs="unbounded" type="sysElemsBaseType">
+                    <xsd:element name="battery" maxOccurs="unbounded" type="batteryType"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="batteryType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Battery</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="sysElemsBaseType">
+                <xsd:sequence>
+                    <xsd:element name="electricEnergyCarrierUID" maxOccurs="unbounded" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Battery</xsd:documentation>
+                            <xsd:documentation>UID of an electric energy carrier</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -35196,81 +35154,8 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
 	                        </xsd:annotation>
 	                    </xsd:element>
                     </xsd:choice>
-                    <xsd:element name="properties" minOccurs="0" type="systemElementPropertiesType"/>
                 </xsd:sequence>
                 <xsd:attribute name="uID" type="xsd:ID" use="required"/>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-	<xsd:complexType name="systemElementPropertiesType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Properties</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="origin" minOccurs="0" type="originType"/>
-                    <xsd:element name="parameters" type="systemElementParametersType"/>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-    
-    <xsd:complexType name="systemElementParametersType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Parameters</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                	<xsd:element name="parameter" maxOccurs="unbounded" type="systemElementParameterType"/>
-                </xsd:sequence>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-    
-    <xsd:complexType name="systemElementParameterType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Parameter</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                	<xsd:element name="name" type="stringBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Name</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="description" minOccurs="0" type="stringBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Description</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="systemAssumptionParameterUID" type="stringBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>UID of a pre-defined system assumption parameter</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -35370,8 +35255,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element name="energyStorages" minOccurs="0" type="energyStoragesType"/>
-	                <!-- xsd:element name="genericSystemArchitectures" minOccurs="0" type="genericSystemArchitecturesType"/ -->
+                    <xsd:element name="tbd" minOccurs="0" type="xsd:string"/>
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
@@ -36925,6 +36809,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                 	<xsd:element name="turbopropEngines" minOccurs="0" type="turbopropEnginesType"/>
                 	<xsd:element name="electricMotors" minOccurs="0" type="stringBaseType"/>
                 	<xsd:element name="turbogenerators" minOccurs="0" type="stringBaseType"/>
+                	<xsd:element name="batteries" minOccurs="0" type="batteriesType"/>
                     <xsd:element name="powerCables" minOccurs="0" type="stringBaseType"/>
                     <xsd:element name="gasTurbines" minOccurs="0" type="stringBaseType"/>
                     <xsd:element name="rotors" minOccurs="0" type="rotorsType"/>
@@ -36974,13 +36859,33 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
-    
-    <xsd:complexType name="propulsionSystemType">
+
+    <xsd:complexType name="propulsionArchitectureType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Propulsion system</ddue:para>
+                        <ddue:para>Propulsion architecture</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="propulsionComponents" minOccurs="0" type="propulsionComponentsType"/>
+                    <xsd:element name="energyStorages" minOccurs="0" type="energyStoragesType"/>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="propulsionComponentsType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Propulsion components</ddue:para>
                     </ddue:summary>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -37318,6 +37223,177 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:extension base="complexBaseType">
                 <xsd:all>
                     <xsd:element name="tbd" type="stringBaseType"/>
+                </xsd:all>
+                <xsd:attribute name="uID" type="xsd:ID" use="required"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="energyCarriersType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Energy Carriers</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="electricEnergyCarriers" type="electricalEnergyCarriersType"/>
+                    <xsd:element name="chemicalEnergyCarriers" type="chemicalEnergyCarriersType"/>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="electricalEnergyCarriersType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Electrical energy carriers</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="electricEnergyCarrier" type="electricalEnergyCarrierType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="chemicalEnergyCarriersType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Chemical energy carriers</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="chemicalEnergyCarrier" type="chemicalEnergyCarrierType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="electricalEnergyCarrierType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Electrical energy carrier</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="name" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Name</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="description" minOccurs="0" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Description</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="massFlowPerEnergyFlow" minOccurs="0" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Ratio of mass flow per energy flow</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="specificEnergy" minOccurs="0" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Specific energy</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="density" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Density at 15deg C</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="nominalCRate" minOccurs="0" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Nominal C-Rate</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="maxCRate" minOccurs="0" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Maximum C-Rate</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:all>
+                <xsd:attribute name="uID" type="xsd:ID" use="required"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="chemicalEnergyCarrierType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Chemical energy carrier</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="name" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Name</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="description" minOccurs="0" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Description</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="lowerHeatingValue" minOccurs="0" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Lower heating value</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="density" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Density at 15deg C</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="co2EmissionIndex" minOccurs="0" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>CO2 emission index</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="h2oEmissionIndex" minOccurs="0" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>H2O emission index</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="energySpecificCost" minOccurs="0" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Energy specific cost</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="freezingPoint" minOccurs="0" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Freezing point</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                 </xsd:all>
                 <xsd:attribute name="uID" type="xsd:ID" use="required"/>
             </xsd:extension>
