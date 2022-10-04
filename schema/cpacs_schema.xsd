@@ -29,7 +29,16 @@ marko.alder@dlr.de
             xmlns:sd="http://schemas.xsddoc.codeplex.com/schemaDoc/2009/3"
             xmlns:xlink="http://www.w3.org/1999/xlink">
 
-    <xsd:element name="cpacs" type="cpacsType"/>
+    <xsd:element name="cpacs" type="cpacsType">
+        <xsd:keyref name="versionKeyRef" refer="versionKey">
+	        <xsd:selector xpath="./header"/>
+	        <xsd:field xpath="version"/>
+	    </xsd:keyref>
+	    <xsd:key name="versionKey">
+	      <xsd:selector xpath="./header/versionInfos/*"/>
+	      <xsd:field xpath="@version"/>
+	    </xsd:key>
+    </xsd:element>
 
     <xsd:complexType name="cpacsType">
         <xsd:annotation>
@@ -54,7 +63,7 @@ marko.alder@dlr.de
                                 <ddue:title>1. Overview</ddue:title>
                                 <ddue:content>
                                     <ddue:para>The <ddue:legacyBold>C</ddue:legacyBold>ommon <ddue:legacyBold>P</ddue:legacyBold>arametric <ddue:legacyBold>A</ddue:legacyBold>ircraft <ddue:legacyBold>C</ddue:legacyBold>onfiguration <ddue:legacyBold>S</ddue:legacyBold>cheme <ddue:legacyItalic>(CPACS)</ddue:legacyItalic> is an XML-based data format for describing aircraft configurations and their corresponding data.</ddue:para>
-                                    <ddue:para>This XML-Schema document (<ddue:legacyBold>XSD</ddue:legacyBold>) serves two purposes: (1) it defines the <ddue:legacyItalic>CPACS</ddue:legacyItalic>
+                                    <ddue:para>This XMfL-Schema document (<ddue:legacyBold>XSD</ddue:legacyBold>) serves two purposes: (1) it defines the <ddue:legacyItalic>CPACS</ddue:legacyItalic>
                                     data structure used in the <ddue:legacyBold>XML</ddue:legacyBold> file (e.g., aircraft.xml) and
                                     (2) it provides the corresponding documentation (see picture below). An XML processor (e.g., <ddue:externalLink><ddue:linkText>TiXI</ddue:linkText><ddue:linkUri>https://github.com/DLR-SC/tixi</ddue:linkUri></ddue:externalLink> or
                                     XML tools in Eclipse) parses the XSD and XML files and validates whether the data set defined by the user (or tool) conforms to the given structure defined by the schema.</ddue:para>
@@ -1001,9 +1010,59 @@ marko.alder@dlr.de
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="creator" type="stringBaseType">
+                    <xsd:element name="version" type="versionStringType">
                         <xsd:annotation>
-                            <xsd:documentation>Creator of initial CPACS dataset
+                            <xsd:documentation>Version of initial CPACS dataset
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="versionInfos" type="versionInfosType"/>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+	<xsd:complexType name="versionInfosType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Version Informations</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="versionInfo" maxOccurs="unbounded" type="versionInfoType"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="versionInfoType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Version Information</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="cpacsVersion" type="versionStringType">
+                        <xsd:annotation>
+                            <xsd:documentation>CPACS version of the dataset
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="description" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Description of CPACS dataset
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
@@ -1013,54 +1072,24 @@ marko.alder@dlr.de
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="version" type="stringBaseType">
+                    <xsd:element name="creator" type="stringBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Version of initial CPACS dataset
+                            <xsd:documentation>Creator of initial CPACS dataset
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="cpacsVersion" minOccurs="0">
-                        <xsd:annotation>
-                            <xsd:documentation>CPACS version that the dataset is valid to. The element is optional, since data sets
-                                can be valid for several CPACS versions. However, we strongly recommend to assign data sets to a
-                                specific CPACS version as far as possible, especially since some tools and libraries (e.g. TiGL)
-                                require this specification.
-                            </xsd:documentation>
-                        </xsd:annotation>
-                        <xsd:simpleType>
-                            <xsd:restriction base="xsd:string">
-                                <xsd:enumeration value="3.4"/>
-                            </xsd:restriction>
-                        </xsd:simpleType>
-                    </xsd:element>
-                    <xsd:element minOccurs="0" name="updates" type="updatesType"/>
-                </xsd:all>
+                </xsd:all>	
+                <xsd:attribute name="version" type="versionStringType" use="required"/>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
-
-    <xsd:complexType name="updatesType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>updatesType</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>Updates type, containing update data for the CPACS
-                            dataset</ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element maxOccurs="unbounded" name="update" type="updateType"/>
-                </xsd:sequence>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
+    
+    <xsd:simpleType name="versionStringType">
+        <xsd:restriction base="xsd:string">
+            <xsd:pattern value="^(0|[1-9]\d*)\.(0|[1-9]\d*)"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+   
 
     <!--
     =================================================================
@@ -26635,59 +26664,6 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:enumeration value="ExponentialDistribution"/>
         </xsd:restriction>
     </xsd:simpleType>
-
-
-    <xsd:complexType name="updateType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>updateType</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>Update type, containing a datablock for each update of
-                            the CPACS dataset</ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="modification" type="stringBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Description of Modification of CPACS data
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="creator" type="stringBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Creator of CPACS modification
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="timestamp" type="dateTimeBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Timestamp of CPACS modification
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="version" type="stringBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>New version number of CPACS dataset after
-                                modification</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="cpacsVersion" type="stringBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>CPACS version that the dataset is valid to
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
 
     <xsd:complexType name="upperLinksType">
         <xsd:annotation>
