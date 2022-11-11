@@ -1010,9 +1010,9 @@ marko.alder@dlr.de
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="version" type="versionStringType">
+                    <xsd:element name="version" type="xsd:string">
                         <xsd:annotation>
-                            <xsd:documentation>Version of initial CPACS dataset
+                            <xsd:documentation>Version of initial CPACS dataset according to the Semantic Versioning 2.0.0 standard.
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
@@ -1054,7 +1054,7 @@ marko.alder@dlr.de
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element name="cpacsVersion" type="versionStringType">
+                    <xsd:element name="cpacsVersion" type="xsd:string">
                         <xsd:annotation>
                             <xsd:documentation>CPACS version of the dataset
                             </xsd:documentation>
@@ -1078,18 +1078,68 @@ marko.alder@dlr.de
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
+                    <xsd:element name="changeLog" minOccurs="0" type="changeLogType"/>
                 </xsd:all>	
-                <xsd:attribute name="version" type="versionStringType" use="required"/>
+                <xsd:attribute name="version" type="xsd:string" use="required"/>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
     
-    <xsd:simpleType name="versionStringType">
-        <xsd:restriction base="xsd:string">
-            <xsd:pattern value="^(0|[1-9]\d*)\.(0|[1-9]\d*)"/>
-        </xsd:restriction>
-    </xsd:simpleType>
-   
+    <xsd:complexType name="changeLogType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Change log</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="logEntry" maxOccurs="unbounded" type="logEntryType"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="logEntryType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Log entry</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="description" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Description of CPACS dataset
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="timestamp" type="dateTimeBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Timestamp
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="creator" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Creator (tool, person, etc.)
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:all>	
+                <xsd:attribute name="version" type="xsd:string" use="required"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>   
 
     <!--
     =================================================================
