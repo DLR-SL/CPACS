@@ -226,6 +226,6 @@ if __name__ == '__main__':
         for item in toomuch:
             print item
     else:
-        print "No unsused types could be identified"
+        print "No unused types could be identified"
 
 
