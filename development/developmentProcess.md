@@ -28,7 +28,7 @@ In general the inclusion of new items should work more or less in this order:
 6. Issue closed and feature marked for target version of CPACS
 
 
-Incoming issues from outside the development team should be checked before beeing accepted.
+Incoming issues from outside the development team should be checked before being accepted.
 The following questions should be answered:
 
 - What is the driver for the requested change?
