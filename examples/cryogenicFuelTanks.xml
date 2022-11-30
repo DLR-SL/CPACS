@@ -1,0 +1,110 @@
+<cpacs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../schema/cpacs_schema.xsd">
+	<header>
+		<name>Fuel tank examples</name>
+		<version>1.0.0</version>
+		<!-- <cpacsVersion>3.4</cpacsVersion> -->
+		<versionInfos>
+			<versionInfo version="1.0.0">
+				<creator>DLR-SL</creator>
+				<timestamp>2022-11-30T11:56:46.259694</timestamp>
+				<description>Some examples how to parametrize fuel tanks</description>
+				<cpacsVersion>3.4</cpacsVersion>
+			</versionInfo>
+		</versionInfos>
+	</header>
+	<vehicles>
+		<aircraft>
+			<model uID="aircraftModel">
+				<name>Aircraft</name>
+				<fuselages>
+					<fuselage uID="fuselage">
+						<name>Main fuselage</name>
+						<transformation />
+						<sections>
+							<section uID="sec1">
+								<name>Section1</name>
+								<transformation />
+								<elements>
+									<element uID="sec1el1">
+										<name>Section 1 Element 1</name>
+										<profileUID>fuselageCircleProfile</profileUID>
+										<transformation />
+									</element>
+								</elements>
+							</section>
+							<section uID="sec2">
+								<name>Section2</name>
+								<transformation />
+								<elements>
+									<element uID="sec2el1">
+										<name>Section 2 Element 1</name>
+										<profileUID>fuselageCircleProfile</profileUID>
+										<transformation />
+									</element>
+								</elements>
+							</section>
+						</sections>
+						<positionings>
+							<positioning uID="sec2positioning">
+								<name>Section 2 positioning</name>
+								<length>10</length>
+								<sweepAngle>90</sweepAngle>
+								<dihedralAngle>0</dihedralAngle>
+								<toSectionUID>sec2</toSectionUID>
+							</positioning>
+						</positionings>
+						<segments>
+							<segment uID="seg1">
+								<name>Segment 1</name>
+								<fromElementUID>sec1el1</fromElementUID>
+								<toElementUID>sec2el1</toElementUID>
+							</segment>
+						</segments>
+						<fuelTanks>
+							<cryogenicFuelTanks>
+								<cryogenicFuelTank uID="simpleTank">
+									<name>Cryogenic fuel tank</name>
+									<globalDesignPrameters>
+										<cylinderLength>3</cylinderLength>
+										<cylinderRadius>0.9</cylinderRadius>
+										<domeHeight>1</domeHeight>
+										<cylinderDomeTangent>
+											<x>1.</x>
+											<y>0.</y>
+											<z>0.</z>
+										</cylinderDomeTangent>
+										<cylinderDomeCurvature>1.</cylinderDomeCurvature>
+										<materialUID>mat1</materialUID>
+									</globalDesignPrameters>
+								</cryogenicFuelTank>
+							</cryogenicFuelTanks>
+						</fuelTanks>
+					</fuselage>
+				</fuselages>
+			</model>
+		</aircraft>
+		<profiles>
+			<fuselageProfiles>
+				<fuselageProfile uID="fuselageCircleProfile">
+					<name>Circle</name>
+					<description>Profile build up from set of Points on Circle where may Dimensions are 1..-1</description>
+					<pointList>
+						<x mapType="vector">0.0;0.0;0.0;0.0;0.0</x>
+						<y mapType="vector">0.0;1.0;0.0;-1.0;0.0</y>
+						<z mapType="vector">1.0;0.0;-1.0;0.0;1.0</z>
+					</pointList>
+				</fuselageProfile>
+			</fuselageProfiles>
+		</profiles>
+		<materials>
+			<material uID="mat1">
+				<name>Material 1</name>
+				<description>This is a dummy material</description>
+				<rho>1.234</rho>
+				<isotropicProperties>
+					<E>1.234</E>
+				</isotropicProperties>
+			</material>
+		</materials>
+	</vehicles>
+</cpacs>

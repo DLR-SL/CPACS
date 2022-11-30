@@ -9185,6 +9185,50 @@ cpacs@dlr.de
         </xsd:complexContent>
     </xsd:complexType>
 
+    <xsd:complexType name="cryogenicFuelTankGlobalParametersType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Global design parameters</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="cylinderRadius" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Radius of the cylinder</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="cylinderLength" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Length of the cylinder</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="domeHeight" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Height of the dome</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="cylinderDomeTangent" type="pointXYZType">
+                        <xsd:annotation>
+                            <xsd:documentation>Tangent at the transition from cylinder to dome (wrt. fuselage coordinate system)</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="cylinderDomeCurvature" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Curvature of the dome at the transition from cylinder to dome</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="materialUID" minOccurs="0" type="stringUIDBaseType"/>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
     <xsd:complexType name="cryogenicFuelTanksType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -9223,8 +9267,8 @@ cpacs@dlr.de
         </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="name" minOccurs="0" type="stringBaseType">
+                <xsd:sequence>
+                    <xsd:element name="name" type="stringBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Name
                             </xsd:documentation>
@@ -9236,8 +9280,11 @@ cpacs@dlr.de
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="hulls" type="hullsType"/>
-                </xsd:all>
+                    <xsd:choice>
+                        <xsd:element name="hulls" type="hullsType"/>
+                        <xsd:element name="globalDesignPrameters" type="cryogenicFuelTankGlobalParametersType"/>
+                    </xsd:choice>
+                </xsd:sequence>
                 <xsd:attribute name="uID" use="required" type="xsd:ID"/>
             </xsd:extension>
         </xsd:complexContent>
@@ -14703,7 +14750,7 @@ cpacs@dlr.de
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:element name="liquidFuelTanks" minOccurs="0" type="liquidFuelTanksType">
+                    <xsd:element name="integralFuelTanks" minOccurs="0" type="integralFuelTanksType">
                         <xsd:annotation>
                             <xsd:documentation>The fuselage fuel tank geometry is defined by a link to a fuselage geometry compartment.
 The fuel tank volume type should also be used for the wing fuel tank</xsd:documentation>
@@ -16727,6 +16774,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:element name="sections" type="fuselageSectionsType"/>
                     <xsd:element name="segments" type="fuselageSegmentsType"/>
                     <xsd:element name="structure" minOccurs="0" type="hullStructureType"/>
+                    <xsd:element name="cutOuts" minOccurs="0" type="fuselageCutOutsType"/>
                 </xsd:all>
                 <xsd:attribute name="uID" use="required" type="xsd:ID"/>
             </xsd:extension>
@@ -16776,6 +16824,33 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                 <xsd:attribute name="externalDataDirectory" type="xsd:string"/>
             </xsd:extension>
         </xsd:simpleContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="integralFuelTanksType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>List of fuselage fuel tanks integrated in compartments.</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para/>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="integralFuelTank" maxOccurs="unbounded" type="liquidFuelTankType">
+                        <xsd:annotation>
+                            <xsd:documentation>The integral fuel tank geometry is defined by a link to a fuselage geometry compartment.
+The fuel tank volume type should also be used for the wing fuel tank</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
     </xsd:complexType>
 
     <xsd:complexType name="interConnectionStrutAttachmentType">
@@ -18302,33 +18377,6 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                 </xsd:attribute>
             </xsd:extension>
         </xsd:simpleContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="liquidFuelTanksType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>List of fuselage fuel tanks integrated in compartments.</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para/>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element name="liquidFuelTank" maxOccurs="unbounded" type="liquidFuelTankType">
-                        <xsd:annotation>
-                            <xsd:documentation>The liquid fuel tank geometry is defined by a link to a fuselage geometry compartment.
-The fuel tank volume type should also be used for the wing fuel tank</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:sequence>
-            </xsd:extension>
-        </xsd:complexContent>
     </xsd:complexType>
 
     <xsd:complexType name="liquidFuelTankType">
@@ -29752,7 +29800,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:choice>
                         <xsd:element name="startFrameUID" type="stringUIDBaseType">
                             <xsd:annotation>
-                                <xsd:documentation>UID of frame at start of the skin segment
+                                <xsd:documentation>UID of (virtual) frame at start of the skin segment
                                 </xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
@@ -29766,7 +29814,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:choice>
                         <xsd:element name="endFrameUID" type="stringUIDBaseType">
                             <xsd:annotation>
-                                <xsd:documentation>UID of frame at end of the skin segment
+                                <xsd:documentation>UID of (virtual) frame at end of the skin segment
                                 </xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
@@ -29777,15 +29825,15 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             </xsd:annotation>
                         </xsd:element>
                     </xsd:choice>
-                    <xsd:element name="startStringerUID" type="stringUIDBaseType">
+                    <xsd:element name="startStringerUID" minOccurs="0" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of stringer at start of the skin segment
+                            <xsd:documentation>UID of (virtual) stringer at start of the skin segment
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="endStringerUID" minOccurs="0" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of stringer at end of the skin segment
+                            <xsd:documentation>UID of (virtual) stringer at end of the skin segment
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
