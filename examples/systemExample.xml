@@ -41,6 +41,17 @@
                 </engines>
                 <systems>
                     <genericSystems>
+                        <genericSystem uID="eDrive">
+                            <name>e-Drive</name>
+                            <transformation></transformation>
+                            <components>
+                                <component uID="installedEMotor">
+                                    <name>Intalled eMotor</name>
+                                    <systemElementUID>predefinedEMotor</systemElementUID>
+                                    <transformation></transformation>
+                                </component>
+                            </components>
+                        </genericSystem>
                         <genericSystem uID="mySystem">
                             <name>Example system</name>
                             <transformation></transformation>
@@ -54,12 +65,30 @@
                         </genericSystem>
                     </genericSystems>
                 </systems>
+                <systemArchitectures>
+                    <systemArchitecture>
+                        <name>Propeller - eMotor connection</name>
+                        <description>Useless system to demonstrate usage of sub-components</description>
+                        <systemType>generic</systemType>
+                        <connections>
+                            <connection uID="propEMotConnection">
+                                <source>
+                                    <componentUID>installedEngine1</componentUID>
+                                    <subComponentUID>installedPropeller</subComponentUID>
+                                </source>
+                                <target>
+                                    <componentUID>installedEMotor</componentUID>
+                                </target>
+                            </connection>
+                        </connections>
+                    </systemArchitecture>
+                </systemArchitectures>
             </model>
         </aircraft>
         <engines>
             <engine uID="predefinedEngine">
                 <name>Engine</name>
-                <propeller>
+                <propeller uID="installedPropeller">
                     <rotorUID>Propeller</rotorUID>
                     <transformation>
                         <scaling>
@@ -83,6 +112,12 @@
             </engine>
         </engines>
         <systemElements>
+            <electricMotors>
+                <electricMotor uID="predefinedEMotor">
+                    <name>E-Motor</name>
+                    <geometricBaseType>cube</geometricBaseType>
+                </electricMotor>
+            </electricMotors>
             <heatExchangers>
                 <heatExchanger uID="predefinedHeatExchanger">
                     <name>Heat exchanger</name>
