@@ -1040,22 +1040,6 @@ cpacs@dlr.de
         </xsd:all>
     </xsd:complexType>
 
-<xsd:simpleType name="abstractSourceSinkType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>ambient | passengers</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:restriction base="xsd:string">
-            <xsd:enumeration value="ambient"/>
-            <xsd:enumeration value="passengers"/>
-        </xsd:restriction>
-    </xsd:simpleType>
-
     <xsd:complexType name="actuatorAttachmentType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -6425,7 +6409,7 @@ cpacs@dlr.de
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:element name="components" maxOccurs="unbounded" type="componentType"/>
+                    <xsd:element name="component" maxOccurs="unbounded" type="componentType"/>
                 </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
@@ -6664,8 +6648,8 @@ cpacs@dlr.de
                             <xsd:documentation>Description</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="source" type="sourceSinkType"/>
-                    <xsd:element name="sink" type="sourceSinkType"/>
+                    <xsd:element name="source" type="sourceTargetType"/>
+                    <xsd:element name="target" type="sourceTargetType"/>
                 </xsd:all>
                 <xsd:attribute name="uID" use="required" type="xsd:ID"/>
             </xsd:extension>
@@ -12003,8 +11987,24 @@ cpacs@dlr.de
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:element name="electricMotorType" maxOccurs="unbounded" type="gearBoxType"/>
+                    <xsd:element name="electricMotor" maxOccurs="unbounded" type="electricMotorType"/>
                 </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="electricMotorType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Electric motor</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="sysElemsBaseType">
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -12771,6 +12771,34 @@ cpacs@dlr.de
         </xsd:complexContent>
     </xsd:complexType>
 
+    <xsd:complexType name="enginePropellerType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>
+                            Propeller
+                        </ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="rotorUID" type="stringUIDBaseType"/>
+                    <xsd:element name="transformation" type="transformationType"/>
+                    <xsd:element name="nominalRotationsPerMinute" minOccurs="0" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Nominal value of the angular rotation speed in
+                                rotations per minute (rpm).</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
     <xsd:complexType name="enginePylonsType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -12938,6 +12966,7 @@ cpacs@dlr.de
                     </xsd:element>
                     <xsd:element name="geometry" minOccurs="0" type="engineGeometryType"/>
                     <xsd:element name="nacelle" minOccurs="0" type="engineNacelleType"/>
+                    <xsd:element name="propeller" minOccurs="0" type="enginePropellerType"/>
                     <xsd:element name="global" minOccurs="0" type="engineGlobalType"/>
                     <xsd:element name="analysis" minOccurs="0" type="engineAnalysisType"/>
                 </xsd:all>
@@ -15732,8 +15761,24 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:element name="gasTurbineType" maxOccurs="unbounded" type="gearBoxType"/>
+                    <xsd:element name="gasTurbine" maxOccurs="unbounded" type="gasTurbineType"/>
                 </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="gasTurbineType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>GasTurbine</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="sysElemsBaseType">
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -16983,6 +17028,41 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     </xsd:element>
                     <xsd:element name="versionInfos" type="versionInfosType"/>
                 </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="heatExchangersType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Heat exchangers</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="heatExchanger" maxOccurs="unbounded" type="heatExchangerType"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="heatExchangerType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Heat exchanger</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="sysElemsBaseType">
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -25189,6 +25269,22 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
+<xsd:simpleType name="nonModeledComponentType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>ambient | passengers</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="ambient"/>
+            <xsd:enumeration value="passengers"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
     <xsd:complexType name="noseGearsType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -29401,6 +29497,100 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
+    <xsd:complexType name="rotorBladeElementsType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Rotor blade elements</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>RotorBlades type, containing all the rotor blade
+                                gometry definitions of an rotorcraft model.</ddue:para>
+                            <ddue:para>Rotor blade geometries are defined using the same data
+                                structure as wings (wingType). But in order to be compatible
+                                with the other rotor blade related types (e.g. rotorType,
+                                rotorHubType, rotorHubHingeType) there are some additional
+                                conventions/requirements regarding the definition and
+                                orientation of rotorBlade geometries:</ddue:para>
+                            <ddue:list class="bullet">
+                                <ddue:listItem>Rotor blades should be positioned relative to the
+                                    global z-axis the way they will be positioned to the rotor
+                                    shaft (when blade azimuth=0deg).</ddue:listItem>
+                                <ddue:listItem>The global x-axis should be used as radial axis
+                                    (usually the quarter chord line of the rotor blade coincides to
+                                    a great extent with the x-axis of the rotor blade coordinate
+                                    system).</ddue:listItem>
+                                <ddue:listItem>All sections should be positioned in the positive
+                                    x halfspace.</ddue:listItem>
+                                <ddue:listItem>Segments should connect sections with ascending x
+                                    coordinates.</ddue:listItem>
+                                <ddue:listItem>Airfoils defined in the rotorAirfoils node should
+                                    be used instead airfoils from the wingAirfoils node.
+                                </ddue:listItem>
+                            </ddue:list>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="rotorBlade_cs01"/>
+                            </ddue:mediaLink>
+                        </ddue:content>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="rotorBlade" maxOccurs="unbounded" type="rotorBladeElementType">
+                        <xsd:annotation>
+                            <xsd:documentation>Rotor blade geometries are defined using the
+                                same data structure as wings (wingType). But in order to be
+                                compatible with the other rotor blade related types (e.g.
+                                rotorType, rotorHubType, rotorHubHingeType) there are some
+                                additional conventions/requirements regarding the definition and
+                                orientation of rotorBlade geometries: see remarks.
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="rotorBladeElementType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Rotor blade</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="name" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Name of the wing.</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="description" minOccurs="0" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Description of the wing.</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="transformation" type="transformationType"></xsd:element>
+                    <xsd:element name="sections" type="wingSectionsType"/>
+                    <xsd:element name="positionings" minOccurs="0" type="positioningsType"/>
+                    <xsd:element name="segments" type="wingSegmentsType"/>
+                    <xsd:element name="componentSegments" minOccurs="0" type="componentSegmentsType"/>
+                </xsd:all>
+                <xsd:attribute name="uID" use="required" type="xsd:ID"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
     <xsd:complexType name="rotorBladesType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -29853,6 +30043,111 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
+    <xsd:complexType name="rotorElementsType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Rotor</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="rotor" maxOccurs="unbounded" type="rotorElementType"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="rotorElementType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Rotor type, containing a rotor (main rotor, tail rotor,
+                            fenestron, propeller,...) of an rotorcraft model.</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>Rotor type, containing a rotor (e.g. main rotor, tail
+                                rotor, fenestron, propeller,...) definition of a rotorcraft
+                                model.</ddue:para>
+                            <ddue:para>The position and attitude of the rotor is defined
+                                using the transformation element. The following image shows the
+                                CPACS conventions for the orientation of rotors and rotor axis
+                                systems:</ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="rotor_cs01"/>
+                            </ddue:mediaLink>
+                            <ddue:list class="bullet">
+                                <ddue:listItem>The origin coincides with the center of rotation.
+                                </ddue:listItem>
+                                <ddue:listItem>The z-axis corresponds to the axis of rotation
+                                    and thus coincides with the rotor shaft centerline. It Points
+                                    in the main thrust direction of the rotor (usually upwards for
+                                    a main rotor, forwards for a propeller).</ddue:listItem>
+                                <ddue:listItem>The x-axis points from nose to tail (usually
+                                    rearwards for main and tail rotors, upwards for a propeller).
+                                </ddue:listItem>
+                                <ddue:listItem>The y-axis completes the right-handed orthogonal
+                                    coordinate system.</ddue:listItem>
+                            </ddue:list>
+                            <ddue:para>Rotor hub attributes, hinges and references to
+                                attached rotor blades are defined in the rotorHub element.
+                            </ddue:para>
+                            <ddue:para>
+                                Note that rotor blade geometries are only referenced and not
+                                defined in the child nodes of the rotor element. Refer to the
+                                documentation of rotorBladesType (
+                                <xsd:xmlEntityReference>Empty#T/rotorBladesType</xsd:xmlEntityReference>
+                                ) and wingType (
+                                <xsd:xmlEntityReference>Empty#T/wingType</xsd:xmlEntityReference>
+                                ) for information on the definition of rotor blade geometries.
+                            </ddue:para>
+                            <ddue:para>The following figure shows the transformations to be
+                                applied to rotorBlade geometries to visualize them in the rotor
+                                frames for a given state (each rotor: rotorAzimuth given, each
+                                hinge: hingeDeflection given):</ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="rotor_transformation"/>
+                            </ddue:mediaLink>
+                        </ddue:content>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="name" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Name of the rotor.</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="description" minOccurs="0" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Description of the rotor.</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="rotorHub" type="rotorHubType">
+                        <xsd:annotation>
+                            <xsd:documentation>The rotorHub element contains the definition
+                                of the rotor hub type and number and azimuth angles of the
+                                attached blades and their hinges. The rotor hub position and
+                                attitude coincides with the rotor axis system's origin and z
+                                axis.</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:all>
+                <xsd:attribute name="uID" use="required" type="xsd:ID"/>
+                <xsd:attribute name="symmetry" type="symmetryXyXzYzType"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
     <xsd:complexType name="rotorHubHingesType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -30017,6 +30312,26 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
+    <xsd:complexType name="rotorPropellerElementsType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Rotor elements</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="rotors" type="rotorElementsType"/>
+                    <xsd:element name="rotorBlades" type="rotorBladeElementsType"/>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
     <xsd:complexType name="rotorsType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -30120,7 +30435,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="type" minOccurs="0">
+                    <xsd:element name="type">
                         <xsd:annotation>
                             <xsd:documentation>Rotor type. Possible values: "mainRotor"
                                 (default), "tailRotor", "fenestron" or "propeller"..
@@ -31026,7 +31341,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="sourceSinkType">
+    <xsd:complexType name="sourceTargetType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
@@ -31053,14 +31368,14 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             </xsd:annotation>
                         </xsd:element>
                     </xsd:sequence>
+                    <xsd:element name="nonModeledComponent" type="nonModeledComponentType"/>
                     <xsd:element name="ataChapter" type="ataChapterListType">
                         <xsd:annotation>
                             <xsd:documentation>
-                                Source / sink system according to ATA chapter
+                                Source / target system according to ATA chapter
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="system" type="abstractSourceSinkType"/>
                 </xsd:choice>
             </xsd:extension>
         </xsd:complexContent>
@@ -33041,10 +33356,9 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                 <xsd:all>
                     <xsd:element name="electricMotors" minOccurs="0" type="electricMotorsType"/>
                     <xsd:element name="turboGenerators" minOccurs="0" type="turboGeneratorsType"/>
+                    <xsd:element name="heatExchangers" minOccurs="0" type="heatExchangersType"/>
                     <xsd:element name="batteries" minOccurs="0" type="batteriesType"/>
                     <xsd:element name="gasTurbines" minOccurs="0" type="gasTurbinesType"/>
-                    <xsd:element name="rotors" minOccurs="0" type="rotorsType"/>
-                    <xsd:element name="rotorBlades" minOccurs="0" type="rotorBladesType"/>
                     <xsd:element name="gearBoxes" minOccurs="0" type="gearBoxesType"/>
                     <xsd:element name="genericComponents" minOccurs="0" type="genericComponentsType"/>
                 </xsd:all>
@@ -34404,8 +34718,24 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:element name="turboGeneratorType" maxOccurs="unbounded" type="gearBoxType"/>
+                    <xsd:element name="turboGenerator" maxOccurs="unbounded" type="turboGeneratorType"/>
                 </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="turboGeneratorType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Turbo generator</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="sysElemsBaseType">
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -34683,13 +35013,14 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                 <xsd:all>
                     <xsd:element name="aircraft" minOccurs="0" type="aircraftType"/>
                     <xsd:element name="rotorcraft" minOccurs="0" type="rotorcraftType"/>
+                    <xsd:element name="engines" minOccurs="0" type="enginesType"/>
                     <xsd:element name="performanceCases" minOccurs="0" type="globalPerformanceCasesType"/>
                     <xsd:element name="flightPoints" minOccurs="0" type="flightPointsType"/>
-                    <xsd:element name="engines" minOccurs="0" type="enginesType"/>
                     <xsd:element name="profiles" minOccurs="0" type="profilesType"/>
                     <xsd:element name="structuralElements" minOccurs="0" type="structuralElementsType"/>
                     <xsd:element name="deckElements" minOccurs="0" type="deckElementsType"/>
                     <xsd:element name="systemElements" minOccurs="0" type="systemElementsType"/>
+                    <xsd:element name="rotorElements" minOccurs="0" type="rotorPropellerElementsType"/>
                     <xsd:element name="materials" minOccurs="0" type="materialsType"/>
                     <xsd:element name="energyCarriers" minOccurs="0" type="energyCarriersType"/>
                 </xsd:all>
