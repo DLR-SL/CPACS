@@ -8,7 +8,7 @@ class schemaCheck(unittest.TestCase):
 
         xml_dir = "../examples/"
         xml_files = [os.path.join(xml_dir,f) for f in os.listdir(xml_dir)
-                     if f != "toolspecific.xml"]
+                     if f != "toolspecific.xml" and f != "seat.stp"]
         xsd = "../schema/cpacs_schema.xsd"
 
         for xml in xml_files:

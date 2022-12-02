@@ -11,9 +11,10 @@ For contributions you can use the same steps as described in the "Development Pr
 ## Contents
 
 1. [Project developments](project_developments.md)
-2. [Development process](development.md)
-3. [Tools](tools.md)
-4. [Repository structure](repository.md)
-5. [Release process](release.md)
-6. [Known Issues](known_issues.md)
+2. [Development process](developmentProcess.md)
+3. [Development guidelines](developmentGuidelines.md)
+4. [Tools](tools.md)
+5. [Repository structure](repository.md)
+6. [Release process](release.md)
+7. [Known Issues](known_issues.md)
 
