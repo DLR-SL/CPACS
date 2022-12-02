@@ -1,0 +1,24 @@
+name: run_examples_validation.yml
+on: [push]
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v3
+      with:
+        python-version: 3.9
+    - name: Add conda to system path
+      run: |
+        # $CONDA is an environment variable pointing to the root of the miniconda directory
+        echo $CONDA/bin >> $GITHUB_PATH
+    - name: Install tixi
+      run: |
+        conda install lxml tixi3 -c dlr-sc
+    - name: Test with pytest
+      run: |
+        conda install pytest
+        pwd
+        pytest -q ./scripts/tests/
