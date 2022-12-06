@@ -18,9 +18,9 @@
             <model uID="exampleAircraft">
                 <name>Example aircraft</name>
                 <engines>
-                    <engine uID="installedEngine1">
+                    <engine uID="eng1_inst">
                         <name>Engine left</name>
-                        <engineUID>predefinedEngine</engineUID>
+                        <engineUID>engine</engineUID>
                         <parentUID>exampleAircraft</parentUID>
                         <transformation>
                             <translation>
@@ -28,9 +28,9 @@
                             </translation>
                         </transformation>
                     </engine>
-                    <engine uID="installedEngine2">
+                    <engine uID="eng2_inst">
                         <name>Engine right</name>
-                        <engineUID>predefinedEngine</engineUID>
+                        <engineUID>engine</engineUID>
                         <parentUID>exampleAircraft</parentUID>
                         <transformation>
                             <translation>
@@ -43,41 +43,282 @@
                     <genericSystems>
                         <genericSystem uID="eDrive">
                             <name>e-Drive</name>
-                            <transformation></transformation>
                             <components>
                                 <component uID="installedEMotor">
                                     <name>Intalled eMotor</name>
-                                    <systemElementUID>predefinedEMotor</systemElementUID>
-                                    <transformation></transformation>
+                                    <systemElementUID>eMotor</systemElementUID>
                                 </component>
                             </components>
                         </genericSystem>
                         <genericSystem uID="mySystem">
                             <name>Example system</name>
-                            <transformation></transformation>
                             <components>
-                                <component uID="intalledHeatExchanger">
-                                    <name>Installed heat exchanger</name>
-                                    <systemElementUID>predefinedHeatExchanger</systemElementUID>
-                                    <transformation></transformation>
+                                <component uID="hx1_inst">
+                                    <name>heatExchanger1</name>
+                                    <description>heatExchangerSystem1</description>
+                                    <systemElementUID>hx</systemElementUID>
+                                </component>
+                                <component uID="hx2_inst">
+                                    <name>heatExchanger2</name>
+                                    <description>heatExchangerSystem2</description>
+                                    <systemElementUID>hx</systemElementUID>
+                                </component>
+                                <component uID="hxGS_inst">
+                                    <name>heatExchangerGS</name>
+                                    <description>heatExchangerSystemGS</description>
+                                    <systemElementUID>hx</systemElementUID>
+                                </component>
+                                <component uID="gb1_inst">
+                                    <name>gearbox1_inst</name>
+                                    <description>gearboxSystem1</description>
+                                    <systemElementUID>gearbox</systemElementUID>
+                                </component>
+                                <component uID="motor1a_inst">
+                                    <name>motor1a_inst</name>
+                                    <description>motorSystem1a</description>
+                                    <systemElementUID>eMotor</systemElementUID>
+                                </component>
+                                <component uID="motor1b_inst">
+                                    <name>motor1b_inst</name>
+                                    <description>motorSystem1b</description>
+                                    <systemElementUID>eMotor</systemElementUID>
+                                </component>
+                                <component uID="gb2_inst">
+                                    <name>gearbox2_inst</name>
+                                    <description>gearboxSystem2</description>
+                                    <systemElementUID>gearbox</systemElementUID>
+                                </component>
+                                <component uID="motor2a_inst">
+                                    <name>motor2a_inst</name>
+                                    <description>motorSystem2a</description>
+                                    <systemElementUID>eMotor</systemElementUID>
+                                </component>
+                                <component uID="motor2b_inst">
+                                    <name>motor2b_inst</name>
+                                    <description>motorSystem2b</description>
+                                    <systemElementUID>eMotor</systemElementUID>
+                                </component>
+                                <component uID="generator_inst">
+                                    <name>generator_inst</name>
+                                    <description>generator</description>
+                                    <systemElementUID>generator</systemElementUID>
+                                </component>
+                                <component uID="gasturbine_inst">
+                                    <name>gasturbine_inst</name>
+                                    <description>gasturbine</description>
+                                    <systemElementUID>gasTurbine</systemElementUID>
                                 </component>
                             </components>
                         </genericSystem>
                     </genericSystems>
                 </systems>
                 <systemArchitectures>
+                    <systemArchitecture uID="fuelSystemArch">
+                        <name>Fuel system</name>
+                        <systemType>fuelSystem</systemType>
+                    </systemArchitecture>
                     <systemArchitecture>
-                        <name>Propeller - eMotor connection</name>
-                        <description>Useless system to demonstrate usage of sub-components</description>
+                        <name>Example system</name>
+                        <description>Example system with five components: propeller, gearbox, motor, generator and gas turbine</description>
                         <systemType>generic</systemType>
                         <connections>
-                            <connection uID="propEMotConnection">
+                            <connection uID="motor1a_to_gb1">
+                                <name>motor1a_to_gb1</name>
                                 <source>
-                                    <componentUID>installedEngine1</componentUID>
-                                    <subComponentUID>installedPropeller</subComponentUID>
+                                    <componentUID>motor1a_inst</componentUID>
                                 </source>
                                 <target>
-                                    <componentUID>installedEMotor</componentUID>
+                                    <componentUID>gb1_inst</componentUID>
+                                </target>
+                            </connection>
+                            <connection uID="motor1b_to_gb1">
+                                <name>motor1b_to_gb1</name>
+                                <source>
+                                    <componentUID>motor1b_inst</componentUID>
+                                </source>
+                                <target>
+                                    <componentUID>gb1_inst</componentUID>
+                                </target>
+                            </connection>
+                            <connection uID="motor1a_to_hx1">
+                                <name>motor1a_to_hx1</name>
+                                <source>
+                                    <componentUID>motor1a_inst</componentUID>
+                                </source>
+                                <target>
+                                    <componentUID>hx1_inst</componentUID>
+                                </target>
+                            </connection>
+                            <connection uID="motor1b_to_hx1">
+                                <name>motor1b_to_hx1</name>
+                                <source>
+                                    <componentUID>motor1b_inst</componentUID>
+                                </source>
+                                <target>
+                                    <componentUID>hx1_inst</componentUID>
+                                </target>
+                            </connection>
+                            <connection uID="gb1_to_hx1">
+                                <name>gb1_to_hx1</name>
+                                <source>
+                                    <componentUID>gb1_inst</componentUID>
+                                </source>
+                                <target>
+                                    <componentUID>hx1_inst</componentUID>
+                                </target>
+                            </connection>
+                            <connection uID="generator_to_motor1a">
+                                <name>generator_to_motor1a</name>
+                                <source>
+                                    <componentUID>generator_inst</componentUID>
+                                </source>
+                                <target>
+                                    <componentUID>motor1a_inst</componentUID>
+                                </target>
+                            </connection>
+                            <connection uID="generator_to_motor1b">
+                                <name>generator_to_motor1b</name>
+                                <source>
+                                    <componentUID>generator_inst</componentUID>
+                                </source>
+                                <target>
+                                    <componentUID>motor1b_inst</componentUID>
+                                </target>
+                            </connection>
+                            <connection uID="gasturbine_to_generator">
+                                <name>gasturbine_to_generator</name>
+                                <source>
+                                    <componentUID>gasturbine_inst</componentUID>
+                                </source>
+                                <target>
+                                    <componentUID>generator_inst</componentUID>
+                                </target>
+                            </connection>
+                            <connection uID="gasturbine_to_hxGS">
+                                <name>gasturbine_to_hxGS</name>
+                                <source>
+                                    <componentUID>gasturbine_inst</componentUID>
+                                </source>
+                                <target>
+                                    <componentUID>hxGS_inst</componentUID>
+                                </target>
+                            </connection>
+                            <connection uID="gb2_to_prop2">
+                                <name>gb2_to_prop2</name>
+                                <source>
+                                    <componentUID>gb2_inst</componentUID>
+                                </source>
+                                <target>
+                                    <componentUID>eng2_inst</componentUID>
+                                    <subComponentUID>prop_inst</subComponentUID>
+                                </target>
+                            </connection>
+                            <connection uID="motor2a_to_gb2">
+                                <name>motor2a_to_gb2</name>
+                                <source>
+                                    <componentUID>motor2a_inst</componentUID>
+                                </source>
+                                <target>
+                                    <componentUID>gb2_inst</componentUID>
+                                </target>
+                            </connection>
+                            <connection uID="motor2b_to_gb2">
+                                <name>motor2b_to_gb2</name>
+                                <source>
+                                    <componentUID>motor2b_inst</componentUID>
+                                </source>
+                                <target>
+                                    <componentUID>gb2_inst</componentUID>
+                                </target>
+                            </connection>
+                            <connection uID="motor2a_to_hx2">
+                                <name>motor2a_to_hx2</name>
+                                <source>
+                                    <componentUID>motor2a_inst</componentUID>
+                                </source>
+                                <target>
+                                    <componentUID>hx2_inst</componentUID>
+                                </target>
+                            </connection>
+                            <connection uID="motor2b_to_hx2">
+                                <name>motor2b_to_hx2</name>
+                                <source>
+                                    <componentUID>motor2b_inst</componentUID>
+                                </source>
+                                <target>
+                                    <componentUID>hx2_inst</componentUID>
+                                </target>
+                            </connection>
+                            <connection uID="gb2_to_hx2">
+                                <name>gb2_to_hx2</name>
+                                <source>
+                                    <componentUID>gb2_inst</componentUID>
+                                </source>
+                                <target>
+                                    <componentUID>hx2_inst</componentUID>
+                                </target>
+                            </connection>
+                            <connection uID="generator_to_motor2a">
+                                <name>generator_to_motor2a</name>
+                                <source>
+                                    <componentUID>generator_inst</componentUID>
+                                </source>
+                                <target>
+                                    <componentUID>motor2a_inst</componentUID>
+                                </target>
+                            </connection>
+                            <connection uID="generator_to_motor2b">
+                                <name>generator_to_motor2b</name>
+                                <source>
+                                    <componentUID>generator_inst</componentUID>
+                                </source>
+                                <target>
+                                    <componentUID>motor2b_inst</componentUID>
+                                </target>
+                            </connection>
+                            <connection uID="generator_to_hxGS">
+                                <name>generator_to_hxGS</name>
+                                <source>
+                                    <componentUID>generator_inst</componentUID>
+                                </source>
+                                <target>
+                                    <componentUID>hxGS_inst</componentUID>
+                                </target>
+                            </connection>
+                            <connection uID="fuelSystem_to_gasturbine">
+                                <name>fuelSystem_to_gasturbine</name>
+                                <source>
+                                    <ataChapter>ata28</ataChapter>
+                                </source>
+                                <target>
+                                    <componentUID>gasturbine_inst</componentUID>
+                                </target>
+                            </connection>
+                            <connection uID="hxGS_to_ambient">
+                                <name>hxGS_to_ambient</name>
+                                <source>
+                                    <componentUID>hxGS_inst</componentUID>
+                                </source>
+                                <target>
+                                    <nonModeledComponent>ambient</nonModeledComponent>
+                                </target>
+                            </connection>
+                            <connection uID="hx1_to_ambient">
+                                <name>hxGS_to_ambient</name>
+                                <source>
+                                    <componentUID>hx1_inst</componentUID>
+                                </source>
+                                <target>
+                                    <nonModeledComponent>ambient</nonModeledComponent>
+                                </target>
+                            </connection>
+                            <connection uID="hx2_to_ambient">
+                                <name>hx2_to_ambient</name>
+                                <source>
+                                    <componentUID>hx2_inst</componentUID>
+                                </source>
+                                <target>
+                                    <nonModeledComponent>ambient</nonModeledComponent>
                                 </target>
                             </connection>
                         </connections>
@@ -86,9 +327,9 @@
             </model>
         </aircraft>
         <engines>
-            <engine uID="predefinedEngine">
+            <engine uID="engine">
                 <name>Engine</name>
-                <propeller uID="installedPropeller">
+                <propeller uID="prop_inst">
                     <rotorUID>Propeller</rotorUID>
                     <transformation>
                         <scaling>
@@ -113,17 +354,35 @@
         </engines>
         <systemElements>
             <electricMotors>
-                <electricMotor uID="predefinedEMotor">
+                <electricMotor uID="eMotor">
                     <name>E-Motor</name>
-                    <geometricBaseType>cube</geometricBaseType>
+                    <geometricBaseType>cylinder</geometricBaseType>
                 </electricMotor>
             </electricMotors>
             <heatExchangers>
-                <heatExchanger uID="predefinedHeatExchanger">
+                <heatExchanger uID="hx">
                     <name>Heat exchanger</name>
                     <geometricBaseType>cube</geometricBaseType>
                 </heatExchanger>
-            </heatExchangers>  
+            </heatExchangers>
+            <gearBoxes>
+                <gearBox uID="gearbox">
+                    <name>Gear box</name>
+                    <geometricBaseType>cylinder</geometricBaseType>
+                </gearBox>
+            </gearBoxes>
+            <gasTurbines>
+                <gasTurbine uID="gasTurbine">
+                    <name>GasTurbine</name>
+                    <geometricBaseType>cylinder</geometricBaseType>
+                </gasTurbine>
+            </gasTurbines>
+            <generators>
+                <generator uID="generator">
+                    <name>Generator</name>
+                    <geometricBaseType>cylinder</geometricBaseType>
+                </generator>
+            </generators>
         </systemElements>
         <rotorElements>
             <rotorBlades>

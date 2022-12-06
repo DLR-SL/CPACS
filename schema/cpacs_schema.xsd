@@ -6449,7 +6449,8 @@ cpacs@dlr.de
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="transformation" type="transformationType"/>
+                    <xsd:element name="parentUID" minOccurs="0" type="stringUIDBaseType"/>
+                    <xsd:element name="transformation" minOccurs="0" type="transformationExplicitType"/>
                 </xsd:all>
                 <xsd:attribute name="uID" use="required" type="xsd:ID"/>
             </xsd:extension>
@@ -6643,6 +6644,11 @@ cpacs@dlr.de
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
+                    <xsd:element name="name" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Name</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                     <xsd:element name="description" minOccurs="0" type="stringBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Description</xsd:documentation>
@@ -16032,6 +16038,41 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
+    <xsd:complexType name="generatorsType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Generators</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="generator" maxOccurs="unbounded" type="generatorType"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="generatorType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Generator</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="sysElemsBaseType">
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
     <xsd:complexType name="genericComponentsType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -16495,7 +16536,6 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             <xsd:documentation>Description of the system component.</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="transformation" type="transformationType"/>
                     <xsd:element name="components" type="componentsType"/>
                 </xsd:all>
                 <xsd:attribute name="uID" use="required" type="xsd:ID"/>
@@ -33328,16 +33368,18 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             <xsd:complexType>
                             <xsd:simpleContent>
                                 <xsd:restriction base="stringBaseType">
-                                    <xsd:enumeration value="environmentalControlSystem"/>
                                     <xsd:enumeration value="electricSystem"/>
-                                    <xsd:enumeration value="thermalManagementSystems"/>
+                                    <xsd:enumeration value="environmentalControlSystem"/>
+                                    <xsd:enumeration value="fuelSystem"/>
                                     <xsd:enumeration value="generic"/>
+                                    <xsd:enumeration value="thermalManagementSystems"/>
                                 </xsd:restriction>
                             </xsd:simpleContent>
                         </xsd:complexType>
                     </xsd:element>
-                    <xsd:element name="connections" type="connectionsType"/>
+                    <xsd:element name="connections" minOccurs="0" type="connectionsType"/>
                 </xsd:all>
+                <xsd:attribute name="uID" type="xsd:ID"/>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -33361,6 +33403,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:element name="batteries" minOccurs="0" type="batteriesType"/>
                     <xsd:element name="gasTurbines" minOccurs="0" type="gasTurbinesType"/>
                     <xsd:element name="gearBoxes" minOccurs="0" type="gearBoxesType"/>
+                    <xsd:element name="generators" minOccurs="0" type="generatorsType"/>
                     <xsd:element name="genericComponents" minOccurs="0" type="genericComponentsType"/>
                 </xsd:all>
             </xsd:extension>
@@ -34341,6 +34384,84 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
+                <xsd:attribute name="uID" type="xsd:ID"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="transformationExplicitType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Transformation</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>Transformation type, containing a set of
+                            transformations. The order of the transformations is scaling
+                            -&gt; rotation -&gt; translation, and they are executed in this
+                            order. Any of them can be omitted; it will be replaced by its
+                            defaults.</ddue:para>
+                        <ddue:para>Transformations are always executed relative to the
+                            child not the parent. I.e. a scaling does not have an influence
+                            on the parent item. For example in the outer geometry of a wing
+                            the element scaling does not influence the section. Scaling does
+                            also not effect rotation and translation.</ddue:para>
+                        <ddue:para>Scaling data default: 1,1,1. Those parameters
+                                describe the scaling of the x-, y-, and z-axis.</ddue:para>
+                        <ddue:para>Rotation data default: 0,0,0. The rotation
+                                angles are the three Euler angles to describe the orientation of
+                                the coordinate system. The order is always xyz in CPACS.
+                                Therefore the first rotation is around the x-axis, the second
+                                rotation is around the rotated y-axis (y') and the third
+                                rotation is around the two times rotated z-axis (z'').</ddue:para>
+                        <ddue:para>Translation data default: 0,0,0. Translations
+                                can either be made absolute in the global coordinate system
+                                (absGlobal) or absolute in the local Coordinate system (absLocal).</ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:choice>
+                    <xsd:sequence>
+                        <xsd:element name="scaling" type="pointType">
+                            <xsd:annotation>
+                                <xsd:documentation>Scaling</xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element name="rotation" minOccurs="0" type="pointType">
+                            <xsd:annotation>
+                                <xsd:documentation>Rotation</xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element name="translation" minOccurs="0" type="pointAbsRelType">
+                            <xsd:annotation>
+                                <xsd:documentation>Translation</xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                    </xsd:sequence>
+                    <xsd:sequence>
+                        <xsd:element name="rotation" type="pointType">
+                            <xsd:annotation>
+                                <xsd:documentation>Rotation</xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element name="translation" minOccurs="0" type="pointAbsRelType">
+                            <xsd:annotation>
+                                <xsd:documentation>Translation</xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                    </xsd:sequence>
+                    <xsd:sequence>
+                        <xsd:element name="translation" type="pointAbsRelType">
+                            <xsd:annotation>
+                                <xsd:documentation>Translation</xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:choice>
                 <xsd:attribute name="uID" type="xsd:ID"/>
             </xsd:extension>
         </xsd:complexContent>
