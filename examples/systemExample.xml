@@ -213,6 +213,16 @@
                                     <subComponentUID>prop_inst</subComponentUID>
                                 </target>
                             </connection>
+                            <connection uID="gb1_to_prop1">
+                                <name>gb1_to_prop1</name>
+                                <source>
+                                    <componentUID>gb1_inst</componentUID>
+                                </source>
+                                <target>
+                                    <componentUID>eng1_inst</componentUID>
+                                    <subComponentUID>prop_inst</subComponentUID>
+                                </target>
+                            </connection>
                             <connection uID="motor2a_to_gb2">
                                 <name>motor2a_to_gb2</name>
                                 <source>
@@ -324,6 +334,135 @@
                         </connections>
                     </systemArchitecture>
                 </systemArchitectures>
+                <analyses>
+                    <systemAnalyses>
+                        <powerBreakdowns>
+                            <powerBreakdownCases>
+                                <powerBreakdownCase>
+                                    <name>example</name>
+                                    <description>example power breakdown with 5 systems: propeller, gearbox, motor, generator and gas turbine</description>
+                                    <specification>
+                                        <environment>
+                                            <atmosphericModel>ISA</atmosphericModel>
+                                        </environment>
+                                        <altitude>0.</altitude>
+                                        <machNumber>0.</machNumber>
+                                    </specification>
+                                    <powerBreakdownData>
+                                        <powerFlow>
+                                            <name>gb1_to_prop1</name>
+                                            <connectionUID>gb1_to_prop1</connectionUID>
+                                            <!-- powerValue>6517047.11</powerValue>
+                                            <torque>73907.3</torque -->
+                                            <mechanicalPower>
+                                                <mechanicalPowerValue>6517047.11</mechanicalPowerValue>
+                                                <torque>73907.3</torque>
+                                            </mechanicalPower>
+                                        </powerFlow>
+                                        <powerFlow>
+                                            <name>motor1a_to_gb1</name>
+                                            <connectionUID>motor1a_to_gb1</connectionUID>
+                                            <mechanicalPower>
+                                                <mechanicalPowerValue>3392881.67</mechanicalPowerValue>
+                                                <torque>3847.7</torque>
+                                            </mechanicalPower>
+                                        </powerFlow>
+                                        <powerFlow>
+                                            <name>motor1b_to_gb1</name>
+                                            <connectionUID>motor1b_to_gb1</connectionUID>
+                                            <mechanicalPower>
+                                                <mechanicalPowerValue>3392881.67</mechanicalPowerValue>
+                                                <torque>3847.7</torque>
+                                            </mechanicalPower>
+                                        </powerFlow>
+                                        <powerFlow>
+                                            <name>motor1a_to_hx1</name>
+                                            <connectionUID>motor1a_to_hx1</connectionUID>
+                                            <heatFlow>
+                                                <heatFlowValue>67857.6</heatFlowValue>
+                                            </heatFlow>
+                                        </powerFlow>
+                                        <powerFlow>
+                                            <name>motor1b_to_hx1</name>
+                                            <connectionUID>motor1b_to_hx1</connectionUID>
+                                            <heatFlow>
+                                                <heatFlowValue>67857.6</heatFlowValue>
+                                            </heatFlow>
+                                        </powerFlow>
+                                        <powerFlow>
+                                            <name>gb1_to_hx1</name>
+                                            <connectionUID>gb1_to_hx1</connectionUID>
+                                            <heatFlow>
+                                                <heatFlowValue>133000.9</heatFlowValue>
+                                            </heatFlow>
+                                        </powerFlow>
+                                        <powerFlow>
+                                            <name>generator_to_motor1a</name>
+                                            <connectionUID>generator_to_motor1a</connectionUID>
+                                            <electricPower>
+                                                <electricPowerValue>3462124.15</electricPowerValue>
+                                            </electricPower>
+                                        </powerFlow>
+                                        <powerFlow>
+                                            <name>generator_to_motor1b</name>
+                                            <connectionUID>generator_to_motor1b</connectionUID>
+                                            <electricPower>
+                                                <electricPowerValue>3462124.15</electricPowerValue>
+                                            </electricPower>
+                                        </powerFlow>
+                                        <powerFlow>
+                                            <name>gasturbine_to_generator</name>
+                                            <connectionUID>gasturbine_to_generator</connectionUID>
+                                            <mechanicalPower>
+                                                <mechanicalPowerValue>13848496.61</mechanicalPowerValue>
+                                                <torque>13223.65</torque>
+                                            </mechanicalPower>
+                                        </powerFlow>
+                                        <powerFlow>
+                                            <name>gasturbine_to_hxGS</name>
+                                            <connectionUID>gasturbine_to_hxGS</connectionUID>
+                                            <heatFlow>
+                                                <heatFlowValue>307744.36</heatFlowValue>
+                                            </heatFlow>
+                                        </powerFlow>
+                                        <powerFlow>
+                                            <name>generator_to_hxGS</name>
+                                            <connectionUID>generator_to_hxGS</connectionUID>
+                                            <heatFlow>
+                                                <heatFlowValue>276969.932</heatFlowValue>
+                                            </heatFlow>
+                                        </powerFlow>
+                                        <!-- TODO: Modify massFlow? (only combustion considered: enthalpy = lower heating value)
+                                        <powerFlow>
+                                            <name>fuelSystem_to_gasturbine</name>
+                                            <connectionUID>fuelSystem_to_gasturbine</connectionUID>
+                                            <massFlow>
+                                                <massFlowValue>0.715684</massFlowValue>
+                                                <enthalpy>43000000</enthalpy>
+                                            </massFlow>
+                                        </powerFlow>
+                                         -->
+                                        <!-- how to deal with heat dump to ambient? -->
+                                        <powerFlow>
+                                            <name>hxGS_to_ambient</name>
+                                            <connectionUID>hxGS_to_ambient</connectionUID>
+                                            <heatFlow>
+                                                <heatFlowValue>584714.301</heatFlowValue>
+                                            </heatFlow>
+                                        </powerFlow>
+                                        <powerFlow>
+                                            <name>hx1_to_ambient</name>
+                                            <connectionUID>hx1_to_ambient</connectionUID>
+                                            <heatFlow>
+                                                <heatFlowValue>268716.22</heatFlowValue>
+                                            </heatFlow>
+                                        </powerFlow>
+                                    </powerBreakdownData>
+                                </powerBreakdownCase>
+                            </powerBreakdownCases>
+                        </powerBreakdowns>
+                    </systemAnalyses>
+                </analyses>
             </model>
         </aircraft>
         <engines>
