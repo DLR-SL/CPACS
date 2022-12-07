@@ -1040,6 +1040,22 @@ cpacs@dlr.de
         </xsd:all>
     </xsd:complexType>
 
+<xsd:simpleType name="abstractComponentType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>ambient | passengers</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="ambient"/>
+            <xsd:enumeration value="passengers"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
     <xsd:complexType name="actuatorAttachmentType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -3668,6 +3684,11 @@ cpacs@dlr.de
             <xsd:enumeration value="ata44">
                 <xsd:annotation>
                     <xsd:documentation>Cabin system</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="ata50">
+                <xsd:annotation>
+                    <xsd:documentation>Cargo and accessory compartment</xsd:documentation>
                 </xsd:annotation>
             </xsd:enumeration>
             <xsd:enumeration value="ata50">
@@ -17479,6 +17500,25 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
+<xsd:simpleType name="individualSystemCategoriesType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Individual system categories</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="generic">
+                <xsd:annotation>
+                    <xsd:documentation>Generic</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+        </xsd:restriction>
+    </xsd:simpleType>
+
     <xsd:complexType name="integerBaseType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -25310,22 +25350,6 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
-<xsd:simpleType name="nonModeledComponentType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>ambient | passengers</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:restriction base="xsd:string">
-            <xsd:enumeration value="ambient"/>
-            <xsd:enumeration value="passengers"/>
-        </xsd:restriction>
-    </xsd:simpleType>
-
     <xsd:complexType name="noseGearsType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -31409,7 +31433,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             </xsd:annotation>
                         </xsd:element>
                     </xsd:sequence>
-                    <xsd:element name="nonModeledComponent" type="nonModeledComponentType"/>
+                    <xsd:element name="abstractComponent" type="abstractComponentType"/>
                     <xsd:element name="ataChapter" type="ataChapterListType">
                         <xsd:annotation>
                             <xsd:documentation>
@@ -33361,21 +33385,10 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             <xsd:documentation>Description</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="systemType">
+                    <xsd:element name="systemType" type="systemTypeType">
                         <xsd:annotation>
-                            <xsd:documentation>environmentalControlSystem | electricSystem | thermalManagementSystems | generic</xsd:documentation>
+                            <xsd:documentation>ATA Chapter | generic</xsd:documentation>
                         </xsd:annotation>
-                            <xsd:complexType>
-                            <xsd:simpleContent>
-                                <xsd:restriction base="stringBaseType">
-                                    <xsd:enumeration value="electricSystem"/>
-                                    <xsd:enumeration value="environmentalControlSystem"/>
-                                    <xsd:enumeration value="fuelSystem"/>
-                                    <xsd:enumeration value="generic"/>
-                                    <xsd:enumeration value="thermalManagementSystems"/>
-                                </xsd:restriction>
-                            </xsd:simpleContent>
-                        </xsd:complexType>
                     </xsd:element>
                     <xsd:element name="connections" minOccurs="0" type="connectionsType"/>
                 </xsd:all>
@@ -33470,6 +33483,10 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
+
+<xsd:simpleType name="systemTypeType">
+        <xsd:union memberTypes="individualSystemCategoriesType ataChapterListType"/>
+    </xsd:simpleType>
 
     <xsd:complexType name="tailplaneAttachmentAreaType">
         <xsd:annotation>

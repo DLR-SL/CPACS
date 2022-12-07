@@ -4,6 +4,7 @@ import os
 import shutil
 import sys
 import time
+import itertools
 
 from lxml.etree import XMLParser, indent, parse, register_namespace, tostring
 
@@ -161,6 +162,7 @@ class CPACSXSDSyntaxCleaner(object):
         types_used = set(
             [el.attrib["type"] for el in list(root.iter()) if "type" in el.keys()]
             + [el.attrib["base"] for el in list(root.iter()) if "base" in el.keys()]
+            + list(itertools.chain(*[el.attrib["memberTypes"].split() for el in list(root.iter()) if "memberTypes" in el.keys()]))
         )
         return [t for t in types_exist if not t.attrib["name"] in types_used]
 
