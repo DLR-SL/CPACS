@@ -1741,30 +1741,11 @@ cpacs@dlr.de
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
                     <xsd:choice>
-                        <xsd:sequence>
-                            <xsd:element name="controlDeviceUID" type="stringUIDBaseType">
-                                <xsd:annotation>
-                                    <xsd:documentation>Reference to the uID of a control device, e.g. a control surface or a landing gear</xsd:documentation>
-                                </xsd:annotation>
-                            </xsd:element>
-                            <xsd:element name="controlParameters" type="doubleVectorBaseType">
-                                <xsd:annotation>
-                                    <xsd:documentation>Value of the command parameters of a control distributor. If not given explicitly in the control distributor, linear interpolation between the neighboring points is required.</xsd:documentation>
-                                </xsd:annotation>
-                            </xsd:element>
-                        </xsd:sequence>
-                        <xsd:sequence>
-                            <xsd:element name="controlDistributorUID" type="stringUIDBaseType">
-                                <xsd:annotation>
-                                    <xsd:documentation>Reference to a control distributor uID</xsd:documentation>
-                                </xsd:annotation>
-                            </xsd:element>
-                            <xsd:element name="commandInputs" type="doubleVectorBaseType">
-                                <xsd:annotation>
-                                    <xsd:documentation>Command inputs of a control distributor given as vector. If not given explicitly in the control distributor, linear interpolation between the neighboring points is required.</xsd:documentation>
-                                </xsd:annotation>
-                            </xsd:element>
-                        </xsd:sequence>
+                        <xsd:element name="configurationDefinitionUID" type="stringUIDBaseType">
+                            <xsd:annotation>
+                                <xsd:documentation>Configuration uID</xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
                         <xsd:element name="aeroPerformanceIncrementMapUID" type="stringUIDBaseType">
                             <xsd:annotation>
                                 <xsd:documentation>Reference to an increment map of the aeroPerformanceMap</xsd:documentation>
@@ -1944,9 +1925,7 @@ cpacs@dlr.de
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element name="atmosphericModel" type="atmosphericModelType">
-
-                    </xsd:element>
+                    <xsd:element name="atmosphericModel" type="atmosphericModelType"/>
                     <xsd:element name="deltaTemperature" minOccurs="0" type="doubleBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
@@ -1958,7 +1937,7 @@ cpacs@dlr.de
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="configuration" minOccurs="0" type="configurationType">
+                    <xsd:element name="configurationDefinitionUID" minOccurs="0" type="stringUIDBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
                                 Configuration settings
@@ -2007,33 +1986,12 @@ cpacs@dlr.de
         </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:choice>
-                        <xsd:sequence>
-                            <xsd:element name="controlDeviceUID" type="stringUIDBaseType">
-                                <xsd:annotation>
-                                    <xsd:documentation>Reference to the uID of a control device, e.g. a control surface or a landing gear</xsd:documentation>
-                                </xsd:annotation>
-                            </xsd:element>
-                            <xsd:element name="controlParameters" type="doubleVectorBaseType">
-                                <xsd:annotation>
-                                    <xsd:documentation>Value of the command parameters of a control distributor. If not given explicitly in the control distributor, linear interpolation between the neighboring points is required.</xsd:documentation>
-                                </xsd:annotation>
-                            </xsd:element>
-                        </xsd:sequence>
-                        <xsd:sequence>
-                            <xsd:element name="controlDistributorUID" type="stringUIDBaseType">
-                                <xsd:annotation>
-                                    <xsd:documentation>Reference to a control distributor uID</xsd:documentation>
-                                </xsd:annotation>
-                            </xsd:element>
-                            <xsd:element name="commandInputs" type="doubleVectorBaseType">
-                                <xsd:annotation>
-                                    <xsd:documentation>Command inputs of a control distributor given as vector. If not given explicitly in the control distributor, linear interpolation between the neighboring points is required.</xsd:documentation>
-                                </xsd:annotation>
-                            </xsd:element>
-                        </xsd:sequence>
-                    </xsd:choice>
+                <xsd:all>
+                    <xsd:element name="configurationUIDs" type="uIDSequenceType">
+                        <xsd:annotation>
+                            <xsd:documentation>UIDs of configurations or its variations</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                     <xsd:element name="dcd" minOccurs="0" type="doubleArrayBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Increment of drag coefficient in aerodynamic coordinates</xsd:documentation>
@@ -2064,7 +2022,7 @@ cpacs@dlr.de
                             <xsd:documentation>Increment of cml</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                </xsd:sequence>
+                </xsd:all>
                 <xsd:attribute name="uID" type="xsd:ID"/>
             </xsd:extension>
         </xsd:complexContent>
@@ -6630,62 +6588,6 @@ cpacs@dlr.de
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="configurationalChangesType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Configurational changes</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element name="configurationalChange" maxOccurs="unbounded" type="configurationalChangeType"/>
-                </xsd:sequence>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="configurationalChangeType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Configurational change</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="name" type="stringBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                Name
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="description" minOccurs="0" type="stringBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                Description
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="payloadChanges" minOccurs="0" type="xsd:string"/>
-                    <xsd:element name="modelChanges" minOccurs="0" type="xsd:string"/>
-                    <xsd:element name="energyChanges" minOccurs="0" type="xsd:string"/>
-                    <xsd:element name="systemsChanges" minOccurs="0" type="xsd:string"/>
-                </xsd:all>
-                <xsd:attribute name="uID" use="required" type="xsd:ID"/>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
     <xsd:complexType name="configurationDefinitionsType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -6724,7 +6626,7 @@ cpacs@dlr.de
             <xsd:extension base="complexBaseType">
                 <xsd:all>
                     <xsd:element name="baseConfiguration" type="baseConfigurationType"/>
-                    <xsd:element name="configurationalChanges" minOccurs="0" type="configurationalChangesType"/>
+                    <xsd:element name="variations" minOccurs="0" type="variationsType"/>
                 </xsd:all>
                 <xsd:attribute name="uID" use="required" type="xsd:ID"/>
             </xsd:extension>
@@ -32412,21 +32314,28 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:element name="storageComponentUIDs" type="uIDSequenceType"/>
                     <xsd:element name="chemicalEnergyCarrierUID" type="stringUIDBaseType"/>
                     <xsd:sequence minOccurs="0">
-                        <xsd:element name="storageCapacity" type="doubleBaseType">
+                        <xsd:element name="fillFactor">
                             <xsd:annotation>
-                                <xsd:documentation>Maximum storage capacity [l]
-                                </xsd:documentation>
-                            </xsd:annotation>
-                        </xsd:element>
-                        <xsd:element name="storageLevel" minOccurs="0">
-                            <xsd:annotation>
-                                <xsd:documentation>Storage level wrt. storage capacity
+                                <xsd:documentation>Fill factor
                                 </xsd:documentation>
                             </xsd:annotation>
                             <xsd:simpleType>
                                 <xsd:restriction base="xsd:double">
                                     <xsd:minInclusive value="0"/>
                                     <xsd:maxInclusive value="1"/>
+                                </xsd:restriction>
+                            </xsd:simpleType>
+                        </xsd:element>
+                        <xsd:element name="reference">
+                            <xsd:annotation>
+                                <xsd:documentation>Fill factor reference (optimalVolume | usableVolume | realVolume)
+                                </xsd:documentation>
+                            </xsd:annotation>
+                            <xsd:simpleType>
+                                <xsd:restriction base="xsd:string">
+                                    <xsd:enumeration value="optimalVolume"/>
+                                    <xsd:enumeration value="usableVolume"/>
+                                    <xsd:enumeration value="realVolume"/>
                                 </xsd:restriction>
                             </xsd:simpleType>
                         </xsd:element>
@@ -35285,6 +35194,73 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
+    <xsd:complexType name="variationsType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Variations</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="variation" maxOccurs="unbounded" type="variationType"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="variationType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Variation</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="name" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Name
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="description" minOccurs="0" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Description
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:choice>
+                        <xsd:sequence>
+                            <xsd:element name="payloadConfiguration" minOccurs="0" type="payloadConfigurationType"/>
+                            <xsd:element name="modelConfiguration" minOccurs="0" type="modelConfigurationType"/>
+                            <xsd:element name="energyConfiguration" minOccurs="0" type="energyConfigurationType"/>
+                            <xsd:element name="systemsConfiguration" minOccurs="0" type="systemsConfigurationType"/>
+                        </xsd:sequence>
+                        <xsd:element name="combinedVariationUIDs" minOccurs="0" type="uIDSequenceType">
+                            <xsd:annotation>
+                                <xsd:documentation>
+                                    UID of a configurations to include
+                                </xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                    </xsd:choice>
+                </xsd:sequence>
+                <xsd:attribute name="uID" use="required" type="xsd:ID"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
     <xsd:complexType name="vehiclesType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -38029,21 +38005,37 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     </xsd:element>
                     <xsd:element name="elements" type="wingWingAttachmentElementsType"/>
                     <xsd:element name="sparAttachments" type="wingWingAttachmentsSparsType"/>
-                    <xsd:element name="upperShellAttachment" type="stringUIDBaseType">
+                    <xsd:element name="upperShellAttachment">
                         <xsd:annotation>
                             <xsd:documentation>Defines if the upper shell of the current
                                 componentSegment is structurally connected to the upper or lower
                                 shell of the second componentSegment. Can have the values
                                 'upperShell' or 'lowerShell'.</xsd:documentation>
                         </xsd:annotation>
+                            <xsd:complexType>
+                            <xsd:simpleContent>
+                                <xsd:restriction base="stringBaseType">
+                                    <xsd:enumeration value="upperShell"/>
+                                    <xsd:enumeration value="lowerShell"/>
+                                </xsd:restriction>
+                            </xsd:simpleContent>
+                        </xsd:complexType>
                     </xsd:element>
-                    <xsd:element name="lowerShellAttachment" type="stringUIDBaseType">
+                    <xsd:element name="lowerShellAttachment">
                         <xsd:annotation>
                             <xsd:documentation>Defines if the lower shell of the current
                                 componentSegment is structurally connected to the upper or lower
                                 shell of the second componentSegment. Can have the values
                                 'upperShell' or 'lowerShell'.</xsd:documentation>
                         </xsd:annotation>
+                            <xsd:complexType>
+                            <xsd:simpleContent>
+                                <xsd:restriction base="stringBaseType">
+                                    <xsd:enumeration value="upperShell"/>
+                                    <xsd:enumeration value="lowerShell"/>
+                                </xsd:restriction>
+                            </xsd:simpleContent>
+                        </xsd:complexType>
                     </xsd:element>
                 </xsd:all>
             </xsd:extension>
