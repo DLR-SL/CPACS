@@ -6633,6 +6633,59 @@ cpacs@dlr.de
         </xsd:complexContent>
     </xsd:complexType>
 
+    <xsd:complexType name="configurationReferencesType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Configurations</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para/>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="configuration" maxOccurs="unbounded" type="configurationReferenceType"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="configurationReferenceType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Configuration</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para/>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="uID" type="stringUIDBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>UID of the configuration definition</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="vectorIndex" minOccurs="0" type="posExcl0IntBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Index of the weight and balance vectors to which the configuration applies to. [1;inf]</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
     <xsd:complexType name="configurationType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -25505,11 +25558,12 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                 <xsd:all>
                     <xsd:element name="name" minOccurs="0" type="stringBaseType"/>
                     <xsd:element name="description" minOccurs="0" type="stringBaseType"/>
+                    <xsd:element name="configurations" minOccurs="0" type="configurationReferencesType"/>
                     <xsd:element name="mass" type="stringVectorBaseType"/>
                     <xsd:element name="coG" type="pointListXYZVectorType"/>
                     <xsd:element name="massInertia" minOccurs="0" type="massInertiaVectorType"/>
                     <xsd:element name="mFuel" minOccurs="0" type="weightAndBalanceFuelType"/>
-                    <xsd:element name="mPayload" type="weightAndBalancePayloadType"/>
+                    <xsd:element name="mPayload" minOccurs="0" type="weightAndBalancePayloadType"/>
                 </xsd:all>
                 <xsd:attribute name="uID" use="required" type="xsd:ID"/>
             </xsd:extension>
@@ -35773,6 +35827,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                 <xsd:all>
                     <xsd:element name="name" minOccurs="0" type="stringBaseType"/>
                     <xsd:element name="description" minOccurs="0" type="stringBaseType"/>
+                    <xsd:element name="configurations" minOccurs="0" type="configurationReferencesType"/>
                     <xsd:element name="mass" type="stringVectorBaseType"/>
                     <xsd:element name="coG" minOccurs="0" type="pointListType"/>
                     <xsd:element name="massIntertia" minOccurs="0" type="pointListType"/>
