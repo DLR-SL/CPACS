@@ -214,8 +214,9 @@ class CPACSXSDSyntaxCleaner(object):
         # Remove trailing empty spaces:
         root_str = "".join([line.rstrip() + "\n" for line in root_str.splitlines()])
 
-        # Fix indent of complexType:
+        # Fix indent of complexType and simpleType:
         root_str = root_str.replace("<xsd:complexType", "    <xsd:complexType")
+        root_str = root_str.replace("<xsd:simpleType name=", "    <xsd:simpleType name=")
 
         # Add encoding and license information:
         cpacs_license = self.read_license_information()
