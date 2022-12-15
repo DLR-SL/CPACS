@@ -44,6 +44,6 @@ def test_xPath():
 
     # Note: a prefix is always required according to https://learn.microsoft.com/en-us/dotnet/standard/data/xml/xpath-queries-and-namespaces
     tixi_h = tixi3wrapper.Tixi3()
-    tixi_h.open('../../examples/simpleAircraft.xml')
+    tixi_h.open(os.path.join(rel_location(), '../../examples/simpleAircraft.xml'))
     tixi_h.registerNamespace('http://www.cpacs.de/cpacs_schema_v4.0.0','cp')
     assert tixi_h.getTextElement('/cp:cpacs/cp:header/cp:name/') == "Simple aircraft template"
