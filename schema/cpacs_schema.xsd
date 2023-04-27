@@ -1036,6 +1036,7 @@ cpacs@dlr.de
             <xsd:element name="flights" minOccurs="0" type="flightsType"/>
             <xsd:element name="airlines" minOccurs="0" type="airlinesType"/>
             <xsd:element name="studies" minOccurs="0" type="studiesType"/>
+            <xsd:element name="extensions" minOccurs="0" type="extensionsType"/>
             <xsd:element name="toolspecific" minOccurs="0" type="toolspecificType"/>
         </xsd:all>
     </xsd:complexType>
@@ -12410,6 +12411,50 @@ cpacs@dlr.de
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="extensionsType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>CPACS extensions</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="extension" maxOccurs="unbounded" type="extensionType"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="extensionType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>CPACS Extension</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:any>
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Wildcard for the root element of the extension namespace
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:any>
+                </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
