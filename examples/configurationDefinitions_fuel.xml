@@ -43,9 +43,9 @@
 
                 <!-- (4) Fuel configuration -->
                 <configurationDefinitions>
-                    <configurationDefinition uID="fuelConfig1">
+                    <configurationDefinition>
                         <!-- (4.1) First, define base configuration with full tanks -->
-                        <baseConfiguration>
+                        <baseConfiguration uID="fuelConfig1">
                             <name>Base configuration</name>
                             <description>All tanks fully filled</description>
                             <energyConfiguration>
@@ -66,9 +66,9 @@
                         <!-- (4.2) Define fuel state variants, which could be used for weight and balance. 
                                    Note: this just specifies different states of fill levels, not a sequence in time! Describing sequences of fuel
                                    usage is a disciplinary task and could therefore be part of a weight and balance specification node.  -->
-                        <variations>
+                        <variants>
                             <!-- (4.2.1) Update of the inner fuel tank wrt. base configuration -->
-                            <variation uID="innerTankAfterEngineStart">
+                            <variant uID="innerTankAfterEngineStart">
                                 <name>Fuel after engine start</name>
                                 <description>During engine start-up, the inner wing tank is used</description>
                                 <energyConfiguration>
@@ -83,10 +83,10 @@
                                         </storedChemicalEnergy>
                                     </storedChemicalEnergies>
                                 </energyConfiguration>
-                            </variation>
+                            </variant>
 
                             <!-- (4.2.2) Update of the center fuel tank wrt. base configuration. Thus, the innerFuelTank is still fully filled. -->
-                            <variation uID="centerTankAfterTaxi">
+                            <variant uID="centerTankAfterTaxi">
                                 <name>Fuel in center tank after taxi</name>
                                 <description>During taxi, the center fuel tank is used</description>
                                 <energyConfiguration>
@@ -101,20 +101,20 @@
                                         </storedChemicalEnergy>
                                     </storedChemicalEnergies>
                                 </energyConfiguration>
-                            </variation>
+                            </variant>
 
                             <!-- (4.2.3) If we want to explicitly define the combined state before take-off, we need to combine the upper two variants -->
-                            <variation uID="tanksAfterTaxi">
+                            <variant uID="tanksAfterTaxi">
                                 <name>Tanks after taxi</name>
                                 <description>A bit of center and inner fuel tank has been consumed</description>
-                                <combinedVariationUIDs>
+                                <combinedVariants>
                                     <uID>innerTankAfterEngineStart</uID>
                                     <uID>centerTankAfterTaxi</uID>
-                                </combinedVariationUIDs>
-                            </variation>
+                                </combinedVariants>
+                            </variant>
 
                             <!-- (4.2.4) Update of the inner tank after take-off -->
-                            <variation uID="innerTankAfterTakeOff">
+                            <variant uID="innerTankAfterTakeOff">
                                 <name>Fuel in inner tank after take-off</name>
                                 <description>During take-off, the inner fuel tank is used, as it is prohibited to use the center tanke</description>
                                 <energyConfiguration>
@@ -129,20 +129,20 @@
                                         </storedChemicalEnergy>
                                     </storedChemicalEnergies>
                                 </energyConfiguration>
-                            </variation>
+                            </variant>
 
                             <!-- (4.2.5) The combination of tanksAfterTaxi and innerTankAfterTakeOff gives the total state after take-off. 
                                          Note: The 0.99 innerTankAfterEngineStart is overwritten by 0.95 innerTankAfterTakeOff -->
-                            <variation uID="tanksAfterTakeOff">
+                            <variant uID="tanksAfterTakeOff">
                                 <name>Tanks after take-off</name>
-                                <combinedVariationUIDs>
+                                <combinedVariants>
                                     <uID>tanksAfterTaxi</uID>
                                     <uID>innerTankAfterTakeOff</uID>
-                                </combinedVariationUIDs>
-                            </variation>
+                                </combinedVariants>
+                            </variant>
 
                             <!-- (4.2.6) Definition of a state where the center tank is empty -->
-                            <variation uID="centerTankEmpty">
+                            <variant uID="centerTankEmpty">
                                 <name>Empty center tank</name>
                                 <description>During flight, the center tank is used until it is empty</description>
                                 <energyConfiguration>
@@ -157,10 +157,10 @@
                                         </storedChemicalEnergy>
                                     </storedChemicalEnergies>
                                 </energyConfiguration>
-                            </variation>
+                            </variant>
 
                             <!-- (4.2.7) Definition of a state where the inner tank is almost empty -->
-                            <variation uID="innerTankLow">
+                            <variant uID="innerTankLow">
                                 <name>Empty inner tank</name>
                                 <description>All fuel used from the inner tank</description>
                                 <energyConfiguration>
@@ -175,10 +175,10 @@
                                         </storedChemicalEnergy>
                                     </storedChemicalEnergies>
                                 </energyConfiguration>
-                            </variation>
+                            </variant>
 
                             <!-- (4.2.8) Definition of a state where the outer tank is almost empty -->
-                            <variation uID="outerTankLow">
+                            <variant uID="outerTankLow">
                                 <name>Empty inner tank</name>
                                 <description>All fuel used from the inner tank</description>
                                 <energyConfiguration>
@@ -193,24 +193,24 @@
                                         </storedChemicalEnergy>
                                     </storedChemicalEnergies>
                                 </energyConfiguration>
-                            </variation>
+                            </variant>
 
                             <!-- (4.2.8) Definition of combined state, e.g. after landing -->
-                            <variation uID="fuelAfterLanding">
+                            <variant uID="fuelAfterLanding">
                                 <name>Fuel after landing</name>
-                                <combinedVariationUIDs>
+                                <combinedVariants>
                                     <uID>centerTankEmpty</uID>
                                     <uID>innerTankLow</uID>
                                     <uID>outerTankLow</uID>
-                                </combinedVariationUIDs>
-                            </variation>
-                        </variations>
+                                </combinedVariants>
+                            </variant>
+                        </variants>
                     </configurationDefinition>
 
-                    <configurationDefinition uID="fuelConfig2">
+                    <configurationDefinition>
                         <!-- (4.3) An alternative for the upper appraoch, which avoids combinations of sub-variants (i.e., more compact), 
                             but therefore has some repetitions (e.g., if tank was not in use and thus the fillFactor remains constant)  -->
-                        <baseConfiguration>
+                        <baseConfiguration uID="fuelConfig2">
                             <name>Base configuration v2</name>
                             <description>All tanks fully filled</description>
                             <energyConfiguration>
@@ -229,8 +229,8 @@
                             </energyConfiguration>
                         </baseConfiguration>
 
-                        <variations>
-                            <variation uID="innerTankAfterEngineStart_v2">
+                        <variants>
+                            <variant uID="innerTankAfterEngineStart_v2">
                                 <name>Fuel after engine start</name>
                                 <description>During engine start-up, the inner wing tank is used</description>
                                 <energyConfiguration>
@@ -245,9 +245,9 @@
                                         </storedChemicalEnergy>
                                     </storedChemicalEnergies>
                                 </energyConfiguration>
-                            </variation>
+                            </variant>
 
-                            <variation uID="centerTankAfterTaxi_v2">
+                            <variant uID="centerTankAfterTaxi_v2">
                                 <name>Fuel in center tank after taxi</name>
                                 <description>During taxi, the center fuel tank is used</description>
                                 <energyConfiguration>
@@ -270,11 +270,11 @@
                                         </storedChemicalEnergy>
                                     </storedChemicalEnergies>
                                 </energyConfiguration>
-                            </variation>
+                            </variant>
 
-                            <variation uID="tankAfterTakeOff_v2">
+                            <variant uID="tankAfterTakeOff_v2">
                                 <name>Fuel in inner tank after take-off</name>
-                                <description>During take-off, the inner fuel tank is used, as it is prohibited to use the center tanke</description>
+                                <description>During take-off, the inner fuel tank is used, as it is prohibited to use the center tank</description>
                                 <energyConfiguration>
                                     <storedChemicalEnergies>
                                         <storedChemicalEnergy>
@@ -295,9 +295,9 @@
                                         </storedChemicalEnergy>
                                     </storedChemicalEnergies>
                                 </energyConfiguration>
-                            </variation>
+                            </variant>
 
-                            <variation uID="fuelAfterLanding_v2">
+                            <variant uID="fuelAfterLanding_v2">
                                 <name>Empty inner tank</name>
                                 <description>All fuel used from the inner tank</description>
                                 <energyConfiguration>
@@ -328,8 +328,8 @@
                                         </storedChemicalEnergy>
                                     </storedChemicalEnergies>
                                 </energyConfiguration>
-                            </variation>
-                        </variations>
+                            </variant>
+                        </variants>
                     </configurationDefinition>
                 </configurationDefinitions>
 
