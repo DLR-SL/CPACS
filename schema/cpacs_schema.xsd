@@ -20407,22 +20407,9 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="fluidType">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                Fluid type
-                            </xsd:documentation>
-                        </xsd:annotation>
-                            <xsd:complexType>
-                            <xsd:simpleContent>
-                                <xsd:restriction base="stringBaseType">
-                                    <xsd:enumeration value="air"/>
-                                </xsd:restriction>
-                            </xsd:simpleContent>
-                        </xsd:complexType>
-                    </xsd:element>
-                </xsd:all>
+                <xsd:sequence>
+                    <xsd:element name="species" maxOccurs="unbounded" type="speciesType"/>
+                </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -20448,8 +20435,8 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:choice minOccurs="0">
-                        <xsd:element name="singlePhaseMassFlow" type="singlePhaseMassFlowTrajectoryType"/>
-                        <xsd:element name="multiPhaseMassFlow" type="multiPhaseMassFlowTrajectoryType"/>
+                        <xsd:element name="singlePhaseMassFlow" type="phaseMassFlowTrajectoryType"/>
+                        <xsd:element name="multiPhaseMassFlow" type="phaseMassFlowTrajectoryType"/>
                     </xsd:choice>
                 </xsd:sequence>
             </xsd:extension>
@@ -20477,8 +20464,8 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:choice minOccurs="0">
-                        <xsd:element name="singlePhaseMassFlow" type="singlePhaseMassFlowTrajectoryType"/>
-                        <xsd:element name="multiPhaseMassFlow" type="multiPhaseMassFlowTrajectoryType"/>
+                        <xsd:element name="singlePhaseMassFlow" type="phaseMassFlowType"/>
+                        <xsd:element name="multiPhaseMassFlow" type="phaseMassFlowType"/>
                     </xsd:choice>
                 </xsd:sequence>
             </xsd:extension>
@@ -24750,39 +24737,6 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="multiPhaseMassFlowTrajectoryType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Multi-phase mass flow</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="pressure" type="doubleVectorBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                Pressure
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="enthalpy" type="doubleVectorBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                Enthalpy
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="massComposition" minOccurs="0" type="massCompositionType"/>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
     <xsd:complexType name="mUnusableFuelsType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -26267,6 +26221,72 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:element name="maxOperatingAltitude" minOccurs="0" type="requirementType">
                     </xsd:element>
                     <xsd:element name="approachSpeed" minOccurs="0" type="requirementType"/>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="phaseMassFlowTrajectoryType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Multi-phase mass flow</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="pressure" type="doubleVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Pressure
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="temperature" type="doubleVectorBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Temperature
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="massComposition" minOccurs="0" type="massCompositionType"/>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="phaseMassFlowType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Multi-phase mass flow</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="pressure" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Pressure
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="temperature" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Temperature
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="massComposition" minOccurs="0" type="massCompositionType"/>
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
@@ -31339,39 +31359,6 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="singlePhaseMassFlowTrajectoryType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Single-phase mass flow</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="pressure" type="doubleVectorBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                Pressure
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="temperature" type="doubleVectorBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                Temperature
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="massComposition" minOccurs="0" type="massCompositionType"/>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
     <xsd:complexType name="skidGearsType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -31871,6 +31858,54 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
+
+    <xsd:complexType name="speciesType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Species</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="share">
+                        <xsd:annotation>
+                            <xsd:documentation>Share</xsd:documentation>
+                        </xsd:annotation>
+                        <xsd:simpleType>
+                            <xsd:restriction base="xsd:double">
+                                <xsd:minInclusive value="0"/>
+                                <xsd:maxInclusive value="1"/>
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="type" type="speciesTypeType"/>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+<xsd:simpleType name="speciesTypeType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Species type</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="Air"/>
+            <xsd:enumeration value="Oxygen"/>
+            <xsd:enumeration value="Nitrogen"/>
+            <xsd:enumeration value="Methane"/>
+        </xsd:restriction>
+    </xsd:simpleType>
 
     <xsd:complexType name="specificConfigurationSegmentsType">
         <xsd:annotation>
