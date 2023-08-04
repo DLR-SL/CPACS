@@ -1,0 +1,744 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cpacs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../schema/cpacs_schema.xsd">
+    <header>
+        <name>Example system architecture</name>
+        <version>1.0.0</version>
+        <versionInfos>
+            <versionInfo version="1.0.0">
+                <creator>DLR-SL</creator>
+                <timestamp>2022-12-02T10:30:00</timestamp>
+                <description>Create initial data set</description>
+                <cpacsVersion>3.5</cpacsVersion>
+            </versionInfo>
+        </versionInfos>
+    </header>
+    <vehicles>
+        <aircraft>
+            <model uID="exampleAircraft">
+                <name>Example aircraft</name>
+                <engines>
+                    <engine uID="eng1_inst">
+                        <name>Engine left</name>
+                        <engineUID>engine</engineUID>
+                        <parentUID>exampleAircraft</parentUID>
+                        <transformation>
+                            <translation>
+                                <y>-5</y>
+                            </translation>
+                        </transformation>
+                    </engine>
+                    <engine uID="eng2_inst">
+                        <name>Engine right</name>
+                        <engineUID>engine</engineUID>
+                        <parentUID>exampleAircraft</parentUID>
+                        <transformation>
+                            <translation>
+                                <y>5</y>
+                            </translation>
+                        </transformation>
+                    </engine>
+                </engines>
+                <systems>
+                    <genericSystems>
+                        <genericSystem uID="mySystem">
+                            <name>Example system</name>
+                            <components>
+                                <component uID="hx1_inst">
+                                    <name>heatExchanger1</name>
+                                    <description>heatExchangerSystem1</description>
+                                    <systemElementUID>hx</systemElementUID>
+                                </component>
+                                <component uID="hx2_inst">
+                                    <name>heatExchanger2</name>
+                                    <description>heatExchangerSystem2</description>
+                                    <systemElementUID>hx</systemElementUID>
+                                </component>
+                                <component uID="hxGS_inst">
+                                    <name>heatExchangerGS</name>
+                                    <description>heatExchangerSystemGS</description>
+                                    <systemElementUID>hx</systemElementUID>
+                                </component>
+                                <component uID="gb1_inst">
+                                    <name>gearbox1_inst</name>
+                                    <description>gearboxSystem1</description>
+                                    <systemElementUID>gearbox</systemElementUID>
+                                </component>
+                                <component uID="motor1a_inst">
+                                    <name>motor1a_inst</name>
+                                    <description>motorSystem1a</description>
+                                    <systemElementUID>eMotor</systemElementUID>
+                                </component>
+                                <component uID="motor1b_inst">
+                                    <name>motor1b_inst</name>
+                                    <description>motorSystem1b</description>
+                                    <systemElementUID>eMotor</systemElementUID>
+                                </component>
+                                <component uID="gb2_inst">
+                                    <name>gearbox2_inst</name>
+                                    <description>gearboxSystem2</description>
+                                    <systemElementUID>gearbox</systemElementUID>
+                                </component>
+                                <component uID="motor2a_inst">
+                                    <name>motor2a_inst</name>
+                                    <description>motorSystem2a</description>
+                                    <systemElementUID>eMotor</systemElementUID>
+                                </component>
+                                <component uID="motor2b_inst">
+                                    <name>motor2b_inst</name>
+                                    <description>motorSystem2b</description>
+                                    <systemElementUID>eMotor</systemElementUID>
+                                </component>
+                                <component uID="generator_inst">
+                                    <name>generator_inst</name>
+                                    <description>generator</description>
+                                    <systemElementUID>generator</systemElementUID>
+                                </component>
+                                <component uID="gasturbine_inst">
+                                    <name>gasturbine_inst</name>
+                                    <description>gasturbine</description>
+                                    <systemElementUID>gasTurbine</systemElementUID>
+                                </component>
+                            </components>
+                        </genericSystem>
+                    </genericSystems>
+                </systems>
+                <systemArchitectures>
+                    <systemArchitecture>
+                        <name>Example system</name>
+                        <description>Example system with five components: propeller, gearbox, motor, generator and gas turbine</description>
+                        <systemType>generic</systemType>
+                        <connections>
+                            <connection uID="motor1a_to_gb1">
+                                <name>motor1a_to_gb1</name>
+                                <source>
+                                    <componentUID>motor1a_inst</componentUID>
+                                </source>
+                                <target>
+                                    <componentUID>gb1_inst</componentUID>
+                                </target>
+                            </connection>
+                            <connection uID="motor1b_to_gb1">
+                                <name>motor1b_to_gb1</name>
+                                <source>
+                                    <componentUID>motor1b_inst</componentUID>
+                                </source>
+                                <target>
+                                    <componentUID>gb1_inst</componentUID>
+                                </target>
+                            </connection>
+                            <connection uID="motor1a_to_hx1">
+                                <name>motor1a_to_hx1</name>
+                                <source>
+                                    <componentUID>motor1a_inst</componentUID>
+                                </source>
+                                <target>
+                                    <componentUID>hx1_inst</componentUID>
+                                </target>
+                            </connection>
+                            <connection uID="motor1b_to_hx1">
+                                <name>motor1b_to_hx1</name>
+                                <source>
+                                    <componentUID>motor1b_inst</componentUID>
+                                </source>
+                                <target>
+                                    <componentUID>hx1_inst</componentUID>
+                                </target>
+                            </connection>
+                            <connection uID="gb1_to_hx1">
+                                <name>gb1_to_hx1</name>
+                                <source>
+                                    <componentUID>gb1_inst</componentUID>
+                                </source>
+                                <target>
+                                    <componentUID>hx1_inst</componentUID>
+                                </target>
+                            </connection>
+                            <connection uID="generator_to_motor1a">
+                                <name>generator_to_motor1a</name>
+                                <source>
+                                    <componentUID>generator_inst</componentUID>
+                                </source>
+                                <target>
+                                    <componentUID>motor1a_inst</componentUID>
+                                </target>
+                            </connection>
+                            <connection uID="generator_to_motor1b">
+                                <name>generator_to_motor1b</name>
+                                <source>
+                                    <componentUID>generator_inst</componentUID>
+                                </source>
+                                <target>
+                                    <componentUID>motor1b_inst</componentUID>
+                                </target>
+                            </connection>
+                            <connection uID="gasturbine_to_generator">
+                                <name>gasturbine_to_generator</name>
+                                <source>
+                                    <componentUID>gasturbine_inst</componentUID>
+                                </source>
+                                <target>
+                                    <componentUID>generator_inst</componentUID>
+                                </target>
+                            </connection>
+                            <connection uID="gasturbine_to_hxGS">
+                                <name>gasturbine_to_hxGS</name>
+                                <source>
+                                    <componentUID>gasturbine_inst</componentUID>
+                                </source>
+                                <target>
+                                    <componentUID>hxGS_inst</componentUID>
+                                </target>
+                            </connection>
+                            <connection uID="gb2_to_prop2">
+                                <name>gb2_to_prop2</name>
+                                <source>
+                                    <componentUID>gb2_inst</componentUID>
+                                </source>
+                                <target>
+                                    <componentUID>eng2_inst</componentUID>
+                                    <subComponentUID>prop_inst</subComponentUID>
+                                </target>
+                            </connection>
+                            <connection uID="gb1_to_prop1">
+                                <name>gb1_to_prop1</name>
+                                <source>
+                                    <componentUID>gb1_inst</componentUID>
+                                </source>
+                                <target>
+                                    <componentUID>eng1_inst</componentUID>
+                                    <subComponentUID>prop_inst</subComponentUID>
+                                </target>
+                            </connection>
+                            <connection uID="motor2a_to_gb2">
+                                <name>motor2a_to_gb2</name>
+                                <source>
+                                    <componentUID>motor2a_inst</componentUID>
+                                </source>
+                                <target>
+                                    <componentUID>gb2_inst</componentUID>
+                                </target>
+                            </connection>
+                            <connection uID="motor2b_to_gb2">
+                                <name>motor2b_to_gb2</name>
+                                <source>
+                                    <componentUID>motor2b_inst</componentUID>
+                                </source>
+                                <target>
+                                    <componentUID>gb2_inst</componentUID>
+                                </target>
+                            </connection>
+                            <connection uID="motor2a_to_hx2">
+                                <name>motor2a_to_hx2</name>
+                                <source>
+                                    <componentUID>motor2a_inst</componentUID>
+                                </source>
+                                <target>
+                                    <componentUID>hx2_inst</componentUID>
+                                </target>
+                            </connection>
+                            <connection uID="motor2b_to_hx2">
+                                <name>motor2b_to_hx2</name>
+                                <source>
+                                    <componentUID>motor2b_inst</componentUID>
+                                </source>
+                                <target>
+                                    <componentUID>hx2_inst</componentUID>
+                                </target>
+                            </connection>
+                            <connection uID="gb2_to_hx2">
+                                <name>gb2_to_hx2</name>
+                                <source>
+                                    <componentUID>gb2_inst</componentUID>
+                                </source>
+                                <target>
+                                    <componentUID>hx2_inst</componentUID>
+                                </target>
+                            </connection>
+                            <connection uID="generator_to_motor2a">
+                                <name>generator_to_motor2a</name>
+                                <source>
+                                    <componentUID>generator_inst</componentUID>
+                                </source>
+                                <target>
+                                    <componentUID>motor2a_inst</componentUID>
+                                </target>
+                            </connection>
+                            <connection uID="generator_to_motor2b">
+                                <name>generator_to_motor2b</name>
+                                <source>
+                                    <componentUID>generator_inst</componentUID>
+                                </source>
+                                <target>
+                                    <componentUID>motor2b_inst</componentUID>
+                                </target>
+                            </connection>
+                            <connection uID="generator_to_hxGS">
+                                <name>generator_to_hxGS</name>
+                                <source>
+                                    <componentUID>generator_inst</componentUID>
+                                </source>
+                                <target>
+                                    <componentUID>hxGS_inst</componentUID>
+                                </target>
+                            </connection>
+                            <connection uID="fuelSystem_to_gasturbine">
+                                <name>fuelSystem_to_gasturbine</name>
+                                <source>
+                                    <ataChapter>ata28</ataChapter>
+                                </source>
+                                <target>
+                                    <componentUID>gasturbine_inst</componentUID>
+                                </target>
+                            </connection>
+                            <connection uID="hxGS_to_ambient">
+                                <name>hxGS_to_ambient</name>
+                                <source>
+                                    <componentUID>hxGS_inst</componentUID>
+                                </source>
+                                <target>
+                                    <unmodeledComponent>ambient</unmodeledComponent>
+                                </target>
+                            </connection>
+                            <connection uID="hx1_to_ambient">
+                                <name>hxGS_to_ambient</name>
+                                <source>
+                                    <componentUID>hx1_inst</componentUID>
+                                </source>
+                                <target>
+                                    <unmodeledComponent>ambient</unmodeledComponent>
+                                </target>
+                            </connection>
+                            <connection uID="hx2_to_ambient">
+                                <name>hx2_to_ambient</name>
+                                <source>
+                                    <componentUID>hx2_inst</componentUID>
+                                </source>
+                                <target>
+                                    <unmodeledComponent>ambient</unmodeledComponent>
+                                </target>
+                            </connection>
+                        </connections>
+                    </systemArchitecture>
+                </systemArchitectures>
+                <analyses>
+                    <systemAnalyses>
+                        <powerBreakdowns>
+                            <powerBreakdownCases>
+                                <powerBreakdownCase>
+                                    <name>example</name>
+                                    <description>example power breakdown with 5 systems: propeller, gearbox, motor, generator and gas turbine</description>
+                                    <specification>
+                                        <altitude>0.</altitude>
+                                        <machNumber>0.</machNumber>
+                                        <environment>
+                                            <atmosphericModel>ISA</atmosphericModel>
+                                        </environment>
+                                    </specification>
+                                    <powerBreakdownData>
+                                        <powerFlow>
+                                            <name>gb1_to_prop1</name>
+                                            <connectionUID>gb1_to_prop1</connectionUID>
+                                            <!-- powerValue>6517047.11</powerValue>
+                                            <torque>73907.3</torque -->
+                                            <mechanicalPower>
+                                                <mechanicalPowerValue>6517047.11</mechanicalPowerValue>
+                                                <torque>73907.3</torque>
+                                            </mechanicalPower>
+                                        </powerFlow>
+                                        <powerFlow>
+                                            <name>motor1a_to_gb1</name>
+                                            <connectionUID>motor1a_to_gb1</connectionUID>
+                                            <mechanicalPower>
+                                                <mechanicalPowerValue>3392881.67</mechanicalPowerValue>
+                                                <torque>3847.7</torque>
+                                            </mechanicalPower>
+                                        </powerFlow>
+                                        <powerFlow>
+                                            <name>motor1b_to_gb1</name>
+                                            <connectionUID>motor1b_to_gb1</connectionUID>
+                                            <mechanicalPower>
+                                                <mechanicalPowerValue>3392881.67</mechanicalPowerValue>
+                                                <torque>3847.7</torque>
+                                            </mechanicalPower>
+                                        </powerFlow>
+                                        <powerFlow>
+                                            <name>motor1a_to_hx1</name>
+                                            <connectionUID>motor1a_to_hx1</connectionUID>
+                                            <heatFlow>
+                                                <heatFlowValue>67857.6</heatFlowValue>
+                                            </heatFlow>
+                                        </powerFlow>
+                                        <powerFlow>
+                                            <name>motor1b_to_hx1</name>
+                                            <connectionUID>motor1b_to_hx1</connectionUID>
+                                            <heatFlow>
+                                                <heatFlowValue>67857.6</heatFlowValue>
+                                            </heatFlow>
+                                        </powerFlow>
+                                        <powerFlow>
+                                            <name>gb1_to_hx1</name>
+                                            <connectionUID>gb1_to_hx1</connectionUID>
+                                            <heatFlow>
+                                                <heatFlowValue>133000.9</heatFlowValue>
+                                            </heatFlow>
+                                        </powerFlow>
+                                        <powerFlow>
+                                            <name>generator_to_motor1a</name>
+                                            <connectionUID>generator_to_motor1a</connectionUID>
+                                            <electricPower>
+                                                <electricPowerValue>3462124.15</electricPowerValue>
+                                            </electricPower>
+                                        </powerFlow>
+                                        <powerFlow>
+                                            <name>generator_to_motor1b</name>
+                                            <connectionUID>generator_to_motor1b</connectionUID>
+                                            <electricPower>
+                                                <electricPowerValue>3462124.15</electricPowerValue>
+                                            </electricPower>
+                                        </powerFlow>
+                                        <powerFlow>
+                                            <name>gasturbine_to_generator</name>
+                                            <connectionUID>gasturbine_to_generator</connectionUID>
+                                            <mechanicalPower>
+                                                <mechanicalPowerValue>13848496.61</mechanicalPowerValue>
+                                                <torque>13223.65</torque>
+                                            </mechanicalPower>
+                                        </powerFlow>
+                                        <powerFlow>
+                                            <name>gasturbine_to_hxGS</name>
+                                            <connectionUID>gasturbine_to_hxGS</connectionUID>
+                                            <heatFlow>
+                                                <heatFlowValue>307744.36</heatFlowValue>
+                                            </heatFlow>
+                                        </powerFlow>
+                                        <powerFlow>
+                                            <name>generator_to_hxGS</name>
+                                            <connectionUID>generator_to_hxGS</connectionUID>
+                                            <heatFlow>
+                                                <heatFlowValue>276969.932</heatFlowValue>
+                                            </heatFlow>
+                                        </powerFlow>
+                                        <!-- TODO: Modify massFlow? (only combustion considered: enthalpy = lower heating value)
+                                        <powerFlow>
+                                            <name>fuelSystem_to_gasturbine</name>
+                                            <connectionUID>fuelSystem_to_gasturbine</connectionUID>
+                                            <massFlow>
+                                                <massFlowValue>0.715684</massFlowValue>
+                                                <enthalpy>43000000</enthalpy>
+                                            </massFlow>
+                                        </powerFlow>
+                                         -->
+                                        <!-- how to deal with heat dump to ambient? -->
+                                        <powerFlow>
+                                            <name>hxGS_to_ambient</name>
+                                            <connectionUID>hxGS_to_ambient</connectionUID>
+                                            <heatFlow>
+                                                <heatFlowValue>584714.301</heatFlowValue>
+                                            </heatFlow>
+                                        </powerFlow>
+                                        <powerFlow>
+                                            <name>hx1_to_ambient</name>
+                                            <connectionUID>hx1_to_ambient</connectionUID>
+                                            <heatFlow>
+                                                <heatFlowValue>268716.22</heatFlowValue>
+                                            </heatFlow>
+                                        </powerFlow>
+                                    </powerBreakdownData>
+                                </powerBreakdownCase>
+                            </powerBreakdownCases>
+                        </powerBreakdowns>
+                    </systemAnalyses>
+                </analyses>
+            </model>
+        </aircraft>
+        <engines>
+            <engine uID="engine">
+                <name>Engine</name>
+                <rotors>
+                    <rotor uID="prop_inst">
+                        <rotorUID>Propeller</rotorUID>
+                        <transformation>
+                            <scaling>
+                                <x>1</x>
+                                <y>1</y>
+                                <z>1</z>
+                            </scaling>
+                            <rotation>
+                                <x>0</x>
+                                <y>-90</y>
+                                <z>0</z>
+                            </rotation>
+                            <translation>
+                                <x>2.5</x>
+                                <y>1</y>
+                                <z>0.5</z>
+                            </translation>
+                        </transformation>
+                    </rotor>
+                </rotors>
+            </engine>
+        </engines>
+        <systemElements>
+            <electricMotors>
+                <electricMotor uID="eMotor">
+                    <name>E-Motor</name>
+                    <geometricBaseType>cylinder</geometricBaseType>
+                </electricMotor>
+            </electricMotors>
+            <heatExchangers>
+                <heatExchanger uID="hx">
+                    <name>Heat exchanger</name>
+                    <geometricBaseType>cube</geometricBaseType>
+                </heatExchanger>
+            </heatExchangers>
+            <gearBoxes>
+                <gearBox uID="gearbox">
+                    <name>Gear box</name>
+                    <geometricBaseType>cylinder</geometricBaseType>
+                </gearBox>
+            </gearBoxes>
+            <gasTurbines>
+                <gasTurbine uID="gasTurbine">
+                    <name>GasTurbine</name>
+                    <geometricBaseType>cylinder</geometricBaseType>
+                </gasTurbine>
+            </gasTurbines>
+            <generators>
+                <generator uID="generator">
+                    <name>Generator</name>
+                    <geometricBaseType>cylinder</geometricBaseType>
+                </generator>
+            </generators>
+        </systemElements>
+        <rotorElements>
+            <rotorBlades>
+                <rotorBlade uID="Propeller_blade">
+                    <name>Propeller_blade</name>
+                    <transformation uID="Propeller_blade_transformation1">
+                        <scaling uID="Propeller_blade_transformation1_scaling1">
+                            <x>1</x>
+                            <y>1</y>
+                            <z>1</z>
+                        </scaling>
+                        <rotation uID="Propeller_blade_transformation1_rotation1">
+                            <x>0</x>
+                            <y>0</y>
+                            <z>0</z>
+                        </rotation>
+                        <translation refType="absLocal" uID="Propeller_blade_transformation1_translation1">
+                            <x>0</x>
+                            <y>0</y>
+                            <z>0</z>
+                        </translation>
+                    </transformation>
+                    <sections>
+                        <section uID="Propeller_blade_section1">
+                            <name>Propeller_blade_section1</name>
+                            <transformation>
+                                <scaling>
+                                    <x>0.07</x>
+                                    <y>0.07</y>
+                                    <z>0.07</z>
+                                </scaling>
+                                <rotation>
+                                    <x>14.56</x>
+                                    <y>0</y>
+                                    <z>10</z>
+                                </rotation>
+                                <translation>
+                                    <x>0</x>
+                                    <y>0</y>
+                                    <z>0</z>
+                                </translation>
+                            </transformation>
+                            <elements>
+                                <element uID="Propeller_blade_section1_element1">
+                                    <name>Propeller_blade_section1_element_1</name>
+                                    <airfoilUID>NACA0010</airfoilUID>
+                                    <transformation>
+                                        <scaling>
+                                            <x>1</x>
+                                            <y>1</y>
+                                            <z>1.75</z>
+                                        </scaling>
+                                        <rotation>
+                                            <x>0</x>
+                                            <y>0</y>
+                                            <z>-90</z>
+                                        </rotation>
+                                        <translation>
+                                            <x>0</x>
+                                            <y>0.5</y>
+                                            <z>0</z>
+                                        </translation>
+                                    </transformation>
+                                </element>
+                            </elements>
+                        </section>
+                        <section uID="Propeller_blade_section5">
+                            <name>Propeller_blade_section5</name>
+                            <transformation>
+                                <scaling>
+                                    <x>0.1</x>
+                                    <y>0.1</y>
+                                    <z>0.1</z>
+                                </scaling>
+                                <rotation>
+                                    <x>5.97</x>
+                                    <y>0</y>
+                                    <z>-11.42</z>
+                                </rotation>
+                            </transformation>
+                            <elements>
+                                <element uID="Propeller_blade_section5_element1">
+                                    <name>Propeller_blade_section5_element1</name>
+                                    <airfoilUID>NACA0010</airfoilUID>
+                                    <transformation>
+                                        <scaling>
+                                            <x>1</x>
+                                            <y>1</y>
+                                            <z>0.39</z>
+                                        </scaling>
+                                        <rotation>
+                                            <x>0</x>
+                                            <y>0</y>
+                                            <z>-90</z>
+                                        </rotation>
+                                        <translation>
+                                            <x>0</x>
+                                            <y>0.5</y>
+                                            <z>0</z>
+                                        </translation>
+                                    </transformation>
+                                </element>
+                            </elements>
+                        </section>
+                        <section uID="Propeller_blade_section10">
+                            <name>Propeller_blade_section10</name>
+                            <transformation>
+                                <scaling>
+                                    <x>0.03</x>
+                                    <y>0.03</y>
+                                    <z>0.03</z>
+                                </scaling>
+                                <rotation>
+                                    <x>-9.18</x>
+                                    <y>0</y>
+                                    <z>0</z>
+                                </rotation>
+                                <translation>
+                                    <x>0</x>
+                                    <y>0</y>
+                                    <z>0</z>
+                                </translation>
+                            </transformation>
+                            <elements>
+                                <element uID="Propeller_blade_section10_element1">
+                                    <name>Propeller_blade_section10_element1</name>
+                                    <airfoilUID>NACA0010</airfoilUID>
+                                    <transformation>
+                                        <scaling>
+                                            <x>1</x>
+                                            <y>1</y>
+                                            <z>0.18</z>
+                                        </scaling>
+                                        <rotation>
+                                            <x>0</x>
+                                            <y>0</y>
+                                            <z>-90</z>
+                                        </rotation>
+                                        <translation>
+                                            <x>0</x>
+                                            <y>0.5</y>
+                                            <z>0</z>
+                                        </translation>
+                                    </transformation>
+                                </element>
+                            </elements>
+                        </section>
+                    </sections>
+                    <positionings>
+                        <positioning uID="Propeller_blade_positioning1">
+                            <name>Propeller_blade_positioning1</name>
+                            <length>0.05</length>
+                            <sweepAngle>90</sweepAngle>
+                            <dihedralAngle>0</dihedralAngle>
+                            <toSectionUID>Propeller_blade_section1</toSectionUID>
+                        </positioning>
+                        <positioning uID="Propeller_blade_positioning2">
+                            <name>Propeller_blade_positioning2</name>
+                            <length>0.2</length>
+                            <sweepAngle>90</sweepAngle>
+                            <dihedralAngle>0</dihedralAngle>
+                            <fromSectionUID>Propeller_blade_section1</fromSectionUID>
+                            <toSectionUID>Propeller_blade_section5</toSectionUID>
+                        </positioning>
+                        <positioning uID="Propeller_blade_positioning3">
+                            <name>Propeller_blade_positioning3</name>
+                            <length>0.3</length>
+                            <sweepAngle>90</sweepAngle>
+                            <dihedralAngle>0</dihedralAngle>
+                            <fromSectionUID>Propeller_blade_section5</fromSectionUID>
+                            <toSectionUID>Propeller_blade_section10</toSectionUID>
+                        </positioning>
+                    </positionings>
+                    <segments>
+                        <segment uID="Propeller_blade_segment1">
+                            <name>Propeller_blade_segment1</name>
+                            <fromElementUID>Propeller_blade_section1_element1</fromElementUID>
+                            <toElementUID>Propeller_blade_section5_element1</toElementUID>
+                        </segment>
+                        <segment uID="Propeller_blade_segment2">
+                            <name>Propeller_blade_segment2</name>
+                            <fromElementUID>Propeller_blade_section5_element1</fromElementUID>
+                            <toElementUID>Propeller_blade_section10_element1</toElementUID>
+                        </segment>
+                    </segments>
+                </rotorBlade>
+            </rotorBlades>
+            <rotors>
+                <rotor uID="Propeller">
+                    <name>Propeller</name>
+                    <rotorHub uID="PropellerHub">
+                        <name>PropellerHub</name>
+                        <type>rigid</type>
+                        <rotorBladeAttachments>
+                            <rotorBladeAttachment uID="PropellerHub_rotorBladeAttachment1">
+                                <numberOfBlades>5</numberOfBlades>
+                                <hinges>
+                                    <hinge uID="Propeller_pitchHinge">
+                                        <name>Propeller_pitchHinge</name>
+                                        <transformation>
+                                            <translation>
+                                                <x>0.10</x>
+                                                <y>0</y>
+                                                <z>0</z>
+                                            </translation>
+                                        </transformation>
+                                        <type>pitch</type>
+                                        <neutralPosition>10</neutralPosition>
+                                    </hinge>
+                                </hinges>
+                                <rotorBladeUID>Propeller_blade</rotorBladeUID>
+                            </rotorBladeAttachment>
+                        </rotorBladeAttachments>
+                    </rotorHub>
+                </rotor>
+            </rotors>
+        </rotorElements>
+        <profiles>
+            <rotorAirfoils>
+                <rotorAirfoil uID="NACA0010">
+                    <name>NACA0.00.00.10</name>
+                    <description>NACA 4 Series Profile</description>
+                    <pointList>
+                        <x mapType="vector">1.0;0.9875;0.975;0.9625;0.95;0.9375;0.925;0.9125;0.9;0.8875;0.875;0.8625;0.85;0.8375;0.825;0.8125;0.8;0.7875;0.775;0.7625;0.75;0.7375;0.725;0.7125;0.7;0.6875;0.675;0.6625;0.65;0.6375;0.625;0.6125;0.6;0.5875;0.575;0.5625;0.55;0.5375;0.525;0.5125;0.5;0.4875;0.475;0.4625;0.45;0.4375;0.425;0.4125;0.4;0.3875;0.375;0.3625;0.35;0.3375;0.325;0.3125;0.3;0.2875;0.275;0.2625;0.25;0.2375;0.225;0.2125;0.2;0.1875;0.175;0.1625;0.15;0.1375;0.125;0.1125;0.1;0.0875;0.075;0.0625;0.05;0.0375;0.025;0.0125;0.0;0.0125;0.025;0.0375;0.05;0.0625;0.075;0.0875;0.1;0.1125;0.125;0.1375;0.15;0.1625;0.175;0.1875;0.2;0.2125;0.225;0.2375;0.25;0.2625;0.275;0.2875;0.3;0.3125;0.325;0.3375;0.35;0.3625;0.375;0.3875;0.4;0.4125;0.425;0.4375;0.45;0.4625;0.475;0.4875;0.5;0.5125;0.525;0.5375;0.55;0.5625;0.575;0.5875;0.6;0.6125;0.625;0.6375;0.65;0.6625;0.675;0.6875;0.7;0.7125;0.725;0.7375;0.75;0.7625;0.775;0.7875;0.8;0.8125;0.825;0.8375;0.85;0.8625;0.875;0.8875;0.9;0.9125;0.925;0.9375;0.95;0.9625;0.975;0.9875;1.0</x>
+                        <y mapType="vector">0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0</y>
+                        <z mapType="vector">0.00105;0.002500348;0.003928655;0.005335474;0.006721326;0.008086699;0.009432047;0.010757789;0.012064311;0.013351962;0.014621061;0.015871888;0.017104689;0.018319675;0.019517022;0.020696868;0.021859317;0.023004432;0.024132245;0.025242745;0.026335885;0.027411581;0.028469708;0.029510101;0.030532556;0.031536828;0.032522631;0.033489635;0.034437468;0.035365713;0.036273909;0.037161548;0.038028076;0.038872887;0.039695329;0.040494697;0.041270231;0.042021117;0.042746484;0.043445402;0.044116877;0.04475985;0.045373197;0.045955718;0.046506139;0.047023106;0.04750518;0.047950828;0.048358424;0.048726231;0.049052403;0.049334968;0.049571818;0.049760699;0.049899189;0.049984688;0.050014389;0.049985255;0.049893991;0.049737002;0.049510352;0.049209703;0.048830253;0.048366646;0.047812858;0.047162066;0.046406453;0.04553697;0.044543002;0.043411909;0.042128372;0.040673443;0.039023087;0.037145888;0.034999196;0.032522211;0.029622381;0.026144896;0.021789332;0.015782522;0;-0.015782522;-0.021789332;-0.026144896;-0.029622381;-0.032522211;-0.034999196;-0.037145888;-0.039023087;-0.040673443;-0.042128372;-0.043411909;-0.044543002;-0.04553697;-0.046406453;-0.047162066;-0.047812858;-0.048366646;-0.048830253;-0.049209703;-0.049510352;-0.049737002;-0.049893991;-0.049985255;-0.050014389;-0.049984688;-0.049899189;-0.049760699;-0.049571818;-0.049334968;-0.049052403;-0.048726231;-0.048358424;-0.047950828;-0.04750518;-0.047023106;-0.046506139;-0.045955718;-0.045373197;-0.04475985;-0.044116877;-0.043445402;-0.042746484;-0.042021117;-0.041270231;-0.040494697;-0.039695329;-0.038872887;-0.038028076;-0.037161548;-0.036273909;-0.035365713;-0.034437468;-0.033489635;-0.032522631;-0.031536828;-0.030532556;-0.029510101;-0.028469708;-0.027411581;-0.026335885;-0.025242745;-0.024132245;-0.023004432;-0.021859317;-0.020696868;-0.019517022;-0.018319675;-0.017104689;-0.015871888;-0.014621061;-0.013351962;-0.012064311;-0.010757789;-0.009432047;-0.008086699;-0.006721326;-0.005335474;-0.003928655;-0.002500348;-0.00105</z>
+                    </pointList>
+                </rotorAirfoil>
+            </rotorAirfoils>
+        </profiles>
+    </vehicles>
+</cpacs>

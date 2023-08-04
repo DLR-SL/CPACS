@@ -33,6 +33,7 @@ def test_exampleFiles(cpacs_examples, cpacs_schema):
     tixi_h = tixi3wrapper.Tixi3()
 
     for xml in cpacs_examples:
+        print('Open ', xml)
         tixi_h.open(xml)
         if not tixi_h.schemaValidateFromFile(cpacs_schema):
             validationResult = True
