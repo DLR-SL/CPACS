@@ -1,0 +1,40 @@
+name: Documentation Build
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Set up MSBuild
+      uses: microsoft/setup-msbuild@v1.0.1
+
+    - name: Install 7-Zip
+      run: |
+        Invoke-WebRequest -Uri https://www.7-zip.org/a/7z1900-x64.exe -OutFile 7z.exe
+        Start-Process -Wait -FilePath 7z.exe
+        Remove-Item -Force 7z.exe
+
+    - name: Extract 3rdparty.zip
+      run: 7z x -y .\development\3rdparty.zip -o.\development\
+
+    - name: Build Documentation
+      run: msbuild /p:Configuration=Release documentation\Cpacs_doc_project.shfbproj
+
+    - name: Package HTML Docs
+      run: 7z a -tzip .\build\doc\htmlDocs.zip .\build\doc\*
+
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: documentation-artifacts
+        path: |
+          .\build\doc\*.chm
+          .\build\doc\htmlDocs.zip
