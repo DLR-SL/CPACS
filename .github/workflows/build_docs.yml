@@ -54,10 +54,6 @@ jobs:
         path: |
           .\build\doc\*.chm
           .\build\doc\htmlDocs.zip
-          
-    - name: Move HTML Docs to Pages Directory
-      run: |
-        mv .\build\doc\* .
         
   deploy:
     needs: build
@@ -71,10 +67,13 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v3
         with:
-          branch: gh-pages # Oder die Ziel-Branch, die du für GitHub Pages verwendest
-          folder: .       # Ordner, in dem die GitHub Pages-Inhalte liegen
+          branch: gh-pages
+          folder: .
+      - name: Extract HTML Docs
+        run: |
+          7z x -y documentation-artifacts/htmlDocs.zip -ohtmlDocs
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2 
         with:
-          token: ${{ secrets.GITHUB_TOKEN }} # Token für die Berechtigung zur Veröffentlichung
+          token: ${{ secrets.GITHUB_TOKEN }}
