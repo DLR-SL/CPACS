@@ -3,12 +3,20 @@ on: [push]
 jobs:
   build-linux:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -l {0}
 
     steps:
     - uses: actions/checkout@v3
-    - uses: s-weigand/setup-conda@v1
-    - run: conda --version
-    - run: which python
+    - uses: conda-incubator/setup-miniconda@v2
+      with:
+        activate-environment: anaconda-client-env
+        environment-file: etc/example-environment.yml
+        auto-activate-base: false
+    - run: |
+          conda info
+          conda list
     - run: conda create -n myenv python=3.9
     - run: conda activate myenv
     - run: conda install pytest lxml tixi3 -c dlr-sc
