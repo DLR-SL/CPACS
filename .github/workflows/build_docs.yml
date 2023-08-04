@@ -23,7 +23,8 @@ jobs:
         Remove-Item -Force 7z.exe
 
     - name: Extract 3rdparty.zip
-      run: 7z x -y .\development\3rdparty.zip -o.\development\
+      run: |
+        Start-Process -Wait -FilePath 'C:\Program Files\7-Zip\7z.exe' -ArgumentList "x -y .\development\3rdparty.zip -o.\development\"
 
     - name: Build Documentation
       run: msbuild /p:Configuration=Release documentation\Cpacs_doc_project.shfbproj
