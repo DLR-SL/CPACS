@@ -5,6 +5,8 @@ import sys
 import pytest
 from lxml.etree import XMLParser, indent, parse, register_namespace, tostring
 
+import itertools
+
 log = logging.getLogger(__name__)
 log.addHandler(logging.StreamHandler(sys.stdout))
 
@@ -144,6 +146,7 @@ def test_unused_types(get_root_tree):
     types_used = set(
         [el.attrib["type"] for el in list(root.iter()) if "type" in el.keys()]
         + [el.attrib["base"] for el in list(root.iter()) if "base" in el.keys()]
+        + list(itertools.chain(*[el.attrib["memberTypes"].split() for el in list(root.iter()) if "memberTypes" in el.keys()]))
     )
     types_unused = [
         t.attrib["name"] for t in types_exist if not t.attrib["name"] in types_used

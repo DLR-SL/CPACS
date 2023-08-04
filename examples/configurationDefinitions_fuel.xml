@@ -1,21 +1,34 @@
-<?xml version="1.0" encoding="utf-8"?>
-<cpacs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../schema/cpacs_schema.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<cpacs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../schema/cpacs_schema.xsd">
     <header>
-        <name>Load case example</name>
+        <name>Detank and re-fueling strategy</name>
         <version>1.0.0</version>
         <versionInfos>
             <versionInfo version="1.0.0">
-                <creator>DLR-AE, DLR-SL</creator>
-                <description>Example of a D150 wing with loads from iLOADS project. To illustration purposes, this example contains only a
-            reduced data set and is therefore not realistic.</description>
-                <timestamp>2020-07-10T00:00:00</timestamp>
-                <cpacsVersion>3.4</cpacsVersion>
+                <creator>DLR-SL</creator>
+                <timestamp>2022-12-09T12:00:00</timestamp>
+                <description>Initial data set</description>
+                <cpacsVersion>3.5</cpacsVersion>
             </versionInfo>
         </versionInfos>
     </header>
     <vehicles>
+        <!-- (1) Define kerosene -->
+        <energyCarriers>
+            <chemicalEnergyCarriers>
+                <chemicalEnergyCarrier uID="kerosene">
+                    <name>Generic kerosene</name>
+                    <type>kerosene</type>
+                    <lowerHeatingValue>43.2171</lowerHeatingValue>
+                    <density>807.5</density>
+                </chemicalEnergyCarrier>
+            </chemicalEnergyCarriers>
+        </energyCarriers>
+
+        <!-- (2) Define aircraft -->
         <aircraft>
-            <model uID="D150_iLOADS">
+            <model uID="D150_wing">
                 <name>iLOADS_D150</name>
                 <description>iLOADS_D150 model</description>
                 <reference>
@@ -27,14 +40,300 @@
                     <length>4.19360760824</length>
                     <area>122.4</area>
                 </reference>
+
+                <!-- (4) Fuel configuration -->
                 <configurationDefinitions>
                     <configurationDefinition>
-                        <baseConfiguration uID="aconf1">
-                            <name>Configuration Description</name>
-                            <!-- This is a dummy placeholder for the aircraft configuration node! -->
+                        <!-- (4.1) First, define base configuration with full tanks -->
+                        <baseConfiguration uID="fuelConfig1">
+                            <name>Base configuration</name>
+                            <description>All tanks fully filled</description>
+                            <energyConfiguration>
+                                <storedChemicalEnergies>
+                                    <storedChemicalEnergy>
+                                        <storageComponentUIDs>
+                                            <uID>wing_tank_center</uID>
+                                            <uID>wing_tank_inner</uID>
+                                            <uID>wing_tank_outer</uID>
+                                        </storageComponentUIDs>
+                                        <chemicalEnergyCarrierUID>kerosene</chemicalEnergyCarrierUID>
+                                        <fillFactor>1</fillFactor>
+                                        <reference>usableVolume</reference>
+                                    </storedChemicalEnergy>
+                                </storedChemicalEnergies>
+                            </energyConfiguration>
                         </baseConfiguration>
+                        <!-- (4.2) Define fuel state variants, which could be used for weight and balance. 
+                                   Note: this just specifies different states of fill levels, not a sequence in time! Describing sequences of fuel
+                                   usage is a disciplinary task and could therefore be part of a weight and balance specification node.  -->
+                        <variants>
+                            <!-- (4.2.1) Update of the inner fuel tank wrt. base configuration -->
+                            <variant uID="innerTankAfterEngineStart">
+                                <name>Fuel after engine start</name>
+                                <description>During engine start-up, the inner wing tank is used</description>
+                                <energyConfiguration>
+                                    <storedChemicalEnergies>
+                                        <storedChemicalEnergy>
+                                            <storageComponentUIDs>
+                                                <uID>wing_tank_inner</uID>
+                                            </storageComponentUIDs>
+                                            <chemicalEnergyCarrierUID>kerosene</chemicalEnergyCarrierUID>
+                                            <fillFactor>0.99</fillFactor>
+                                            <reference>usableVolume</reference>
+                                        </storedChemicalEnergy>
+                                    </storedChemicalEnergies>
+                                </energyConfiguration>
+                            </variant>
+
+                            <!-- (4.2.2) Update of the center fuel tank wrt. base configuration. Thus, the innerFuelTank is still fully filled. -->
+                            <variant uID="centerTankAfterTaxi">
+                                <name>Fuel in center tank after taxi</name>
+                                <description>During taxi, the center fuel tank is used</description>
+                                <energyConfiguration>
+                                    <storedChemicalEnergies>
+                                        <storedChemicalEnergy>
+                                            <storageComponentUIDs>
+                                                <uID>wing_tank_center</uID>
+                                            </storageComponentUIDs>
+                                            <chemicalEnergyCarrierUID>kerosene</chemicalEnergyCarrierUID>
+                                            <fillFactor>0.96</fillFactor>
+                                            <reference>usableVolume</reference>
+                                        </storedChemicalEnergy>
+                                    </storedChemicalEnergies>
+                                </energyConfiguration>
+                            </variant>
+
+                            <!-- (4.2.3) If we want to explicitly define the combined state before take-off, we need to combine the upper two variants -->
+                            <variant uID="tanksAfterTaxi">
+                                <name>Tanks after taxi</name>
+                                <description>A bit of center and inner fuel tank has been consumed</description>
+                                <combinedVariants>
+                                    <uID>innerTankAfterEngineStart</uID>
+                                    <uID>centerTankAfterTaxi</uID>
+                                </combinedVariants>
+                            </variant>
+
+                            <!-- (4.2.4) Update of the inner tank after take-off -->
+                            <variant uID="innerTankAfterTakeOff">
+                                <name>Fuel in inner tank after take-off</name>
+                                <description>During take-off, the inner fuel tank is used, as it is prohibited to use the center tanke</description>
+                                <energyConfiguration>
+                                    <storedChemicalEnergies>
+                                        <storedChemicalEnergy>
+                                            <storageComponentUIDs>
+                                                <uID>wing_tank_inner</uID>
+                                            </storageComponentUIDs>
+                                            <chemicalEnergyCarrierUID>kerosene</chemicalEnergyCarrierUID>
+                                            <fillFactor>0.95</fillFactor>
+                                            <reference>usableVolume</reference>
+                                        </storedChemicalEnergy>
+                                    </storedChemicalEnergies>
+                                </energyConfiguration>
+                            </variant>
+
+                            <!-- (4.2.5) The combination of tanksAfterTaxi and innerTankAfterTakeOff gives the total state after take-off. 
+                                         Note: The 0.99 innerTankAfterEngineStart is overwritten by 0.95 innerTankAfterTakeOff -->
+                            <variant uID="tanksAfterTakeOff">
+                                <name>Tanks after take-off</name>
+                                <combinedVariants>
+                                    <uID>tanksAfterTaxi</uID>
+                                    <uID>innerTankAfterTakeOff</uID>
+                                </combinedVariants>
+                            </variant>
+
+                            <!-- (4.2.6) Definition of a state where the center tank is empty -->
+                            <variant uID="centerTankEmpty">
+                                <name>Empty center tank</name>
+                                <description>During flight, the center tank is used until it is empty</description>
+                                <energyConfiguration>
+                                    <storedChemicalEnergies>
+                                        <storedChemicalEnergy>
+                                            <storageComponentUIDs>
+                                                <uID>wing_tank_center</uID>
+                                            </storageComponentUIDs>
+                                            <chemicalEnergyCarrierUID>kerosene</chemicalEnergyCarrierUID>
+                                            <fillFactor>0.0</fillFactor>
+                                            <reference>usableVolume</reference>
+                                        </storedChemicalEnergy>
+                                    </storedChemicalEnergies>
+                                </energyConfiguration>
+                            </variant>
+
+                            <!-- (4.2.7) Definition of a state where the inner tank is almost empty -->
+                            <variant uID="innerTankLow">
+                                <name>Empty inner tank</name>
+                                <description>All fuel used from the inner tank</description>
+                                <energyConfiguration>
+                                    <storedChemicalEnergies>
+                                        <storedChemicalEnergy>
+                                            <storageComponentUIDs>
+                                                <uID>wing_tank_inner</uID>
+                                            </storageComponentUIDs>
+                                            <chemicalEnergyCarrierUID>kerosene</chemicalEnergyCarrierUID>
+                                            <fillFactor>0.2</fillFactor>
+                                            <reference>usableVolume</reference>
+                                        </storedChemicalEnergy>
+                                    </storedChemicalEnergies>
+                                </energyConfiguration>
+                            </variant>
+
+                            <!-- (4.2.8) Definition of a state where the outer tank is almost empty -->
+                            <variant uID="outerTankLow">
+                                <name>Empty inner tank</name>
+                                <description>All fuel used from the inner tank</description>
+                                <energyConfiguration>
+                                    <storedChemicalEnergies>
+                                        <storedChemicalEnergy>
+                                            <storageComponentUIDs>
+                                                <uID>wing_tank_outer</uID>
+                                            </storageComponentUIDs>
+                                            <chemicalEnergyCarrierUID>kerosene</chemicalEnergyCarrierUID>
+                                            <fillFactor>0.34</fillFactor>
+                                            <reference>usableVolume</reference>
+                                        </storedChemicalEnergy>
+                                    </storedChemicalEnergies>
+                                </energyConfiguration>
+                            </variant>
+
+                            <!-- (4.2.8) Definition of combined state, e.g. after landing -->
+                            <variant uID="fuelAfterLanding">
+                                <name>Fuel after landing</name>
+                                <combinedVariants>
+                                    <uID>centerTankEmpty</uID>
+                                    <uID>innerTankLow</uID>
+                                    <uID>outerTankLow</uID>
+                                </combinedVariants>
+                            </variant>
+                        </variants>
+                    </configurationDefinition>
+
+                    <configurationDefinition>
+                        <!-- (4.3) An alternative for the upper appraoch, which avoids combinations of sub-variants (i.e., more compact), 
+                            but therefore has some repetitions (e.g., if tank was not in use and thus the fillFactor remains constant)  -->
+                        <baseConfiguration uID="fuelConfig2">
+                            <name>Base configuration v2</name>
+                            <description>All tanks fully filled</description>
+                            <energyConfiguration>
+                                <storedChemicalEnergies>
+                                    <storedChemicalEnergy>
+                                        <storageComponentUIDs>
+                                            <uID>wing_tank_center</uID>
+                                            <uID>wing_tank_inner</uID>
+                                            <uID>wing_tank_outer</uID>
+                                        </storageComponentUIDs>
+                                        <chemicalEnergyCarrierUID>kerosene</chemicalEnergyCarrierUID>
+                                        <fillFactor>1</fillFactor>
+                                        <reference>usableVolume</reference>
+                                    </storedChemicalEnergy>
+                                </storedChemicalEnergies>
+                            </energyConfiguration>
+                        </baseConfiguration>
+
+                        <variants>
+                            <variant uID="innerTankAfterEngineStart_v2">
+                                <name>Fuel after engine start</name>
+                                <description>During engine start-up, the inner wing tank is used</description>
+                                <energyConfiguration>
+                                    <storedChemicalEnergies>
+                                        <storedChemicalEnergy>
+                                            <storageComponentUIDs>
+                                                <uID>wing_tank_inner</uID>
+                                            </storageComponentUIDs>
+                                            <chemicalEnergyCarrierUID>kerosene</chemicalEnergyCarrierUID>
+                                            <fillFactor>0.99</fillFactor>
+                                            <reference>usableVolume</reference>
+                                        </storedChemicalEnergy>
+                                    </storedChemicalEnergies>
+                                </energyConfiguration>
+                            </variant>
+
+                            <variant uID="centerTankAfterTaxi_v2">
+                                <name>Fuel in center tank after taxi</name>
+                                <description>During taxi, the center fuel tank is used</description>
+                                <energyConfiguration>
+                                    <storedChemicalEnergies>
+                                        <storedChemicalEnergy>
+                                            <storageComponentUIDs>
+                                                <uID>wing_tank_center</uID>
+                                            </storageComponentUIDs>
+                                            <chemicalEnergyCarrierUID>kerosene</chemicalEnergyCarrierUID>
+                                            <fillFactor>0.96</fillFactor>
+                                            <reference>usableVolume</reference>
+                                        </storedChemicalEnergy>
+                                        <storedChemicalEnergy>
+                                            <storageComponentUIDs>
+                                                <uID>wing_tank_inner</uID>
+                                            </storageComponentUIDs>
+                                            <chemicalEnergyCarrierUID>kerosene</chemicalEnergyCarrierUID>
+                                            <fillFactor>0.99</fillFactor>
+                                            <reference>usableVolume</reference>
+                                        </storedChemicalEnergy>
+                                    </storedChemicalEnergies>
+                                </energyConfiguration>
+                            </variant>
+
+                            <variant uID="tankAfterTakeOff_v2">
+                                <name>Fuel in inner tank after take-off</name>
+                                <description>During take-off, the inner fuel tank is used, as it is prohibited to use the center tank</description>
+                                <energyConfiguration>
+                                    <storedChemicalEnergies>
+                                        <storedChemicalEnergy>
+                                            <storageComponentUIDs>
+                                                <uID>wing_tank_center</uID>
+                                            </storageComponentUIDs>
+                                            <chemicalEnergyCarrierUID>kerosene</chemicalEnergyCarrierUID>
+                                            <fillFactor>0.96</fillFactor>
+                                            <reference>usableVolume</reference>
+                                        </storedChemicalEnergy>
+                                        <storedChemicalEnergy>
+                                            <storageComponentUIDs>
+                                                <uID>wing_tank_inner</uID>
+                                            </storageComponentUIDs>
+                                            <chemicalEnergyCarrierUID>kerosene</chemicalEnergyCarrierUID>
+                                            <fillFactor>0.95</fillFactor>
+                                            <reference>usableVolume</reference>
+                                        </storedChemicalEnergy>
+                                    </storedChemicalEnergies>
+                                </energyConfiguration>
+                            </variant>
+
+                            <variant uID="fuelAfterLanding_v2">
+                                <name>Empty inner tank</name>
+                                <description>All fuel used from the inner tank</description>
+                                <energyConfiguration>
+                                    <storedChemicalEnergies>
+                                        <storedChemicalEnergy>
+                                            <storageComponentUIDs>
+                                                <uID>wing_tank_center</uID>
+                                            </storageComponentUIDs>
+                                            <chemicalEnergyCarrierUID>kerosene</chemicalEnergyCarrierUID>
+                                            <fillFactor>0.0</fillFactor>
+                                            <reference>usableVolume</reference>
+                                        </storedChemicalEnergy>
+                                        <storedChemicalEnergy>
+                                            <storageComponentUIDs>
+                                                <uID>wing_tank_inner</uID>
+                                            </storageComponentUIDs>
+                                            <chemicalEnergyCarrierUID>kerosene</chemicalEnergyCarrierUID>
+                                            <fillFactor>0.2</fillFactor>
+                                            <reference>usableVolume</reference>
+                                        </storedChemicalEnergy>
+                                        <storedChemicalEnergy>
+                                            <storageComponentUIDs>
+                                                <uID>wing_tank_outer</uID>
+                                            </storageComponentUIDs>
+                                            <chemicalEnergyCarrierUID>kerosene</chemicalEnergyCarrierUID>
+                                            <fillFactor>0.34</fillFactor>
+                                            <reference>usableVolume</reference>
+                                        </storedChemicalEnergy>
+                                    </storedChemicalEnergies>
+                                </energyConfiguration>
+                            </variant>
+                        </variants>
                     </configurationDefinition>
                 </configurationDefinitions>
+
+                <!-- (3) Define tanks and volumes -->
                 <wings>
                     <wing symmetry="x-z-plane" uID="W1">
                         <name>D150_wing_1</name>
@@ -81,7 +380,7 @@
                                     <element uID="W1_Sec1_Elem1">
                                         <name>Wing_Sec1_Elem1</name>
                                         <description>Wing_Sec1_Element1</description>
-                                        <airfoilUID isLink="True">W_SupCritProf1</airfoilUID>
+                                        <airfoilUID>W_SupCritProf1</airfoilUID>
                                         <transformation uID="W1_Sec1_Elem1_transformation1">
                                             <scaling uID="W1_Sec1_Elem1_transformation1_scaling1">
                                                 <x>6.07437252431</x>
@@ -126,7 +425,7 @@
                                     <element uID="W1_Sec2_Elem1">
                                         <name>Wing_Sec2_Elem1</name>
                                         <description>Wing_Sec2_Element1</description>
-                                        <airfoilUID isLink="True">W_SupCritProf1</airfoilUID>
+                                        <airfoilUID>W_SupCritProf1</airfoilUID>
                                         <transformation uID="W1_Sec2_Elem1_transformation1">
                                             <scaling uID="W1_Sec2_Elem1_transformation1_scaling1">
                                                 <x>6.07437252431</x>
@@ -171,7 +470,7 @@
                                     <element uID="W1_Sec3_Elem1">
                                         <name>Wing_Sec3_Elem1</name>
                                         <description>Wing_Sec3_Element1</description>
-                                        <airfoilUID isLink="True">W_SupCritProf1</airfoilUID>
+                                        <airfoilUID>W_SupCritProf1</airfoilUID>
                                         <transformation uID="W1_Sec3_Elem1_transformation1">
                                             <scaling uID="W1_Sec3_Elem1_transformation1_scaling1">
                                                 <x>3.75760684354</x>
@@ -216,7 +515,7 @@
                                     <element uID="W1_Sec4_Elem1">
                                         <name>Wing_Sec4_Elem1</name>
                                         <description>Wing_Sec4_Element1</description>
-                                        <airfoilUID isLink="True">W_SupCritProf1</airfoilUID>
+                                        <airfoilUID>W_SupCritProf1</airfoilUID>
                                         <transformation uID="W1_Sec4_Elem1_transformation1">
                                             <scaling uID="W1_Sec4_Elem1_transformation1_scaling1">
                                                 <x>1.49551051549</x>
@@ -244,69 +543,69 @@
                                 <length>0</length>
                                 <sweepAngle>0.0</sweepAngle>
                                 <dihedralAngle>0.0</dihedralAngle>
-                                <toSectionUID isLink="True">W1_Sec1</toSectionUID>
+                                <toSectionUID>W1_Sec1</toSectionUID>
                             </positioning>
                             <positioning uID="W1_Pos2">
                                 <name>Wing_Position2</name>
                                 <length>1.86791084904</length>
                                 <sweepAngle>0.0</sweepAngle>
                                 <dihedralAngle>0.0</dihedralAngle>
-                                <fromSectionUID isLink="True">W1_Sec1</fromSectionUID>
-                                <toSectionUID isLink="True">W1_Sec2</toSectionUID>
+                                <fromSectionUID>W1_Sec1</fromSectionUID>
+                                <toSectionUID>W1_Sec2</toSectionUID>
                             </positioning>
                             <positioning uID="W1_Pos3">
                                 <name>Wing_Position3</name>
                                 <length>5.04548439586</length>
                                 <sweepAngle>27.3288085125</sweepAngle>
                                 <dihedralAngle>5.0</dihedralAngle>
-                                <fromSectionUID isLink="True">W1_Sec2</fromSectionUID>
-                                <toSectionUID isLink="True">W1_Sec3</toSectionUID>
+                                <fromSectionUID>W1_Sec2</fromSectionUID>
+                                <toSectionUID>W1_Sec3</toSectionUID>
                             </positioning>
                             <positioning uID="W1_Pos4">
                                 <name>Wing_Position4</name>
                                 <length>12.0034782943</length>
                                 <sweepAngle>27.3288085125</sweepAngle>
                                 <dihedralAngle>5.0</dihedralAngle>
-                                <fromSectionUID isLink="True">W1_Sec3</fromSectionUID>
-                                <toSectionUID isLink="True">W1_Sec4</toSectionUID>
+                                <fromSectionUID>W1_Sec3</fromSectionUID>
+                                <toSectionUID>W1_Sec4</toSectionUID>
                             </positioning>
                         </positionings>
                         <segments>
                             <segment uID="W1_Seg1">
                                 <name>W1_Seg1</name>
                                 <description>W1_Seg1</description>
-                                <fromElementUID isLink="True">W1_Sec1_Elem1</fromElementUID>
-                                <toElementUID isLink="True">W1_Sec2_Elem1</toElementUID>
+                                <fromElementUID>W1_Sec1_Elem1</fromElementUID>
+                                <toElementUID>W1_Sec2_Elem1</toElementUID>
                             </segment>
                             <segment uID="W1_Seg2">
                                 <name>W1_Seg2</name>
                                 <description>W1_Seg2</description>
-                                <fromElementUID isLink="True">W1_Sec2_Elem1</fromElementUID>
-                                <toElementUID isLink="True">W1_Sec3_Elem1</toElementUID>
+                                <fromElementUID>W1_Sec2_Elem1</fromElementUID>
+                                <toElementUID>W1_Sec3_Elem1</toElementUID>
                             </segment>
                             <segment uID="W1_Seg3">
                                 <name>W1_Seg3</name>
                                 <description>W1_Seg3</description>
-                                <fromElementUID isLink="True">W1_Sec3_Elem1</fromElementUID>
-                                <toElementUID isLink="True">W1_Sec4_Elem1</toElementUID>
+                                <fromElementUID>W1_Sec3_Elem1</fromElementUID>
+                                <toElementUID>W1_Sec4_Elem1</toElementUID>
                             </segment>
                         </segments>
                         <componentSegments>
                             <componentSegment uID="W1_CompSeg1">
                                 <name>W1_CompSeg1</name>
                                 <description>W1_CompSeg1</description>
-                                <fromElementUID isLink="True">W1_Sec1_Elem1</fromElementUID>
-                                <toElementUID isLink="True">W1_Sec4_Elem1</toElementUID>
+                                <fromElementUID>W1_Sec1_Elem1</fromElementUID>
+                                <toElementUID>W1_Sec4_Elem1</toElementUID>
                                 <structure>
                                     <upperShell uID="W1_CompSeg1_upperShell1">
                                         <skin>
                                             <material>
-                                                <materialUID isLink="True">aluminium7150</materialUID>
+                                                <materialUID>aluminium7150</materialUID>
                                                 <thickness>0.003</thickness>
                                             </material>
                                         </skin>
                                         <stringer>
-                                            <stringerStructureUID isLink="True">stringerDummy</stringerStructureUID>
+                                            <stringerStructureUID>stringerDummy</stringerStructureUID>
                                             <pitch>0.14</pitch>
                                             <refPoint>
                                                 <eta>0</eta>
@@ -319,12 +618,12 @@
                                     <lowerShell uID="W1_CompSeg1_lowerShell1">
                                         <skin>
                                             <material>
-                                                <materialUID isLink="True">aluminium2024</materialUID>
+                                                <materialUID>aluminium2024</materialUID>
                                                 <thickness>0.003</thickness>
                                             </material>
                                         </skin>
                                         <stringer>
-                                            <stringerStructureUID isLink="True">stringerDummy</stringerStructureUID>
+                                            <stringerStructureUID>stringerDummy</stringerStructureUID>
                                             <pitch>0.14</pitch>
                                             <refPoint>
                                                 <eta>0</eta>
@@ -359,7 +658,7 @@
                                             </ribsPositioning>
                                             <ribCrossSection>
                                                 <material>
-                                                    <materialUID isLink="True">aluminium2024</materialUID>
+                                                    <materialUID>aluminium2024</materialUID>
                                                     <thickness>0.003</thickness>
                                                 </material>
                                             </ribCrossSection>
@@ -388,7 +687,7 @@
                                             </ribsPositioning>
                                             <ribCrossSection>
                                                 <material>
-                                                    <materialUID isLink="True">aluminium2024</materialUID>
+                                                    <materialUID>aluminium2024</materialUID>
                                                     <thickness>0.003</thickness>
                                                 </material>
                                             </ribCrossSection>
@@ -417,7 +716,7 @@
                                             </ribsPositioning>
                                             <ribCrossSection>
                                                 <material>
-                                                    <materialUID isLink="True">aluminium2024</materialUID>
+                                                    <materialUID>aluminium2024</materialUID>
                                                     <thickness>0.002</thickness>
                                                 </material>
                                             </ribCrossSection>
@@ -446,7 +745,7 @@
                                             </ribsPositioning>
                                             <ribCrossSection>
                                                 <material>
-                                                    <materialUID isLink="True">aluminium2024</materialUID>
+                                                    <materialUID>aluminium2024</materialUID>
                                                     <thickness>0.002</thickness>
                                                 </material>
                                             </ribCrossSection>
@@ -475,7 +774,7 @@
                                             </ribsPositioning>
                                             <ribCrossSection>
                                                 <material>
-                                                    <materialUID isLink="True">aluminium2024</materialUID>
+                                                    <materialUID>aluminium2024</materialUID>
                                                     <thickness>0.002</thickness>
                                                 </material>
                                             </ribCrossSection>
@@ -504,7 +803,7 @@
                                             </ribsPositioning>
                                             <ribCrossSection>
                                                 <material>
-                                                    <materialUID isLink="True">aluminium2024</materialUID>
+                                                    <materialUID>aluminium2024</materialUID>
                                                     <thickness>0.002</thickness>
                                                 </material>
                                             </ribCrossSection>
@@ -533,7 +832,7 @@
                                             </ribsPositioning>
                                             <ribCrossSection>
                                                 <material>
-                                                    <materialUID isLink="True">aluminium2024</materialUID>
+                                                    <materialUID>aluminium2024</materialUID>
                                                     <thickness>0.002</thickness>
                                                 </material>
                                             </ribCrossSection>
@@ -611,20 +910,20 @@
                                                     <upperCap>
                                                         <area>0.0003</area>
                                                         <material>
-                                                            <materialUID isLink="True">aluminium2024</materialUID>
+                                                            <materialUID>aluminium2024</materialUID>
                                                             <thickness>0.003</thickness>
                                                         </material>
                                                     </upperCap>
                                                     <lowerCap>
                                                         <area>0.0003</area>
                                                         <material>
-                                                            <materialUID isLink="True">aluminium2024</materialUID>
+                                                            <materialUID>aluminium2024</materialUID>
                                                             <thickness>0.003</thickness>
                                                         </material>
                                                     </lowerCap>
                                                     <web1>
                                                         <material>
-                                                            <materialUID isLink="True">aluminium2024</materialUID>
+                                                            <materialUID>aluminium2024</materialUID>
                                                             <thickness>0.003</thickness>
                                                         </material>
                                                         <relPos>0.0</relPos>
@@ -646,20 +945,20 @@
                                                     <upperCap>
                                                         <area>0.0003</area>
                                                         <material>
-                                                            <materialUID isLink="True">aluminium2024</materialUID>
+                                                            <materialUID>aluminium2024</materialUID>
                                                             <thickness>0.003</thickness>
                                                         </material>
                                                     </upperCap>
                                                     <lowerCap>
                                                         <area>0.0003</area>
                                                         <material>
-                                                            <materialUID isLink="True">aluminium2024</materialUID>
+                                                            <materialUID>aluminium2024</materialUID>
                                                             <thickness>0.003</thickness>
                                                         </material>
                                                     </lowerCap>
                                                     <web1>
                                                         <material>
-                                                            <materialUID isLink="True">aluminium2024</materialUID>
+                                                            <materialUID>aluminium2024</materialUID>
                                                             <thickness>0.003</thickness>
                                                         </material>
                                                         <relPos>1.0</relPos>
@@ -675,7 +974,7 @@
                                         <trailingEdgeDevice uID="W1_CompSeg1_innerFlap">
                                             <name>W1_CompSeg1_innerFlap</name>
                                             <description>Inner flap of the D150</description>
-                                            <parentUID isLink="True">W1_CompSeg1</parentUID>
+                                            <parentUID>W1_CompSeg1</parentUID>
                                             <outerShape>
                                                 <innerBorder>
                                                     <etaLE>
@@ -748,7 +1047,7 @@
                                         <trailingEdgeDevice uID="W1_CompSeg1_outerFlap">
                                             <name>W1_CompSeg1_outerFlap</name>
                                             <description>Outer flap of the D150</description>
-                                            <parentUID isLink="True">W1_CompSeg1</parentUID>
+                                            <parentUID>W1_CompSeg1</parentUID>
                                             <outerShape>
                                                 <innerBorder>
                                                     <etaLE>
@@ -821,7 +1120,7 @@
                                         <trailingEdgeDevice uID="W1_CompSeg1_aileron">
                                             <name>W1_CompSeg1_aileron</name>
                                             <description>All speed aileron of the D150</description>
-                                            <parentUID isLink="True">W1_CompSeg1</parentUID>
+                                            <parentUID>W1_CompSeg1</parentUID>
                                             <outerShape>
                                                 <innerBorder>
                                                     <etaLE>
@@ -909,11 +1208,11 @@
                                 <wingFuselageAttachments>
                                     <wingFuselageAttachment>
                                         <rib1>
-                                            <ribDefinitionUID isLink="True">ribs_CWB</ribDefinitionUID>
+                                            <ribDefinitionUID>ribs_CWB</ribDefinitionUID>
                                             <ribNumber>1</ribNumber>
                                         </rib1>
                                         <rib2>
-                                            <ribDefinitionUID isLink="True">ribs_IW</ribDefinitionUID>
+                                            <ribDefinitionUID>ribs_IW</ribDefinitionUID>
                                             <ribNumber>1</ribNumber>
                                         </rib2>
                                     </wingFuselageAttachment>
@@ -923,58 +1222,70 @@
                                         <name>wing_tank_inner</name>
                                         <geometry>
                                             <border>
-                                                <sparUID isLink="True">frontSpar</sparUID>
+                                                <sparUID>frontSpar</sparUID>
                                             </border>
                                             <border>
-                                                <ribDefinitionUID isLink="True">ribs_CWB</ribDefinitionUID>
+                                                <ribDefinitionUID>ribs_CWB</ribDefinitionUID>
                                                 <ribNumber>1</ribNumber>
                                             </border>
                                             <border>
-                                                <ribDefinitionUID isLink="True">ribs_CWB</ribDefinitionUID>
+                                                <ribDefinitionUID>ribs_CWB</ribDefinitionUID>
                                                 <ribNumber>3</ribNumber>
                                             </border>
                                             <border>
-                                                <sparUID isLink="True">rearSpar</sparUID>
+                                                <sparUID>rearSpar</sparUID>
                                             </border>
                                         </geometry>
+                                        <volume>
+                                            <optimalVolume>6925</optimalVolume>
+                                            <useableVolumeFactor>1</useableVolumeFactor>
+                                        </volume>
                                     </wingFuelTank>
-                                    <wingFuelTank uID="wing_tank_middle">
-                                        <name>wing_tank_middle</name>
+                                    <wingFuelTank uID="wing_tank_center">
+                                        <name>wing_tank_center</name>
                                         <geometry>
                                             <border>
-                                                <ribDefinitionUID isLink="True">ribs_CWB</ribDefinitionUID>
+                                                <ribDefinitionUID>ribs_CWB</ribDefinitionUID>
                                                 <ribNumber>3</ribNumber>
                                             </border>
                                             <border>
-                                                <sparUID isLink="True">frontSpar</sparUID>
+                                                <sparUID>frontSpar</sparUID>
                                             </border>
                                             <border>
-                                                <ribDefinitionUID isLink="True">ribs_OW</ribDefinitionUID>
+                                                <ribDefinitionUID>ribs_OW</ribDefinitionUID>
                                                 <ribNumber>5</ribNumber>
                                             </border>
                                             <border>
-                                                <sparUID isLink="True">rearSpar</sparUID>
+                                                <sparUID>rearSpar</sparUID>
                                             </border>
                                         </geometry>
+                                        <volume>
+                                            <optimalVolume>8250</optimalVolume>
+                                            <useableVolumeFactor>1</useableVolumeFactor>
+                                        </volume>
                                     </wingFuelTank>
                                     <wingFuelTank uID="wing_tank_outer">
                                         <name>wing_tank_outer</name>
                                         <geometry>
                                             <border>
-                                                <ribDefinitionUID isLink="True">ribs_OW</ribDefinitionUID>
+                                                <ribDefinitionUID>ribs_OW</ribDefinitionUID>
                                                 <ribNumber>5</ribNumber>
                                             </border>
                                             <border>
-                                                <sparUID isLink="True">frontSpar</sparUID>
+                                                <sparUID>frontSpar</sparUID>
                                             </border>
                                             <border>
-                                                <ribDefinitionUID isLink="True">ribs_OW</ribDefinitionUID>
+                                                <ribDefinitionUID>ribs_OW</ribDefinitionUID>
                                                 <ribNumber>12</ribNumber>
                                             </border>
                                             <border>
-                                                <sparUID isLink="True">rearSpar</sparUID>
+                                                <sparUID>rearSpar</sparUID>
                                             </border>
                                         </geometry>
+                                        <volume>
+                                            <optimalVolume>880</optimalVolume>
+                                            <useableVolumeFactor>1</useableVolumeFactor>
+                                        </volume>
                                     </wingFuelTank>
                                 </wingFuelTanks>
                             </componentSegment>
@@ -982,203 +1293,38 @@
                     </wing>
                 </wings>
                 <analyses>
-                    <global>
-                        <loadApplicationPointSets>
-                            <loadApplicationPointSet uID="pointSet1">
-                                <componentUID>W1</componentUID>
-                                <loadReferenceLine>
-                                    <loadReferencePoint>
-                                        <eta>0.0</eta>
-                                        <xsi>0.3</xsi>
-                                        <referenceUID>W1_CompSeg1</referenceUID>
-                                    </loadReferencePoint>
-                                    <loadReferencePoint>
-                                        <eta>0.12</eta>
-                                        <xsi>0.3</xsi>
-                                        <relHeight>0.5</relHeight>
-                                        <referenceUID>W1_CompSeg1</referenceUID>
-                                    </loadReferencePoint>
-                                    <loadReferencePoint>
-                                        <eta>1.</eta>
-                                        <xsi>0.4</xsi>
-                                        <relHeight>0.5</relHeight>
-                                        <referenceUID>W1_CompSeg1</referenceUID>
-                                    </loadReferencePoint>
-                                </loadReferenceLine>
-                                <loadApplicationPoints>
-                                    <pointIDs mapType="vector">1;2;3;4;5;6;7;8;9;10;11;12;13;14;15;16;17;18;19;20;21;22;23;24;25;26;27;28;29;30;31</pointIDs>
-                                    <x mapType="vector">14.56120;14.61802;14.67484;14.72619;14.86287;15.12919;15.39551;15.66182;15.92814;16.23375;16.36809;16.66316;16.92172;17.15948;17.39431;17.62913;17.86396;18.09878;18.33361;18.56843;18.80326;19.03808;19.27291;19.50774;19.74256;19.97739;20.21221;20.44704;20.68186;20.87617;21.13479</x>
-                                    <y mapType="vector">0.00000;0.70536;1.41072;2.04815;2.65147;3.25180;3.85212;4.45245;5.05278;5.74168;6.04449;6.70964;7.29247;7.82843;8.35777;8.88711;9.41645;9.94579;10.47512;11.00446;11.53380;12.06314;12.59248;13.12181;13.65115;14.18049;14.70983;15.23917;15.76850;16.20651;16.78948</y>
-                                    <z mapType="vector">-1.19988;-1.20524;-1.21059;-1.21544;-1.19993;-1.15479;-1.10965;-1.06451;-1.01937;-0.96756;-0.94479;-0.89478;-0.85095;-0.81065;-0.77085;-0.73105;-0.69124;-0.65144;-0.61164;-0.57183;-0.53203;-0.49223;-0.45242;-0.41262;-0.37281;-0.33301;-0.29321;-0.25340;-0.21360;-0.18067;-0.13683</z>
-                                </loadApplicationPoints>
-                            </loadApplicationPointSet>
-                        </loadApplicationPointSets>
-                    </global>
-                    <loadAnalysis>
-                        <loadCases>
-                            <flightLoadCases>
-                                <flightLoadCase uID="MTOfF.OC000.LLFPD">
-                                    <name>MTOfF.OC000.LLFPD</name>
-                                    <specification>
-                                        <environment>
-                                            <atmosphericModel>ISA</atmosphericModel>
-                                        </environment>
-                                        <altitude>0.0</altitude>
-                                        <machNumber>0.5289</machNumber>
-                                        <loadConditions>
-                                            <safetyFactor>
-                                                1.5
-                                            </safetyFactor>
-                                            <sizingType>limitLoad</sizingType>
-                                            <designSpeed>VC</designSpeed>
-                                            <accelerations>
-                                                <loadFactors>
-                                                    <nX>0.0</nX>
-                                                    <nY>0.0</nY>
-                                                    <nZ>-1.0</nZ>
-                                                </loadFactors>
-                                                <rotation>
-                                                    <x>0.0</x>
-                                                    <y>0.0</y>
-                                                    <z>0.0</z>
-                                                </rotation>
-                                            </accelerations>
-                                        </loadConditions>
-                                        <weightAndBalanceUID>MTOfF</weightAndBalanceUID>
-                                        <configuration>
-                                            <configurationUID>aconf1</configurationUID>
-                                        </configuration>
-                                    </specification>
-                                    <loadData>
-                                        <nodalLoadSets>
-                                            <loadSet uID="nodalLoadSet.MTOfF.OC000.LLFPD">
-                                                <pointSetUID>pointSet1</pointSetUID>
-                                                <fx mapType="vector">0.000000;-0.000015;-0.000007;-0.000003;0.000006;0.000016;0.000020;0.000033;0.000036;0.000042;-0.000053;0.000050;0.000032;0.000056;0.000034;0.000059;0.000025;0.000035;0.000083;0.000000;0.000081;0.000000;0.000076;0.000024;0.000025;0.000023;0.000000;0.000020;0.000000;0.000016;0.000000</fx>
-                                                <fy mapType="vector">-38.023420;28.706107;110.705695;-6.679050;1346.913989;1776.622983;227.501041;1537.846976;1654.849975;402.151074;-5142.002819;849.687869;1169.554980;471.228263;1105.029976;428.665157;941.259381;650.712274;571.558438;929.433800;246.244240;1025.712000;238.470745;505.505283;284.718483;268.014385;273.804000;183.151288;207.343900;98.002220;91.362260</fy>
-                                                <fz mapType="vector">-1227.765000;-2500.910000;-6590.370000;16992.910000;-10370.230000;-13381.600000;18410.718000;-12987.334000;-16682.014000;433.913000;12767.570000;-7200.992000;-13895.212000;-2429.468000;-13564.194000;-2503.597000;-12206.410000;-7500.653000;-4386.615000;-13404.000000;-407.335000;-14793.010000;-937.836000;-6595.941300;-3395.323300;-3285.905100;-3947.065000;-2181.977900;-2976.591000;-979.803700;-1419.138000</fz>
-                                                <mx mapType="vector">7.421633;89.882931;216.995270;651.943510;412.478530;45.718610;-11001.296360;-56.038620;95.238770;-365.555650;-8849.591000;-916.186000;-2907.356600;-560.087000;-4089.087600;488.861760;-3680.808700;-758.448600;-1939.682100;-1651.739000;-565.759800;-2545.965000;-743.011230;-1424.544600;-1561.834300;-1099.864400;-1275.328000;-890.890050;-1073.204000;8.534749;-1.534866</mx>
-                                                <my mapType="vector">6384.641000;-19044.739000;-18444.610000;8838.963000;-16250.376000;-24752.307900;-20609.187000;-14448.339400;-20651.804700;-5776.298900;23140.020000;-9328.083700;-12557.076200;-2180.044700;-12198.000960;282.456630;-10955.708550;-849.747200;-6363.901400;-4395.490000;-1801.953000;-6775.068000;-1643.815600;-4351.786150;-3643.524800;-3259.008785;-3393.988000;-2451.494260;-2856.084000;-386.182700;-726.677700</my>
-                                                <mz mapType="vector">-32.978660;87.748404;-58.600200;511.639086;-1106.920012;-1774.148012;420.927900;-1023.747005;-1450.915002;-443.642296;14325.609562;-692.427103;-877.993900;-174.496504;-845.200208;8.233204;-754.178210;-80.482700;-450.851712;-303.307900;-138.438104;-468.520500;-129.452996;-298.418408;-260.543893;-224.908005;-234.331700;-170.606201;-197.461800;-26.427080;-45.748040</mz>
-                                            </loadSet>
-                                        </nodalLoadSets>
-                                        <cutLoadSets>
-                                            <loadSet uID="cutLoadSet1">
-                                                <pointSetUID>pointSet1</pointSetUID>
-                                                <fx mapType="vector">0.001529;0.001532;0.001545;-4921.682649;-4925.403528;-4388.245269;-3679.734793;-3590.264456;-2976.888996;-2316.677543;-4487.497013;-4205.508227;-3866.605304;-3399.874030;-3212.019916;-2771.011003;-2600.105676;-2224.416019;-1964.751587;-1736.811376;-1365.757376;-1267.646699;-858.154999;-763.107362;-561.339651;-447.716920;-340.754681;-231.444981;-158.354888;-75.578558;-36.480570</fx>
-                                                <fy mapType="vector">12438.050784;12476.070784;12447.370667;2733.170000;1555.699000;1045.550000;351.956000;-1138.546000;-1641.115000;-1993.405000;1581.637000;1424.140600;1148.220900;1045.880900;783.914400;717.559500;499.702300;488.628300;415.647000;198.195300;281.356100;84.409600;176.220900;23.337700;20.208700;-3.824180;-20.193860;4.189690;-11.418850;6.181900;-15.247030</fy>
-                                                <fz mapType="vector">-133146.100000;-131918.400000;-129417.500000;-123316.700000;-140268.800000;-129837.700000;-116375.100000;-134726.560000;-121672.600000;-104925.390000;-125450.190000;-118397.490000;-111159.750000;-97223.610000;-94770.000000;-81168.150000;-78643.240000;-66406.370000;-58882.370000;-54469.909000;-41039.109000;-40617.034000;-25794.444000;-24843.664000;-18231.453000;-14826.191000;-11531.154500;-7576.187500;-5387.811900;-2405.208900;-1421.526000</fz>
-                                                <mx mapType="vector">-1331297.200000;-1247306.700000;-1164991.300000;-1117802.800000;-1019866.900000;-939114.700000;-870494.700000;-777708.800000;-701315.100000;-628387.100000;-576792.300000;-491411.900000;-423293.680000;-368829.480000;-312633.390000;-265311.090000;-218720.090000;-180082.110000;-144593.750000;-112846.860000;-88594.340000;-64556.731000;-49528.400000;-34677.292000;-24225.219000;-15397.043000;-8806.080300;-4467.431400;-1409.400700;-310.911401;288.044000</mx>
-                                                <my mapType="vector">260049.000000;253664.300000;272709.000000;-164907.990000;-173282.400000;-158499.850000;-135744.900000;-112543.610000;-99228.280000;-80261.090000;-93128.960000;-93460.031000;-84503.305000;-71803.340000;-69573.074000;-56720.180000;-57173.103000;-45632.773000;-44549.866000;-37924.386900;-33224.808400;-31341.358000;-24097.644100;-22289.161900;-17720.278900;-13747.574500;-10311.710450;-6683.037470;-4074.100390;-1020.549460;-668.719500</my>
-                                                <mz mapType="vector">38463.742128;38496.722581;38408.973031;50145.246000;46881.255000;43998.365000;41705.913000;37241.506000;35329.872000;33667.143000;19914.546800;16891.678300;14491.879900;12498.667100;10601.293400;8898.460200;7370.377810;5993.395130;4826.081660;3779.131530;2940.121270;2191.004600;1642.866110;1191.019380;836.237440;552.886898;335.223414;178.676698;72.979931;18.395448;0.813304</mz>
-                                            </loadSet>
-                                        </cutLoadSets>
-                                    </loadData>
-                                </flightLoadCase>
-                                <flightLoadCase uID="MTOfF.Oa000.LLFPU">
-                                    <name>MTOfF.Oa000.LLFPU</name>
-                                    <specification>
-                                        <environment>
-                                            <atmosphericModel>ISA</atmosphericModel>
-                                        </environment>
-                                        <altitude>0.0</altitude>
-                                        <machNumber>0.3743</machNumber>
-                                        <loadConditions>
-                                            <safetyFactor>
-                                                1.5
-                                            </safetyFactor>
-                                            <sizingType>limitLoad</sizingType>
-                                            <designSpeed>VC</designSpeed>
-                                            <accelerations>
-                                                <loadFactors>
-                                                    <nX>0.0</nX>
-                                                    <nY>0.0</nY>
-                                                    <nZ>2.5</nZ>
-                                                </loadFactors>
-                                                <rotation>
-                                                    <x>0.0</x>
-                                                    <y>0.0</y>
-                                                    <z>0.0</z>
-                                                </rotation>
-                                            </accelerations>
-                                        </loadConditions>
-                                        <weightAndBalanceUID>MTOfF</weightAndBalanceUID>
-                                        <configuration>
-                                            <configurationUID>aconf1</configurationUID>
-                                        </configuration>
-                                    </specification>
-                                    <loadData>
-                                        <nodalLoadSets>
-                                            <loadSet uID="nodalLoadSet.MTOfF.Oa000.LLFPU">
-                                                <pointSetUID>pointSet1</pointSetUID>
-                                                <fx mapType="vector">0.000462;0.000231;0.000314;0.000357;0.000656;0.000448;-0.004840;0.000521;0.000676;0.000624;0.000643;0.000444;0.000623;0.000318;0.000298;0.000103;0.000000;0.000343;0.000421;0.000954;0.000932;0.001179;0.001099;0.001220;0.000995;0.001357;0.000946;0.001248;0.000943;0.001585;0.000361;0.000425;0.000302;0.000302;0.000288;0.000267;0.000245;0.000241;0.000000;0.000000</fx>
-                                                <fy mapType="vector">-6.045221;-0.124200;-3.985510;-0.000000;0.000000;-2.973892;-3.450085;-0.000000;0.000000;-0.000000;-7.897459;-8.873242;0.000000;0.000000;0.000000;0.000000;0.000000;-2.095335;0.000033;0.000126;0.000183;0.000319;-20.504223;-30.273637;0.000569;0.000984;0.000853;0.001280;-345.728250;-250.262529;0.000501;0.000657;0.000521;-1246.704425;-958.188169;0.000688;0.000748;118.031208;3.148453;-89.102790</fy>
-                                                <fz mapType="vector">-6707.640000;-8910.465500;16134.990000;-14955.280000;-26778.729999;-7208.370000;-25780.340000;-19531.640000;-25015.410000;-22891.560000;-30729.206000;-25395.288000;-29064.510000;-18842.520000;-25702.150000;-17765.870000;-138640.900000;-47383.170000;-17765.880000;-29064.530000;-23156.480000;-25702.180000;-19481.764000;-19918.221000;-19531.720000;-27301.260000;-19531.740000;-25015.550000;-20728.104000;-31208.886000;-6467.263000;-7541.465000;-5390.617000;-18549.559000;-15504.281000;-5390.623000;-5390.625001;-13413.811000;-214.017800;-6342.755000</fz>
-                                                <mx mapType="vector">0.000000;0.000000;0.000000;0.000000;0.000000;0.000000;-0.000000;0.000000;0.000000;0.000000;0.000000;0.000000;0.000000;0.000000;0.000000;0.000000;0.000000;-0.000001;-0.000003;-0.000012;-0.000018;-0.000031;-0.000037;-0.000053;-0.000055;-0.000094;-0.000021;0.000061;0.000127;0.000134;0.000134;0.000225;0.000216;0.000281;0.000354;0.000437;0.000530;0.000632;0.000003;0.000000</mx>
-                                                <my mapType="vector">-1035.588800;2012.956000;3456.994000;1046.870001;2918.882000;-1013.745000;2806.108275;937.518800;399.997000;984.337600;2248.417400;-2737.304000;-1165.486000;-472.947000;-1750.316000;-2382.404000;1177797.884000;-5029.449700;-1316.451000;-613.260500;1296.764000;3212.774000;2296.604400;3991.957400;1543.007000;2047.596000;1894.579000;923.074500;406.073900;-1286.807200;71.139820;97.284880;-145.546800;2581.295400;-3042.131000;-787.031100;-1002.656000;-612.861500;-64.603530;57.677720</my>
-                                                <mz mapType="vector">0.067147;-0.037476;0.322733;-0.000000;-0.000000;-0.715936;0.790439;-0.000000;-0.000000;0.000000;-1.891372;2.045076;-0.000000;-0.000000;0.000000;0.000000;0.000000;0.541154;-0.000001;0.000008;0.000019;0.000051;-5.111531;6.625495;0.000050;0.000091;0.000089;0.000062;-76.425002;61.651483;0.000006;0.000012;-0.000014;-278.775239;234.030333;-0.000100;-0.000139;8.914191;-0.950394;-0.810254</mz>
-                                            </loadSet>
-                                        </nodalLoadSets>
-                                        <cutLoadSets>
-                                            <loadSet uID="cutLoadSet.MTOfF.Oa000.LLFPU">
-                                                <pointSetUID>pointSet1</pointSetUID>
-                                                <fx mapType="vector">0.000000;0.000037;0.000018;0.000007;-0.000015;-0.000039;-0.000050;-0.000081;-0.000091;-0.000105;0.000133;-0.000124;-0.000079;-0.000139;-0.000086;-0.000147;-0.000063;-0.000087;-0.000208;0.000000;-0.000203;0.000000;-0.000190;-0.000060;-0.000062;-0.000057;0.000000;-0.000049;0.000000;-0.000041;0.000000</fx>
-                                                <fy mapType="vector">116.132500;-52.458752;-217.653388;-11.925791;-3772.388974;-4883.520958;-351.326654;-4062.261939;-4203.663939;-1512.977935;14376.709547;-2673.668924;-2820.313949;-1045.384906;-3049.563940;-851.922693;-2728.684953;-1248.324935;-1834.437845;-1958.662000;-895.461050;-2419.679000;-852.165963;-1409.957958;-1038.459957;-953.881862;-998.072200;-743.379169;-801.717700;-331.881076;-251.979500</fy>
-                                                <fz mapType="vector">-3471.472000;25485.030000;31912.120000;-44603.574000;29829.100000;39373.230000;-48930.581000;35800.960000;42750.720000;6097.770000;-52006.580000;25991.490000;33123.959000;4176.850000;38023.519000;3085.615000;35926.474000;13288.791000;16812.273000;28243.800000;5052.355000;34895.000000;6035.037000;18596.973000;13198.473000;12307.068000;14388.200000;9570.797000;11521.950000;3677.569700;3938.009000</fz>
-                                                <mx mapType="vector">-25.488380;-225.623191;-531.778790;-1663.250420;-1073.310810;-110.019900;27495.290660;129.916180;-242.371400;921.761020;25429.173000;1409.847000;7641.948400;1411.070600;9326.841000;-3163.389000;9355.244000;724.506740;4397.353000;4083.507000;385.853600;6980.687000;-306.684420;3590.947100;2743.898200;1882.776000;2569.345000;1513.703140;2006.654000;-24.397968;4.762501</mx>
-                                                <my mapType="vector">-12211.760000;52555.817000;60261.660000;-44560.048000;38409.815000;61832.700000;48542.900000;31611.548600;49324.736800;16760.730000;-92846.980000;16496.809000;32970.000400;5477.477700;28109.687400;-5873.310500;27795.841400;-994.638300;14705.751100;10865.930000;1767.119900;18575.690000;-1649.808900;10957.652870;6019.388600;5840.195963;6837.221000;4229.502660;5340.051000;-368.832450;2233.664000</my>
-                                                <mz mapType="vector">251.596700;-193.210784;471.671724;-1704.582965;1939.626030;4379.106031;-1317.674751;2240.066013;3476.777005;1283.440989;-37918.788906;1289.493007;2293.685000;443.585510;1944.680019;-378.848281;1913.358024;-15.131974;1043.661029;749.860300;156.458709;1285.116000;-75.381370;751.853119;437.585082;402.765613;472.111100;295.403903;369.562600;-29.904680;152.807000</mz>
-                                            </loadSet>
-                                        </cutLoadSets>
-                                    </loadData>
-                                </flightLoadCase>
-                            </flightLoadCases>
-                        </loadCases>
-                        <loadEnvelopes>
-                            <loadEnvelope>
-                                <name>Example load envelope</name>
-                                <description>This node contains a list of load case uIDs (loadCaseUIDs) for a given point set (pointSetUID) which are defining the dimensioning loads</description>
-                                <pointSetUID>pointSet1</pointSetUID>
-                                <loadCaseUIDs>
-                                    <uID>nodalLoadSet.MTOfF.Oa000.LLFPU</uID>
-                                    <uID>cutLoadSet.MTOfF.Oa000.LLFPU</uID>
-                                </loadCaseUIDs>
-                            </loadEnvelope>
-                        </loadEnvelopes>
-                    </loadAnalysis>
                     <weightAndBalance>
                         <operationalCases>
-                            <operationalCase uID="MTOfF">
-                                <description>Mass cases by MONA (MassModel) 05-Mar-2020 13:19:26</description>
-                                <mass mapType="vector">69644</mass>
+                            <operationalCase uID="defuelingStrategy">
+                                <name>Defueling</name>
+                                <configurations>
+                                    <configuration>
+                                        <uID>fuelConfig1</uID>
+                                        <vectorIndex>1</vectorIndex>
+                                    </configuration>
+                                    <configuration>
+                                        <uID>innerTankAfterEngineStart</uID>
+                                        <vectorIndex>4</vectorIndex>
+                                    </configuration>
+                                    <configuration>
+                                        <uID>tanksAfterTaxi</uID>
+                                        <vectorIndex>7</vectorIndex>
+                                    </configuration>
+                                    <configuration>
+                                        <uID>tanksAfterTakeOff</uID>
+                                        <vectorIndex>9</vectorIndex>
+                                    </configuration>
+                                    <configuration>
+                                        <uID>fuelAfterLanding</uID>
+                                        <vectorIndex>15</vectorIndex>
+                                    </configuration>
+                                </configurations>
+                                <mass>NaN;NaN;NaN;NaN;NaN;NaN;NaN;NaN;NaN;NaN;NaN;NaN;NaN;NaN;NaN</mass>
                                 <coG>
-                                    <x mapType="vector">16.1039</x>
-                                    <y mapType="vector">-1.39481e-05</y>
-                                    <z mapType="vector">-0.657332</z>
+                                    <x>NaN;NaN;NaN;NaN;NaN;NaN;NaN;NaN;NaN;NaN;NaN;NaN;NaN;NaN;NaN</x>
+                                    <y>NaN;NaN;NaN;NaN;NaN;NaN;NaN;NaN;NaN;NaN;NaN;NaN;NaN;NaN;NaN</y>
+                                    <z>NaN;NaN;NaN;NaN;NaN;NaN;NaN;NaN;NaN;NaN;NaN;NaN;NaN;NaN;NaN</z>
                                 </coG>
-                                <massInertia>
-                                    <Jxx mapType="vector">1.16331e+06</Jxx>
-                                    <Jyy mapType="vector">2.75098e+06</Jyy>
-                                    <Jzz mapType="vector">3.82423e+06</Jzz>
-                                    <Jxy mapType="vector">-16.8271</Jxy>
-                                    <Jxz mapType="vector">81973.2</Jxz>
-                                    <Jyz mapType="vector">-4.34021</Jyz>
-                                </massInertia>
-                                <mPayload>
-                                    <mass mapType="vector">0.</mass>
-                                    <coG>
-                                        <x mapType="vector">0.</x>
-                                        <y mapType="vector">0.</y>
-                                        <z mapType="vector">0.</z>
-                                    </coG>
-                                    <massInertia>
-                                        <Jxx mapType="vector">0.</Jxx>
-                                        <Jyy mapType="vector">0.</Jyy>
-                                        <Jzz mapType="vector">0.</Jzz>
-                                        <Jxy mapType="vector">0.</Jxy>
-                                        <Jxz mapType="vector">0.</Jxz>
-                                        <Jyz mapType="vector">0.</Jyz>
-                                    </massInertia>
-                                </mPayload>
                             </operationalCase>
                         </operationalCases>
                     </weightAndBalance>

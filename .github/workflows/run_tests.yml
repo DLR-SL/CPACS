@@ -3,22 +3,25 @@ on: [push]
 jobs:
   build-linux:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -l {0}
 
     steps:
     - uses: actions/checkout@v3
-    - name: Set up Python 3.9
-      uses: actions/setup-python@v3
+    - uses: conda-incubator/setup-miniconda@v2
       with:
-        python-version: 3.9
-    - name: Add conda to system path
+        activate-environment: anaconda-client-env
+        auto-activate-base: false
+    - name: Create new conda environment
       run: |
-        # $CONDA is an environment variable pointing to the root of the miniconda directory
-        echo $CONDA/bin >> $GITHUB_PATH
-    - name: Install tixi
+        conda create -n cpacs python=3.9
+    - name: Activate new conda environment
       run: |
-        conda install lxml tixi3 -c dlr-sc
-    - name: Test with pytest
+        conda activate cpacs
+    - name: Install python modules
       run: |
-        conda install pytest
-        pwd
-        pytest -q ./scripts/tests/
+        conda install pytest lxml tixi3 -c dlr-sc
+    - name: Run pytest
+      run: |
+        pytest
