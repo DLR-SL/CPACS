@@ -48,32 +48,36 @@ jobs:
       run: 7z a -tzip .\build\doc\htmlDocs.zip .\build\doc\*
 
     - name: Upload Artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: documentation-artifacts
         path: |
           .\build\doc\*.chm
           .\build\doc\htmlDocs.zip
         
-#  deploy:
-#    needs: build
-#    environment:
-#      name: github-pages
-#      url: ${{ steps.deployment.outputs.page_url }}
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Checkout
-#        uses: actions/checkout@v3
-#      - name: Setup Pages
-#        uses: actions/configure-pages@v3
-#        with:
-#          branch: gh-pages
-#          folder: .
-#      - name: Extract HTML Docs
-#        run: |
-#          7z x -y documentation-artifacts/htmlDocs.zip -ohtmlDocs
-#      - name: Deploy to GitHub Pages
-#        id: deployment
-#        uses: actions/deploy-pages@v2 
-#        with:
-#          token: ${{ secrets.GITHUB_TOKEN }}
+  deploy:
+    needs: build
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+        with:
+          branch: gh-pages
+          folder: .
+      - name: Download html zip
+        uses: actions/download-artifact@v3
+        with:
+          name: documentation-artifacts
+      - name: Extract HTML Docs
+        run: |
+          7z x -y documentation-artifacts/htmlDocs.zip -ohtmlDocs
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2 
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
