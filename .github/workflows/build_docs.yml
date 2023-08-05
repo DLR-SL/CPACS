@@ -71,20 +71,19 @@ jobs:
         uses: actions/configure-pages@v3
         with:
           branch: gh-pages
-          folder: ./htmlDocs/
+          folder: .
       - name: Download html zip
         uses: actions/download-artifact@v3
         with:
           name: documentation-artifacts
       - name: Extract HTML Docs
         run: |
-          7z x -y htmlDocs.zip -ohtmlDocs
+          7z x -y htmlDocs.zip
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
         with:
           name: htmlContent
-          path: |
-            .\htmlDocs\*
+          path: .
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2 
