@@ -7,12 +7,6 @@ on:
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
-
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
-permissions:
-  contents: read
-  pages: write
-  id-token: write
   
 # Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
 # However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
@@ -57,9 +51,18 @@ jobs:
         
   deploy:
     needs: build
+
+    # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
+    permissions:
+      pages: write      # to deploy to Pages
+      id-token: write   # to verify the deployment originates from an appropriate source
+      
+    # Deploy to the github-pages environment
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+
+    # Specify runner + deployment step
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -76,6 +79,12 @@ jobs:
       - name: Extract HTML Docs
         run: |
           7z x -y htmlDocs.zip -ohtmlDocs
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: htmlContent
+          path: |
+            .\htmlDocs\*
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2 
