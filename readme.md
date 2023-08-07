@@ -3,6 +3,10 @@ The Common Parametric Aircraft Configuration Schema (**CPACS**) is a data defini
 
 ![Centralized vs Decentralized](/development/images/centralized.png)
 
+## CPACS Documentation
+
+The online documentation of the current development status can be viewed at [this link](http://dlr-sl.github.io/CPACS/). Further documentation of the official releases can be found at [cpacs.de](https://www.cpacs.de/pages/documentation.html). 
+
 ## CPACS Homepage
 
 The CPACS homepage contains information about new developments, releases and other related projects. Checkout the available content at [www.cpacs.de](http://www.cpacs.de).

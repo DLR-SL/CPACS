@@ -1,0 +1,118 @@
+<cpacs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../schema/cpacs_schema.xsd">
+    <header>
+        <name>Simple battery example</name>
+        <version>1.0.0</version>
+        <versionInfos>
+            <versionInfo version="1.0.0">
+                <creator>DLR-SL</creator>
+                <timestamp>2022-12-07T11:56:46.259694</timestamp>
+                <description>A simple, unrealistic, example of a battery used in an aircraft</description>
+                <cpacsVersion>3.5</cpacsVersion>
+            </versionInfo>
+        </versionInfos>
+    </header>
+    <vehicles>
+
+        <!-- (1) Pre-define the electric energy carrier -->
+        <energyCarriers>
+            <electricEnergyCarriers>
+                <electricEnergyCarrier uID="liIon">
+                    <name>Lithium-Ion</name>
+                    <maxCRate>2</maxCRate>
+                    <nominalCRate>1</nominalCRate>
+                </electricEnergyCarrier>
+            </electricEnergyCarriers>
+        </energyCarriers>
+
+        <!-- (2) Pre-define a battery -->
+        <systemElements>
+            <batteries>
+                <battery uID="battery">
+                    <name>Battery</name>
+                    <geometricBaseType>cube</geometricBaseType>
+                    <electricEnergyCarrierUID>liIon</electricEnergyCarrierUID>
+                </battery>
+            </batteries>
+        </systemElements>
+
+        <!-- (3) Define the actual aircraft -->
+        <aircraft>
+            <model uID="aircraft">
+                <name>Aircraft dummy</name>
+
+                <!-- (4) "Install" (instantiate) battery in the aircraft model -->
+                <systems>
+                    <genericSystems>
+                        <genericSystem uID="system">
+                            <name>Generic System</name>
+                            <description>... with only a battery</description>
+                            <components>
+                                <component uID="battery_inst1">
+                                    <name>Battery 1</name>
+                                    <description>parentUID would usually refer to fuselage or wing</description>
+                                    <systemElementUID>battery</systemElementUID>
+                                    <parentUID>aircraft</parentUID>
+                                    <transformation>
+                                        <translation>
+                                            <x>5</x>
+                                            <y>0</y>
+                                            <z>1</z>
+                                        </translation>
+                                    </transformation>
+                                </component>
+                                <component uID="battery_inst2">
+                                    <name>Battery 2</name>
+                                    <description>parentUID would usually refer to fuselage or wing</description>
+                                    <systemElementUID>battery</systemElementUID>
+                                    <parentUID>aircraft</parentUID>
+                                    <transformation>
+                                        <translation>
+                                            <x>5.2</x>
+                                            <y>0</y>
+                                            <z>1</z>
+                                        </translation>
+                                    </transformation>
+                                </component>
+                                <component uID="battery_inst3">
+                                    <name>Battery 3</name>
+                                    <description>parentUID would usually refer to fuselage or wing</description>
+                                    <systemElementUID>battery</systemElementUID>
+                                    <parentUID>aircraft</parentUID>
+                                    <transformation>
+                                        <translation>
+                                            <x>5.4</x>
+                                            <y>0</y>
+                                            <z>1</z>
+                                        </translation>
+                                    </transformation>
+                                </component>
+                            </components>
+                        </genericSystem>
+                    </genericSystems>
+                </systems>
+
+                <!-- (5) Define battery state -->
+                <configurationDefinitions>
+                    <configurationDefinition>
+                        <baseConfiguration uID="initialConfiguration">
+                            <name>Initial configuration</name>
+                            <description>At the ramp, batteries charged, ready for taxi and take-off</description>
+                            <energyConfiguration>
+                                <storedElectricEnergies>
+                                    <storedElectricEnergy>
+                                        <instantiatedBatteryUIDs>
+                                            <uID>battery_inst1</uID>
+                                            <uID>battery_inst2</uID>
+                                            <uID>battery_inst3</uID>
+                                        </instantiatedBatteryUIDs>
+                                        <chargeLevel>0.98</chargeLevel>
+                                    </storedElectricEnergy>
+                                </storedElectricEnergies>
+                            </energyConfiguration>
+                        </baseConfiguration>
+                    </configurationDefinition>
+                </configurationDefinitions>
+            </model>
+        </aircraft>
+    </vehicles>
+</cpacs>
