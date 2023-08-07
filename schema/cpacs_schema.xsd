@@ -17419,7 +17419,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     </xsd:element>
                     <xsd:element name="cpacsVersion" minOccurs="0" type="xsd:string">
                         <xsd:annotation>
-                            <xsd:documentation>DEPRECATED: Should only be set to allow TiGL to open the file until TiGL is adopted accordingly. 
+                            <xsd:documentation>DEPRECATED: Should only be set to allow TiGL to open the file until TiGL is adopted accordingly.
                                 Will be replaced by the cpacsVersion element in versionInfos.
                             </xsd:documentation>
                         </xsd:annotation>
@@ -21357,6 +21357,36 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
+    <xsd:complexType name="mAxleType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Axle</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para/>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="massDescription" type="genericMassType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Axle mass description
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="mShaft" minOccurs="0" type="singleGenericMassType"/>
+                    <xsd:element name="mWheels" minOccurs="0" type="mWheelsType"/>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
     <xsd:complexType name="mBellyFairingsType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -21402,6 +21432,36 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="mBogieType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Bogie</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para/>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="massDescription" type="genericMassType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Bogie mass description
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="mAxle" minOccurs="0" type="mAxleType"/>
+                    <xsd:element name="mStrut" minOccurs="0" type="mWheelsType"/>
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
@@ -24003,7 +24063,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
-                <xsd:all>
+                <xsd:sequence>
                     <xsd:element name="massDescription" type="genericMassType">
                         <xsd:annotation>
                             <xsd:documentation>
@@ -24011,9 +24071,8 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="mNoseGears" minOccurs="0" type="mNoseGearsType"/>
-                    <xsd:element name="mMainGears" minOccurs="0" type="mMainGearsType"/>
-                </xsd:all>
+                    <xsd:element name="mLandingGear" minOccurs="0" maxOccurs="unbounded" type="mLandingGearType"/>
+                </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -24037,6 +24096,42 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:element name="massDescription" type="genericMassType"/>
                     <xsd:element name="mLandingGearSupport" minOccurs="0" maxOccurs="unbounded" type="singleGenericMassType"/>
                 </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="mLandingGearType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>mLandingGearType</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para/>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="massDescription" type="genericMassType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Landing Gear mass description
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="mMainStrut" minOccurs="0" type="singleGenericMassType"/>
+                    <xsd:element name="mPiston" minOccurs="0" type="singleGenericMassType"/>
+                    <xsd:element name="mDragStrut" minOccurs="0" type="singleGenericMassType"/>
+                    <xsd:element name="mPintleStruts" minOccurs="0" type="mPintleStrutsType"/>
+                    <xsd:element name="mSideStruts" minOccurs="0" type="mSideStrutsType"/>
+                    <xsd:element name="mMainActuator" minOccurs="0" type="singleGenericMassType"/>
+                    <xsd:element name="mAxle" minOccurs="0" type="mAxleType"/>
+                    <xsd:element name="mBogie" minOccurs="0" type="mBogieType"/>
+                </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -24082,29 +24177,6 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                 <xsd:sequence>
                     <xsd:element name="massDescription" type="genericMassType"/>
                     <xsd:element name="mLining" minOccurs="0" maxOccurs="unbounded" type="singleGenericMassType"/>
-                </xsd:sequence>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="mMainGearsType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>mMainGearsType</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para/>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element name="massDescription" type="genericMassType"/>
-                    <xsd:element name="mMainGear" minOccurs="0" maxOccurs="unbounded" type="singleGenericMassType"/>
                 </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
@@ -24286,29 +24358,6 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="mNoseGearsType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>mNoseGearsType</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para/>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element name="massDescription" type="genericMassType"/>
-                    <xsd:element name="mNoseGear" minOccurs="0" maxOccurs="unbounded" type="singleGenericMassType"/>
-                </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -24577,6 +24626,35 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
+    <xsd:complexType name="mPintleStrutsType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Pintle struts</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para/>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="massDescription" type="genericMassType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Pintle struts mass description
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="mPintleStrut" minOccurs="0" maxOccurs="2" type="singleGenericMassType"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
     <xsd:complexType name="mPowerUnitsType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -24802,6 +24880,35 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:element name="mCells" minOccurs="0" type="mCellsType"/>
                     <xsd:element name="mStringers" minOccurs="0" type="mStringersType"/>
                 </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="mSideStrutsType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Side Struts</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para/>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="massDescription" type="genericMassType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Side struts mass description
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="mSideStrut" minOccurs="0" maxOccurs="2" type="singleGenericMassType"/>
+                </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -25325,6 +25432,35 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             <xsd:documentation>Water reservoir</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="mWheelsType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Wheels</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para/>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="massDescription" type="genericMassType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Wheels mass description
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="mWheel" minOccurs="0" maxOccurs="unbounded" type="singleGenericMassType"/>
                 </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
