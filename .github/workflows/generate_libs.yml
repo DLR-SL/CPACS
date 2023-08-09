@@ -1,0 +1,36 @@
+name: Generate CPACS Libs
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  generate-cpacs-lib:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@vv
+
+      - name: Set up Python
+        uses: actions/checkout@v3
+        uses: actions/setup-python@v4
+        with:
+            python-version: '3.10' 
+
+      - name: Install generateDS
+        run: |
+          pip install generateds
+          pip install lxml
+
+      - name: Generate CPACS Python Classes
+        run: |
+          cd schema
+          generateds -o ../cpacsLib.py -f cpacs_schema.xsd
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: cpacsLib
+          path: cpacsLib.py
