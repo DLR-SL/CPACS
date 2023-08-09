@@ -48,20 +48,18 @@ jobs:
 
       - name: Download and Install xjc
         run: |
-          wget https://javaee.github.io/jaxb-v2/2.3.2/jaxb-ri-2.3.2.zip
-          unzip jaxb-ri-2.3.2.zip
-          chmod +x jaxb-ri-2.3.2/bin/xjc
-          export PATH="$PATH:$GITHUB_WORKSPACE/jaxb-ri-2.3.2/bin"
+          wget https://repo1.maven.org/maven2/com/sun/xml/bind/jaxb-ri/2.3.1/jaxb-ri-2.3.1.zip
+          unzip jaxb-ri-2.3.1.zip
+          chmod +x jaxb-ri-2.3.1/jaxb-ri/bin/xjc.bat
+          export PATH="$PATH:$GITHUB_WORKSPACE/jaxb-ri-2.3.1/bin"
 
       - name: Generate Java Classes
         run: |
           xsd_file_path="./schema/cpacs_schema.xsd"
-          
-          cd schema
           xjc -d .\build\javaLib "$xsd_file_path"
 
       - name: Upload Java Classes Artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: cpacsJavaLib
           path: .\build\javaLib
