@@ -64,33 +64,3 @@ jobs:
         with:
           name: cpacsJavaLib
           path: .\build\javaLib
-          
-  generate-cpp-libs:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-
-      - name: Install xsd2cpp
-        run: |
-          sudo apt-get update
-          sudo yum update
-          sudo yum install -y xsd
-          
-      - name: Generate C++ Classes
-        run: |
-          xsd_file_path="./schema/cpacs_schema.xsd"
-          
-          # Generate C++ classes from XSD using xsd2cpp
-          xsd2cpp "$xsd_file_path" -o cppLib
-
-      - name: Create ZIP Archive
-        run: |
-          zip -r cpacsCppLib.zip cppLib
-
-      - name: Upload ZIP Artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: cpacsCppLib
-          path: cpacsCppLib.zip
