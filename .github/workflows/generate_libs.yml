@@ -6,7 +6,7 @@ on:
       - develop
 
 jobs:
-  generate-cpacs-lib:
+  generate-python-libs:
     runs-on: ubuntu-latest
 
     steps:
@@ -30,5 +30,38 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: cpacsLib
+          name: cpacsPythonLib
           path: cpacsLib.py
+          
+  generate-java-libs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Download and Install xjc
+        run: |
+          wget https://javaee.github.io/jaxb-v2/2.3.2/jaxb-ri-2.3.2.zip
+          unzip jaxb-ri-2.3.2.zip
+          chmod +x jaxb-ri-2.3.2/bin/xjc
+          export PATH="$PATH:$GITHUB_WORKSPACE/jaxb-ri-2.3.2/bin"
+
+      - name: Generate Java Classes
+        run: |
+          xsd_file_path="./schema/cpacs_schema.xsd"
+          
+          cd schema
+          xjc -d .\build\javaLib "$xsd_file_path"
+
+      - name: Upload Java Classes Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: cpacsJavaLib
+          path: .\build\javaLib
