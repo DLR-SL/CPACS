@@ -64,3 +64,41 @@ jobs:
         with:
           name: cpacsJavaLib
           path: .\build\javaLib
+          
+  generate-cpp-libs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Apache XMLBeans
+        run: |
+          # Install required packages
+          sudo apt-get update
+          sudo apt-get install -y default-jdk maven
+
+          # Clone the Apache XMLBeans repository
+          git clone https://github.com/apache/xmlbeans.git
+
+          # Build the XMLBeans C++ library
+          cd xmlbeans
+          mvn package
+
+      - name: Generate C++ Classes
+        run: |
+          xsd_file_path="./schema/cpacs_schema.xsd"
+          
+          # Generate C++ classes from XSD using Apache XMLBeans
+          cd xmlbeans
+          java -cp target/xmlbeans-*.jar org.apache.xmlbeans.impl.tool.SchemaCompiler -cpp -src ../src -d ../src "$xsd_file_path"
+
+      - name: Create ZIP Archive
+        run: |
+          zip -r cpacsCppLib.zip ../src
+
+      - name: Upload ZIP Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: cpacsCppLib
+          path: cpacsCppLib.zip
