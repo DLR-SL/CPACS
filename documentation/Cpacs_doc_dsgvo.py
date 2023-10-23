@@ -16,7 +16,9 @@ def replace_page_footer(file_path):
     &copy; 2023 <a href="https://www.DLR.de">Deutsches Zentrum für Luft- und Raumfahrt e.V.</a>&nbsp;&nbsp;&nbsp;
     <a href="https://www.dlr.de/sl">Institute of System Architectures in Aeronautics</a></li>&nbsp;&nbsp;&nbsp;
     <a href="https://www.cpacs.de/pages/imprint.html">Imprint</a></li>&nbsp;&nbsp;&nbsp;
-    <a href="https://www.cpacs.de/pages/privacy.html">Privacy</a></li>
+    <a href="https://www.cpacs.de/pages/privacy.html">Privacy</a></li>&nbsp;&nbsp;&nbsp;
+    <a href="https://www.cpacs.de/pages/terms-of-use.html">Terms of use</a></li>&nbsp;&nbsp;&nbsp;
+    <a href="https://dlr-sl.github.io/cpacs-website/pages/accessibility.html">Accessibility</a></li>
 </p>
 '''
 
