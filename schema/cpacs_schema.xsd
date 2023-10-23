@@ -4821,43 +4821,6 @@ cpacs@dlr.de
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="baseConfigurationType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Vehicle base configuration</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="name" type="stringBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                Name
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="description" minOccurs="0" type="stringBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                Description
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <!-- ToDo: xsd:element name="payloadConfiguration" minOccurs="0" type="payloadConfigurationType"/ -->
-                    <xsd:element name="modelConfiguration" minOccurs="0" type="modelConfigurationType"/>
-                    <xsd:element name="energyConfiguration" minOccurs="0" type="energyConfigurationType"/>
-                    <xsd:element name="systemsConfiguration" minOccurs="0" type="systemsConfigurationType"/>
-                </xsd:all>
-                <xsd:attribute name="uID" use="required" type="xsd:ID"/>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
     <xsd:complexType name="batteriesType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -7652,7 +7615,7 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Configuration definition</ddue:para>
+                        <ddue:para>Vehicle configuration</ddue:para>
                     </ddue:summary>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -7660,9 +7623,26 @@ cpacs@dlr.de
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element name="baseConfiguration" type="baseConfigurationType"/>
-                    <xsd:element name="variants" minOccurs="0" type="variantsType"/>
+                    <xsd:element name="name" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Name
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="description" minOccurs="0" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Description
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <!-- ToDo: xsd:element name="payloadConfiguration" minOccurs="0" type="payloadConfigurationType"/ -->
+                    <xsd:element name="modelConfiguration" minOccurs="0" type="modelConfigurationType"/>
+                    <xsd:element name="energyConfiguration" minOccurs="0" type="energyConfigurationType"/>
+                    <xsd:element name="systemsConfiguration" minOccurs="0" type="systemsConfigurationType"/>
                 </xsd:all>
+                <xsd:attribute name="uID" use="required" type="xsd:ID"/>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -27976,23 +27956,6 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="payloadConfigurationType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Payload configuration</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all/>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
     <xsd:complexType name="payloadGlobalType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -33382,7 +33345,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             <xsd:documentation>External system (ambient | passengers)
                             </xsd:documentation>
                         </xsd:annotation>
-                        <xsd:complexType>
+                            <xsd:complexType>
                             <xsd:simpleContent>
                                 <xsd:restriction base="stringBaseType">
                                     <xsd:enumeration value="ambient"/>
@@ -37142,31 +37105,6 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="uIDSequencesType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>List of uIDs</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element name="uID" minOccurs="2" maxOccurs="unbounded" type="stringUIDBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                Reference at least two uIDs
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:sequence>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
     <xsd:complexType name="uIDSequenceType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -37287,73 +37225,6 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         </xsd:complexType>
                     </xsd:element>
                 </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="variantsType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Variations</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element name="variant" maxOccurs="unbounded" type="variantType"/>
-                </xsd:sequence>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="variantType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Variation</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element name="name" type="stringBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                Name
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="description" minOccurs="0" type="stringBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                Description
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:choice>
-                        <xsd:sequence>
-                            <xsd:element name="payloadConfiguration" minOccurs="0" type="payloadConfigurationType"/>
-                            <xsd:element name="modelConfiguration" minOccurs="0" type="modelConfigurationType"/>
-                            <xsd:element name="energyConfiguration" minOccurs="0" type="energyConfigurationType"/>
-                            <xsd:element name="systemsConfiguration" minOccurs="0" type="systemsConfigurationType"/>
-                        </xsd:sequence>
-                        <xsd:element name="combinedVariants" minOccurs="0" type="uIDSequencesType">
-                            <xsd:annotation>
-                                <xsd:documentation>
-                                    List uIDs of variats to combine
-                                </xsd:documentation>
-                            </xsd:annotation>
-                        </xsd:element>
-                    </xsd:choice>
-                </xsd:sequence>
-                <xsd:attribute name="uID" use="required" type="xsd:ID"/>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
