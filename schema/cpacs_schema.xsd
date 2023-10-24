@@ -3279,7 +3279,7 @@ cpacs@dlr.de
                     <xsd:element name="monetaryValues" minOccurs="0" type="monetaryValuesAnalysisType"/>
                     <xsd:element name="noise" minOccurs="0" type="noiseAnalysisType"/>
                     <xsd:element name="trajectories" minOccurs="0" type="trajectoriesType"/>
-                    <xsd:element name="systemAnalyses" minOccurs="0" type="systemAnalysesType"/>
+                    <xsd:element name="powerBreakdowns" minOccurs="0" type="powerBreakdownsType"/>
                     <xsd:element name="weightAndBalance" minOccurs="0" type="weightAndBalanceType"/>
                 </xsd:all>
             </xsd:extension>
@@ -29370,56 +29370,6 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="powerBreakdownCasesType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Power breakdowns</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element name="powerBreakdownCase" maxOccurs="unbounded" type="powerBreakdownCaseType"/>
-                </xsd:sequence>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="powerBreakdownCaseType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Power breakdown case</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="name" type="stringBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Name</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="description" minOccurs="0" type="stringBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Description</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="specification" type="powerBreakdownSpecificationType"/>
-                    <xsd:element name="powerBreakdownData" type="breakdownDataType"/>
-                </xsd:all>
-                <xsd:attribute name="uID" type="xsd:ID"/>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
     <xsd:complexType name="powerBreakdownSpecificationType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -29500,59 +29450,9 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:element name="powerBreakdownCases" minOccurs="0" type="powerBreakdownCasesType"/>
-                    <xsd:element name="powerBreakdownTrajectoryCases" minOccurs="0" type="powerBreakdownTrajectoryCasesType"/>
+                    <xsd:element name="staticCases" minOccurs="0" type="staticCasesType"/>
+                    <xsd:element name="trajectoryCases" minOccurs="0" type="trajectoryCasesType"/>
                 </xsd:sequence>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="powerBreakdownTrajectoryCasesType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Power breakdowns</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element name="powerBreakdownCase" maxOccurs="unbounded" type="powerBreakdownTrajectoryCaseType"/>
-                </xsd:sequence>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="powerBreakdownTrajectoryCaseType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Power breakdown case along a trajectory</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="name" type="stringBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Name</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="description" minOccurs="0" type="stringBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Description</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="specification" type="powerBreakdownTrajectorySpecificationType"/>
-                    <xsd:element name="powerBreakdownData" type="breakdownDataTrajectoryType"/>
-                </xsd:all>
-                <xsd:attribute name="uID" type="xsd:ID"/>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -34232,6 +34132,56 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
+    <xsd:complexType name="staticCasesType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Static power breakdowns</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="staticCase" maxOccurs="unbounded" type="staticCaseType"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="staticCaseType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Static power breakdown case</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="name" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Name</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="description" minOccurs="0" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Description</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="specification" type="powerBreakdownSpecificationType"/>
+                    <xsd:element name="powerBreakdownData" type="breakdownDataType"/>
+                </xsd:all>
+                <xsd:attribute name="uID" type="xsd:ID"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
     <xsd:complexType name="stiffnessType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -35464,25 +35414,6 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="systemAnalysesType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>System analyses</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element name="powerBreakdowns" minOccurs="0" type="powerBreakdownsType"/>
-                </xsd:sequence>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
     <xsd:complexType name="systemArchitecturesType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -36481,6 +36412,56 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                 <xsd:sequence>
                     <xsd:element name="trajectory" maxOccurs="unbounded" type="trajectoryType"/>
                 </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="trajectoryCasesType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Power breakdowns</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="trajectoryCase" maxOccurs="unbounded" type="trajectoryCaseType"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="trajectoryCaseType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Power breakdown case along a trajectory</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="name" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Name</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="description" minOccurs="0" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Description</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="specification" type="powerBreakdownTrajectorySpecificationType"/>
+                    <xsd:element name="powerBreakdownData" type="breakdownDataTrajectoryType"/>
+                </xsd:all>
+                <xsd:attribute name="uID" type="xsd:ID"/>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
