@@ -2812,7 +2812,7 @@ cpacs@dlr.de
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="configurationDefinitionUID" minOccurs="0" type="stringUIDBaseType">
+                    <xsd:element name="configuration" minOccurs="0" type="configurationType">
                         <xsd:annotation>
                             <xsd:documentation>
                                 Configuration settings
@@ -3330,6 +3330,18 @@ cpacs@dlr.de
                         <xsd:element name="controlDeviceUID" type="stringUIDBaseType">
                             <xsd:annotation>
                                 <xsd:documentation>Reference to the uID of a control device, e.g. a control surface or a landing gear</xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element name="controlParameter" type="doubleBaseType">
+                            <xsd:annotation>
+                                <xsd:documentation>Control parameter of the control device</xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                    </xsd:sequence>
+                    <xsd:sequence>
+                        <xsd:element name="controlFunctionUID" type="stringUIDBaseType">
+                            <xsd:annotation>
+                                <xsd:documentation>Reference to a control function uID</xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
                         <xsd:element name="controlParameter" type="doubleBaseType">
@@ -7637,10 +7649,10 @@ cpacs@dlr.de
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <!-- ToDo: xsd:element name="payloadConfiguration" minOccurs="0" type="payloadConfigurationType"/ -->
-                    <xsd:element name="modelConfiguration" minOccurs="0" type="modelConfigurationType"/>
-                    <xsd:element name="energyConfiguration" minOccurs="0" type="energyConfigurationType"/>
-                    <xsd:element name="systemsConfiguration" minOccurs="0" type="systemsConfigurationType"/>
+                    <xsd:element name="controlElements" minOccurs="0" type="aircraftControlElementsType"/>
+                    <xsd:element name="energyCarrier" minOccurs="0" type="energyCarrierType"/>
+                    <!-- ToDo: Payload only for completeness. Should be removed before release -->
+                    <xsd:element name="payload" minOccurs="0"/>
                 </xsd:all>
                 <xsd:attribute name="uID" use="required" type="xsd:ID"/>
             </xsd:extension>
@@ -7719,10 +7731,10 @@ cpacs@dlr.de
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element name="configurationUID" minOccurs="0" type="stringUIDBaseType">
+                    <xsd:element name="configurationDefinitionUID" minOccurs="0" type="stringUIDBaseType">
                         <xsd:annotation>
                             <xsd:documentation>
-                                Reference to the aircraft configuration node (aircraft/model/configurations/configuration)
+                                Reference to the aircraft configuration definition node (aircraft/model/configurationDefinitions/configurationDefinition)
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
@@ -7796,6 +7808,7 @@ cpacs@dlr.de
                             </xsd:simpleContent>
                         </xsd:complexType>
                     </xsd:element>
+                    <xsd:element name="controlFunction" minOccurs="0" type="systemControlFunctionType"/>
                     <xsd:element name="source" type="sourceTargetType"/>
                     <xsd:element name="target" type="sourceTargetType"/>
                 </xsd:all>
@@ -13509,12 +13522,12 @@ cpacs@dlr.de
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="energyConfigurationType">
+    <xsd:complexType name="energyCarrierType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Energy (fuel) configuration</ddue:para>
+                        <ddue:para>Energy carrier (fuel) configuration</ddue:para>
                     </ddue:summary>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -19328,68 +19341,6 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     </xsd:element>
                     <xsd:element name="rivetJointAreas" minOccurs="0" type="rivetJointAreasAssemblyType"/>
                     <xsd:element name="tiedInterfaces" minOccurs="0" type="tiedInterfacesType"/>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="internalPressuresType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Internal pressure of a deck</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element name="internalPressure" maxOccurs="unbounded" type="internalPressureType">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                Internal pressure of a fuselage, deck or compartment
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:sequence>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="internalPressureType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Cabin pressure</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>
-                            Internal pressure of a fuselage, deck or compartment
-                        </ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="referenceUID" type="stringUIDBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                UID of a fuselage, deck or compartment
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="pressure" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                Internal pressure [Pa]
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
@@ -25584,52 +25535,6 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="modelConfigurationType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Model configuration</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="controlSurfaceSettings" minOccurs="0" type="aircraftControlElementsType">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                Control surface settings
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="engineSettings" minOccurs="0" type="aircraftControlElementsType">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                Engine settings
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="landingGearSettings" minOccurs="0" type="aircraftControlElementsType">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                Landing gear settings
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="internalPressures" minOccurs="0" type="internalPressuresType">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                Deck configurations
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
     <xsd:complexType name="monetaryValuesAnalysisType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -29425,10 +29330,10 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             </xsd:annotation>
                         </xsd:element>
                     </xsd:choice>
-                    <xsd:element name="configurationDefinitionUID" minOccurs="0" type="stringUIDBaseType">
+                    <xsd:element name="configuration" minOccurs="0" type="configurationType">
                         <xsd:annotation>
                             <xsd:documentation>
-                                UID of configuration definition
+                                Configuration
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
@@ -35461,7 +35366,37 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             <xsd:documentation>ATA Chapter | generic</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
+                    <xsd:element name="controlFunction" minOccurs="0" type="systemControlFunctionType"/>
                     <xsd:element name="connections" minOccurs="0" type="connectionsType"/>
+                </xsd:all>
+                <xsd:attribute name="uID" type="xsd:ID"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="systemControlFunctionType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Control function</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="controlParameterActive" type="integerBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Control parameter indicating active state</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="controlParameterInactive" type="integerBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Control parameter indicating inactive state</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                 </xsd:all>
                 <xsd:attribute name="uID" type="xsd:ID"/>
             </xsd:extension>
@@ -35489,26 +35424,6 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:element name="gearBoxes" minOccurs="0" type="gearBoxesType"/>
                     <xsd:element name="generators" minOccurs="0" type="generatorsType"/>
                     <xsd:element name="genericComponents" minOccurs="0" type="genericComponentsType"/>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="systemsConfigurationType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Systems configuration</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="inactiveSystemArchitectureUIDs" minOccurs="0" type="uIDSequenceType"/>
-                    <xsd:element name="inactiveConnectionUIDs" minOccurs="0" type="uIDSequenceType"/>
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
