@@ -7750,89 +7750,6 @@ cpacs@dlr.de
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="connectionsType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Connections</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element name="connection" maxOccurs="unbounded" type="connectionType"/>
-                </xsd:sequence>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="connectionType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Connection</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="name" type="stringBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Name</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="description" minOccurs="0" type="stringBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Description</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="connectionType" minOccurs="0">
-                        <xsd:annotation>
-                            <xsd:documentation>Type of the connection
-                            </xsd:documentation>
-                        </xsd:annotation>
-                            <xsd:complexType>
-                            
-                        </xsd:complexType>
-                    </xsd:element>
-                    <xsd:element name="controlFunction" minOccurs="0" type="systemControlFunctionType"/>
-                    <xsd:element name="source" type="sourceTargetType"/>
-                    <xsd:element name="target" type="sourceTargetType"/>
-                </xsd:all>
-                <xsd:attribute name="uID" use="required" type="xsd:ID"/>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="connectionTypeType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Type of the connection</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para/>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:simpleContent>
-            <xsd:restriction base="stringBaseType">
-                <xsd:enumeration value="massFlow"/>
-                <xsd:enumeration value="heatFlow"/>
-                <xsd:enumeration value="electricPower"/>
-                <xsd:enumeration value="mechanicalPower"/>
-            </xsd:restriction>
-        </xsd:simpleContent>
-    </xsd:complexType>
-
     <xsd:complexType name="connectivitiesType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -35383,9 +35300,76 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="controlFunction" minOccurs="0" type="systemControlFunctionType"/>
-                    <xsd:element name="connections" minOccurs="0" type="connectionsType"/>
+                    <xsd:element name="connections" minOccurs="0" type="systemConnectionsType"/>
                 </xsd:all>
                 <xsd:attribute name="uID" type="xsd:ID"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="systemConnectionsType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Connections</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="connection" maxOccurs="unbounded" type="systemConnectionType"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="systemConnectionType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Connection</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="name" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Name</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="description" minOccurs="0" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Description</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="connectionType" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>Type of the connection.
+                            </xsd:documentation>
+                        </xsd:annotation>
+                            <xsd:complexType>
+                            <xsd:simpleContent>
+                                <xsd:restriction base="stringBaseType">
+                                    <xsd:enumeration value="massFlow"/>
+                                    <xsd:enumeration value="heatFlow"/>
+                                    <xsd:enumeration value="electricPower"/>
+                                    <xsd:enumeration value="mechanicalPower"/>
+                                </xsd:restriction>
+                            </xsd:simpleContent>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="controlFunction" minOccurs="0" type="systemControlFunctionType"/>
+                    <xsd:element name="source" type="sourceTargetType"/>
+                    <xsd:element name="target" type="sourceTargetType"/>
+                </xsd:all>
+                <xsd:attribute name="uID" use="required" type="xsd:ID"/>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
