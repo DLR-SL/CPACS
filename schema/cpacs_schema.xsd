@@ -2861,12 +2861,33 @@ cpacs@dlr.de
         </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="configurationDefinitionUIDs" type="uIDSequenceType">
-                        <xsd:annotation>
-                            <xsd:documentation>UIDs of configurationDefinitions or its variations</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
+                <xsd:sequence>
+                    <xsd:choice>
+                        <xsd:sequence>
+                            <xsd:element name="controlDeviceUID" type="stringUIDBaseType">
+                                <xsd:annotation>
+                                    <xsd:documentation>Reference to the uID of a control device, e.g. a control surface or a landing gear</xsd:documentation>
+                                </xsd:annotation>
+                            </xsd:element>
+                            <xsd:element name="controlParameters" type="doubleVectorBaseType">
+                                <xsd:annotation>
+                                    <xsd:documentation>Value of the command parameters of a control distributor. If not given explicitly in the control distributor, linear interpolation between the neighboring points is required.</xsd:documentation>
+                                </xsd:annotation>
+                            </xsd:element>
+                        </xsd:sequence>
+                        <xsd:sequence>
+                            <xsd:element name="controlDistributorUID" type="stringUIDBaseType">
+                                <xsd:annotation>
+                                    <xsd:documentation>Reference to a control distributor uID</xsd:documentation>
+                                </xsd:annotation>
+                            </xsd:element>
+                            <xsd:element name="commandInputs" type="doubleVectorBaseType">
+                                <xsd:annotation>
+                                    <xsd:documentation>Command inputs of a control distributor given as vector. If not given explicitly in the control distributor, linear interpolation between the neighboring points is required.</xsd:documentation>
+                                </xsd:annotation>
+                            </xsd:element>
+                        </xsd:sequence>
+                    </xsd:choice>
                     <xsd:element name="dcd" minOccurs="0" type="doubleArrayBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Increment of drag coefficient in aerodynamic coordinates</xsd:documentation>
@@ -2897,7 +2918,7 @@ cpacs@dlr.de
                             <xsd:documentation>Increment of cml</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                </xsd:all>
+                </xsd:sequence>
                 <xsd:attribute name="uID" type="xsd:ID"/>
             </xsd:extension>
         </xsd:complexContent>
@@ -3330,18 +3351,6 @@ cpacs@dlr.de
                         <xsd:element name="controlDeviceUID" type="stringUIDBaseType">
                             <xsd:annotation>
                                 <xsd:documentation>Reference to the uID of a control device, e.g. a control surface or a landing gear</xsd:documentation>
-                            </xsd:annotation>
-                        </xsd:element>
-                        <xsd:element name="controlParameter" type="doubleBaseType">
-                            <xsd:annotation>
-                                <xsd:documentation>Control parameter of the control device</xsd:documentation>
-                            </xsd:annotation>
-                        </xsd:element>
-                    </xsd:sequence>
-                    <xsd:sequence>
-                        <xsd:element name="controlFunctionUID" type="stringUIDBaseType">
-                            <xsd:annotation>
-                                <xsd:documentation>Reference to a control function uID</xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
                         <xsd:element name="controlParameter" type="doubleBaseType">
@@ -35299,7 +35308,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             <xsd:documentation>ATA Chapter | generic</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="controlFunction" minOccurs="0" type="systemControlFunctionType"/>
+                    <xsd:element name="controlDevices" minOccurs="0" type="systemControlDevicesType"/>
                     <xsd:element name="connections" minOccurs="0" type="systemConnectionsType"/>
                 </xsd:all>
                 <xsd:attribute name="uID" type="xsd:ID"/>
@@ -35365,7 +35374,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             </xsd:simpleContent>
                         </xsd:complexType>
                     </xsd:element>
-                    <xsd:element name="controlFunction" minOccurs="0" type="systemControlFunctionType"/>
+                    <xsd:element name="controlDevices" minOccurs="0" type="systemControlDevicesType"/>
                     <xsd:element name="source" type="sourceTargetType"/>
                     <xsd:element name="target" type="sourceTargetType"/>
                 </xsd:all>
@@ -35374,12 +35383,12 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="systemControlFunctionType">
+    <xsd:complexType name="systemControlDevicesType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Control function</ddue:para>
+                        <ddue:para>Control devices</ddue:para>
                     </ddue:summary>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -35387,18 +35396,13 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element name="controlParameterActive" type="integerBaseType">
+                    <xsd:element name="state" type="systemStateType">
                         <xsd:annotation>
-                            <xsd:documentation>Control parameter indicating active state</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="controlParameterInactive" type="integerBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Control parameter indicating inactive state</xsd:documentation>
+                            <xsd:documentation>Control function indicating the activation state</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
-                <xsd:attribute name="uID" type="xsd:ID"/>
+                <xsd:attribute name="uID" use="required" type="xsd:ID"/>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -35424,6 +35428,34 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:element name="gearBoxes" minOccurs="0" type="gearBoxesType"/>
                     <xsd:element name="generators" minOccurs="0" type="generatorsType"/>
                     <xsd:element name="genericComponents" minOccurs="0" type="genericComponentsType"/>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="systemStateType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Control parameter definition for System or Connection state</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="controlParameterActive" type="integerBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Control parameter indicating active state</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="controlParameterInactive" type="integerBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Control parameter indicating inactive state</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
