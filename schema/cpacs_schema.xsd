@@ -7607,6 +7607,37 @@ cpacs@dlr.de
         </xsd:complexContent>
     </xsd:complexType>
 
+    <xsd:complexType name="coneType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Cone</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>A cone is defined with a default volume of 1m<ddue:superscript>3</ddue:superscript>.</ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="radius" minOccurs="0" default="1" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Radius (default=1) [m]</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="height" minOccurs="0" default="0.9549297" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Height (default=3/pi=0.9549297) [m]</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
     <xsd:complexType name="configurationDefinitionsType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -10824,6 +10855,42 @@ cpacs@dlr.de
         </xsd:complexContent>
     </xsd:complexType>
 
+    <xsd:complexType name="cuboidType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Cuboid</ddue:para>
+                        <ddue:remarks>
+                            <ddue:para>A cube is defined with a default volume of 1m<ddue:superscript>3</ddue:superscript>.</ddue:para>
+                        </ddue:remarks>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="length" minOccurs="0" default="1" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Length [m]</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="width" minOccurs="0" default="1" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Width [m]</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="height" minOccurs="0" default="1" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Height [m]</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
     <xsd:complexType name="curveParamPointMapType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -11202,6 +11269,37 @@ cpacs@dlr.de
                     </xsd:element>
                 </xsd:all>
                 <xsd:attribute name="uID" use="required" type="xsd:ID"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="cylinderType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Cylinder</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>A cylinder is defined with a default volume of 1m<ddue:superscript>3</ddue:superscript>.</ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="radius" minOccurs="0" default="1" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Radius (default=1) [m]</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="height" minOccurs="0" default="0.31831" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Height (default=1/pi) [m]</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -18039,6 +18137,29 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     </xsd:element>
                 </xsd:all>
                 <xsd:attribute name="uID" type="xsd:ID"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="geometryType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Geometry</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:choice>
+                    <xsd:element name="cuboid" type="cuboidType"/>
+                    <xsd:element name="cone" type="coneType"/>
+                    <xsd:element name="sphere" type="sphereType"/>
+                    <xsd:element name="cylinder" type="cylinderType"/>
+                    <xsd:element name="genericGeometryComponent" type="genericGeometryComponentType"/>
+                </xsd:choice>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -33832,6 +33953,32 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:simpleContent>
     </xsd:complexType>
 
+    <xsd:complexType name="sphereType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Sphere</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>A sphere is defined with a default volume of 1m<ddue:superscript>3</ddue:superscript>.</ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="radius" minOccurs="0" default="0.62035" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Radius (default=(3/(4*pi))<ddue:superscript>1/3</ddue:superscript> 0.62035) [m]</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
     <xsd:complexType name="spoilersType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -35223,26 +35370,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             <xsd:documentation>Description</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:choice>
-                        <xsd:element name="geometricBaseType">
-                            <xsd:annotation>
-                                <xsd:documentation>List of basic component shapes</xsd:documentation>
-                            </xsd:annotation>
-                            <xsd:simpleType>
-                                <xsd:restriction base="xsd:string">
-                                    <xsd:enumeration value="cone"/>
-                                    <xsd:enumeration value="sphere"/>
-                                    <xsd:enumeration value="cube"/>
-                                    <xsd:enumeration value="cylinder"/>
-                                </xsd:restriction>
-                            </xsd:simpleType>
-                        </xsd:element>
-                        <xsd:element name="volume" type="doubleBaseType">
-                            <xsd:annotation>
-                                <xsd:documentation>Volume</xsd:documentation>
-                            </xsd:annotation>
-                        </xsd:element>
-                    </xsd:choice>
+                    <xsd:element name="geometry" type="geometryType"/>
                     <xsd:choice minOccurs="0">
                         <xsd:element name="density" type="doubleBaseType">
                             <xsd:annotation>
