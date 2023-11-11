@@ -4872,7 +4872,7 @@ cpacs@dlr.de
             </xsd:appinfo>
         </xsd:annotation>
         <xsd:complexContent>
-            <xsd:extension base="sysElemsBaseType">
+            <xsd:extension base="vehicleElementBaseType">
                 <xsd:sequence>
                     <xsd:element name="electricEnergyCarrierUID" type="stringUIDBaseType">
                         <xsd:annotation>
@@ -5486,12 +5486,45 @@ cpacs@dlr.de
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
+                    <xsd:element name="name" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Name</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                     <xsd:element name="description" minOccurs="0" type="stringBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Description</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="mass" minOccurs="0" type="deckElementMassType"/>
+                    <xsd:element name="geometry">
+                            <xsd:complexType>
+                            <xsd:choice>
+                                <xsd:element name="containerGeometry" type="cargoContainerGeometryType"/>
+                                <xsd:element name="genericGeometryComponent" type="genericGeometryComponentType"/>
+                                <xsd:element name="boundingBox" type="boundingBoxType"/>
+                            </xsd:choice>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="mass" minOccurs="0" type="elementMassType"/>
+                </xsd:all>
+                <xsd:attribute name="uID" use="required" type="xsd:ID"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="cargoContainerGeometryType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Cargo container geometry</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
                     <xsd:element name="contour">
                         <xsd:annotation>
                             <xsd:documentation>Contour: single or double</xsd:documentation>
@@ -5536,7 +5569,6 @@ cpacs@dlr.de
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
-                <xsd:attribute name="uID" use="required" type="xsd:ID"/>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -5695,7 +5727,7 @@ cpacs@dlr.de
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:element name="ceilingPanelElement" maxOccurs="unbounded" type="deckElementBaseType">
+                    <xsd:element name="ceilingPanelElement" maxOccurs="unbounded" type="vehicleElementBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Ceiling panel element for use in the decks</xsd:documentation>
                         </xsd:annotation>
@@ -6423,7 +6455,7 @@ cpacs@dlr.de
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:element name="classDividerElement" maxOccurs="unbounded" type="deckElementBaseType">
+                    <xsd:element name="classDividerElement" maxOccurs="unbounded" type="vehicleElementBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Class divider element for use in the decks</xsd:documentation>
                         </xsd:annotation>
@@ -10831,28 +10863,25 @@ cpacs@dlr.de
                     <ddue:summary>
                         <ddue:para>Cuboid</ddue:para>
                     </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>A cuboid is defined with a default volume of 1m<ddue:superscript>3</ddue:superscript>.</ddue:para>
-                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element name="length" default="1" type="doubleBaseType">
+                    <xsd:element name="length" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Length (default=1) [m]</xsd:documentation>
+                            <xsd:documentation>Length [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="width" default="1" type="doubleBaseType">
+                    <xsd:element name="width" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Width (default=1) [m]</xsd:documentation>
+                            <xsd:documentation>Width [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="height" default="1" type="doubleBaseType">
+                    <xsd:element name="height" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Height (default=1) [m]</xsd:documentation>
+                            <xsd:documentation>Height [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -11768,89 +11797,6 @@ cpacs@dlr.de
                             </xsd:simpleContent>
                         </xsd:complexType>
                     </xsd:element>
-                </xsd:all>
-                <xsd:attribute name="uID" use="required" type="xsd:ID"/>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="deckElementBaseType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Deck element</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="description" minOccurs="0" type="stringBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Description</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="geometry" type="deckElementGeometryType"/>
-                    <xsd:element name="mass" minOccurs="0" type="deckElementMassType"/>
-                </xsd:all>
-                <xsd:attribute name="uID" use="required" type="xsd:ID"/>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="deckElementGeometryType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Geometry</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>Description of the deck element geometry. This might be either a bounding box definition or a link to a generic geometry component.</ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:choice>
-                    <xsd:element name="genericGeometryComponent" type="genericGeometryComponentType"/>
-                    <xsd:element name="boundingBox" type="boundingBoxType"/>
-                </xsd:choice>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="deckElementMassType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Mass</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>Description of mass, center of gravity and inertia
-                        </ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="mass" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Mass value</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="location" minOccurs="0" type="pointType">
-                        <xsd:annotation>
-                            <xsd:documentation>Center of gravity (x,y,z)</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="massInertia" minOccurs="0" type="massInertiaType"/>
                 </xsd:all>
                 <xsd:attribute name="uID" use="required" type="xsd:ID"/>
             </xsd:extension>
@@ -13328,7 +13274,7 @@ cpacs@dlr.de
             </xsd:appinfo>
         </xsd:annotation>
         <xsd:complexContent>
-            <xsd:extension base="sysElemsBaseType"/>
+            <xsd:extension base="vehicleElementBaseType"/>
         </xsd:complexContent>
     </xsd:complexType>
 
@@ -13398,6 +13344,70 @@ cpacs@dlr.de
                         <xsd:element name="alternatingCurrent" type="alternatingCurrentType"/>
                     </xsd:choice>
                 </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="elementGeometryType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Geometry</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:choice>
+                    <xsd:element name="cuboid" type="cuboidType"/>
+                    <xsd:element name="frustum" type="frustumType"/>
+                    <xsd:element name="sphere" type="sphereType"/>
+                    <xsd:element name="genericGeometryComponent" type="genericGeometryComponentType"/>
+                    <xsd:element name="boundingBox" type="boundingBoxType"/>
+                </xsd:choice>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="elementMassType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Mass</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>Description of mass, center of gravity and inertia. Density should only be specified in combination with a valid geometry.
+                        </ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:choice>
+                        <xsd:element name="density" type="doubleBaseType">
+                            <xsd:annotation>
+                                <xsd:documentation>Density</xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element name="mass" type="doubleBaseType">
+                            <xsd:annotation>
+                                <xsd:documentation>Mass</xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                    </xsd:choice>
+                    <xsd:element name="location" minOccurs="0" type="pointType">
+                        <xsd:annotation>
+                            <xsd:documentation>Center of gravity (x,y,z)</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="massInertia" minOccurs="0" type="massInertiaType"/>
+                </xsd:sequence>
+                <xsd:attribute name="uID" use="required" type="xsd:ID"/>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -16281,28 +16291,25 @@ cpacs@dlr.de
                     <ddue:summary>
                         <ddue:para>Frustum</ddue:para>
                     </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>A cone is defined with a default volume of 1m<ddue:superscript>3</ddue:superscript>.</ddue:para>
-                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element name="upperRadius" default="0.56419" type="doubleBaseType">
+                    <xsd:element name="upperRadius" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Upper radius (default=squareRoot(1/pi)=0.56419) [m]</xsd:documentation>
+                            <xsd:documentation>Upper radius [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="lowerRadius" default="0.56419" type="doubleBaseType">
+                    <xsd:element name="lowerRadius" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Upper radius (default=squareRoot(1/pi)=0.56419) [m]</xsd:documentation>
+                            <xsd:documentation>Upper radius [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="height" default="1" type="doubleBaseType">
+                    <xsd:element name="height" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Height (default=1) [m]</xsd:documentation>
+                            <xsd:documentation>Height [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -17071,22 +17078,14 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             </xsd:appinfo>
         </xsd:annotation>
         <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="description" minOccurs="0" type="stringBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Description</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="geometry" type="deckElementGeometryType"/>
-                    <xsd:element name="mass" minOccurs="0" type="deckElementMassType"/>
+            <xsd:extension base="vehicleElementBaseType">
+                <xsd:sequence>
                     <xsd:element name="numberOfTrolleys" minOccurs="0" type="posExcl0IntBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Number of trolleys</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                </xsd:all>
-                <xsd:attribute name="uID" use="required" type="xsd:ID"/>
+                </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -17147,7 +17146,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             </xsd:appinfo>
         </xsd:annotation>
         <xsd:complexContent>
-            <xsd:extension base="sysElemsBaseType"/>
+            <xsd:extension base="vehicleElementBaseType"/>
         </xsd:complexContent>
     </xsd:complexType>
 
@@ -17181,7 +17180,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             </xsd:appinfo>
         </xsd:annotation>
         <xsd:complexContent>
-            <xsd:extension base="sysElemsBaseType"/>
+            <xsd:extension base="vehicleElementBaseType"/>
         </xsd:complexContent>
     </xsd:complexType>
 
@@ -17431,7 +17430,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             </xsd:appinfo>
         </xsd:annotation>
         <xsd:complexContent>
-            <xsd:extension base="sysElemsBaseType"/>
+            <xsd:extension base="vehicleElementBaseType"/>
         </xsd:complexContent>
     </xsd:complexType>
 
@@ -17448,7 +17447,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:element name="genericComponent" maxOccurs="unbounded" type="sysElemsBaseType"/>
+                    <xsd:element name="genericComponent" maxOccurs="unbounded" type="vehicleElementBaseType"/>
                 </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
@@ -17494,7 +17493,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:element name="genericFloorElement" maxOccurs="unbounded" type="deckElementBaseType">
+                    <xsd:element name="genericFloorElement" maxOccurs="unbounded" type="vehicleElementBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Generic floor element for use in the decks</xsd:documentation>
                         </xsd:annotation>
@@ -18104,28 +18103,6 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="geometryType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Geometry</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:choice>
-                    <xsd:element name="cuboid" type="cuboidType"/>
-                    <xsd:element name="frustum" type="frustumType"/>
-                    <xsd:element name="sphere" type="sphereType"/>
-                    <xsd:element name="genericGeometryComponent" type="genericGeometryComponentType"/>
-                </xsd:choice>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
     <xsd:complexType name="globalAeroPerformanceType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -18606,7 +18583,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             </xsd:appinfo>
         </xsd:annotation>
         <xsd:complexContent>
-            <xsd:extension base="sysElemsBaseType"/>
+            <xsd:extension base="vehicleElementBaseType"/>
         </xsd:complexContent>
     </xsd:complexType>
 
@@ -20365,7 +20342,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:element name="lavatoryElement" maxOccurs="unbounded" type="deckElementBaseType">
+                    <xsd:element name="lavatoryElement" maxOccurs="unbounded" type="vehicleElementBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Lavatory element for use in the decks</xsd:documentation>
                         </xsd:annotation>
@@ -21631,7 +21608,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:element name="luggageCompartmentElement" maxOccurs="unbounded" type="deckElementBaseType">
+                    <xsd:element name="luggageCompartmentElement" maxOccurs="unbounded" type="vehicleElementBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Luggage compartment element for use in the decks</xsd:documentation>
                         </xsd:annotation>
@@ -32553,22 +32530,14 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             </xsd:appinfo>
         </xsd:annotation>
         <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="description" minOccurs="0" type="stringBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Description</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="geometry" type="deckElementGeometryType"/>
-                    <xsd:element name="mass" minOccurs="0" type="deckElementMassType"/>
+            <xsd:extension base="vehicleElementBaseType">
+                <xsd:sequence>
                     <xsd:element name="numberOfSeats" minOccurs="0" type="posExcl0IntBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Number of seats</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                </xsd:all>
-                <xsd:attribute name="uID" use="required" type="xsd:ID"/>
+                </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -32957,7 +32926,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:element name="sidewallPanelElement" maxOccurs="unbounded" type="deckElementBaseType">
+                    <xsd:element name="sidewallPanelElement" maxOccurs="unbounded" type="vehicleElementBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Sidewall panel element for use in the decks</xsd:documentation>
                         </xsd:annotation>
@@ -33922,18 +33891,15 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <ddue:summary>
                         <ddue:para>Sphere</ddue:para>
                     </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>A sphere is defined with a default volume of 1m<ddue:superscript>3</ddue:superscript>.</ddue:para>
-                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element name="radius" default="0.62035" type="doubleBaseType">
+                    <xsd:element name="radius" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Radius (default=cubicRoot(3/(4pi))=0.62035) [m]</xsd:documentation>
+                            <xsd:documentation>Radius [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -35308,48 +35274,6 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             </xsd:enumeration>
         </xsd:restriction>
     </xsd:simpleType>
-
-    <xsd:complexType name="sysElemsBaseType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>System element</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element name="name" type="stringBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Name</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="description" minOccurs="0" type="stringBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Description</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="geometry" type="geometryType"/>
-                    <xsd:choice minOccurs="0">
-                        <xsd:element name="density" type="doubleBaseType">
-                            <xsd:annotation>
-                                <xsd:documentation>Density</xsd:documentation>
-                            </xsd:annotation>
-                        </xsd:element>
-                        <xsd:element name="mass" type="doubleBaseType">
-                            <xsd:annotation>
-                                <xsd:documentation>Mass</xsd:documentation>
-                            </xsd:annotation>
-                        </xsd:element>
-                    </xsd:choice>
-                </xsd:sequence>
-                <xsd:attribute name="uID" use="required" type="xsd:ID"/>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
 
     <xsd:complexType name="systemArchitecturesType">
         <xsd:annotation>
@@ -37070,7 +36994,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             </xsd:appinfo>
         </xsd:annotation>
         <xsd:complexContent>
-            <xsd:extension base="sysElemsBaseType"/>
+            <xsd:extension base="vehicleElementBaseType"/>
         </xsd:complexContent>
     </xsd:complexType>
 
@@ -37244,6 +37168,37 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         </xsd:complexType>
                     </xsd:element>
                 </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="vehicleElementBaseType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>System element</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="name" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Name</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="description" minOccurs="0" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Description</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="geometry" type="elementGeometryType"/>
+                    <xsd:element name="mass" minOccurs="0" type="elementMassType"/>
+                </xsd:sequence>
+                <xsd:attribute name="uID" use="required" type="xsd:ID"/>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
