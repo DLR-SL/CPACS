@@ -45,11 +45,11 @@ cpacs@dlr.de
                             <ddue:definitionTable>
                                 <ddue:definedTerm>Version</ddue:definedTerm>
                                 <ddue:definition>
-                                    <ddue:para>V3.5-beta</ddue:para>
+                                    <ddue:para>V3.5-RC</ddue:para>
                                 </ddue:definition>
                                 <ddue:definedTerm>Date</ddue:definedTerm>
                                 <ddue:definition>
-                                    <ddue:para>2023-08-06</ddue:para>
+                                    <ddue:para>2023-11-17</ddue:para>
                                 </ddue:definition>
                             </ddue:definitionTable>
                             <ddue:section>
@@ -1102,9 +1102,9 @@ cpacs@dlr.de
                                 </ddue:content>
                             </ddue:section>
                             <ddue:section>
-                                <ddue:title>CPACS 3.5-beta</ddue:title>
+                                <ddue:title>CPACS 3.5-RC</ddue:title>
                                 <ddue:content>
-                                    <ddue:para>Release in August 2023</ddue:para>
+                                    <ddue:para>Release in November 2023</ddue:para>
                                     <ddue:list class="bullet">
                                         <ddue:listItem>
                                             new
@@ -1186,6 +1186,8 @@ cpacs@dlr.de
                                                 <ddue:codeInline>landingGears</ddue:codeInline>
                                                 definition
                                             </ddue:listItem>
+                                            <ddue:listItem>add <ddue:codeInline>mGenericFuelTanks</ddue:codeInline> to <ddue:codeInline>mFuselageStructure</ddue:codeInline>
+                                            </ddue:listItem>
                                         </ddue:list>
                                         <ddue:listItem>
                                             <ddue:codeInline>sparPositionType</ddue:codeInline>
@@ -1200,29 +1202,13 @@ cpacs@dlr.de
                                         <ddue:listItem> Systems definition</ddue:listItem>
                                         <ddue:list class="bullet">
                                             <ddue:listItem>
-                                                <ddue:codeInline>aeroMaps</ddue:codeInline>
+                                                <ddue:codeInline>aeroMaps</ddue:codeInline>, <ddue:codeInline>loadCases</ddue:codeInline>
                                             </ddue:listItem>
                                             <ddue:list class="bullet">
                                                 <ddue:listItem>
-                                                    <ddue:codeInline>aeroLimitsIncrementMapType</ddue:codeInline>
-                                                    :
-                                                    <ddue:codeInline>controlDeviceUID</ddue:codeInline>
+                                                    <ddue:codeInline>configurationUID</ddue:codeInline>
                                                     , ... --&gt;
                                                     <ddue:codeInline>configurationDefinitionUID</ddue:codeInline>
-                                                </ddue:listItem>
-                                                <ddue:listItem>
-                                                    <ddue:codeInline>aeroPerformanceBoundaryConditionsType</ddue:codeInline>
-                                                    :
-                                                    <ddue:codeInline>configurationType</ddue:codeInline>
-                                                    --&gt;
-                                                    <ddue:codeInline>configurationDefinitionUID</ddue:codeInline>
-                                                </ddue:listItem>
-                                                <ddue:listItem>
-                                                    <ddue:codeInline>aeroPerformanceIncrementMapType</ddue:codeInline>
-                                                    :
-                                                    <ddue:codeInline>controlDeviceUID</ddue:codeInline>
-                                                    , ... -&gt;
-                                                    <ddue:codeInline>configurationDefinitionUIDs</ddue:codeInline>
                                                 </ddue:listItem>
                                             </ddue:list>
                                         </ddue:list>
@@ -1366,6 +1352,8 @@ cpacs@dlr.de
                                             add
                                             <ddue:codeInline>fuselageStructuralMountsType</ddue:codeInline>
                                         </ddue:listItem>
+                                        <ddue:listItem>
+                                            <ddue:codeInline>controlSurfaceTrackTypeType</ddue:codeInline>: joint position names in figures changed to count from P1</ddue:listItem>
                                         <ddue:listItem> add CI schema validation </ddue:listItem>
                                         <ddue:listItem> add python script for automatic syntax formatting </ddue:listItem>
                                         <ddue:listItem> add automatic generation and publication of html documentation via GitHub actions and Appveyor</ddue:listItem>
@@ -10846,44 +10834,6 @@ cpacs@dlr.de
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="cuboidType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Cuboid</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>The component coordinate system is located in the center of the cuboid.
-                            This means that "length" extends in the x-direction, "width" in the y-direction and "height" in the z-direction, half in the positive and half in the negative direction.
-                        </ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="length" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Length [m]</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="width" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Width [m]</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="height" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Height [m]</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
     <xsd:complexType name="curveParamPointMapType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -13363,7 +13313,7 @@ cpacs@dlr.de
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:choice>
-                    <xsd:element name="cuboid" type="cuboidType"/>
+                    <xsd:element name="parallelepiped" type="parallelepipedType"/>
                     <xsd:element name="frustum" type="frustumType"/>
                     <xsd:element name="sphere" type="sphereType"/>
                     <xsd:element name="genericGeometryComponent" type="genericGeometryComponentType"/>
@@ -16297,6 +16247,9 @@ cpacs@dlr.de
                         <ddue:para>The component coordinate system of the frustum is centered on the center of its geometrically defining variables,
                             which is half the height and center of the lower and upper circular faces.
                         </ddue:para>
+                        <ddue:para>The upper radius is optional.
+                            If not specified, it defaults to the lower radius, resulting in a cylinder.
+                        </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -16304,11 +16257,6 @@ cpacs@dlr.de
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element name="upperRadius" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Upper radius [m]</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
                     <xsd:element name="lowerRadius" type="doubleBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Upper radius [m]</xsd:documentation>
@@ -16317,6 +16265,11 @@ cpacs@dlr.de
                     <xsd:element name="height" type="doubleBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Height [m]</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="upperRadius" minOccurs="0" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Upper radius [m] (if not defined: equals lowerRadius)</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -27775,6 +27728,61 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:element name="profileUID" type="stringUIDBaseType"/>
                     <xsd:element name="rotZ" type="doubleBaseType"/>
                 </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="parallelepipedType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Parallelepiped</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>The component coordinate system is located in the center of the cuboid.
+                            This means that "length" extends in the x-direction, "width" in the y-direction and "height" in the z-direction, half in the positive and half in the negative direction.
+                        </ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="a" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Length [m]</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="b" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Width [m]</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="c" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Height [m]</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:sequence minOccurs="0">
+                        <xsd:element name="alpha" type="doubleBaseType">
+                            <xsd:annotation>
+                                <xsd:documentation>Angle between b and c [deg]</xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element name="beta" type="doubleBaseType">
+                            <xsd:annotation>
+                                <xsd:documentation>Angle between a and c [deg]</xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element name="gamma" type="doubleBaseType">
+                            <xsd:annotation>
+                                <xsd:documentation>Angle between a and b [deg]</xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
