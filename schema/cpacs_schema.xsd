@@ -4860,15 +4860,7 @@ cpacs@dlr.de
             </xsd:appinfo>
         </xsd:annotation>
         <xsd:complexContent>
-            <xsd:extension base="vehicleElementBaseType">
-                <xsd:sequence>
-                    <xsd:element name="electricEnergyCarrierUID" type="stringUIDBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>UID of an electric energy carrier</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:sequence>
-            </xsd:extension>
+            <xsd:extension base="vehicleElementBaseType"/>
         </xsd:complexContent>
     </xsd:complexType>
 
@@ -7574,7 +7566,7 @@ cpacs@dlr.de
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="controlElements" minOccurs="0" type="aircraftControlElementsType"/>
-                    <xsd:element name="energyCarriers" minOccurs="0" type="energyCarrierType"/>
+                    <xsd:element name="energyCarriers" minOccurs="0" type="storedEnergyCarriersType"/>
                 </xsd:all>
                 <xsd:attribute name="uID" use="required" type="xsd:ID"/>
             </xsd:extension>
@@ -13019,79 +13011,6 @@ cpacs@dlr.de
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="electricalEnergyCarriersType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Electrical energy carriers</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element name="electricEnergyCarrier" maxOccurs="unbounded" type="electricalEnergyCarrierType"/>
-                </xsd:sequence>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="electricalEnergyCarrierType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Electrical energy carrier</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="name" type="stringBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Name</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="description" minOccurs="0" type="stringBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Description</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="massFlowPerEnergyFlow" minOccurs="0" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Ratio of mass flow per energy flow</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="specificEnergy" minOccurs="0" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Specific energy</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="density" minOccurs="0" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Density at 15deg C</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="nominalCRate" minOccurs="0" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Nominal C-Rate</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="maxCRate" minOccurs="0" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Maximum C-Rate</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:all>
-                <xsd:attribute name="uID" use="required" type="xsd:ID"/>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
     <xsd:complexType name="electricMotorsType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -13358,28 +13277,7 @@ cpacs@dlr.de
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element name="electricEnergyCarriers" minOccurs="0" type="electricalEnergyCarriersType"/>
                     <xsd:element name="fuels" minOccurs="0" type="fuelsType"/>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="energyCarrierType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Energy carrier configuration</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="storedElectricEnergies" minOccurs="0" type="storedElectricEnergiesType"/>
-                    <xsd:element name="storedFuels" minOccurs="0" type="storedFuelsType"/>
                 </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
@@ -34287,53 +34185,21 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="storedElectricalEnergyType">
+    <xsd:complexType name="storedEnergyCarriersType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Stored electrical energy</ddue:para>
+                        <ddue:para>Energy carrier configuration</ddue:para>
                     </ddue:summary>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element name="componentUIDs" type="uIDSequenceType"/>
-                    <xsd:element name="chargeLevel" minOccurs="0">
-                        <xsd:annotation>
-                            <xsd:documentation>Charge level
-                            </xsd:documentation>
-                        </xsd:annotation>
-                        <xsd:simpleType>
-                            <xsd:restriction base="xsd:double">
-                                <xsd:minInclusive value="0"/>
-                                <xsd:maxInclusive value="1"/>
-                            </xsd:restriction>
-                        </xsd:simpleType>
-                    </xsd:element>
-                </xsd:sequence>
-                <xsd:attribute name="uID" type="xsd:ID"/>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="storedElectricEnergiesType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Stored electric energies</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element name="storedElectricEnergy" maxOccurs="unbounded" type="storedElectricalEnergyType"/>
-                </xsd:sequence>
+                <xsd:all>
+                    <xsd:element name="storedFuels" minOccurs="0" type="storedFuelsType"/>
+                </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
