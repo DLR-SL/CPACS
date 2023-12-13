@@ -1037,12 +1037,21 @@ cpacs@dlr.de
                             <ddue:section>
                                 <ddue:title>10. Control Parameters</ddue:title>
                                 <ddue:content>
-                                    <ddue:para>Control parameters are abstract parameters, linking a generic floating point value to a certain status of a control device
-                                    (e.g. control surface, landing gear, suction system, brake parachute, ...). For control surfaces, such a data pair (control parameter
-                                    and control surface deflection status) is called a &lt;step&gt; and the ordered list of all steps for a control surface forms its deflection
-                                    &lt;path&gt;. </ddue:para>
+                                    <ddue:para>Control parameters are abstract parameters, linking a generic value (i.e., the control parameter) to a configurational state of a control device
+                                    (e.g., control surface, landing gear, engine settings, ...).
+                                    The basic idea is that this control parameter can be used in different CPACS nodes (e.g., aeroMaps), while the relationship between the abstract control parameter and the configurative state of a controllable component is defined in the latter.
+                                    Controllable compents can have multiple control functions (referred to as control devices), e.g., extraction and rotation state as well as the braking state of a landing gear.
+                                    </ddue:para>
+                                    <ddue:para>
+                                    Control parameters are predominantly used for control surfaces, which is why they are discussed in more detail below as an example.
+                                    However, the approach also applies to other components, such as landing gears.
+                                    In future the engines and other components will also be controlable via control parameters.</ddue:para>
+                                    <ddue:para>
+                                    For control surfaces, the translation from the abstract control parameter to its physical state (i.e., deflection = rotation + translation)
+                                    is defined in a so-called &lt;path&gt;, which is componsed of a list of &lt;step&gt; elements.
+                                    </ddue:para>
                                     <ddue:para>The control parameter values for each step are arbitrary floating point values. However, it is strongly recommended to use
-                                    values between -1. and +1., or between 0. And +1. (depending on the type of control surface). The smallest and the largest value implicitly
+                                    values between -1. and +1., or between 0. and +1. (depending on the type of control surface). The smallest and the largest value implicitly
                                     define the maximum deflection limits. It is mandatory, that the value &#8220;0.&#8221; is within the specified range, as this value is treated as
                                     undeflected and used to specify a &#8220;clean&#8221; aircraft configuration (e.g. used in the clean aero performance map). It is recommended, but not
                                     mandatory to specify a &lt;step&gt; with a &lt;controlParameter&gt; of 0. Consequently, no &lt;controlParameter&gt; must be used twice within
@@ -1077,6 +1086,27 @@ cpacs@dlr.de
         ...
                                         ]]>
                                     </ddue:code>
+                                    <ddue:para>
+                                        There is a possibility that more than one deflection command is applied to a control surface at the same time (e.g. coming from a configuration definition and from an explicit deflection).
+                                        Furthermore, a control surface could be deflected by one (or even multiple) control distributor and control device command(s) in parallel. In all these cases, the deflection commands have to be superposed in the following way:
+                                        <ddue:list class="ordered">
+                                            <ddue:listItem>
+                                                The commands for each control distributor have to be added up to get a summed-up control distributor command input.
+                                            </ddue:listItem>
+                                            <ddue:listItem>
+                                                The command inputs for each control distributor have to be evaluated to come to a set of control device control parameters.
+                                            </ddue:listItem>
+                                            <ddue:listItem>
+                                                The control device control parameters for each control device (coming from control distributor and from control device commands) have to be added up.
+                                            </ddue:listItem>
+                                            <ddue:listItem>
+                                                The final control device control parameters for each control device have to be evaluated considering the paths specification to come to the desired movements/deflections.
+                                            </ddue:listItem>
+                                            <ddue:listItem>
+                                                If command inputs or control parameters in step 2.) or 4.) are found to exceed the or boundaries of the defined range , an error should be returned from the evaluation.
+                                            </ddue:listItem>
+                                        </ddue:list>
+                                    </ddue:para>
                                 </ddue:content>
                             </ddue:section>
                             <ddue:section>
