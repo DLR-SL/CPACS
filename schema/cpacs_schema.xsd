@@ -10974,7 +10974,7 @@ cpacs@dlr.de
                             <xsd:documentation>Description</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="paxCapacity" type="integerBaseType">
+                    <xsd:element name="paxCapacity" minOccurs="0" type="integerBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Number of passengers this door adds to the
                                 overall exit capacity limit of the aircraft.</xsd:documentation>
@@ -11700,67 +11700,6 @@ cpacs@dlr.de
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="doorOpeningLegacyType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>doorOpeningLegacyType</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>doors describe all doors of the cabin. They are linked
-                            to a structural door description. The cabin door is usually equal
-                            in size to the door, but does not need to be. The structural door
-                            might describe a wider cut-out, while the cabin door is primarily
-                            intended for evacuation modeling and cabin layout. In order to
-                            obtain a 3-dimensional door representation, the local cabin
-                            geometry shall be used.</ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="x" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>This is the forward x-coordinate of the door
-                                relative to the cabin origin.</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="z" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>the door sill height relative to cabin origin.
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="width" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>The width of the door in x-direction.
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="height" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>the effective height of the door.
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="side">
-                            <xsd:complexType>
-                            <xsd:simpleContent>
-                                <xsd:restriction base="stringBaseType">
-                                    <xsd:enumeration value="port"/>
-                                    <xsd:enumeration value="starboard"/>
-                                </xsd:restriction>
-                            </xsd:simpleContent>
-                        </xsd:complexType>
-                    </xsd:element>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
     <xsd:complexType name="doorOpeningType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -11778,7 +11717,7 @@ cpacs@dlr.de
             <xsd:extension base="complexBaseType">
                 <xsd:choice>
                     <xsd:element name="cutOutUID" type="stringUIDBaseType"/>
-                    <xsd:element name="doorOpeningLegacy" type="doorOpeningLegacyType"/>
+                    <xsd:element name="hingeArm" minOccurs="0" type="hingeArmType"/>
                 </xsd:choice>
             </xsd:extension>
         </xsd:complexContent>
@@ -17956,6 +17895,98 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         <xsd:element name="sinkTemperature" type="doubleBaseType"/>
                     </xsd:sequence>
                 </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="hingeArmMainBodyType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Main body</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="segments" type="hingeArmSegmentsType"/>
+                    <xsd:element name="thickness" minOccurs="0" type="doubleBaseType"/>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="hingeArmSegmentsType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Segments</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="segment" maxOccurs="unbounded" type="hingeArmSegmentType"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="hingeArmSegmentType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Segments</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="name" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Name</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="length" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Length of the segment</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="angle" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>90 degs minus angle to door plane</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:all>
+                <xsd:attribute name="uID" type="xsd:ID"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="hingeArmType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Hinge arm</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="mainBody" type="hingeArmMainBodyType"/>
+                </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
