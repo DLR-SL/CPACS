@@ -18251,6 +18251,23 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
+    <xsd:complexType name="icaoCodeType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>ICAO Code designator</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:simpleContent>
+            <xsd:restriction base="stringBaseType">
+                <xsd:pattern value="[A-Za-z0-9]{4}"/>
+            </xsd:restriction>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
     <xsd:complexType name="indirectOperatingCostType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -23885,6 +23902,21 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                                 </xsd:complexContent>
                             </xsd:complexType>
                         </xsd:element>
+                        <xsd:element name="waypoint" type="waypointType"/>
+                        <xsd:element name="airportICAO" type="icaoCodeType">
+                            <xsd:annotation>
+                                <xsd:documentation>
+                                    ICAO airport code designator
+                                </xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element name="airportUID" type="stringUIDBaseType">
+                            <xsd:annotation>
+                                <xsd:documentation>
+                                    Reference to the uID of a CPACS airport (/cpacs/airports/airport)
+                                </xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
                     </xsd:choice>
                     <xsd:choice minOccurs="0">
                         <xsd:element name="massFraction">
@@ -24267,6 +24299,21 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                                 <xsd:documentation>
                                     UID of the runway at which the
                                     mission starts
+                                </xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element name="waypoint" type="waypointType"/>
+                        <xsd:element name="airportICAO" type="icaoCodeType">
+                            <xsd:annotation>
+                                <xsd:documentation>
+                                    ICAO airport code designator
+                                </xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element name="airportUID" type="stringUIDBaseType">
+                            <xsd:annotation>
+                                <xsd:documentation>
+                                    Reference to the uID of a CPACS airport (/cpacs/airports/airport)
                                 </xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
@@ -36900,6 +36947,52 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         <xsd:annotation>
                             <xsd:documentation>
                                 List of wall segments.
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="waypointType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Waypoint</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="name" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Waypoint
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="via" minOccurs="0" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Get to waypoint via (e.g., airway, SID)
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="latitude" minOccurs="0" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Latitude
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="longitude" minOccurs="0" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                Longitude
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
