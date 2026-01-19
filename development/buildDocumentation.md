@@ -83,7 +83,7 @@ Verify that all prerequisites have been completed:
 Run MSBuild for the tool-specific documentation project (example path shown below):
 
 ```cmd
-"C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin\MSBuild.exe" /p:Configuration=Release documentation\Toolspecific_doc_project.shfbproj
+msbuild /p:Configuration=Release documentation\Toolspecific_doc_project.shfbproj
 ```
 
 Adjust the MSBuild path as necessary to match your local Visual Studio installation.
