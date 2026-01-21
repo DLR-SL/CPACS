@@ -6935,6 +6935,49 @@ cpacs@dlr.de
         </xsd:complexContent>
     </xsd:complexType>
 
+    <xsd:complexType name="coneType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Cone</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>
+                            The component coordinate system of the cone is centered on the center of its geometrically defining variables,
+                            which is half the height and center of the lower and upper circular faces.
+                        </ddue:para>
+                        <ddue:para>
+                            The upper radius is optional.
+                            If not specified, it defaults to the lower radius, resulting in a cylinder.
+                        </ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="lowerRadius" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Lower radius [m]</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="upperRadius" minOccurs="0" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Upper radius [m] (if not defined: equals 0)</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="height" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Height [m]</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
     <xsd:complexType name="configurationDefinitionsType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -10092,6 +10135,59 @@ cpacs@dlr.de
         </xsd:complexContent>
     </xsd:complexType>
 
+    <xsd:complexType name="cuboidType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Cuboid</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="lengthX" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Length x-direction [m]</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="depthY" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Depth in y-direction [m]</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="heightZ" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Height in z-direction (if cuboid, then c equals the total height in z-direction) [m]</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="upperFaceXmin" minOccurs="0" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>...</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="upperFaceXmax" minOccurs="0" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>...</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="upperFaceYmin" minOccurs="0" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>...</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="upperFaceYmax" minOccurs="0" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>...</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
     <xsd:complexType name="curveParamPointMapType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -10470,6 +10566,39 @@ cpacs@dlr.de
                     </xsd:element>
                 </xsd:all>
                 <xsd:attribute name="uID" use="required" type="xsd:ID"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="cylinderType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Cylinder</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>
+                            The component coordinate system of the cylinder is centered on the center of its lower circular face.
+                        </ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="radius" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Radius [m]</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="height" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Height [m]</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -12488,13 +12617,13 @@ cpacs@dlr.de
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:choice>
-                    <xsd:element name="parallelepiped" type="parallelepipedType"/>
-                    <xsd:element name="frustum" type="frustumType"/>
+                    <xsd:element name="cuboid" type="cuboidType"/>
+                    <xsd:element name="cylinder" type="cylinderType"/>
+                    <xsd:element name="cone" type="coneType"/>
                     <xsd:element name="ellipsoid" type="ellipsoidType"/>
-                    <xsd:element name="externalGeometry" type="externalGeometryType"/>
-                    <xsd:element name="genericGeometry" type="genericGeometryType"/>
-                    <xsd:element name="boundingBox" type="boundingBoxType"/>
+                    <xsd:element name="external" type="externalGeometryType"/>
                 </xsd:choice>
+                <xsd:attribute name="boundingShape" type="xsd:boolean"/>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -15431,57 +15560,6 @@ cpacs@dlr.de
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="frustumType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Frustum</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>The component coordinate system of the frustum is centered on the center of its geometrically defining variables,
-                            which is half the height and center of the lower and upper circular faces.
-                        </ddue:para>
-                        <ddue:para>The upper radius is optional.
-                            If not specified, it defaults to the lower radius, resulting in a cylinder.
-                        </ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="lowerRadiusX" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Upper radius in local x-direction [m]</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="lowerRadiusY" minOccurs="0" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Upper radius in local y-direction [m] (if not defined: equals lowerRadiusX)</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="height" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Height [m]</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="upperRadiusX" minOccurs="0" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Upper radius in local x-direction [m] (if not defined: equals lowerRadiusX)</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="upperRadiusY" minOccurs="0" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Upper radius in local y-direction [m] (if not defined: equals lowerRadiusX)</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
     <xsd:complexType name="fuelFlowsType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -17013,26 +17091,6 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                 <xsd:sequence>
                     <xsd:element name="genericGeometryComponent" maxOccurs="unbounded" type="genericGeometricComponentType"/>
                 </xsd:sequence>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="genericGeometryType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Generic geometry</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:choice>
-                    <xsd:element name="longitudinalBodies" minOccurs="0" type="longitudinalBodiesType"/>
-                    <xsd:element name="transverseBodies" minOccurs="0" type="transverseBodiesType"/>
-                </xsd:choice>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -20735,56 +20793,6 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:element name="longFloorBeamPosition" minOccurs="2" maxOccurs="unbounded" type="longFloorBeamPositionType"/>
                 </xsd:sequence>
                 <xsd:attribute name="uID" use="required" type="xsd:ID"/>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="longitudinalBodiesType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Longitudinal bodies</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element name="longitudinalBody" maxOccurs="unbounded" type="longitudinalBodyType"/>
-                </xsd:sequence>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="longitudinalBodyType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Longitudinal body (lofted in streamwise direction, like a fuselage)</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="parentUID" minOccurs="0" type="stringUIDBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>
-                                UID of part to which the longitudinal body is mounted (if any).
-                                The parent of the longitudinal body can be the transverse body.
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="transformation" type="transformationType"/>
-                    <xsd:element name="sections" type="fuselageSectionsType"/>
-                    <xsd:element name="segments" type="fuselageSegmentsType"/>
-                </xsd:all>
-                <xsd:attribute name="uID" use="required" type="xsd:ID"/>
-                <xsd:attribute name="symmetry" type="symmetryXyXzYzType"/>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -26835,61 +26843,6 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:element name="profileUID" type="stringUIDBaseType"/>
                     <xsd:element name="rotZ" type="doubleBaseType"/>
                 </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="parallelepipedType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Parallelepiped</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>The component coordinate system is located in the center of the cuboid.
-                            This means that "length" extends in the x-direction, "width" in the y-direction and "height" in the z-direction, half in the positive and half in the negative direction.
-                        </ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element name="length" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Length (in local x-direction) [m]</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="width" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Width (in local y-direction) [m]</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="height" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Height (in local z-direction) [m]</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:sequence minOccurs="0">
-                        <xsd:element name="alpha" type="doubleBaseType">
-                            <xsd:annotation>
-                                <xsd:documentation>Angle between edges in width and height direction (default: 90deg) [deg]</xsd:documentation>
-                            </xsd:annotation>
-                        </xsd:element>
-                        <xsd:element name="beta" type="doubleBaseType">
-                            <xsd:annotation>
-                                <xsd:documentation>Angle between edges in length and height direction (default: 90deg) [deg]</xsd:documentation>
-                            </xsd:annotation>
-                        </xsd:element>
-                        <xsd:element name="gamma" type="doubleBaseType">
-                            <xsd:annotation>
-                                <xsd:documentation>Angle between edges in length and width direction (default: 90deg) [deg]</xsd:documentation>
-                            </xsd:annotation>
-                        </xsd:element>
-                    </xsd:sequence>
-                </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -35893,55 +35846,6 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:element name="shaftOutputs" minOccurs="0" type="transmissionShaftOutputsType"/>
                 </xsd:all>
                 <xsd:attribute name="uID" use="required" type="xsd:ID"/>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="transverseBodiesType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Transverse bodies</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element name="transverseBody" maxOccurs="unbounded" type="transverseBodyType"/>
-                </xsd:sequence>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="transverseBodyType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Transverse body (i.e., cross-stream direction, like a wing)</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="parentUID" minOccurs="0" type="stringUIDBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>UID of part to which the transverse body is mounted (if any).
-                                The parent of the transverse body can be the longitudinal body.
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="transformation" type="transformationType"/>
-                    <xsd:element name="sections" type="wingSectionsType"/>
-                    <xsd:element name="segments" type="wingSegmentsType"/>
-                </xsd:all>
-                <xsd:attribute name="uID" use="required" type="xsd:ID"/>
-                <xsd:attribute name="symmetry" type="symmetryXyXzYzType"/>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
