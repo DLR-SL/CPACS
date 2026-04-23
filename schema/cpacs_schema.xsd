@@ -30339,6 +30339,100 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
+    <xsd:complexType name="rotorBladesType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Rotor blades</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>RotorBlades type, containing all the rotor blade
+                                gometry definitions of an rotorcraft model.</ddue:para>
+                            <ddue:para>Rotor blade geometries are defined using the same data
+                                structure as wings (wingType). But in order to be compatible
+                                with the other rotor blade related types (e.g. rotorType,
+                                rotorHubType, rotorHubHingeType) there are some additional
+                                conventions/requirements regarding the definition and
+                                orientation of rotorBlade geometries:</ddue:para>
+                            <ddue:list class="bullet">
+                                <ddue:listItem>Rotor blades should be positioned relative to the
+                                    global z-axis the way they will be positioned to the rotor
+                                    shaft (when blade azimuth=0deg).</ddue:listItem>
+                                <ddue:listItem>The global x-axis should be used as radial axis
+                                    (usually the quarter chord line of the rotor blade coincides to
+                                    a great extent with the x-axis of the rotor blade coordinate
+                                    system).</ddue:listItem>
+                                <ddue:listItem>All sections should be positioned in the positive
+                                    x halfspace.</ddue:listItem>
+                                <ddue:listItem>Segments should connect sections with ascending x
+                                    coordinates.</ddue:listItem>
+                                <ddue:listItem>Airfoils defined in the rotorAirfoils node should
+                                    be used instead airfoils from the wingAirfoils node.
+                                </ddue:listItem>
+                            </ddue:list>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="rotorBlade_cs01"/>
+                            </ddue:mediaLink>
+                        </ddue:content>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="rotorBlade" maxOccurs="unbounded" type="rotorBladeType">
+                        <xsd:annotation>
+                            <xsd:documentation>Rotor blade geometries are defined using the
+                                same data structure as wings (wingType). But in order to be
+                                compatible with the other rotor blade related types (e.g.
+                                rotorType, rotorHubType, rotorHubHingeType) there are some
+                                additional conventions/requirements regarding the definition and
+                                orientation of rotorBlade geometries: see remarks.
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="rotorBladeType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Rotor blade</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="name" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Name</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="description" minOccurs="0" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Description</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="transformation" type="transformationType"/>
+                    <xsd:element name="sections" type="wingSectionsType"/>
+                    <xsd:element name="positionings" minOccurs="0" type="positioningsType"/>
+                    <xsd:element name="segments" type="wingSegmentsType"/>
+                    <xsd:element name="componentSegments" minOccurs="0" type="componentSegmentsType"/>
+                </xsd:all>
+                <xsd:attribute name="uID" use="required" type="xsd:ID"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
     <xsd:complexType name="rotorcraftAnalysesType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -30702,100 +30796,6 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                 <xsd:sequence>
                     <xsd:element name="model" maxOccurs="unbounded" type="rotorcraftModelType"/>
                 </xsd:sequence>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="rotorElementsRotorBladesType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Rotor blade elements</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:content>
-                            <ddue:para>RotorBlades type, containing all the rotor blade
-                                gometry definitions of an rotorcraft model.</ddue:para>
-                            <ddue:para>Rotor blade geometries are defined using the same data
-                                structure as wings (wingType). But in order to be compatible
-                                with the other rotor blade related types (e.g. rotorType,
-                                rotorHubType, rotorHubHingeType) there are some additional
-                                conventions/requirements regarding the definition and
-                                orientation of rotorBlade geometries:</ddue:para>
-                            <ddue:list class="bullet">
-                                <ddue:listItem>Rotor blades should be positioned relative to the
-                                    global z-axis the way they will be positioned to the rotor
-                                    shaft (when blade azimuth=0deg).</ddue:listItem>
-                                <ddue:listItem>The global x-axis should be used as radial axis
-                                    (usually the quarter chord line of the rotor blade coincides to
-                                    a great extent with the x-axis of the rotor blade coordinate
-                                    system).</ddue:listItem>
-                                <ddue:listItem>All sections should be positioned in the positive
-                                    x halfspace.</ddue:listItem>
-                                <ddue:listItem>Segments should connect sections with ascending x
-                                    coordinates.</ddue:listItem>
-                                <ddue:listItem>Airfoils defined in the rotorAirfoils node should
-                                    be used instead airfoils from the wingAirfoils node.
-                                </ddue:listItem>
-                            </ddue:list>
-                            <ddue:mediaLink>
-                                <ddue:image xlink:href="rotorBlade_cs01"/>
-                            </ddue:mediaLink>
-                        </ddue:content>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element name="rotorBlade" maxOccurs="unbounded" type="rotorElementsRotorBladeType">
-                        <xsd:annotation>
-                            <xsd:documentation>Rotor blade geometries are defined using the
-                                same data structure as wings (wingType). But in order to be
-                                compatible with the other rotor blade related types (e.g.
-                                rotorType, rotorHubType, rotorHubHingeType) there are some
-                                additional conventions/requirements regarding the definition and
-                                orientation of rotorBlade geometries: see remarks.
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:sequence>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="rotorElementsRotorBladeType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Rotor blade</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="name" type="stringBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Name of the wing.</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="description" minOccurs="0" type="stringBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Description of the wing.</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="transformation" type="transformationType"/>
-                    <xsd:element name="sections" type="wingSectionsType"/>
-                    <xsd:element name="positionings" minOccurs="0" type="positioningsType"/>
-                    <xsd:element name="segments" type="wingSegmentsType"/>
-                    <xsd:element name="componentSegments" minOccurs="0" type="componentSegmentsType"/>
-                </xsd:all>
-                <xsd:attribute name="uID" use="required" type="xsd:ID"/>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -36784,7 +36784,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:element name="structuralElements" minOccurs="0" type="structuralElementsType"/>
                     <xsd:element name="deckElements" minOccurs="0" type="deckElementsType"/>
                     <xsd:element name="systemElements" minOccurs="0" type="systemElementsType"/>
-                    <xsd:element name="rotorBlades" minOccurs="0" type="rotorElementsRotorBladesType"/>
+                    <xsd:element name="rotorBlades" minOccurs="0" type="rotorBladesType"/>
                     <xsd:element name="materials" minOccurs="0" type="materialsType"/>
                     <xsd:element name="energyCarriers" minOccurs="0" type="energyCarriersType"/>
                 </xsd:all>
