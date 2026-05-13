@@ -1496,6 +1496,630 @@ cpacs@dlr.de
         </xsd:all>
     </xsd:complexType>
 
+<!-- ==== base types ==== -->
+
+    <xsd:complexType name="complexBaseType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>complexBaseType</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>Base type for complex nodes (including external data
+                            attributes)</ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:attribute name="externalDataNodePath" type="xsd:string"/>
+        <xsd:attribute name="externalFileName" type="xsd:string"/>
+        <xsd:attribute name="externalDataDirectory" type="xsd:string"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="stringArrayBaseType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>stringArrayBaseType</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>Base type for string array nodes (including maptype
+                            array attribute)</ddue:para>
+                        <ddue:para>
+                            DEPRECATED: As of CPACCS version 3.3, the
+                            <ddue:legacyItalic>mapType</ddue:legacyItalic>
+                            attribute is set to optional to ensure the compatibility of older data records. However, since the type is uniquely defined via the XSD, the attribute is superfluous and will therefore be completely omitted in future versions.
+                        </ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:simpleContent>
+            <xsd:extension base="stringBaseType">
+                <xsd:attribute name="mapType" fixed="array" type="xsd:string"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="stringVectorBaseType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>stringVectorBaseType</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>Base type for string vector nodes</ddue:para>
+                            <ddue:para>The vector base type can include optional uncertainty
+                                information. The description of uncertainties is placed in
+                                additional attributes. First, it is described by an attribute that
+                                describes the type of uncertainty function called functionName.
+                                The functionName attribute includes the tag name of the
+                                distribution function which is listened in the table shown below.
+                                Each uncertainty function is further describes by a set of
+                                parameters that are described in the table below.</ddue:para>
+                            <ddue:para>If the uncertainty values change for the elements of
+                                the vector than the attribute may be written as a list of values
+                                separated by semicolons</ddue:para>
+                            <ddue:para>
+                                DEPRECATED: As of
+                                CPACS
+                                version 3.3, the
+                                <ddue:legacyItalic>mapType</ddue:legacyItalic>
+                                attribute is set to optional to ensure the compatibility of older data sets.
+                                However, since the type is uniquely defined via the XSD, the attribute is superfluous
+                                and will therefore be completely omitted in the next major release (Note: requires
+                                TiXI &gt;= 3.3). Please contact the
+                                CPACS
+                                team
+                                if for any reason you see a long-term need for the
+                                <ddue:legacyItalic>mapType</ddue:legacyItalic>
+                                attribute.
+                            </ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="uncertaintyFunctions"/>
+                            </ddue:mediaLink>
+                        </ddue:content>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:simpleContent>
+            <xsd:extension base="stringBaseType">
+                <xsd:attribute name="mapType" fixed="vector" type="xsd:string"/>
+                <xsd:attribute name="uncertaintyFunctionName" type="uncertaintyFunctionType"/>
+                <xsd:attribute name="mu" type="xsd:string"/>
+                <xsd:attribute name="delta" type="xsd:string"/>
+                <xsd:attribute name="a" type="xsd:string"/>
+                <xsd:attribute name="b" type="xsd:string"/>
+                <xsd:attribute name="c" type="xsd:string"/>
+                <xsd:attribute name="v" type="xsd:string"/>
+                <xsd:attribute name="w" type="xsd:string"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="booleanBaseType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>booleanBaseType</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>Base type for boolean nodes (including external data
+                            attributes)</ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:boolean">
+                <xsd:attribute name="externalDataNodePath" type="xsd:string"/>
+                <xsd:attribute name="externalFileName" type="xsd:string"/>
+                <xsd:attribute name="externalDataDirectory" type="xsd:string"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="dateBaseType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>dateBaseType</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>Base type for date nodes (including external data attributes).
+                            This date type is based on the xsd:date definition.
+                            "To specify a time zone, you can either enter a date in UTC time by adding a "Z" behind the date - like this: 2002-09-24Z
+                            or you can specify an offset from the UTC time by adding a positive or negative time behind the date - like this:
+                            2002-09-24-06:00
+                            or
+                            2002-09-24+06:00" (description taken from http://www.w3schools.com/xml/schema_dtypes_date.asp)
+                        </ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:date">
+                <xsd:attribute name="externalDataNodePath" type="xsd:string"/>
+                <xsd:attribute name="externalFileName" type="xsd:string"/>
+                <xsd:attribute name="externalDataDirectory" type="xsd:string"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="dateTimeBaseType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>dateTimeBaseType</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>Base type for dateTime nodes (including external data
+                            attributes)</ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:dateTime">
+                <xsd:attribute name="externalDataNodePath" type="xsd:string"/>
+                <xsd:attribute name="externalFileName" type="xsd:string"/>
+                <xsd:attribute name="externalDataDirectory" type="xsd:string"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="doubleArrayBaseType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Array with semicolon separated values of type double</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>
+                                In
+                                CPACS
+                                arrays are used to exchange values
+                            in full-factorial parameter spaces, for example to describe the aerodynamic coefficients depending
+                            on Mach number and altitude.
+                            </ddue:para>
+                            <ddue:para>Thus, the dimensions of the array are spanned by the input vectors. See the following
+                            example where two input vectors are defined. For clarification the entries of the array result from
+                            the multiplication of the index values of the corresponding input vectors:</ddue:para>
+                            <ddue:code language="XML" title="Input vectors">
+&lt;inputVector1&gt;1;2;3&lt;/inputVector1&gt;
+&lt;inputVector2&gt;4;5;6;7&lt;/inputVector2&gt;
+                            </ddue:code>
+                            <ddue:code language="XML" title="Resulting 3x4 array">
+&lt;array&gt;4;5;6;7;8;10;12;14;12;15;18;21&lt;/array&gt;
+                            </ddue:code>
+                            <ddue:para>
+                                Any entries of type
+                                <ddue:legacyItalic>double</ddue:legacyItalic>
+                                separated by semicolons are valid, e.g.:
+                            </ddue:para>
+                            <ddue:code language="XML" title="Example 1: valid double array">
+&lt;doubleArrayTest&gt;123.456;+123.456;-1.234e56;-.45E-6;NaN;0&lt;/doubleArrayTest&gt;
+                            </ddue:code>
+                            <ddue:code language="XML" title="Example 2: valid double array with only one entry">
+&lt;doubleArrayTest&gt;123.456&lt;/doubleArrayTest&gt;
+                            </ddue:code>
+                            <ddue:code language="XML" title="Example 3: invalid double array due to comma separation">
+&lt;doubleArrayTest&gt;123.456,+1234.456&lt;/doubleArrayTest&gt;
+                            </ddue:code>
+                            <ddue:code language="XML" title="Example 4: invalid double array due to string entry">
+&lt;doubleArrayTest&gt;123.456;mainWingUID&lt;/doubleArrayTest&gt;
+                            </ddue:code>
+                            <ddue:code language="XML" title="Example 5: invalid double array due invalid double values">
+&lt;doubleArrayTest&gt;1234.4E 56;-1.234e5.6&lt;/doubleArrayTest&gt;
+                            </ddue:code>
+                            <ddue:para>
+                                Please note that the syntax of arrays in the current
+                                CPACS
+                                version correspond exactly to the syntax of vectors. There is no special character indicating
+                                the dimensions. Thus, the input vectors have to be determined from the documentation of the
+                                corresponding elements and splitting of the one-dimensional vector has to be done manually.
+                            </ddue:para>
+                        </ddue:content>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:simpleContent>
+            <xsd:restriction base="stringArrayBaseType">
+                <xsd:pattern value="((\s+)?[-+]?(\d+)?(\.)?(\d+)?(([eE][-+]?)?\d+)?(\s+)?|(\s+)?(NaN)(\s+)?)(;(((\s+)?[-+]?(\d+)?(\.)?(\d+)?(([eE][-+]?)?\d+)?(\s+)?)|(\s+)?(NaN)(\s+)?))*"/>
+            </xsd:restriction>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="doubleBaseType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>doubleBaseType</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>Base type for double nodes (including external data
+                                attributes)</ddue:para>
+                            <ddue:para>The double base type can include optional uncertainty
+                                information. The description of uncertainties is placed in
+                                additional attributes. First, it is described by an attribute
+                                that describes the type of uncertainty function called
+                                functionName. The functionName attribute includes the tag name
+                                of the distribution function which is listened in the table
+                                shown below. Each uncertainty function is further describes by a
+                                set of parameters that are described in the table below.
+                            </ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="uncertaintyFunctions"/>
+                            </ddue:mediaLink>
+                        </ddue:content>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:double">
+                <xsd:attribute name="externalDataNodePath" type="xsd:string"/>
+                <xsd:attribute name="externalFileName" type="xsd:string"/>
+                <xsd:attribute name="externalDataDirectory" type="xsd:string"/>
+                <xsd:attribute name="uncertaintyFunctionName" type="uncertaintyFunctionType"/>
+                <xsd:attribute name="mu" type="xsd:double"/>
+                <xsd:attribute name="delta" type="xsd:double"/>
+                <xsd:attribute name="a" type="xsd:double"/>
+                <xsd:attribute name="b" type="xsd:double"/>
+                <xsd:attribute name="c" type="xsd:double"/>
+                <xsd:attribute name="v" type="xsd:double"/>
+                <xsd:attribute name="w" type="xsd:double"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="doubleConstraintBaseType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>doubleConstraintBaseType</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>Base type for double nodes including a relational operator attribute indicating valid constraint region</ddue:para>
+                            <ddue:para>The doubleConstraintBaseType extends the doubleBaseType and thus inherits all its attributes.</ddue:para>
+                        </ddue:content>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:simpleContent>
+            <xsd:extension base="doubleBaseType">
+                <xsd:attribute name="relationalOperator" use="required">
+                    <xsd:simpleType>
+                        <xsd:restriction base="xsd:string">
+                            <xsd:enumeration value="lt"/>
+                            <xsd:enumeration value="le"/>
+                            <xsd:enumeration value="eq"/>
+                            <xsd:enumeration value="ne"/>
+                            <xsd:enumeration value="gt"/>
+                            <xsd:enumeration value="ge"/>
+                        </xsd:restriction>
+                    </xsd:simpleType>
+                </xsd:attribute>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="doubleVectorBaseType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Vector with semicolon separated values of type double</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>
+                                Any entries of type
+                                <ddue:legacyItalic>double</ddue:legacyItalic>
+                                separated by semicolons are permitted, e.g.:
+                            </ddue:para>
+                            <ddue:code language="XML" title="Example 1: valid double vector">
+&lt;doubleVectorTest&gt;123.456;+123.456;-1.234e56;-.45E-6;NaN&lt;/doubleVectorTest&gt;
+                               </ddue:code>
+                            <ddue:code language="XML" title="Example 2: valid double vector with only one entry">
+&lt;doubleVectorTest&gt;123.456&lt;/doubleVectorTest&gt;
+                            </ddue:code>
+                            <ddue:code language="XML" title="Example 3: invalid double vector due to comma separation">
+&lt;doubleVectorTest&gt;123.456,+1234.456&lt;/doubleVectorTest&gt;
+                            </ddue:code>
+                            <ddue:code language="XML" title="Example 4: invalid double vector due to string entry">
+&lt;doubleVectorTest&gt;123.456;mainWingUID&lt;/doubleVectorTest&gt;
+                            </ddue:code>
+                            <ddue:code language="XML" title="Example 5: invalid double vector due invalid double values">
+&lt;doubleVectorTest&gt;123.456;1234.4E 56;-1.234e5.6&lt;/doubleVectorTest&gt;
+                            </ddue:code>
+                        </ddue:content>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:simpleContent>
+            <xsd:restriction base="stringVectorBaseType">
+                <xsd:pattern value="((\s+)?[-+]?(\d+)?(\.)?(\d+)?(([eE][-+]?)?\d+)?(\s+)?|(\s+)?(NaN)(\s+)?)(;(((\s+)?[-+]?(\d+)?(\.)?(\d+)?(([eE][-+]?)?\d+)?(\s+)?)|(\s+)?(NaN)(\s+)?))*"/>
+            </xsd:restriction>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="doubleVectorConstraintBaseType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>doubleVectorConstraintBaseType</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>Base type for double vectors including a relational operator attribute indicating valid constraint region.</ddue:para>
+                            <ddue:para>The doubleVectorConstraintBaseType extends the doubleVectorBaseType and thus inherits all its attributes.</ddue:para>
+                        </ddue:content>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:simpleContent>
+            <xsd:extension base="doubleVectorBaseType">
+                <xsd:attribute name="relationalOperator" use="required">
+                    <xsd:simpleType>
+                        <xsd:restriction base="xsd:string">
+                            <xsd:enumeration value="lt"/>
+                            <xsd:enumeration value="le"/>
+                            <xsd:enumeration value="eq"/>
+                            <xsd:enumeration value="ne"/>
+                            <xsd:enumeration value="gt"/>
+                            <xsd:enumeration value="ge"/>
+                        </xsd:restriction>
+                    </xsd:simpleType>
+                </xsd:attribute>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="integerBaseType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>integerBaseType</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>Base type for integer nodes (including external data
+                            attributes)</ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:integer">
+                <xsd:attribute name="externalDataNodePath" type="xsd:string"/>
+                <xsd:attribute name="externalFileName" type="xsd:string"/>
+                <xsd:attribute name="externalDataDirectory" type="xsd:string"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="posExcl0DoubleBaseType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Positive double values larger than 0</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:simpleContent>
+            <xsd:restriction base="doubleBaseType">
+                <xsd:minExclusive value="0"/>
+            </xsd:restriction>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="posExcl0IntBaseType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Positive integer values larger than 0</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:simpleContent>
+            <xsd:restriction base="integerBaseType">
+                <xsd:minExclusive value="0"/>
+            </xsd:restriction>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="posIntVectorBaseType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Vector with semicolon separated positive integer values</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>Any positive integer values separated by semicolons are permitted, e.g.:</ddue:para>
+                            <ddue:code language="XML" title="Example 1: valid integer vector">
+&lt;intVectorTest&gt;0;1;2;3;4;5&lt;/intVectorTest&gt;
+                            </ddue:code>
+                            <ddue:code language="XML" title="Example 2: valid integer vector with only one entry">
+&lt;intVectorTest&gt;1&lt;/intVectorTest&gt;
+                            </ddue:code>
+                            <ddue:code language="XML" title="Example 3: invalid integer vector due comma separation">
+&lt;intVectorTest&gt;0,1,2,3,4,5&lt;/intVectorTest&gt;
+                            </ddue:code>
+                            <ddue:code language="XML" title="Example 4: invalid integer vector due to invalid integer">
+&lt;intVectorTest&gt;0.;1.;2.&lt;/intVectorTest&gt;
+                            </ddue:code>
+                            <ddue:code language="XML" title="Example 5: invalid integer vector due to negative value">
+&lt;intVectorTest&gt;-1;0;1&lt;/intVectorTest&gt;
+                            </ddue:code>
+                        </ddue:content>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:simpleContent>
+            <xsd:restriction base="stringVectorBaseType">
+                <xsd:pattern value="(\s+)?\d+(([eE][-+]?)?\d+)?(\s+)?(;(\s+)?\d+(([eE][-+]?)?\d+)?(\s+)?)*"/>
+            </xsd:restriction>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="stringBaseType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>stringBaseType</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>Base type for string nodes (including external data
+                            attributes)</ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute name="externalDataNodePath" type="xsd:string"/>
+                <xsd:attribute name="externalFileName" type="xsd:string"/>
+                <xsd:attribute name="externalDataDirectory" type="xsd:string"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="stringUIDBaseType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>stringUIDBaseType</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>This is the base type that links to other components. It should always contain a UID.</ddue:para>
+                        <ddue:para>This node has an additional attribute isLink that will be used if a stringBaseType refers to a uID. TIXI can then
+                            perform automatic validation for the existence of the referenced uID. </ddue:para>
+                        <ddue:para>Furthermore this node contains an additional attribute symmetry. The symmetry attribute may take three values: symm, def, full </ddue:para>
+                        <ddue:para>def: The element refers to the geometric component that has a symmetry attribute and refers only to the defined side of the geometric component.</ddue:para>
+                        <ddue:para>symm: The element refers to the geometric component that has a symmetry attribute and refers only to the symmetric side of the geometric component. (Similar to the previous _symm solution)</ddue:para>
+                        <ddue:para>full: The element refers to the geometric component that has a symmetry attribute and refers to the complete component. (This is the default behaviour)</ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:IDREF">
+                <xsd:attribute name="isLink" default="True" type="xsd:string">
+                    <xsd:annotation>
+                        <xsd:documentation>
+                            <ddue:legacyBold>DEPRECATED</ddue:legacyBold>:
+                            The <ddue:codeInline>isLink</ddue:codeInline> attribute is set to optional to ensure the compatibility of older data records.
+                            However, since the linking character is explicitly defined by the <ddue:legacyBold>stringUIDBaseType</ddue:legacyBold>, the attribute is superfluous and will therefore be completely omitted in future versions.
+                        </xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="symmetry">
+                    <xsd:simpleType>
+                        <xsd:restriction base="xsd:string">
+                            <xsd:enumeration value="def"/>
+                            <xsd:enumeration value="symm"/>
+                            <xsd:enumeration value="full"/>
+                        </xsd:restriction>
+                    </xsd:simpleType>
+                </xsd:attribute>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="timeBaseType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>timeBaseType</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>Base type for time nodes (including external data attributes)
+                            This time type is based on the xsd:time definition.
+                            "To specify a time zone, you can either enter a time in UTC time by adding a "Z" behind the time - like this: 09:30:10Z
+                            or you can specify an offset from the UTC time by adding a positive or negative time behind the time - like this:
+                            09:30:10-06:00
+                            or
+                            09:30:10+06:00" (description taken from http://www.w3schools.com/xml/schema_dtypes_date.asp)</ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:time">
+                <xsd:attribute name="externalDataNodePath" type="xsd:string"/>
+                <xsd:attribute name="externalFileName" type="xsd:string"/>
+                <xsd:attribute name="externalDataDirectory" type="xsd:string"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="timeConstraintBaseType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>timeConstraintBaseType</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>Base type for time nodes including a relational operator attribute indicating valid constraint region</ddue:para>
+                            <ddue:para>The timeConstraintBaseType extends the timeBaseType and thus inherits all its attributes.</ddue:para>
+                        </ddue:content>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:simpleContent>
+            <xsd:extension base="timeBaseType">
+                <xsd:attribute name="relationalOperator" use="required">
+                    <xsd:simpleType>
+                        <xsd:restriction base="xsd:string">
+                            <xsd:enumeration value="lt"/>
+                            <xsd:enumeration value="le"/>
+                            <xsd:enumeration value="eq"/>
+                            <xsd:enumeration value="ne"/>
+                            <xsd:enumeration value="gt"/>
+                            <xsd:enumeration value="ge"/>
+                        </xsd:restriction>
+                    </xsd:simpleType>
+                </xsd:attribute>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+<!-- ==== custom types ==== -->
+
     <xsd:complexType name="actuatorAttachmentType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -4469,29 +5093,6 @@ cpacs@dlr.de
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="booleanBaseType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>booleanBaseType</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>Base type for boolean nodes (including external data
-                            attributes)</ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:simpleContent>
-            <xsd:extension base="xsd:boolean">
-                <xsd:attribute name="externalDataNodePath" type="xsd:string"/>
-                <xsd:attribute name="externalFileName" type="xsd:string"/>
-                <xsd:attribute name="externalDataDirectory" type="xsd:string"/>
-            </xsd:extension>
-        </xsd:simpleContent>
-    </xsd:complexType>
-
     <xsd:complexType name="boundingBoxType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -6400,25 +7001,6 @@ cpacs@dlr.de
                 <xsd:attribute name="uID" type="xsd:ID"/>
             </xsd:extension>
         </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="complexBaseType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>complexBaseType</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>Base type for complex nodes (including external data
-                            attributes)</ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:attribute name="externalDataNodePath" type="xsd:string"/>
-        <xsd:attribute name="externalFileName" type="xsd:string"/>
-        <xsd:attribute name="externalDataDirectory" type="xsd:string"/>
     </xsd:complexType>
 
     <xsd:complexType name="componentCostType">
@@ -10984,58 +11566,6 @@ cpacs@dlr.de
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="dateBaseType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>dateBaseType</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>Base type for date nodes (including external data attributes).
-                            This date type is based on the xsd:date definition.
-                            "To specify a time zone, you can either enter a date in UTC time by adding a "Z" behind the date - like this: 2002-09-24Z
-                            or you can specify an offset from the UTC time by adding a positive or negative time behind the date - like this:
-                            2002-09-24-06:00
-                            or
-                            2002-09-24+06:00" (description taken from http://www.w3schools.com/xml/schema_dtypes_date.asp)
-                        </ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:simpleContent>
-            <xsd:extension base="xsd:date">
-                <xsd:attribute name="externalDataNodePath" type="xsd:string"/>
-                <xsd:attribute name="externalFileName" type="xsd:string"/>
-                <xsd:attribute name="externalDataDirectory" type="xsd:string"/>
-            </xsd:extension>
-        </xsd:simpleContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="dateTimeBaseType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>dateTimeBaseType</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>Base type for dateTime nodes (including external data
-                            attributes)</ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:simpleContent>
-            <xsd:extension base="xsd:dateTime">
-                <xsd:attribute name="externalDataNodePath" type="xsd:string"/>
-                <xsd:attribute name="externalFileName" type="xsd:string"/>
-                <xsd:attribute name="externalDataDirectory" type="xsd:string"/>
-            </xsd:extension>
-        </xsd:simpleContent>
-    </xsd:complexType>
-
     <xsd:complexType name="deckComponent2DBaseType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -12062,225 +12592,6 @@ cpacs@dlr.de
                 </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="doubleArrayBaseType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Array with semicolon separated values of type double</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:content>
-                            <ddue:para>
-                                In
-                                CPACS
-                                arrays are used to exchange values
-                            in full-factorial parameter spaces, for example to describe the aerodynamic coefficients depending
-                            on Mach number and altitude.
-                            </ddue:para>
-                            <ddue:para>Thus, the dimensions of the array are spanned by the input vectors. See the following
-                            example where two input vectors are defined. For clarification the entries of the array result from
-                            the multiplication of the index values of the corresponding input vectors:</ddue:para>
-                            <ddue:code language="XML" title="Input vectors">
-&lt;inputVector1&gt;1;2;3&lt;/inputVector1&gt;
-&lt;inputVector2&gt;4;5;6;7&lt;/inputVector2&gt;
-                            </ddue:code>
-                            <ddue:code language="XML" title="Resulting 3x4 array">
-&lt;array&gt;4;5;6;7;8;10;12;14;12;15;18;21&lt;/array&gt;
-                            </ddue:code>
-                            <ddue:para>
-                                Any entries of type
-                                <ddue:legacyItalic>double</ddue:legacyItalic>
-                                separated by semicolons are valid, e.g.:
-                            </ddue:para>
-                            <ddue:code language="XML" title="Example 1: valid double array">
-&lt;doubleArrayTest&gt;123.456;+123.456;-1.234e56;-.45E-6;NaN;0&lt;/doubleArrayTest&gt;
-                            </ddue:code>
-                            <ddue:code language="XML" title="Example 2: valid double array with only one entry">
-&lt;doubleArrayTest&gt;123.456&lt;/doubleArrayTest&gt;
-                            </ddue:code>
-                            <ddue:code language="XML" title="Example 3: invalid double array due to comma separation">
-&lt;doubleArrayTest&gt;123.456,+1234.456&lt;/doubleArrayTest&gt;
-                            </ddue:code>
-                            <ddue:code language="XML" title="Example 4: invalid double array due to string entry">
-&lt;doubleArrayTest&gt;123.456;mainWingUID&lt;/doubleArrayTest&gt;
-                            </ddue:code>
-                            <ddue:code language="XML" title="Example 5: invalid double array due invalid double values">
-&lt;doubleArrayTest&gt;1234.4E 56;-1.234e5.6&lt;/doubleArrayTest&gt;
-                            </ddue:code>
-                            <ddue:para>
-                                Please note that the syntax of arrays in the current
-                                CPACS
-                                version correspond exactly to the syntax of vectors. There is no special character indicating
-                                the dimensions. Thus, the input vectors have to be determined from the documentation of the
-                                corresponding elements and splitting of the one-dimensional vector has to be done manually.
-                            </ddue:para>
-                        </ddue:content>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:simpleContent>
-            <xsd:restriction base="stringArrayBaseType">
-                <xsd:pattern value="((\s+)?[-+]?(\d+)?(\.)?(\d+)?(([eE][-+]?)?\d+)?(\s+)?|(\s+)?(NaN)(\s+)?)(;(((\s+)?[-+]?(\d+)?(\.)?(\d+)?(([eE][-+]?)?\d+)?(\s+)?)|(\s+)?(NaN)(\s+)?))*"/>
-            </xsd:restriction>
-        </xsd:simpleContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="doubleBaseType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>doubleBaseType</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:content>
-                            <ddue:para>Base type for double nodes (including external data
-                                attributes)</ddue:para>
-                            <ddue:para>The double base type can include optional uncertainty
-                                information. The description of uncertainties is placed in
-                                additional attributes. First, it is described by an attribute
-                                that describes the type of uncertainty function called
-                                functionName. The functionName attribute includes the tag name
-                                of the distribution function which is listened in the table
-                                shown below. Each uncertainty function is further describes by a
-                                set of parameters that are described in the table below.
-                            </ddue:para>
-                            <ddue:mediaLink>
-                                <ddue:image xlink:href="uncertaintyFunctions"/>
-                            </ddue:mediaLink>
-                        </ddue:content>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:simpleContent>
-            <xsd:extension base="xsd:double">
-                <xsd:attribute name="externalDataNodePath" type="xsd:string"/>
-                <xsd:attribute name="externalFileName" type="xsd:string"/>
-                <xsd:attribute name="externalDataDirectory" type="xsd:string"/>
-                <xsd:attribute name="uncertaintyFunctionName" type="uncertaintyFunctionType"/>
-                <xsd:attribute name="mu" type="xsd:double"/>
-                <xsd:attribute name="delta" type="xsd:double"/>
-                <xsd:attribute name="a" type="xsd:double"/>
-                <xsd:attribute name="b" type="xsd:double"/>
-                <xsd:attribute name="c" type="xsd:double"/>
-                <xsd:attribute name="v" type="xsd:double"/>
-                <xsd:attribute name="w" type="xsd:double"/>
-            </xsd:extension>
-        </xsd:simpleContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="doubleConstraintBaseType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>doubleConstraintBaseType</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:content>
-                            <ddue:para>Base type for double nodes including a relational operator attribute indicating valid constraint region</ddue:para>
-                            <ddue:para>The doubleConstraintBaseType extends the doubleBaseType and thus inherits all its attributes.</ddue:para>
-                        </ddue:content>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:simpleContent>
-            <xsd:extension base="doubleBaseType">
-                <xsd:attribute name="relationalOperator" use="required">
-                    <xsd:simpleType>
-                        <xsd:restriction base="xsd:string">
-                            <xsd:enumeration value="lt"/>
-                            <xsd:enumeration value="le"/>
-                            <xsd:enumeration value="eq"/>
-                            <xsd:enumeration value="ne"/>
-                            <xsd:enumeration value="gt"/>
-                            <xsd:enumeration value="ge"/>
-                        </xsd:restriction>
-                    </xsd:simpleType>
-                </xsd:attribute>
-            </xsd:extension>
-        </xsd:simpleContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="doubleVectorBaseType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Vector with semicolon separated values of type double</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:content>
-                            <ddue:para>
-                                Any entries of type
-                                <ddue:legacyItalic>double</ddue:legacyItalic>
-                                separated by semicolons are permitted, e.g.:
-                            </ddue:para>
-                            <ddue:code language="XML" title="Example 1: valid double vector">
-&lt;doubleVectorTest&gt;123.456;+123.456;-1.234e56;-.45E-6;NaN&lt;/doubleVectorTest&gt;
-                               </ddue:code>
-                            <ddue:code language="XML" title="Example 2: valid double vector with only one entry">
-&lt;doubleVectorTest&gt;123.456&lt;/doubleVectorTest&gt;
-                            </ddue:code>
-                            <ddue:code language="XML" title="Example 3: invalid double vector due to comma separation">
-&lt;doubleVectorTest&gt;123.456,+1234.456&lt;/doubleVectorTest&gt;
-                            </ddue:code>
-                            <ddue:code language="XML" title="Example 4: invalid double vector due to string entry">
-&lt;doubleVectorTest&gt;123.456;mainWingUID&lt;/doubleVectorTest&gt;
-                            </ddue:code>
-                            <ddue:code language="XML" title="Example 5: invalid double vector due invalid double values">
-&lt;doubleVectorTest&gt;123.456;1234.4E 56;-1.234e5.6&lt;/doubleVectorTest&gt;
-                            </ddue:code>
-                        </ddue:content>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:simpleContent>
-            <xsd:restriction base="stringVectorBaseType">
-                <xsd:pattern value="((\s+)?[-+]?(\d+)?(\.)?(\d+)?(([eE][-+]?)?\d+)?(\s+)?|(\s+)?(NaN)(\s+)?)(;(((\s+)?[-+]?(\d+)?(\.)?(\d+)?(([eE][-+]?)?\d+)?(\s+)?)|(\s+)?(NaN)(\s+)?))*"/>
-            </xsd:restriction>
-        </xsd:simpleContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="doubleVectorConstraintBaseType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>doubleVectorConstraintBaseType</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:content>
-                            <ddue:para>Base type for double vectors including a relational operator attribute indicating valid constraint region.</ddue:para>
-                            <ddue:para>The doubleVectorConstraintBaseType extends the doubleVectorBaseType and thus inherits all its attributes.</ddue:para>
-                        </ddue:content>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:simpleContent>
-            <xsd:extension base="doubleVectorBaseType">
-                <xsd:attribute name="relationalOperator" use="required">
-                    <xsd:simpleType>
-                        <xsd:restriction base="xsd:string">
-                            <xsd:enumeration value="lt"/>
-                            <xsd:enumeration value="le"/>
-                            <xsd:enumeration value="eq"/>
-                            <xsd:enumeration value="ne"/>
-                            <xsd:enumeration value="gt"/>
-                            <xsd:enumeration value="ge"/>
-                        </xsd:restriction>
-                    </xsd:simpleType>
-                </xsd:attribute>
-            </xsd:extension>
-        </xsd:simpleContent>
     </xsd:complexType>
 
     <xsd:complexType name="dragContributionsType">
@@ -18296,29 +18607,6 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             </xsd:enumeration>
         </xsd:restriction>
     </xsd:simpleType>
-
-    <xsd:complexType name="integerBaseType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>integerBaseType</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>Base type for integer nodes (including external data
-                            attributes)</ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:simpleContent>
-            <xsd:extension base="xsd:integer">
-                <xsd:attribute name="externalDataNodePath" type="xsd:string"/>
-                <xsd:attribute name="externalFileName" type="xsd:string"/>
-                <xsd:attribute name="externalDataDirectory" type="xsd:string"/>
-            </xsd:extension>
-        </xsd:simpleContent>
-    </xsd:complexType>
 
     <xsd:complexType name="interConnectionStrutAttachmentType">
         <xsd:annotation>
@@ -28184,77 +28472,6 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="posExcl0DoubleBaseType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Positive double values larger than 0</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:simpleContent>
-            <xsd:restriction base="doubleBaseType">
-                <xsd:minExclusive value="0"/>
-            </xsd:restriction>
-        </xsd:simpleContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="posExcl0IntBaseType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Positive integer values larger than 0</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:simpleContent>
-            <xsd:restriction base="integerBaseType">
-                <xsd:minExclusive value="0"/>
-            </xsd:restriction>
-        </xsd:simpleContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="posIntVectorBaseType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Vector with semicolon separated positive integer values</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:content>
-                            <ddue:para>Any positive integer values separated by semicolons are permitted, e.g.:</ddue:para>
-                            <ddue:code language="XML" title="Example 1: valid integer vector">
-&lt;intVectorTest&gt;0;1;2;3;4;5&lt;/intVectorTest&gt;
-                            </ddue:code>
-                            <ddue:code language="XML" title="Example 2: valid integer vector with only one entry">
-&lt;intVectorTest&gt;1&lt;/intVectorTest&gt;
-                            </ddue:code>
-                            <ddue:code language="XML" title="Example 3: invalid integer vector due comma separation">
-&lt;intVectorTest&gt;0,1,2,3,4,5&lt;/intVectorTest&gt;
-                            </ddue:code>
-                            <ddue:code language="XML" title="Example 4: invalid integer vector due to invalid integer">
-&lt;intVectorTest&gt;0.;1.;2.&lt;/intVectorTest&gt;
-                            </ddue:code>
-                            <ddue:code language="XML" title="Example 5: invalid integer vector due to negative value">
-&lt;intVectorTest&gt;-1;0;1&lt;/intVectorTest&gt;
-                            </ddue:code>
-                        </ddue:content>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:simpleContent>
-            <xsd:restriction base="stringVectorBaseType">
-                <xsd:pattern value="(\s+)?\d+(([eE][-+]?)?\d+)?(\s+)?(;(\s+)?\d+(([eE][-+]?)?\d+)?(\s+)?)*"/>
-            </xsd:restriction>
-        </xsd:simpleContent>
-    </xsd:complexType>
-
     <xsd:complexType name="positioningsType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -33014,55 +33231,6 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="stringArrayBaseType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>stringArrayBaseType</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>Base type for string array nodes (including maptype
-                            array attribute)</ddue:para>
-                        <ddue:para>
-                            DEPRECATED: As of CPACCS version 3.3, the
-                            <ddue:legacyItalic>mapType</ddue:legacyItalic>
-                            attribute is set to optional to ensure the compatibility of older data records. However, since the type is uniquely defined via the XSD, the attribute is superfluous and will therefore be completely omitted in future versions.
-                        </ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:simpleContent>
-            <xsd:extension base="stringBaseType">
-                <xsd:attribute name="mapType" fixed="array" type="xsd:string"/>
-            </xsd:extension>
-        </xsd:simpleContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="stringBaseType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>stringBaseType</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>Base type for string nodes (including external data
-                            attributes)</ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:simpleContent>
-            <xsd:extension base="xsd:string">
-                <xsd:attribute name="externalDataNodePath" type="xsd:string"/>
-                <xsd:attribute name="externalFileName" type="xsd:string"/>
-                <xsd:attribute name="externalDataDirectory" type="xsd:string"/>
-            </xsd:extension>
-        </xsd:simpleContent>
-    </xsd:complexType>
-
     <xsd:complexType name="stringerFramePositionType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -33235,108 +33403,6 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                 <xsd:attribute name="uID" use="required" type="xsd:ID"/>
             </xsd:extension>
         </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="stringUIDBaseType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>stringUIDBaseType</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>This is the base type that links to other components. It should always contain a UID.</ddue:para>
-                        <ddue:para>This node has an additional attribute isLink that will be used if a stringBaseType refers to a uID. TIXI can then
-                            perform automatic validation for the existence of the referenced uID. </ddue:para>
-                        <ddue:para>Furthermore this node contains an additional attribute symmetry. The symmetry attribute may take three values: symm, def, full </ddue:para>
-                        <ddue:para>def: The element refers to the geometric component that has a symmetry attribute and refers only to the defined side of the geometric component.</ddue:para>
-                        <ddue:para>symm: The element refers to the geometric component that has a symmetry attribute and refers only to the symmetric side of the geometric component. (Similar to the previous _symm solution)</ddue:para>
-                        <ddue:para>full: The element refers to the geometric component that has a symmetry attribute and refers to the complete component. (This is the default behaviour)</ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:simpleContent>
-            <xsd:extension base="xsd:IDREF">
-                <xsd:attribute name="isLink" default="True" type="xsd:string">
-                    <xsd:annotation>
-                        <xsd:documentation>
-                            <ddue:legacyBold>DEPRECATED</ddue:legacyBold>:
-                            The <ddue:codeInline>isLink</ddue:codeInline> attribute is set to optional to ensure the compatibility of older data records.
-                            However, since the linking character is explicitly defined by the <ddue:legacyBold>stringUIDBaseType</ddue:legacyBold>, the attribute is superfluous and will therefore be completely omitted in future versions.
-                        </xsd:documentation>
-                    </xsd:annotation>
-                </xsd:attribute>
-                <xsd:attribute name="symmetry">
-                    <xsd:simpleType>
-                        <xsd:restriction base="xsd:string">
-                            <xsd:enumeration value="def"/>
-                            <xsd:enumeration value="symm"/>
-                            <xsd:enumeration value="full"/>
-                        </xsd:restriction>
-                    </xsd:simpleType>
-                </xsd:attribute>
-            </xsd:extension>
-        </xsd:simpleContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="stringVectorBaseType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>stringVectorBaseType</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:content>
-                            <ddue:para>Base type for string vector nodes</ddue:para>
-                            <ddue:para>The vector base type can include optional uncertainty
-                                information. The description of uncertainties is placed in
-                                additional attributes. First, it is described by an attribute that
-                                describes the type of uncertainty function called functionName.
-                                The functionName attribute includes the tag name of the
-                                distribution function which is listened in the table shown below.
-                                Each uncertainty function is further describes by a set of
-                                parameters that are described in the table below.</ddue:para>
-                            <ddue:para>If the uncertainty values change for the elements of
-                                the vector than the attribute may be written as a list of values
-                                separated by semicolons</ddue:para>
-                            <ddue:para>
-                                DEPRECATED: As of
-                                CPACS
-                                version 3.3, the
-                                <ddue:legacyItalic>mapType</ddue:legacyItalic>
-                                attribute is set to optional to ensure the compatibility of older data sets.
-                                However, since the type is uniquely defined via the XSD, the attribute is superfluous
-                                and will therefore be completely omitted in the next major release (Note: requires
-                                TiXI &gt;= 3.3). Please contact the
-                                CPACS
-                                team
-                                if for any reason you see a long-term need for the
-                                <ddue:legacyItalic>mapType</ddue:legacyItalic>
-                                attribute.
-                            </ddue:para>
-                            <ddue:mediaLink>
-                                <ddue:image xlink:href="uncertaintyFunctions"/>
-                            </ddue:mediaLink>
-                        </ddue:content>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:simpleContent>
-            <xsd:extension base="stringBaseType">
-                <xsd:attribute name="mapType" fixed="vector" type="xsd:string"/>
-                <xsd:attribute name="uncertaintyFunctionName" type="uncertaintyFunctionType"/>
-                <xsd:attribute name="mu" type="xsd:string"/>
-                <xsd:attribute name="delta" type="xsd:string"/>
-                <xsd:attribute name="a" type="xsd:string"/>
-                <xsd:attribute name="b" type="xsd:string"/>
-                <xsd:attribute name="c" type="xsd:string"/>
-                <xsd:attribute name="v" type="xsd:string"/>
-                <xsd:attribute name="w" type="xsd:string"/>
-            </xsd:extension>
-        </xsd:simpleContent>
     </xsd:complexType>
 
     <xsd:complexType name="structuralElementsType">
@@ -35294,68 +35360,6 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                 </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="timeBaseType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>timeBaseType</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>Base type for time nodes (including external data attributes)
-                            This time type is based on the xsd:time definition.
-                            "To specify a time zone, you can either enter a time in UTC time by adding a "Z" behind the time - like this: 09:30:10Z
-                            or you can specify an offset from the UTC time by adding a positive or negative time behind the time - like this:
-                            09:30:10-06:00
-                            or
-                            09:30:10+06:00" (description taken from http://www.w3schools.com/xml/schema_dtypes_date.asp)</ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:simpleContent>
-            <xsd:extension base="xsd:time">
-                <xsd:attribute name="externalDataNodePath" type="xsd:string"/>
-                <xsd:attribute name="externalFileName" type="xsd:string"/>
-                <xsd:attribute name="externalDataDirectory" type="xsd:string"/>
-            </xsd:extension>
-        </xsd:simpleContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="timeConstraintBaseType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>timeConstraintBaseType</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:content>
-                            <ddue:para>Base type for time nodes including a relational operator attribute indicating valid constraint region</ddue:para>
-                            <ddue:para>The timeConstraintBaseType extends the timeBaseType and thus inherits all its attributes.</ddue:para>
-                        </ddue:content>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:simpleContent>
-            <xsd:extension base="timeBaseType">
-                <xsd:attribute name="relationalOperator" use="required">
-                    <xsd:simpleType>
-                        <xsd:restriction base="xsd:string">
-                            <xsd:enumeration value="lt"/>
-                            <xsd:enumeration value="le"/>
-                            <xsd:enumeration value="eq"/>
-                            <xsd:enumeration value="ne"/>
-                            <xsd:enumeration value="gt"/>
-                            <xsd:enumeration value="ge"/>
-                        </xsd:restriction>
-                    </xsd:simpleType>
-                </xsd:attribute>
-            </xsd:extension>
-        </xsd:simpleContent>
     </xsd:complexType>
 
     <xsd:complexType name="toolspecificType">
