@@ -5093,44 +5093,6 @@ cpacs@dlr.de
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="boundingBoxType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Bounding Box</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="deltaX" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Length in x</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="deltaY" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Length in y</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="deltaZ" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Length in z</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="origin" minOccurs="0" type="pointType">
-                        <xsd:annotation>
-                            <xsd:documentation>Origin</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
     <xsd:complexType name="boundingElementUIDsType">
         <xsd:annotation>
             <xsd:documentation>
@@ -5501,115 +5463,8 @@ cpacs@dlr.de
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:element name="cargoContainerElement" maxOccurs="unbounded" type="cargoContainerElementType"/>
+                    <xsd:element name="cargoContainerElement" maxOccurs="unbounded" type="vehicleElementBaseType"/>
                 </xsd:sequence>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="cargoContainerElementType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Cargo container element for use in the decks</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:content>
-                            <ddue:mediaLink>
-                                <ddue:image xlink:href="cargoContainer"/>
-                            </ddue:mediaLink>
-                        </ddue:content>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="name" type="stringBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Name</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="description" minOccurs="0" type="stringBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Description</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="geometry">
-                            <xsd:complexType>
-                            <xsd:choice>
-                                <xsd:element name="containerGeometry" type="cargoContainerGeometryType"/>
-                                <xsd:element name="externalGeometry" type="externalGeometryType"/>
-                                <xsd:element name="boundingBox" type="boundingBoxType"/>
-                            </xsd:choice>
-                        </xsd:complexType>
-                    </xsd:element>
-                    <xsd:element name="mass" minOccurs="0" type="elementMassType"/>
-                </xsd:all>
-                <xsd:attribute name="uID" use="required" type="xsd:ID"/>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="cargoContainerGeometryType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Cargo container geometry</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="contour">
-                        <xsd:annotation>
-                            <xsd:documentation>Contour: single or double</xsd:documentation>
-                        </xsd:annotation>
-                            <xsd:complexType>
-                            <xsd:simpleContent>
-                                <xsd:restriction base="stringBaseType">
-                                    <xsd:enumeration value="single"/>
-                                    <xsd:enumeration value="double"/>
-                                </xsd:restriction>
-                            </xsd:simpleContent>
-                        </xsd:complexType>
-                    </xsd:element>
-                    <xsd:element name="deltaX" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Delta x
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="deltaY" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Delta y
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="deltaYBase" minOccurs="0" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Delta y of the base
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="deltaZ" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Delta z
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="deltaZKink" minOccurs="0" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Delta z kink
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -5630,55 +5485,8 @@ cpacs@dlr.de
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:element name="cargoContainer" maxOccurs="unbounded" type="cargoContainerType"/>
+                    <xsd:element name="cargoContainer" maxOccurs="unbounded" type="deckComponentBaseType"/>
                 </xsd:sequence>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="cargoContainerType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Cargo container</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>Cargo container type for placing an instance of a cargo container in the parent deck.</ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="name" minOccurs="0" type="stringBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Name</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="description" minOccurs="0" type="stringBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Description</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="cargoContainerElementUID" type="stringUIDBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>UID of the cargo container element in the cpacs/vehicles/deckElements node</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="x" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Position in x</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="y" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Position in y</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:all>
-                <xsd:attribute name="uID" use="required" type="xsd:ID"/>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -6401,7 +6209,7 @@ cpacs@dlr.de
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:element name="classDivider" maxOccurs="unbounded" type="deckComponent2DBaseType">
+                    <xsd:element name="classDivider" maxOccurs="unbounded" type="deckComponentBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Class divider
                             </xsd:documentation>
@@ -11566,42 +11374,6 @@ cpacs@dlr.de
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="deckComponent2DBaseType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Deck component</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="name" type="stringBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Name</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="description" minOccurs="0" type="stringBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Description</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="deckElementUID" type="stringUIDBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>UID of the corresponding element in the cpacs/vehicles/deckElemets node</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="structuralMounts" minOccurs="0" type="deckStructuralMountsType"/>
-                    <xsd:element name="transformation" minOccurs="0" type="transformation2DType"/>
-                </xsd:all>
-                <xsd:attribute name="uID" use="required" type="xsd:ID"/>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
     <xsd:complexType name="deckComponentBaseType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -11790,7 +11562,89 @@ cpacs@dlr.de
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="decksDeckType">
+    <xsd:complexType name="deckStructuralMountsType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Structural mounts</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>Structural mount type containing the structural connections of cabin elements</ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="structuralMount" maxOccurs="unbounded" type="deckStructuralMountType"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="deckStructuralMountType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Structural mount</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>Structural mount type containing the structural connections of cabin elements</ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="name" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Name</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="description" minOccurs="0" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Description</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="componentUID" type="stringUIDBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>UID of the component to connect to</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:all>
+                <xsd:attribute name="uID" use="required" type="xsd:ID"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="decksType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Decks</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>List of decks
+                        </ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="deck" maxOccurs="unbounded" type="deckType"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="deckType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
@@ -11913,88 +11767,6 @@ cpacs@dlr.de
                     </xsd:element>
                 </xsd:all>
                 <xsd:attribute name="uID" use="required" type="xsd:ID"/>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="deckStructuralMountsType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Structural mounts</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>Structural mount type containing the structural connections of cabin elements</ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element name="structuralMount" maxOccurs="unbounded" type="deckStructuralMountType"/>
-                </xsd:sequence>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="deckStructuralMountType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Structural mount</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>Structural mount type containing the structural connections of cabin elements</ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="name" type="stringBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Name</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="description" minOccurs="0" type="stringBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Description</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="componentUID" type="stringUIDBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>UID of the component to connect to</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:all>
-                <xsd:attribute name="uID" use="required" type="xsd:ID"/>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="decksType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Decks</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>List of decks
-                        </ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element name="deck" maxOccurs="unbounded" type="decksDeckType"/>
-                </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -16969,7 +16741,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:element name="galley" maxOccurs="unbounded" type="deckComponent2DBaseType">
+                    <xsd:element name="galley" maxOccurs="unbounded" type="deckComponentBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Galley</xsd:documentation>
                         </xsd:annotation>
@@ -17261,7 +17033,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:element name="genericFloorModule" maxOccurs="unbounded" type="deckComponent2DBaseType">
+                    <xsd:element name="genericFloorModule" maxOccurs="unbounded" type="deckComponentBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Generic floor module</xsd:documentation>
                         </xsd:annotation>
@@ -19795,7 +19567,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:element name="lavatory" maxOccurs="unbounded" type="deckComponent2DBaseType">
+                    <xsd:element name="lavatory" maxOccurs="unbounded" type="deckComponentBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Lavatory</xsd:documentation>
                         </xsd:annotation>
@@ -31556,7 +31328,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:element name="seatModule" maxOccurs="unbounded" type="deckComponent2DBaseType">
+                    <xsd:element name="seatModule" maxOccurs="unbounded" type="deckComponentBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Seat module</xsd:documentation>
                         </xsd:annotation>
