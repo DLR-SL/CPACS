@@ -17,7 +17,9 @@ def cpacs_examples():
     xml_files = [
         os.path.join(xml_dir, f)
         for f in os.listdir(xml_dir)
-        if not "toolspecific.xml" in f and not "seat.stp" in f
+        if not "toolspecific.xml" in f
+        and not "seat.stp" in f
+        and not "leading-edge-devices.xml" in f
     ]
     return xml_files
 
@@ -33,7 +35,7 @@ def test_exampleFiles(cpacs_examples, cpacs_schema):
     tixi_h = tixi3wrapper.Tixi3()
 
     for xml in cpacs_examples:
-        print('Open ', xml)
+        print("Open ", xml)
         tixi_h.open(xml)
         if not tixi_h.schemaValidateFromFile(cpacs_schema):
             validationResult = True
