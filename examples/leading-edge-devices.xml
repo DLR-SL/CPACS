@@ -1,0 +1,707 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cpacs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../schema/cpacs_schema.xsd">
+    <!--
+        LEADING-EDGE DEVICE EXAMPLE
+        ===========================
+
+        PURPOSE
+
+        This dataset introduces the CPACS data structure for movable leading-edge
+        devices on a simple wing. It is intended as a readable starting point for
+        users who are not yet familiar with control-surface definitions.
+
+        Two alternative geometry descriptions are demonstrated:
+
+        1. LED_INNER_SHAPE uses a compact parametric description. The exposed
+           contour follows the parent wing, while innerShape controls the rear or
+           hollow contour of the device.
+
+        2. LED_AIRFOIL references a dedicated wingAirfoil that describes the
+           complete closed cross-section of the slat.
+
+        Both devices contain a path with a retracted and a deployed state. The
+        detailed coordinate conventions, profile placement, and motion parameters
+        are documented next to the corresponding XML elements.
+
+        DATASET ORGANIZATION
+
+        The aircraft model contains a three-section tapered wing, two wing segments,
+        and one component segment spanning the complete semispan. The leading-edge
+        devices are stored below the controlSurfaces node of that component segment.
+
+        SCOPE
+
+        Dimensions, profiles, and motion laws are illustrative. The dataset explains
+        the CPACS hierarchy and supports geometry-tool testing; it is not an
+        aerodynamically validated reference configuration.
+    -->
+
+    <header>
+        <name>Leading-edge device examples</name>
+        <description>
+            This dataset demonstrates two alternative CPACS definitions of leading-edge
+            devices on a simple tapered wing: a parametric inner contour and a complete
+            profile-defined contour.
+        </description>
+        <version>1.0.0</version>
+        <versionInfos>
+            <versionInfo version="1.0.0">
+                <creator>DLR-SL</creator>
+                <timestamp>2026-07-30T17:49:00</timestamp>
+                <description>Initial leading-edge device example dataset.</description>
+                <cpacsVersion>3.5.1</cpacsVersion>
+            </versionInfo>
+        </versionInfos>
+    </header>
+
+    <vehicles>
+        <aircraft>
+            <model uID="LED_EXAMPLE">
+                <name>Leading-edge device example aircraft</name>
+                <description>
+                    Simple aircraft model used to compare a parametric innerShape definition
+                    with a complete profile-defined leading-edge device.
+                </description>
+
+                <reference>
+                    <area>3.0</area>
+                    <length>2.0</length>
+                    <point uID="LED_EXAMPLE_REFERENCE_POINT">
+                        <x>0.0</x>
+                        <y>0.0</y>
+                        <z>0.0</z>
+                    </point>
+                </reference>
+
+                <wings>
+                    <wing uID="WING" symmetry="x-z-plane">
+                        <name>Simple tapered wing</name>
+                        <description>
+                            Deliberately simple three-section tapered NACA 0012 wing used to
+                            keep the example focused on the leading-edge device definitions.
+                        </description>
+
+                        <transformation uID="WING_TRAFO">
+                            <scaling uID="WING_TRAFO_SCALING">
+                                <x>1.0</x>
+                                <y>1.0</y>
+                                <z>1.0</z>
+                            </scaling>
+                            <rotation uID="WING_TRAFO_ROTATION">
+                                <x>0.0</x>
+                                <y>0.0</y>
+                                <z>0.0</z>
+                            </rotation>
+                            <translation refType="absGlobal" uID="WING_TRAFO_TRANSLATION">
+                                <x>0.0</x>
+                                <y>0.0</y>
+                                <z>0.0</z>
+                            </translation>
+                        </transformation>
+
+                        <sections>
+                            <section uID="WING_SEC_1">
+                                <name>Root section</name>
+                                <description>Root section</description>
+                                <transformation uID="WING_SEC_1_TRAFO">
+                                    <scaling uID="WING_SEC_1_SCALING">
+                                        <x>1.0</x>
+                                        <y>1.0</y>
+                                        <z>1.0</z>
+                                    </scaling>
+                                    <rotation uID="WING_SEC_1_ROTATION">
+                                        <x>0.0</x>
+                                        <y>0.0</y>
+                                        <z>0.0</z>
+                                    </rotation>
+                                    <translation refType="absLocal" uID="WING_SEC_1_TRANSLATION">
+                                        <x>0.0</x>
+                                        <y>0.0</y>
+                                        <z>0.0</z>
+                                    </translation>
+                                </transformation>
+                                <elements>
+                                    <element uID="WING_SEC_1_ELEMENT">
+                                        <name>Root element</name>
+                                        <description>NACA 0012 root element</description>
+                                        <airfoilUID>NACA0012</airfoilUID>
+                                        <transformation uID="WING_SEC_1_ELEMENT_TRAFO">
+                                            <scaling uID="WING_SEC_1_ELEMENT_SCALING">
+                                                <x>1.0</x>
+                                                <y>1.0</y>
+                                                <z>1.0</z>
+                                            </scaling>
+                                            <rotation uID="WING_SEC_1_ELEMENT_ROTATION">
+                                                <x>0.0</x>
+                                                <y>0.0</y>
+                                                <z>0.0</z>
+                                            </rotation>
+                                            <translation refType="absLocal"
+                                                uID="WING_SEC_1_ELEMENT_TRANSLATION">
+                                                <x>0.0</x>
+                                                <y>0.0</y>
+                                                <z>0.0</z>
+                                            </translation>
+                                        </transformation>
+                                    </element>
+                                </elements>
+                            </section>
+
+                            <section uID="WING_SEC_2">
+                                <name>Mid section</name>
+                                <description>Mid section</description>
+                                <transformation uID="WING_SEC_2_TRAFO">
+                                    <scaling uID="WING_SEC_2_SCALING">
+                                        <x>1.0</x>
+                                        <y>1.0</y>
+                                        <z>1.0</z>
+                                    </scaling>
+                                    <rotation uID="WING_SEC_2_ROTATION">
+                                        <x>0.0</x>
+                                        <y>0.0</y>
+                                        <z>0.0</z>
+                                    </rotation>
+                                    <translation refType="absLocal" uID="WING_SEC_2_TRANSLATION">
+                                        <x>0.0</x>
+                                        <y>0.0</y>
+                                        <z>0.0</z>
+                                    </translation>
+                                </transformation>
+                                <elements>
+                                    <element uID="WING_SEC_2_ELEMENT">
+                                        <name>Mid element</name>
+                                        <description>NACA 0012 mid element</description>
+                                        <airfoilUID>NACA0012</airfoilUID>
+                                        <transformation uID="WING_SEC_2_ELEMENT_TRAFO">
+                                            <scaling uID="WING_SEC_2_ELEMENT_SCALING">
+                                                <x>0.82</x>
+                                                <y>1.0</y>
+                                                <z>0.82</z>
+                                            </scaling>
+                                            <rotation uID="WING_SEC_2_ELEMENT_ROTATION">
+                                                <x>0.0</x>
+                                                <y>0.0</y>
+                                                <z>0.0</z>
+                                            </rotation>
+                                            <translation refType="absLocal"
+                                                uID="WING_SEC_2_ELEMENT_TRANSLATION">
+                                                <x>0.08</x>
+                                                <y>0.0</y>
+                                                <z>0.0</z>
+                                            </translation>
+                                        </transformation>
+                                    </element>
+                                </elements>
+                            </section>
+
+                            <section uID="WING_SEC_3">
+                                <name>Tip section</name>
+                                <description>Tip section</description>
+                                <transformation uID="WING_SEC_3_TRAFO">
+                                    <scaling uID="WING_SEC_3_SCALING">
+                                        <x>1.0</x>
+                                        <y>1.0</y>
+                                        <z>1.0</z>
+                                    </scaling>
+                                    <rotation uID="WING_SEC_3_ROTATION">
+                                        <x>0.0</x>
+                                        <y>0.0</y>
+                                        <z>0.0</z>
+                                    </rotation>
+                                    <translation refType="absLocal" uID="WING_SEC_3_TRANSLATION">
+                                        <x>0.0</x>
+                                        <y>0.0</y>
+                                        <z>0.0</z>
+                                    </translation>
+                                </transformation>
+                                <elements>
+                                    <element uID="WING_SEC_3_ELEMENT">
+                                        <name>Tip element</name>
+                                        <description>NACA 0012 tip element</description>
+                                        <airfoilUID>NACA0012</airfoilUID>
+                                        <transformation uID="WING_SEC_3_ELEMENT_TRAFO">
+                                            <scaling uID="WING_SEC_3_ELEMENT_SCALING">
+                                                <x>0.60</x>
+                                                <y>1.0</y>
+                                                <z>0.60</z>
+                                            </scaling>
+                                            <rotation uID="WING_SEC_3_ELEMENT_ROTATION">
+                                                <x>0.0</x>
+                                                <y>0.0</y>
+                                                <z>0.0</z>
+                                            </rotation>
+                                            <translation refType="absLocal"
+                                                uID="WING_SEC_3_ELEMENT_TRANSLATION">
+                                                <x>0.25</x>
+                                                <y>0.0</y>
+                                                <z>0.0</z>
+                                            </translation>
+                                        </transformation>
+                                    </element>
+                                </elements>
+                            </section>
+                        </sections>
+
+                        <positionings>
+                            <positioning uID="WING_POSITIONING_1">
+                                <name>Root positioning</name>
+                                <description>Places the root section.</description>
+                                <length>0.0</length>
+                                <sweepAngle>0.0</sweepAngle>
+                                <dihedralAngle>0.0</dihedralAngle>
+                                <toSectionUID>WING_SEC_1</toSectionUID>
+                            </positioning>
+                            <positioning uID="WING_POSITIONING_2">
+                                <name>Mid positioning</name>
+                                <description>Places the mid section one metre outboard.</description>
+                                <length>1.0</length>
+                                <sweepAngle>0.0</sweepAngle>
+                                <dihedralAngle>0.0</dihedralAngle>
+                                <fromSectionUID>WING_SEC_1</fromSectionUID>
+                                <toSectionUID>WING_SEC_2</toSectionUID>
+                            </positioning>
+                            <positioning uID="WING_POSITIONING_3">
+                                <name>Tip positioning</name>
+                                <description>Places the tip section one metre farther outboard.</description>
+                                <length>1.0</length>
+                                <sweepAngle>0.0</sweepAngle>
+                                <dihedralAngle>0.0</dihedralAngle>
+                                <fromSectionUID>WING_SEC_2</fromSectionUID>
+                                <toSectionUID>WING_SEC_3</toSectionUID>
+                            </positioning>
+                        </positionings>
+
+                        <segments>
+                            <segment uID="WING_SEG_1">
+                                <name>Inner wing segment</name>
+                                <description>Root-to-mid segment.</description>
+                                <fromElementUID>WING_SEC_1_ELEMENT</fromElementUID>
+                                <toElementUID>WING_SEC_2_ELEMENT</toElementUID>
+                            </segment>
+                            <segment uID="WING_SEG_2">
+                                <name>Outer wing segment</name>
+                                <description>Mid-to-tip segment.</description>
+                                <fromElementUID>WING_SEC_2_ELEMENT</fromElementUID>
+                                <toElementUID>WING_SEC_3_ELEMENT</toElementUID>
+                            </segment>
+                        </segments>
+
+                        <componentSegments>
+                            <componentSegment uID="WING_CS1">
+                                <name>Complete wing component segment</name>
+
+                                <fromElementUID>WING_SEC_1_ELEMENT</fromElementUID>
+                                <toElementUID>WING_SEC_3_ELEMENT</toElementUID>
+
+                                <controlSurfaces>
+                                    <leadingEdgeDevices>
+                                        <leadingEdgeDevice uID="LED_INNER_SHAPE">
+                                            <!-- Human-readable label; it is not used as a reference
+                                            key. -->
+                                            <name>Parametric slat</name>
+                                            <!--
+                                                Free-text description of the device and the geometry
+                                                representation used in this example.
+                                            -->
+                                            <description>Slat whose rear/inner contour is generated from innerShape.</description>
+                                            <!--
+                                                parentUID identifies the component segment that supplies
+                                                the reference geometry, eta/xsi coordinate domain, and
+                                                local wing surfaces used to construct the device.
+                                            -->
+                                            <parentUID>WING_CS1</parentUID>
+                                            <!--
+                                                outerShape describes the retracted device geometry using
+                                                one inboard and one outboard border.
+                                            -->
+                                            <outerShape>
+                                                <!-- Inboard cross-section of the device. -->
+                                                <innerBorder>
+                                                    <!--
+                                                        Spanwise position of the device leading-edge
+                                                        point. eta = 0 is inboard and eta = 1 outboard
+                                                        on the referenced component segment.
+                                                    -->
+                                                    <etaLE>
+                                                        <eta>0.10</eta>
+                                                        <referenceUID>WING_CS1</referenceUID>
+                                                    </etaLE>
+                                                    <!--
+                                                        Spanwise position of the rear reference point.
+                                                        If etaTE is omitted, it defaults to etaLE.
+                                                    -->
+                                                    <etaTE>
+                                                        <eta>0.10</eta>
+                                                        <referenceUID>WING_CS1</referenceUID>
+                                                    </etaTE>
+                                                    <!--
+                                                        Border-level xsiTE locates the rear reference in
+                                                        the parent chord system: xsi = 0 at the wing
+                                                        leading edge and xsi = 1 at the trailing edge.
+                                                    -->
+                                                    <xsiTE>
+                                                        <xsi>0.08</xsi>
+                                                        <referenceUID>WING_CS1</referenceUID>
+                                                    </xsiTE>
+                                                    <!--
+                                                        innerShape defines a characteristic point used
+                                                        to construct the rear or hollow contour.
+
+                                                        relHeightTE gives the point height through the
+                                                        local parent profile: 0 is the lower surface and
+                                                        1 is the upper surface.
+
+                                                        The nested xsiTE is not the border-level xsiTE.
+                                                        TiGL currently evaluates it locally from the LED
+                                                        rear reference (0) towards the LED nose (1).
+
+                                                        TODO FOR CPACS AND TIGL DEVELOPERS:
+                                                        The XSD wording currently describes this nested
+                                                        xsiTE as being based on the parent chord. Align
+                                                        the normative definition, TiGL implementation,
+                                                        generated documentation, examples, and tests.
+                                                    -->
+                                                    <innerShape>
+                                                        <relHeightTE>0.20</relHeightTE>
+                                                        <xsiTE>0.50</xsiTE>
+                                                    </innerShape>
+                                                </innerBorder>
+
+                                                <!--
+                                                    Outboard cross-section. Different values at the two
+                                                    borders permit spanwise variation of chord and shape.
+                                                -->
+                                                <outerBorder>
+                                                    <etaLE>
+                                                        <eta>0.42</eta>
+                                                        <referenceUID>WING_CS1</referenceUID>
+                                                    </etaLE>
+                                                    <etaTE>
+                                                        <eta>0.42</eta>
+                                                        <referenceUID>WING_CS1</referenceUID>
+                                                    </etaTE>
+                                                    <!--
+                                                        The larger value produces a slightly larger LED
+                                                        chord at the outboard border.
+                                                    -->
+                                                    <xsiTE>
+                                                        <xsi>0.10</xsi>
+                                                        <referenceUID>WING_CS1</referenceUID>
+                                                    </xsiTE>
+                                                    <!--
+                                                        The outboard innerShape is specified explicitly;
+                                                        supported omitted values may default to the
+                                                        corresponding inboard definition.
+                                                    -->
+                                                    <innerShape>
+                                                        <relHeightTE>0.20</relHeightTE>
+                                                        <xsiTE>0.50</xsiTE>
+                                                    </innerShape>
+                                                </outerBorder>
+                                            </outerShape>
+
+                                            <!--
+                                                path describes the device motion. innerHingePoint and
+                                                outerHingePoint define the initial hinge line.
+                                                hingeXsi is chordwise, while hingeRelHeight is measured
+                                                from the lower to the upper parent-airfoil surface.
+                                            -->
+                                            <path>
+                                                <!-- Inboard endpoint of the hinge line. -->
+                                                <innerHingePoint>
+                                                    <hingeXsi>0.05</hingeXsi>
+                                                    <hingeRelHeight>0.50</hingeRelHeight>
+                                                </innerHingePoint>
+                                                <!-- Outboard endpoint of the hinge line. -->
+                                                <outerHingePoint>
+                                                    <hingeXsi>0.05</hingeXsi>
+                                                    <hingeRelHeight>0.50</hingeRelHeight>
+                                                </outerHingePoint>
+                                                <!--
+                                                    Discrete states are tabulated versus
+                                                    controlParameter; tools may interpolate between them.
+                                                -->
+                                                <steps>
+                                                    <!-- Retracted reference state. -->
+                                                    <step>
+                                                        <controlParameter>0.0</controlParameter>
+                                                        <!-- Inboard hinge-point translation in wing
+                                                        coordinates. -->
+                                                        <innerHingeTranslation>
+                                                            <x>0.0</x>
+                                                            <y>0.0</y>
+                                                            <z>0.0</z>
+                                                        </innerHingeTranslation>
+                                                        <!-- Outboard hinge-point translation. -->
+                                                        <outerHingeTranslation>
+                                                            <x>0.0</x>
+                                                            <z>0.0</z>
+                                                        </outerHingeTranslation>
+                                                        <!-- Rotation in degrees about the
+                                                        translated hinge line. -->
+                                                        <hingeLineRotation>0.0</hingeLineRotation>
+                                                    </step>
+                                                    <!-- Deployed demonstration state. -->
+                                                    <step>
+                                                        <controlParameter>1.0</controlParameter>
+                                                        <innerHingeTranslation>
+                                                            <x>-0.12</x>
+                                                            <y>0.00</y>
+                                                            <z>-0.08</z>
+                                                        </innerHingeTranslation>
+                                                        <outerHingeTranslation>
+                                                            <x>-0.10</x>
+                                                            <z>-0.07</z>
+                                                        </outerHingeTranslation>
+                                                        <hingeLineRotation>-25.0</hingeLineRotation>
+                                                    </step>
+                                                </steps>
+                                            </path>
+                                        </leadingEdgeDevice>
+
+                                        <!--
+                                            VARIANT B: COMPLETE PROFILE-DEFINED CONTOUR
+
+                                            This device references complete normalized slat
+                                            cross-sections. This representation is appropriate when
+                                            the geometry is already known from CAD or aerodynamic
+                                            design.
+
+                                            Placement and scaling parameters are documented directly
+                                            at the airfoil element.
+                                        -->
+                                        <!--
+                                            This second leadingEdgeDevice uses the same direct child
+                                            structure as the first one. It has its own uID, metadata,
+                                            parent reference, geometry definition, and motion path, so
+                                            it can be queried and actuated independently.
+                                        -->
+                                        <leadingEdgeDevice uID="LED_AIRFOIL">
+                                            <!-- Human-readable label; references use the uID
+                                            instead. -->
+                                            <name>Airfoil-defined slat</name>
+                                            <!--
+                                                Free-text description indicating that complete profile
+                                                contours are supplied at the device borders.
+                                            -->
+                                            <description>Slat using a complete closed profile at each spanwise border.</description>
+                                            <!--
+                                                Reference to the component segment whose geometry and
+                                                coordinate system are used for placement.
+                                            -->
+                                            <parentUID>WING_CS1</parentUID>
+                                            <!--
+                                                outerShape defines the undeployed reference geometry.
+                                                The geometry is constructed between innerBorder and
+                                                outerBorder.
+                                            -->
+                                            <outerShape>
+                                                <!-- Inboard profile cross-section. -->
+                                                <innerBorder>
+                                                    <!-- Spanwise position of the profile nose. -->
+                                                    <etaLE>
+                                                        <eta>0.55</eta>
+                                                        <referenceUID>WING_CS1</referenceUID>
+                                                    </etaLE>
+                                                    <!--
+                                                        Spanwise position of the profile rear reference.
+                                                        Keeping etaTE equal to etaLE creates a border
+                                                        aligned with a constant component-segment eta.
+                                                    -->
+                                                    <etaTE>
+                                                        <eta>0.55</eta>
+                                                        <referenceUID>WING_CS1</referenceUID>
+                                                    </etaTE>
+                                                    <!--
+                                                        Rear chordwise reference. Together with etaLE it
+                                                        fixes the profile chord and placement.
+                                                    -->
+                                                    <xsiTE>
+                                                        <xsi>0.12</xsi>
+                                                        <referenceUID>WING_CS1</referenceUID>
+                                                    </xsiTE>
+                                                    <!--
+                                                        airfoilUID selects the complete normalized
+                                                        profile. rotX rotates it about the border axis.
+                                                        scalY is spanwise scaling and is irrelevant for
+                                                        this planar profile. scalZ scales thickness.
+                                                    -->
+                                                    <airfoil>
+                                                        <airfoilUID>SLAT_CLOSED_PROFILE</airfoilUID>
+                                                        <rotX>90.0</rotX>
+                                                        <scalY>1.0</scalY>
+                                                        <scalZ>1.0</scalZ>
+                                                    </airfoil>
+                                                </innerBorder>
+
+                                                <!--
+                                                    Outboard profile cross-section. A different profile
+                                                    or scalZ could introduce spanwise shape variation.
+                                                -->
+                                                <outerBorder>
+                                                    <!-- Outboard spanwise position of the profile
+                                                    nose. -->
+                                                    <etaLE>
+                                                        <eta>0.90</eta>
+                                                        <referenceUID>WING_CS1</referenceUID>
+                                                    </etaLE>
+                                                    <!-- Outboard spanwise position of the rear
+                                                    reference. -->
+                                                    <etaTE>
+                                                        <eta>0.90</eta>
+                                                        <referenceUID>WING_CS1</referenceUID>
+                                                    </etaTE>
+                                                    <!-- Same normalized device chord as at the
+                                                    inboard border. -->
+                                                    <xsiTE>
+                                                        <xsi>0.12</xsi>
+                                                        <referenceUID>WING_CS1</referenceUID>
+                                                    </xsiTE>
+                                                    <!--
+                                                        The same normalized profile and scale are reused,
+                                                        so the local parent-wing taper determines the
+                                                        absolute outboard size.
+                                                    -->
+                                                    <airfoil>
+                                                        <airfoilUID>SLAT_CLOSED_PROFILE</airfoilUID>
+                                                        <rotX>90.0</rotX>
+                                                        <scalY>1.0</scalY>
+                                                        <scalZ>1.0</scalZ>
+                                                    </airfoil>
+                                                </outerBorder>
+                                            </outerShape>
+
+                                            <!--
+                                                This path uses the same hierarchy as the first device,
+                                                but defines an independent hinge line and deployment
+                                                motion.
+                                            -->
+                                            <path>
+                                                <!--
+                                                    Hinge coordinates use the parent component segment
+                                                    as their geometric reference.
+                                                -->
+                                                <!-- Inboard endpoint of the hinge line. -->
+                                                <innerHingePoint>
+                                                    <hingeXsi>0.06</hingeXsi>
+                                                    <hingeRelHeight>0.50</hingeRelHeight>
+                                                </innerHingePoint>
+
+                                                <!-- Outboard endpoint of the hinge line. -->
+                                                <outerHingePoint>
+                                                    <hingeXsi>0.06</hingeXsi>
+                                                    <hingeRelHeight>0.50</hingeRelHeight>
+                                                </outerHingePoint>
+
+                                                <!--
+                                                    Two discrete states define the example motion.
+                                                    Additional steps can be added for a more detailed
+                                                    nonlinear deployment path.
+                                                -->
+                                                <steps>
+                                                    <!-- Retracted reference state. -->
+                                                    <step>
+                                                        <controlParameter>0.0</controlParameter>
+                                                        <!-- Inboard hinge-point translation. -->
+                                                        <innerHingeTranslation>
+                                                            <x>0.0</x>
+                                                            <y>0.0</y>
+                                                            <z>0.0</z>
+                                                        </innerHingeTranslation>
+                                                        <!-- Outboard hinge-point translation. -->
+                                                        <outerHingeTranslation>
+                                                            <x>0.0</x>
+                                                            <z>0.0</z>
+                                                        </outerHingeTranslation>
+                                                        <!-- Rotation in degrees about the hinge
+                                                        line. -->
+                                                        <hingeLineRotation>0.0</hingeLineRotation>
+                                                    </step>
+
+                                                    <!-- Deployed demonstration state. -->
+                                                    <step>
+                                                        <controlParameter>1.0</controlParameter>
+                                                        <innerHingeTranslation>
+                                                            <x>-0.14</x>
+                                                            <y>0.00</y>
+                                                            <z>-0.09</z>
+                                                        </innerHingeTranslation>
+                                                        <outerHingeTranslation>
+                                                            <x>-0.11</x>
+                                                            <z>-0.07</z>
+                                                        </outerHingeTranslation>
+                                                        <hingeLineRotation>-28.0</hingeLineRotation>
+                                                    </step>
+                                                </steps>
+                                            </path>
+                                        </leadingEdgeDevice>
+
+                                        <!--
+                                            Additional leadingEdgeDevice entries could be added here.
+                                            They should normally occupy distinct spanwise regions unless
+                                            an overlapping multi-element arrangement is intentional and
+                                            supported by the consuming geometry tool.
+                                        -->
+                                    </leadingEdgeDevices>
+                                </controlSurfaces>
+                            </componentSegment>
+                        </componentSegments>
+                    </wing>
+                </wings>
+            </model>
+        </aircraft>
+
+        <profiles>
+            <wingAirfoils>
+                <!--
+                    Profiles are defined once and referenced by uID. The main wing
+                    uses a compact NACA definition. The LED uses a pointList so the
+                    complete contour and its ordering remain visible.
+                -->
+                <wingAirfoil uID="NACA0012">
+                    <name>NACA 0012</name>
+                    <description>Main-wing profile.</description>
+                    <!--
+                        Compact NACA representation: 0012 denotes a symmetric profile
+                        with 12 percent relative thickness.
+                    -->
+                    <nacaProfile>
+                        <naca4DigitCode>0012</naca4DigitCode>
+                    </nacaProfile>
+                </wingAirfoil>
+
+                <wingAirfoil uID="SLAT_CLOSED_PROFILE">
+                    <name>Closed illustrative slat contour</name>
+                    <description>
+                        Complete normalized illustrative slat contour. The points start at the
+                        lower trailing edge, follow the inner or lower surface to the nose, and
+                        return along the outer or upper surface to the upper trailing edge.
+                    </description>
+                    <!--
+                        pointList contains the complete closed slat contour.
+
+                        Point order:
+                            lower rear point -> inner/lower contour -> nose
+                            -> outer/upper contour -> upper rear point
+
+                        x = 0 at the nose and x = 1 at the rear reference.
+                        y = 0 because this is a planar two-dimensional profile.
+                        z defines thickness and camber.
+
+                        The x, y, and z vectors must contain the same number of
+                        entries. The first and last points share the rear location.
+                    -->
+                    <pointList>
+                        <!-- Normalized chordwise coordinates. -->
+                        <x mapType="vector">1.00;0.92;0.80;0.65;0.50;0.35;0.22;0.12;0.05;0.00;0.03;0.08;0.16;0.28;0.42;0.58;0.74;0.88;1.00</x>
+                        <!-- Zero spanwise coordinates for this planar section. -->
+                        <y mapType="vector">0.00;0.00;0.00;0.00;0.00;0.00;0.00;0.00;0.00;0.00;0.00;0.00;0.00;0.00;0.00;0.00;0.00;0.00;0.00</y>
+                        <!-- Coordinates normal to the profile chord plane. -->
+                        <z mapType="vector">0.000;-0.007;-0.017;-0.028;-0.036;-0.040;-0.037;-0.029;-0.017;0.000;0.025;0.044;0.058;0.066;0.065;0.055;0.040;0.021;0.000</z>
+                    </pointList>
+                </wingAirfoil>
+            </wingAirfoils>
+        </profiles>
+    </vehicles>
+</cpacs>
