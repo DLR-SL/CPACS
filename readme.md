@@ -39,7 +39,6 @@ pixi run check
 Run individual checks:
 
 ```bash
-pixi run check-schema-format
 pixi run test-schema
 pixi run test-examples
 ```
