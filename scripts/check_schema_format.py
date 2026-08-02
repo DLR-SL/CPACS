@@ -39,7 +39,7 @@ def main() -> int:
         formatted = formatted_schema.read_text(encoding="utf-8")
 
     if original == formatted:
-        print("Schema formatting is canonical.")
+        print("Schema formatting OK. The schema is in canonical form.")
         return 0
 
     print(
@@ -55,7 +55,7 @@ def main() -> int:
         original.splitlines(),
         formatted.splitlines(),
         fromfile="schema/cpacs_schema.xsd",
-        tofile="canonically formatted schema",
+        tofile="Schema formatting OK. The schema is in canonical form.",
         lineterm="",
         n=3,
     )

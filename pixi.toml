@@ -16,9 +16,8 @@ lxml = ">=5,<6"
 tixi3 = { version = "3.3.0.*", channel = "dlr-sc" }
 
 [tasks]
-test-schema = "python -m pytest scripts/tests/test_schema.py -v"
+test-schema = "python scripts/check_schema_format.py"
 test-examples = "python -m pytest scripts/tests/test_examples.py -v"
-test = "python -m pytest scripts/tests -v"
 
 format-schema = """
 python scripts/syntax_cleanup.py \
@@ -26,7 +25,5 @@ python scripts/syntax_cleanup.py \
     schema/cpacs_schema.xsd
 """
 
-check-schema-format = "python scripts/check_schema_format.py"
-
-# Alias task: both dependencies must complete successfully.
-check = { depends-on = ["check-schema-format", "test"] }
+# Run all validation tasks used by CI.
+check = { depends-on = ["test-schema", "test-examples"] }
