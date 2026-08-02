@@ -1,66 +1,108 @@
-name: Generate CPACS Libs
+name: Generate CPACS libraries
 
 on:
   push:
     branches:
       - develop
 
+permissions:
+  contents: read
+
+env:
+  PYTHON_VERSION: "3.10"
+  GENERATEDS_VERSION: "2.43.3"
+  LXML_VERSION: "5.4.0"
+  JAVA_VERSION: "17"
+  JAXB_RI_VERSION: "2.3.9"
+
 jobs:
-  generate-python-libs:
+  generate-python-library:
+    name: Generate Python bindings
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-        
+      - name: Check out repository
+        uses: actions/checkout@v6
+
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v6
         with:
-            python-version: '3.10' 
+          python-version: ${{ env.PYTHON_VERSION }}
 
-      - name: Install generateDS
+      - name: Install Python generator
         run: |
-          pip install generateds
-          pip install lxml
+          python -m pip install --disable-pip-version-check \
+            "generateDS==${GENERATEDS_VERSION}" \
+            "lxml==${LXML_VERSION}"
 
-      - name: Generate CPACS Python Classes
+      - name: Generate CPACS Python bindings
         run: |
-          generateDS.py -o cpacsLib.py -f ./schema/cpacs_schema.xsd
+          mkdir -p build/python
+          python -m generateDS \
+            --no-dates \
+            --no-versions \
+            -o build/python/cpacsLib.py \
+            -f schema/cpacs_schema.xsd
 
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
+      - name: Validate generated Python bindings
+        run: |
+          python -m py_compile build/python/cpacsLib.py
+          PYTHONPATH=build/python python -c "import cpacsLib"
+
+      - name: Upload Python bindings
+        uses: actions/upload-artifact@v7
         with:
           name: cpacsPythonLib
-          path: cpacsLib.py
-          
-  generate-java-libs:
+          path: build/python/cpacsLib.py
+          if-no-files-found: error
+          retention-days: 30
+
+  generate-java-library:
+    name: Generate Java bindings
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
+      - name: Check out repository
+        uses: actions/checkout@v6
 
       - name: Set up Java
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v5
         with:
-          distribution: 'temurin'
-          java-version: '17'
+          distribution: temurin
+          java-version: ${{ env.JAVA_VERSION }}
 
-      - name: Download and Install xjc
+      - name: Install XJC
         run: |
-          wget https://repo1.maven.org/maven2/com/sun/xml/bind/jaxb-ri/2.3.1/jaxb-ri-2.3.1.zip
-          unzip jaxb-ri-2.3.1.zip
-          chmod +x jaxb-ri/bin/xjc.bat
-          export PATH="$PATH:$GITHUB_WORKSPACE/jaxb-ri-2.3.1/bin"
+          curl --fail --location --retry 3 \
+            "https://repo1.maven.org/maven2/com/sun/xml/bind/jaxb-ri/${JAXB_RI_VERSION}/jaxb-ri-${JAXB_RI_VERSION}.zip" \
+            --output jaxb-ri.zip
+          unzip -q jaxb-ri.zip
+          chmod +x jaxb-ri/bin/xjc.sh
 
-      - name: Generate Java Classes
+      - name: Generate CPACS Java bindings
         run: |
-          xsd_file_path="./schema/cpacs_schema.xsd"
-          mkdir .buildjavaLib
-          xjc -d .\build\javaLib "$xsd_file_path"
+          mkdir -p build/javaLib
+          ./jaxb-ri/bin/xjc.sh \
+            -no-header \
+            -encoding UTF-8 \
+            -d build/javaLib \
+            schema/cpacs_schema.xsd
 
-      - name: Upload Java Classes Artifact
-        uses: actions/upload-artifact@v4
+      - name: Validate generated Java bindings
+        run: |
+          java_file_count="$(find build/javaLib -type f -name '*.java' | wc -l)"
+          if [ "${java_file_count}" -eq 0 ]; then
+            echo "No Java source files were generated." >&2
+            exit 1
+          fi
+          echo "Generated ${java_file_count} Java source files."
+
+      - name: Upload Java bindings
+        uses: actions/upload-artifact@v7
         with:
           name: cpacsJavaLib
-          path: .\build\javaLib
+          path: build/javaLib
+          if-no-files-found: error
+          retention-days: 30
