@@ -1,44 +1,46 @@
-import os
+from __future__ import annotations
+
+from pathlib import Path
 
 import pytest
 from tixi3 import tixi3wrapper
 
 
-def rel_location():
-    __location__ = os.path.realpath(
-        os.path.join(os.getcwd(), os.path.dirname(__file__))
-    )
-    return __location__
+ROOT = Path(__file__).resolve().parents[2]
+SCHEMA = ROOT / "schema" / "cpacs_schema.xsd"
+
+EXCLUDED_EXAMPLES = {
+    "toolspecific.xml",
+    "leading-edge-devices.xml",
+}
+
+EXAMPLE_FILES = [
+    path
+    for path in sorted((ROOT / "examples").glob("*.xml"))
+    if path.name not in EXCLUDED_EXAMPLES
+]
 
 
-@pytest.fixture
-def cpacs_examples():
-    xml_dir = os.path.join(rel_location(), "../../examples/")
-    xml_files = [
-        os.path.join(xml_dir, f)
-        for f in os.listdir(xml_dir)
-        if not "toolspecific.xml" in f
-        and not "seat.stp" in f
-        and not "leading-edge-devices.xml" in f
-    ]
-    return xml_files
+@pytest.mark.parametrize(
+    "xml_file",
+    EXAMPLE_FILES,
+    ids=lambda path: path.name,
+)
+def test_example_file_validates(xml_file: Path) -> None:
+    tixi = tixi3wrapper.Tixi3()
+    opened = False
 
+    try:
+        tixi.open(str(xml_file))
+        opened = True
 
-@pytest.fixture
-def cpacs_schema():
-    xsd_file = os.path.join(rel_location(), "../../schema/cpacs_schema.xsd")
-    return xsd_file
+        validation_code = tixi.schemaValidateFromFile(str(SCHEMA))
 
-
-def test_exampleFiles(cpacs_examples, cpacs_schema):
-
-    tixi_h = tixi3wrapper.Tixi3()
-
-    for xml in cpacs_examples:
-        print("Open ", xml)
-        tixi_h.open(xml)
-        if not tixi_h.schemaValidateFromFile(cpacs_schema):
-            validationResult = True
-        tixi_h.close()
-
-        assert validationResult
+        assert not validation_code, (
+            f'Example "{xml_file.relative_to(ROOT)}" does not validate '
+            f'against "{SCHEMA.relative_to(ROOT)}". '
+            f"TIXI returned {validation_code!r}."
+        )
+    finally:
+        if opened:
+            tixi.close()

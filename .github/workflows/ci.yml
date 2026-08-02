@@ -1,0 +1,39 @@
+name: Validate CPACS
+
+on:
+  pull_request:
+  push:
+    branches:
+      - develop
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - windows-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install Pixi environment
+        uses: prefix-dev/setup-pixi@v0.9.6
+        with:
+          pixi-version: v0.69.0
+          frozen: true
+          cache: true
+          cache-write: >-
+            ${{ github.event_name == 'push'
+                && github.ref_name == 'develop' }}
+
+      - name: Run CPACS validation
+        run: pixi run --frozen check
