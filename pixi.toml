@@ -1,0 +1,32 @@
+[workspace]
+name = "cpacs-schema"
+description = "Development and validation environment for the CPACS schema"
+channels = ["conda-forge", "dlr-sc"]
+platforms = ["linux-64", "win-64"]
+channel-priority = "strict"
+requires-pixi = ">=0.69,<1"
+
+[dependencies]
+python = "3.10.*"
+pytest = ">=8,<9"
+lxml = ">=5,<6"
+
+# Restrict TIXI explicitly to the DLR-SC channel. Generic dependencies
+# should preferably come from conda-forge.
+tixi3 = { version = "3.3.0.*", channel = "dlr-sc" }
+
+[tasks]
+test-schema = "python -m pytest scripts/tests/test_schema.py -v"
+test-examples = "python -m pytest scripts/tests/test_examples.py -v"
+test = "python -m pytest scripts/tests -v"
+
+format-schema = """
+python scripts/syntax_cleanup.py \
+    schema/cpacs_schema.xsd \
+    schema/cpacs_schema.xsd
+"""
+
+check-schema-format = "python scripts/check_schema_format.py"
+
+# Alias task: both dependencies must complete successfully.
+check = { depends-on = ["check-schema-format", "test"] }
