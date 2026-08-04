@@ -1,0 +1,139 @@
+# CPACS schema policy used by schema_tool.py.
+#
+# This file contains project-specific conventions and ordering rules. The
+# Python implementation contains the XSD parsing, QName handling, dependency
+# analysis, validation, and atomic write algorithms.
+
+[schema]
+root_element = "cpacs"
+root_type = "cpacsType"
+
+[format]
+indent_size = 4
+remove_redundant_occurs_one = true
+base_types_comment = "==== base types ===="
+custom_types_comment = "==== custom types ===="
+
+# Readability-oriented order for XSD attributes. Unknown attributes are kept
+# and sorted alphabetically after these entries.
+attribute_order = [
+    "name",
+    "ref",
+    "minOccurs",
+    "maxOccurs",
+    "default",
+    "use",
+    "fixed",
+    "type",
+    "base",
+    "itemType",
+    "memberTypes",
+    "substitutionGroup",
+    "refer",
+    "xpath",
+    "value",
+    "nillable",
+    "abstract",
+    "mixed",
+    "form",
+    "block",
+    "final",
+    "id",
+]
+
+# CPACS compatibility order. These global types are placed after cpacsType and
+# before all remaining declarations. The order is intentionally not purely
+# alphabetical because existing CPACS tooling may depend on it.
+base_types = [
+    "complexBaseType",
+    "stringArrayBaseType",
+    "stringVectorBaseType",
+    "booleanBaseType",
+    "dateBaseType",
+    "dateTimeBaseType",
+    "doubleArrayBaseType",
+    "doubleBaseType",
+    "doubleConstraintBaseType",
+    "doubleVectorBaseType",
+    "doubleVectorConstraintBaseType",
+    "integerBaseType",
+    "posExcl0DoubleBaseType",
+    "posExcl0IntBaseType",
+    "posIntVectorBaseType",
+    "stringBaseType",
+    "stringUIDBaseType",
+    "timeBaseType",
+    "timeConstraintBaseType",
+]
+
+[naming.types]
+first_character = "lower"
+required_suffix = "Type"
+
+# Types listed here are neither reported nor automatically normalized by
+# rename-types. An explicit entry in [renames.types] still takes precedence.
+exceptions = []
+
+[reachability]
+# Additional public components that must be retained even when they are not
+# reachable from the configured CPACS root element. Names may refer to any
+# global XSD component kind; all matching components are treated as roots.
+keep = []
+
+[prefixes]
+# Prefix spelling is a CPACS source-code convention. Namespace processing still
+# uses the normative W3C namespace URIs in schema_tool.py.
+xsd = "xsd"
+xlink = "xlink"
+
+# Lint rules can be disabled or assigned error, warning, or info severity.
+# XSD001 (schema compilation failure) is a technical error and is intentionally
+# not configurable here.
+[rules.CPACS001]
+enabled = true
+severity = "error"      # Duplicate global component
+
+[rules.CPACS002]
+enabled = true
+severity = "error"      # Missing configured root element
+
+[rules.CPACS003]
+enabled = true
+severity = "error"      # Root element uses unexpected type
+
+[rules.CPACS004]
+enabled = true
+severity = "error"      # Global type violates naming convention
+
+[rules.CPACS005]
+enabled = true
+severity = "error"      # Type-name normalization collision
+
+[rules.CPACS006]
+enabled = true
+severity = "warning"    # Configured base type is missing
+
+[rules.CPACS007]
+enabled = true
+severity = "warning"    # Redundant minOccurs/maxOccurs="1"
+
+[rules.CPACS008]
+enabled = true
+severity = "error"      # Unresolved local component reference
+
+[rules.CPACS009]
+enabled = true
+severity = "warning"    # Type unreachable from configured roots
+
+[rules.CPACS010]
+enabled = true
+severity = "error"      # Configured xsd prefix has wrong namespace URI
+
+[rules.CPACS011]
+enabled = true
+severity = "error"      # Configured xlink prefix has wrong namespace URI
+
+# Optional, reviewed type migrations. These mappings override automatic naming
+# normalization. Keep this table empty when no explicit migration is pending.
+[renames.types]
+# OldTypeName = "newTypeName"
