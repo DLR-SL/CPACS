@@ -17,10 +17,13 @@ tomli = ">=2,<3"
 tixi3 = { version = "3.3.0.*", channel = "dlr-sc" }
 
 [tasks]
-test-schema = "python scripts/schema_tool.py check schema/cpacs_schema.xsd"
-lint-schema = "python scripts/schema_tool.py lint schema/cpacs_schema.xsd"
+test-schema = "cpacs-schema check schema/cpacs_schema.xsd"
+lint-schema = "cpacs-schema lint schema/cpacs_schema.xsd"
 test-examples = "python -m pytest scripts/tests/test_examples.py -v"
-format-schema = "python scripts/schema_tool.py format schema/cpacs_schema.xsd --in-place"
+format-schema = "cpacs-schema format schema/cpacs_schema.xsd --in-place"
 
 # Run all validation tasks used by CI.
 check = { depends-on = ["test-schema", "lint-schema", "test-examples"] }
+
+[pypi-dependencies]
+cpacs-schema-tool = { git = "https://github.com/DLR-SL/cpacs-schema-tool.git", tag = "v0.1.1" }
