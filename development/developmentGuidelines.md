@@ -39,6 +39,59 @@ Furthermore, we should avoid using mathematical symbols or abbreviations as thei
 - **§6: Always use SI and accepted derived units.***
 - **§7: Use the CPACS coordinate system for describing data (do not introduce new coordinate systems if not absolutely necessary).**
 
+## Documentation of elements
+
+Every element carries an `xsd:annotation/xsd:documentation` text. It is the string a user sees next to the element in the generated documentation, so it should read as a caption for *that* element — not as a sentence about the schema.
+
+- **§8: An element documentation describes the element itself. It does not repeat the parent element, the enclosing type or the dataset.**
+
+The path already tells the reader where the element sits, so restating it only adds noise. Where the surrounding context is stripped away and nothing meaningful is left, use the element name written out as a readable phrase.
+
+| Avoid | Use |
+| ---------- | ---------- |
+| `Name of CPACS dataset` | `Name` |
+| `Runways of the airport` | `Runways` |
+| `Bolt of the attachment pin` | `Bolt` |
+| `Profile geometries used by the models` | `Profiles` |
+| `Single cargo cross beam` | `Cargo cross beam` |
+
+The last row is a convention that was used in earlier releases and is no longer applied: a plural container groups its children by definition (see §3), so prefixing the child documentation with *Single* is redundant.
+
+**This rule does not license shortening a documentation that carries real information.** Wherever an author explained a concept, a sign convention, a reference frame or an edge case, that text is the valuable part and must be kept:
+
+> `compressedSuspensionTravel`: *Compressed suspension travel means the positive distance between the total length in airborne condition and the maximum reduced length due to maximum compression on the ground (e.g., landing shock).*
+
+The same holds for a trailing phrase that distinguishes an element from its siblings. In `commandCases`, the elements `dp`, `dq` and `dr` are documented as *Command case for the roll / pitch / yaw rate command*; cutting the phrase after *Command case* would make all three identical and destroy the only information in the string.
+
+- **§9: The `name` and `description` elements are always documented as `Name` and `Description`.**
+
+Their meaning is defined once and for all in [*"name", "description" and "uID"*](#name-description-and-uid). Repeating the parent in every occurrence (`Name of the airline`, `Description of layer`) produces 100+ variants of the same statement without adding anything.
+
+- **§10: Documentation starts with a capital letter.**
+
+The only exception is a text that opens with a code identifier, where capitalising would name a different element (`relPos ranges from 0 to 1 ...`). Prefer rewriting such a text so that it starts with a normal word.
+
+- **§11: A full sentence ends with a period. A label does not.**
+
+Decide by grammatical form, not by length. A noun phrase is a label and takes no period, however long it is; a clause with a subject and a finite verb is a sentence and takes one. Documentation consisting of several sentences ends with a period as well.
+
+| Form | Example | Period |
+| ---------- | ---------- | ---------- |
+| Label (noun phrase) | `Cross section area` | no |
+| Label with relative clause | `Height above the floor that is required to be empty of any objects` | no |
+| Sentence | `The fuselage fuel tank geometry is defined by a link to a fuselage geometry compartment.` | yes |
+| Several sentences | `Relative spanwise position. Eta refers to the segment or componentSegment depending on the referenced UID.` | yes |
+
+- **§12: In running text, `UID` is written in capitals. `uID` refers to the XML attribute only.**
+
+`uID` is the name of the attribute and is spelled that way when the attribute itself is meant, ideally in backticks. Used as a word — *"Reference to the UID of the analysed airfoil"* — it is an abbreviation and takes capitals.
+
+- **§13: Physical units are given in square brackets at the end of the text, e.g. `Tilt angle of the bogie [deg]`.**
+
+Write the unit as `[deg]`, `[m]`, `[N/m^2]`, and `[-]` for a dimensionless quantity — not as part of the prose (*"the angle (in deg) at which ..."*).
+
+Documentation that is missing, or that is a placeholder, is a defect like any other. An element whose meaning cannot be stated in one line is usually a sign that the element itself needs discussion.
+
 ## Development Guidelines by Example
 
 ### Example analysis node
