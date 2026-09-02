@@ -39,11 +39,11 @@ Furthermore, we should avoid using mathematical symbols or abbreviations as thei
 - **§6: Always use SI and accepted derived units.***
 - **§7: Use the CPACS coordinate system for describing data (do not introduce new coordinate systems if not absolutely necessary).**
 
-## Documentation of elements
+## Documentation of elements and attributes
 
-Every element carries an `xsd:annotation/xsd:documentation` text. It is the string a user sees next to the element in the generated documentation, so it should read as a caption for *that* element — not as a sentence about the schema.
+Every element and every attribute carries an `xsd:annotation/xsd:documentation` text. It is the string a user sees next to the node in the generated documentation, so it should read as a caption for *that* node — not as a sentence about the schema. §8 to §13 below apply to elements and attributes alike; §14 adds what is specific to attributes.
 
-- **§8: An element documentation describes the element itself. It does not repeat the parent element, the enclosing type or the dataset.**
+- **§8: A documentation describes the node itself. It does not repeat the parent element, the enclosing type or the dataset.**
 
 The path already tells the reader where the element sits, so restating it only adds noise. Where the surrounding context is stripped away and nothing meaningful is left, use the element name written out as a readable phrase.
 
@@ -63,9 +63,9 @@ The last row is a convention that was used in earlier releases and is no longer 
 
 The same holds for a trailing phrase that distinguishes an element from its siblings. In `commandCases`, the elements `dp`, `dq` and `dr` are documented as *Command case for the roll / pitch / yaw rate command*; cutting the phrase after *Command case* would make all three identical and destroy the only information in the string.
 
-- **§9: The `name` and `description` elements are always documented as `Name` and `Description`.**
+- **§9: The `name` and `description` elements and the `uID` attribute are always documented as `Name`, `Description` and `UID`.**
 
-Their meaning is defined once and for all in [*"name", "description" and "uID"*](#name-description-and-uid). Repeating the parent in every occurrence (`Name of the airline`, `Description of layer`) produces 100+ variants of the same statement without adding anything.
+Their meaning is defined once and for all in [*"name", "description" and "uID"*](#name-description-and-uid). Repeating the parent in every occurrence (`Name of the airline`, `Description of layer`, `UID of the pylon box.`) produces hundreds of variants of the same statement without adding anything. `uID` alone accounts for more than 200 occurrences.
 
 - **§10: Documentation starts with a capital letter.**
 
@@ -90,7 +90,29 @@ Decide by grammatical form, not by length. A noun phrase is a label and takes no
 
 Write the unit as `[deg]`, `[m]`, `[N/m^2]`, and `[-]` for a dimensionless quantity — not as part of the prose (*"the angle (in deg) at which ..."*).
 
-Documentation that is missing, or that is a placeholder, is a defect like any other. An element whose meaning cannot be stated in one line is usually a sign that the element itself needs discussion.
+- **§14: Attributes are documented like elements. Where the same attribute name carries a different meaning in different types, each occurrence is documented for its own type.**
+
+An attribute is easy to overlook because it is often written as a self-closing tag, but it reaches the user the same way an element does. Add the annotation as the first child, before any inline `xsd:simpleType`:
+
+```XML
+<xsd:attribute name="loftContinuity" type="loftContinuityType">
+    <xsd:annotation>
+        <xsd:documentation>Continuity used for lofting this component (default: C2 for fuselages and ducts, C0 for wings)</xsd:documentation>
+    </xsd:annotation>
+</xsd:attribute>
+```
+
+Note that a documentation placed inside a nested `xsd:enumeration` documents that *value*, not the attribute. Both are useful, but one does not replace the other.
+
+The second half of §14 matters wherever a name was reused for unrelated concepts. `symmetry` is the example in the current schema:
+
+| Type | Meaning |
+| ---------- | ---------- |
+| `stringUIDBaseType` | `Side of the referenced symmetric component (def, symm or full)` |
+| `profileGeometry2DType` | `Symmetry of the profile (none, inherit, x-axis or y-axis)` |
+| `wingType`, `fuselageType`, `ductType`, … | `Symmetry plane the component is mirrored at` |
+
+Documentation that is missing, or that is a placeholder, is a defect like any other. A node whose meaning cannot be stated in one line is usually a sign that the node itself needs discussion.
 
 ## Development Guidelines by Example
 
