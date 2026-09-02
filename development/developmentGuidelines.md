@@ -112,6 +112,19 @@ The second half of §14 matters wherever a name was reused for unrelated concept
 | `profileGeometry2DType` | `Symmetry of the profile (none, inherit, x-axis or y-axis)` |
 | `wingType`, `fuselageType`, `ductType`, … | `Symmetry plane the component is mirrored at` |
 
+- **§15: A type documentation does not introduce itself with its own type name. The `sd:schemaDoc/ddue:summary` names the type, the `ddue:remarks` explain it.**
+
+The two blocks have different jobs, and neither of them needs the type name spelled out — the reader sees it in the schema and in the generated page heading.
+
+| Avoid | Use |
+| ---------- | ---------- |
+| `Transformation type, containing a set of transformations` | `Set of transformations` |
+| `AircraftAnalyses type, containing detailed analysis data of the aircraft` | `Detailed analysis data of the aircraft` |
+
+Beyond being redundant, the prefix rots. It is copied along when a type is renamed or duplicated, and then states something false: `centerFuselageAreaType` claimed to be the *CenterFuselageAssembly type*, `skinSegmentType` the *FuselagePanel type*, and `flightsType` the *Flighs type*. A name that is written down twice will disagree with itself sooner or later.
+
+Where removing the prefix leaves nothing but the summary repeated (*"Doors type, containing doors"*), the remarks block carried no information to begin with and should be dropped rather than rephrased.
+
 Documentation that is missing, or that is a placeholder, is a defect like any other. A node whose meaning cannot be stated in one line is usually a sign that the node itself needs discussion.
 
 ## Development Guidelines by Example
