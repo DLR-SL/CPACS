@@ -13,7 +13,7 @@ The release process is grouped into the following steps:
  - Sort in alphabetical order           --> convert.py
  - Remove unused namespaces!            --> cleanNamespaces.bat
  
-## 1. Create documentation                 --> createDocumentation.bat
+## 1. Create documentation                 --> see [Building the documentation](buildDocumentation.md)
 
 ## 2. Create libraries                     --> generateLibraries.bat
 

@@ -7,90 +7,94 @@ on:
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
-  
+
 # Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
 # However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
 concurrency:
   group: "pages"
   cancel-in-progress: false
-  
+
+permissions:
+  contents: read
+
+env:
+  # The branch of the generator repository DLR-SL/cpacs-doc, not of this one.
+  # What gets documented is always the commit that triggered this run; only the
+  # tool that documents it is taken from here. Pin a tag or a commit to freeze
+  # the output against changes made to the generator.
+  CPACS_DOC_REF: main
+
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v4
+      - name: Check out repository
+        uses: actions/checkout@v4
 
-    - name: Add MSBuild to PATH
-      uses: microsoft/setup-msbuild@v1.0.2
+      - name: Check out the documentation generator
+        uses: actions/checkout@v4
+        with:
+          repository: DLR-SL/cpacs-doc
+          ref: ${{ env.CPACS_DOC_REF }}
+          path: .cpacs-doc
 
-    - name: Install 7-Zip
-      run: |
-        Invoke-WebRequest -Uri https://www.7-zip.org/a/7z1900-x64.exe -OutFile 7z.exe
-        Start-Process -Wait -FilePath 7z.exe
-        Remove-Item -Force 7z.exe
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
 
-    - name: Extract 3rdparty.zip
-      run: |
-        Start-Process -Wait -FilePath 'C:\Program Files\7-Zip\7z.exe' -ArgumentList "x -y .\development\3rdparty.zip -o.\development\"
+      - name: Install the documentation generator
+        # The generator's own lock file, so the build depends on the versions
+        # it was tested against.
+        run: uv sync --locked --project .cpacs-doc
 
-    - name: Build Documentation
-      run: msbuild /p:Configuration=Release documentation\Cpacs_doc_project.shfbproj
+      - name: Build the documentation
+        # The media catalogue is found next to the schema directory, so
+        # documentation/media.json needs no flag. The run exits non-zero when
+        # the build report holds errors, which fails the workflow on a broken
+        # schema without a second check.
+        run: >-
+          uv run --project .cpacs-doc
+          cpacs-doc build schema/cpacs_schema.xsd --site --single -o build/doc
 
-    - name: Add dsgvo footer to html docs
-      run: python .\documentation\Cpacs_doc_dsgvo.py
+      - name: Separate the one-file build from the Pages tree
+        # What is deployed stays the site; the one file is 20 MB that no page
+        # there links to. It is offered as a download instead, in the role the
+        # compiled help file used to fill.
+        run: |
+          mkdir -p build/single
+          mv build/doc/cpacs-doc.html build/single/
+          touch build/doc/.nojekyll
 
-    - name: Package HTML Docs
-      run: 7z a -tzip .\build\doc\htmlDocs.zip .\build\doc\*
+      - name: Upload the Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: build/doc
 
-    - name: Upload Artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: cpacsDocs
-        path: |
-          .\build\doc\*.chm
-          .\build\doc\htmlDocs.zip
-        
+      - name: Upload the one-file documentation
+        uses: actions/upload-artifact@v4
+        with:
+          name: cpacs-doc-single
+          path: build/single/cpacs-doc.html
+          if-no-files-found: error
+          retention-days: 30
+
   deploy:
     needs: build
 
     # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
     permissions:
-      contents: read
       pages: write
       id-token: write
-      
+
     # Deploy to the github-pages environment
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
 
-    # Specify runner + deployment step
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-      - name: Download html zip
-        uses: actions/download-artifact@v4
-        with:
-          name: cpacsDocs
-      - name: Extract HTML Docs
-        run: |
-          7z x -y htmlDocs.zip
-      - name: Fix permissions
-        run: |
-          chmod -c -R +rX "." | while read line; do
-            echo "::warning title=Invalid file permissions automatically fixed::$line"
-          done
-      - name: Upload Artifacts
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: .
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
