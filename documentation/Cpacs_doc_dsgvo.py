@@ -13,7 +13,7 @@ def replace_page_footer(file_path):
     pattern = r'<div id="pageFooter" class="pageFooter"><p>.*?</p>'
     replacement = '''
 <div id="pageFooter" class="pageFooter"><p>
-    &copy; 2023 <a href="https://www.DLR.de">Deutsches Zentrum für Luft- und Raumfahrt e.V.</a>&nbsp;&nbsp;&nbsp;
+    &copy; 2026 <a href="https://www.DLR.de">Deutsches Zentrum für Luft- und Raumfahrt e.V.</a>&nbsp;&nbsp;&nbsp;
     <a href="https://www.dlr.de/sl">Institute of System Architectures in Aeronautics</a></li>&nbsp;&nbsp;&nbsp;
     <a href="https://www.cpacs.de/pages/imprint.html">Imprint</a></li>&nbsp;&nbsp;&nbsp;
     <a href="https://www.cpacs.de/pages/privacy.html">Privacy</a></li>&nbsp;&nbsp;&nbsp;
