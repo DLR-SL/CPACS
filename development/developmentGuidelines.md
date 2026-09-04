@@ -39,6 +39,94 @@ Furthermore, we should avoid using mathematical symbols or abbreviations as thei
 - **§6: Always use SI and accepted derived units.***
 - **§7: Use the CPACS coordinate system for describing data (do not introduce new coordinate systems if not absolutely necessary).**
 
+## Documentation of elements and attributes
+
+Every element and every attribute carries an `xsd:annotation/xsd:documentation` text. It is the string a user sees next to the node in the generated documentation, so it should read as a caption for *that* node — not as a sentence about the schema. §8 to §13 below apply to elements and attributes alike; §14 adds what is specific to attributes.
+
+- **§8: A documentation describes the node itself. It does not repeat the parent element, the enclosing type or the dataset.**
+
+The path already tells the reader where the element sits, so restating it only adds noise. Where the surrounding context is stripped away and nothing meaningful is left, use the element name written out as a readable phrase.
+
+| Avoid | Use |
+| ---------- | ---------- |
+| `Name of CPACS dataset` | `Name` |
+| `Runways of the airport` | `Runways` |
+| `Bolt of the attachment pin` | `Bolt` |
+| `Profile geometries used by the models` | `Profiles` |
+| `Single cargo cross beam` | `Cargo cross beam` |
+
+The last row is a convention that was used in earlier releases and is no longer applied: a plural container groups its children by definition (see §3), so prefixing the child documentation with *Single* is redundant.
+
+**This rule does not license shortening a documentation that carries real information.** Wherever an author explained a concept, a sign convention, a reference frame or an edge case, that text is the valuable part and must be kept:
+
+> `compressedSuspensionTravel`: *Compressed suspension travel means the positive distance between the total length in airborne condition and the maximum reduced length due to maximum compression on the ground (e.g., landing shock).*
+
+The same holds for a trailing phrase that distinguishes an element from its siblings. In `commandCases`, the elements `dp`, `dq` and `dr` are documented as *Command case for the roll / pitch / yaw rate command*; cutting the phrase after *Command case* would make all three identical and destroy the only information in the string.
+
+- **§9: The `name` and `description` elements and the `uID` attribute are always documented as `Name`, `Description` and `UID`.**
+
+Their meaning is defined once and for all in [*"name", "description" and "uID"*](#name-description-and-uid). Repeating the parent in every occurrence (`Name of the airline`, `Description of layer`, `UID of the pylon box.`) produces hundreds of variants of the same statement without adding anything. `uID` alone accounts for more than 200 occurrences.
+
+- **§10: Documentation starts with a capital letter.**
+
+The only exception is a text that opens with a code identifier, where capitalising would name a different element (`relPos ranges from 0 to 1 ...`). Prefer rewriting such a text so that it starts with a normal word.
+
+- **§11: A full sentence ends with a period. A label does not.**
+
+Decide by grammatical form, not by length. A noun phrase is a label and takes no period, however long it is; a clause with a subject and a finite verb is a sentence and takes one. Documentation consisting of several sentences ends with a period as well.
+
+| Form | Example | Period |
+| ---------- | ---------- | ---------- |
+| Label (noun phrase) | `Cross section area` | no |
+| Label with relative clause | `Height above the floor that is required to be empty of any objects` | no |
+| Sentence | `The fuselage fuel tank geometry is defined by a link to a fuselage geometry compartment.` | yes |
+| Several sentences | `Relative spanwise position. Eta refers to the segment or componentSegment depending on the referenced UID.` | yes |
+
+- **§12: In running text, `UID` is written in capitals. `uID` refers to the XML attribute only.**
+
+`uID` is the name of the attribute and is spelled that way when the attribute itself is meant, ideally in backticks. Used as a word — *"Reference to the UID of the analysed airfoil"* — it is an abbreviation and takes capitals.
+
+- **§13: Physical units are given in square brackets at the end of the text, e.g. `Tilt angle of the bogie [deg]`.**
+
+Write the unit as `[deg]`, `[m]`, `[N/m^2]`, and `[-]` for a dimensionless quantity — not as part of the prose (*"the angle (in deg) at which ..."*).
+
+- **§14: Attributes are documented like elements. Where the same attribute name carries a different meaning in different types, each occurrence is documented for its own type.**
+
+An attribute is easy to overlook because it is often written as a self-closing tag, but it reaches the user the same way an element does. Add the annotation as the first child, before any inline `xsd:simpleType`:
+
+```XML
+<xsd:attribute name="loftContinuity" type="loftContinuityType">
+    <xsd:annotation>
+        <xsd:documentation>Continuity used for lofting this component (default: C2 for fuselages and ducts, C0 for wings)</xsd:documentation>
+    </xsd:annotation>
+</xsd:attribute>
+```
+
+Note that a documentation placed inside a nested `xsd:enumeration` documents that *value*, not the attribute. Both are useful, but one does not replace the other.
+
+The second half of §14 matters wherever a name was reused for unrelated concepts. `symmetry` is the example in the current schema:
+
+| Type | Meaning |
+| ---------- | ---------- |
+| `stringUIDBaseType` | `Side of the referenced symmetric component (def, symm or full)` |
+| `profileGeometry2DType` | `Symmetry of the profile (none, inherit, x-axis or y-axis)` |
+| `wingType`, `fuselageType`, `ductType`, … | `Symmetry plane the component is mirrored at` |
+
+- **§15: A type documentation does not introduce itself with its own type name. The `sd:schemaDoc/ddue:summary` names the type, the `ddue:remarks` explain it.**
+
+The two blocks have different jobs, and neither of them needs the type name spelled out — the reader sees it in the schema and in the generated page heading.
+
+| Avoid | Use |
+| ---------- | ---------- |
+| `Transformation type, containing a set of transformations` | `Set of transformations` |
+| `AircraftAnalyses type, containing detailed analysis data of the aircraft` | `Detailed analysis data of the aircraft` |
+
+Beyond being redundant, the prefix rots. It is copied along when a type is renamed or duplicated, and then states something false: `centerFuselageAreaType` claimed to be the *CenterFuselageAssembly type*, `skinSegmentType` the *FuselagePanel type*, and `flightsType` the *Flighs type*. A name that is written down twice will disagree with itself sooner or later.
+
+Where removing the prefix leaves nothing but the summary repeated (*"Doors type, containing doors"*), the remarks block carried no information to begin with and should be dropped rather than rephrased.
+
+Documentation that is missing, or that is a placeholder, is a defect like any other. A node whose meaning cannot be stated in one line is usually a sign that the node itself needs discussion.
+
 ## Development Guidelines by Example
 
 ### Example analysis node
