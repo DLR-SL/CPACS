@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cpacs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../schema/cpacs_schema.xsd">
+  <header>
+    <name>Routing test</name>
+    <description>Hydraulic line with a T-branch, routed as a generic system</description>
+    <version>1.0.0</version>
+    <versionInfos>
+      <versionInfo version="1.0.0">
+        <description>First draft of the routing extension</description>
+        <creator>DLR-SL</creator>
+        <timestamp>2026-09-09T12:00:00</timestamp>
+        <cpacsVersion>3.5.1</cpacsVersion>
+      </versionInfo>
+    </versionInfos>
+  </header>
+  <vehicles>
+    <aircraft>
+      <model uID="testAircraft">
+        <name>Test aircraft</name>
+        <systems>
+          <genericSystems>
+            <genericSystem uID="hydraulicSystemGreen">
+              <name>Hydraulic system green</name>
+              <components>
+                <component uID="greenPump">
+                  <name>Engine driven pump</name>
+                  <systemElementUID>pumpElement</systemElementUID>
+                  <transformation>
+                    <translation>
+                      <x>10.0</x>
+                      <y>0.0</y>
+                      <z>-0.5</z>
+                    </translation>
+                  </transformation>
+                </component>
+              </components>
+              <routings>
+                <routing uID="greenPressureLine">
+                  <name>Green pressure line</name>
+                  <description>Pump to two actuators, branched at the wing root rib</description>
+                  <transformation>
+                    <translation refType="absGlobal">
+                      <x>0.0</x>
+                      <y>0.0</y>
+                      <z>0.0</z>
+                    </translation>
+                  </transformation>
+                  <routePositions>
+                    <routePosition uID="rp_pumpOutlet">
+                      <componentUID>greenPump</componentUID>
+                      <point>
+                        <x>0.1</x>
+                        <y>0.0</y>
+                        <z>0.0</z>
+                      </point>
+                    </routePosition>
+                    <routePosition uID="rp_floorPanel">
+                      <point>
+                        <x>11.5</x>
+                        <y>0.0</y>
+                        <z>-0.5</z>
+                      </point>
+                    </routePosition>
+                    <routePosition uID="rp_keelBeam">
+                      <point>
+                        <x>13.0</x>
+                        <y>0.0</y>
+                        <z>-0.9</z>
+                      </point>
+                    </routePosition>
+                    <routePosition uID="rp_junction">
+                      <point>
+                        <x>15.5</x>
+                        <y>0.0</y>
+                        <z>-0.9</z>
+                      </point>
+                    </routePosition>
+                    <routePosition uID="rp_actuatorLeft">
+                      <point>
+                        <x>16.2</x>
+                        <y>-2.4</y>
+                        <z>-0.7</z>
+                      </point>
+                    </routePosition>
+                    <routePosition uID="rp_actuatorRight">
+                      <point>
+                        <x>16.2</x>
+                        <y>2.4</y>
+                        <z>-0.7</z>
+                      </point>
+                    </routePosition>
+                  </routePositions>
+                  <routeSegments>
+                    <routeSegment uID="rs_main">
+                      <name>Main run</name>
+                      <crossSection>
+                        <routingElementUID>pipeTitanium10x1</routingElementUID>
+                      </crossSection>
+                      <path>
+                        <waypoint>
+                          <routePositionUID>rp_pumpOutlet</routePositionUID>
+                        </waypoint>
+                        <waypoint>
+                          <routePositionUID>rp_floorPanel</routePositionUID>
+                        </waypoint>
+                        <waypoint>
+                          <routePositionUID>rp_keelBeam</routePositionUID>
+                          <bendRadius>0.08</bendRadius>
+                        </waypoint>
+                        <waypoint>
+                          <routePositionUID>rp_junction</routePositionUID>
+                        </waypoint>
+                        <defaultBendRadius>0.05</defaultBendRadius>
+                      </path>
+                    </routeSegment>
+                    <routeSegment uID="rs_branchLeft">
+                      <name>Branch to left actuator</name>
+                      <crossSection>
+                        <fromRoutingElementUID>pipeTitanium10x1</fromRoutingElementUID>
+                        <toRoutingElementUID>pipeTitanium8x1</toRoutingElementUID>
+                      </crossSection>
+                      <path>
+                        <waypoint>
+                          <routePositionUID>rp_junction</routePositionUID>
+                        </waypoint>
+                        <waypoint>
+                          <routePositionUID>rp_actuatorLeft</routePositionUID>
+                        </waypoint>
+                      </path>
+                    </routeSegment>
+                    <routeSegment uID="rs_branchRight">
+                      <name>Branch to right actuator</name>
+                      <crossSection>
+                        <routingElementUID>pipeTitanium8x1</routingElementUID>
+                      </crossSection>
+                      <path>
+                        <waypoint>
+                          <routePositionUID>rp_junction</routePositionUID>
+                        </waypoint>
+                        <waypoint>
+                          <routePositionUID>rp_actuatorRight</routePositionUID>
+                        </waypoint>
+                      </path>
+                    </routeSegment>
+                  </routeSegments>
+                </routing>
+              </routings>
+            </genericSystem>
+          </genericSystems>
+        </systems>
+      </model>
+    </aircraft>
+    <systemElements>
+      <hydraulicElements>
+        <conversionElements>
+          <mechanicalDrivenPumps>
+            <mechanicalDrivenPump uID="pumpElement">
+            <name>Engine driven pump</name>
+            <geometry representation="envelope">
+              <cuboids>
+                <cuboid>
+                  <lengthX>0.30</lengthX>
+                  <depthY>0.18</depthY>
+                  <heightZ>0.18</heightZ>
+                </cuboid>
+              </cuboids>
+            </geometry>
+            <mass>
+              <mass>12.5</mass>
+            </mass>
+            </mechanicalDrivenPump>
+          </mechanicalDrivenPumps>
+        </conversionElements>
+      </hydraulicElements>
+      <routingElements>
+        <routingElement uID="pipeTitanium10x1">
+          <name>Titanium pipe 10 x 1</name>
+          <description>Outer diameter 10 mm, wall thickness 1 mm</description>
+          <circularCrossSection>
+            <outerDiameter>0.010</outerDiameter>
+            <wallThickness>0.001</wallThickness>
+          </circularCrossSection>
+          <materialUID>titanium</materialUID>
+        </routingElement>
+        <routingElement uID="pipeTitanium8x1">
+          <name>Titanium pipe 8 x 1</name>
+          <circularCrossSection>
+            <outerDiameter>0.008</outerDiameter>
+            <wallThickness>0.001</wallThickness>
+          </circularCrossSection>
+          <materialUID>titanium</materialUID>
+        </routingElement>
+      </routingElements>
+    </systemElements>
+    <materials>
+      <material uID="titanium">
+        <name>Ti-6Al-4V</name>
+        <rho>4430.0</rho>
+        <isotropicProperties>
+          <E>110000000000.0</E>
+        </isotropicProperties>
+      </material>
+    </materials>
+  </vehicles>
+</cpacs>
