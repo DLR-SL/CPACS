@@ -7263,6 +7263,38 @@ cpacs@dlr.de
         </xsd:complexContent>
     </xsd:complexType>
 
+    <xsd:complexType name="circularCrossSectionType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Circular cross section</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>Circular cross section of a routing element. Without a wall thickness the cross section
+                            is solid, which is the usual case for cables and cable bundles.</ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="outerDiameter" type="posExcl0DoubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Outer diameter [m]</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="wallThickness" minOccurs="0" type="posExcl0DoubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Wall thickness. If omitted, the cross section is solid [m]</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:all>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
     <xsd:complexType name="classDividerElementsType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -20303,6 +20335,11 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     <xsd:element name="components" minOccurs="0" type="componentsType">
                         <xsd:annotation>
                             <xsd:documentation>Components</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="routings" minOccurs="0" type="routingsType">
+                        <xsd:annotation>
+                            <xsd:documentation>Routings</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -36398,6 +36435,470 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
         </xsd:complexContent>
     </xsd:complexType>
 
+    <xsd:complexType name="routeCrossSectionType">
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:choice>
+                        <xsd:element name="routingElementUID" type="stringUIDBaseType">
+                            <xsd:annotation>
+                                <xsd:documentation>UID reference to the routing element used along the whole segment</xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:sequence>
+                            <xsd:element name="fromRoutingElementUID" type="stringUIDBaseType">
+                                <xsd:annotation>
+                                    <xsd:documentation>UID reference to the routing element at the first waypoint</xsd:documentation>
+                                </xsd:annotation>
+                            </xsd:element>
+                            <xsd:element name="toRoutingElementUID" type="stringUIDBaseType">
+                                <xsd:annotation>
+                                    <xsd:documentation>UID reference to the routing element at the last waypoint</xsd:documentation>
+                                </xsd:annotation>
+                            </xsd:element>
+                        </xsd:sequence>
+                    </xsd:choice>
+                    <xsd:element name="profileRotation" minOccurs="0" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Rotation of the cross section about the path, measured at the first route
+                                position (default: 0) [deg]</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="routePathType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>...</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>...</ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="waypoint" minOccurs="2" maxOccurs="unbounded" type="routeWaypointType">
+                        <xsd:annotation>
+                            <xsd:documentation>...</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="routePositionsType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Route positions</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>Collection of the supporting points of a routing.</ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="routePosition" minOccurs="2" maxOccurs="unbounded" type="routePositionType">
+                        <xsd:annotation>
+                            <xsd:documentation>Route position</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="routePositionType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Route position</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>Supporting point of a route. The point is given in the coordinate system of the
+                                enclosing routing. If a reference object is specified, the point is given relative to the
+                                origin of that object instead.</ddue:para>
+                            <ddue:para>A route position that is referenced by more than one route segment forms a
+                                junction, for example a T-piece.</ddue:para>
+                        </ddue:content>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:choice minOccurs="0">
+                        <xsd:element name="componentUID" type="stringUIDBaseType">
+                            <xsd:annotation>
+                                <xsd:documentation>UID of a system component the point is referred to</xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element name="fuselageSectionUID" type="stringUIDBaseType">
+                            <xsd:annotation>
+                                <xsd:documentation>UID of a fuselage section the point is referred to</xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element name="frameUID" type="stringUIDBaseType">
+                            <xsd:annotation>
+                                <xsd:documentation>UID of a frame the point is referred to</xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element name="deckUID" type="stringUIDBaseType">
+                            <xsd:annotation>
+                                <xsd:documentation>UID of a deck the point is referred to</xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                    </xsd:choice>
+                    <xsd:element name="point" type="pointType">
+                        <xsd:annotation>
+                            <xsd:documentation>Coordinates of the supporting point [m]</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+                <xsd:attribute name="uID" use="required" type="xsd:ID">
+                    <xsd:annotation>
+                        <xsd:documentation>UID</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="routeSegmentsType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Route segments</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>Collection of the segments forming a routing.</ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="routeSegment" maxOccurs="unbounded" type="routeSegmentType">
+                        <xsd:annotation>
+                            <xsd:documentation>Route segment</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="routeSegmentType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Route segment</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>Section of a route with a constant cross section. The path is defined by an ordered
+                                list of route positions. Interior corners are rounded with the bend radius, which may be
+                                overridden at each route position.</ddue:para>
+                            <ddue:para>The geometry is obtained by sweeping the cross section of the referenced routing
+                                element along the path. Branches are modelled by two or more route segments sharing a
+                                route position.</ddue:para>
+                        </ddue:content>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="name" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Name</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="description" minOccurs="0" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Description</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="crossSection" type="routeCrossSectionType">
+                        <xsd:annotation>
+                            <xsd:documentation>...</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="path" type="routePathType">
+                        <xsd:annotation>
+                            <xsd:documentation>...</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="defaultBendRadius" minOccurs="0" type="posExcl0DoubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Default bend radius applied at all interior route positions of the segment. If
+                                omitted, the corners without local bendRadius definition remain sharp [m]</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:all>
+                <xsd:attribute name="uID" use="required" type="xsd:ID">
+                    <xsd:annotation>
+                        <xsd:documentation>UID</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="routeWaypointType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>...</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>...</ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="routePositionUID" type="stringUIDBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>...</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="bendRadius" minOccurs="0" type="posExcl0DoubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>...</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="routingElementsType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Routing elements</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>Vehicle level library of the cross sections available for routing.</ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="routingElement" maxOccurs="unbounded" type="routingElementType">
+                        <xsd:annotation>
+                            <xsd:documentation>Routing element</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="routingElementType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Routing element</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>Reusable definition of the cross section of a pipe, a cable or a cable bundle,
+                                together with its material. The definition follows the pattern of the profile based
+                                structural elements.</ddue:para>
+                            <ddue:para>The cross section is either taken from a structural profile or given as a standard
+                                profile. For a standard profile, the wall thickness decides whether the swept solid is
+                                hollow or solid.</ddue:para>
+                        </ddue:content>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="name" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Name</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="description" minOccurs="0" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Description</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:choice>
+                        <xsd:sequence>
+                            <xsd:element name="structuralProfileUID" type="stringUIDBaseType">
+                                <xsd:annotation>
+                                    <xsd:documentation>UID reference to a structural profile</xsd:documentation>
+                                </xsd:annotation>
+                            </xsd:element>
+                            <xsd:element name="referencePointUID" minOccurs="0" type="stringUIDBaseType">
+                                <xsd:annotation>
+                                    <xsd:documentation>Point of the structural profile placed on the path. If omitted, the
+                                        origin of the profile is used</xsd:documentation>
+                                </xsd:annotation>
+                            </xsd:element>
+                            <xsd:element name="sheetProperties" maxOccurs="unbounded" type="materialDefinitionForProfileBasedType">
+                                <xsd:annotation>
+                                    <xsd:documentation>Material definition of a sheet of the profile</xsd:documentation>
+                                </xsd:annotation>
+                            </xsd:element>
+                        </xsd:sequence>
+                        <xsd:sequence>
+                            <xsd:element name="circularCrossSection" type="circularCrossSectionType">
+                                <xsd:annotation>
+                                    <xsd:documentation>Circular cross section given by its dimensions</xsd:documentation>
+                                </xsd:annotation>
+                            </xsd:element>
+                            <xsd:element name="materialUID" minOccurs="0" type="stringUIDBaseType">
+                                <xsd:annotation>
+                                    <xsd:documentation>UID reference to a material definition</xsd:documentation>
+                                </xsd:annotation>
+                            </xsd:element>
+                        </xsd:sequence>
+                    </xsd:choice>
+                </xsd:sequence>
+                <xsd:attribute name="uID" use="required" type="xsd:ID">
+                    <xsd:annotation>
+                        <xsd:documentation>UID</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="routingsType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Routings</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>Collection of the routings of a generic system.</ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="routing" maxOccurs="unbounded" type="routingType">
+                        <xsd:annotation>
+                            <xsd:documentation>Routing</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="routingType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Routing</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>Geometric path of a pipe or a cable within a generic system. A routing consists of
+                                supporting points and of segments connecting them. Its geometry is derived by sweeping the
+                                cross sections of the referenced routing elements along the segments.</ddue:para>
+                            <ddue:para>The coordinate system of the routing is placed by the optional transformation. If a
+                                parent is given, the translation refers to the coordinate system of the parent by default,
+                                whereas the rotation refers to the global coordinate system.</ddue:para>
+                            <ddue:para>The mass follows from the swept volume and the material densities. It may be
+                                overridden by an explicit value, for instance to match a measured harness mass.</ddue:para>
+                        </ddue:content>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="name" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Name</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="description" minOccurs="0" type="stringBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Description</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="parentUID" minOccurs="0" type="stringUIDBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Optional UID reference to the parent object used for relative positioning</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="transformation" minOccurs="0" type="transformationSE3Type">
+                        <xsd:annotation>
+                            <xsd:documentation>Optional rigid transformation defining position and orientation of the
+                                routing</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="systemConnectionUIDs" minOccurs="0" type="uIDSequenceType">
+                        <xsd:annotation>
+                            <xsd:documentation>UIDs of the system connections realised by this routing</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="routePositions" type="routePositionsType">
+                        <xsd:annotation>
+                            <xsd:documentation>Supporting points of the routing</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="routeSegments" type="routeSegmentsType">
+                        <xsd:annotation>
+                            <xsd:documentation>Segments of the routing</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="mass" minOccurs="0" type="elementMassType">
+                        <xsd:annotation>
+                            <xsd:documentation>Mass properties overriding the values derived from geometry and material</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:all>
+                <xsd:attribute name="uID" use="required" type="xsd:ID">
+                    <xsd:annotation>
+                        <xsd:documentation>UID</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
     <xsd:complexType name="runwayILSType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -44311,6 +44812,11 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     <xsd:element name="thermoFluidElements" minOccurs="0" type="sysElemThermoFluidElementsType">
                         <xsd:annotation>
                             <xsd:documentation>Thermo-fluid system elements</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="routingElements" minOccurs="0" type="routingElementsType">
+                        <xsd:annotation>
+                            <xsd:documentation>Routing elements</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
