@@ -12331,7 +12331,7 @@ cpacs@dlr.de
                 <xsd:all>
                     <xsd:element name="position" type="etaXsiRelHeightPointType">
                         <xsd:annotation>
-                            <xsd:documentation>Position of the mid point of the roll of the cruise roller</xsd:documentation>
+                            <xsd:documentation>Position of the mid position of the roll of the cruise roller</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="parentAttachment" type="materialDefinitionType">
@@ -22144,7 +22144,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                                 0 means that the landing gear will rotate around the upper end
                                 of the main strut during retraction. If this value is greater
                                 than 0, the center of rotation is shifted by this value above
-                                the main strut end point (translation along the main strut axis).
+                                the main strut end position (translation along the main strut axis).
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
@@ -35372,7 +35372,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                             </ddue:para>
                             <ddue:para>
                                 Next, the blending from the rotated profile of the nacelle segment to the rotation curve is defined.
-                                The corresponding start and end points are given in curve coordinates <ddue:codeInline>zeta</ddue:codeInline> of the corresponding profiles.
+                                The corresponding start and end positions are given in curve coordinates <ddue:codeInline>zeta</ddue:codeInline> of the corresponding profiles.
                                 Note that the lower part of the segment profile counts from <ddue:legacyItalic>zeta=[-1,..,0]</ddue:legacyItalic> and the upper part counts from <ddue:legacyItalic>zeta=[0,..,1]</ddue:legacyItalic>.
                                 In between, the blending is linear.
                             </ddue:para>
@@ -36441,33 +36441,21 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="routeCrossSectionType">
+    <xsd:complexType name="routeEndPositionType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Route cross section</ddue:para>
+                        <ddue:para>Route end position</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>Cross section swept along a route segment. The cross section itself is not defined
-                                here but taken from the vehicle level library in
-                                <ddue:codeInline>routingElements</ddue:codeInline>. This node only selects the library
-                                entry and orients it.</ddue:para>
-                            <ddue:para>A single <ddue:codeInline>routingElementUID</ddue:codeInline> keeps the cross
-                                section constant along the segment. The pair
-                                <ddue:codeInline>fromRoutingElementUID</ddue:codeInline> and
-                                <ddue:codeInline>toRoutingElementUID</ddue:codeInline> describes a continuous transition
-                                between two cross sections, for example a cable bundle that thins out behind a branch.
-                                Both entries are interpolated along the path, which requires topologically compatible
-                                cross sections. Two circular cross sections are always compatible; two structural
-                                profiles are only compatible if they consist of the same number of edges. A discrete
-                                change of the cross section, such as a reducer in a pipe, is not modelled by a transition
-                                but by two segments sharing a route position.</ddue:para>
-                            <ddue:para>The orientation of the cross section in the plane normal to the path is defined by
-                                <ddue:codeInline>profileRotation</ddue:codeInline>. It applies to the instance only; the
-                                referenced library entry stays unchanged. The same cable duct can therefore be used lying
-                                and upright by defining two segments referring to the same routing element.</ddue:para>
+                            <ddue:para>Last point of a route segment. It carries no bend radius, because the path ends
+                                here and no change of direction occurs.</ddue:para>
+                            <ddue:para>A cross section given here ends the segment with that cross section, the change
+                                from the previous definition being distributed continuously along the path in between.
+                                Without it the cross section stays as it was at the last point that defined
+                                one.</ddue:para>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -36476,38 +36464,15 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:choice>
-                        <xsd:element name="routingElementUID" type="stringUIDBaseType">
-                            <xsd:annotation>
-                                <xsd:documentation>UID reference to the routing element used along the whole segment</xsd:documentation>
-                            </xsd:annotation>
-                        </xsd:element>
-                        <xsd:sequence>
-                            <xsd:element name="fromRoutingElementUID" type="stringUIDBaseType">
-                                <xsd:annotation>
-                                    <xsd:documentation>UID reference to the routing element at the first waypoint of the
-                                        segment</xsd:documentation>
-                                </xsd:annotation>
-                            </xsd:element>
-                            <xsd:element name="toRoutingElementUID" type="stringUIDBaseType">
-                                <xsd:annotation>
-                                    <xsd:documentation>UID reference to the routing element at the last waypoint of the
-                                        segment. The cross section changes continuously between the two
-                                        entries</xsd:documentation>
-                                </xsd:annotation>
-                            </xsd:element>
-                        </xsd:sequence>
-                    </xsd:choice>
-                    <xsd:element name="profileRotation" minOccurs="0" type="doubleBaseType">
+                    <xsd:element name="routePositionUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Rotation of the cross section about the path, applied along the whole
-                                segment and, for a transition, to both cross sections alike. The zero position is the
-                                orientation obtained when the profile plane is spanned with the global z axis, which
-                                keeps the cross section aligned with the aircraft even where the path bends. The value is
-                                undefined where the path runs parallel to the z axis, and it has no effect on a circular
-                                cross section. The rotation is performed about the profile point placed on the path, so
-                                an off-centre reference point shifts the cross section sideways (default: 0)
-                                [deg]</xsd:documentation>
+                            <xsd:documentation>UID reference to the route position the segment ends at</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="routingElementUID" minOccurs="0" type="stringUIDBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>UID reference to the routing element the segment ends with. The cross
+                                section changes continuously from the previous definition to this one</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -36515,21 +36480,18 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="routePathType">
+    <xsd:complexType name="routeMidPositionsType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Route path</ddue:para>
+                        <ddue:para>Route mid positions</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>Ordered sequence of the waypoints passed by a route segment. The order is given by
-                                the document order of the waypoints and defines the direction of the segment, which
-                                matters for a transition of the cross section.</ddue:para>
-                            <ddue:para>At least two waypoints are required. The first and the last waypoint are the
-                                endpoints of the segment, all others are interior waypoints. Only interior waypoints form
-                                a corner and can therefore be rounded.</ddue:para>
+                            <ddue:para>Interior points of a route segment, in the order in which the segment passes
+                                them. The document order defines the direction of the segment, which matters for a
+                                change of the cross section.</ddue:para>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -36538,19 +36500,66 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:element name="waypoint" minOccurs="2" maxOccurs="unbounded" type="routeWaypointType">
+                    <xsd:element name="midPosition" maxOccurs="unbounded" type="routeMidPositionType">
                         <xsd:annotation>
-                            <xsd:documentation>Waypoint</xsd:documentation>
+                            <xsd:documentation>Mid position</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="defaultBendRadius" minOccurs="0" type="posExcl0DoubleBaseType">
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="routeMidPositionType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Route mid position</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>Interior point of a route segment. It either rounds the corner or changes the
+                                cross section, never both. A rounded corner is not passed by the path, because the arc
+                                replaces it, so a cross section defined there would have no point on the path to sit
+                                on.</ddue:para>
+                            <ddue:para>A mid position with neither entry takes the
+                                <ddue:codeInline>defaultBendRadius</ddue:codeInline> of the path. Where that is not given
+                                either, the corner stays sharp.</ddue:para>
+                            <ddue:para>A mid position that changes the cross section has to keep enough distance from a
+                                neighbouring bend. The arc of that bend reaches back R · tan(δ/2) along the straight, and
+                                a cross section placed inside that stretch would again not sit on the path.</ddue:para>
+                        </ddue:content>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="routePositionUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Bend radius applied at every interior waypoint of the segment that does
-                                not define a bend radius of its own. Where neither value is given, the corner stays
-                                sharp. The value has no effect on a segment with two waypoints, because such a segment
-                                has no interior waypoint [m]</xsd:documentation>
+                            <xsd:documentation>UID reference to the route position passed by the segment</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
+                    <xsd:choice minOccurs="0">
+                        <xsd:element name="bendRadius" type="posExcl0DoubleBaseType">
+                            <xsd:annotation>
+                                <xsd:documentation>Bend radius applied at this point, overriding the default bend radius
+                                    of the path. The value is the radius of the centre line of the bend, as used for the
+                                    usual R/D ratio of a pipe. It has no effect where the path continues in a straight
+                                    line. Whether the radius is admissible for the material and the wall thickness is not
+                                    checked [m]</xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element name="routingElementUID" type="stringUIDBaseType">
+                            <xsd:annotation>
+                                <xsd:documentation>UID reference to the routing element the cross section changes to at
+                                    this point. The change from the previous definition is distributed continuously along
+                                    the path in between</xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                    </xsd:choice>
                 </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
@@ -36565,7 +36574,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>Collection of the supporting points of a routing. The points are defined once here and
-                            referenced by the waypoints of the route segments.</ddue:para>
+                            referenced by the route segments.</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -36597,7 +36606,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                                 origin of that object instead, so that the routing follows the reference object when the
                                 latter is moved.</ddue:para>
                             <ddue:para>A route position carries geometry only. How the path behaves at the point depends
-                                on the segment passing through it and is therefore defined at the waypoint, not
+                                on the segment passing through it and is therefore defined at the position of the segment, not
                                 here.</ddue:para>
                             <ddue:para>A route position referenced by more than one route segment forms a junction, for
                                 example a T-piece. At a junction the point is an endpoint of every segment involved, and
@@ -36679,25 +36688,37 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>Section of a routing with one cross section and one path. The geometry is obtained
-                                by sweeping the cross section along the path.</ddue:para>
-                            <ddue:para>The path runs as a straight line from waypoint to waypoint. At an interior
-                                waypoint carrying a bend radius the corner is replaced by a circular arc that touches
+                            <ddue:para>Section of a routing, given as an ordered sequence of points. The geometry is
+                                obtained by sweeping the cross sections defined along them.</ddue:para>
+                            <ddue:para>The three kinds of position differ in what they may carry. The start position defines
+                                the cross section the segment begins with. A mid position either rounds the corner or
+                                changes the cross section. The end position may close the segment with a cross section.
+                                Neither the start nor the end position can be rounded, because no change of direction
+                                occurs there.</ddue:para>
+                            <ddue:para>The path runs as a straight line from position to position. At a mid position carrying a
+                                bend radius the corner is replaced by a circular arc that touches
                                 both adjacent straight lines tangentially. The arc starts and ends at the distance
                                 R · tan(δ/2) from the route position, where δ is the change of direction at the corner.
                                 The route position itself is therefore not passed by the path but remains the
                                 intersection point of the two straight lines, in line with the usual dimensioning of pipe
                                 drawings. Consequently the length of the path is shorter than the length of the
                                 polyline.</ddue:para>
-                            <ddue:para>A corner cannot be rounded at the first and the last waypoint, because no change
-                                of direction occurs there, and it is not rounded where the path continues in a straight
-                                line. Two neighbouring arcs must not overlap, which limits the bend radii to the length
-                                of the straight line between them.</ddue:para>
+                            <ddue:para>A corner is not rounded where the path continues in a straight line. Two
+                                neighbouring arcs must not overlap, which limits the bend radii to the length of the
+                                straight line between them.</ddue:para>
+                            <ddue:para>The cross section is defined at the start position and may be changed at any mid
+                                point and at the end position. Between two definitions it changes continuously, and after
+                                the last one it stays constant to the end of the segment. A discrete change, such as a
+                                reducer in a pipe, is modelled by two segments sharing a route position.</ddue:para>
+                            <ddue:para>
+                                <ddue:codeInline>defaultBendRadius</ddue:codeInline> and
+                                <ddue:codeInline>profileRotation</ddue:codeInline> apply to the whole segment rather
+                                than to a single point, which is why they are given here and not on one of the
+                                positions.</ddue:para>
                             <ddue:para>Branches are modelled by two or more route segments sharing a route position. A
-                                separate segment is also used where the cross section changes discretely or where the
-                                cross section is rotated differently. In all these cases the shared route position is an
-                                endpoint of every segment involved, so the transition between the segments is never
-                                rounded.</ddue:para>
+                                separate segment is also used where the cross section is rotated differently. In all
+                                these cases the shared route position is an endpoint of every segment involved, so the
+                                transition between the segments is never rounded.</ddue:para>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -36716,14 +36737,38 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                             <xsd:documentation>Description</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="crossSection" type="routeCrossSectionType">
+                    <xsd:element name="startPosition" type="routeStartPositionType">
                         <xsd:annotation>
-                            <xsd:documentation>Cross section swept along the path, and its orientation</xsd:documentation>
+                            <xsd:documentation>First point of the segment, defining the cross section it starts with</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="path" type="routePathType">
+                    <xsd:element name="midPositions" minOccurs="0" type="routeMidPositionsType">
                         <xsd:annotation>
-                            <xsd:documentation>Ordered sequence of the waypoints passed by the segment</xsd:documentation>
+                            <xsd:documentation>Interior points of the segment, either rounding a corner or changing the
+                                cross section</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="endPosition" type="routeEndPositionType">
+                        <xsd:annotation>
+                            <xsd:documentation>Last point of the segment</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="defaultBendRadius" minOccurs="0" type="posExcl0DoubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Bend radius applied at every mid position of the segment that defines
+                                neither a bend radius nor a cross section of its own. Where neither value is given, the
+                                corner stays sharp. The value has no effect on a segment without mid positions [m]</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="profileRotation" minOccurs="0" type="doubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Rotation of the cross section about the path, applied along the whole
+                                segment and to every cross section of it alike. The zero position is the orientation
+                                obtained when the profile plane is spanned with the global z axis, which keeps the cross
+                                section aligned with the aircraft even where the path bends. The value is undefined where
+                                the path runs parallel to the z axis, and it has no effect on a circular cross section.
+                                The rotation is performed about the profile point placed on the path, so an off-centre
+                                reference point shifts the cross section sideways (default: 0) [deg]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -36736,19 +36781,20 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="routeWaypointType">
+    <xsd:complexType name="routeStartPositionType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Route waypoint</ddue:para>
+                        <ddue:para>Route start position</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>Passage of a route segment through one route position. The waypoint carries what
-                                is specific to this passage, whereas the coordinates belong to the route position. A
-                                route position shared by several segments therefore keeps one set of coordinates while
-                                each segment defines its own behaviour at the point.</ddue:para>
+                            <ddue:para>First point of a route segment. It defines the cross section the segment starts
+                                with, which is why the reference is mandatory: a segment has a cross section from its
+                                first point onwards.</ddue:para>
+                            <ddue:para>It carries no bend radius, because the path starts here and no change of
+                                direction occurs.</ddue:para>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -36759,16 +36805,12 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:sequence>
                     <xsd:element name="routePositionUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID reference to the route position passed by the segment</xsd:documentation>
+                            <xsd:documentation>UID reference to the route position the segment starts at</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="bendRadius" minOccurs="0" type="posExcl0DoubleBaseType">
+                    <xsd:element name="routingElementUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Bend radius applied at this waypoint, overriding the default bend radius
-                                of the segment. The value is the radius of the centre line of the bend, as used for the
-                                usual R/D ratio of a pipe. It has no effect at the first and the last waypoint of the
-                                segment and where the path continues in a straight line. Whether the radius is
-                                admissible for the material and the wall thickness is not checked [m]</xsd:documentation>
+                            <xsd:documentation>UID reference to the routing element the segment starts with</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -39473,9 +39515,9 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                                 From left to right:
                             </ddue:para>
                             <ddue:list class="bullet">
-                                <ddue:listItem>The leftmost attachment uses the end points of the intersection line between the starboard wall and the forward bulkhead.</ddue:listItem>
+                                <ddue:listItem>The leftmost attachment uses the end positions of the intersection line between the starboard wall and the forward bulkhead.</ddue:listItem>
                                 <ddue:listItem>The middle attachment uses all points (here only 7 points are drawn for visualization) on the intersection line between the middle wall and the front bulkhead.</ddue:listItem>
-                                <ddue:listItem>The rightmost attachment has a similar definition to the left one, using the end points of the intersection line between the port wall and the front bulkhead.</ddue:listItem>
+                                <ddue:listItem>The rightmost attachment has a similar definition to the left one, using the end positions of the intersection line between the port wall and the front bulkhead.</ddue:listItem>
                             </ddue:list>
                             <ddue:para>
                                 When creating a structural FEM model of this CPACS representation, a rigid body element (e.g. Nastran RBEx) can be generated based on the yellow lines.
@@ -39500,7 +39542,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     </xsd:element>
                     <xsd:element name="takeOnlyEndPoints" type="booleanBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>If this value is set to true then only the end points of the intersection shall be included as nodes in the model
+                            <xsd:documentation>If this value is set to true then only the end positions of the intersection shall be included as nodes in the model
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
@@ -48141,7 +48183,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                         <ddue:para>Definition of the landing gear wheel.</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>The center plane of the wheel is located on the end point of the axle.</ddue:para>
+                        <ddue:para>The center plane of the wheel is located on the end position of the axle.</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -49417,7 +49459,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                         <ddue:content>
                             <ddue:para>Use this type for an explicit positioning of a rib. As opposed to
                                 ribsPositioning, this defines a single rib connecting a specified start
-                                and end point.</ddue:para>
+                                and end position.</ddue:para>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -49532,7 +49574,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                         <xsd:annotation>
                             <xsd:documentation>
                                 Normalized xsi coordinate of the rib point which is measured along the rib
-                                from the start point [0] towards the end point [1]
+                                from the start position [0] towards the end position [1]
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
