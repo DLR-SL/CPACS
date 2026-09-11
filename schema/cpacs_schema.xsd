@@ -12331,7 +12331,7 @@ cpacs@dlr.de
                 <xsd:all>
                     <xsd:element name="position" type="etaXsiRelHeightPointType">
                         <xsd:annotation>
-                            <xsd:documentation>Position of the mid position of the roll of the cruise roller</xsd:documentation>
+                            <xsd:documentation>Position of the inner position of the roll of the cruise roller</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="parentAttachment" type="materialDefinitionType">
@@ -36480,12 +36480,12 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="routeMidPositionsType">
+    <xsd:complexType name="routeInnerPositionsType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Route mid positions</ddue:para>
+                        <ddue:para>Route inner positions</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
@@ -36500,9 +36500,9 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
-                    <xsd:element name="midPosition" maxOccurs="unbounded" type="routeMidPositionType">
+                    <xsd:element name="innerPosition" maxOccurs="unbounded" type="routeInnerPositionType">
                         <xsd:annotation>
-                            <xsd:documentation>Mid position</xsd:documentation>
+                            <xsd:documentation>Inner position</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -36510,12 +36510,12 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="routeMidPositionType">
+    <xsd:complexType name="routeInnerPositionType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Route mid position</ddue:para>
+                        <ddue:para>Route inner position</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
@@ -36523,10 +36523,10 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                                 cross section, never both. A rounded corner is not passed by the path, because the arc
                                 replaces it, so a cross section defined there would have no point on the path to sit
                                 on.</ddue:para>
-                            <ddue:para>A mid position with neither entry takes the
+                            <ddue:para>A inner position with neither entry takes the
                                 <ddue:codeInline>defaultBendRadius</ddue:codeInline> of the path. Where that is not given
                                 either, the corner stays sharp.</ddue:para>
-                            <ddue:para>A mid position that changes the cross section has to keep enough distance from a
+                            <ddue:para>A inner position that changes the cross section has to keep enough distance from a
                                 neighbouring bend. The arc of that bend reaches back R · tan(δ/2) along the straight, and
                                 a cross section placed inside that stretch would again not sit on the path.</ddue:para>
                         </ddue:content>
@@ -36691,11 +36691,11 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                             <ddue:para>Section of a routing, given as an ordered sequence of points. The geometry is
                                 obtained by sweeping the cross sections defined along them.</ddue:para>
                             <ddue:para>The three kinds of position differ in what they may carry. The start position defines
-                                the cross section the segment begins with. A mid position either rounds the corner or
+                                the cross section the segment begins with. A inner position either rounds the corner or
                                 changes the cross section. The end position may close the segment with a cross section.
                                 Neither the start nor the end position can be rounded, because no change of direction
                                 occurs there.</ddue:para>
-                            <ddue:para>The path runs as a straight line from position to position. At a mid position carrying a
+                            <ddue:para>The path runs as a straight line from position to position. At a inner position carrying a
                                 bend radius the corner is replaced by a circular arc that touches
                                 both adjacent straight lines tangentially. The arc starts and ends at the distance
                                 R · tan(δ/2) from the route position, where δ is the change of direction at the corner.
@@ -36742,7 +36742,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                             <xsd:documentation>First point of the segment, defining the cross section it starts with</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="midPositions" minOccurs="0" type="routeMidPositionsType">
+                    <xsd:element name="innerPositions" minOccurs="0" type="routeInnerPositionsType">
                         <xsd:annotation>
                             <xsd:documentation>Interior points of the segment, either rounding a corner or changing the
                                 cross section</xsd:documentation>
@@ -36755,9 +36755,9 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     </xsd:element>
                     <xsd:element name="defaultBendRadius" minOccurs="0" type="posExcl0DoubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Bend radius applied at every mid position of the segment that defines
+                            <xsd:documentation>Bend radius applied at every inner position of the segment that defines
                                 neither a bend radius nor a cross section of its own. Where neither value is given, the
-                                corner stays sharp. The value has no effect on a segment without mid positions [m]</xsd:documentation>
+                                corner stays sharp. The value has no effect on a segment without inner positions [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="profileRotation" minOccurs="0" type="doubleBaseType">
