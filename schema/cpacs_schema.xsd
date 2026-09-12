@@ -36519,16 +36519,22 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>Interior point of a route segment. It either rounds the corner or changes the
-                                cross section, never both. A rounded corner is not passed by the path, because the arc
-                                replaces it, so a cross section defined there would have no point on the path to sit
-                                on.</ddue:para>
-                            <ddue:para>A inner position with neither entry takes the
+                            <ddue:para>Interior point of a route segment. It may round the corner, change the cross
+                                section, or do both.</ddue:para>
+                            <ddue:para>An inner position without a <ddue:codeInline>bendRadius</ddue:codeInline> takes the
                                 <ddue:codeInline>defaultBendRadius</ddue:codeInline> of the path. Where that is not given
                                 either, the corner stays sharp.</ddue:para>
-                            <ddue:para>A inner position that changes the cross section has to keep enough distance from a
-                                neighbouring bend. The arc of that bend reaches back R · tan(δ/2) along the straight, and
-                                a cross section placed inside that stretch would again not sit on the path.</ddue:para>
+                            <ddue:para>A rounded corner is not passed by the path, because the arc replaces it. The cross
+                                section therefore attaches to the two tangent points of the arc rather than to the point
+                                itself: <ddue:codeInline>routingElementUID</ddue:codeInline> holds one section across the
+                                whole bend, which is the normal case, a bend being made from one pipe size, while
+                                <ddue:codeInline>startRoutingElementUID</ddue:codeInline> and
+                                <ddue:codeInline>endRoutingElementUID</ddue:codeInline> let it change over the
+                                bend.</ddue:para>
+                            <ddue:para>An inner position that changes the cross section without rounding the corner itself
+                                has to keep enough distance from a neighbouring bend. The arc of that bend reaches back
+                                R · tan(δ/2) along the straight, and a cross section placed inside that stretch would have
+                                no point on the path to sit on.</ddue:para>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -36542,23 +36548,41 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                             <xsd:documentation>UID reference to the route position passed by the segment</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
+                    <xsd:element name="bendRadius" minOccurs="0" type="posExcl0DoubleBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>Bend radius applied at this point, overriding the default bend radius
+                                of the path. The value is the radius of the centre line of the bend, as used for the
+                                usual R/D ratio of a pipe. It has no effect where the path continues in a straight
+                                line. Whether the radius is admissible for the material and the wall thickness is not
+                                checked [m]</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                     <xsd:choice minOccurs="0">
-                        <xsd:element name="bendRadius" type="posExcl0DoubleBaseType">
-                            <xsd:annotation>
-                                <xsd:documentation>Bend radius applied at this point, overriding the default bend radius
-                                    of the path. The value is the radius of the centre line of the bend, as used for the
-                                    usual R/D ratio of a pipe. It has no effect where the path continues in a straight
-                                    line. Whether the radius is admissible for the material and the wall thickness is not
-                                    checked [m]</xsd:documentation>
-                            </xsd:annotation>
-                        </xsd:element>
                         <xsd:element name="routingElementUID" type="stringUIDBaseType">
                             <xsd:annotation>
                                 <xsd:documentation>UID reference to the routing element the cross section changes to at
                                     this point. The change from the previous definition is distributed continuously along
-                                    the path in between</xsd:documentation>
+                                    the path in between. Where the point is rounded, the cross section is held across the
+                                    whole bend</xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
+                        <xsd:sequence>
+                            <xsd:element name="startRoutingElementUID" type="stringUIDBaseType">
+                                <xsd:annotation>
+                                    <xsd:documentation>UID reference to the routing element the cross section has where
+                                        the bend begins. Only meaningful where the corner is rounded, by a bend radius
+                                        here or by the default bend radius of the path, and both ends of the bend have
+                                        to be given</xsd:documentation>
+                                </xsd:annotation>
+                            </xsd:element>
+                            <xsd:element name="endRoutingElementUID" type="stringUIDBaseType">
+                                <xsd:annotation>
+                                    <xsd:documentation>UID reference to the routing element the cross section has where
+                                        the bend ends. The change from the start of the bend is distributed continuously
+                                        along the arc</xsd:documentation>
+                                </xsd:annotation>
+                            </xsd:element>
+                        </xsd:sequence>
                     </xsd:choice>
                 </xsd:sequence>
             </xsd:extension>
