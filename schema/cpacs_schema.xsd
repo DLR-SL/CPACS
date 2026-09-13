@@ -7263,44 +7263,6 @@ cpacs@dlr.de
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="circularCrossSectionType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Circular cross section</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:content>
-                            <ddue:para>Circular cross section of a routing element. The wall thickness is measured
-                                inwards from the outer diameter. Without a wall thickness the cross section is solid,
-                                which is the usual case for cables and cable bundles.</ddue:para>
-                            <ddue:para>The bend radius of a route segment is not related to these dimensions. It refers
-                                to the centre line of the path, so that the usual ratio of bend radius to outer diameter
-                                can be applied directly.</ddue:para>
-                        </ddue:content>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="outerDiameter" type="posExcl0DoubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Outer diameter [m]</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="wallThickness" minOccurs="0" type="posExcl0DoubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Wall thickness. If omitted, the cross section is solid [m]</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
     <xsd:complexType name="classDividerElementsType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -36469,10 +36431,11 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                             <xsd:documentation>UID reference to the route position the segment ends at</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="routingElementUID" minOccurs="0" type="stringUIDBaseType">
+                    <xsd:element name="structuralElementUID" minOccurs="0" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID reference to the routing element the segment ends with. The cross
-                                section changes continuously from the previous definition to this one</xsd:documentation>
+                            <xsd:documentation>UID reference to the profile based structural element the segment ends
+                                with. The cross section changes continuously from the previous definition to this
+                                one</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -36526,10 +36489,10 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                                 either, the corner stays sharp.</ddue:para>
                             <ddue:para>A rounded corner is not passed by the path, because the arc replaces it. The cross
                                 section therefore attaches to the two tangent points of the arc rather than to the point
-                                itself: <ddue:codeInline>routingElementUID</ddue:codeInline> holds one section across the
+                                itself: <ddue:codeInline>structuralElementUID</ddue:codeInline> holds one section across the
                                 whole bend, which is the normal case, a bend being made from one pipe size, while
-                                <ddue:codeInline>startRoutingElementUID</ddue:codeInline> and
-                                <ddue:codeInline>endRoutingElementUID</ddue:codeInline> let it change over the
+                                <ddue:codeInline>startStructuralElementUID</ddue:codeInline> and
+                                <ddue:codeInline>endStructuralElementUID</ddue:codeInline> let it change over the
                                 bend.</ddue:para>
                             <ddue:para>An inner position that changes the cross section without rounding the corner itself
                                 has to keep enough distance from a neighbouring bend. The arc of that bend reaches back
@@ -36558,27 +36521,27 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:choice minOccurs="0">
-                        <xsd:element name="routingElementUID" type="stringUIDBaseType">
+                        <xsd:element name="structuralElementUID" type="stringUIDBaseType">
                             <xsd:annotation>
-                                <xsd:documentation>UID reference to the routing element the cross section changes to at
-                                    this point. The change from the previous definition is distributed continuously along
+                                <xsd:documentation>UID reference to the profile based structural element the cross
+                                    section changes to at this point. The change from the previous definition is distributed continuously along
                                     the path in between. Where the point is rounded, the cross section is held across the
                                     whole bend</xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
                         <xsd:sequence>
-                            <xsd:element name="startRoutingElementUID" type="stringUIDBaseType">
+                            <xsd:element name="startStructuralElementUID" type="stringUIDBaseType">
                                 <xsd:annotation>
-                                    <xsd:documentation>UID reference to the routing element the cross section has where
-                                        the bend begins. Only meaningful where the corner is rounded, by a bend radius
+                                    <xsd:documentation>UID reference to the profile based structural element the cross
+                                        section has where the bend begins. Only meaningful where the corner is rounded, by a bend radius
                                         here or by the default bend radius of the path, and both ends of the bend have
                                         to be given</xsd:documentation>
                                 </xsd:annotation>
                             </xsd:element>
-                            <xsd:element name="endRoutingElementUID" type="stringUIDBaseType">
+                            <xsd:element name="endStructuralElementUID" type="stringUIDBaseType">
                                 <xsd:annotation>
-                                    <xsd:documentation>UID reference to the routing element the cross section has where
-                                        the bend ends. The change from the start of the bend is distributed continuously
+                                    <xsd:documentation>UID reference to the profile based structural element the cross
+                                        section has where the bend ends. The change from the start of the bend is distributed continuously
                                         along the arc</xsd:documentation>
                                 </xsd:annotation>
                             </xsd:element>
@@ -36715,12 +36678,12 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                             <ddue:para>Section of a routing, given as an ordered sequence of points. The geometry is
                                 obtained by sweeping the cross sections defined along them.</ddue:para>
                             <ddue:para>The three kinds of position differ in what they may carry. The start position defines
-                                the cross section the segment begins with. A inner position either rounds the corner or
-                                changes the cross section. The end position may close the segment with a cross section.
+                                the cross section the segment begins with. An inner position may round the corner, change the
+                                cross section, or do both. The end position may close the segment with a cross section.
                                 Neither the start nor the end position can be rounded, because no change of direction
                                 occurs there.</ddue:para>
-                            <ddue:para>The path runs as a straight line from position to position. At a inner position carrying a
-                                bend radius the corner is replaced by a circular arc that touches
+                            <ddue:para>The path runs as a straight line from position to position. At an inner position with a
+                                bend radius, its own or the default of the segment, the corner is replaced by a circular arc that touches
                                 both adjacent straight lines tangentially. The arc starts and ends at the distance
                                 R · tan(δ/2) from the route position, where δ is the change of direction at the corner.
                                 The route position itself is therefore not passed by the path but remains the
@@ -36730,10 +36693,40 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                             <ddue:para>A corner is not rounded where the path continues in a straight line. Two
                                 neighbouring arcs must not overlap, which limits the bend radii to the length of the
                                 straight line between them.</ddue:para>
-                            <ddue:para>The cross section is defined at the start position and may be changed at any mid
-                                point and at the end position. Between two definitions it changes continuously, and after
-                                the last one it stays constant to the end of the segment. A discrete change, such as a
-                                reducer in a pipe, is modelled by two segments sharing a route position.</ddue:para>
+                            <ddue:para>The cross section is defined at the start position and may be changed at any inner
+                                position and at the end position. Between two definitions it changes continuously, and
+                                after the last one it stays constant to the end of the segment. A discrete change, such as
+                                a reducer in a pipe, is modelled by two segments sharing a route position.</ddue:para>
+                            <ddue:para>Every cross section is a profile based structural element, referenced by
+                                <ddue:codeInline>structuralElementUID</ddue:codeInline> as frames, stringers and struts
+                                reference theirs, so shape, dimensions, wall thickness and material are defined where
+                                CPACS defines them for every other line-like member. A pipe is typically a
+                                <ddue:codeInline>TUBE</ddue:codeInline>, a cable or a solid rod a
+                                <ddue:codeInline>ROD</ddue:codeInline>, a rectangular duct a
+                                <ddue:codeInline>BOX</ddue:codeInline>, a flat conductor a
+                                <ddue:codeInline>BAR</ddue:codeInline>; any other shape is available through a structural
+                                profile. The wall thickness is the thickness of the material definition of each sheet,
+                                isotropic or composite.</ddue:para>
+                            <ddue:para>The profile is placed on the path with the origin of its coordinate system. For a
+                                standard profile this is the origin of its definition, which is the centre of a
+                                <ddue:codeInline>TUBE</ddue:codeInline>, a <ddue:codeInline>ROD</ddue:codeInline>, a
+                                <ddue:codeInline>BOX</ddue:codeInline> and a <ddue:codeInline>BAR</ddue:codeInline>; for a
+                                structural profile it is the point given by
+                                <ddue:codeInline>referencePointUID</ddue:codeInline>, or the origin of the profile if that
+                                is omitted.</ddue:para>
+                            <ddue:para>Every sheet lies on its mid-line, and its thickness is laid symmetrically about it.
+                                The outer diameter of a <ddue:codeInline>TUBE</ddue:codeInline> is therefore the length of
+                                its sheet plus the thickness, and its inner diameter the length minus the thickness. The
+                                routing is built as a solid bounded by the mid-lines offset by half the thickness to either
+                                side, with the corners of a <ddue:codeInline>BOX</ddue:codeInline> mitred. For a
+                                <ddue:codeInline>TUBE</ddue:codeInline> and a <ddue:codeInline>BOX</ddue:codeInline> the
+                                area of that solid section equals the length of the sheets times their thickness, so the
+                                mass derived from the swept volume agrees with the one of a thin-walled structural member.
+                                A <ddue:codeInline>ROD</ddue:codeInline> is solid by definition, and the thickness of its
+                                sheet is not used.</ddue:para>
+                            <ddue:para>A profile based structural element defined by global beam properties only has no
+                                shape and cannot be routed. Where the sheets of a <ddue:codeInline>BOX</ddue:codeInline>
+                                differ in thickness, the centroid of the section leaves the path.</ddue:para>
                             <ddue:para>
                                 <ddue:codeInline>defaultBendRadius</ddue:codeInline> and
                                 <ddue:codeInline>profileRotation</ddue:codeInline> apply to the whole segment rather
@@ -36768,8 +36761,8 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     </xsd:element>
                     <xsd:element name="innerPositions" minOccurs="0" type="routeInnerPositionsType">
                         <xsd:annotation>
-                            <xsd:documentation>Interior points of the segment, either rounding a corner or changing the
-                                cross section</xsd:documentation>
+                            <xsd:documentation>Interior points of the segment, rounding a corner, changing the cross
+                                section, or both</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="endPosition" type="routeEndPositionType">
@@ -36779,18 +36772,21 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     </xsd:element>
                     <xsd:element name="defaultBendRadius" minOccurs="0" type="posExcl0DoubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Bend radius applied at every inner position of the segment that defines
-                                neither a bend radius nor a cross section of its own. Where neither value is given, the
-                                corner stays sharp. The value has no effect on a segment without inner positions [m]</xsd:documentation>
+                            <xsd:documentation>Bend radius applied at every inner position of the segment that does not
+                                define a bend radius of its own. Where neither value is given, the corner stays
+                                sharp. The value has no effect on a segment without inner positions [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="profileRotation" minOccurs="0" type="doubleBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Rotation of the cross section about the path, applied along the whole
                                 segment and to every cross section of it alike. The zero position is the orientation
-                                obtained when the profile plane is spanned with the global z axis, which keeps the cross
+                                obtained when the profile plane is spanned with the global z axis: the y axis of the
+                                profile points along the global z axis projected into the profile plane, and its x axis
+                                completes a right-handed system with the direction of the path. This keeps the cross
                                 section aligned with the aircraft even where the path bends. The value is undefined where
-                                the path runs parallel to the z axis, and it has no effect on a circular cross section.
+                                the path runs parallel to the z axis, and it has no effect on a rotationally symmetric
+                                cross section such as a TUBE or a ROD.
                                 The rotation is performed about the profile point placed on the path, so an off-centre
                                 reference point shifts the cross section sideways (default: 0) [deg]</xsd:documentation>
                         </xsd:annotation>
@@ -36832,126 +36828,13 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                             <xsd:documentation>UID reference to the route position the segment starts at</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="routingElementUID" type="stringUIDBaseType">
+                    <xsd:element name="structuralElementUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID reference to the routing element the segment starts with</xsd:documentation>
+                            <xsd:documentation>UID reference to the profile based structural element the segment
+                                starts with</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="routingElementsType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Routing elements</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>Vehicle level library of the cross sections available for routing. The entries are
-                            referenced by the route segments of the aircraft models.</ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element name="routingElement" maxOccurs="unbounded" type="routingElementType">
-                        <xsd:annotation>
-                            <xsd:documentation>Routing element</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:sequence>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="routingElementType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Routing element</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:content>
-                            <ddue:para>Reusable definition of the cross section of a pipe, a cable or a cable bundle,
-                                together with its material. The definition follows the pattern of the profile based
-                                structural elements: the shape comes from
-                                <ddue:codeInline>profiles</ddue:codeInline>, the material from
-                                <ddue:codeInline>materials</ddue:codeInline>, and this element binds both under one
-                                name.</ddue:para>
-                            <ddue:para>The cross section is either taken from a structural profile, which allows any
-                                closed shape and a separate material per sheet, or given as a circular cross section,
-                                which covers pipes and cables. For a structural profile the wall thickness follows from
-                                the thickness of the sheets, for a circular cross section from
-                                <ddue:codeInline>wallThickness</ddue:codeInline>.</ddue:para>
-                            <ddue:para>The element defines the cross section only. Where it lies and how it is oriented
-                                follows from the route segment referencing it, so one entry serves any number of
-                                routings. The mass of a routing is obtained from the swept volume and the densities of
-                                the referenced materials.</ddue:para>
-                        </ddue:content>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element name="name" type="stringBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Name</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="description" minOccurs="0" type="stringBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Description</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:choice>
-                        <xsd:sequence>
-                            <xsd:element name="structuralProfileUID" type="stringUIDBaseType">
-                                <xsd:annotation>
-                                    <xsd:documentation>UID reference to the structural profile defining the shape of the
-                                        cross section</xsd:documentation>
-                                </xsd:annotation>
-                            </xsd:element>
-                            <xsd:element name="referencePointUID" minOccurs="0" type="stringUIDBaseType">
-                                <xsd:annotation>
-                                    <xsd:documentation>Point of the structural profile placed on the path and used as the
-                                        centre of the profile rotation. If omitted, the origin of the profile is
-                                        used</xsd:documentation>
-                                </xsd:annotation>
-                            </xsd:element>
-                            <xsd:element name="sheetProperties" maxOccurs="unbounded" type="materialDefinitionForProfileBasedType">
-                                <xsd:annotation>
-                                    <xsd:documentation>Material definition of a sheet of the profile</xsd:documentation>
-                                </xsd:annotation>
-                            </xsd:element>
-                        </xsd:sequence>
-                        <xsd:sequence>
-                            <xsd:element name="circularCrossSection" type="circularCrossSectionType">
-                                <xsd:annotation>
-                                    <xsd:documentation>Circular cross section given by its dimensions</xsd:documentation>
-                                </xsd:annotation>
-                            </xsd:element>
-                            <xsd:element name="materialUID" minOccurs="0" type="stringUIDBaseType">
-                                <xsd:annotation>
-                                    <xsd:documentation>UID reference to the material of the circular cross section. If
-                                        omitted, no mass can be derived from the geometry</xsd:documentation>
-                                </xsd:annotation>
-                            </xsd:element>
-                        </xsd:sequence>
-                    </xsd:choice>
-                </xsd:sequence>
-                <xsd:attribute name="uID" use="required" type="xsd:ID">
-                    <xsd:annotation>
-                        <xsd:documentation>UID</xsd:documentation>
-                    </xsd:annotation>
-                </xsd:attribute>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -36993,7 +36876,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                         <ddue:content>
                             <ddue:para>Geometric path of a pipe or a cable within a generic system. A routing consists of
                                 supporting points and of segments connecting them. Its geometry is obtained by sweeping
-                                the cross sections of the referenced routing elements along the segments. Routings and
+                                the cross sections of the referenced profile based structural elements along the segments. Routings and
                                 components are complementary: components describe the discrete equipment of the system,
                                 routings the lines between them.</ddue:para>
                             <ddue:para>A line that is not yet routed is modelled as a component referring to a system
@@ -44974,11 +44857,6 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     <xsd:element name="thermoFluidElements" minOccurs="0" type="sysElemThermoFluidElementsType">
                         <xsd:annotation>
                             <xsd:documentation>Thermo-fluid system elements</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="routingElements" minOccurs="0" type="routingElementsType">
-                        <xsd:annotation>
-                            <xsd:documentation>Routing elements</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>

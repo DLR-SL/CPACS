@@ -3,7 +3,8 @@
   xsi:noNamespaceSchemaLocation="../schema/cpacs_schema.xsd">
   <header>
     <name>Routing test</name>
-    <description>Hydraulic line with a T-branch, routed as a generic system</description>
+    <description>Hydraulic line with a T-branch, a rectangular air duct and a power feeder, routed as generic
+      systems</description>
     <version>1.0.0</version>
     <versionInfos>
       <versionInfo version="1.0.0">
@@ -103,11 +104,11 @@
                       <name>Main run</name>
                       <description>Three kinds of inner position: one that only rounds the corner with the
                         default bend radius, one that overrides that radius, and one that both rounds the corner
-                        and reduces the cross section across the bend it makes. The end position names no routing
-                        element, so the reduced section stays to the junction</description>
+                        and reduces the cross section across the bend it makes. The end position names no cross
+                        section, so the reduced section stays to the junction</description>
                       <startPosition>
                         <routePositionUID>rp_pumpOutlet</routePositionUID>
-                        <routingElementUID>pipeTitanium10x1</routingElementUID>
+                        <structuralElementUID>tubeTitanium10x1</structuralElementUID>
                       </startPosition>
                       <innerPositions>
                         <innerPosition>
@@ -120,8 +121,8 @@
                         <innerPosition>
                           <routePositionUID>rp_ribCutout</routePositionUID>
                           <bendRadius>0.12</bendRadius>
-                          <startRoutingElementUID>pipeTitanium10x1</startRoutingElementUID>
-                          <endRoutingElementUID>pipeTitanium8x1</endRoutingElementUID>
+                          <startStructuralElementUID>tubeTitanium10x1</startStructuralElementUID>
+                          <endStructuralElementUID>tubeTitanium8x1</endStructuralElementUID>
                         </innerPosition>
                       </innerPositions>
                       <endPosition>
@@ -132,14 +133,14 @@
                     <routeSegment uID="rs_branchLeft">
                       <name>Branch to left actuator</name>
                       <description>The cross section thins out along the branch, which needs no transition
-                        of its own: a different routing element at the end position is the transition</description>
+                        of its own: a different cross section at the end position is the transition</description>
                       <startPosition>
                         <routePositionUID>rp_junction</routePositionUID>
-                        <routingElementUID>pipeTitanium10x1</routingElementUID>
+                        <structuralElementUID>tubeTitanium10x1</structuralElementUID>
                       </startPosition>
                       <endPosition>
                         <routePositionUID>rp_actuatorLeft</routePositionUID>
-                        <routingElementUID>pipeTitanium8x1</routingElementUID>
+                        <structuralElementUID>tubeTitanium8x1</structuralElementUID>
                       </endPosition>
                     </routeSegment>
                     <routeSegment uID="rs_branchRight">
@@ -148,10 +149,112 @@
                         start position stays to the end</description>
                       <startPosition>
                         <routePositionUID>rp_junction</routePositionUID>
-                        <routingElementUID>pipeTitanium8x1</routingElementUID>
+                        <structuralElementUID>tubeTitanium8x1</structuralElementUID>
                       </startPosition>
                       <endPosition>
                         <routePositionUID>rp_actuatorRight</routePositionUID>
+                      </endPosition>
+                    </routeSegment>
+                  </routeSegments>
+                </routing>
+              </routings>
+            </genericSystem>
+            <genericSystem uID="cabinAirSystem">
+              <name>Cabin air distribution</name>
+              <routings>
+                <routing uID="mixerDuct">
+                  <name>Duct from the mixer unit</name>
+                  <description>Flat rectangular duct. With the default profile rotation the y axis of the BOX
+                    follows the global z axis, so its 60 mm sides stand upright and its 120 mm sides lie flat, and
+                    the bend in the horizontal plane sweeps the wide side round the corner</description>
+                  <routePositions>
+                    <routePosition uID="md_mixer">
+                      <point>
+                        <x>12.0</x>
+                        <y>-0.8</y>
+                        <z>1.2</z>
+                      </point>
+                    </routePosition>
+                    <routePosition uID="md_corner">
+                      <point>
+                        <x>14.0</x>
+                        <y>-0.8</y>
+                        <z>1.2</z>
+                      </point>
+                    </routePosition>
+                    <routePosition uID="md_riserOutlet">
+                      <point>
+                        <x>14.0</x>
+                        <y>0.4</y>
+                        <z>1.2</z>
+                      </point>
+                    </routePosition>
+                  </routePositions>
+                  <routeSegments>
+                    <routeSegment uID="md_seg">
+                      <name>Mixer to outlet</name>
+                      <startPosition>
+                        <routePositionUID>md_mixer</routePositionUID>
+                        <structuralElementUID>boxAluminium120x60</structuralElementUID>
+                      </startPosition>
+                      <innerPositions>
+                        <innerPosition>
+                          <routePositionUID>md_corner</routePositionUID>
+                        </innerPosition>
+                      </innerPositions>
+                      <endPosition>
+                        <routePositionUID>md_riserOutlet</routePositionUID>
+                      </endPosition>
+                      <defaultBendRadius>0.25</defaultBendRadius>
+                    </routeSegment>
+                  </routeSegments>
+                </routing>
+              </routings>
+            </genericSystem>
+            <genericSystem uID="electricalPowerSystem">
+              <name>Electrical power distribution</name>
+              <routings>
+                <routing uID="feederCable">
+                  <name>Power feeder</name>
+                  <description>Solid conductor as a ROD, whose sheet thickness plays no part</description>
+                  <routePositions>
+                    <routePosition uID="fc_panel">
+                      <point>
+                        <x>13.0</x>
+                        <y>0.9</y>
+                        <z>1.5</z>
+                      </point>
+                    </routePosition>
+                    <routePosition uID="fc_bracket">
+                      <point>
+                        <x>15.0</x>
+                        <y>0.9</y>
+                        <z>1.5</z>
+                      </point>
+                    </routePosition>
+                    <routePosition uID="fc_load">
+                      <point>
+                        <x>15.5</x>
+                        <y>1.4</y>
+                        <z>1.5</z>
+                      </point>
+                    </routePosition>
+                  </routePositions>
+                  <routeSegments>
+                    <routeSegment uID="fc_seg">
+                      <name>Panel to load</name>
+                      <startPosition>
+                        <routePositionUID>fc_panel</routePositionUID>
+                        <structuralElementUID>rodCopper12</structuralElementUID>
+                      </startPosition>
+                      <innerPositions>
+                        <innerPosition>
+                          <routePositionUID>fc_bracket</routePositionUID>
+                          <bendRadius>0.05</bendRadius>
+                        </innerPosition>
+                      </innerPositions>
+                      <endPosition>
+                        <routePositionUID>fc_load</routePositionUID>
                       </endPosition>
                     </routeSegment>
                   </routeSegments>
@@ -184,27 +287,90 @@
           </mechanicalDrivenPumps>
         </conversionElements>
       </hydraulicElements>
-      <routingElements>
-        <routingElement uID="pipeTitanium10x1">
-          <name>Titanium pipe 10 x 1</name>
-          <description>Outer diameter 10 mm, wall thickness 1 mm</description>
-          <circularCrossSection>
-            <outerDiameter>0.010</outerDiameter>
-            <wallThickness>0.001</wallThickness>
-          </circularCrossSection>
-          <materialUID>titanium</materialUID>
-        </routingElement>
-        <routingElement uID="pipeTitanium8x1">
-          <name>Titanium pipe 8 x 1</name>
-          <circularCrossSection>
-            <outerDiameter>0.008</outerDiameter>
-            <wallThickness>0.001</wallThickness>
-          </circularCrossSection>
-          <materialUID>titanium</materialUID>
-        </routingElement>
-      </routingElements>
     </systemElements>
+    <structuralElements>
+      <profileBasedStructuralElements>
+        <profileBasedStructuralElement uID="tubeTitanium10x1">
+          <name>Tube 10 x 1</name>
+          <description>Mid-line diameter 9 mm with a 1 mm wall, so 10 mm outside and 8 mm inside</description>
+          <sheetProperties>
+            <standardProfileSheetID>S1</standardProfileSheetID>
+            <length>0.009</length>
+            <materialUID>titanium</materialUID>
+            <thickness>0.001</thickness>
+          </sheetProperties>
+          <standardProfileType>TUBE</standardProfileType>
+        </profileBasedStructuralElement>
+        <profileBasedStructuralElement uID="tubeTitanium8x1">
+          <name>Tube 8 x 1</name>
+          <description>Mid-line diameter 7 mm with a 1 mm wall, so 8 mm outside and 6 mm inside</description>
+          <sheetProperties>
+            <standardProfileSheetID>S1</standardProfileSheetID>
+            <length>0.007</length>
+            <materialUID>titanium</materialUID>
+            <thickness>0.001</thickness>
+          </sheetProperties>
+          <standardProfileType>TUBE</standardProfileType>
+        </profileBasedStructuralElement>
+        <profileBasedStructuralElement uID="boxAluminium120x60">
+          <name>Box 120 x 60</name>
+          <description>Mid-line 120 mm wide and 60 mm high with a 1 mm wall on every side. S1 and S3 are the
+            upright sides along the y axis of the profile, S2 and S4 the flat ones along x</description>
+          <sheetProperties>
+            <standardProfileSheetID>S1</standardProfileSheetID>
+            <length>0.060</length>
+            <materialUID>aluminium2024</materialUID>
+            <thickness>0.001</thickness>
+          </sheetProperties>
+          <sheetProperties>
+            <standardProfileSheetID>S2</standardProfileSheetID>
+            <length>0.120</length>
+            <materialUID>aluminium2024</materialUID>
+            <thickness>0.001</thickness>
+          </sheetProperties>
+          <sheetProperties>
+            <standardProfileSheetID>S3</standardProfileSheetID>
+            <length>0.060</length>
+            <materialUID>aluminium2024</materialUID>
+            <thickness>0.001</thickness>
+          </sheetProperties>
+          <sheetProperties>
+            <standardProfileSheetID>S4</standardProfileSheetID>
+            <length>0.120</length>
+            <materialUID>aluminium2024</materialUID>
+            <thickness>0.001</thickness>
+          </sheetProperties>
+          <standardProfileType>BOX</standardProfileType>
+        </profileBasedStructuralElement>
+        <profileBasedStructuralElement uID="rodCopper12">
+          <name>Rod 12 mm</name>
+          <description>Radius 6 mm. The thickness is mandatory for a sheet but has no meaning for a solid
+            rod; it is set to the radius here</description>
+          <sheetProperties>
+            <standardProfileSheetID>S1</standardProfileSheetID>
+            <length>0.006</length>
+            <materialUID>copper</materialUID>
+            <thickness>0.006</thickness>
+          </sheetProperties>
+          <standardProfileType>ROD</standardProfileType>
+        </profileBasedStructuralElement>
+      </profileBasedStructuralElements>
+    </structuralElements>
     <materials>
+      <material uID="aluminium2024">
+        <name>Al 2024-T3</name>
+        <rho>2780.0</rho>
+        <isotropicProperties>
+          <E>73100000000.0</E>
+        </isotropicProperties>
+      </material>
+      <material uID="copper">
+        <name>Copper</name>
+        <rho>8960.0</rho>
+        <isotropicProperties>
+          <E>117000000000.0</E>
+        </isotropicProperties>
+      </material>
       <material uID="titanium">
         <name>Ti-6Al-4V</name>
         <rho>4430.0</rho>
