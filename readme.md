@@ -16,6 +16,10 @@ The CPACS homepage contains information about new developments, releases and oth
 
 Have a look at our first [tutorial](https://www.youtube.com/watch?v=NgYWfc5N-Xw) video for CPACS. It explains how to create a wing in CPACS. Thanks to Till and Erwin for their work!
 
+## CPACS Examples
+
+The folder [examples](/examples) contains CPACS datasets for many parts of the schema. How to read, write and validate such datasets from Python with lxml or TiXI is shown in [examples/python](/examples/python/README.md).
+
 ## Development
 
 Further information about the CPACS development is available [here](/development/README.md).
