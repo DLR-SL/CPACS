@@ -129,7 +129,7 @@ Documentation that is missing, or that is a placeholder, is a defect like any ot
 
 ## Code examples in the documentation
 
-The remarks of a type can carry XML examples as `ddue:code` blocks, which the generator renders as captioned, highlighted code. An example is the most concrete statement the documentation makes about a node: readers — and AI assistants working from the schema — copy it rather than derive the data from the type definitions. §16 to §19 therefore treat an example like data: it has one form, a stated purpose, and it has to be correct.
+The remarks of a type can carry XML examples as `ddue:code` blocks, which the generator renders as captioned, highlighted code. An example is the most concrete statement the documentation makes about a node: readers — and AI assistants working from the schema — copy it rather than derive the data from the type definitions. §16 to §20 therefore treat an example like data: it has one form, a stated purpose, and it has to be correct.
 
 - **§16: A code example is a `ddue:code` block with `language="XML"` and a `title`. The title is a label naming what the example shows.**
 
@@ -165,7 +165,7 @@ A `ddue:para` becomes an HTML paragraph, and an HTML paragraph cannot contain a 
 | ---------- | ---------- |
 | `<ddue:para>... e.g. a fuselage: <ddue:code>...</ddue:code></ddue:para>` | `<ddue:para>... e.g. a fuselage:</ddue:para>` followed by `<ddue:code>...</ddue:code>` |
 
-- **§19: An example is well-formed XML and uses the element and attribute names of the current schema. Omitted content is written as `...`, and every element that is opened is closed.**
+- **§19: An XML example is well-formed and uses the element and attribute names of the current schema. Omitted content is written as `...`, and every element that is opened is closed.**
 
 A fragment that stops after its start tag leaves the reader to guess where the element ends, and whoever reuses it — a person or an AI assistant — produces a broken file. `...` stands for everything that does not matter to the point being made:
 
@@ -178,6 +178,10 @@ A fragment that stops after its start tag leaves the reader to guess where the e
 An example does not follow the schema by itself. Renaming an element includes searching the examples for the old name: before this rule was introduced, examples still used `CAS` and `continuitySetting` instead of `calibratedAirSpeed` and `continuity`, and `kinks` and `pointIndex` instead of `kinkIndices` and `pointIndices`, none of which the schema knew any longer.
 
 Three cases are exempt. An example that deliberately shows invalid data says so in its title (`Example 4: invalid double vector due to string entry`). A placeholder name standing for any element of a type (`doubleVectorTest`) is fine where the surrounding text makes that clear. And an XML declaration (`<?xml version="1.0" encoding="utf-8"?>`) is only written where the example shows a complete file.
+
+- **§20: The documentation shows data, not code. How to read or write a node with a library is shown in a script in `examples/python/`, which the documentation names and the tests run.**
+
+Program code in the schema would make the documentation long, tie it to particular libraries, and could not be checked by the documentation generator, which runs nothing. A script in `examples/python/` can be run and is tested by `scripts/tests/test_examples.py`; the XML examples it uses stay in `examples/`. Where the documentation shows an excerpt of a file from `examples/`, the same test compares the two, so that neither changes without the other. The documentation of `toolspecificType` is the reference: it shows the tool data of `examples/toolspecific.xml` and the schema `examples/toolspecific_combined.xsd`, and names the scripts `examples/python/toolspecific_lxml.py` and `examples/python/toolspecific_tixi.py`.
 
 ## Development Guidelines by Example
 

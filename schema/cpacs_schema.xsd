@@ -878,9 +878,20 @@ cpacs@dlr.de
                                 </ddue:content>
                             </ddue:section>
                             <ddue:section>
+                                <ddue:title>CPACS 3.6</ddue:title>
+                                <ddue:content>
+                                    <ddue:para>Not yet released</ddue:para>
+                                    <ddue:list class="bullet">
+                                        <ddue:listItem>
+                                            Revised documentation, template and examples for tool-specific data (<ddue:codeInline>toolspecific</ddue:codeInline>)
+                                        </ddue:listItem>
+                                    </ddue:list>
+                                </ddue:content>
+                            </ddue:section>
+                            <ddue:section>
                                 <ddue:title>CPACS 3.5.1</ddue:title>
                                 <ddue:content>
-                                    <ddue:para>Release in 2026</ddue:para>
+                                    <ddue:para>Release in September 2026</ddue:para>
                                     <ddue:list class="bullet">
                                         <ddue:listItem>
                                             Refinement of the <ddue:codeInline>systems</ddue:codeInline> definition introduced in CPACS 3.5
@@ -44694,45 +44705,169 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Toolspecific data</ddue:para>
+                        <ddue:para>Tool-specific data</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>
-                                This type contains a list of tools each specifying some basic tool information as well as the actual toolspecific part.
-                            </ddue:para>
-                            <ddue:para>
-                                The toolspecific elements must be defined in a separate namespace which can be specified and linked with the corresponding XSD file
-                                in the CPACS header:
-                            </ddue:para>
-                            <ddue:code language="XML" title="CPACS header">
-                                <![CDATA[
+                            <ddue:section>
+                                <ddue:title>1. Purpose</ddue:title>
+                                <ddue:content>
+                                    <ddue:para>
+                                        The <ddue:codeInline>toolspecific</ddue:codeInline> node holds data that a tool needs to store in a CPACS dataset but that CPACS itself does not define,
+                                        e.g. tool settings, intermediate results or data whose definition in CPACS is still under development.
+                                    </ddue:para>
+                                    <ddue:para>
+                                        CPACS defines only the frame for this data: each tool writes its data into a <ddue:codeInline>tool</ddue:codeInline> element that is identified by <ddue:codeInline>name</ddue:codeInline> and <ddue:codeInline>version</ddue:codeInline>.
+                                        The structure of the data itself is defined by the tool maintainer in a separate XML schema with its own namespace, the tool schema.
+                                        The file <ddue:codeInline>schema/toolspecific_template.xsd</ddue:codeInline> in the CPACS repository is a starting point for such a schema.
+                                    </ddue:para>
+                                    <ddue:para>
+                                        Tool-specific data complements CPACS and does not replace it.
+                                        Data that CPACS already defines should not be copied into the tool-specific part but referenced by its UID.
+                                        Data that is of interest to other tools as well should be proposed as an extension of CPACS, see
+                                        <ddue:externalLink>
+                                            <ddue:linkText>how to proceed with missing data</ddue:linkText>
+                                            <ddue:linkUri>https://github.com/DLR-SL/CPACS/blob/develop/development/project_developments.md</ddue:linkUri>
+                                        </ddue:externalLink>.
+                                    </ddue:para>
+                                </ddue:content>
+                            </ddue:section>
+                            <ddue:section>
+                                <ddue:title>2. Rules</ddue:title>
+                                <ddue:content>
+                                    <ddue:list class="ordered">
+                                        <ddue:listItem>
+                                            Each tool writes its data into a <ddue:codeInline>tool</ddue:codeInline> element.
+                                            Data of several tools is stored side by side as several <ddue:codeInline>tool</ddue:codeInline> elements.
+                                        </ddue:listItem>
+                                        <ddue:listItem>
+                                            <ddue:codeInline>name</ddue:codeInline> and <ddue:codeInline>version</ddue:codeInline> identify the tool that wrote the data. Both are required.
+                                            <ddue:codeInline>version</ddue:codeInline> is the version of the tool, not the version of CPACS or of the tool schema.
+                                        </ddue:listItem>
+                                        <ddue:listItem>
+                                            <ddue:codeInline>name</ddue:codeInline> and <ddue:codeInline>version</ddue:codeInline> are followed by exactly one element, the root element of the tool data.
+                                            A <ddue:codeInline>tool</ddue:codeInline> element without a root element, or with more than one, is invalid.
+                                        </ddue:listItem>
+                                        <ddue:listItem>
+                                            The root element and its content must be qualified with the namespace of the tool schema, e.g. by a namespace declaration <ddue:codeInline>xmlns="..."</ddue:codeInline> on the root element.
+                                            A namespace is identified by a URI. It looks like a web address but is only a name: no tool opens or downloads it, it only has to be unique, and a web domain guarantees that.
+                                            If the tool maintainer has no preference, <ddue:codeInline>http://www.cpacs.de/</ddue:codeInline> followed by the name of the tool is proposed, such as <ddue:codeInline>http://www.cpacs.de/myTool</ddue:codeInline> in the examples below; otherwise the maintainer chooses a URI of their own.
+                                        </ddue:listItem>
+                                        <ddue:listItem>
+                                            The root element must be declared as a global element in the tool schema.
+                                            The CPACS schema validates the tool data strictly (<ddue:codeInline>processContents="strict"</ddue:codeInline>): if the validator cannot resolve the tool schema, the whole CPACS dataset is invalid (see section 4).
+                                        </ddue:listItem>
+                                        <ddue:listItem>
+                                            The tool schema should state its own version, e.g. as a <ddue:codeInline>schemaVersion</ddue:codeInline> attribute of the root element, so that a reader can detect which version of the data structure it is processing.
+                                        </ddue:listItem>
+                                    </ddue:list>
+                                </ddue:content>
+                            </ddue:section>
+                            <ddue:section>
+                                <ddue:title>3. Examples</ddue:title>
+                                <ddue:content>
+                                    <ddue:para>
+                                        The tool schema is linked in the root element of the dataset, next to the CPACS schema.
+                                        <ddue:codeInline>xsi:schemaLocation</ddue:codeInline> holds pairs of namespace URI and schema file; for several tools, the pairs are listed one after the other, separated by whitespace.
+                                    </ddue:para>
+                                    <ddue:code language="XML" title="Schema references in the root element">
+                                        <![CDATA[
 <cpacs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="pathToSchemaFile/cpacs_schema.xsd"
        xsi:schemaLocation="http://www.cpacs.de/myTool pathToToolspecificSchemaFile/toolspecific_myTool.xsd">
     ...
 </cpacs>
-                                ]]>
-                            </ddue:code>
-                            <ddue:para>
-                                A simple example could look like this:
-                            </ddue:para>
-                            <ddue:code language="XML" title="Toolspecific node">
-                                <![CDATA[
+                                        ]]>
+                                    </ddue:code>
+                                    <ddue:para>
+                                        The data of a single tool is shown below.
+                                        It corresponds to the example file <ddue:codeInline>examples/toolspecific.xml</ddue:codeInline> and validates against <ddue:codeInline>schema/toolspecific_template.xsd</ddue:codeInline>.
+                                    </ddue:para>
+                                    <ddue:code language="XML" title="Data of a single tool">
+                                        <![CDATA[
 <toolspecific>
     <tool>
         <name>myToolName</name>
         <version>1.2.3</version>
-        <myTool xmlns="http://www.cpacs.de/myTool" schemaVersion="1.0">
+        <myToolName xmlns="http://www.cpacs.de/myTool" schemaVersion="1.0">
             <parentElement>
                 <childElement1>stringValue</childElement1>
                 <childElement2>1.0</childElement2>
             </parentElement>
-        </myTool>
+        </myToolName>
     </tool>
 </toolspecific>
-                                ]]>
-                            </ddue:code>
+                                        ]]>
+                                    </ddue:code>
+                                    <ddue:para>
+                                        Each further tool adds a <ddue:codeInline>tool</ddue:codeInline> element with its own root element and namespace:
+                                    </ddue:para>
+                                    <ddue:code language="XML" title="Data of two tools">
+                                        <![CDATA[
+<toolspecific>
+    <tool>
+        <name>myToolName</name>
+        <version>1.2.3</version>
+        <myToolName xmlns="http://www.cpacs.de/myTool" schemaVersion="1.0">
+            ...
+        </myToolName>
+    </tool>
+    <tool>
+        <name>anotherToolName</name>
+        <version>0.9</version>
+        <anotherToolName xmlns="http://www.cpacs.de/anotherTool" schemaVersion="2.1">
+            ...
+        </anotherToolName>
+    </tool>
+</toolspecific>
+                                        ]]>
+                                    </ddue:code>
+                                </ddue:content>
+                            </ddue:section>
+                            <ddue:section>
+                                <ddue:title>4. Validation</ddue:title>
+                                <ddue:content>
+                                    <ddue:para>
+                                        A dataset without tool data is validated against <ddue:codeInline>cpacs_schema.xsd</ddue:codeInline> as usual.
+                                    </ddue:para>
+                                    <ddue:para>
+                                        A dataset with tool data needs one more thing.
+                                        The CPACS schema does not describe the tool data, so the validator also needs the tool schema.
+                                        Without it, the validator reports the dataset as invalid even if all data is correct, with a message such as:
+                                        <ddue:codeInline>Element '{http://www.cpacs.de/myTool}myToolName': No matching global element declaration available, but demanded by the strict wildcard.</ddue:codeInline>
+                                    </ddue:para>
+                                    <ddue:para>
+                                        Some validators find the tool schema by themselves, through the reference in the root element of the dataset (see section 3).
+                                        TiXI (<ddue:codeInline>schemaValidateFromFile</ddue:codeInline>) and lxml (<ddue:codeInline>etree.XMLSchema</ddue:codeInline>) do not: they only use the one schema file they are given.
+                                    </ddue:para>
+                                    <ddue:para>
+                                        The solution is a small schema file that combines both schemas.
+                                        It is given to the validator instead of <ddue:codeInline>cpacs_schema.xsd</ddue:codeInline>; neither the dataset nor the tool schema has to be changed.
+                                        The file <ddue:codeInline>examples/toolspecific_combined.xsd</ddue:codeInline> does this for the examples:
+                                    </ddue:para>
+                                    <ddue:code language="XML" title="Schema combining the CPACS schema and a tool schema">
+                                        <![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Validate datasets with tool data against this file instead of cpacs_schema.xsd.
+     It combines the CPACS schema with the schema of the tool in toolspecific.xml.
+     Add one xsd:import per tool schema. -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <xsd:include schemaLocation="../schema/cpacs_schema.xsd"/>
+    <xsd:import namespace="http://www.cpacs.de/myTool"
+                schemaLocation="../schema/toolspecific_template.xsd"/>
+</xsd:schema>
+                                        ]]>
+                                    </ddue:code>
+                                    <ddue:para>
+                                        For your own tool, copy the file and adapt the two paths and, in <ddue:codeInline>xsd:import</ddue:codeInline>, the URI of your tool (see rule 4).
+                                        The paths are relative to the copied file.
+                                        For several tools, add one <ddue:codeInline>xsd:import</ddue:codeInline> line per tool.
+                                    </ddue:para>
+                                    <ddue:para>
+                                        How to read, write and validate tool data with lxml or TiXI is shown step by step in the scripts <ddue:codeInline>examples/python/toolspecific_lxml.py</ddue:codeInline> and <ddue:codeInline>examples/python/toolspecific_tixi.py</ddue:codeInline>.
+                                    </ddue:para>
+                                </ddue:content>
+                            </ddue:section>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -44756,11 +44891,14 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Tool identification</ddue:para>
+                        <ddue:para>Data of a single tool</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>
-                        Tool information as described in the toolspecificType.
+                            <ddue:codeInline>name</ddue:codeInline> and <ddue:codeInline>version</ddue:codeInline> identify the tool that wrote the data.
+                            They are followed by exactly one element, the root element of the tool data.
+                            It is qualified with the namespace of the tool schema and declared as a global element in that schema.
+                            The rules and examples are given in the documentation of <xsd:xmlEntityReference>Empty#T/toolspecificType</xsd:xmlEntityReference>.
                         </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -44776,14 +44914,12 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     </xsd:element>
                     <xsd:element name="version" type="stringBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Version</xsd:documentation>
+                            <xsd:documentation>Version of the tool that wrote the data</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:any>
                         <xsd:annotation>
-                            <xsd:documentation>
-                                Wildcard for the root element of a toolspecific namespace
-                            </xsd:documentation>
+                            <xsd:documentation>Root element of the tool data, qualified with the namespace of the tool schema</xsd:documentation>
                         </xsd:annotation>
                     </xsd:any>
                 </xsd:sequence>

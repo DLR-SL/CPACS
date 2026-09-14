@@ -1,18 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
-        xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5" 
-        xmlns:html="http://www.w3.org/1999/xhtml" 
-        xmlns:sd="http://schemas.xsddoc.codeplex.com/schemaDoc/2009/3" 
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+        xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5"
+        xmlns:html="http://www.w3.org/1999/xhtml"
+        xmlns:sd="http://schemas.xsddoc.codeplex.com/schemaDoc/2009/3"
         xmlns:xlink="http://www.w3.org/1999/xlink"
         targetNamespace="http://www.cpacs.de/myTool"
         xmlns="http://www.cpacs.de/myTool"
         elementFormDefault="qualified">
 
-    <!-- This schema is a template that can be used as a starting point for your own 
-         tool-specific schema. We recommend that you use the CPACS base-types (copy 
-         & paste them into this file) and adopt the schema version attribute.  -->
+    <!-- This schema is a template that can be used as a starting point for your own
+         tool schema, i.e. the schema of the data a tool stores below
+         cpacs/toolspecific/tool. The rules for tool data are documented in the
+         toolspecificType of the CPACS schema. To adapt the template:
 
-    <!-- Global element -->
+         1. Replace the namespace URI "http://www.cpacs.de/myTool" in both
+            targetNamespace and xmlns above. The URI is only a name for your tool
+            schema: it looks like a web address, but nothing is ever downloaded from
+            it; it only has to be unique. Unless you prefer a URI of your own, use
+            "http://www.cpacs.de/" followed by the name of your tool.
+         2. Rename the global element "myToolName" and its type "myToolType", and
+            replace the example content of the type with your own elements.
+         3. Keep the schemaVersion attribute and increase its value whenever the
+            structure of your tool data changes.
+
+         The base types below are copies of the corresponding CPACS base types,
+         reduced to the external data attributes. Copy further CPACS base types into
+         this file as needed. Document elements and types following the development
+         guidelines of CPACS (development/developmentGuidelines.md). -->
+
+    <!-- Global element: the root element of the tool data below cpacs/toolspecific/tool -->
     <xsd:element name="myToolName" type="myToolType"/>
 
     <!-- Base types -->
@@ -21,7 +37,7 @@
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>complexBaseType</ddue:para>
+                        <ddue:para>Complex base type</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>Base type for complex nodes (including external data
@@ -30,9 +46,21 @@
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
-        <xsd:attribute name="externalDataNodePath" type="xsd:string"/>
-        <xsd:attribute name="externalFileName" type="xsd:string"/>
-        <xsd:attribute name="externalDataDirectory" type="xsd:string"/>
+        <xsd:attribute name="externalDataNodePath" type="xsd:string">
+            <xsd:annotation>
+                <xsd:documentation>Path of the node inside the external data file</xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="externalFileName" type="xsd:string">
+            <xsd:annotation>
+                <xsd:documentation>Name of the external data file</xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="externalDataDirectory" type="xsd:string">
+            <xsd:annotation>
+                <xsd:documentation>Directory of the external data file</xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
     </xsd:complexType>
 
     <xsd:complexType name="stringBaseType">
@@ -40,7 +68,7 @@
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>stringBaseType</ddue:para>
+                        <ddue:para>String base type</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>Base type for string nodes (including external data
@@ -51,9 +79,21 @@
         </xsd:annotation>
         <xsd:simpleContent>
             <xsd:extension base="xsd:string">
-                <xsd:attribute name="externalDataNodePath" type="xsd:string"/>
-                <xsd:attribute name="externalFileName" type="xsd:string"/>
-                <xsd:attribute name="externalDataDirectory" type="xsd:string"/>
+                <xsd:attribute name="externalDataNodePath" type="xsd:string">
+                    <xsd:annotation>
+                        <xsd:documentation>Path of the node inside the external data file</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="externalFileName" type="xsd:string">
+                    <xsd:annotation>
+                        <xsd:documentation>Name of the external data file</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="externalDataDirectory" type="xsd:string">
+                    <xsd:annotation>
+                        <xsd:documentation>Directory of the external data file</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
             </xsd:extension>
         </xsd:simpleContent>
     </xsd:complexType>
@@ -63,55 +103,54 @@
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>doubleBaseType</ddue:para>
+                        <ddue:para>Floating point base type</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:content>
-                            <ddue:para>Base type for double nodes (including external data
-                                attributes)</ddue:para>
-                            <ddue:para>The double base type can include optional uncertainty
-                                information. The description of uncertainties is placed in
-                                additional attributes. First, it is described by an attribute
-                                that describes the type of uncertainty function called
-                                functionName. The functionName attribute includes the tag name
-                                of the distribution function which is listened in the table
-                                shown below. Each uncertainty function is further describes by a
-                                set of parameters that are described in the table below.
-                            </ddue:para>
-                            <ddue:mediaLink>
-                                <ddue:image xlink:href="uncertaintyFunctions"/>
-                            </ddue:mediaLink>
-                        </ddue:content>
+                        <ddue:para>Base type for double nodes (including external data
+                            attributes). Unlike the CPACS base type, this copy carries no
+                            uncertainty attributes.</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
         <xsd:simpleContent>
             <xsd:extension base="xsd:double">
-                <xsd:attribute name="externalDataNodePath" type="xsd:string"/>
-                <xsd:attribute name="externalFileName" type="xsd:string"/>
-                <xsd:attribute name="externalDataDirectory" type="xsd:string"/>
+                <xsd:attribute name="externalDataNodePath" type="xsd:string">
+                    <xsd:annotation>
+                        <xsd:documentation>Path of the node inside the external data file</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="externalFileName" type="xsd:string">
+                    <xsd:annotation>
+                        <xsd:documentation>Name of the external data file</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="externalDataDirectory" type="xsd:string">
+                    <xsd:annotation>
+                        <xsd:documentation>Directory of the external data file</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
             </xsd:extension>
         </xsd:simpleContent>
     </xsd:complexType>
 
-    <!-- Type of the global tool element; must be an extension of toolBaseType -->
+    <!-- Type of the global element: replace its documentation and content with your own -->
     <xsd:complexType name="myToolType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>My example tool</ddue:para>
+                        <ddue:para>Data of my example tool</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
                             <ddue:section>
-                                <ddue:title>
-                                    1. General overview
-                                </ddue:title>
+                                <ddue:title>1. Overview</ddue:title>
                                 <ddue:content>
                                     <ddue:para>
-                                        ... add documentation ...
+                                        Replace this text: describe what the tool stores here, which
+                                        CPACS data it refers to (by UID), and how the data is meant to be
+                                        read and written.
                                     </ddue:para>
                                 </ddue:content>
                             </ddue:section>
@@ -123,12 +162,19 @@
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element name="parentElement"
-                        type="parentElementBaseType" />
+                    <xsd:element name="parentElement" type="parentElementType">
+                        <xsd:annotation>
+                            <xsd:documentation>Parent element</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                 </xsd:all>
-                <!-- We recommend to use a "schemaVersion" attribute (or element) to properly document the version of the
-                tool-specific schema and allow XML-processors to validate your data. An example could look like below: -->
+                <!-- A schemaVersion attribute documents the version of the tool schema and
+                     lets readers detect which structure they are processing. List every
+                     supported version as an enumeration value. -->
                 <xsd:attribute name="schemaVersion">
+                    <xsd:annotation>
+                        <xsd:documentation>Version of the tool schema the data conforms to</xsd:documentation>
+                    </xsd:annotation>
                     <xsd:simpleType>
                         <xsd:restriction base="xsd:string">
                             <xsd:enumeration value="1.0"/>
@@ -139,16 +185,13 @@
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="parentElementBaseType">
+    <xsd:complexType name="parentElementType">
         <xsd:annotation>
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
                         <ddue:para>Element with child elements</ddue:para>
                     </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>... some explanation ...</ddue:para>
-                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -157,14 +200,12 @@
                 <xsd:all>
                     <xsd:element name="childElement1" type="stringBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>A first element of type double
-                            </xsd:documentation>
+                            <xsd:documentation>First child element, a string</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="childElement2" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>A second element of type double
-                            </xsd:documentation>
+                            <xsd:documentation>Second child element, a floating point value</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
