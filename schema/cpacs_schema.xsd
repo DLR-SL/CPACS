@@ -33931,29 +33931,26 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                                 description and a 2-dimensional pointlist with both
                                 coordinates mandatory. All point coordinates are transferred
                                 to the global coordinate system depending on the context they
-                                are used in. The points have to be ordered in a mathematical
-                                positive sense. The x-coordinates of the profile has to be
-                                normalized between 0 and 1. First and last point
-                                may, but need not to, be identical. Hence, it is possible to
-                                include "open" profiles. However, the trailing edge position of
-                                the upper and lower point need to be identical. No crooked
-                                trailing edges are possible.</ddue:para>
-                            <ddue:para>Example 1: For a conventional nacelle profile, the airfoil
-                                coordinates are defined in x and y. The points have to be ordered
-                                from the trailing edge along the lower side to the leading
-                                edge and then along the upper side back to the trailing edge.
-                                When used for a nacelle the profile axis align
-                                with the global axes as follows:
+                                are used in. The type is used for nacelle profiles and for
+                                curve profiles.</ddue:para>
+                            <ddue:para>Nacelle profiles (<ddue:codeInline>nacelleProfiles</ddue:codeInline>) are
+                                airfoil-like profiles defined in x and y, with the x-coordinates
+                                normalized between 0 and 1. The points have to be ordered from
+                                the trailing edge along the lower side to the leading edge and
+                                then along the upper side back to the trailing edge. The lower
+                                side is the inner side of the nacelle, facing its axis. First
+                                and last point may, but need not to, be identical. Hence, the
+                                trailing edge may be sharp or blunt. In both cases, first and last
+                                point have the same x-coordinate; crooked trailing edges are not
+                                allowed. When used for a nacelle the
+                                profile axis align with the global axes as follows:
                                 +x_profile -&gt; +x_global;
                                 +y-profile -&gt; -z_global</ddue:para>
-                            <ddue:para>Example 2: For a fuselage, the coordinates are
-                                also given in x and z with x as the normalized fuselage height.
-                                Starting point of the profile should be the lowest point
-                                (typically in the symmetry plane), then upwards on the positive x-side up to the highest
-                                point (again, typically in the symmetry plane). Depending on,
-                                whether the fuselage shall be specified with symmetry condition
-                                or not, the profile either ends there, or continues on the
-                                negative x-side back down to the lowest point.</ddue:para>
+                            <ddue:para>Curve profiles (<ddue:codeInline>curveProfiles</ddue:codeInline>) are open
+                                curves, such as the rotation curves of nacelles, which run from
+                                their first to their last point. The rules for the order of the
+                                points and for the trailing edge of nacelle profiles do not
+                                apply to them.</ddue:para>
                             <ddue:para>Alternatively, it is possible to specify the
                                 coordinates of a profile via the CST (class function /shape
                                 function transformation technique) notation. Please see the
@@ -34027,18 +34024,29 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                                 description and a 3-dimensional pointlist with all three
                                 coordinates mandatory. For typical profiles, one of the
                                 coordinate vectors contains only "0" entries. All point
-                                coordinates are transferred to the global coordinate system. The
-                                points have to be ordered in a mathematical positive sense.
+                                coordinates are transferred to the global coordinate system.
                                 Normalized coordinates are not required. First and last point
                                 may, but need not to, be identical. Hence, it is possible to
-                                include "open" profiles. However, the trailing edge position of
-                                the upper and lower point need to be identical. No crooked
-                                trailing edges are possible.</ddue:para>
-                            <ddue:para>Example 1: For a conventional wing, the airfoil
+                                include "open" profiles.</ddue:para>
+                            <ddue:para>The order of the points depends on the use of the profile
+                                and is given in the examples below. In both cases, the points run
+                                in the mathematically positive sense about the axis normal to the
+                                profile plane (right-hand rule): about the y-axis for wing
+                                profiles and about the x-axis for fuselage profiles. Plotted with
+                                x to the right and z upwards, a wing profile therefore runs
+                                clockwise.</ddue:para>
+                            <ddue:para>Example 1: For a wing or a rotor blade, the airfoil
                                 coordinates are defined in x and z with all the y-coordinates
                                 set to "0". The points have to be ordered from the trailing edge
                                 along the lower side to the leading edge and then along the
-                                upper side back to the trailing edge.</ddue:para>
+                                upper side back to the trailing edge, so that the point with the
+                                smallest z-coordinate comes before the point with the largest
+                                one. The trailing edge may be sharp, with identical first and
+                                last point, or blunt, with first and last point differing in z.
+                                In both cases, first and last point have the same x-coordinate;
+                                crooked trailing edges are not allowed. TiGL
+                                reverses a point list that starts with the upper side and issues
+                                a warning.</ddue:para>
                             <ddue:para>Example 2: For a fuselage, the coordinates are
                                 typically given in y and z with x set to "0". Starting point of
                                 the profile should be the lowest point (typically in the symmetry
@@ -34053,7 +34061,8 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                                 cst2DType for further information.</ddue:para>
                             <ddue:para>A profile can be symmetric. In that case the profile
                                 is interpreted as being not closed and will be closed by
-                                mirroring it on the symmetry plane.</ddue:para>
+                                mirroring it on the symmetry plane. For a fuselage profile, the
+                                first point then has to lie in the symmetry plane.</ddue:para>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -35395,13 +35404,14 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                                 Next, the blending from the rotated profile of the nacelle segment to the rotation curve is defined.
                                 The corresponding start and end points are given in curve coordinates <ddue:codeInline>zeta</ddue:codeInline> of the corresponding profiles.
                                 Note that the lower part of the segment profile counts from <ddue:legacyItalic>zeta=[-1,..,0]</ddue:legacyItalic> and the upper part counts from <ddue:legacyItalic>zeta=[0,..,1]</ddue:legacyItalic>.
+                                Since the rotation curve replaces a part of the lower side, all four zeta values lie in <ddue:legacyItalic>[-1,..,0]</ddue:legacyItalic>.
                                 In between, the blending is linear.
                             </ddue:para>
                             <ddue:code language="XML" title="Rotation curve in a fan cowl">
                                 <![CDATA[
 <rotationCurve uID="rotationCurve">
     <referenceSectionUID>engine_nacelle_fanCowl_section1</referenceSectionUID>
-    <curveProfileUID>fanCowl_upperSection</curveProfileUID>
+    <curveProfileUID>fanCowlRotationCurve</curveProfileUID>
     <startZetaBlending>-0.6</startZetaBlending>
     <startZeta>-0.5</startZeta>
     <endZeta>-0.2</endZeta>
@@ -35433,22 +35443,22 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             </xsd:element>
             <xsd:element name="startZeta" type="doubleBaseType">
                 <xsd:annotation>
-                    <xsd:documentation>Start zeta [-1,..,1]; relative curve coordante along the rotation curve from which it will be inserted in the nacelle</xsd:documentation>
+                    <xsd:documentation>Start zeta [-1,..,0]; relative curve coordinate along the rotation curve from which it will be inserted in the nacelle</xsd:documentation>
                 </xsd:annotation>
             </xsd:element>
             <xsd:element name="endZeta" type="doubleBaseType">
                 <xsd:annotation>
-                    <xsd:documentation>End zeta [-1,..,1]; relative curve coordante along the rotation curve up to which it will be inserted in the nacelle</xsd:documentation>
+                    <xsd:documentation>End zeta [-1,..,0]; relative curve coordinate along the rotation curve up to which it will be inserted in the nacelle</xsd:documentation>
                 </xsd:annotation>
             </xsd:element>
             <xsd:element name="startZetaBlending" type="doubleBaseType">
                 <xsd:annotation>
-                    <xsd:documentation>Start zeta for blending [-1..1]; relative curve coordinate along the nacelle profile at which blending from the nacelle profile to the rotation curve will begin</xsd:documentation>
+                    <xsd:documentation>Start zeta for blending [-1,..,0]; relative curve coordinate along the nacelle profile at which blending from the nacelle profile to the rotation curve will begin</xsd:documentation>
                 </xsd:annotation>
             </xsd:element>
             <xsd:element name="endZetaBlending" type="doubleBaseType">
                 <xsd:annotation>
-                    <xsd:documentation>End zeta for blending; relative curve coordinate along the nacelle profile at which blending from the rotation curve to the nacelle profile will end</xsd:documentation>
+                    <xsd:documentation>End zeta for blending [-1,..,0]; relative curve coordinate along the nacelle profile at which blending from the rotation curve to the nacelle profile will end</xsd:documentation>
                 </xsd:annotation>
             </xsd:element>
             <xsd:element name="curveProfileUID" type="stringUIDBaseType">
