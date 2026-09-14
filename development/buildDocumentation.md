@@ -80,8 +80,8 @@ serves the viewer at <http://127.0.0.1:8000>:
 uv run --project .cpacs-doc cpacs-doc serve schema/cpacs_schema.xsd
 ```
 
-The wording conventions the documentation text follows are described in the
-[development guidelines](developmentGuidelines.md).
+The wording conventions the documentation text follows, and the form of the XML examples in
+it, are described in the [development guidelines](developmentGuidelines.md).
 
 ---
 

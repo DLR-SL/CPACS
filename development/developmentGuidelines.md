@@ -127,6 +127,58 @@ Where removing the prefix leaves nothing but the summary repeated (*"Doors type,
 
 Documentation that is missing, or that is a placeholder, is a defect like any other. A node whose meaning cannot be stated in one line is usually a sign that the node itself needs discussion.
 
+## Code examples in the documentation
+
+The remarks of a type can carry XML examples as `ddue:code` blocks, which the generator renders as captioned, highlighted code. An example is the most concrete statement the documentation makes about a node: readers — and AI assistants working from the schema — copy it rather than derive the data from the type definitions. §16 to §19 therefore treat an example like data: it has one form, a stated purpose, and it has to be correct.
+
+- **§16: A code example is a `ddue:code` block with `language="XML"` and a `title`. The title is a label naming what the example shows.**
+
+§10 and §11 apply to the title: it starts with a capital letter and, being a label, takes no period. Like a type documentation (§15), it does not introduce itself — the block is an example by definition. Where several examples form a series, the number is the one prefix that carries information.
+
+| Avoid | Use |
+| ---------- | ---------- |
+| `Control parameter example` | `Control parameters in a control surface deflection path` |
+| `Example of an engine pylon located only on the mirrored side of the wing.` | `Engine pylon located only on the mirrored side of the wing` |
+| `title=" "`, or no title at all | `Point list with kinks and parameter map` |
+| | `Example 3: invalid double vector due to comma separation` (one of a series) |
+
+- **§17: The code is written in a CDATA section, not escaped. It starts at column 0 and is indented by four spaces per level.**
+
+```XML
+<ddue:para>Hence, some parts offer the option to set a <ddue:codeInline>symmetry</ddue:codeInline> attribute:</ddue:para>
+<ddue:code language="XML" title="Symmetry attribute applied to a wing">
+    <![CDATA[
+<wing symmetry="x-z-plane">
+    ...
+</wing>
+    ]]>
+</ddue:code>
+```
+
+The schema is read in its raw form as often as in the generated documentation: in an editor, in a pull request, or as input to a language model. Escaped as `&lt;wing symmetry="x-z-plane"&gt;`, an example is no longer recognisable as XML there. Inside CDATA it reads exactly as in a CPACS file and can be copied out of the schema as it stands. The `<![CDATA[` and `]]>` markers follow the indentation of the schema, the code does not, so that its own indentation is preserved. The generator strips the blank lines around the code. Note that a CDATA section cannot contain the sequence `]]>`.
+
+- **§18: A code block stands on its own — next to paragraphs, never inside a `ddue:para`.**
+
+A `ddue:para` becomes an HTML paragraph, and an HTML paragraph cannot contain a code block: the browser closes the paragraph before the code, the text after it loses its paragraph, and the orphaned end tag adds an empty one. Close the paragraph with the sentence that introduces the example, place the code block after it, and continue in a new paragraph. The same holds for a `ddue:list` containing code blocks; directly inside a `ddue:listItem` or a `ddue:content`, a code block is in the right place.
+
+| Avoid | Use |
+| ---------- | ---------- |
+| `<ddue:para>... e.g. a fuselage: <ddue:code>...</ddue:code></ddue:para>` | `<ddue:para>... e.g. a fuselage:</ddue:para>` followed by `<ddue:code>...</ddue:code>` |
+
+- **§19: An example is well-formed XML and uses the element and attribute names of the current schema. Omitted content is written as `...`, and every element that is opened is closed.**
+
+A fragment that stops after its start tag leaves the reader to guess where the element ends, and whoever reuses it — a person or an AI assistant — produces a broken file. `...` stands for everything that does not matter to the point being made:
+
+```XML
+<fuselage uID="ATTAS_fuselage">
+    ...
+</fuselage>
+```
+
+An example does not follow the schema by itself. Renaming an element includes searching the examples for the old name: before this rule was introduced, examples still used `CAS` and `continuitySetting` instead of `calibratedAirSpeed` and `continuity`, and `kinks` and `pointIndex` instead of `kinkIndices` and `pointIndices`, none of which the schema knew any longer.
+
+Three cases are exempt. An example that deliberately shows invalid data says so in its title (`Example 4: invalid double vector due to string entry`). A placeholder name standing for any element of a type (`doubleVectorTest`) is fine where the surrounding text makes that clear. And an XML declaration (`<?xml version="1.0" encoding="utf-8"?>`) is only written where the example shows a complete file.
+
 ## Development Guidelines by Example
 
 ### Example analysis node
