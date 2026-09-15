@@ -183,6 +183,56 @@ Three cases are exempt. An example that deliberately shows invalid data says so 
 
 Program code in the schema would make the documentation long, tie it to particular libraries, and could not be checked by the documentation generator, which runs nothing. A script in `examples/python/` can be run and is tested by `scripts/tests/test_examples.py`; the XML examples it uses stay in `examples/`. Where the documentation shows an excerpt of a file from `examples/`, the same test compares the two, so that neither changes without the other. The documentation of `toolspecificType` is the reference: it shows the tool data of `examples/toolspecific.xml` and the schema `examples/toolspecific_combined.xsd`, and names the scripts `examples/python/toolspecific_lxml.py` and `examples/python/toolspecific_tixi.py`.
 
+## Figures and equations in the documentation
+
+Figures and equations are images referenced from the schema with `ddue:mediaLink`/`ddue:image` and listed in `documentation/media.json` (see [Building the Documentation](buildDocumentation.md#figures)). The documentation generator renders neither formulas (`ddue:math`) nor plots itself, so both are produced beforehand. §21 to §25 apply to every new or reworked figure; existing figures are migrated when they are touched.
+
+- **§21: A generated figure or equation is reproducible from source. The script lives in `documentation/scripts/`, is run with `uv run`, and is committed together with the images it writes.**
+
+A figure that exists only as a PNG cannot be corrected, restyled or regenerated after a schema change. A script can. Each script declares its dependencies with pinned versions as [inline script metadata](https://packaging.python.org/en/latest/specifications/inline-script-metadata/), so `uv run documentation/scripts/<name>.py` from the repository root needs no further setup, and it writes byte-identical files when run again. Data shown in a figure is computed or read by the script, never typed in by hand. `documentation/scripts/cst2D.py` is the reference: it writes the figures and equations of `cst2DType` and the example file `examples/wingAirfoils_cst.xml`.
+
+- **§22: Figures use the shared style in `documentation/scripts/figure_style.py`.**
+
+The module sets the colors, line widths, fonts and output format below, so that all figures read as one family. A script imports it rather than defining its own values; a value that needs to change is changed in the module and in this table together.
+
+| Role | Value | Use |
+| ---------- | ---------- | ---------- |
+| Series 1 | `#2a78d6` (blue) | first or only data series |
+| Series 2 | `#d95926` (orange) | second series |
+| Series 3 | `#199e70` (aqua) | third series, always with a text label |
+| Series 1, light | `#86b6ef` | secondary marks of series 1, e.g. the terms of a sum drawn in series 1 |
+| Ink | `#0b0b0b` | titles, labels, annotations |
+| Secondary ink | `#52514e` | tick labels, secondary annotations |
+| Muted | `#898781` | reference lines (e.g. a chord), leader lines, neutral comparison curves |
+| Axis | `#c3c2b7` | axis lines and ticks |
+| Grid | `#e1e0d9` | gridlines, where needed |
+| Area wash | series color at 8 % opacity | the area enclosed by a curve |
+| Lines | data 1.5 pt, secondary 1.0 pt, reference and axis 0.75 pt | solid, round caps and joins |
+| Font | DejaVu Sans, 9 pt; titles 10 pt; annotations 8.5 pt | DejaVu Sans ships with matplotlib, so the output does not depend on installed fonts |
+| Size | 7.6 in wide at 100 dpi nominal (760 px, the width of the detail pane), saved at 200 dpi | sharp on high-density screens |
+| Background | transparent | the viewer places images on a light plate |
+
+The series colors are validated as a categorical palette (lightness, chroma, separation under protanopia and deuteranopia, all pairs) against both plates the viewer uses, `#fefdfb` in the light and `#edeff1` in the dark theme. Series 1 and 2 reach at least 3:1 contrast on both; series 3 reaches 2.95:1 on the dark-theme plate and therefore always carries a text label. A figure needing more than three series is split into panels instead of adding colors.
+
+- **§23: Color identifies, text explains. Text is set in ink, never in a series color, and identity never depends on color alone.**
+
+Series colors are for marks: lines, markers, arrows, areas. Every label, value and legend entry uses ink or secondary ink, with a colored line key or a leader line next to it to show what it belongs to. Two or more series get a legend or a direct label for each series. To highlight one curve among alternatives, draw it in series 1 and the others in muted gray, each with a direct label. Leader lines share the muted gray, so a panel with gray curves identifies its labels by position or line key instead; a leader line there reads as one more curve.
+
+| Avoid | Use |
+| ---------- | ---------- |
+| Label text in the series color | Label in ink with a colored line key |
+| Dashed or dotted lines to tell series apart | Distinct colors or muted gray plus direct labels |
+| Dashed gridlines or reference lines | Solid hairlines in muted or grid color |
+| Top and right axis frame | Left and bottom axis only; a full frame only for zoomed detail views |
+
+- **§24: Labels do not overlap each other, the data or the axes. Render the figure and look at it before committing.**
+
+Collisions depend on the rendered text size and are not visible in the code. Check the image on both plate colors, `#fefdfb` and `#edeff1`. Move a label that collides to free space and connect it with a leader line; do not shrink it below the annotation size.
+
+- **§25: An equation is written as LaTeX and rendered in Computer Modern. The `.tex` source is stored next to the image in `documentation/equations/`.**
+
+`save_equation` in `figure_style.py` writes both files from the same lines, so source and image cannot diverge. It renders with matplotlib's mathtext, which needs no LaTeX installation and understands a large subset of LaTeX math (`\frac`, `\dfrac`, `\sum`, `\left(`…`\right)`, `\mathrm`); stay within that subset. Symbols inside the running text use `ddue:subscript` and `ddue:superscript` rather than an image. Write them so that no inline element directly follows another one or closes its parent (e.g. `B<ddue:subscript>0</ddue:subscript>²/2`, not `B<ddue:subscript>0</ddue:subscript><ddue:superscript>2</ddue:superscript>/2`): the schema formatter puts a line break after such an element, which is displayed as a space.
+
 ## Development Guidelines by Example
 
 ### Example analysis node

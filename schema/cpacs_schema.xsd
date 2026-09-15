@@ -12397,66 +12397,199 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Two-dimensional CST parameterization</ddue:para>
+                        <ddue:para>Profile defined by the class-shape transformation (CST)</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>
+                                The class-shape transformation (CST) describes a profile by two analytical functions, one for the upper and one for the lower side.
+                                Instead of a list of points, a few parameters per side define a smooth profile with a well-defined leading and trailing edge.
+                                This makes the parameterization compact and well suited for design and optimization.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Coordinates</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The profile is defined in coordinates normalized by the chord length <ddue:legacyItalic>c</ddue:legacyItalic>.
+                                <ddue:legacyItalic>ψ = x/c</ddue:legacyItalic> runs along the chord from the leading edge (ψ = 0) to the trailing edge (ψ = 1).
+                                <ddue:legacyItalic>ζ</ddue:legacyItalic> is the normalized coordinate normal to the chord (z/c for wing and rotor airfoils, y/c for nacelle profiles).
+                                The leading edge therefore lies at (0, 0) and the trailing edge at (1, 0).
+                                Size, position and orientation of the profile are defined where it is referenced, e.g. by the transformation of a wing element.
+                            </ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="cst2D_airfoil"/>
+                            </ddue:mediaLink>
+                            <ddue:para>
+                                <ddue:legacyBold>Upper and lower side</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>Each side is the product of a class function <ddue:legacyItalic>C</ddue:legacyItalic> and a shape function <ddue:legacyItalic>S</ddue:legacyItalic>, plus a linear term for the trailing edge thickness:</ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="eq_cst2D_surfaces"/>
+                            </ddue:mediaLink>
+                            <ddue:para>
+                                Both sides are parameterized independently: the upper side by <ddue:codeInline>upperN1</ddue:codeInline>, <ddue:codeInline>upperN2</ddue:codeInline> and <ddue:codeInline>upperB</ddue:codeInline>, the lower side by <ddue:codeInline>lowerN1</ddue:codeInline>, <ddue:codeInline>lowerN2</ddue:codeInline> and <ddue:codeInline>lowerB</ddue:codeInline>.
+                                Due to the minus sign in the equation of the lower side, <ddue:legacyBold>positive <ddue:codeInline>lowerB</ddue:codeInline> coefficients place the lower side below the chord</ddue:legacyBold>.
+                                A symmetric profile therefore has identical parameters for both sides.
+                                Note that this differs from the original notation by Kulfan, in which the coefficients of the lower side are usually negative.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Class function</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="eq_cst2D_classFunction"/>
+                            </ddue:mediaLink>
+                            <ddue:para>
+                                The class function defines the basic type of the profile.
+                                It is zero at the leading and at the trailing edge; the exponent N<ddue:subscript>1</ddue:subscript> shapes the leading edge and N<ddue:subscript>2</ddue:subscript> the trailing edge.
+                                Typical combinations are:
+                            </ddue:para>
+                            <ddue:table>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:legacyBold>N<ddue:subscript>1</ddue:subscript>
+                                        </ddue:legacyBold>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        <ddue:legacyBold>N<ddue:subscript>2</ddue:subscript>
+                                        </ddue:legacyBold>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        <ddue:legacyBold>Profile type</ddue:legacyBold>
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>0.5</ddue:entry>
+                                    <ddue:entry>1.0</ddue:entry>
+                                    <ddue:entry>conventional airfoil with round leading edge and sharp trailing edge</ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>0.5</ddue:entry>
+                                    <ddue:entry>0.5</ddue:entry>
+                                    <ddue:entry>elliptic profile, round at both ends</ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>1.0</ddue:entry>
+                                    <ddue:entry>1.0</ddue:entry>
+                                    <ddue:entry>biconvex profile, pointed at both ends</ddue:entry>
+                                </ddue:row>
+                            </ddue:table>
+                            <ddue:para>
+                                <ddue:legacyBold>Shape function</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="eq_cst2D_shapeFunction"/>
+                            </ddue:mediaLink>
+                            <ddue:para>
+                                The shape function scales the class function along the chord.
+                                It is a weighted sum of Bernstein polynomials whose weights B<ddue:subscript>i</ddue:subscript> are the entries of <ddue:codeInline>upperB</ddue:codeInline> or <ddue:codeInline>lowerB</ddue:codeInline>, ordered from the leading to the trailing edge.
+                                The number of coefficients determines the polynomial degree <ddue:legacyItalic>n</ddue:legacyItalic> = (number of coefficients − 1); more coefficients allow more detailed shapes.
+                                Each coefficient acts mainly on one part of the chord:
+                            </ddue:para>
+                            <ddue:list class="bullet">
+                                <ddue:listItem>
+                                    <ddue:para>The first coefficient B<ddue:subscript>0</ddue:subscript> controls the leading edge. For N<ddue:subscript>1</ddue:subscript> = 0.5 it defines the leading edge radius: R<ddue:subscript>LE</ddue:subscript>/c = B<ddue:subscript>0</ddue:subscript>²/2.</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>The last coefficient B<ddue:subscript>n</ddue:subscript> controls the trailing edge. For N<ddue:subscript>2</ddue:subscript> = 1.0 it defines the angle β between surface and chord at the trailing edge: tan β = B<ddue:subscript>n</ddue:subscript> − Δζ<ddue:subscript>TE</ddue:subscript>/2.</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>The remaining coefficients shape the region between leading and trailing edge. Identical coefficients yield a constant shape function, i.e. the class function scaled by that value.</ddue:para>
+                                </ddue:listItem>
+                            </ddue:list>
+                            <ddue:para>The following figure shows how class function and shape function combine to the upper side of the example below:</ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="cst2D_construction"/>
+                            </ddue:mediaLink>
+                            <ddue:para>
+                                <ddue:legacyBold>Trailing edge thickness</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The optional <ddue:codeInline>trailingEdgeThickness</ddue:codeInline> (Δζ<ddue:subscript>TE</ddue:subscript> in the equations above) is the total thickness at the trailing edge relative to the chord.
+                                Half of it is added to each side, growing linearly from zero at the leading edge.
+                                If it is omitted, the trailing edge is sharp.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Sampling positions</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The <ddue:codeInline>psi</ddue:codeInline> vector lists the positions at which a tool that needs discrete coordinates, e.g. for exporting a point list, evaluates the profile.
+                                It does not change the shape, which is defined for all ψ between 0 and 1.
+                                The values are given in ascending order from 0 to 1 and are typically denser near the leading edge, where the curvature is highest.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Example</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>The following wing airfoil approximates the NACA 2412 airfoil, including its finite trailing edge thickness. It is the profile shown in the figures above.</ddue:para>
+                            <ddue:code language="XML" title="CST parameterization of a NACA 2412 airfoil">
+                                <![CDATA[
+<wingAirfoil uID="NACA2412_CST">
+    <name>NACA 2412 (CST)</name>
+    <cst2D>
+        <psi>0;0.005;0.02;0.05;0.1;0.2;0.3;0.4;0.5;0.6;0.7;0.8;0.9;1</psi>
+        <upperN1>0.5</upperN1>
+        <upperN2>1.0</upperN2>
+        <upperB>0.1939;0.1974;0.231;0.1723;0.2176;0.2044</upperB>
+        <lowerN1>0.5</lowerN1>
+        <lowerN2>1.0</lowerN2>
+        <lowerB>0.1516;0.1062;0.0926;0.0931;0.0704;0.0758</lowerB>
+        <trailingEdgeThickness>0.0025</trailingEdgeThickness>
+    </cst2D>
+</wingAirfoil>
+                                ]]>
+                            </ddue:code>
+                            <ddue:para>
+                                Reference: B. M. Kulfan, "Universal Parametric Geometry Representation Method", Journal of Aircraft, Vol. 45, No. 1, pp. 142–158, 2008,
+                                <ddue:externalLink>
+                                    <ddue:linkText>doi:10.2514/1.29958</ddue:linkText>
+                                    <ddue:linkUri>https://doi.org/10.2514/1.29958</ddue:linkUri>
+                                </ddue:externalLink>.
+                            </ddue:para>
+                        </ddue:content>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
-                <xsd:annotation>
-                    <xsd:documentation>A 2D implementation for Class shape
-                        transformations. For more details look at AIAA Journal of Aircraft
-                        Vol.45 No.1 2008</xsd:documentation>
-                </xsd:annotation>
                 <xsd:all>
                     <xsd:element name="psi" type="stringVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>The psi vector for definition of the class and
-                                shape function, i.e. the points at which the CST functions will
-                                be evaluated</xsd:documentation>
+                            <xsd:documentation>Positions ψ = x/c at which the profile is evaluated when discrete coordinates are needed, in ascending order from 0 (leading edge) to 1 (trailing edge)</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="upperN1" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>N1 for the class function for the upper side
-                                of the profile</xsd:documentation>
+                            <xsd:documentation>Class function exponent N1 of the upper side, shaping the leading edge (e.g. 0.5 for a round leading edge)</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="upperN2" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>N2 for the class function for the upper side
-                                of the profile</xsd:documentation>
+                            <xsd:documentation>Class function exponent N2 of the upper side, shaping the trailing edge (e.g. 1.0 for a finite trailing edge angle)</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="upperB" type="stringVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>B Coefficients for the Bernstein polynominal
-                                on the upper side</xsd:documentation>
+                            <xsd:documentation>Shape function coefficients of the upper side, ordered from leading to trailing edge</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="lowerN1" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>N1 for the class function for the lower side
-                                of the profile</xsd:documentation>
+                            <xsd:documentation>Class function exponent N1 of the lower side, shaping the leading edge (e.g. 0.5 for a round leading edge)</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="lowerN2" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>N2 for the class function for the lower side
-                                of the profile</xsd:documentation>
+                            <xsd:documentation>Class function exponent N2 of the lower side, shaping the trailing edge (e.g. 1.0 for a finite trailing edge angle)</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="lowerB" type="stringVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>B Coefficients for the Bernstein polynominal
-                                on the lower side</xsd:documentation>
+                            <xsd:documentation>Shape function coefficients of the lower side, ordered from leading to trailing edge; positive values place the lower side below the chord</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="trailingEdgeThickness" minOccurs="0" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Optionally, the trailingEdgeThickness of the
-                                profile</xsd:documentation>
+                            <xsd:documentation>Total trailing edge thickness relative to the chord, split equally between upper and lower side (if omitted: sharp trailing edge)</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
