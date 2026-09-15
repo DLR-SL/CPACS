@@ -20782,10 +20782,29 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                                 all three coordinates mandatory. For typical profiles, one of
                                 the coordinate vectors contains only "0" entries. All point
                                 coordinates are transferred to the global coordinate system.
-                                First and last point may, but need not to, be identical.
                             </ddue:para>
-                            <ddue:para>The points have to be ordered in a mathematical
-                                positive sense.</ddue:para>
+                            <ddue:para>For wings and fuselages, the points lie between the start
+                                point of the guide curve on the inner (wing) or front (fuselage)
+                                profile and its end point on the outer or rear profile. They are
+                                given in the relative coordinates illustrated in guideCurveType:
+                                rY runs from 0 at the start point to 1 at the end point, rX and rZ
+                                are offsets relative to the local chord (wing) or height
+                                (fuselage). The points are ordered from the start point to the end
+                                point, i.e. with increasing rY. Start and end point are not part of
+                                the point list, so the first point has rY greater than 0 and the
+                                last point rY less than 1.</ddue:para>
+                            <ddue:para>For nacelles, rX is the running coordinate instead: it
+                                runs from 0 at the start section to 1 at the end section, and the
+                                points are ordered with increasing rX.</ddue:para>
+                            <ddue:para>Start and end point are placed on the profiles via
+                                fromRelativeCircumference and toRelativeCircumference, which count
+                                along the profile in the direction of its points, as shown in the
+                                figures below: on a wing profile from -1 at the trailing edge of
+                                the lower side over 0 at the leading edge to 1 at the trailing
+                                edge of the upper side; on a fuselage profile from 0 at its first
+                                point, the lowest point, upwards along the right side. The figure
+                                shows a half profile, which ends at 1 at its highest point; on a
+                                full, mirror-symmetric profile, the highest point lies at 0.5.</ddue:para>
                             <ddue:para>A profile can be symmetric. In that case the profile
                                 is interpreted as being not closed and will be closed by
                                 mirroring it on the symmetry plane.</ddue:para>
@@ -33942,10 +33961,10 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                                 and last point may, but need not to, be identical. Hence, the
                                 trailing edge may be sharp or blunt. In both cases, first and last
                                 point have the same x-coordinate; crooked trailing edges are not
-                                allowed. When used for a nacelle the
-                                profile axis align with the global axes as follows:
-                                +x_profile -&gt; +x_global;
-                                +y-profile -&gt; -z_global</ddue:para>
+                                allowed. When used for a nacelle, +x_profile points in the
+                                direction of +x_global and +y_profile points radially away from
+                                the nacelle axis; for a section at 0°, +y_profile therefore
+                                points in the direction of +z_global.</ddue:para>
                             <ddue:para>Curve profiles (<ddue:codeInline>curveProfiles</ddue:codeInline>) are open
                                 curves, such as the rotation curves of nacelles, which run from
                                 their first to their last point. The rules for the order of the
