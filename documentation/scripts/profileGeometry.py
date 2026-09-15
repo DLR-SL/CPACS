@@ -114,6 +114,8 @@ def figure_point_order():
         # (a) wing profile in the x-z plane
         cx, cz = airfoil_curve()
         wing.fill(cx, cz, color=CURVE, alpha=0.08, lw=0)
+        wing.plot([0.0, 1.0], [0.0, 0.0], color=MUTED, lw=LINE["reference"])
+        wing.text(0.62, 0.004, "chord line", fontsize=NOTE, color=INK2, ha="center", va="bottom")
         wing.plot(cx, cz, color=CURVE)
         points = airfoil_points()
         positions = {
