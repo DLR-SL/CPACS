@@ -12784,19 +12784,19 @@ cpacs@dlr.de
                             <ddue:para>
                                 <ddue:legacyBold>Example</ddue:legacyBold>
                             </ddue:para>
-                            <ddue:para>The following fuselage profile has a flat floor between the kinks at points 3 and 9 and a circular arc above it. Points 3, 6 and 9 have fixed curve parameters, so that they meet the corresponding points of a second profile of the same fuselage. It is the profile shown in figure (a) and the rear profile in figure (b).</ddue:para>
+                            <ddue:para>The following fuselage profile has a circular arc and a flat floor between the kinks at points 5 and 9. Points 5, 7 and 9 have fixed curve parameters, so that they meet the corresponding points of a second profile of the same fuselage. It is the profile shown in figure (a) and the rear profile in figure (b).</ddue:para>
                             <ddue:code language="XML" title="Fuselage profile with kinks and parameter map">
                                 <![CDATA[
 <fuselageProfile uID="FloorProfile_wide">
     <name>Fuselage profile with flat floor, wide</name>
     <pointList>
-        <x>0;0;0;0;0;0;0;0;0;0;0</x>
-        <y>0;0.4;0.8;1.1598;0.8269;0;-0.8269;-1.1598;-0.8;-0.4;0</y>
-        <z>-1;-1;-1;-0.1789;0.6535;1;0.6535;-0.1789;-1;-1;-1</z>
-        <kinkIndices>3;9</kinkIndices>
+        <x>0;0;0;0;0;0;0;0;0;0;0;0;0</x>
+        <y>0;0.6503;1.077;1.1334;0.8;0.4;0;-0.4;-0.8;-1.1334;-1.077;-0.6503;0</y>
+        <z>1;0.8006;0.2708;-0.4071;-1;-1;-1;-1;-1;-0.4071;0.2708;0.8006;1</z>
+        <kinkIndices>5;9</kinkIndices>
         <parameterMap>
-            <pointIndices>3;6;9</pointIndices>
-            <paramOnCurve>0.1;0.5;0.9</paramOnCurve>
+            <pointIndices>5;7;9</pointIndices>
+            <paramOnCurve>0.4;0.5;0.6</paramOnCurve>
         </parameterMap>
     </pointList>
 </fuselageProfile>
@@ -20968,12 +20968,15 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                             <ddue:para>Start and end point are placed on the profiles via
                                 fromRelativeCircumference and toRelativeCircumference, which count
                                 along the profile in the direction of its points, as shown in the
-                                figures below: on a wing profile from -1 at the trailing edge of
+                                figure below: on a wing profile from -1 at the trailing edge of
                                 the lower side over 0 at the leading edge to 1 at the trailing
                                 edge of the upper side; on a fuselage profile from 0 at its first
-                                point, the lowest point, upwards along the right side. The figure
-                                shows a half profile, which ends at 1 at its highest point; on a
-                                full, mirror-symmetric profile, the highest point lies at 0.5.</ddue:para>
+                                point, the highest point, downwards along the right side. On a
+                                full, mirror-symmetric profile, the lowest point lies at 0.5; a
+                                half profile ends at 1 at its lowest point.</ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="guideCurveCircumference"/>
+                            </ddue:mediaLink>
                             <ddue:para>A profile can be symmetric. In that case the profile
                                 is interpreted as being not closed and will be closed by
                                 mirroring it on the symmetry plane.</ddue:para>
@@ -20981,12 +20984,6 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                                 fuselage</ddue:para>
                             <ddue:para>Connection of guide curves from segment to segment
                             </ddue:para>
-                            <ddue:mediaLink>
-                                <ddue:image xlink:href="guideProfileWing"/>
-                            </ddue:mediaLink>
-                            <ddue:mediaLink>
-                                <ddue:image xlink:href="guideProfileFuselage"/>
-                            </ddue:mediaLink>
                             <ddue:para>Please note, currently it is not possible to apply any
                                 means of class based transformation in the description. However,
                                 this may be an addition for the future. </ddue:para>
@@ -32632,10 +32629,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                                 Vectors. The x, y and z vector elements with the same index
                                 specify a 3D point relative to a geometric segment.</ddue:para>
                             <ddue:mediaLink>
-                                <ddue:image xlink:href="guideProfileWing"/>
-                            </ddue:mediaLink>
-                            <ddue:mediaLink>
-                                <ddue:image xlink:href="guideProfileFuselage"/>
+                                <ddue:image xlink:href="guideCurveCircumference"/>
                             </ddue:mediaLink>
                             <ddue:mediaLink>
                                 <ddue:image xlink:href="guideProfileLong"/>
@@ -34219,11 +34213,9 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                                 may, but need not to, be identical. Hence, it is possible to
                                 include "open" profiles.</ddue:para>
                             <ddue:para>The order of the points depends on the use of the profile
-                                and is given in the examples below. In both cases, the points run
-                                in the mathematically positive sense about the axis normal to the
-                                profile plane (right-hand rule): about the y-axis for wing
-                                profiles and about the x-axis for fuselage profiles. Plotted with
-                                x to the right and z upwards, a wing profile therefore runs
+                                and is given in the examples below. In both cases, plotted with the
+                                horizontal axis of the profile to the right (x for wing profiles,
+                                y for fuselage profiles) and z upwards, the points run
                                 clockwise.</ddue:para>
                             <ddue:para>Example 1: For a wing or a rotor blade, the airfoil
                                 coordinates are defined in x and z with all the y-coordinates
@@ -34239,13 +34231,49 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                                 <ddue:para>TiGL 3.5 reverses the point list of a wing or rotor profile that starts with the upper side and issues a warning. The <ddue:codeInline>kinkIndices</ddue:codeInline> and the <ddue:codeInline>parameterMap</ddue:codeInline> are not adapted to the reversed order.</ddue:para>
                             </ddue:alert>
                             <ddue:para>Example 2: For a fuselage, the coordinates are
-                                typically given in y and z with x set to "0". Starting point of
-                                the profile should be the lowest point (typically in the symmetry
-                                plane), then upwards on the positive y-side up to the highest
-                                point (again, typically in the symmetry plane). Depending on,
-                                whether the fuselage shall be specified with symmetry condition
-                                or not, the profile either ends there, or continues on the
-                                negative y-side back down to the lowest point.</ddue:para>
+                                typically given in y and z with x set to "0". The starting point of
+                                the profile is the highest point (typically in the symmetry plane);
+                                the points then run downwards on the positive y side to the lowest
+                                point (again, typically in the symmetry plane). Depending on
+                                whether the fuselage is specified with a symmetry condition or not,
+                                the profile either ends there or continues on the negative y side
+                                back up to the highest point. This is the same order as for
+                                standard profiles (standardProfileType), so that point lists and
+                                standard profiles can be combined in one fuselage.</ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="profilePointOrder"/>
+                            </ddue:mediaLink>
+                            <ddue:para>The following wing airfoil and fuselage profile are the ones shown in the figure. The parameterMap of the fuselage profile gives its widest points, points 4 and 10, the curve parameters of the widest points of a superellipse (see standardProfileType).</ddue:para>
+                            <ddue:code language="XML" title="Wing airfoil and fuselage profile defined by point lists">
+                                <![CDATA[
+<profiles>
+    <wingAirfoils>
+        <wingAirfoil uID="NACA0012_points">
+            <name>NACA 0012, 13 points</name>
+            <pointList>
+                <x>1;0.933;0.75;0.5;0.25;0.067;0;0.067;0.25;0.5;0.75;0.933;1</x>
+                <y>0;0;0;0;0;0;0;0;0;0;0;0;0</y>
+                <z>0;-0.0093;-0.0312;-0.0529;-0.0594;-0.0401;0;0.0401;0.0594;0.0529;0.0312;0.0093;0</z>
+            </pointList>
+        </wingAirfoil>
+    </wingAirfoils>
+    <fuselageProfiles>
+        <fuselageProfile uID="FuselageProfile_points">
+            <name>Fuselage profile, point list</name>
+            <pointList>
+                <x>0;0;0;0;0;0;0;0;0;0;0;0;0</x>
+                <y>0;0.3;0.45;0.5;0.45;0.3;0;-0.3;-0.45;-0.5;-0.45;-0.3;0</y>
+                <z>0.5;0.38;0.1615;-0.1;-0.2925;-0.4397;-0.5;-0.4397;-0.2925;-0.1;0.1615;0.38;0.5</z>
+                <parameterMap>
+                    <pointIndices>4;10</pointIndices>
+                    <paramOnCurve>0.25;0.75</paramOnCurve>
+                </parameterMap>
+            </pointList>
+        </fuselageProfile>
+    </fuselageProfiles>
+</profiles>
+                                ]]>
+                            </ddue:code>
                             <ddue:para>Alternatively, it is possible to specify the
                                 coordinates of a profile via the CST (class function /shape
                                 function transformation technique) notation. Please see the
@@ -34967,24 +34995,26 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Rectangle</ddue:para>
+                        <ddue:para>Rectangle with optionally rounded corners</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>The width of the profile is always 1, since scaling is performed after referencing it (e.g., in the fuselage).</ddue:para>
-                            <ddue:para>The resulting profile is defined by the following equation:</ddue:para>
-                            <ddue:mediaLink>
-                                <ddue:image xlink:href="eq_roundedRectangle"/>
-                            </ddue:mediaLink>
                             <ddue:para>
-                                with <ddue:legacyItalic>c = cornerRadius</ddue:legacyItalic> and <ddue:legacyItalic>r = heightToWidthRatio</ddue:legacyItalic>.
-                            </ddue:para>
-                            <ddue:para>
-                                Example: Rectangle with <ddue:legacyItalic>cornerRadius</ddue:legacyItalic>=0.125 and <ddue:legacyItalic>heightToWidthRatio</ddue:legacyItalic>=0.5
+                                The rectangle is 1 wide in y direction and <ddue:codeInline>heightToWidthRatio</ddue:codeInline> high in z direction, centered at the origin.
+                                The optional <ddue:codeInline>cornerRadius</ddue:codeInline> rounds all four corners with quarter circles of the same radius, given relative to the width; without it, the corners are sharp.
+                                The radius must be less than half the width and must not exceed half the height; if it equals half the height, the short sides become semicircles.
+                                Order and curve parameter are described for <ddue:codeInline>standardProfileType</ddue:codeInline>.
                             </ddue:para>
                             <ddue:mediaLink>
-                                <ddue:image xlink:href="rectangleRoundedCorners"/>
+                                <ddue:image xlink:href="rectangleProfile"/>
                             </ddue:mediaLink>
+                            <ddue:para>The contour is the set of points (y, z) that fulfill</ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="eq_rectangleProfile"/>
+                            </ddue:mediaLink>
+                            <ddue:para>
+                                with <ddue:legacyItalic>c</ddue:legacyItalic> = <ddue:codeInline>cornerRadius</ddue:codeInline> and <ddue:legacyItalic>r</ddue:legacyItalic> = <ddue:codeInline>heightToWidthRatio</ddue:codeInline>.
+                            </ddue:para>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -34995,7 +35025,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:all>
                     <xsd:element name="cornerRadius" minOccurs="0">
                         <xsd:annotation>
-                            <xsd:documentation>Radius of the rectangle corners</xsd:documentation>
+                            <xsd:documentation>Radius of the rounded corners relative to the width, less than half the width and at most half the height (if omitted: sharp corners)</xsd:documentation>
                         </xsd:annotation>
                         <xsd:complexType>
                             <xsd:annotation>
@@ -35024,7 +35054,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                                     </ddue:summary>
                                 </sd:schemaDoc>
                             </xsd:appinfo>
-                            <xsd:documentation>Ratio of the rectangle height to its width</xsd:documentation>
+                            <xsd:documentation>Height of the rectangle relative to its width</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -38487,8 +38517,112 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Standard profile</ddue:para>
+                        <ddue:para>Profile defined by a parametric standard shape</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>
+                                A standard profile describes the cross section of a fuselage-like body by a few parameters instead of a point list: either a rectangle with optionally rounded corners or a superellipse.
+                                It is intended for fuselage profiles.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Coordinates</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The profile is a closed curve in the y-z plane (x = 0), centered at the origin.
+                                Its width in y direction is always 1; its height in z direction is 1 for a superellipse and <ddue:codeInline>heightToWidthRatio</ddue:codeInline> for a rectangle.
+                                The actual size, position and orientation are defined where the profile is referenced, e.g. by the scaling of a fuselage element; scaling y and z differently changes the proportions of the profile.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Order and curve parameter</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                Start point, direction and curve parameter <ddue:legacyItalic>t</ddue:legacyItalic> of a standard profile are not set in the data, but they determine how it is used:
+                                points with equal parameters of consecutive profiles are connected (see Combining profiles below), and positions on the profile, such as the start and end of a fuselage guide curve (<ddue:codeInline>guideCurveType</ddue:codeInline>), are counted from the start point in the direction of the curve.
+                            </ddue:para>
+                            <ddue:para>
+                                The curve starts at the top (y = 0) and runs first over the positive y side down to the bottom and then over the negative y side back to the top.
+                                Its curve parameter <ddue:legacyItalic>t</ddue:legacyItalic> runs from 0 to 1, and four points have fixed parameters:
+                            </ddue:para>
+                            <ddue:table>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:legacyBold>t</ddue:legacyBold>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        <ddue:legacyBold>Rectangle</ddue:legacyBold>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        <ddue:legacyBold>Superellipse</ddue:legacyBold>
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>0 and 1</ddue:entry>
+                                    <ddue:entry>middle of the upper side</ddue:entry>
+                                    <ddue:entry>top</ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>0.25</ddue:entry>
+                                    <ddue:entry>middle of the side at y = 0.5</ddue:entry>
+                                    <ddue:entry>widest point at y = 0.5</ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>0.5</ddue:entry>
+                                    <ddue:entry>middle of the lower side</ddue:entry>
+                                    <ddue:entry>bottom</ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>0.75</ddue:entry>
+                                    <ddue:entry>middle of the side at y = −0.5</ddue:entry>
+                                    <ddue:entry>widest point at y = −0.5</ddue:entry>
+                                </ddue:row>
+                            </ddue:table>
+                            <ddue:para>How the parameter is distributed between these points is left to the tool.</ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="standardProfile"/>
+                            </ddue:mediaLink>
+                            <ddue:para>
+                                <ddue:legacyBold>Combining profiles</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                Consecutive profiles of a fuselage are connected at equal curve parameters (see <ddue:codeInline>curvePointListXYZType</ddue:codeInline>).
+                                Between two standard profiles, top, sides and bottom are therefore always connected with each other, even if the profiles differ in type or proportions.
+                                Fuselage point lists follow the same order (see <ddue:codeInline>profileGeometryType</ddue:codeInline>), so that both can be combined in one fuselage.
+                                The corresponding points of a point list can be given the parameters 0.25, 0.5 and 0.75 with a <ddue:codeInline>parameterMap</ddue:codeInline>.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Example</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>The following fuselage profiles are the rectangle and the superellipse shown in the figure above.</ddue:para>
+                            <ddue:code language="XML" title="Fuselage profiles defined by a rectangle and a superellipse">
+                                <![CDATA[
+<fuselageProfiles>
+    <fuselageProfile uID="RectangleProfile">
+        <name>Rectangle with rounded corners</name>
+        <standardProfile>
+            <rectangle>
+                <cornerRadius>0.15</cornerRadius>
+                <heightToWidthRatio>0.75</heightToWidthRatio>
+            </rectangle>
+        </standardProfile>
+    </fuselageProfile>
+    <fuselageProfile uID="SuperEllipseProfile">
+        <name>Superellipse with flattened lower half</name>
+        <standardProfile>
+            <superEllipse>
+                <mUpper>2</mUpper>
+                <nUpper>2</nUpper>
+                <mLower>3</mLower>
+                <nLower>2</nLower>
+                <lowerHeightFraction>0.4</lowerHeightFraction>
+            </superEllipse>
+        </standardProfile>
+    </fuselageProfile>
+</fuselageProfiles>
+                                ]]>
+                            </ddue:code>
+                        </ddue:content>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -38497,12 +38631,12 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:choice>
                     <xsd:element name="rectangle" type="rectangleProfileType">
                         <xsd:annotation>
-                            <xsd:documentation>Rectangular profile</xsd:documentation>
+                            <xsd:documentation>Rectangle with optionally rounded corners</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="superEllipse" type="superEllipseProfileType">
                         <xsd:annotation>
-                            <xsd:documentation>Superelliptic profile</xsd:documentation>
+                            <xsd:documentation>Superellipse composed of an upper and a lower half</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:choice>
@@ -39745,54 +39879,75 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Superellipse</ddue:para>
+                        <ddue:para>Superellipse composed of an upper and a lower half</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>A profile based on superellipses is composed of an upper and a lower semi-ellipse, which may differ from each other in their parameterization.
-                                The total width and height of the profile is always 1, since scaling is performed after referencing (e.g., in the fuselage).
-                            </ddue:para>
                             <ddue:para>
-                                This <ddue:legacyItalic>lowerHeightFraction</ddue:legacyItalic> describes the portion of the lower semi-ellipse on the total height.
+                                The profile consists of an upper and a lower semi-superellipse, which meet at their widest point on the line z = z<ddue:subscript>0</ddue:subscript> and can be shaped independently.
+                                Width and total height are always 1, and the profile is centered at the origin.
+                                <ddue:codeInline>lowerHeightFraction</ddue:codeInline> is the height of the lower half relative to the total height and thus defines where the two halves meet.
+                                Order and curve parameter are described for <ddue:codeInline>standardProfileType</ddue:codeInline>.
                             </ddue:para>
-                            <ddue:para>The resulting profile is defined by the following set of equations:</ddue:para>
+                            <ddue:para>The contour is the set of points (y, z) that fulfill</ddue:para>
                             <ddue:mediaLink>
-                                <ddue:image xlink:href="superEllipseUpper"/>
-                            </ddue:mediaLink>
-                            <ddue:mediaLink>
-                                <ddue:image xlink:href="superEllipseLower"/>
-                            </ddue:mediaLink>
-                            <ddue:para>with</ddue:para>
-                            <ddue:mediaLink>
-                                <ddue:image xlink:href="superEllipseLowerZ0"/>
-                            </ddue:mediaLink>
-                            <ddue:para>The following examples indicate the various possibilities of parametric profiles:</ddue:para>
-                            <ddue:para>
-                                <ddue:legacyBold>Example 1</ddue:legacyBold>:
-                                (<ddue:legacyItalic>mUpper,nUpper,mLower,nLower, lowerHeightFraction</ddue:legacyItalic>) = (0.5; 2; 5; 3; 0.25)
-                            </ddue:para>
-                            <ddue:mediaLink>
-                                <ddue:image xlink:href="superEllipseExample1"/>
+                                <ddue:image xlink:href="eq_superEllipseProfile"/>
                             </ddue:mediaLink>
                             <ddue:para>
-                                <ddue:legacyBold>Example 2</ddue:legacyBold>:
-                                (<ddue:legacyItalic>mUpper,nUpper,mLower,nLower, lowerHeightFraction</ddue:legacyItalic>) = (2; 2; 2; 2; 0.5) = a circle
+                                The exponents <ddue:legacyItalic>m</ddue:legacyItalic> act on the y term and the exponents <ddue:legacyItalic>n</ddue:legacyItalic> on the z term.
+                                Both equal to 2 give half an ellipse; larger values give fuller shapes that approach a rectangle, both equal to 1 give straight lines, and values below 1 give concave, pointed shapes.
+                                A rectangle cannot be described exactly, since infinite exponents are not allowed; use <ddue:codeInline>rectangle</ddue:codeInline> instead.
                             </ddue:para>
+                            <ddue:para>The following figure shows three examples:</ddue:para>
+                            <ddue:table>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:legacyBold>Example</ddue:legacyBold>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        <ddue:legacyBold>mUpper</ddue:legacyBold>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        <ddue:legacyBold>nUpper</ddue:legacyBold>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        <ddue:legacyBold>mLower</ddue:legacyBold>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        <ddue:legacyBold>nLower</ddue:legacyBold>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        <ddue:legacyBold>lowerHeightFraction</ddue:legacyBold>
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>(a) pointed top, flat bottom</ddue:entry>
+                                    <ddue:entry>0.5</ddue:entry>
+                                    <ddue:entry>2</ddue:entry>
+                                    <ddue:entry>5</ddue:entry>
+                                    <ddue:entry>3</ddue:entry>
+                                    <ddue:entry>0.25</ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>(b) circle</ddue:entry>
+                                    <ddue:entry>2</ddue:entry>
+                                    <ddue:entry>2</ddue:entry>
+                                    <ddue:entry>2</ddue:entry>
+                                    <ddue:entry>2</ddue:entry>
+                                    <ddue:entry>0.5</ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>(c) diamond, i.e. a square rotated by 45°</ddue:entry>
+                                    <ddue:entry>1</ddue:entry>
+                                    <ddue:entry>1</ddue:entry>
+                                    <ddue:entry>1</ddue:entry>
+                                    <ddue:entry>1</ddue:entry>
+                                    <ddue:entry>0.5</ddue:entry>
+                                </ddue:row>
+                            </ddue:table>
                             <ddue:mediaLink>
-                                <ddue:image xlink:href="superEllipseExample2"/>
+                                <ddue:image xlink:href="superEllipseProfile"/>
                             </ddue:mediaLink>
-                            <ddue:para>
-                                <ddue:legacyBold>Example 3</ddue:legacyBold>:
-                                (<ddue:legacyItalic>mUpper,nUpper,mLower,nLower, lowerHeightFraction</ddue:legacyItalic>) = (1; 1; 1; 1; 0.5) = a square / diamond
-                            </ddue:para>
-                            <ddue:mediaLink>
-                                <ddue:image xlink:href="superEllipseExample3"/>
-                            </ddue:mediaLink>
-                            <ddue:para>
-                                <ddue:legacyBold>Note</ddue:legacyBold>: For exponents that are infinitely large, the superellipse converges to a rectangle.
-                                However, the value <ddue:legacyItalic>Inf</ddue:legacyItalic> is not a valid entry at this point.
-                                Use the <ddue:legacyItalic>square</ddue:legacyItalic> element instead.
-                            </ddue:para>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -39803,31 +39958,31 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:all>
                     <xsd:element name="mUpper" type="posExcl0DoubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Exponent m for upper semi-ellipse</xsd:documentation>
+                            <xsd:documentation>Exponent of the y term of the upper half</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="nUpper" type="posExcl0DoubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Exponent n for upper semi-ellipse</xsd:documentation>
+                            <xsd:documentation>Exponent of the z term of the upper half</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="mLower" type="posExcl0DoubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Exponent m for lower semi-ellipse</xsd:documentation>
+                            <xsd:documentation>Exponent of the y term of the lower half</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="nLower" type="posExcl0DoubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Exponent n for lower semi-ellipse</xsd:documentation>
+                            <xsd:documentation>Exponent of the z term of the lower half</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="lowerHeightFraction">
                         <xsd:annotation>
-                            <xsd:documentation>Height of the lower semi-ellipse relative to the total height</xsd:documentation>
+                            <xsd:documentation>Height of the lower half relative to the total height</xsd:documentation>
                         </xsd:annotation>
                         <xsd:complexType>
                             <xsd:annotation>
-                                <xsd:documentation>Fraction of height of the lower semi-ellipse relative to the total height</xsd:documentation>
+                                <xsd:documentation>Fraction of the total height, between 0 and 1</xsd:documentation>
                             </xsd:annotation>
                             <xsd:simpleContent>
                                 <xsd:restriction base="doubleBaseType">

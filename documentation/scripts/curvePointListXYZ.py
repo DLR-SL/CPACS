@@ -49,12 +49,12 @@ INK = COLORS["ink"]
 INK2 = COLORS["inkSecondary"]
 MUTED = COLORS["muted"]
 
-# Curve parameters of the point list: floor (1-3), arc (3-9) and floor (9-11).
-# Points 3, 6 and 9 are the ones listed in the parameter map.
-KINK_INDICES = [3, 9]
-MAPPED_INDICES = [3, 6, 9]
-MAPPED_PARAMETERS = [0.1, 0.5, 0.9]
-POINT_PARAMETERS = [0.0, 0.05, 0.1, 0.1 + 0.4 / 3, 0.1 + 0.8 / 3, 0.5, 0.5 + 0.4 / 3, 0.5 + 0.8 / 3, 0.9, 0.95, 1.0]
+# Curve parameters of the point list: arc (1-5), floor (5-9) and arc (9-13).
+# Points 5, 7 and 9 are the ones listed in the parameter map.
+KINK_INDICES = [5, 9]
+MAPPED_INDICES = [5, 7, 9]
+MAPPED_PARAMETERS = [0.4, 0.5, 0.6]
+POINT_PARAMETERS = [0.0, 0.1, 0.2, 0.3, 0.4, 0.45, 0.5, 0.55, 0.6, 0.7, 0.8, 0.9, 1.0]
 
 # Floor half-widths of the two profiles; both are 2 high (z from -1 to 1).
 WIDE, NARROW = 0.8, 0.4
@@ -63,23 +63,21 @@ WIDE, NARROW = 0.8, 0.4
 def profile_point(t, floor_half_width):
     """Point (y, z) at curve parameter t of the floor profile.
 
-    The floor runs from the bottom center (t = 0) to the right corner (t = 0.1),
-    the arc over the top (t = 0.5) to the left corner (t = 0.9) and the floor back
-    to the bottom center (t = 1). Between these points, t is proportional to the
-    floor length or the arc angle.
+    The profile starts at the top (t = 0) and runs down the arc on the positive y
+    side to the right corner (t = 0.4), along the floor over the bottom center
+    (t = 0.5) to the left corner (t = 0.6) and up the arc back to the top (t = 1).
+    Between these points, t is proportional to the arc angle or the floor length.
     """
+    if t > 0.5:  # mirror image of the first half
+        y, z = profile_point(1.0 - t, floor_half_width)
+        return -y, z
     w = floor_half_width
     center = -w * w / 4.0  # circle through both corners (±w, -1) and the top (0, 1)
     radius = 1.0 - center
     corner = atan2(-1.0 - center, w)
-    if t <= 0.1:
-        return w * t / 0.1, -1.0
-    if t >= 0.9:
-        return -w * (1.0 - t) / 0.1, -1.0
-    if t <= 0.5:
-        angle = corner + (pi / 2 - corner) * (t - 0.1) / 0.4
-    else:
-        angle = pi / 2 + (pi / 2 - corner) * (t - 0.5) / 0.4
+    if t >= 0.4:
+        return w * (0.5 - t) / 0.1, -1.0
+    angle = pi / 2 - (pi / 2 - corner) * t / 0.4
     return radius * cos(angle), center + radius * sin(angle)
 
 
@@ -102,33 +100,33 @@ def figure():
         points = point_list(WIDE)
         ax.plot(curve[:, 0], curve[:, 1], color=CURVE, zorder=2)
 
-        for index, (y, z) in enumerate(points[:-1], start=1):  # point 11 coincides with point 1
+        for index, (y, z) in enumerate(points[:-1], start=1):  # the last point coincides with point 1
             is_kink = index in KINK_INDICES
             ax.plot(y, z, ls="none", marker="D" if is_kink else "o", ms=6.5 if is_kink else 4.5,
                     color=KINK if is_kink else INK, mec=COLORS["surface"], mew=1.0, zorder=4)
-            label = "1, 11" if index == 1 else str(index)
+            label = f"1, {len(points)}" if index == 1 else str(index)
             if index in MAPPED_INDICES:
                 label += f"  (t = {MAPPED_PARAMETERS[MAPPED_INDICES.index(index)]:g})"
-            if index == 1:  # bottom center: below the point
+            if index == 1:  # top: above the point
+                position, ha, va = (y, z + 0.1), "center", "bottom"
+            elif index == MAPPED_INDICES[1]:  # bottom center: below the point
                 position, ha, va = (y, z - 0.13), "center", "top"
             elif z <= -0.999 and not is_kink:  # floor: above the point, inside the profile
                 position, ha, va = (y, z + 0.11), "center", "bottom"
             elif is_kink:  # corners: diagonally below, outwards
                 position, ha, va = (y + 0.1 * np.sign(y), z - 0.1), "left" if y > 0 else "right", "top"
-            elif index == 6:  # top: to the right
-                position, ha, va = (y + 0.1, z + 0.08), "left", "bottom"
             else:  # arc: radially outwards
                 direction = np.array([y, z + 0.16]) / np.hypot(y, z + 0.16)
                 position, ha, va = (y + 0.17 * direction[0], z + 0.17 * direction[1]), "center", "center"
             ax.text(*position, label, fontsize=note, ha=ha, va=va)
 
-        ax.add_patch(FancyArrowPatch((0.2, -0.62), (0.86, -0.3), connectionstyle="arc3,rad=0.28",
+        ax.add_patch(FancyArrowPatch((0.12, 0.62), (0.72, 0.1), connectionstyle="arc3,rad=-0.3",
                                      arrowstyle="-|>", mutation_scale=8, lw=LINE["secondary"], color=INK2))
-        ax.text(0.1, -0.5, "point order", fontsize=note, color=INK2, ha="right", va="center")
+        ax.text(-0.02, 0.45, "point\norder", fontsize=note, color=INK2, ha="right", va="center")
 
         ax.set_aspect("equal")
         ax.set_xlim(-2.0, 2.0)
-        ax.set_ylim(-1.45, 1.4)
+        ax.set_ylim(-1.45, 1.45)
         ax.set_xticks([-1.0, 0.0, 1.0])
         ax.set_yticks([-1.0, 0.0, 1.0])
         ax.set_xlabel("y")
@@ -151,7 +149,7 @@ def figure():
             y, z = profile_point(t, w)
             return project(scale * y, scale * z, x)
 
-        generator_parameters = [0.0, 0.05, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.95]
+        generator_parameters = [0.0, 0.1, 0.2, 0.3, 0.45, 0.5, 0.55, 0.7, 0.8, 0.9]
         for t in generator_parameters + MAPPED_PARAMETERS[::2]:
             is_kink = t in MAPPED_PARAMETERS[::2]
             (y0, z0), (y1, z1) = section_point(t, sections[0]), section_point(t, sections[1])
@@ -166,12 +164,12 @@ def figure():
                 loft.plot(y, z, ls="none", marker="D" if t != 0.5 else "o", ms=6.5 if t != 0.5 else 4.5,
                           color=KINK if t != 0.5 else INK, mec=COLORS["surface"], mew=1.0, zorder=4)
 
-        near_right = section_point(0.1, sections[1])
-        near_left = section_point(0.9, sections[1])
-        far_top = section_point(0.5, sections[0])
-        loft.text(near_right[0] + 0.12, near_right[1] - 0.06, "t = 0.1 (kink)", fontsize=note, ha="left", va="top")
-        loft.text(near_left[0] - 0.12, near_left[1] - 0.06, "t = 0.9 (kink)", fontsize=note, ha="right", va="top")
-        loft.text(far_top[0] + 0.1, far_top[1] + 0.06, "t = 0.5", fontsize=note, ha="left", va="bottom")
+        near_right = section_point(0.4, sections[1])
+        near_left = section_point(0.6, sections[1])
+        near_bottom = section_point(0.5, sections[1])
+        loft.text(near_right[0] + 0.12, near_right[1] - 0.06, "t = 0.4 (kink)", fontsize=note, ha="left", va="top")
+        loft.text(near_left[0] - 0.12, near_left[1] - 0.06, "t = 0.6 (kink)", fontsize=note, ha="right", va="top")
+        loft.text(near_bottom[0], near_bottom[1] - 0.14, "t = 0.5", fontsize=note, ha="center", va="top")
 
         # coordinate triad
         origin = np.array([1.75, -1.35])
@@ -204,8 +202,8 @@ def figure():
 # ---------------------------------------------------------------------- example
 PROFILES = [
     ("FloorProfile_wide", "Fuselage profile with flat floor, wide", WIDE,
-     "Flat cabin floor between two kinks and a circular arc above it. Points 3 and 9 are kinks; "
-     "points 3, 6 and 9 have fixed curve parameters so that they match the narrow profile."),
+     "Flat cabin floor between two kinks and a circular arc above it. Points 5 and 9 are kinks; "
+     "points 5, 7 and 9 have fixed curve parameters so that they match the narrow profile."),
     ("FloorProfile_narrow", "Fuselage profile with flat floor, narrow", NARROW,
      "Same point order, kinks and curve parameters as the wide profile, but with a narrower floor."),
 ]
