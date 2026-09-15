@@ -189,7 +189,7 @@ Figures and equations are images referenced from the schema with `ddue:mediaLink
 
 - **§21: A generated figure or equation is reproducible from source. The script lives in `documentation/scripts/`, is run with `uv run`, and is committed together with the images it writes.**
 
-A figure that exists only as a PNG cannot be corrected, restyled or regenerated after a schema change. A script can. Each script declares its dependencies with pinned versions as [inline script metadata](https://packaging.python.org/en/latest/specifications/inline-script-metadata/), so `uv run documentation/scripts/<name>.py` from the repository root needs no further setup, and it writes byte-identical files when run again. Data shown in a figure is computed or read by the script, never typed in by hand. `documentation/scripts/cst2D.py` is the reference: it writes the figures and equations of `cst2DType` and the example file `examples/wingAirfoils_cst.xml`.
+A figure that exists only as a PNG cannot be corrected, restyled or regenerated after a schema change. A script can. Each script declares its dependencies with pinned versions as [inline script metadata](https://packaging.python.org/en/latest/specifications/inline-script-metadata/), so `uv run documentation/scripts/<name>.py` from the repository root needs no further setup, and it writes byte-identical files when run again. Data shown in a figure is computed or read by the script, never typed in by hand. `documentation/scripts/cst2D.py` is the reference: it writes the figures and equations of `cst2DType` and the example file `examples/wingAirfoils_cst.xml`. Example files are written with the helpers in `documentation/scripts/example_xml.py`, so that all generated examples share one layout.
 
 - **§22: Figures use the shared style in `documentation/scripts/figure_style.py`.**
 
@@ -232,6 +232,36 @@ Collisions depend on the rendered text size and are not visible in the code. Che
 - **§25: An equation is written as LaTeX and rendered in Computer Modern. The `.tex` source is stored next to the image in `documentation/equations/`.**
 
 `save_equation` in `figure_style.py` writes both files from the same lines, so source and image cannot diverge. It renders with matplotlib's mathtext, which needs no LaTeX installation and understands a large subset of LaTeX math (`\frac`, `\dfrac`, `\sum`, `\left(`…`\right)`, `\mathrm`); stay within that subset. Symbols inside the running text use `ddue:subscript` and `ddue:superscript` rather than an image. Write them so that no inline element directly follows another one or closes its parent (e.g. `B<ddue:subscript>0</ddue:subscript>²/2`, not `B<ddue:subscript>0</ddue:subscript><ddue:superscript>2</ddue:superscript>/2`): the schema formatter puts a line break after such an element, which is displayed as a space.
+
+## Notes on TiGL
+
+CPACS is a tool-independent standard, and its documentation defines what the data means. Most users, however, process the data with [TiGL](https://dlr-sc.github.io/tigl), and where TiGL reads valid data differently, they need to know. §26 to §28 keep the two apart.
+
+- **§26: The normative text is tool-neutral. It describes what the data means, not how a tool reads it.**
+
+A convention that TiGL established in practice is stated as a rule of CPACS, without naming TiGL. The sign of the lower CST coefficients is an example: it is written as the definition of `cst2DType`, not as TiGL behaviour.
+
+- **§27: Where TiGL treats valid data differently, does not support it, or needs a workaround, a TiGL note says so. It is a `ddue:alert` with `class="tigl"`, names the TiGL version it was checked against, and is removed once TiGL follows the text.**
+
+The generator sets the note apart from the text and labels it *TiGL*, so that readers can tell the standard from the state of its main tool at a glance. A note states only behaviour that was checked in a released TiGL version; features still under development in TiGL (at the time of writing, the approximation of point lists) get no note until their behaviour has settled. Place it in the remarks of the type, directly after the statement it qualifies; an element documentation (`xsd:documentation`) is plain text and cannot hold one. Where a TiGL issue exists, link it. A note that applies to no particular tool uses `class="note"` instead of a bold or italic "Note:".
+
+```XML
+<ddue:para>... the point indices start at 1.</ddue:para>
+<ddue:alert class="tigl">
+    <ddue:para>For interpolated fuselage profiles, TiGL 3.5 counts the kinkIndices ... from 0. ...</ddue:para>
+</ddue:alert>
+```
+
+- **§28: A TiGL note describes how TiGL treats the data, not how to use TiGL. How to call TiGL belongs in the TiGL documentation.**
+
+The parameters of TiGL's API functions are not CPACS parameters, even where they share a name: `xsi` in `tiglWingGetUpperPoint` is a surface parameter by default, not the relative chord position CPACS calls `xsi`. Explaining the API in the schema would mix the two.
+
+| Avoid | Use |
+| ---------- | ---------- |
+| "TiGL interprets the lower coefficients with a negative sign." | The sign convention as definition of the type, without TiGL (§26) |
+| A TiGL remark inside a normative paragraph | A separate `ddue:alert class="tigl"` after it |
+| "TiGL does not support this." | "TiGL 3.5 does not support this." |
+| "Use tiglWingSetGetPointBehavior(onLinearLoft) to …" | Nothing in the schema; a hint in the TiGL documentation |
 
 ## Development Guidelines by Example
 

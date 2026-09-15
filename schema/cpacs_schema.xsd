@@ -694,9 +694,12 @@ cpacs@dlr.de
 </enginePylons>
                                         ]]>
                                     </ddue:code>
-                                    <ddue:para>
-                                        <ddue:legacyItalic>Note: This feature is not implemented in TiGL. The upper figure is manually processed to illustrate the principle. In addition, there is an ongoing debate whether the approach is suitable for CPACS due to rapidly increasing complexity and unresolved implicit assumptions as to whether it is one or two components after mirroring. Therefore, it is advised to avoid using the symmetry attribute if possible.</ddue:legacyItalic>
-                                    </ddue:para>
+                                    <ddue:alert class="tigl">
+                                        <ddue:para>TiGL 3.5 does not evaluate the <ddue:codeInline>symmetry</ddue:codeInline> attribute of referencing elements such as <ddue:codeInline>&lt;parentUID&gt;</ddue:codeInline>. The figure above was therefore drawn manually to illustrate the principle.</ddue:para>
+                                    </ddue:alert>
+                                    <ddue:alert class="note">
+                                        <ddue:para>There is an ongoing debate whether the approach is suitable for CPACS due to rapidly increasing complexity and unresolved implicit assumptions as to whether it is one or two components after mirroring. Therefore, it is advised to avoid using the symmetry attribute if possible.</ddue:para>
+                                    </ddue:alert>
                                 </ddue:content>
                             </ddue:section>
                             <ddue:section>
@@ -5330,8 +5333,16 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Approximation settings</ddue:para>
+                        <ddue:para>Settings for approximating a point list</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>
+                                The curve is fitted to the points either with a given number of control points or within a given maximum error.
+                                The error is measured as the distance between each point and the curve, in the coordinates of the point list.
+                            </ddue:para>
+                        </ddue:content>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -5339,7 +5350,7 @@ cpacs@dlr.de
             <xsd:choice>
                 <xsd:element name="controlPointNumber" default="12">
                     <xsd:annotation>
-                        <xsd:documentation>Number of control points that should be used for approximating the given points with a B-spline curve. The minimal value is 4.</xsd:documentation>
+                        <xsd:documentation>Number of control points of the approximating B-spline curve (at least 4)</xsd:documentation>
                     </xsd:annotation>
                     <xsd:complexType>
                         <xsd:simpleContent>
@@ -5351,9 +5362,7 @@ cpacs@dlr.de
                 </xsd:element>
                 <xsd:element name="maximumError" default="1e-5">
                     <xsd:annotation>
-                        <xsd:documentation>Instead of specifying the number of control points, the positive upper bound for the error of the approximation is provided.
-                        The number of control points is increased automatically until the approximation error lies below the given maximum approximation error.
-                        </xsd:documentation>
+                        <xsd:documentation>Maximum approximation error; the number of control points is increased until the error is below this value</xsd:documentation>
                     </xsd:annotation>
                     <xsd:complexType>
                         <xsd:simpleContent>
@@ -5366,19 +5375,13 @@ cpacs@dlr.de
             </xsd:choice>
             <xsd:element name="interpolatedPointsIndices" minOccurs="0" type="stringVectorBaseType">
                 <xsd:annotation>
-                    <xsd:documentation>Index list of points that should still be interpolated. Each index is in the range [1, npoints].
-                    </xsd:documentation>
+                    <xsd:documentation>Indices of the points that are interpolated nonetheless, each in the range from 1 to the number of points</xsd:documentation>
                 </xsd:annotation>
             </xsd:element>
         </xsd:sequence>
         <xsd:attribute name="errorComputationMethod" default="RMSE">
             <xsd:annotation>
-                <xsd:documentation>Here, the approximation error's computation method can be chosen. The error is computed between the defined points (A) and their respective projections on the approximated curve (B).
-                By default, this error is computed as the root mean square error of the distances between (A) and (B).
-                In the following, the currently allowed entries are listed together with their meaning (-&gt; respective computation method):
-                    1. RMSE: Root Mean Square Error
-                    2. MaxError: Maximum Error
-                </xsd:documentation>
+                <xsd:documentation>Method for combining the distances between the points and the curve into the approximation error: RMSE (root mean square, default) or MaxError (maximum)</xsd:documentation>
             </xsd:annotation>
             <xsd:simpleType>
                 <xsd:restriction base="xsd:string">
@@ -12694,12 +12697,16 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Maps points (actually the index in the point list) to a curve parameter.</ddue:para>
+                        <ddue:para>Fixed curve parameters of selected points</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>Which parameters are allowed depends on the context.
-                            For example in a wing profile, values between -1 and 1 are valid.</ddue:para>
+                            <ddue:para>
+                                Assigns a curve parameter <ddue:legacyItalic>t</ddue:legacyItalic> to each point listed in <ddue:codeInline>pointIndices</ddue:codeInline>.
+                                The curve parameter runs from 0 at the first point to 1 at the last point of the point list, and the parameters increase with the point index.
+                                Both vectors have the same number of entries; the i-th parameter belongs to the i-th index.
+                                Why and when to fix curve parameters is described for the point list (<ddue:codeInline>curvePointListXYZType</ddue:codeInline>).
+                            </ddue:para>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -12710,12 +12717,12 @@ cpacs@dlr.de
                 <xsd:sequence>
                     <xsd:element name="pointIndices" type="stringVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>List of indices of points to be mapped. Each index must be in the range [1, npoints].</xsd:documentation>
+                            <xsd:documentation>Indices of the points in ascending order, each in the range from 1 to the number of points</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="paramOnCurve" type="stringVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>List of parameters on the curve, that is mapped to the points defined by their index</xsd:documentation>
+                            <xsd:documentation>Curve parameters of these points, between 0 and 1 and in the same order as the indices</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -12728,39 +12735,71 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>A curve that interpolates a list of points.</ddue:para>
+                        <ddue:para>Smooth curve through an ordered list of points</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>The curve interpolates the list of points, typically with a b-spline.
-                            In theory, the interpolation is somewhat ambiguous as it is not defined at which
-                            curve parameter a point will be interpolated.
+                            <ddue:para>
+                                The curve passes through the points in the order in which they are listed.
+                                The entries of <ddue:codeInline>x</ddue:codeInline>, <ddue:codeInline>y</ddue:codeInline> and <ddue:codeInline>z</ddue:codeInline> with the same position form one point; the <ddue:legacyBold>point indices start at 1</ddue:legacyBold>.
+                                Between the points, the curve is smooth, typically a B-spline.
+                                The plane in which a profile lies and the order of its points are described for the profile (<ddue:codeInline>profileGeometryType</ddue:codeInline>).
                             </ddue:para>
-                            <ddue:para>To solve is ambiguity, an optional parameter map can be defined
-                            that maps point indices with curve parameters.
+                            <ddue:para>
+                                <ddue:legacyBold>Kinks</ddue:legacyBold>
                             </ddue:para>
-                            <ddue:para>Kinks can also be modeled by populating the "kinkIndices" vector with the
-                            indices of points that should be on a kink. As an example, look at the following image:
+                            <ddue:para>
+                                By default, the curve is smooth at every point.
+                                <ddue:codeInline>kinkIndices</ddue:codeInline> lists the points at which the curve may change its direction abruptly, e.g. where a flat cabin floor meets the side of a fuselage.
+                                The curve still passes through such a point, but the shapes before and after the point are independent of each other.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Curve parameter</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                A position on the curve is described by the curve parameter <ddue:legacyItalic>t</ddue:legacyItalic>, which runs from 0 at the first point to 1 at the last point.
+                                Which parameter the points in between receive is not defined by the points alone; a tool usually distributes the parameters according to the distances between the points.
+                                The optional <ddue:codeInline>parameterMap</ddue:codeInline> fixes the parameters of selected points instead; the parameters of the other points are distributed between them.
+                            </ddue:para>
+                            <ddue:alert class="tigl">
+                                <ddue:para>For interpolated fuselage profiles, TiGL 3.5 counts the <ddue:codeInline>kinkIndices</ddue:codeInline> and the <ddue:codeInline>pointIndices</ddue:codeInline> of the <ddue:codeInline>parameterMap</ddue:codeInline> from 0. Kinks and fixed parameters are therefore applied to the point after the intended one. Until this is corrected, the indices have to be reduced by 1 for TiGL.</ddue:para>
+                                <ddue:para>For interpolated wing and rotor profiles, TiGL 3.5 ignores <ddue:codeInline>kinkIndices</ddue:codeInline> and the <ddue:codeInline>parameterMap</ddue:codeInline>.</ddue:para>
+                            </ddue:alert>
+                            <ddue:para>
+                                The parameters matter wherever several curves are combined, above all when a surface is lofted through the profiles of consecutive sections: along the surface, points with equal parameters are connected.
+                                If corresponding points of consecutive profiles, such as the kinks at the floor corners, receive the same parameters, these features are connected along the fuselage instead of running diagonally across its surface.
                             </ddue:para>
                             <ddue:mediaLink>
-                                <ddue:image width="300" xlink:href="curve_point_list_xyz"/>
+                                <ddue:image xlink:href="curvePointListXYZ"/>
                             </ddue:mediaLink>
-                            <ddue:para>In this example, the kinkIndices vector will be "3;7".
-                            Optionally, the parameters of the kinks can be set in the parameter map.
-                            The whole profile looks as follows:
+                            <ddue:para>
+                                <ddue:legacyBold>Approximation</ddue:legacyBold>
                             </ddue:para>
-                            <ddue:code language="XML" title="Point list with kinks and parameter map">
+                            <ddue:para>
+                                By default, the curve interpolates the points, i.e. it passes exactly through each of them.
+                                With <ddue:codeInline>approximationSettings</ddue:codeInline>, the curve approximates the points instead: it is fitted to them with a limited number of control points or within a maximum error.
+                                This keeps curves through many or scattered points compact and smooth, but the curve no longer passes exactly through every point.
+                                Points that have to lie exactly on the curve nonetheless are listed in <ddue:codeInline>interpolatedPointsIndices</ddue:codeInline>.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Example</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>The following fuselage profile has a flat floor between the kinks at points 3 and 9 and a circular arc above it. Points 3, 6 and 9 have fixed curve parameters, so that they meet the corresponding points of a second profile of the same fuselage. It is the profile shown in figure (a) and the rear profile in figure (b).</ddue:para>
+                            <ddue:code language="XML" title="Fuselage profile with kinks and parameter map">
                                 <![CDATA[
-<pointList>
-    <x>...</x>
-    <y>...</y>
-    <z>...</z>
-    <kinkIndices>3;7</kinkIndices>
-    <parameterMap>
-        <pointIndices>3;5;7</pointIndices>
-        <paramOnCurve>0.2;0.5;0.8</paramOnCurve>
-    </parameterMap>
-</pointList>
+<fuselageProfile uID="FloorProfile_wide">
+    <name>Fuselage profile with flat floor, wide</name>
+    <pointList>
+        <x>0;0;0;0;0;0;0;0;0;0;0</x>
+        <y>0;0.4;0.8;1.1598;0.8269;0;-0.8269;-1.1598;-0.8;-0.4;0</y>
+        <z>-1;-1;-1;-0.1789;0.6535;1;0.6535;-0.1789;-1;-1;-1</z>
+        <kinkIndices>3;9</kinkIndices>
+        <parameterMap>
+            <pointIndices>3;6;9</pointIndices>
+            <paramOnCurve>0.1;0.5;0.9</paramOnCurve>
+        </parameterMap>
+    </pointList>
+</fuselageProfile>
                                 ]]>
                             </ddue:code>
                         </ddue:content>
@@ -12773,20 +12812,17 @@ cpacs@dlr.de
                 <xsd:sequence>
                     <xsd:element name="kinkIndices" minOccurs="0" type="stringVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Indices of points at which the curve has a kink. Each index is in the range [1, npoints].
-                            </xsd:documentation>
+                            <xsd:documentation>Indices of the points at which the curve has a kink, each in the range from 1 to the number of points</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="parameterMap" minOccurs="0" type="curveParamPointMapType">
                         <xsd:annotation>
-                            <xsd:documentation>Map between point index and curve parameter</xsd:documentation>
+                            <xsd:documentation>Fixed curve parameters of selected points</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="approximationSettings" minOccurs="0" type="approximationSettingsType">
                         <xsd:annotation>
-                            <xsd:documentation>If this element is specified, the given point list is approximated instead of interpolated when creating a b-spline representation of the profile.
-                            This has the advantage of more control over the complexity of the resulting b-spline curves, but does not guarantee that the b-spline curve passes through all given points as for the interpolation approach introducing possible imprecisions in the geometrical representation of the profile.
-                            </xsd:documentation>
+                            <xsd:documentation>Settings for approximating the points instead of interpolating them (if omitted: the curve passes through all points)</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -30718,6 +30754,9 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     <ddue:remarks>
                         <ddue:content>
                             <ddue:para>Parametric definition of a NACA airfoil (4-digit or 5-digit series).</ddue:para>
+                            <ddue:alert class="tigl">
+                                <ddue:para>TiGL 3.5 supports only <ddue:codeInline>naca4DigitCode</ddue:codeInline>; a profile defined by <ddue:codeInline>naca5DigitCode</ddue:codeInline> cannot be built.</ddue:para>
+                            </ddue:alert>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -32727,15 +32766,14 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>List of 3D points, kept in three coordinate vecors (x,
-                            y, z)</ddue:para>
+                        <ddue:para>Ordered list of 3D points, stored as three coordinate vectors</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>This set of vectors contains an ordered list of points
-                                for x, y and z coordinates in the form of stringBased Vectors.
-                                The x, y and z vector elements with the same index specify a 3D
-                                point.</ddue:para>
+                            <ddue:para>
+                                The entries of <ddue:codeInline>x</ddue:codeInline>, <ddue:codeInline>y</ddue:codeInline> and <ddue:codeInline>z</ddue:codeInline> with the same position form one point.
+                                All three vectors have the same number of entries.
+                            </ddue:para>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -34196,9 +34234,10 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                                 one. The trailing edge may be sharp, with identical first and
                                 last point, or blunt, with first and last point differing in z.
                                 In both cases, first and last point have the same x-coordinate;
-                                crooked trailing edges are not allowed. TiGL
-                                reverses a point list that starts with the upper side and issues
-                                a warning.</ddue:para>
+                                crooked trailing edges are not allowed.</ddue:para>
+                            <ddue:alert class="tigl">
+                                <ddue:para>TiGL 3.5 reverses the point list of a wing or rotor profile that starts with the upper side and issues a warning. The <ddue:codeInline>kinkIndices</ddue:codeInline> and the <ddue:codeInline>parameterMap</ddue:codeInline> are not adapted to the reversed order.</ddue:para>
+                            </ddue:alert>
                             <ddue:para>Example 2: For a fuselage, the coordinates are
                                 typically given in y and z with x set to "0". Starting point of
                                 the profile should be the lowest point (typically in the symmetry

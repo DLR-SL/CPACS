@@ -41,6 +41,9 @@ COLORS = {
     "muted": "#898781",  # reference lines (e.g. chord), leader lines, neutral comparison curves
     "axis": "#c3c2b7",  # axis lines and ticks
     "grid": "#e1e0d9",  # optional gridlines
+    # Light-theme plate; used as a thin ring around markers so that they stay
+    # legible where they sit on a line.
+    "surface": "#fefdfb",
 }
 
 # Line widths in points. Figures are laid out at 100 dpi nominal size, so
