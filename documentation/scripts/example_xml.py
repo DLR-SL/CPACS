@@ -30,15 +30,29 @@ def transformation_xml(rotation=(0.0, 0.0, 0.0), scaling=(1.0, 1.0, 1.0), transl
     return "\n".join(parts)
 
 
+def _collections(pairs, levels: int) -> str:
+    """<tag> ... </tag> blocks for (tag, content) pairs, the tags at the given level."""
+    blocks = []
+    for tag, content in pairs:
+        blocks += [indent(f"<{tag}>", levels), indent(content, levels + 1), indent(f"</{tag}>", levels)]
+    return "\n".join(blocks)
+
+
 def write_cpacs_file(path: Path, generator: Path, name: str, description: str, model_uid: str, model_name: str,
-                     components_tag: str, components: str, profiles_tag: str, profiles: str) -> None:
+                     components_tag: str, components: str, profiles_tag: str, profiles: str,
+                     extra_components=(), extra_profiles=()) -> None:
     """Write a complete CPACS file with one aircraft model and its profiles.
 
     generator is the script writing the file (pass Path(__file__)). It is named in a
     comment at the top of the file and in the version information, so that nobody
     edits the file by hand and loses the changes the next time the script runs.
+
+    extra_components and extra_profiles are further (tag, xml) pairs, written after
+    the first component and profile collection.
     """
     script = generator.resolve().relative_to(path.resolve().parents[1]).as_posix()
+    component_blocks = _collections([(components_tag, components), *extra_components], 4)
+    profile_blocks = _collections([(profiles_tag, profiles), *extra_profiles], 3)
     path.write_text(
         f"""<?xml version="1.0" encoding="UTF-8"?>
 <!--
@@ -65,15 +79,11 @@ def write_cpacs_file(path: Path, generator: Path, name: str, description: str, m
         <aircraft>
             <model uID="{model_uid}">
                 <name>{model_name}</name>
-                <{components_tag}>
-{indent(components, 5)}
-                </{components_tag}>
+{component_blocks}
             </model>
         </aircraft>
         <profiles>
-            <{profiles_tag}>
-{indent(profiles, 4)}
-            </{profiles_tag}>
+{profile_blocks}
         </profiles>
     </vehicles>
 </cpacs>""",

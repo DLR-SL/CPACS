@@ -6,7 +6,7 @@
 # ]
 # ///
 """Figures and example data for the point order of profiles (profileGeometryType) and the
-relative circumference of guide curves (guideCurveProfileGeometryType).
+relative circumference of guide curves (guideCurveType).
 
 Run from the repository root:
 

@@ -20942,51 +20942,75 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Guide curve profile geometry</ddue:para>
+                        <ddue:para>Shape of guide curves, given as points in relative coordinates</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>A guide curve profile is defined by a profile name, an
-                                optional description and a 3-dimensional relative pointlist with
-                                all three coordinates mandatory. For typical profiles, one of
-                                the coordinate vectors contains only "0" entries. All point
-                                coordinates are transferred to the global coordinate system.
+                            <ddue:para>
+                                A guide curve profile describes the shape of a guide curve independently of where the curve lies.
+                                Its points are given relative to the start and end point of the guide curve and to the size of the profiles.
+                                Several guide curves can therefore share one guide curve profile, also in segments of different size or in different components; the shape scales with the profiles.
                             </ddue:para>
-                            <ddue:para>For wings and fuselages, the points lie between the start
-                                point of the guide curve on the inner (wing) or front (fuselage)
-                                profile and its end point on the outer or rear profile. They are
-                                given in the relative coordinates illustrated in guideCurveType:
-                                rY runs from 0 at the start point to 1 at the end point, rX and rZ
-                                are offsets relative to the local chord (wing) or height
-                                (fuselage). The points are ordered from the start point to the end
-                                point, i.e. with increasing rY. Start and end point are not part of
-                                the point list, so the first point has rY greater than 0 and the
-                                last point rY less than 1.</ddue:para>
-                            <ddue:para>For nacelles, rX is the running coordinate instead: it
-                                runs from 0 at the start section to 1 at the end section, and the
-                                points are ordered with increasing rX.</ddue:para>
-                            <ddue:para>Start and end point are placed on the profiles via
-                                fromRelativeCircumference and toRelativeCircumference, which count
-                                along the profile in the direction of its points, as shown in the
-                                figure below: on a wing profile from -1 at the trailing edge of
-                                the lower side over 0 at the leading edge to 1 at the trailing
-                                edge of the upper side; on a fuselage profile from 0 at its first
-                                point, the highest point, downwards along the right side. On a
-                                full, mirror-symmetric profile, the lowest point lies at 0.5; a
-                                half profile ends at 1 at its lowest point.</ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Coordinates</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                For wings and fuselages, <ddue:codeInline>rY</ddue:codeInline> is the position along the straight line from the start point (0) to the end point (1) of the guide curve.
+                                <ddue:codeInline>rX</ddue:codeInline> and <ddue:codeInline>rZ</ddue:codeInline> are offsets from this line, as fractions of the chord length (wing) or height (fuselage) of the profiles at this position.
+                                <ddue:codeInline>rX</ddue:codeInline> is applied along the x-axis of the wing or the z-axis of the fuselage, unless the guide curve gives another <ddue:codeInline>rXDirection</ddue:codeInline>; <ddue:codeInline>rZ</ddue:codeInline> is applied normal to it and to the line.
+                                The exact construction is given for the guide curve (<ddue:codeInline>guideCurveType</ddue:codeInline>).
+                            </ddue:para>
                             <ddue:mediaLink>
-                                <ddue:image xlink:href="guideCurveCircumference"/>
+                                <ddue:image xlink:href="guideCurveProfile"/>
                             </ddue:mediaLink>
-                            <ddue:para>A profile can be symmetric. In that case the profile
-                                is interpreted as being not closed and will be closed by
-                                mirroring it on the symmetry plane.</ddue:para>
-                            <ddue:para>Curves have to go continuously over the whole wing or
-                                fuselage</ddue:para>
-                            <ddue:para>Connection of guide curves from segment to segment
+                            <ddue:para>
+                                Figure (a) shows the guide curve profile of the example below in its own coordinates, figure (b) the guide curve it gives on top of a fuselage segment whose height grows from 1.2 to 2.
+                                Each point is lifted by <ddue:codeInline>rX</ddue:codeInline> times the local height, so the same value of <ddue:codeInline>rX</ddue:codeInline> gives a larger offset near the larger profile.
                             </ddue:para>
-                            <ddue:para>Please note, currently it is not possible to apply any
-                                means of class based transformation in the description. However,
-                                this may be an addition for the future. </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Points</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:list class="bullet">
+                                <ddue:listItem>
+                                    <ddue:para>The guide curve passes through all points, in the order of the list, i.e. with increasing <ddue:codeInline>rY</ddue:codeInline>.</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>Start and end point are not part of the list; they are given by the guide curve. The first point therefore has an <ddue:codeInline>rY</ddue:codeInline> greater than 0 and the last point an <ddue:codeInline>rY</ddue:codeInline> less than 1.</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>At least one point is required. A single point with <ddue:codeInline>rX</ddue:codeInline> and <ddue:codeInline>rZ</ddue:codeInline> equal to 0 gives a straight guide curve.</ddue:para>
+                                </ddue:listItem>
+                            </ddue:list>
+                            <ddue:para>
+                                For nacelles, the coordinates have a different meaning (<ddue:codeInline>nacelleGuideCurveType</ddue:codeInline>): <ddue:codeInline>rX</ddue:codeInline> runs from 0 at the start section to 1 at the end section, and the points are ordered with increasing <ddue:codeInline>rX</ddue:codeInline>.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Example</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>The first profile gives a straight guide curve. The second one is the profile shown in the figure: used for the top guide curve of a fuselage, it forms a canopy hump that rises by up to 14 % of the local height.</ddue:para>
+                            <ddue:code language="XML" title="Guide curve profiles">
+                                <![CDATA[
+<guideCurves>
+    <guideCurveProfile uID="GCP_straight">
+        <name>Straight guide curve</name>
+        <pointList>
+            <rX>0</rX>
+            <rY>0.5</rY>
+            <rZ>0</rZ>
+        </pointList>
+    </guideCurveProfile>
+    <guideCurveProfile uID="GCP_canopy">
+        <name>Canopy hump</name>
+        <pointList>
+            <rX>0.1;0.14;0.08</rX>
+            <rY>0.3;0.55;0.8</rY>
+            <rZ>0;0;0</rZ>
+        </pointList>
+    </guideCurveProfile>
+    ...
+</guideCurves>
+                                ]]>
+                            </ddue:code>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -21007,7 +21031,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     </xsd:element>
                     <xsd:element name="pointList" type="pointListRelXYZVectorType">
                         <xsd:annotation>
-                            <xsd:documentation>Relative point list</xsd:documentation>
+                            <xsd:documentation>Points of the guide curve in relative coordinates</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -21030,13 +21054,10 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Guide curve profiles</ddue:para>
+                        <ddue:para>Guide curve profiles shared by the guide curves of all components</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Guide Curve Profiles type. This type is used to
-                            describe guide curves that enable designers to create a geometry
-                            that deviates from a standard loft.
-                        </ddue:para>
+                        <ddue:para>Guide curve profiles describe the shape of guide curves in relative coordinates, independently of the component they are used in. They are referenced by their uID from the guide curves of wing and fuselage segments (<ddue:codeInline>guideCurveType</ddue:codeInline>) and of nacelle cowls (<ddue:codeInline>nacelleGuideCurveType</ddue:codeInline>), and one profile can serve any number of guide curves.</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -21046,7 +21067,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:sequence>
                     <xsd:element name="guideCurveProfile" maxOccurs="unbounded" type="guideCurveProfileGeometryType">
                         <xsd:annotation>
-                            <xsd:documentation>Guide curve profile</xsd:documentation>
+                            <xsd:documentation>Guide curve profile, referenced by its uID</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -21059,12 +21080,10 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Guide curves</ddue:para>
+                        <ddue:para>Guide curves of a segment</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Guide Curve type. This type is used to describe guide
-                            curves that enable designers to create a geometry that deviates
-                            from a standard loft.</ddue:para>
+                        <ddue:para>Guide curves shape the surface of the segment between its start and end profile. Each guide curve is continued in the neighboring segments, so all segments of a component have the same number of guide curves (<ddue:codeInline>guideCurveType</ddue:codeInline>).</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -21087,18 +21106,184 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Guide curve</ddue:para>
+                        <ddue:para>Curve along the surface of a segment that shapes the surface between its profiles</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>A guide curve may be used to alter the shape of the
-                                outer geometry and "guide" the loft.
-                                The guide curve profiles are defined in the guideCurveProfileGeometryType.
-                                Their use on wing and fuselage components is illustrated in the image below.
+                            <ddue:para>
+                                A guide curve runs along the surface of a wing or fuselage segment, from a point on the start profile to a point on the end profile of the segment.
+                                The surface is lofted through the profiles and the guide curves together, so that guide curves control the shape between the sections, e.g. a curved leading edge, a canopy or a smooth transition over a kink, without additional sections.
+                                The shape of the curve is taken from a guide curve profile (<ddue:codeInline>guideCurveProfileUID</ddue:codeInline>), a list of points in relative coordinates that several guide curves can share.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Start and end point</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:codeInline>fromRelativeCircumference</ddue:codeInline> places the start point on the start profile of the segment (<ddue:codeInline>fromElementUID</ddue:codeInline>), <ddue:codeInline>toRelativeCircumference</ddue:codeInline> the end point on the end profile (<ddue:codeInline>toElementUID</ddue:codeInline>).
+                                The relative circumference is the arc length along the profile in the direction of its points, as a fraction of the profile length:
+                                on a wing profile, it runs from -1 at the trailing edge of the lower side over 0 at the leading edge to 1 at the trailing edge of the upper side, each side counting for 1;
+                                on a fuselage profile, it runs from 0 at the first point, the highest point, downwards along the side of positive y, so that the lowest point of a full, mirror-symmetric profile lies at 0.5.
                             </ddue:para>
                             <ddue:mediaLink>
-                                <ddue:image xlink:href="guideCurveIllustration"/>
+                                <ddue:image xlink:href="guideCurveCircumference"/>
                             </ddue:mediaLink>
+                            <ddue:para>
+                                Instead of the relative circumference, <ddue:codeInline>fromParameter</ddue:codeInline> and <ddue:codeInline>toParameter</ddue:codeInline> give the curve parameter of the profile, which runs from 0 at the first to 1 at the last point and can be fixed at selected points by a <ddue:codeInline>parameterMap</ddue:codeInline> (<ddue:codeInline>curvePointListXYZType</ddue:codeInline>).
+                                This places a guide curve exactly on a profile point with a fixed parameter, e.g. a kink, independently of the arc length.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Shape between start and end point</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The points of the guide curve profile are given relative to the straight line from the start point P<ddue:subscript>0</ddue:subscript> to the end point P<ddue:subscript>1</ddue:subscript>.
+                                <ddue:codeInline>rY</ddue:codeInline> is the position along this line, <ddue:codeInline>rX</ddue:codeInline> and <ddue:codeInline>rZ</ddue:codeInline> are offsets from it, scaled by the size of the profiles.
+                                A point of the guide curve is
+                            </ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="eq_guideCurvePoint"/>
+                            </ddue:mediaLink>
+                            <ddue:list class="bullet">
+                                <ddue:listItem>
+                                    <ddue:para>e<ddue:subscript>x</ddue:subscript> is the unit vector along <ddue:codeInline>rXDirection</ddue:codeInline>. By default, it is the x-axis of the wing, i.e. along the chord towards the trailing edge, or the z-axis of the fuselage, i.e. upwards.</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>e<ddue:subscript>z</ddue:subscript> is normal to e<ddue:subscript>x</ddue:subscript> and to the line from P<ddue:subscript>0</ddue:subscript> to P<ddue:subscript>1</ddue:subscript>. With the default directions, it points upwards on a wing that extends towards positive y, and towards positive y on a fuselage that extends towards positive x.</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>s<ddue:subscript>0</ddue:subscript> and s<ddue:subscript>1</ddue:subscript> are the chord lengths (wing) or heights (fuselage) of the start and end profile as placed in the component, i.e. including all scalings. Along the guide curve, the scale s changes linearly between them.</ddue:para>
+                                </ddue:listItem>
+                            </ddue:list>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="guideCurveCoordinates"/>
+                            </ddue:mediaLink>
+                            <ddue:para>
+                                Figure (a) constructs the point P of a guide curve on the upper side of a wing: <ddue:codeInline>rY</ddue:codeInline> = 0.5 leads to the middle of the line from P<ddue:subscript>0</ddue:subscript> to P<ddue:subscript>1</ddue:subscript>, <ddue:codeInline>rX</ddue:codeInline> moves the point towards the trailing edge and <ddue:codeInline>rZ</ddue:codeInline> upwards.
+                                Figure (b) shows the same construction for a guide curve on top of a fuselage, where <ddue:codeInline>rX</ddue:codeInline> moves the point upwards and <ddue:codeInline>rZ</ddue:codeInline> sideways.
+                                A guide curve profile with <ddue:codeInline>rX</ddue:codeInline> and <ddue:codeInline>rZ</ddue:codeInline> equal to 0 gives a straight guide curve.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Guide curves over several segments</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                A guide curve ends at the end profile of its segment.
+                                In the next segment, it is continued by a guide curve that references it with <ddue:codeInline>fromGuideCurveUID</ddue:codeInline> instead of giving a start point; the continuing curve starts where the referenced curve ends.
+                                Connected in this way, the guide curves of all segments form one curve along the whole component.
+                                Only the guide curves of the first segment give their start point explicitly.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:codeInline>continuity</ddue:codeInline> describes how a continuing curve joins the referenced curve at the common section:
+                            </ddue:para>
+                            <ddue:table>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:legacyBold>continuity</ddue:legacyBold>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        <ddue:legacyBold>Transition at the section</ddue:legacyBold>
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>not given</ddue:entry>
+                                    <ddue:entry>Smooth. The connected guide curves form a single curve through all their points.</ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>C0</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>The curves only share the point, so the transition may have a kink. Each curve is shaped by its own points only.</ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>C1 from previous</ddue:codeInline>, <ddue:codeInline>C2 from previous</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>This curve starts with the tangent (C1) or also with the curvature (C2) with which the referenced curve ends. The referenced curve is not affected.</ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>C1 to previous</ddue:codeInline>, <ddue:codeInline>C2 to previous</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>The other way round: the referenced curve ends with the tangent (C1) or also with the curvature (C2) with which this curve starts.</ddue:entry>
+                                </ddue:row>
+                            </ddue:table>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="guideCurveSegments"/>
+                            </ddue:mediaLink>
+                            <ddue:para>
+                                The figure shows the planform of the example below.
+                                The leading edge guide curve of the outer segment has no continuity, so the leading edge stays smooth over the kink section although only the inner segment is curved.
+                                The trailing edge guide curve of the outer segment has continuity <ddue:codeInline>C0</ddue:codeInline>: it is curved while the inner one is straight, and the trailing edge has a kink at the section.
+                            </ddue:para>
+                            <ddue:para>
+                                The optional <ddue:codeInline>tangent</ddue:codeInline> elements prescribe the tangent of the guide curve at its start point (only for a guide curve with an explicit start point) and at its end point, e.g. to let a fuselage start parallel to its axis.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Requirements</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:list class="bullet">
+                                <ddue:listItem>
+                                    <ddue:para>Every guide curve is continued over all segments of the component, i.e. all segments have the same number of guide curves.</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>Guide curves and profiles form a valid curve network: each guide curve meets each profile exactly once, and guide curves neither cross nor touch each other.</ddue:para>
+                                </ddue:listItem>
+                            </ddue:list>
+                            <ddue:alert class="tigl">
+                                <ddue:para>For wings, TiGL 3.5 builds the surface from guide curves only if one of them runs along the leading edge, i.e. at relative circumference 0.</ddue:para>
+                                <ddue:para>TiGL 3.5 supports <ddue:codeInline>fromParameter</ddue:codeInline> and <ddue:codeInline>toParameter</ddue:codeInline> only for fuselages.</ddue:para>
+                                <ddue:para>TiGL 3.5 treats <ddue:codeInline>C2 from previous</ddue:codeInline> and <ddue:codeInline>C2 to previous</ddue:codeInline> like the C1 options: only the tangent is transferred.</ddue:para>
+                                <ddue:para>TiGL 3.5 interprets <ddue:codeInline>rXDirection</ddue:codeInline> and <ddue:codeInline>tangent</ddue:codeInline> in the global coordinate system, and uses the global z-axis as default direction for fuselages. This differs from the local axes only for rotated components.</ddue:para>
+                            </ddue:alert>
+                            <ddue:para>
+                                <ddue:legacyBold>Example</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>The following wing has three sections (root, kink, tip). The excerpt shows the guide curves of the leading edge and of the upper side of the trailing edge; the guide curves of the lower side of the trailing edge follow the same pattern with relative circumference -1. Of the referenced guide curve profiles (<ddue:codeInline>guideCurveProfileGeometryType</ddue:codeInline>), <ddue:codeInline>GCP_straight</ddue:codeInline> gives straight guide curves, while <ddue:codeInline>GCP_leadingEdgeBulge</ddue:codeInline> and <ddue:codeInline>GCP_trailingEdgeBulge</ddue:codeInline> move the middle of the curve forward or backward by up to 6 % of the local chord.</ddue:para>
+                            <ddue:code language="XML" title="Wing segments with guide curves">
+                                <![CDATA[
+<segments>
+    <segment uID="GuideCurveWing_segment1">
+        <name>Segment 1</name>
+        <fromElementUID>GuideCurveWing_root_element</fromElementUID>
+        <toElementUID>GuideCurveWing_kink_element</toElementUID>
+        <guideCurves>
+            <guideCurve uID="GuideCurveWing_leadingEdge_1">
+                <name>Leading edge, segment 1</name>
+                <guideCurveProfileUID>GCP_leadingEdgeBulge</guideCurveProfileUID>
+                <fromRelativeCircumference>0</fromRelativeCircumference>
+                <toRelativeCircumference>0</toRelativeCircumference>
+            </guideCurve>
+            <guideCurve uID="GuideCurveWing_trailingEdgeUpper_1">
+                <name>Trailing edge, upper side, segment 1</name>
+                <guideCurveProfileUID>GCP_straight</guideCurveProfileUID>
+                <fromRelativeCircumference>1</fromRelativeCircumference>
+                <toRelativeCircumference>1</toRelativeCircumference>
+            </guideCurve>
+            ...
+        </guideCurves>
+    </segment>
+    <segment uID="GuideCurveWing_segment2">
+        <name>Segment 2</name>
+        <fromElementUID>GuideCurveWing_kink_element</fromElementUID>
+        <toElementUID>GuideCurveWing_tip_element</toElementUID>
+        <guideCurves>
+            <guideCurve uID="GuideCurveWing_leadingEdge_2">
+                <name>Leading edge, segment 2</name>
+                <guideCurveProfileUID>GCP_straight</guideCurveProfileUID>
+                <fromGuideCurveUID>GuideCurveWing_leadingEdge_1</fromGuideCurveUID>
+                <toRelativeCircumference>0</toRelativeCircumference>
+            </guideCurve>
+            <guideCurve uID="GuideCurveWing_trailingEdgeUpper_2">
+                <name>Trailing edge, upper side, segment 2</name>
+                <guideCurveProfileUID>GCP_trailingEdgeBulge</guideCurveProfileUID>
+                <fromGuideCurveUID>GuideCurveWing_trailingEdgeUpper_1</fromGuideCurveUID>
+                <continuity>C0</continuity>
+                <toRelativeCircumference>1</toRelativeCircumference>
+            </guideCurve>
+            ...
+        </guideCurves>
+    </segment>
+</segments>
+                                ]]>
+                            </ddue:code>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -21119,32 +21304,22 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     </xsd:element>
                     <xsd:element name="guideCurveProfileUID" type="stringBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Reference to a guide curve profile
-                            </xsd:documentation>
+                            <xsd:documentation>UID of the guide curve profile that defines the shape of the curve between start and end point</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:choice>
                         <xsd:annotation>
-                            <xsd:documentation>For the first segment fromGuideCurveUID is not
-                                a valid entry! For the first guideCurve
-                                fromRelativeCircumference must be applied! fromGuideCurveUID is
-                                exclusive.
-                            </xsd:documentation>
+                            <xsd:documentation>Start of the guide curve: either the end of the guide curve it continues (not in the first segment), or a point on the start profile</xsd:documentation>
                         </xsd:annotation>
                         <xsd:sequence>
                             <xsd:element name="fromGuideCurveUID" type="stringUIDBaseType">
                                 <xsd:annotation>
-                                    <xsd:documentation>Reference to the previous guide curve from
-                                        which this guide curve shall start
-                                    </xsd:documentation>
+                                    <xsd:documentation>UID of the guide curve in the previous segment that this guide curve continues; it starts where the referenced curve ends</xsd:documentation>
                                 </xsd:annotation>
                             </xsd:element>
                             <xsd:element name="continuity" minOccurs="0">
                                 <xsd:annotation>
-                                    <xsd:documentation>Continuity definition for geometry
-                                        generation. Possible options: C0, C1 from previous, C2 from
-                                        previous, C1 to previous, C2 to previous.
-                                    </xsd:documentation>
+                                    <xsd:documentation>Transition to the continued guide curve at the common section. If not given, the connected guide curves form a single smooth curve. C0: common point only, a kink is possible. C1/C2 from previous: this curve takes over the end tangent (C1) or also the curvature (C2) of the continued curve. C1/C2 to previous: the continued curve takes over the start tangent or curvature of this curve.</xsd:documentation>
                                 </xsd:annotation>
                                 <xsd:complexType>
                                     <xsd:simpleContent>
@@ -21163,24 +21338,18 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                             <xsd:choice>
                                 <xsd:element name="fromRelativeCircumference" type="doubleBaseType">
                                     <xsd:annotation>
-                                        <xsd:documentation>Reference to the relative circumference
-                                            position from which the guide curve shall start. Valid values
-                                            are in the interval -1.0...1.0.
-                                        </xsd:documentation>
+                                        <xsd:documentation>Start point as relative circumference on the start profile: from -1 (trailing edge, lower side) over 0 (leading edge) to 1 (trailing edge, upper side) on wing profiles, from 0 (first point) to 1 (last point) on fuselage profiles</xsd:documentation>
                                     </xsd:annotation>
                                 </xsd:element>
                                 <xsd:element name="fromParameter" type="doubleBaseType">
                                     <xsd:annotation>
-                                        <xsd:documentation>Reference to the parameter
-                                            position from which the guide curve shall start. Valid values
-                                            are in the interval -1.0...1.0.
-                                            </xsd:documentation>
+                                        <xsd:documentation>Start point as curve parameter of the start profile, from 0 (first point) to 1 (last point)</xsd:documentation>
                                     </xsd:annotation>
                                 </xsd:element>
                             </xsd:choice>
                             <xsd:element name="tangent" minOccurs="0" type="pointXYZType">
                                 <xsd:annotation>
-                                    <xsd:documentation>Tangent at first point</xsd:documentation>
+                                    <xsd:documentation>Tangent of the guide curve at its start point</xsd:documentation>
                                 </xsd:annotation>
                             </xsd:element>
                         </xsd:sequence>
@@ -21189,33 +21358,24 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                         <xsd:choice>
                             <xsd:element name="toRelativeCircumference" type="doubleBaseType">
                                 <xsd:annotation>
-                                    <xsd:documentation>The relative circumference
-                                        position at which the guide curve shall end. Valid values
-                                        are in the interval -1.0,..,1.0.
-                                    </xsd:documentation>
+                                    <xsd:documentation>End point as relative circumference on the end profile, defined as for fromRelativeCircumference</xsd:documentation>
                                 </xsd:annotation>
                             </xsd:element>
                             <xsd:element name="toParameter" type="doubleBaseType">
                                 <xsd:annotation>
-                                    <xsd:documentation>The parameter
-                                        position at which the guide curve shall end. Valid values
-                                       are in the interval -1.0...1.0.
-                                    </xsd:documentation>
+                                    <xsd:documentation>End point as curve parameter of the end profile, from 0 (first point) to 1 (last point)</xsd:documentation>
                                 </xsd:annotation>
                             </xsd:element>
                         </xsd:choice>
                         <xsd:element name="tangent" minOccurs="0" type="pointXYZType">
                             <xsd:annotation>
-                                <xsd:documentation>Tangent at last point</xsd:documentation>
+                                <xsd:documentation>Tangent of the guide curve at its end point</xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
                     </xsd:sequence>
                     <xsd:element name="rXDirection" minOccurs="0" type="pointXYZType">
                         <xsd:annotation>
-                            <xsd:documentation>Local direction along which the relative x-coordinates of
-                                    the guide curve points are defined. For the wing the default is
-                                    the wing's local x-axis, for the fuselage its the fuselage's local z-axis.
-                            </xsd:documentation>
+                            <xsd:documentation>Direction along which the rX coordinates of the guide curve profile points are applied, in local coordinates of the component. Default: the x-axis for wings, the z-axis for fuselages.</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -31054,7 +31214,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                                 <ddue:image xlink:href="nacelle_guideCurve"/>
                             </ddue:mediaLink>
                             <ddue:para>
-                                <ddue:legacyBold>Note</ddue:legacyBold>: Currently, the nacelles do not have an explicit guide curve type but employ the standard guide curve definition, which is used in wings and profiles.
+                                <ddue:legacyBold>Note</ddue:legacyBold>: Nacelle guide curves reference the same guide curve profiles (<ddue:codeInline>guideCurveProfileGeometryType</ddue:codeInline>) as the guide curves of wings and fuselages.
                                 Therefore, the parameters have a different meaning:
                             </ddue:para>
                             <ddue:table>
@@ -32705,22 +32865,10 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>List of 3D points, kept in three relative coordinate
-                            vecors (rX, rY, rZ)</ddue:para>
+                        <ddue:para>List of 3D points in relative coordinates, kept in three vectors (rX, rY, rZ)</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:content>
-                            <ddue:para>This set of vectors contains an ordered list of points
-                                for rX, rY, and rZ coordinates in the form of stringBased
-                                Vectors. The x, y and z vector elements with the same index
-                                specify a 3D point relative to a geometric segment.</ddue:para>
-                            <ddue:mediaLink>
-                                <ddue:image xlink:href="guideCurveCircumference"/>
-                            </ddue:mediaLink>
-                            <ddue:mediaLink>
-                                <ddue:image xlink:href="guideProfileLong"/>
-                            </ddue:mediaLink>
-                        </ddue:content>
+                        <ddue:para>The entries of <ddue:codeInline>rX</ddue:codeInline>, <ddue:codeInline>rY</ddue:codeInline> and <ddue:codeInline>rZ</ddue:codeInline> with the same position form one point, so all three vectors have the same number of entries. What the coordinates are relative to is described where the list is used, for guide curve profiles in <ddue:codeInline>guideCurveProfileGeometryType</ddue:codeInline>.</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -32730,22 +32878,17 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:all>
                     <xsd:element name="rX" type="stringVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Vector of rX coordinates. Relative
-                                circumferential coordinate on wing, fuselage or nacelle profile.
-                            </xsd:documentation>
+                            <xsd:documentation>rX coordinates of the points</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="rY" type="stringVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Vector of rY coordinates. Relative span
-                                coordinate along a segment.</xsd:documentation>
+                            <xsd:documentation>rY coordinates of the points</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="rZ" type="stringVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Vector of rZ coordinates. Relative coordinate
-                                normal to the linear strake (normalised with chordlength /
-                                diameter c*)</xsd:documentation>
+                            <xsd:documentation>rZ coordinates of the points</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
