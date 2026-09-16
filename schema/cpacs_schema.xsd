@@ -12999,6 +12999,9 @@ cpacs@dlr.de
                     <ddue:summary>
                         <ddue:para>Curve profiles</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>Open two-dimensional curves that run from their first to their last point, e.g. curves that are rotated about an axis to a surface of revolution. Other elements reference them by their <ddue:codeInline>uID</ddue:codeInline>, e.g. the rotation curves and the center cowl of engine nacelles.</ddue:para>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -31440,8 +31443,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                         <ddue:para>Nacelle profiles</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Nacelle profiles type, containing nacelle profile geometries.
-                            See profileGeometryType for further documentation</ddue:para>
+                        <ddue:para>Profiles of the fan cowl and the core cowl of engine nacelles (<ddue:codeInline>engineNacelleType</ddue:codeInline>). The sections of a cowl (<ddue:codeInline>nacelleSectionType</ddue:codeInline>) reference them by their <ddue:codeInline>uID</ddue:codeInline> and arrange them around the nacelle axis. The rotation curves of the cowls and the contour of the center cowl are open curves and are taken from <ddue:codeInline>curveProfiles</ddue:codeInline> instead.</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -33077,14 +33079,24 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>List of 2D points, kept in two coordinate vecors (x, y)</ddue:para>
+                        <ddue:para>Ordered list of 2D points, stored as two coordinate vectors</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>This set of vectors contains an ordered list of points
-                                for x and y coordinates in the form of stringBased Vectors.
-                                The x and y vector elements with the same index specify a 2D
-                                point. The coordinates of the x vector of [0, 1].</ddue:para>
+                            <ddue:para>
+                                The entries of <ddue:codeInline>x</ddue:codeInline> and <ddue:codeInline>y</ddue:codeInline> with the same position form one point.
+                                Both vectors have the same number of entries, separated by semicolons.
+                                The plane of the points, the meaning of their order and their purpose depend on the CPACS element that contains the list.
+                            </ddue:para>
+                            <ddue:para>The following list contains five points; the second point, for example, is (0.5, −0.05):</ddue:para>
+                            <ddue:code language="XML" title="Five points given as two coordinate vectors">
+                                <![CDATA[
+<pointList>
+    <x>1;0.5;0;0.5;1</x>
+    <y>0;-0.05;0;0.06;0</y>
+</pointList>
+                                ]]>
+                            </ddue:code>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -34481,41 +34493,118 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Two-dimensional profile geometry</ddue:para>
+                        <ddue:para>Two-dimensional profile or curve in the x-y plane</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>A profile is defined by a profile name, an optional
-                                description and a 2-dimensional pointlist with both
-                                coordinates mandatory. All point coordinates are transferred
-                                to the global coordinate system depending on the context they
-                                are used in. The type is used for nacelle profiles and for
-                                curve profiles.</ddue:para>
-                            <ddue:para>Nacelle profiles (<ddue:codeInline>nacelleProfiles</ddue:codeInline>) are
-                                airfoil-like profiles defined in x and y, with the x-coordinates
-                                normalized between 0 and 1. The points have to be ordered from
-                                the trailing edge along the lower side to the leading edge and
-                                then along the upper side back to the trailing edge. The lower
-                                side is the inner side of the nacelle, facing its axis. First
-                                and last point may, but need not to, be identical. Hence, the
-                                trailing edge may be sharp or blunt. In both cases, first and last
-                                point have the same x-coordinate; crooked trailing edges are not
-                                allowed. When used for a nacelle, +x_profile points in the
-                                direction of +x_global and +y_profile points radially away from
-                                the nacelle axis; for a section at 0°, +y_profile therefore
-                                points in the direction of +z_global.</ddue:para>
-                            <ddue:para>Curve profiles (<ddue:codeInline>curveProfiles</ddue:codeInline>) are open
-                                curves, such as the rotation curves of nacelles, which run from
-                                their first to their last point. The rules for the order of the
-                                points and for the trailing edge of nacelle profiles do not
-                                apply to them.</ddue:para>
-                            <ddue:para>Alternatively, it is possible to specify the
-                                coordinates of a profile via the CST (class function /shape
-                                function transformation technique) notation. Please see the
-                                cst2DType for further information.</ddue:para>
-                            <ddue:para>A profile can be symmetric. In that case the profile
-                                is interpreted as being not closed and will be closed by
-                                mirroring it on the symmetry plane.</ddue:para>
+                            <ddue:para>
+                                A two-dimensional profile is given in the x-y plane of its own coordinate system.
+                                It is either a closed, airfoil-like profile with a leading and a trailing edge, e.g. the profile of a nacelle section (<ddue:codeInline>nacelleProfiles</ddue:codeInline>), or a curve through its points, e.g. the rotation curve of a nacelle (<ddue:codeInline>curveProfiles</ddue:codeInline>).
+                                The referencing element scales, rotates and positions the profile.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Representations</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>The geometry of a profile is given by exactly one of the following representations:</ddue:para>
+                            <ddue:table>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:legacyBold>Element</ddue:legacyBold>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        <ddue:legacyBold>Geometry</ddue:legacyBold>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        <ddue:legacyBold>Intended for</ddue:legacyBold>
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>pointList</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>smooth curve through the points in the order of the list (see <ddue:codeInline>pointListXYVectorType</ddue:codeInline>)</ddue:entry>
+                                    <ddue:entry>closed profiles and curves</ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>cst2D</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>airfoil defined analytically by the class-shape transformation, with the coordinate normal to the chord along y (see <ddue:codeInline>cst2DType</ddue:codeInline>)</ddue:entry>
+                                    <ddue:entry>closed profiles</ddue:entry>
+                                </ddue:row>
+                            </ddue:table>
+                            <ddue:alert class="tigl">
+                                <ddue:para>For nacelle profiles defined by <ddue:codeInline>cst2D</ddue:codeInline>, TiGL 3.5 builds the profile in the x-z plane instead of the x-y plane. In the nacelle, the thickness of the profile then points in circumferential instead of radial direction. Nacelle profiles defined by point lists are not affected.</ddue:para>
+                            </ddue:alert>
+                            <ddue:para>
+                                <ddue:legacyBold>Closed profiles</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                Closed profiles are normalized with the leading edge at (0, 0) and the trailing edge at x = 1, so that the scaling of the referencing element is the chord length.
+                                The points are ordered from the trailing edge along the lower side to the leading edge and then along the upper side back to the trailing edge.
+                                Plotted with x to the right and y upwards, they therefore run clockwise.
+                                The trailing edge may be sharp, with identical first and last point, or blunt, with first and last point differing.
+                                The trailing edge point lies in the middle between first and last point; the leading edge is the point of the list with the largest distance from it, so the point list has to contain the leading edge.
+                                The chord line connects leading and trailing edge point.
+                                The line between first and last point is perpendicular to the chord line; crooked trailing edges are not allowed.
+                            </ddue:para>
+                            <ddue:para>
+                                A position on a closed profile is given by the relative coordinate ζ, e.g. for guide curves and rotation curves of nacelles (<ddue:codeInline>fromZeta</ddue:codeInline>, <ddue:codeInline>startZeta</ddue:codeInline>).
+                                ζ is −1 at the first point, 0 at the leading edge and +1 at the last point.
+                                In between, it is proportional to the arc length along the lower side (ζ from −1 to 0) and along the upper side (ζ from 0 to 1), respectively.
+                            </ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="profileGeometry2D"/>
+                            </ddue:mediaLink>
+                            <ddue:para>
+                                Figure (a) shows the closed profile of the example below.
+                                The positions ζ = −0.5 and ζ = 0.5 lie in the middle of the lower and the upper side, measured along the profile, not along the chord.
+                            </ddue:para>
+                            <ddue:para>
+                                In a nacelle section, +x of the profile points in the direction of the nacelle axis (+x) and +y radially away from the axis.
+                                The lower side is therefore the inner side of the nacelle, facing its axis.
+                                For a section at 0°, +y of the profile points in the direction of +z.
+                            </ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="profileGeometry2DNacelle"/>
+                            </ddue:mediaLink>
+                            <ddue:para>
+                                <ddue:legacyBold>Curves</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                A curve runs through its points from the first to the last point.
+                                The rules for the point order, the leading and the trailing edge and the coordinate ζ of closed profiles do not apply.
+                                The referencing element defines whether the coordinates are normalized and how positions along the curve are given.
+                                Figure (b) shows the curve of the example below: it follows the lower side of the closed profile from the trailing edge to the leading edge.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Example</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>A closed profile (NACA 4412 with 13 points) for the sections of a nacelle and a curve along its lower side for the rotation curve of the same nacelle:</ddue:para>
+                            <ddue:code language="XML" title="Nacelle profile and curve profile">
+                                <![CDATA[
+<profiles>
+    <curveProfiles>
+        <curveProfile uID="RotationCurve_points">
+            <name>Lower side of the nacelle profile</name>
+            <pointList>
+                <x>1;0.9319;0.7476;0.4988;0.2544;0.0736;0</x>
+                <y>0;-0.0008;-0.0047;-0.014;-0.0249;-0.0273;0</y>
+            </pointList>
+        </curveProfile>
+    </curveProfiles>
+    <nacelleProfiles>
+        <nacelleProfile uID="NacelleProfile_points">
+            <name>NACA 4412, 13 points</name>
+            <pointList>
+                <x>1;0.9319;0.7476;0.4988;0.2544;0.0736;0;0.0604;0.2456;0.5012;0.7524;0.9341;1</x>
+                <y>0;-0.0008;-0.0047;-0.014;-0.0249;-0.0273;0;0.0519;0.0936;0.0917;0.0575;0.0177;0</y>
+            </pointList>
+        </nacelleProfile>
+    </nacelleProfiles>
+</profiles>
+                                ]]>
+                            </ddue:code>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -34537,7 +34626,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     <xsd:choice>
                         <xsd:element name="pointList" type="pointListXYVectorType">
                             <xsd:annotation>
-                                <xsd:documentation>Point list</xsd:documentation>
+                                <xsd:documentation>Points of the profile in the x-y plane</xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
                         <xsd:element name="cst2D" type="cst2DType">
@@ -34828,7 +34917,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                                         <ddue:codeInline>curveProfiles</ddue:codeInline>
                                     </ddue:entry>
                                     <ddue:entry>open curves, e.g. rotated to a body of revolution</ddue:entry>
-                                    <ddue:entry>nacelle center cowls</ddue:entry>
+                                    <ddue:entry>rotation curves of nacelle cowls, nacelle center cowls</ddue:entry>
                                 </ddue:row>
                                 <ddue:row>
                                     <ddue:entry>
