@@ -38,9 +38,9 @@ def _collections(pairs, levels: int) -> str:
     return "\n".join(blocks)
 
 
-def write_cpacs_file(path: Path, generator: Path, name: str, description: str, model_uid: str, model_name: str,
-                     components_tag: str, components: str, profiles_tag: str, profiles: str,
-                     extra_components=(), extra_profiles=()) -> None:
+def write_cpacs_file(path: Path, generator: Path, name: str, description: str, model_uid: str | None, model_name: str,
+                     components_tag: str | None, components: str, profiles_tag: str, profiles: str,
+                     extra_components=(), extra_profiles=(), extra_vehicles=()) -> None:
     """Write a complete CPACS file with one aircraft model and its profiles.
 
     generator is the script writing the file (pass Path(__file__)). It is named in a
@@ -48,11 +48,21 @@ def write_cpacs_file(path: Path, generator: Path, name: str, description: str, m
     edits the file by hand and loses the changes the next time the script runs.
 
     extra_components and extra_profiles are further (tag, xml) pairs, written after
-    the first component and profile collection.
+    the first component and profile collection. model_uid None writes no aircraft model,
+    e.g. for data that belongs to no component. extra_vehicles are (tag, xml) pairs
+    written after the profiles, e.g. structural elements and materials.
     """
     script = generator.resolve().relative_to(path.resolve().parents[1]).as_posix()
-    component_blocks = _collections([(components_tag, components), *extra_components], 4)
+    components_pairs = [(components_tag, components)] if components_tag else []
+    component_blocks = "\n" + _collections([*components_pairs, *extra_components], 4) if components_pairs or extra_components else ""
     profile_blocks = _collections([(profiles_tag, profiles), *extra_profiles], 3)
+    vehicle_blocks = "\n" + _collections(extra_vehicles, 2) if extra_vehicles else ""
+    aircraft_block = f"""
+        <aircraft>
+            <model uID="{model_uid}">
+                <name>{model_name}</name>{component_blocks}
+            </model>
+        </aircraft>""" if model_uid else ""
     path.write_text(
         f"""<?xml version="1.0" encoding="UTF-8"?>
 <!--
@@ -75,16 +85,10 @@ def write_cpacs_file(path: Path, generator: Path, name: str, description: str, m
             </versionInfo>
         </versionInfos>
     </header>
-    <vehicles>
-        <aircraft>
-            <model uID="{model_uid}">
-                <name>{model_name}</name>
-{component_blocks}
-            </model>
-        </aircraft>
+    <vehicles>{aircraft_block}
         <profiles>
 {profile_blocks}
-        </profiles>
+        </profiles>{vehicle_blocks}
     </vehicles>
 </cpacs>""",
         encoding="utf-8",

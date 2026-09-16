@@ -201,6 +201,7 @@ The module sets the colors, line widths, fonts and output format below, so that 
 | Series 2 | `#d95926` (orange) | second series |
 | Series 3 | `#199e70` (aqua) | third series, always with a text label |
 | Series 1, light | `#86b6ef` | secondary marks of series 1, e.g. the terms of a sum drawn in series 1 |
+| Mirrored | `#d9a441` (muted amber) | the mirrored side of a symmetric component, whose defined side is drawn in series 1; always with a legend or label |
 | Ink | `#0b0b0b` | titles, labels, annotations |
 | Secondary ink | `#52514e` | tick labels, secondary annotations |
 | Muted | `#898781` | reference lines (e.g. a chord), leader lines, neutral comparison curves |
@@ -213,6 +214,8 @@ The module sets the colors, line widths, fonts and output format below, so that 
 | Background | transparent | the viewer places images on a light plate |
 
 The series colors are validated as a categorical palette (lightness, chroma, separation under protanopia and deuteranopia, all pairs) against both plates the viewer uses, `#fefdfb` in the light and `#edeff1` in the dark theme. Series 1 and 2 reach at least 3:1 contrast on both; series 3 reaches 2.95:1 on the dark-theme plate and therefore always carries a text label. A figure needing more than three series is split into panels instead of adding colors.
+
+Symmetric components follow the colors users know from TiGL, which renders mirrored geometry in gold: the defined side is drawn in series 1 and the mirrored side in the muted amber of the table, never the other way round. Other marks in such a figure, e.g. a component attached to the symmetric one, use series 3, so that they are not mistaken for a side of the component.
 
 - **§23: Color identifies, text explains. Text is set in ink, never in a series color, and identity never depends on color alone.**
 
@@ -241,7 +244,9 @@ CPACS is a tool-independent standard, and its documentation defines what the dat
 
 A convention that TiGL established in practice is stated as a rule of CPACS, without naming TiGL. The sign of the lower CST coefficients is an example: it is written as the definition of `cst2DType`, not as TiGL behaviour.
 
-- **§27: Where TiGL treats valid data differently, does not support it, or needs a workaround, a TiGL note says so. It is a `ddue:alert` with `class="tigl"`, names the TiGL version it was checked against, and is removed once TiGL follows the text.**
+- **§27: Where TiGL treats valid data inconsistently with the text, or where users really need a hint to process the data with TiGL, a TiGL note says so. A feature TiGL does not implement gets no note. The note is a `ddue:alert` with `class="tigl"`, names the TiGL version it was checked against, and is removed once TiGL follows the text.**
+
+Many parts of CPACS are not evaluated by TiGL, and a note for each of them would bury the few that matter. A note is justified where TiGL builds a different geometry from valid data than the text describes (e.g. it counts indices from 0 instead of 1), silently changes the data (e.g. reverses a point list), or where valid data leads to an error or unusable result without a workaround. That TiGL ignores an element or does not build a component at all is not stated in the schema.
 
 The generator sets the note apart from the text and labels it *TiGL*, so that readers can tell the standard from the state of its main tool at a glance. A note states only behaviour that was checked in a released TiGL version; features still under development in TiGL (at the time of writing, the approximation of point lists) get no note until their behaviour has settled. Place it in the remarks of the type, directly after the statement it qualifies; an element documentation (`xsd:documentation`) is plain text and cannot hold one. Where a TiGL issue exists, link it. A note that applies to no particular tool uses `class="note"` instead of a bold or italic "Note:".
 
@@ -260,7 +265,8 @@ The parameters of TiGL's API functions are not CPACS parameters, even where they
 | ---------- | ---------- |
 | "TiGL interprets the lower coefficients with a negative sign." | The sign convention as definition of the type, without TiGL (§26) |
 | A TiGL remark inside a normative paragraph | A separate `ddue:alert class="tigl"` after it |
-| "TiGL does not support this." | "TiGL 3.5 does not support this." |
+| "TiGL counts the indices from 0." | "TiGL 3.5 counts the indices from 0." |
+| "TiGL 3.5 does not evaluate continuityAtP1." | No note; a feature TiGL does not implement is not a reason for one (§27) |
 | "Use tiglWingSetGetPointBehavior(onLinearLoft) to …" | Nothing in the schema; a hint in the TiGL documentation |
 
 ## Development Guidelines by Example

@@ -34,6 +34,10 @@ COLORS = {
     # Lighter step of series 1, for secondary marks of the same entity
     # (e.g. the terms of a sum whose total is drawn in series1).
     "series1Light": "#86b6ef",
+    # Symmetric components: the defined side in series1, the mirrored side in a
+    # muted amber. TiGL renders mirrored geometry in gold, so CPACS users read a
+    # warm yellow tone as the mirrored side. Always with a legend or label.
+    "mirrored": "#d9a441",
     # Ink: all text uses these, never a series color.
     "ink": "#0b0b0b",  # titles, labels, annotations
     "inkSecondary": "#52514e",  # tick labels, secondary annotations

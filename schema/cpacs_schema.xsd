@@ -599,91 +599,142 @@ cpacs@dlr.de
                                 <ddue:title>8. Symmetry</ddue:title>
                                 <ddue:content>
                                     <ddue:para>
-                                        <ddue:legacyBold>8.1. Specification of symmetric elements</ddue:legacyBold>
+                                        <ddue:legacyBold>8.1. Symmetric components</ddue:legacyBold>
                                     </ddue:para>
                                     <ddue:para>
-                                        Sometimes it might be useful to specify a part of the aircraft as symmetric instead of holding all the data twice in nearly identical form in the dataset (e.g. left and right wing are usually identical, except for the sign of the y-coordinate).
-                                        Hence, some parts offer the option to set a <ddue:codeInline>symmetry</ddue:codeInline> attribute:
+                                        Many components are symmetric, e.g. the left and the right side of a wing.
+                                        Instead of storing both sides, such a component can be described once and mirrored with the <ddue:codeInline>symmetry</ddue:codeInline> attribute:
                                     </ddue:para>
                                     <ddue:code language="XML" title="Symmetry attribute applied to a wing">
                                         <![CDATA[
-<wing symmetry="x-z-plane">
+<wing uID="wing" symmetry="x-z-plane">
     ...
 </wing>
                                         ]]>
                                     </ddue:code>
+                                    <ddue:para>The attribute can take the following values; the documentation of each element states which of them are allowed:</ddue:para>
+                                    <ddue:table>
+                                        <ddue:row>
+                                            <ddue:entry>
+                                                <ddue:legacyBold>Value</ddue:legacyBold>
+                                            </ddue:entry>
+                                            <ddue:entry>
+                                                <ddue:legacyBold>Meaning</ddue:legacyBold>
+                                            </ddue:entry>
+                                        </ddue:row>
+                                        <ddue:row>
+                                            <ddue:entry>
+                                                <ddue:codeInline>x-y-plane</ddue:codeInline>, <ddue:codeInline>x-z-plane</ddue:codeInline>, <ddue:codeInline>y-z-plane</ddue:codeInline>
+                                            </ddue:entry>
+                                            <ddue:entry>The component is mirrored at this plane of the CPACS coordinate system, i.e. at a plane through its origin. Mirroring creates a second component: the component described by the data (defined side) is complemented by its mirror image (mirrored side), which is a component of its own.</ddue:entry>
+                                        </ddue:row>
+                                        <ddue:row>
+                                            <ddue:entry>
+                                                <ddue:codeInline>inherit</ddue:codeInline>
+                                            </ddue:entry>
+                                            <ddue:entry>The component takes the symmetry of its parent component (<ddue:codeInline>&lt;parentUID&gt;</ddue:codeInline>); a component without parent is not mirrored. This is the default, i.e. it also applies if the attribute is not set.</ddue:entry>
+                                        </ddue:row>
+                                        <ddue:row>
+                                            <ddue:entry>
+                                                <ddue:codeInline>none</ddue:codeInline>
+                                            </ddue:entry>
+                                            <ddue:entry>The component is not mirrored, even if its parent component is.</ddue:entry>
+                                        </ddue:row>
+                                    </ddue:table>
+                                    <ddue:para>Components with a <ddue:codeInline>symmetry</ddue:codeInline> attribute are e.g. wings, fuselages, ducts, engines, engine pylons, fuel tanks, landing gears, rotors and generic geometric components.</ddue:para>
                                     <ddue:para>
-                                        There are six possible attribute values:
-                                        <ddue:list class="bullet">
-                                            <ddue:listItem>
-                                                <ddue:legacyBold>x-y-plane</ddue:legacyBold>: Symmetry w.r.t. the x-y plane of the CPACS coordinate system
-                                            </ddue:listItem>
-                                            <ddue:listItem>
-                                                <ddue:legacyBold>x-z-plane</ddue:legacyBold>: Symmetry w.r.t. the x-z plane of the CPACS coordinate system
-                                            </ddue:listItem>
-                                            <ddue:listItem>
-                                                <ddue:legacyBold>y-z-plane</ddue:legacyBold>: Symmetry w.r.t. the y-z plane of the CPACS coordinate system
-                                            </ddue:listItem>
-                                            <ddue:listItem>
-                                                <ddue:legacyBold>inherit</ddue:legacyBold>: Symmetry inherited from parent element (default behavior, i.e. also applies if attribute not set)
-                                            </ddue:listItem>
-                                            <ddue:listItem>
-                                                <ddue:legacyBold>none</ddue:legacyBold>: Symmetry inheritance from parent element disabled
-                                            </ddue:listItem>
-                                        </ddue:list>
-                                        <ddue:legacyBold>Note</ddue:legacyBold>: It must be taken from the documentation of the respective element which of these attribute values may be set.
-                                    </ddue:para>
-                                    <ddue:para>
-                                        One example of how to apply the <ddue:codeInline>symmetry</ddue:codeInline> attribute is shown in Sec. 3.2.
-                                        Another simplified example shown below illustrates the combination of different symmetry properties of 4 wings:
+                                        Because the symmetry is inherited along the <ddue:codeInline>&lt;parentUID&gt;</ddue:codeInline> hierarchy, it can be passed on, switched off and set anew.
+                                        The following example shows four wings that form a box:
                                     </ddue:para>
                                     <ddue:mediaLink>
                                         <ddue:image xlink:href="symmetry1"/>
                                     </ddue:mediaLink>
                                     <ddue:list class="bullet">
                                         <ddue:listItem>
-                                            <ddue:legacyBold>Wing 1</ddue:legacyBold> is mirrored on the x-z plane.
+                                            <ddue:para>
+                                                <ddue:codeInline>wing1</ddue:codeInline> is mirrored at the x-z plane.</ddue:para>
                                         </ddue:listItem>
                                         <ddue:listItem>
-                                            <ddue:legacyBold>Wing 2</ddue:legacyBold> has wing 1 as parent element, but suppresses its symmetry inheritance.
+                                            <ddue:para>
+                                                <ddue:codeInline>wing2</ddue:codeInline> has <ddue:codeInline>wing1</ddue:codeInline> as parent, but switches the symmetry off. It therefore exists only once.</ddue:para>
                                         </ddue:listItem>
                                         <ddue:listItem>
-                                            <ddue:legacyBold>Wing 3</ddue:legacyBold> has wing 2 as parent element and sets a new symmetry at the x-y plane.
+                                            <ddue:para>
+                                                <ddue:codeInline>wing3</ddue:codeInline> has <ddue:codeInline>wing2</ddue:codeInline> as parent and sets a new symmetry at the x-y plane.</ddue:para>
                                         </ddue:listItem>
                                         <ddue:listItem>
-                                            <ddue:legacyBold>Wing 4</ddue:legacyBold> has wing 3 as parent element and no symmetry attribute specified. Thus, it inherits the symmetry at the x-y plane from wing 3.
+                                            <ddue:para>
+                                                <ddue:codeInline>wing4</ddue:codeInline> has <ddue:codeInline>wing3</ddue:codeInline> as parent and no <ddue:codeInline>symmetry</ddue:codeInline> attribute. It inherits the symmetry of <ddue:codeInline>wing3</ddue:codeInline> and is mirrored at the x-y plane as well.</ddue:para>
                                         </ddue:listItem>
                                     </ddue:list>
+                                    <ddue:code language="XML" title="Symmetry set, switched off and inherited along the parentUID hierarchy">
+                                        <![CDATA[
+<wings>
+    <wing uID="wing1" symmetry="x-z-plane">
+        <name>Wing 1</name>
+        ...
+    </wing>
+    <wing uID="wing2" symmetry="none">
+        <name>Wing 2</name>
+        <parentUID>wing1</parentUID>
+        ...
+    </wing>
+    <wing uID="wing3" symmetry="x-y-plane">
+        <name>Wing 3</name>
+        <parentUID>wing2</parentUID>
+        ...
+    </wing>
+    <wing uID="wing4">
+        <name>Wing 4</name>
+        <parentUID>wing3</parentUID>
+        ...
+    </wing>
+</wings>
+                                        ]]>
+                                    </ddue:code>
                                     <ddue:para>
-                                        <ddue:legacyBold>Note</ddue:legacyBold>: The corresponding transformations are not shown here.
+                                        <ddue:legacyBold>8.2. References to symmetric components</ddue:legacyBold>
                                     </ddue:para>
                                     <ddue:para>
-                                        <ddue:legacyBold>8.2. Referencing symmetric elements</ddue:legacyBold>
+                                        Elements that reference a component by its <ddue:codeInline>uID</ddue:codeInline> (<ddue:codeInline>stringUIDBaseType</ddue:codeInline>, e.g. <ddue:codeInline>&lt;parentUID&gt;</ddue:codeInline>) refer to both components created by a symmetry, i.e. to the defined and the mirrored side.
+                                        The <ddue:codeInline>symmetry</ddue:codeInline> attribute of the reference selects a single side instead:
                                     </ddue:para>
-                                    <ddue:para>
-                                        All nodes (e.g., <ddue:codeInline>&lt;parentUID&gt;</ddue:codeInline>) in CPACS that refer to a component holding the symmetry attribute (e.g., <ddue:codeInline>&lt;wing&gt;</ddue:codeInline>) might also have a <ddue:codeInline>symmetry</ddue:codeInline> attribute to specify how symmetry is propagated through the resulting element hierarchy.
-                                    </ddue:para>
-                                    <ddue:para>
-                                        The <ddue:codeInline>symmetry</ddue:codeInline> attribute of a referencing element may take three values:
-                                        <ddue:codeInline>symm</ddue:codeInline>,
-                                        <ddue:codeInline>def</ddue:codeInline>,
-                                        <ddue:codeInline>full</ddue:codeInline>:
-                                        <ddue:list class="bullet">
-                                            <ddue:listItem>
-                                                <ddue:legacyBold>def</ddue:legacyBold>: The element refers to the geometric component that has a <ddue:codeInline>symmetry</ddue:codeInline> attribute and refers only to the defined side of the geometric component.
-                                            </ddue:listItem>
-                                            <ddue:listItem>
-                                                <ddue:legacyBold>symm</ddue:legacyBold>: The element refers to the geometric component that has a <ddue:codeInline>symmetry</ddue:codeInline> attribute and refers only to the symmetric side of the geometric component. (Similar to the previous _symm solution)
-                                            </ddue:listItem>
-                                            <ddue:listItem>
-                                                <ddue:legacyBold>full</ddue:legacyBold>: The element refers to the geometric component that has a <ddue:codeInline>symmetry</ddue:codeInline> attribute and refers to the complete component. (This is the default behaviour)
-                                            </ddue:listItem>
-                                        </ddue:list>
-                                    </ddue:para>
+                                    <ddue:table>
+                                        <ddue:row>
+                                            <ddue:entry>
+                                                <ddue:legacyBold>Value</ddue:legacyBold>
+                                            </ddue:entry>
+                                            <ddue:entry>
+                                                <ddue:legacyBold>Referenced part of the component</ddue:legacyBold>
+                                            </ddue:entry>
+                                        </ddue:row>
+                                        <ddue:row>
+                                            <ddue:entry>
+                                                <ddue:codeInline>def</ddue:codeInline>
+                                            </ddue:entry>
+                                            <ddue:entry>defined side only</ddue:entry>
+                                        </ddue:row>
+                                        <ddue:row>
+                                            <ddue:entry>
+                                                <ddue:codeInline>symm</ddue:codeInline>
+                                            </ddue:entry>
+                                            <ddue:entry>mirrored side only</ddue:entry>
+                                        </ddue:row>
+                                        <ddue:row>
+                                            <ddue:entry>
+                                                <ddue:codeInline>full</ddue:codeInline>
+                                            </ddue:entry>
+                                            <ddue:entry>both sides, i.e. the defined and the mirrored component (default)</ddue:entry>
+                                        </ddue:row>
+                                    </ddue:table>
+                                    <ddue:para>The attribute is only used in references to components with a <ddue:codeInline>symmetry</ddue:codeInline> attribute.</ddue:para>
                                     <ddue:mediaLink>
-                                        <ddue:image xlink:href="symmetry2"/>
+                                        <ddue:image xlink:href="uidReferenceSymmetry"/>
                                     </ddue:mediaLink>
-                                    <ddue:para>For example, to refer to the "other" side of a mirrored wing the following syntax might be used:</ddue:para>
+                                    <ddue:para>
+                                        The figure shows an engine pylon whose <ddue:codeInline>&lt;parentUID&gt;</ddue:codeInline> references a wing mirrored at the x-z plane.
+                                        With <ddue:codeInline>def</ddue:codeInline>, the pylon belongs to the defined side of the wing only, with <ddue:codeInline>symm</ddue:codeInline> to the mirrored side only, and with <ddue:codeInline>full</ddue:codeInline> to both sides.
+                                    </ddue:para>
                                     <ddue:code language="XML" title="Engine pylon located only on the mirrored side of the wing">
                                         <![CDATA[
 <enginePylons>
@@ -694,11 +745,23 @@ cpacs@dlr.de
 </enginePylons>
                                         ]]>
                                     </ddue:code>
-                                    <ddue:alert class="tigl">
-                                        <ddue:para>TiGL 3.5 does not evaluate the <ddue:codeInline>symmetry</ddue:codeInline> attribute of referencing elements such as <ddue:codeInline>&lt;parentUID&gt;</ddue:codeInline>. The figure above was therefore drawn manually to illustrate the principle.</ddue:para>
-                                    </ddue:alert>
+                                    <ddue:para>
+                                        Older datasets often append the side to the referenced <ddue:codeInline>uID</ddue:codeInline> instead, e.g. <ddue:codeInline>wing_symm</ddue:codeInline> for the mirrored side of the wing <ddue:codeInline>wing</ddue:codeInline> or <ddue:codeInline>engine1_def</ddue:codeInline> for the defined side of <ddue:codeInline>engine1</ddue:codeInline>.
+                                        This is not intended and must not be used: the string does not match the <ddue:codeInline>uID</ddue:codeInline> of the referenced element.
+                                        Reference the <ddue:codeInline>uID</ddue:codeInline> unchanged and select the side with the <ddue:codeInline>symmetry</ddue:codeInline> attribute, as in the example above.
+                                    </ddue:para>
+                                    <ddue:code language="XML" title="Not intended: side appended to the referenced uID (do not use)">
+                                        <![CDATA[
+<enginePylons>
+    <enginePylon uID="pylon">
+        <parentUID>wing_symm</parentUID>
+        ...
+    </enginePylon>
+</enginePylons>
+                                        ]]>
+                                    </ddue:code>
                                     <ddue:alert class="note">
-                                        <ddue:para>There is an ongoing debate whether the approach is suitable for CPACS due to rapidly increasing complexity and unresolved implicit assumptions as to whether it is one or two components after mirroring. Therefore, it is advised to avoid using the symmetry attribute if possible.</ddue:para>
+                                        <ddue:para>Symmetry quickly leads to complex configurations, in particular when it is inherited along the <ddue:codeInline>&lt;parentUID&gt;</ddue:codeInline> hierarchy and combined with references to single sides. Evaluating such configurations, e.g. masses, loads or structural models, can then become difficult. Use the symmetry attribute with care.</ddue:para>
                                     </ddue:alert>
                                 </ddue:content>
                             </ddue:section>
@@ -2339,16 +2402,82 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>UID reference base type</ddue:para>
+                        <ddue:para>Reference to an element by its uID</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>This is the base type that links to other components. It should always contain a UID.</ddue:para>
-                        <ddue:para>This node has an additional attribute isLink that will be used if a stringBaseType refers to a uID. TIXI can then
-                            perform automatic validation for the existence of the referenced uID. </ddue:para>
-                        <ddue:para>Furthermore this node contains an additional attribute symmetry. The symmetry attribute may take three values: symm, def, full </ddue:para>
-                        <ddue:para>def: The element refers to the geometric component that has a symmetry attribute and refers only to the defined side of the geometric component.</ddue:para>
-                        <ddue:para>symm: The element refers to the geometric component that has a symmetry attribute and refers only to the symmetric side of the geometric component. (Similar to the previous _symm solution)</ddue:para>
-                        <ddue:para>full: The element refers to the geometric component that has a symmetry attribute and refers to the complete component. (This is the default behaviour)</ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                The value is the <ddue:codeInline>uID</ddue:codeInline> of the referenced element, exactly as given in its <ddue:codeInline>uID</ddue:codeInline> attribute, e.g. the <ddue:codeInline>uID</ddue:codeInline> of the wing to which an engine pylon is attached.
+                                Any number of references can point to the same element.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>References to symmetric components</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                A component with a <ddue:codeInline>symmetry</ddue:codeInline> attribute, e.g. a wing with <ddue:codeInline>symmetry="x-z-plane"</ddue:codeInline>, results in two components: the component described by its data (defined side) and its mirror image (mirrored side), which is a component of its own.
+                                The <ddue:codeInline>symmetry</ddue:codeInline> attribute of a reference to such a component selects the side that is meant:
+                            </ddue:para>
+                            <ddue:table>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:legacyBold>Value</ddue:legacyBold>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        <ddue:legacyBold>Referenced part of the component</ddue:legacyBold>
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>def</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>defined side only</ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>symm</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>mirrored side only</ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>full</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>both sides, i.e. the defined and the mirrored component (default)</ddue:entry>
+                                </ddue:row>
+                            </ddue:table>
+                            <ddue:para>The attribute is only used in references to components with a <ddue:codeInline>symmetry</ddue:codeInline> attribute.</ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="uidReferenceSymmetry"/>
+                            </ddue:mediaLink>
+                            <ddue:para>
+                                The figure shows an engine pylon whose <ddue:codeInline>parentUID</ddue:codeInline> references a wing mirrored at the x-z plane.
+                                With <ddue:codeInline>def</ddue:codeInline>, the pylon belongs to the defined side of the wing only, with <ddue:codeInline>symm</ddue:codeInline> to the mirrored side only, and with <ddue:codeInline>full</ddue:codeInline> to both sides.
+                            </ddue:para>
+                            <ddue:code language="XML" title="Engine pylon located only on the mirrored side of the wing">
+                                <![CDATA[
+<enginePylon uID="pylon">
+    <parentUID symmetry="symm">wing</parentUID>
+    ...
+</enginePylon>
+                                ]]>
+                            </ddue:code>
+                            <ddue:para>
+                                <ddue:legacyBold>Side appended to the uID in older datasets</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                Older datasets often append the side to the referenced <ddue:codeInline>uID</ddue:codeInline> instead, e.g. <ddue:codeInline>wing_symm</ddue:codeInline> for the mirrored side of the wing <ddue:codeInline>wing</ddue:codeInline> or <ddue:codeInline>engine1_def</ddue:codeInline> for the defined side of <ddue:codeInline>engine1</ddue:codeInline>.
+                                This is not intended and must not be used: the string does not match the <ddue:codeInline>uID</ddue:codeInline> of the referenced element.
+                                Reference the <ddue:codeInline>uID</ddue:codeInline> unchanged and select the side with the <ddue:codeInline>symmetry</ddue:codeInline> attribute, as in the example above.
+                            </ddue:para>
+                            <ddue:code language="XML" title="Not intended: side appended to the referenced uID (do not use)">
+                                <![CDATA[
+<enginePylon uID="pylon">
+    <parentUID>wing_symm</parentUID>
+    ...
+</enginePylon>
+                                ]]>
+                            </ddue:code>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -2366,7 +2495,7 @@ cpacs@dlr.de
                 </xsd:attribute>
                 <xsd:attribute name="symmetry">
                     <xsd:annotation>
-                        <xsd:documentation>Side of the referenced symmetric component (def, symm or full)</xsd:documentation>
+                        <xsd:documentation>Side of the referenced symmetric component: def (defined side), symm (mirrored side) or full (both sides, default)</xsd:documentation>
                     </xsd:annotation>
                     <xsd:simpleType>
                         <xsd:restriction base="xsd:string">
@@ -12763,7 +12892,6 @@ cpacs@dlr.de
                             </ddue:para>
                             <ddue:alert class="tigl">
                                 <ddue:para>For interpolated fuselage profiles, TiGL 3.5 counts the <ddue:codeInline>kinkIndices</ddue:codeInline> and the <ddue:codeInline>pointIndices</ddue:codeInline> of the <ddue:codeInline>parameterMap</ddue:codeInline> from 0. Kinks and fixed parameters are therefore applied to the point after the intended one. Until this is corrected, the indices have to be reduced by 1 for TiGL.</ddue:para>
-                                <ddue:para>For interpolated wing and rotor profiles, TiGL 3.5 ignores <ddue:codeInline>kinkIndices</ddue:codeInline> and the <ddue:codeInline>parameterMap</ddue:codeInline>.</ddue:para>
                             </ddue:alert>
                             <ddue:para>
                                 The parameters matter wherever several curves are combined, above all when a surface is lofted through the profiles of consecutive sections: along the surface, points with equal parameters are connected.
@@ -21229,7 +21357,6 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                             </ddue:list>
                             <ddue:alert class="tigl">
                                 <ddue:para>For wings, TiGL 3.5 builds the surface from guide curves only if one of them runs along the leading edge, i.e. at relative circumference 0.</ddue:para>
-                                <ddue:para>TiGL 3.5 supports <ddue:codeInline>fromParameter</ddue:codeInline> and <ddue:codeInline>toParameter</ddue:codeInline> only for fuselages.</ddue:para>
                                 <ddue:para>TiGL 3.5 treats <ddue:codeInline>C2 from previous</ddue:codeInline> and <ddue:codeInline>C2 to previous</ddue:codeInline> like the C1 options: only the tangent is transferred.</ddue:para>
                                 <ddue:para>TiGL 3.5 interprets <ddue:codeInline>rXDirection</ddue:codeInline> and <ddue:codeInline>tangent</ddue:codeInline> in the global coordinate system, and uses the global z-axis as default direction for fuselages. This differs from the local axes only for rotated components.</ddue:para>
                             </ddue:alert>
@@ -25042,13 +25169,10 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                                         The <ddue:legacyItalic>massdescription</ddue:legacyItalic> can be found at the <ddue:legacyItalic>designMasses</ddue:legacyItalic> direct under each item.
                                         At the <ddue:legacyItalic>fuel</ddue:legacyItalic>, <ddue:legacyItalic>payload</ddue:legacyItalic> and <ddue:legacyItalic>mOME</ddue:legacyItalic> under massDescription in each item and sub item.
                                     </ddue:para>
-                                    <ddue:para>Concerning symmetry please note that any item
-                                        referenced by its UID, e.g. wingUID, accounts for the complete
-                                        component, e.g. right and left side. Hence for these items
-                                        their complete mass needs to be specified. If the mass of
-                                        geometricallly symmetrical components is different, please use
-                                        the symmetry modifyers for UIDs: _symm and _mirror. See also
-                                        the overall CPACS definition section on symmetry</ddue:para>
+                                    <ddue:para>
+                                        Concerning symmetry, a reference to a symmetric component (e.g. a wing) accounts for both components created by the symmetry, i.e. for the defined and the mirrored side, so their total mass has to be given.
+                                        If the masses of the two sides differ, they are given separately, and the <ddue:codeInline>symmetry</ddue:codeInline> attribute of the reference selects the side (<ddue:codeInline>def</ddue:codeInline> or <ddue:codeInline>symm</ddue:codeInline>, see <ddue:codeInline>stringUIDBaseType</ddue:codeInline>).
+                                    </ddue:para>
                                 </ddue:content>
                             </ddue:section>
                         </ddue:content>
@@ -32901,10 +33025,10 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>List of points</ddue:para>
+                        <ddue:para>List of three-dimensional points</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Ordered list of points</ddue:para>
+                        <ddue:para>The coordinate system of the points and their purpose depend on the CPACS element that contains the list. The list contains at least two and any number of points. Points that are referenced by other elements need a <ddue:codeInline>uID</ddue:codeInline>.</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -32914,7 +33038,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:sequence>
                     <xsd:element name="point" minOccurs="2" maxOccurs="unbounded" type="pointType">
                         <xsd:annotation>
-                            <xsd:documentation>Data point</xsd:documentation>
+                            <xsd:documentation>Point with x, y and z coordinates</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -32927,10 +33051,10 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>List of points in x,y</ddue:para>
+                        <ddue:para>List of two-dimensional points</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Ordered list of points</ddue:para>
+                        <ddue:para>The plane of the points and their purpose depend on the CPACS element that contains the list. The list contains at least two and any number of points. Points that are referenced by other elements need a <ddue:codeInline>uID</ddue:codeInline>.</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -32940,7 +33064,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:sequence>
                     <xsd:element name="point" minOccurs="2" maxOccurs="unbounded" type="pointXYType">
                         <xsd:annotation>
-                            <xsd:documentation>Data points in x-y-space</xsd:documentation>
+                            <xsd:documentation>Point with x and y coordinates</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -33323,10 +33447,25 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Point: x,y,z</ddue:para>
+                        <ddue:para>Three-dimensional point or vector with an x, a y and a z component</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Xyz data triplet.</ddue:para>
+                        <ddue:content>
+                            <ddue:para>What the components mean and to which coordinate system they refer depends on the CPACS element in which the point is used, e.g. the location of a mass, a translation, scaling factors or rotation angles.</ddue:para>
+                            <ddue:alert class="note">
+                                <ddue:para>All components are optional, so that the same type can be used wherever only some of them are needed. A point without any component carries no information and should not be written. For the sake of readability, CPACS does not express the valid combinations of components as choices in the schema; it is the responsibility of the user to fill a point with meaningful data.</ddue:para>
+                            </ddue:alert>
+                            <ddue:para>A point with the optional <ddue:codeInline>uID</ddue:codeInline>, by which other elements can reference it:</ddue:para>
+                            <ddue:code language="XML" title="Point with x, y and z coordinates">
+                                <![CDATA[
+<point uID="examplePoint">
+    <x>1.2</x>
+    <y>0</y>
+    <z>-0.5</z>
+</point>
+                                ]]>
+                            </ddue:code>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -33336,17 +33475,17 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:all>
                     <xsd:element name="x" minOccurs="0" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>X-Component</xsd:documentation>
+                            <xsd:documentation>X component</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="y" minOccurs="0" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Y-Component</xsd:documentation>
+                            <xsd:documentation>Y component</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="z" minOccurs="0" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Z-Component</xsd:documentation>
+                            <xsd:documentation>Z component</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -33395,10 +33534,21 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Point: x,y</ddue:para>
+                        <ddue:para>Two-dimensional point or vector with an x and a y component</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Xy data doublet.</ddue:para>
+                        <ddue:content>
+                            <ddue:para>What the components mean and to which plane they refer depends on the CPACS element in which the point is used, e.g. the coordinates of a point in a structural profile, the centre of gravity of a beam cross section or scaling factors.</ddue:para>
+                            <ddue:para>A point with the optional <ddue:codeInline>uID</ddue:codeInline>, by which other elements can reference it:</ddue:para>
+                            <ddue:code language="XML" title="Point with x and y coordinates">
+                                <![CDATA[
+<point uID="examplePoint">
+    <x>0</x>
+    <y>0.025</y>
+</point>
+                                ]]>
+                            </ddue:code>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -33408,12 +33558,12 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:all>
                     <xsd:element name="x" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>X-Component</xsd:documentation>
+                            <xsd:documentation>X component</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="y" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Y-Component</xsd:documentation>
+                            <xsd:documentation>Y component</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -34202,15 +34352,10 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                                 <ddue:content>
                                     <ddue:para>
                                         The <ddue:legacyItalic>structuralProfileUID</ddue:legacyItalic> element refers to the <ddue:legacyItalic>uID</ddue:legacyItalic> of the <ddue:legacyItalic>structuralProfile2D</ddue:legacyItalic> element.
-                                        As described in the corresponding documentation, this profile is defined by several points in the x-y-space.
-                                        Two points always form a sheet.
-                                        The properties of each sheet are defined in the <ddue:legacyItalic>sheetProperties</ddue:legacyItalic> element.
-                                        The orthotropy direction of composite materials equals the sheets' x-axis.
-                                        The orthotropy direction angle equals a positive rotation around the sheets' z-axis as indicated in the picture below (part 3), which shows an example of a wing stringer.:
+                                        The profile consists of points and of sheets connecting them.
+                                        The properties of each sheet are defined in the <ddue:legacyItalic>sheetProperties</ddue:legacyItalic> element, which references the sheet by its <ddue:legacyItalic>uID</ddue:legacyItalic>; <ddue:legacyItalic>pointProperties</ddue:legacyItalic> reference points of the profile.
+                                        The coordinate system of a sheet, to which the orthotropy direction of a composite refers, and an example are given in the documentation of <ddue:codeInline>structuralProfileType</ddue:codeInline>.
                                     </ddue:para>
-                                    <ddue:mediaLink>
-                                        <ddue:image xlink:href="stringer2"/>
-                                    </ddue:mediaLink>
                                 </ddue:content>
                             </ddue:section>
                             <ddue:section>
@@ -36058,7 +36203,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                         <ddue:para>Rotor airfoils</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Rotor airfoil geometries. See profileGeometryType for further documentation</ddue:para>
+                        <ddue:para>Airfoils of all rotor blades (<ddue:codeInline>rotorBladesType</ddue:codeInline>), e.g. of main rotors, tail rotors and propellers. They are defined like wing airfoils, with the chord line along the x-axis; the element transformation of a blade section turns the chord line perpendicular to the radial x-axis of the blade. Rotor airfoils can also be referenced by other airfoil-based data, e.g. the aerodynamic performance maps of rotorcraft analyses.</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -37570,11 +37715,10 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>List of sheets, connecting 2-dimensional profile
-                            points.</ddue:para>
+                        <ddue:para>Sheets of a structural profile</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>List of sheets. Each sheet combines two points to one sheet.</ddue:para>
+                        <ddue:para>Each sheet connects two points of the profile. Together, the sheets form the cross section; see <ddue:codeInline>structuralProfileType</ddue:codeInline> for an example.</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -37584,7 +37728,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:sequence>
                     <xsd:element name="sheet" maxOccurs="unbounded" type="sheetType">
                         <xsd:annotation>
-                            <xsd:documentation>Sheet</xsd:documentation>
+                            <xsd:documentation>Sheet connecting two points</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -37620,10 +37764,16 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Sheet</ddue:para>
+                        <ddue:para>Sheet between two points of a structural profile</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Connection data of a sheet</ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                A sheet runs from the point <ddue:codeInline>fromPointUID</ddue:codeInline> to the point <ddue:codeInline>toPointUID</ddue:codeInline>.
+                                This direction defines the coordinate system of the sheet, to which its thickness and the orthotropy direction of a composite refer (see <ddue:codeInline>structuralProfileType</ddue:codeInline>).
+                                Material and thickness are assigned by a profile-based structural element, which references the sheet by its <ddue:codeInline>uID</ddue:codeInline> (<ddue:codeInline>sheetProperties</ddue:codeInline>).
+                            </ddue:para>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -37643,16 +37793,12 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     </xsd:element>
                     <xsd:element name="fromPointUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Point from which the sheet definition starts
-                                start</xsd:documentation>
+                            <xsd:documentation>UID of the point at which the sheet starts (P1)</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="continuityAtP1" minOccurs="0">
                         <xsd:annotation>
-                            <xsd:documentation>Continuity definition for profile geometry
-                                generation. 0= C0 (allows sharp edges, default), 1= C1 (defines
-                                tangential continuity), 2= C2 (defines curvature continuity)
-                                2=all.</xsd:documentation>
+                            <xsd:documentation>Continuity at the start point P1: 0 = C0 (sharp edge allowed, default), 1 = C1 (tangent continuity), 2 = C2 (curvature continuity)</xsd:documentation>
                         </xsd:annotation>
                         <xsd:complexType>
                             <xsd:simpleContent>
@@ -37666,22 +37812,17 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     </xsd:element>
                     <xsd:element name="orientationAtP1" minOccurs="0" type="pointXYType">
                         <xsd:annotation>
-                            <xsd:documentation>Orientation vector at P1
-                            </xsd:documentation>
+                            <xsd:documentation>Orientation vector at the start point P1</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="toPointUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Point at which the sheet definition ends
-                            </xsd:documentation>
+                            <xsd:documentation>UID of the point at which the sheet ends (P2)</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="continuityAtP2" minOccurs="0">
                         <xsd:annotation>
-                            <xsd:documentation>Continuity definition for profile geometry
-                                generation. 0= C0 (allows sharp edges, default), 1= C1 (defines
-                                tangential continuity), 2= C2 (defines curvature continuity)
-                                2=all.</xsd:documentation>
+                            <xsd:documentation>Continuity at the end point P2: 0 = C0 (sharp edge allowed, default), 1 = C1 (tangent continuity), 2 = C2 (curvature continuity)</xsd:documentation>
                         </xsd:annotation>
                         <xsd:complexType>
                             <xsd:simpleContent>
@@ -37695,8 +37836,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     </xsd:element>
                     <xsd:element name="orientationAtP2" minOccurs="0" type="pointXYType">
                         <xsd:annotation>
-                            <xsd:documentation>Orientation vector at P2
-                            </xsd:documentation>
+                            <xsd:documentation>Orientation vector at the end point P2</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -39743,11 +39883,10 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Definition cross sections of structural profiles.
-                        </ddue:para>
+                        <ddue:para>Structural profiles</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Cross section information of structural profiles.</ddue:para>
+                        <ddue:para>Cross sections of structural parts. A two-dimensional profile (<ddue:codeInline>structuralProfile2D</ddue:codeInline>) consists of points in a plane that are connected by sheets. It is referenced by profile-based structural elements (<ddue:codeInline>profileBasedStructuralElementType</ddue:codeInline>), whose cross section is swept along the path of e.g. stringers, frames, cross beams and floor beams. Structural profiles are also referenced by pylon structures and by the cut-out profiles of control surfaces. A three-dimensional profile (<ddue:codeInline>structuralProfile3D</ddue:codeInline>) consists of points in space and of sheets spanned by at least three of these points.</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -39775,24 +39914,127 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>2-dimensional cross sections of structural profiles.
-                        </ddue:para>
+                        <ddue:para>Two-dimensional cross section of a structural part, given by points and the sheets connecting them</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>Data of a structure profile cross sections. The cross section profile is defined by several points (-&gt;pointList) in the x-y-space. Two points are combined to one sheet (-&gt;sheetList) by using the pointUIDs.</ddue:para>
-                            <ddue:para>This profile is defined by several points in the
-                                x-y-space. Always two points are combined to one sheet. The
-                                properties of each sheet are defined in the 'sheetProperties'
-                                section by referencing on the sheetUID and the material
-                                properties. The orthotropy direction of composite materials equals
-                                the x-sheet axis. The orthotropy direction angle equals a positive
-                                rotation around the z-sheet axis as indicated in the picture below
-                                (part 3.), where a wing stringer is defined as an example:
+                            <ddue:para>
+                                A structural profile is the cross section of a beam-like structural part, e.g. of a stringer, a frame or a floor beam.
+                                It consists of points and of sheets that connect them.
+                                A profile-based structural element (<ddue:codeInline>profileBasedStructuralElementType</ddue:codeInline>) references the profile by its <ddue:codeInline>uID</ddue:codeInline>, assigns a material and a thickness to each sheet (<ddue:codeInline>sheetProperties</ddue:codeInline>) and can add reinforcements at single points (<ddue:codeInline>pointProperties</ddue:codeInline>).
+                                The structural part that uses the element extends the cross section along its axis.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Points and sheets</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:list class="bullet">
+                                <ddue:listItem>
+                                    <ddue:para>The points lie in the x-y plane of the profile. Their coordinates are lengths in metres. The z-axis of the profile is normal to this plane and runs along the axis of the structural part.</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>A sheet connects the point <ddue:codeInline>fromPointUID</ddue:codeInline> with the point <ddue:codeInline>toPointUID</ddue:codeInline>. Every point used by a sheet or by the structural element therefore needs a <ddue:codeInline>uID</ddue:codeInline>.</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>Several sheets can meet in one point. Open cross sections (e.g. L, T or Z) and closed ones (e.g. a box) are built in the same way.</ddue:para>
+                                </ddue:listItem>
+                            </ddue:list>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="structuralProfile"/>
+                            </ddue:mediaLink>
+                            <ddue:para>
+                                Figure (a) shows the profile of the example below; the labels omit the prefix <ddue:codeInline>TStringerProfile_</ddue:codeInline> of the <ddue:codeInline>uID</ddue:codeInline>.
+                                All three sheets start at the point P1, where they meet.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Coordinate system of a sheet</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>Each sheet has its own right-handed coordinate system, which follows from the direction of the sheet (figure b):</ddue:para>
+                            <ddue:list class="bullet">
+                                <ddue:listItem>
+                                    <ddue:para>y<ddue:subscript>S</ddue:subscript> points along the sheet from <ddue:codeInline>fromPointUID</ddue:codeInline> to <ddue:codeInline>toPointUID</ddue:codeInline>.</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>z<ddue:subscript>S</ddue:subscript> is normal to the sheet and lies in the profile plane: it is y<ddue:subscript>S</ddue:subscript> rotated by +90° about the z-axis of the profile. The thickness of the sheet is measured along z<ddue:subscript>S</ddue:subscript> and lies symmetrically about the line connecting the two points.</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>x<ddue:subscript>S</ddue:subscript> = y<ddue:subscript>S</ddue:subscript> × z<ddue:subscript>S</ddue:subscript> is normal to the profile plane, i.e. parallel to the z-axis of the profile, and runs along the structural part.</ddue:para>
+                                </ddue:listItem>
+                            </ddue:list>
+                            <ddue:para>
+                                Swapping <ddue:codeInline>fromPointUID</ddue:codeInline> and <ddue:codeInline>toPointUID</ddue:codeInline> reverses y<ddue:subscript>S</ddue:subscript> and z<ddue:subscript>S</ddue:subscript> of the sheet.
+                                The orthotropy direction of a composite (<ddue:codeInline>orthotropyDirection</ddue:codeInline> in <ddue:codeInline>sheetProperties</ddue:codeInline>) is the x<ddue:subscript>S</ddue:subscript>-axis rotated by the given angle about z<ddue:subscript>S</ddue:subscript>; a positive angle turns it towards y<ddue:subscript>S</ddue:subscript>.
                             </ddue:para>
                             <ddue:mediaLink>
-                                <ddue:image xlink:href="stringer2"/>
+                                <ddue:image xlink:href="structuralProfileSheet"/>
                             </ddue:mediaLink>
+                            <ddue:para>The figure shows the web S3 of the example as a surface along the structural part, with its coordinate system and the orthotropy direction for an angle of 30°.</ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Example</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>A T-shaped stringer profile with a flange of 30 mm width and a web of 25 mm height:</ddue:para>
+                            <ddue:code language="XML" title="T-stringer profile">
+                                <![CDATA[
+<structuralProfile2D uID="TStringerProfile">
+    <name>T-stringer</name>
+    <description>Flange of 30 mm and web of 25 mm height</description>
+    <pointList>
+        <point uID="TStringerProfile_P1">
+            <x>0</x>
+            <y>0</y>
+        </point>
+        <point uID="TStringerProfile_P2">
+            <x>0.015</x>
+            <y>0</y>
+        </point>
+        <point uID="TStringerProfile_P3">
+            <x>-0.015</x>
+            <y>0</y>
+        </point>
+        <point uID="TStringerProfile_P4">
+            <x>0</x>
+            <y>0.025</y>
+        </point>
+    </pointList>
+    <sheetList>
+        <sheet uID="TStringerProfile_S1">
+            <name>Right flange</name>
+            <fromPointUID>TStringerProfile_P1</fromPointUID>
+            <toPointUID>TStringerProfile_P2</toPointUID>
+        </sheet>
+        <sheet uID="TStringerProfile_S2">
+            <name>Left flange</name>
+            <fromPointUID>TStringerProfile_P1</fromPointUID>
+            <toPointUID>TStringerProfile_P3</toPointUID>
+        </sheet>
+        <sheet uID="TStringerProfile_S3">
+            <name>Web</name>
+            <fromPointUID>TStringerProfile_P1</fromPointUID>
+            <toPointUID>TStringerProfile_P4</toPointUID>
+        </sheet>
+    </sheetList>
+</structuralProfile2D>
+                                ]]>
+                            </ddue:code>
+                            <ddue:para>The structural element assigns a thickness of 1.6 mm to the right flange and adds a stiffener of 20 mm² cross section at the tip of the web:</ddue:para>
+                            <ddue:code language="XML" title="Structural element using the T-stringer profile">
+                                <![CDATA[
+<profileBasedStructuralElement uID="TStringer">
+    <name>T-stringer</name>
+    <sheetProperties>
+        <sheetUID>TStringerProfile_S1</sheetUID>
+        <materialUID>Aluminium2024</materialUID>
+        <thickness>0.0016</thickness>
+    </sheetProperties>
+    ...
+    <structuralProfileUID>TStringerProfile</structuralProfileUID>
+    <pointProperties>
+        <pointUID>TStringerProfile_P4</pointUID>
+        <materialUID>Aluminium2024</materialUID>
+        <crossSectionArea>2e-05</crossSectionArea>
+    </pointProperties>
+</profileBasedStructuralElement>
+                                ]]>
+                            </ddue:code>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -39813,13 +40055,12 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     </xsd:element>
                     <xsd:element name="pointList" type="pointListXYType">
                         <xsd:annotation>
-                            <xsd:documentation>List of structural profile points, only x and
-                                y</xsd:documentation>
+                            <xsd:documentation>Points of the profile in its x-y plane</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="sheetList" type="sheetListType">
                         <xsd:annotation>
-                            <xsd:documentation>Sheets connecting the profile points</xsd:documentation>
+                            <xsd:documentation>Sheets connecting the points</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
