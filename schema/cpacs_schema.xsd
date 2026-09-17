@@ -32938,10 +32938,31 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Point with global/local reference</ddue:para>
+                        <ddue:para>Three-dimensional point or vector with an x, a y and a z component and the coordinate system it refers to</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Xyz data triplet. Each of the components is optional. The refType attribute defines, whether coordinates are absolute in the global coordinate system [absGlobal], absolute in the parent element's local coordinate system [absLocal]. If the object does not have a parent, only [absGlobal] is permitted.</ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                What the components mean depends on the CPACS element in which the point is used, e.g. the translation of a transformation (<ddue:codeInline>transformationType</ddue:codeInline>) or the location of a mass.
+                            </ddue:para>
+                            <ddue:para>
+                                The attribute <ddue:codeInline>refType</ddue:codeInline> states whether the values refer to the local coordinate system of the parent (<ddue:codeInline>absLocal</ddue:codeInline>, the default) or to the global coordinate system (<ddue:codeInline>absGlobal</ddue:codeInline>).
+                                Which node is the parent and how the local coordinate system is defined is described by the element that uses the point; for a translation, see <ddue:codeInline>transformationType</ddue:codeInline>.
+                                For a node without parent, both values refer to the global coordinate system.
+                            </ddue:para>
+                            <ddue:para>
+                                The translation of a vertical tail, relative to the origin of the fuselage it is attached to:
+                            </ddue:para>
+                            <ddue:code language="XML" title="Translation relative to the parent">
+                                <![CDATA[
+<translation refType="absLocal">
+    <x>22</x>
+    <y>0</y>
+    <z>0.8</z>
+</translation>
+                                ]]>
+                            </ddue:code>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -32951,17 +32972,17 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:all>
                     <xsd:element name="x" minOccurs="0" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>X-Component</xsd:documentation>
+                            <xsd:documentation>X component</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="y" minOccurs="0" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Y-Component</xsd:documentation>
+                            <xsd:documentation>Y component</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="z" minOccurs="0" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Z-Component</xsd:documentation>
+                            <xsd:documentation>Z component</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -32972,18 +32993,18 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 </xsd:attribute>
                 <xsd:attribute name="refType" default="absLocal">
                     <xsd:annotation>
-                        <xsd:documentation>Coordinate system the absolute values refer to</xsd:documentation>
+                        <xsd:documentation>Coordinate system the values refer to</xsd:documentation>
                     </xsd:annotation>
                     <xsd:simpleType>
                         <xsd:restriction base="xsd:string">
                             <xsd:enumeration value="absGlobal">
                                 <xsd:annotation>
-                                    <xsd:documentation>Absolute values in global coordinate system</xsd:documentation>
+                                    <xsd:documentation>Values in the global coordinate system</xsd:documentation>
                                 </xsd:annotation>
                             </xsd:enumeration>
                             <xsd:enumeration value="absLocal">
                                 <xsd:annotation>
-                                    <xsd:documentation>Absolute values in local coordinate system (default)</xsd:documentation>
+                                    <xsd:documentation>Values in the local coordinate system of the parent (default)</xsd:documentation>
                                 </xsd:annotation>
                             </xsd:enumeration>
                         </xsd:restriction>
@@ -46966,15 +46987,129 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Transformation</ddue:para>
+                        <ddue:para>Scaling, rotation and translation that place a local coordinate system in the coordinate system of its parent</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Set of transformations. The order of the transformations is scaling -&gt; rotation -&gt; translation, and they are executed in this order. Any of them can be omitted; it will be replaced by its defaults.</ddue:para>
-                        <ddue:para>Transformations are always executed relative to the
-                            child not the parent. I.e. a scaling does not have an influence
-                            on the parent item. For example in the outer geometry of a wing
-                            the element scaling does not influence the section. Scaling does
-                            also not effect rotation and translation.</ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                A transformation places the coordinate system in which a node is defined, e.g. a wing, one of its sections or an element, in the coordinate system of its parent.
+                                It scales, rotates and translates everything that is defined in the local coordinate system.
+                                The parent of a section or an element is the node that contains it; a component such as a wing can reference its parent with <ddue:codeInline>parentUID</ddue:codeInline>.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Order of scaling, rotation and translation</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                A point p given in the local coordinate system lies in the coordinate system of the parent at
+                            </ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="eq_transformationPoint"/>
+                            </ddue:mediaLink>
+                            <ddue:para>
+                                where S scales by the factors s<ddue:subscript>x</ddue:subscript>, s<ddue:subscript>y</ddue:subscript> and s<ddue:subscript>z</ddue:subscript> of <ddue:codeInline>scaling</ddue:codeInline>, R<ddue:subscript>x</ddue:subscript>, R<ddue:subscript>y</ddue:subscript> and R<ddue:subscript>z</ddue:subscript> rotate by the angles φ<ddue:subscript>x</ddue:subscript>, φ<ddue:subscript>y</ddue:subscript> and φ<ddue:subscript>z</ddue:subscript> of <ddue:codeInline>rotation</ddue:codeInline> about the x-, y- and z-axis, and t is the <ddue:codeInline>translation</ddue:codeInline>.
+                                The point is first scaled along the local axes, then rotated and finally translated.
+                                The translation is therefore neither scaled nor rotated.
+                            </ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="transformationOrder"/>
+                            </ddue:mediaLink>
+                            <ddue:para>
+                                The figure illustrates the three steps for an airfoil in the x-z plane: figure (a) scales it by 3, figure (b) rotates it by 12° about the y-axis, and figure (c) translates it by t.
+                                Each panel shows the result of the previous step as a pale contour.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Rotation</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The angles are given in degrees and are positive by the right-hand rule about their axis.
+                                The coordinate system is rotated first about its x-axis, then about the rotated y-axis y′ and finally about the twice rotated z-axis z″.
+                                For a point, this is the same as rotating it first about the z-axis, then about the y-axis and then about the x-axis of the parent coordinate system, which is the order of the equation above.
+                            </ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="transformationRotation"/>
+                            </ddue:mediaLink>
+                            <ddue:para>
+                                The figure illustrates the sequence for φ<ddue:subscript>x</ddue:subscript> = 40°, φ<ddue:subscript>y</ddue:subscript> = 35° and φ<ddue:subscript>z</ddue:subscript> = 45°.
+                                Each panel starts from the axes of the previous panel, drawn pale, and the shaded sector marks the angle of the rotation.
+                                The axis of each rotation, drawn dark, keeps its position; the other two axes turn about it in the direction of the arrow.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Nested transformations</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                Where nodes are nested, e.g. an element in a section of a wing, the transformation of the inner node is applied first and the transformation of its parent after it (see <ddue:codeInline>wingType</ddue:codeInline>).
+                                The scaling and rotation of the parent therefore also scale and rotate the translation of the inner node, whereas the transformation of the inner node does not change its parent.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Components with a parent</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                A component that references another component with <ddue:codeInline>parentUID</ddue:codeInline>, e.g. a wing its fuselage, follows only the translation of its parent.
+                                With <ddue:codeInline>refType="absLocal"</ddue:codeInline> of the translation, which is the default, a point of the component lies in the global coordinate system at
+                            </ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="eq_transformationParent"/>
+                            </ddue:mediaLink>
+                            <ddue:para>
+                                where o<ddue:subscript>parent</ddue:subscript> is the origin of the coordinate system of the parent in the global coordinate system.
+                                The translation is added along the global axes; the rotation and scaling of the parent do not apply to the component.
+                                With <ddue:codeInline>refType="absGlobal"</ddue:codeInline>, the transformation refers to the global coordinate system, as for a component without parent (see the local coordinate systems in <ddue:codeInline>cpacsType</ddue:codeInline>).
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Rules</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:list class="bullet">
+                                <ddue:listItem>
+                                    <ddue:para>An element that is omitted has its default: rotation and translation are 0 and scaling is 1. Elements with these values can be omitted to write a dataset more compactly.</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>A <ddue:codeInline>scaling</ddue:codeInline> is either omitted or given with all three components.</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>A component that is missing in a <ddue:codeInline>rotation</ddue:codeInline> or <ddue:codeInline>translation</ddue:codeInline> is 0.</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>The <ddue:codeInline>refType</ddue:codeInline> of the translation only has a meaning for a component that references a parent with <ddue:codeInline>parentUID</ddue:codeInline>. It is omitted elsewhere, e.g. in sections and elements.</ddue:para>
+                                </ddue:listItem>
+                            </ddue:list>
+                            <ddue:para>
+                                <ddue:legacyBold>Example</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                A vertical tail is a wing whose coordinate system is rotated by 90° about the x-axis, so that its span, the y-axis of the wing, points upwards.
+                                Its translation is given relative to the origin of the fuselage it references with <ddue:codeInline>parentUID</ddue:codeInline>.
+                                The scaling has its default and is omitted.
+                            </ddue:para>
+                            <ddue:code language="XML" title="Vertical tail rotated about the x-axis and translated relative to the fuselage">
+                                <![CDATA[
+<wing uID="VerticalTail">
+    <name>Vertical tail</name>
+    <parentUID>Fuselage</parentUID>
+    <transformation>
+        <rotation>
+            <x>90</x>
+            <y>0</y>
+            <z>0</z>
+        </rotation>
+        <translation refType="absLocal">
+            <x>22</x>
+            <y>0</y>
+            <z>0.8</z>
+        </translation>
+    </transformation>
+    <sections>
+        ...
+    </sections>
+    <positionings>
+        ...
+    </positionings>
+    <segments>
+        ...
+    </segments>
+</wing>
+                                ]]>
+                            </ddue:code>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -46984,28 +47119,17 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:all>
                     <xsd:element name="scaling" minOccurs="0" type="pointType">
                         <xsd:annotation>
-                            <xsd:documentation>Scaling data default: 1,1,1. Those parameters
-                                describe the scaling of the x-, y-, and z-axis.
-                            </xsd:documentation>
+                            <xsd:documentation>Scaling factors along the x-, y- and z-axis of the local coordinate system. Either omitted (default 1) or given with all three components.</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="rotation" minOccurs="0" type="pointType">
                         <xsd:annotation>
-                            <xsd:documentation>Rotation data default: 0,0,0. The rotation
-                                angles are the three Euler angles to describe the orientation of
-                                the coordinate system. The order is always xyz in CPACS.
-                                Therefore the first rotation is around the x-axis, the second
-                                rotation is around the rotated y-axis (y') and the third
-                                rotation is around the two times rotated z-axis (z'').
-                            </xsd:documentation>
+                            <xsd:documentation>Rotation angles in degrees about the x-axis, the rotated y-axis and the twice rotated z-axis, positive by the right-hand rule. Default 0; a missing component is 0.</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="translation" minOccurs="0" type="pointAbsRelType">
                         <xsd:annotation>
-                            <xsd:documentation>Translation data default: 0,0,0. Translations
-                                can either be made absolute in the global coordinate system
-                                (absGlobal) or absolute in the local Coordinate system (absLocal).
-                                </xsd:documentation>
+                            <xsd:documentation>Translation of the local coordinate system. Default 0; a missing component is 0. For a component with parentUID, refType states whether the translation is relative to the origin of the parent (absLocal, default) or global (absGlobal).</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
