@@ -75,6 +75,18 @@ SPOILER = {
     "steps": [(0.0, 0.0, None), (1.0, -45.0, None)],
 }
 
+# Cut-outs of the wing (controlSurfaceWingCutOutType). The chordwise position of the cut on the upper and the
+# lower skin is given as (inner border, outer border) in xsi of the component segment; the borders of the cut-out
+# are (etaLE, etaTE) and default to the borders of the control surface; the control point is (relHeight, xsi).
+FLAP_CUTOUT = {
+    "upperSkin": (0.68, 0.70), "lowerSkin": (0.64, 0.66),
+}
+SLAT_CUTOUT = {
+    "upperSkin": (0.17, 0.17), "lowerSkin": (0.14, 0.14),
+    "controlPoint": {"inner": (0.45, 0.06), "outer": (0.45, 0.06)},
+    "borders": {"inner": (0.43, 0.43), "outer": (0.92, 0.92)},
+}
+
 
 # --------------------------------------------------------------------------- XML
 def iso_xml(tag, kind, value):
@@ -764,6 +776,274 @@ def write_variants():
     )
 
 
+# ------------------------------------------------------------------- cut-outs
+# The cut-out in the wing (controlSurfaceWingCutOutType): at each of its borders the cut runs from the point of
+# the lower skin at lowerSkin/xsi to the point of the upper skin at upperSkin/xsi, straight or, with a control
+# point, as a curve tangential to the skin through that point. Between the two borders the cut-out is a ruled
+# surface, as the outer shape of a control surface is. All xsi are xsi of the component segment.
+CUTOUT_COLOR = COLORS["series3"]
+CUT_OUTS_FILE = DOCUMENTATION.parent / "examples" / "controlSurfaceCutOuts.xml"
+
+FLAP_CUT_OUT_COMMENT = [
+    "Cut-out in the wing for the flap: the cut lies ahead of the leading edge of the flap on both",
+    "skins. Without innerBorder and outerBorder the cut-out ends at the borders of the flap.",
+]
+SLAT_CUT_OUT_COMMENT = [
+    "Cut-out in the wing for the slat: the cut lies behind the trailing edge of the slat on both",
+    "skins, and the control point places the nose of the remaining wing inside the hollow rear side",
+    "of the slat. Its borders are 0.02 further in and out than the borders of the slat.",
+]
+TIGL_CUT_OUT_COMMENT = [
+    "TiGL 3.5 reads this file and builds the clean wing, but aborts as soon as it builds the wing",
+    "with its cut-outs, whatever a wingCutOut contains; the wing can therefore be neither shown nor",
+    "exported with that version. The point is being clarified with the TiGL developers.",
+    "examples/controlSurfaces.xml shows the same wing without cut-outs.",
+]
+
+
+def comment_xml(lines):
+    return "\n".join(["<!-- " + lines[0]] + ["     " + line for line in lines[1:-1]]
+                     + ["     " + lines[-1] + " -->"]) if len(lines) > 1 else f"<!-- {lines[0]} -->"
+
+
+def cut_out_xml(cutout):
+    lines = ["<wingCutOut>"]
+    for tag in ("upperSkin", "lowerSkin"):
+        inner, outer = cutout[tag]
+        lines += [f"    <{tag}>", f"        <xsiInnerBorder>{inner:g}</xsiInnerBorder>",
+                  f"        <xsiOuterBorder>{outer:g}</xsiOuterBorder>", f"    </{tag}>"]
+    if "controlPoint" in cutout:
+        lines.append("    <cutOutProfileControlPoint>")
+        for side in ("inner", "outer"):
+            height, xsi = cutout["controlPoint"][side]
+            lines += [f"        <{side}Border>", f"            <relHeight>{height:g}</relHeight>",
+                      f"            <xsi>{xsi:g}</xsi>", f"        </{side}Border>"]
+        lines.append("    </cutOutProfileControlPoint>")
+    for side in ("inner", "outer"):
+        if "borders" not in cutout:
+            continue
+        eta_le, eta_te = cutout["borders"][side]
+        lines += [f"    <{side}Border>", indent(iso_xml("etaLE", "eta", eta_le), 2),
+                  indent(iso_xml("etaTE", "eta", eta_te), 2), f"    </{side}Border>"]
+    lines.append("</wingCutOut>")
+    return "\n".join(lines)
+
+
+def cut_out_device_xml(tag, device, border_xml, cutout, comment):
+    return "\n".join([
+        f'<{tag} uID="{device["uid"]}">', f"    <name>{device['name']}</name>", f"    <parentUID>{CS_UID}</parentUID>",
+        "    <outerShape>", indent(border_xml("inner"), 2), indent(border_xml("outer"), 2), "    </outerShape>",
+        indent(comment_xml(comment), 1), indent(cut_out_xml(cutout), 1), indent(path_xml(device), 1), f"</{tag}>",
+    ])
+
+
+def cut_outs_control_surfaces_xml():
+    return "\n".join([
+        comment_xml(TIGL_CUT_OUT_COMMENT),
+        "<controlSurfaces>",
+        "    <leadingEdgeDevices>",
+        indent(cut_out_device_xml("leadingEdgeDevice", SLAT, slat_border_xml, SLAT_CUTOUT, SLAT_CUT_OUT_COMMENT), 2),
+        "    </leadingEdgeDevices>",
+        "    <trailingEdgeDevices>",
+        indent(cut_out_device_xml("trailingEdgeDevice", FLAP, flap_border_xml, FLAP_CUTOUT, FLAP_CUT_OUT_COMMENT), 2),
+        "    </trailingEdgeDevices>",
+        "</controlSurfaces>",
+    ])
+
+
+def write_cut_outs():
+    write_cpacs_file(
+        CUT_OUTS_FILE,
+        generator=Path(__file__),
+        name="Control surface cut-outs",
+        description="A flap and a slat with the cut-outs they need in the wing.",
+        model_uid="ControlSurfaceCutOutsAircraft",
+        model_name="Control surface cut-outs example",
+        components_tag="fuselages",
+        components=fuselage_xml(),
+        profiles_tag="fuselageProfiles",
+        profiles=circle_profile_xml(),
+        extra_components=[("wings", wing_xml(cut_outs_control_surfaces_xml()))],
+        extra_profiles=[("wingAirfoils", airfoil_xml())],
+    )
+
+
+def cut_out_etas(device, cutout, side):
+    """Border of a cut-out as (etaLE, etaTE); without innerBorder and outerBorder it is the border of the device."""
+    if "borders" in cutout:
+        return cutout["borders"][side]
+    eta = device["borders"][side][0]
+    return eta, eta
+
+
+def cut_out_frame(device, cutout, kind, side):
+    """Frame of a cut-out border and the position along its axis of a xsi of the component segment.
+
+    The border of the cut-out is built like the border of the control surface: its plane runs through the two
+    points of the chord surface at the eta values of the cut-out and the chordwise positions of the
+    corresponding border of the control surface.
+    """
+    eta_le, eta_te = cut_out_etas(device, cutout, side)
+    if kind == "flap":
+        xsi_le = device["borders"][side][2]
+        frame, chord = border_frame(eta_le, xsi_le, eta_te, 1.0)
+        return frame, chord, lambda xsi: chord * (xsi - xsi_le) / (1.0 - xsi_le)
+    xsi = device["borders"][side][2]
+    xsi_te = max(xsi) if isinstance(xsi, tuple) else xsi
+    frame, chord = border_frame(eta_le, 0.0, eta_te, xsi_te)
+    return frame, chord, lambda value: chord * value / xsi_te
+
+
+def cut_out_section(device, cutout, kind, side, points=41):
+    """Cut of a cut-out at one of its borders: the frame of the border, the cut (2D in that frame) and the
+    indices of its defining points in the cut."""
+    frame, chord, axis = cut_out_frame(device, cutout, kind, side)
+    eta_le, _ = cut_out_etas(device, cutout, side)
+    upper, lower = frame.section(to_segment(min(eta_le, 0.999999), 0.0)[0])
+    index = 0 if side == "inner" else 1
+    a_upper, a_lower = axis(cutout["upperSkin"][index]), axis(cutout["lowerSkin"][index])
+    p_upper = np.array([a_upper, skin(upper, a_upper)])
+    p_lower = np.array([a_lower, skin(lower, a_lower)])
+    if "controlPoint" in cutout:
+        height, xsi = cutout["controlPoint"][side]
+        a_nose = axis(xsi)
+        nose = np.array([a_nose, skin(lower, a_nose) + height * (skin(upper, a_nose) - skin(lower, a_nose))])
+        scale = 0.6 * np.linalg.norm(p_upper - nose)
+        half = points // 2 + 1
+        cut = np.vstack([hermite(p_lower, scale * skin_tangent(lower, a_lower, -1), nose,
+                                 scale * np.array([0.0, 1.0]), half),
+                         hermite(nose, scale * np.array([0.0, 1.0]), p_upper,
+                                 scale * skin_tangent(upper, a_upper, 1), half)[1:]])
+        marks = {"lower": 0, "nose": half - 1, "upper": len(cut) - 1}
+    else:
+        step = np.linspace(0.0, 1.0, points)[:, None]
+        cut = p_lower + step * (p_upper - p_lower)
+        marks = {"lower": 0, "upper": len(cut) - 1}
+    return frame, cut, marks
+
+
+def cut_out_in_plane(device, cutout, kind, frame):
+    """The cut of a cut-out in a plane between its borders.
+
+    Between its two borders the cut-out is the ruled surface through the two cuts, so the cut in any plane in
+    between is the intersection of that surface with the plane. At a border itself the result is the cut there.
+    """
+    contours = []
+    for side in ("inner", "outer"):
+        border, cut, marks = cut_out_section(device, cutout, kind, side)  # both cuts have the same points
+        contours.append(border.to3d(cut))
+    inner, outer = contours
+    distance_inner = (inner - frame.origin) @ frame.w
+    distance_outer = (outer - frame.origin) @ frame.w
+    share = distance_inner / (distance_inner - distance_outer)
+    return frame.to2d(inner + share[:, None] * (outer - inner)), marks
+
+
+def removed_region(kind, upper, lower, cut):
+    """Polygon of the part of the wing section that the cut-out removes: behind the cut for a trailing edge
+    device, ahead of it for a leading edge device."""
+    a_lower, a_upper = cut[0, 0], cut[-1, 0]
+    end_upper, end_lower = (upper[-1, 0], lower[-1, 0]) if kind == "flap" else (upper[0, 0], lower[0, 0])
+    return np.vstack([cut, skin_polyline(upper, a_upper, end_upper)[1:],
+                      skin_polyline(lower, end_lower, a_lower)[1:]])
+
+
+def cut_out_planform(device, cutout, kind):
+    """Top view outline of a cut-out in wing coordinates."""
+    etas = [cut_out_etas(device, cutout, side)[0] for side in ("inner", "outer")]
+    front = [min(cutout["upperSkin"][i], cutout["lowerSkin"][i]) for i in (0, 1)]
+    rear = [max(cutout["upperSkin"][i], cutout["lowerSkin"][i]) for i in (0, 1)]
+    kink = [e for e in element_etas()[0] if etas[0] < e < etas[1]]
+    if kind == "flap":
+        return np.array([component_segment_point(etas[0], front[0]), component_segment_point(etas[1], front[1])]
+                        + [component_segment_point(e, 1.0) for e in [etas[1], *kink[::-1], etas[0]]])
+    return np.array([component_segment_point(e, 0.0) for e in [etas[0], *kink, etas[1]]]
+                    + [component_segment_point(etas[1], rear[1]), component_segment_point(etas[0], rear[0])])
+
+
+def figure_cut_out_planform():
+    """Top view of the wing with the flap and the slat and the cut-outs they need in the wing."""
+    devices = ((FLAP, FLAP_CUTOUT, "flap"), (SLAT, SLAT_CUTOUT, "slat"))
+    with figure_style():
+        fig, ax = make_figure((-8.3, 1.4))
+        planform(ax)
+        outline(ax)
+        for device, cutout, kind in devices:
+            cut = view(cut_out_planform(device, cutout, kind))
+            ax.add_patch(Polygon(cut, closed=True, facecolor=CUTOUT_COLOR, alpha=0.14, edgecolor="none", zorder=3.8))
+            ax.plot(*np.vstack([cut, cut[:1]]).T, color=CUTOUT_COLOR, lw=LINE["data"], zorder=3.9)
+            shape = view(planform_outline(device, kind))
+            ax.plot(*np.vstack([shape, shape[:1]]).T, color=DEVICE_COLOR, lw=LINE["data"], zorder=4.1)
+            text(ax, shape.mean(axis=0), kind, color=INK)
+        # the borders of the slat cut-out; the flap cut-out ends at the borders of the flap
+        for side in ("inner", "outer"):
+            eta = SLAT_CUTOUT["borders"][side][0]
+            point = view(component_segment_point(eta, 0.0))
+            point_marker(ax, point)
+            text(ax, point, f"{side} border: etaLE = {eta:g}", (GAP, GAP), ha="left", va="bottom")
+        element_labels(ax)
+        axes_mark(ax)
+        legend(fig, [handle_line(CHORD, LINE["data"]), handle_line(DEVICE_COLOR, LINE["data"]),
+                     handle_line(CUTOUT_COLOR, LINE["data"]), handle_point()],
+               ["chord of an element", "control surface", "cut-out in the wing", "border point of the cut-out"])
+        save_figure(fig, FIGURES / "controlSurfaceCutOutPlanform.png")
+
+
+def figure_cut_out_sections():
+    """Sections at the inner borders of the flap and the slat: the cut-out and the control surface in it."""
+    f_frame, f_chord, f_up, f_lo, f_contour, _ = flap_section()
+    s_frame, s_chord, s_up, s_lo, s_contour, _ = slat_section()
+    f_cut, f_marks = cut_out_in_plane(FLAP, FLAP_CUTOUT, "flap", f_frame)
+    s_cut, s_marks = cut_out_in_plane(SLAT, SLAT_CUTOUT, "slat", s_frame)
+    panels = [((-1.0, f_chord + 0.25), (-0.26, 0.36)), ((-0.42, 1.3), (-0.36, 0.26))]
+    with figure_style():
+        fig, (flap_ax, slat_ax) = section_axes(panels)
+
+        # (a) flap: the cut is the straight line between the two points on the skin
+        ax = flap_ax
+        draw_wing_section(ax, f_up, f_lo, (-1.0, f_chord + 0.25))
+        draw_device(ax, removed_region("flap", f_up, f_lo, f_cut), color=CUTOUT_COLOR, alpha=0.16, zorder=3)
+        draw_device(ax, f_contour, alpha=0.0, zorder=3.6)
+        ax.plot(*f_cut.T, color=CUTOUT_COLOR, lw=LINE["data"], zorder=4.2)
+        top, bottom = 0.29, -0.2
+        for key, content, level, va in (("upper", f"upperSkin: xsiInnerBorder = {FLAP_CUTOUT['upperSkin'][0]:g}",
+                                         top, "bottom"),
+                                        ("lower", f"lowerSkin: xsiInnerBorder = {FLAP_CUTOUT['lowerSkin'][0]:g}",
+                                         bottom, "top")):
+            point = f_cut[f_marks[key]]
+            leader_line(ax, point[0], point[1], level)
+            point_marker(ax, point)
+            text(ax, (point[0], level), content, (0, GAP - 3 if va == "bottom" else -(GAP - 3)), va=va)
+        panel_title(ax, "(a) Flap: cut in the upper and the lower skin", -1.0)
+
+        # (b) slat: the cut runs through the control point, so the wing keeps a nose
+        ax = slat_ax
+        draw_wing_section(ax, s_up, s_lo, (-0.15, 1.3))
+        draw_device(ax, removed_region("slat", s_up, s_lo, s_cut), color=CUTOUT_COLOR, alpha=0.16, zorder=3)
+        draw_device(ax, s_contour, alpha=0.0, zorder=3.6)
+        ax.plot(*s_cut.T, color=CUTOUT_COLOR, lw=LINE["data"], zorder=4.2)
+        height, xsi = SLAT_CUTOUT["controlPoint"]["inner"]
+        for key, content, offset, ha, va in (("upper", f"upperSkin: xsiInnerBorder = {SLAT_CUTOUT['upperSkin'][0]:g}",
+                                              (GAP, GAP), "left", "bottom"),
+                                             ("lower", f"lowerSkin: xsiInnerBorder = "
+                                              f"{SLAT_CUTOUT['lowerSkin'][0]:g}", (GAP, -GAP), "left", "top")):
+            point = s_cut[s_marks[key]]
+            point_marker(ax, point)
+            text(ax, point, content, offset, ha=ha, va=va)
+        nose = s_cut[s_marks["nose"]]
+        leader_line(ax, nose[0], nose[1], -0.3)
+        point_marker(ax, nose)
+        text(ax, (nose[0], -0.3), f"cutOutProfileControlPoint: xsi = {xsi:g}, relHeight = {height:g}",
+             (0, -(GAP - 3)), va="top")
+        panel_title(ax, "(b) Slat: cut through a control point", -0.42)
+
+        legend(fig, [handle_line(MUTED, LINE["secondary"]), handle_line(CUTOUT_COLOR, LINE["data"]),
+                     handle_line(DEVICE_COLOR, LINE["data"]), handle_point()],
+               ["wing section at the inner border", "cut and the part of the wing it removes", "control surface",
+                "defining point"])
+        save_figure(fig, FIGURES / "controlSurfaceCutOutSections.png")
+
+
 # ------------------------------------------------------------------------ main
 def main():
     save_equation(HINGE_POINT_LINES, EQUATIONS / "controlSurfaceHingePoint")
@@ -771,9 +1051,12 @@ def main():
     figure_planform()
     figure_sections()
     figure_path()
+    figure_cut_out_planform()
+    figure_cut_out_sections()
     write_example()
     write_variants()
-    for path in (EXAMPLE_FILE, VARIANTS_FILE):
+    write_cut_outs()
+    for path in (EXAMPLE_FILE, VARIANTS_FILE, CUT_OUTS_FILE):
         print(f"Written {path.relative_to(DOCUMENTATION.parent).as_posix()}")
     print("\nExcerpt for controlSurfacesType:\n")
     print(excerpt_control_surfaces_xml())
@@ -781,6 +1064,9 @@ def main():
                                 ("spoiler", SPOILER, spoiler_border_xml)):
         print(f"\nExcerpt for {tag}Type:\n")
         print(device_xml(tag, device, border, translations=tag != "spoiler"))
+    for name, cutout in (("the flap", FLAP_CUTOUT), ("the slat", SLAT_CUTOUT)):
+        print(f"\nExcerpt for controlSurfaceWingCutOutType ({name}):\n")
+        print(cut_out_xml(cutout))
 
 
 if __name__ == "__main__":
