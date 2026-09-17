@@ -25,7 +25,6 @@ TOOLSPECIFIC_SCRIPTS = ["toolspecific_tixi.py", "toolspecific_lxml.py"]
 EXCLUDED_EXAMPLES = {
     # Validated together with its tool schema, see the tests below.
     TOOLSPECIFIC_EXAMPLE.name,
-    "leading-edge-devices.xml",
 }
 
 EXAMPLE_FILES = [
