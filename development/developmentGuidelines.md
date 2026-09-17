@@ -226,11 +226,14 @@ Series colors are for marks: lines, markers, arrows, areas. Every label, value a
 | Label text in the series color | Label in ink with a colored line key |
 | Dashed or dotted lines to tell series apart | Distinct colors or muted gray plus direct labels |
 | Dashed gridlines or reference lines | Solid hairlines in muted or grid color |
+| Dashed outline for a shape before a transformation (e.g. an airfoil before its rotation) | Pale solid contour in series 1 light, with a label |
 | Top and right axis frame | Left and bottom axis only; a full frame only for zoomed detail views |
 
 - **§24: Labels do not overlap each other, the data or the axes. Render the figure and look at it before committing.**
 
 Collisions depend on the rendered text size and are not visible in the code. Check the image on both plate colors, `#fefdfb` and `#edeff1`. Move a label that collides to free space and connect it with a leader line; do not shrink it below the annotation size.
+
+Lines collide as well: a helper line that runs close and parallel to a data line, or an axis that lies along a vector in an oblique view, reads as a drawing error and hides what the figure is about. Remove such a line, or choose the view so that the lines separate. Where a scale is exaggerated to make a shape visible, the figure states it with its ratio (`vertical scale exaggerated 3:1`); an exaggerated but readable figure is preferred over a true-to-scale one in which the effect cannot be seen.
 
 - **§25: An equation is written as LaTeX and rendered in Computer Modern. The `.tex` source is stored next to the image in `documentation/equations/`.**
 

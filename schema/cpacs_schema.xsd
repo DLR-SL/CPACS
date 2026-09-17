@@ -33768,10 +33768,13 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Positionings of the wing.</ddue:para>
+                        <ddue:para>Positionings of the sections of a component</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>The positionings of the wing sections.</ddue:para>
+                        <ddue:para>
+                            Translations of the sections of a wing, fuselage, duct or engine pylon, each given by a length, a sweep angle and a dihedral angle (<ddue:codeInline>positioningType</ddue:codeInline>).
+                            A section without positioning is not translated.
+                        </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -33794,43 +33797,98 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Positioning of the wing section</ddue:para>
+                        <ddue:para>Translation of a section by length, sweep angle and dihedral angle</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>The positionings describe an additional translation of
-                                sections. Basically, the positioning is a vector having the
-                                length 'length' and an orientation that is described by the
-                                parameters 'sweepAngle' and 'dihedralAngle'. If the 'sweepAngle'
-                                and the 'dihedralAngle' are set to zero (or left blank) the
-                                positioning vector equals the positive y-axis of the coordinate
-                                system (in case of a positive 'length').</ddue:para>
-                            <ddue:para>If the parameter 'fromSectionUID' is set, the
-                                positioning describes the translation between the 'from' towards
-                                the 'to' section. If the parameter 'fromSectionUID' is left
-                                blank the origin of the positioning vector is the origin of the
-                                parent coordinate system.</ddue:para>
-                            <ddue:para>The origin of the section coordinate system is the
-                                position which is described by the positioning vector PLUS the
-                                translation which is described in the section.</ddue:para>
-                            <ddue:para>Please note: If the origin of the positioning vector is
-                                defined by using another section, i.e. fromSection is defined,
-                                the origin of this vector equals the end of the positioning
-                                vector of the previous section. This means that the section
-                                translation of the from-section has no influence on the
-                                positioning of the to-section. Therefore the total translation,
-                                which is described by positionings, is the sum of the current
-                                positioning and all positionings that are defined 'before'.
+                            <ddue:para>
+                                A positioning translates a section of a component, e.g. a wing or a fuselage, in the coordinate system of the component.
+                                Instead of Cartesian coordinates, the translation is given by a length and two angles, so that span, sweep and dihedral of a wing can be set directly.
+                                The positioning does not rotate the section.
                             </ddue:para>
-                            <ddue:para>An example for this is given at positioning 3 and 4 at
-                                the picture below. Please note, that any other combination of
-                                positionings would be possible.</ddue:para>
-                            <ddue:para>Application of the sweepangle does not lead to a
-                                rotation of the section. Application of the dihedral does not
-                                lead to a rotation of the section.</ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Positioning vector</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The positioning vector v is the y-axis scaled to the <ddue:codeInline>length</ddue:codeInline> L, rotated by the <ddue:codeInline>sweepAngle</ddue:codeInline> φ about the z-axis towards positive x, and then by the <ddue:codeInline>dihedralAngle</ddue:codeInline> ν about the x-axis towards positive z:
+                            </ddue:para>
                             <ddue:mediaLink>
-                                <ddue:image xlink:href="wingpositionings"/>
+                                <ddue:image xlink:href="eq_positioningVector"/>
                             </ddue:mediaLink>
+                            <ddue:para>
+                                A positive sweep angle thus points the vector backwards, a positive dihedral angle upwards.
+                                With both angles equal to 0, the vector points along the y-axis.
+                                For a fuselage, whose sections follow the x-axis, a sweep angle of 90 points the vector along the x-axis.
+                            </ddue:para>
+                            <ddue:para>
+                                The dihedral angle is the angle of the vector in the front view (y-z plane).
+                                The sweep angle is the angle between the vector and the y-z plane; in the top view, the vector appears more strongly swept if the dihedral angle is not 0.
+                            </ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="positioningVector"/>
+                            </ddue:mediaLink>
+                            <ddue:para>
+                                Figure (a) constructs the vector: the y-axis is first rotated by φ in the x-y plane and then by ν about the x-axis.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Chain of positionings</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                Without <ddue:codeInline>fromSectionUID</ddue:codeInline>, the vector starts at the origin of the component coordinate system.
+                                With <ddue:codeInline>fromSectionUID</ddue:codeInline>, it starts at the end of the positioning of the referenced section, so that positionings form a chain, e.g. from the root over the kink to the tip.
+                                The translation of the referenced section does not move this start point; the chain connects the ends of the positionings only.
+                                The origin of a section lies at the end of its positioning plus its own translation.
+                            </ddue:para>
+                            <ddue:para>
+                                Figure (b) shows a chain in the top view.
+                                Section B is additionally translated by its transformation, and positioning C still starts at the end of positioning B.
+                            </ddue:para>
+                            <ddue:list class="bullet">
+                                <ddue:listItem>
+                                    <ddue:para>Each section is positioned by at most one positioning, i.e. no two positionings reference the same section in <ddue:codeInline>toSectionUID</ddue:codeInline>.</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>A section referenced by <ddue:codeInline>fromSectionUID</ddue:codeInline> is positioned itself, i.e. it is the <ddue:codeInline>toSectionUID</ddue:codeInline> of another positioning.</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>The positionings of a component do not form a cycle.</ddue:para>
+                                </ddue:listItem>
+                            </ddue:list>
+                            <ddue:para>
+                                <ddue:legacyBold>Example</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The positionings of the wing shown in <ddue:codeInline>wingType</ddue:codeInline>: the root section stays at the origin, and the kink and tip sections are each positioned from the previous section.
+                            </ddue:para>
+                            <ddue:code language="XML" title="Chain of positionings from root to tip">
+                                <![CDATA[
+<positionings>
+    <positioning uID="Wing_root_positioning">
+        <name>Root positioning</name>
+        <length>0</length>
+        <sweepAngle>0</sweepAngle>
+        <dihedralAngle>0</dihedralAngle>
+        <toSectionUID>Wing_root</toSectionUID>
+    </positioning>
+    <positioning uID="Wing_kink_positioning">
+        <name>Kink positioning</name>
+        <length>6</length>
+        <sweepAngle>20</sweepAngle>
+        <dihedralAngle>6</dihedralAngle>
+        <fromSectionUID>Wing_root</fromSectionUID>
+        <toSectionUID>Wing_kink</toSectionUID>
+    </positioning>
+    <positioning uID="Wing_tip_positioning">
+        <name>Tip positioning</name>
+        <length>9</length>
+        <sweepAngle>28</sweepAngle>
+        <dihedralAngle>6</dihedralAngle>
+        <fromSectionUID>Wing_kink</fromSectionUID>
+        <toSectionUID>Wing_tip</toSectionUID>
+    </positioning>
+</positionings>
+                                ]]>
+                            </ddue:code>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -33851,37 +33909,27 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     </xsd:element>
                     <xsd:element name="length" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Distance between inner and outer section
-                                (length of the positioning vector)</xsd:documentation>
+                            <xsd:documentation>Length of the positioning vector [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="sweepAngle" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Sweepangle between inner and outer section.
-                                This angle equals a positive rotation of the positioning vector
-                                around the z-axis of the wing coordinate system.
-                            </xsd:documentation>
+                            <xsd:documentation>Rotation of the positioning vector about the z-axis towards positive x, applied before the dihedral angle [deg]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="dihedralAngle" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Dihedralangle between inner and outer section.
-                                This angle equals a positive rotation of the positioning vector
-                                around the x-axis of the wing coordinate system.
-                            </xsd:documentation>
+                            <xsd:documentation>Rotation of the positioning vector about the x-axis towards positive z [deg]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="fromSectionUID" minOccurs="0" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Reference to starting section of the
-                                positioning vector. If missing, the positioning is made from the
-                                origin of the wing coordinate system.</xsd:documentation>
+                            <xsd:documentation>Section at the end of whose positioning the vector starts. If missing, the vector starts at the origin of the component coordinate system.</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="toSectionUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Reference to ending section (section to be
-                                positioned) of the positioning vector</xsd:documentation>
+                            <xsd:documentation>Section translated by the positioning</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -49295,10 +49343,13 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Elements of the wing.</ddue:para>
+                        <ddue:para>Elements of a section</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Elements of a wing section.</ddue:para>
+                        <ddue:para>
+                            The airfoils placed in a section (<ddue:codeInline>wingElementType</ddue:codeInline>).
+                            Most sections have one element.
+                        </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -49308,7 +49359,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:sequence>
                     <xsd:element name="element" maxOccurs="unbounded" type="wingElementType">
                         <xsd:annotation>
-                            <xsd:documentation>Wing element</xsd:documentation>
+                            <xsd:documentation>Element</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -49321,28 +49372,82 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Element of the section.</ddue:para>
+                        <ddue:para>Airfoil placed in a section</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>Within elements the airfoils of the wing are defined.
-                                Each section can have one or more elements. Within each element
-                                one airfoil have to be defined. If e.g. the wing should have a
-                                step at this section, two elements can be defined for the two
-                                airfoils.</ddue:para>
-                            <ddue:para>Mathematically spoken a element is a coordinate system
-                                that is translated, rotated and scaled relative to the section
-                                coordinate system. This transformation parameters are defined
-                                within the transformation section. The wirfoil, which is linked
-                                by using the parameter airfoilUID is directly 'copied' in the
-                                element coordinate system. If e.g. the airfoil is defined from 0
-                                to 1 in x-direction and the total scaling of the elements x-axis
-                                equals 3.5 the wing chord is 3.5 m long.</ddue:para>
-                            <ddue:para>An example for wing element can be found in the
-                                picture below:</ddue:para>
+                            <ddue:para>
+                                An element places an airfoil (<ddue:codeInline>airfoilUID</ddue:codeInline>) in the section coordinate system.
+                                The transformation of the element defines the element coordinate system within the section, and the airfoil, usually defined with a chord length of 1 in the x-z plane, lies in this coordinate system.
+                                A scaling in x and z gives the chord length and the thickness; for example, a scaling of 3.4 in x and z turns an airfoil with chord length 1 into one with chord length 3.4.
+                                A rotation and a translation move the element coordinate system within the section, e.g. to offset or incline the airfoil against the section.
+                            </ddue:para>
                             <ddue:mediaLink>
-                                <ddue:image xlink:href="wingelements"/>
+                                <ddue:image xlink:href="wingElementCoordinates"/>
                             </ddue:mediaLink>
+                            <ddue:para>
+                                The figure shows an element whose coordinate system is translated and rotated about the y-axis within the section coordinate system; the airfoil, scaled by 3, lies in the element coordinate system.
+                                The pale contours show the airfoil with chord length 1 and scaled by 3, both without rotation and translation, i.e. with the element coordinate system on the section coordinate system.
+                                The values are illustrative.
+                                How the section in turn is placed in the wing is described in <ddue:codeInline>wingSectionType</ddue:codeInline>.
+                            </ddue:para>
+                            <ddue:para>
+                                Segments start and end at elements, not at sections (<ddue:codeInline>wingSegmentType</ddue:codeInline>).
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Several elements in a section</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                A section can hold several elements with different airfoils or transformations.
+                                They allow a step in the surface at the section: one segment ends at the first element, and the next segment starts at the second element.
+                                Segments can also branch at a section, e.g. to describe a split wingtip: two segments start at the same or at different elements of the section and lead to different outer sections.
+                            </ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="wingSplitWingtip"/>
+                            </ddue:mediaLink>
+                            <ddue:para>
+                                The figure shows a split wingtip: segment 1 leads from the root to the kink section, and segments 2 and 3 both start at the element of the kink section and lead to an upper and a lower tip section.
+                                The wing is an illustration; the vertical scale is exaggerated.
+                            </ddue:para>
+                            <ddue:alert class="tigl">
+                                <ddue:para>
+                                    TiGL 3.5 requires the segments of a wing to form a continuous chain, i.e. each segment starts at the element at which the previous segment ends.
+                                    A wing with a step or a branch is not loaded.
+                                </ddue:para>
+                            </ddue:alert>
+                            <ddue:para>
+                                <ddue:legacyBold>Example</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The element of the kink section of the wing shown in <ddue:codeInline>wingType</ddue:codeInline>, scaling the airfoil to a chord length of 3.4:
+                            </ddue:para>
+                            <ddue:code language="XML" title="Wing element scaled to the chord length">
+                                <![CDATA[
+<elements>
+    <element uID="Wing_kink_element">
+        <name>Kink element</name>
+        <airfoilUID>NACA2412</airfoilUID>
+        <transformation>
+            <rotation>
+                <x>0</x>
+                <y>0</y>
+                <z>0</z>
+            </rotation>
+            <scaling>
+                <x>3.4</x>
+                <y>1</y>
+                <z>3.4</z>
+            </scaling>
+            <translation>
+                <x>0</x>
+                <y>0</y>
+                <z>0</z>
+            </translation>
+        </transformation>
+    </element>
+</elements>
+                                ]]>
+                            </ddue:code>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -49363,13 +49468,12 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     </xsd:element>
                     <xsd:element name="airfoilUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Reference to a wing airfoil
-                            </xsd:documentation>
+                            <xsd:documentation>Reference to a wing airfoil</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="transformation" type="transformationType">
                         <xsd:annotation>
-                            <xsd:documentation>Position and orientation</xsd:documentation>
+                            <xsd:documentation>Position and orientation relative to the section coordinate system</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -50447,10 +50551,13 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Sections of the wing.</ddue:para>
+                        <ddue:para>Sections of a wing</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>The sections of the wing.</ddue:para>
+                        <ddue:para>
+                            The spanwise stations of a wing or an engine pylon at which the airfoils are placed (<ddue:codeInline>wingSectionType</ddue:codeInline>).
+                            There are at least two sections, e.g. root and tip.
+                        </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -50460,7 +50567,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:sequence>
                     <xsd:element name="section" minOccurs="2" maxOccurs="unbounded" type="wingSectionType">
                         <xsd:annotation>
-                            <xsd:documentation>Wing section</xsd:documentation>
+                            <xsd:documentation>Section</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -50473,25 +50580,82 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Section of the wing.</ddue:para>
+                        <ddue:para>Spanwise station of a wing at which airfoils are placed</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>Wing section. The sections contains elements, where the airfoils are defined. For the definition of a wing at least two sections (root and tip) have to be defined, but any number greater than 2 is also possible.</ddue:para>
-                            <ddue:para>Mathematically spoken a section is a coordinate system
-                                that is translated, rotated and scaled relative to the wing
-                                coordinate system. This transformation parameters are defined
-                                within the transformation section.</ddue:para>
-                            <ddue:para>In addition to the translation, which is defined in
-                                the transformation part, the section can be translated by using
-                                the positionings vectors (wing-&gt;positiongs). Translation of
-                                the positionings vectors is added to the translation of the
-                                section.</ddue:para>
-                            <ddue:para>An example for wing sections can be found in the
-                                picture below:</ddue:para>
+                            <ddue:para>
+                                A section is a coordinate system at a spanwise station of the wing, e.g. at the root, a kink or the tip.
+                                Its elements place the airfoils in it (<ddue:codeInline>wingElementType</ddue:codeInline>).
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Position</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The transformation of the section scales, rotates and translates the section coordinate system relative to the wing coordinate system.
+                                The positioning of the section (<ddue:codeInline>positioningType</ddue:codeInline>) adds a translation in the wing coordinate system: the origin of the section lies at the end of its positioning plus the translation of the section, and the positioning does not rotate the section.
+                                A rotation about the y-axis twists the airfoils of the section, e.g. to reduce the angle of incidence towards the tip.
+                            </ddue:para>
                             <ddue:mediaLink>
-                                <ddue:image xlink:href="wingsections"/>
+                                <ddue:image xlink:href="wingProfileTransformation"/>
                             </ddue:mediaLink>
+                            <ddue:para>
+                                The figure shows the steps for an airfoil with a chord length of 5: the airfoil (a) is scaled to the chord length by its element (b) and rotated about the y-axis by the section (c).
+                                The rotation is exaggerated; a negative angle turns the leading edge downwards.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Example</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The kink section of the wing shown in <ddue:codeInline>wingType</ddue:codeInline>, twisted by -1.5° and holding one element that scales the airfoil to a chord length of 3.4:
+                            </ddue:para>
+                            <ddue:code language="XML" title="Wing section with one element">
+                                <![CDATA[
+<section uID="Wing_kink">
+    <name>Kink section</name>
+    <transformation>
+        <rotation>
+            <x>0</x>
+            <y>-1.5</y>
+            <z>0</z>
+        </rotation>
+        <scaling>
+            <x>1</x>
+            <y>1</y>
+            <z>1</z>
+        </scaling>
+        <translation>
+            <x>0</x>
+            <y>0</y>
+            <z>0</z>
+        </translation>
+    </transformation>
+    <elements>
+        <element uID="Wing_kink_element">
+            <name>Kink element</name>
+            <airfoilUID>NACA2412</airfoilUID>
+            <transformation>
+                <rotation>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                </rotation>
+                <scaling>
+                    <x>3.4</x>
+                    <y>1</y>
+                    <z>3.4</z>
+                </scaling>
+                <translation>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                </translation>
+            </transformation>
+        </element>
+    </elements>
+</section>
+                                ]]>
+                            </ddue:code>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -50512,12 +50676,12 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     </xsd:element>
                     <xsd:element name="transformation" type="transformationType">
                         <xsd:annotation>
-                            <xsd:documentation>Position and orientation</xsd:documentation>
+                            <xsd:documentation>Position and orientation relative to the wing coordinate system</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="elements" type="wingElementsType">
                         <xsd:annotation>
-                            <xsd:documentation>Elements</xsd:documentation>
+                            <xsd:documentation>Elements placing the airfoils in the section</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -50535,10 +50699,13 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Segments of the wing.</ddue:para>
+                        <ddue:para>Segments of a wing</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>The segments of the wing.</ddue:para>
+                        <ddue:para>
+                            The parts of the surface of a wing or an engine pylon, each between two elements (<ddue:codeInline>wingSegmentType</ddue:codeInline>).
+                            Together, the segments describe the surface from root to tip.
+                        </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -50548,7 +50715,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:sequence>
                     <xsd:element name="segment" maxOccurs="unbounded" type="wingSegmentType">
                         <xsd:annotation>
-                            <xsd:documentation>Wing segment</xsd:documentation>
+                            <xsd:documentation>Segment</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -50561,17 +50728,37 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Segment of the wing.</ddue:para>
+                        <ddue:para>Part of the wing surface between two elements</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>A segment defines which two wing elements (=cross
-                                sections) are linked to one wing segment.</ddue:para>
-                            <ddue:para>An example for wing segments can be found in the
-                                picture below:</ddue:para>
-                            <ddue:mediaLink>
-                                <ddue:image xlink:href="wingsegments"/>
-                            </ddue:mediaLink>
+                            <ddue:para>
+                                A segment connects the airfoil of its start element (<ddue:codeInline>fromElementUID</ddue:codeInline>) with the airfoil of its end element (<ddue:codeInline>toElementUID</ddue:codeInline>), and the surface of the wing is lofted between them.
+                                The segments of a wing follow each other from root to tip; usually, each segment starts at the element at which the previous one ends.
+                                Guide curves (<ddue:codeInline>guideCurveType</ddue:codeInline>) can shape the surface between the airfoils.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Example</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The segments of the wing shown in <ddue:codeInline>wingType</ddue:codeInline>, from the root to the kink section and from the kink to the tip section:
+                            </ddue:para>
+                            <ddue:code language="XML" title="Wing segments from root to tip">
+                                <![CDATA[
+<segments>
+    <segment uID="Wing_segment1">
+        <name>Segment 1</name>
+        <fromElementUID>Wing_root_element</fromElementUID>
+        <toElementUID>Wing_kink_element</toElementUID>
+    </segment>
+    <segment uID="Wing_segment2">
+        <name>Segment 2</name>
+        <fromElementUID>Wing_kink_element</fromElementUID>
+        <toElementUID>Wing_tip_element</toElementUID>
+    </segment>
+</segments>
+                                ]]>
+                            </ddue:code>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -50592,20 +50779,17 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     </xsd:element>
                     <xsd:element name="fromElementUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Reference to the element from which the
-                                segment shall start</xsd:documentation>
+                            <xsd:documentation>Element at which the segment starts</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="toElementUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Reference to the element at which the segment
-                                shall end</xsd:documentation>
+                            <xsd:documentation>Element at which the segment ends</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="guideCurves" minOccurs="0" type="guideCurvesType">
                         <xsd:annotation>
-                            <xsd:documentation>Optional and additional guidecurves to shape
-                                the outer geometry</xsd:documentation>
+                            <xsd:documentation>Guide curves shaping the surface between the airfoils</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -50926,10 +51110,13 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Wings</ddue:para>
+                        <ddue:para>Lifting surfaces of a model</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>The lifting surfaces (wings, HTPs, VTPs, canards...) of an aircraft model.</ddue:para>
+                        <ddue:para>
+                            The wings, horizontal and vertical tails, canards and other lifting surfaces of an aircraft or rotorcraft model (<ddue:codeInline>wingType</ddue:codeInline>).
+                            A lifting surface that is mirrored with the <ddue:codeInline>symmetry</ddue:codeInline> attribute, e.g. the left and right wing, is defined once.
+                        </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -50952,40 +51139,125 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Wing type, containing all a lifting surface (wing, HTP,
-                            VTP, canard...) of an aircraft model.</ddue:para>
+                        <ddue:para>Lifting surface, e.g. a wing, a horizontal or vertical tail or a canard</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>A lifting surface (wing, HTP, VTP, canard...) of an aircraft model.</ddue:para>
-                            <ddue:para>Position of the wing: The position of the wing is
-                                defined using the transformation parameters. Using those
-                                parameters, the wing coordinate system is translated, rotated
-                                and scaled.</ddue:para>
-                            <ddue:para>Definition of the wings outer shape: The outer shape
-                                of the wing is defined by airfoils that are placed within the 3D
-                                space. Two airfoils are combined to one wing segment within the
-                                segments. For the definition of the positions of the airfoils,
-                                different sections are defined. Within each section one or more
-                                elements are defined. The airfoil shape is defined within the
-                                elements. If the wings outer shape should e.g. have a step it is
-                                possible to define two different airfoils in one section by
-                                using two elements. In most cases each section will only include
-                                one element. Positionings are vectors that are used for an
-                                additional translation of the sections by using 'user friendly
-                                paramaters' as e.g. sweep and dihedral. Please note, the first
-                                positioning may be non-zero. Often it will be zero just to
-                                locate the wing at the position stated by the translation, but
-                                this is not necessary. Finally the wing segments are defined by
-                                combining two consecutive elements. A more detailed description
-                                is given within the different parameters.</ddue:para>
-                            <ddue:para>Definition of control surfaces, wing structures, wing
-                                fuel tank and wing fuselage attachment: those parts are defined
-                                within componentSegments. Please refer to the documentation
-                                there.</ddue:para>
+                            <ddue:para>
+                                A wing describes the outer shape of a lifting surface.
+                                Its airfoils are placed at spanwise stations, the sections, and the surface is lofted between them.
+                                The same type describes the rotor blades of a rotorcraft (<ddue:codeInline>rotorBlade</ddue:codeInline>).
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Geometry</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The outer shape is built from four parts:
+                            </ddue:para>
+                            <ddue:list class="bullet">
+                                <ddue:listItem>
+                                    <ddue:para>
+                                        <ddue:codeInline>sections</ddue:codeInline> (<ddue:codeInline>wingSectionType</ddue:codeInline>) are coordinate systems at spanwise stations, e.g. at the root, a kink and the tip. A wing has at least two sections.</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>The <ddue:codeInline>elements</ddue:codeInline> of a section (<ddue:codeInline>wingElementType</ddue:codeInline>) each reference an airfoil and scale, rotate and translate it within the section. Most sections have one element.</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>
+                                        <ddue:codeInline>positionings</ddue:codeInline> (<ddue:codeInline>positioningType</ddue:codeInline>) translate the sections by a length, a sweep angle and a dihedral angle, e.g. from one section to the next. They are optional.</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>
+                                        <ddue:codeInline>segments</ddue:codeInline> (<ddue:codeInline>wingSegmentType</ddue:codeInline>) each connect two elements; the surface of the wing is lofted between their airfoils.</ddue:para>
+                                </ddue:listItem>
+                            </ddue:list>
                             <ddue:mediaLink>
-                                <ddue:image xlink:href="geomBlock"/>
+                                <ddue:image xlink:href="wingParts"/>
                             </ddue:mediaLink>
+                            <ddue:para>
+                                The figure shows these parts on the example wing below.
+                                Each section is a coordinate system, here at the root, the kink and the tip, and its element places an airfoil in it.
+                                The positionings lead from the root to the kink and from the kink to the tip section.
+                                The segments are the surfaces between the airfoils of neighbouring sections.
+                                The kink and tip sections are rotated about the y-axis by -1.5° and -3° (twist), so that the leading edge of their airfoils points slightly downwards; the vertical scale is exaggerated 3:1, which makes the rotation and the airfoil thickness appear larger.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Coordinate systems</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                A point p of an airfoil is placed in the wing coordinate system at
+                            </ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="eq_wingProfilePoint"/>
+                            </ddue:mediaLink>
+                            <ddue:para>
+                                where T<ddue:subscript>element</ddue:subscript> and T<ddue:subscript>section</ddue:subscript> are the transformations of the element and the section (<ddue:codeInline>transformationType</ddue:codeInline>), and t<ddue:subscript>positioning</ddue:subscript> is the translation of the section by its positioning, or zero for a section without positioning.
+                                The positioning thus translates a section without rotating it, and a rotation of the section does not change the direction of its positioning.
+                                The transformation of the wing places the wing coordinate system in the model.
+                                A wing usually references the fuselage it is attached to with <ddue:codeInline>parentUID</ddue:codeInline>; its translation is then given relative to the position of the fuselage, so that the wing moves with it (see the local coordinate systems in <ddue:codeInline>cpacsType</ddue:codeInline>).
+                            </ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="wingGeometry"/>
+                            </ddue:mediaLink>
+                            <ddue:para>
+                                The figure shows the example below in the wing coordinate system.
+                                The root section lies at the origin.
+                                The positioning of the kink section starts there, and the positioning of the tip section starts at the end of the kink positioning, so that the sweep and dihedral of the two segments add up along the span.
+                                Each segment covers the part of the wing between two neighbouring sections.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Structure and control surfaces</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                Component segments (<ddue:codeInline>componentSegments</ddue:codeInline>) span one or more segments and carry the structure, the control surfaces and the wing-fuselage attachments of the wing.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Example</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                A wing with three sections, attached to the fuselage with <ddue:codeInline>parentUID</ddue:codeInline> and mirrored at the x-z plane.
+                                Its sections, positionings and segments are shown in the documentation of <ddue:codeInline>wingSectionType</ddue:codeInline>, <ddue:codeInline>positioningType</ddue:codeInline> and <ddue:codeInline>wingSegmentType</ddue:codeInline>.
+                                The transformations in the examples are written out in full.
+                                Since rotation and translation default to 0 and scaling to 1, <ddue:codeInline>rotation</ddue:codeInline>, <ddue:codeInline>translation</ddue:codeInline> and <ddue:codeInline>scaling</ddue:codeInline> elements with these values can be omitted to write the dataset more compactly.
+                                A <ddue:codeInline>scaling</ddue:codeInline> that is given should list all three components.
+                            </ddue:para>
+                            <ddue:code language="XML" title="Wing attached to the fuselage, with sections, positionings and segments">
+                                <![CDATA[
+<wing uID="Wing" symmetry="x-z-plane">
+    <name>Wing</name>
+    <parentUID>Fuselage</parentUID>
+    <transformation>
+        <rotation>
+            <x>0</x>
+            <y>0</y>
+            <z>0</z>
+        </rotation>
+        <scaling>
+            <x>1</x>
+            <y>1</y>
+            <z>1</z>
+        </scaling>
+        <translation>
+            <x>10</x>
+            <y>0</y>
+            <z>-0.5</z>
+        </translation>
+    </transformation>
+    <sections>
+        <section uID="Wing_root">
+            ...
+        </section>
+        ...
+    </sections>
+    <positionings>
+        ...
+    </positionings>
+    <segments>
+        ...
+    </segments>
+</wing>
+                                ]]>
+                            </ddue:code>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -51006,35 +51278,32 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     </xsd:element>
                     <xsd:element name="parentUID" minOccurs="0" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of part to which the wing is mounted (if
-                                any). The parent of the wing can e.g. be the fuselage. In each
-                                aircraft model, there is exactly one part without a parent part
-                                (The root of the connection hierarchy).</xsd:documentation>
+                            <xsd:documentation>Component the wing is attached to, usually the fuselage. The translation of the wing is then given relative to the position of this component.</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="transformation" type="transformationType">
                         <xsd:annotation>
-                            <xsd:documentation>Position and orientation</xsd:documentation>
+                            <xsd:documentation>Position and orientation of the wing coordinate system</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="sections" type="wingSectionsType">
                         <xsd:annotation>
-                            <xsd:documentation>Sections</xsd:documentation>
+                            <xsd:documentation>Sections at which the airfoils are placed</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="positionings" minOccurs="0" type="positioningsType">
                         <xsd:annotation>
-                            <xsd:documentation>Positionings of the wing sections</xsd:documentation>
+                            <xsd:documentation>Translations of the sections by length, sweep angle and dihedral angle</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="segments" type="wingSegmentsType">
                         <xsd:annotation>
-                            <xsd:documentation>Segments</xsd:documentation>
+                            <xsd:documentation>Segments connecting the elements of the sections</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="componentSegments" minOccurs="0" type="componentSegmentsType">
                         <xsd:annotation>
-                            <xsd:documentation>ComponentSegments</xsd:documentation>
+                            <xsd:documentation>Component segments carrying structure, control surfaces and attachments</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
