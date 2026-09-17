@@ -8329,7 +8329,7 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Component segment path</ddue:para>
+                        <ddue:para>Deflection path of a component segment</ddue:para>
                     </ddue:summary>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -8339,13 +8339,12 @@ cpacs@dlr.de
                 <xsd:sequence>
                     <xsd:element name="hingePoint" type="etaXsiRelHeightPointType">
                         <xsd:annotation>
-                            <xsd:documentation>Reference point for the deflection definition</xsd:documentation>
+                            <xsd:documentation>Reference point of the deflection</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="hingeRotation" type="pointXYZType">
                         <xsd:annotation>
-                            <xsd:documentation>Orientation of the hinge line with three Euler-rotation angles. The hinge line is oriented along the global y-axis if all rotations are 0.
-                            </xsd:documentation>
+                            <xsd:documentation>Orientation of the hinge line as three Euler angles. With all angles 0, the hinge line points along the global y-axis.</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="steps" minOccurs="0" maxOccurs="unbounded" type="componentSegmentStepsType">
@@ -8363,7 +8362,7 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Component segment path steps</ddue:para>
+                        <ddue:para>Steps of the deflection path of a component segment</ddue:para>
                     </ddue:summary>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -8373,8 +8372,7 @@ cpacs@dlr.de
                 <xsd:sequence>
                     <xsd:element name="step" maxOccurs="unbounded" type="componentSegmentStepType">
                         <xsd:annotation>
-                            <xsd:documentation>Step of the deflection path
-                            </xsd:documentation>
+                            <xsd:documentation>Step</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -8387,7 +8385,7 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Component segment path step</ddue:para>
+                        <ddue:para>Step of the deflection path of a component segment</ddue:para>
                     </ddue:summary>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -8397,22 +8395,17 @@ cpacs@dlr.de
                 <xsd:all>
                     <xsd:element name="controlParameter" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>The control parameter is used to reference the
-                                state of a control device, e.g. in the load
-                                case description. Can have any value and is NOT limited to the
-                                range of -1 to 1.</xsd:documentation>
+                            <xsd:documentation>Control parameter referencing this state of the deflection, e.g. in a load case. It can have any value and is not limited to the range from -1 to 1.</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="hingeTranslation" minOccurs="0" type="pointXYZType">
                         <xsd:annotation>
-                            <xsd:documentation>Translation along the x-, y- and z-Coordinate
-                                of the rotated hinge coordinate system</xsd:documentation>
+                            <xsd:documentation>Translation along the x-, y- and z-axis of the rotated hinge coordinate system</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="hingeLineRotation" minOccurs="0" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Rotation around the hinge line
-                            </xsd:documentation>
+                            <xsd:documentation>Rotation about the hinge line</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -8425,10 +8418,21 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>ComponentSegments of the wing.</ddue:para>
+                        <ddue:para>Component segments of a wing</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>The componentSegments of the wing.</ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                The parts of a wing that carry its structure, control surfaces, fuel tanks, attachments and structural mounts (<ddue:codeInline>componentSegmentType</ddue:codeInline>).
+                                Each component segment spans one or more consecutive segments of the wing and provides the relative coordinates η and ξ in which these parts are positioned.
+                            </ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="componentSegments"/>
+                            </ddue:mediaLink>
+                            <ddue:para>
+                                The figure shows two ways to divide the example wing of <ddue:codeInline>wingType</ddue:codeInline>, which has a root, a kink and a tip element and two segments: (a) one component segment spanning both segments, as in the example, or (b) one component segment for each segment.
+                            </ddue:para>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -8438,7 +8442,7 @@ cpacs@dlr.de
                 <xsd:sequence>
                     <xsd:element name="componentSegment" maxOccurs="unbounded" type="componentSegmentType">
                         <xsd:annotation>
-                            <xsd:documentation>ComponentSegment</xsd:documentation>
+                            <xsd:documentation>Component segment</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -8451,66 +8455,113 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>ComponentSegment of the wing.</ddue:para>
+                        <ddue:para>Part of a wing spanning one or more segments, in which structure and control surfaces are positioned</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>Within componentSegments the wing structure, the
-                                control surfaces, the wing fuel tanks and the
-                                wingFuselageAttachment is defined by using relative coordinates.
+                            <ddue:para>
+                                A component segment covers the segments of a wing from its start element (<ddue:codeInline>fromElementUID</ddue:codeInline>) to its end element (<ddue:codeInline>toElementUID</ddue:codeInline>).
+                                The structure, the control surfaces, the fuel tanks, the attachments to a fuselage or another wing and the structural mounts of the wing are defined in it, positioned by the relative coordinates η (<ddue:codeInline>eta</ddue:codeInline>) along the span and ξ (<ddue:codeInline>xsi</ddue:codeInline>) along the chord.
                             </ddue:para>
-                            <ddue:para>A componentSegment is defined in the same way as
-                                segments: from one cross section (sections-&gt;elements) to
-                                another. Compared to segments one componentSegment can can start
-                                and end at elements that are not consecutive. Therefore that one
-                                componentSegment can be the combination of several segments.
-                                Each wing has at least one componentSegment (from root to tip).
-                                The maximal number of componentSegments equals the number of
-                                segments (each segment is defined as one componentSegment).
-                                This also implies that each segment can only be part of one componentSegment.
+                            <ddue:para>
+                                <ddue:legacyBold>Rules</ddue:legacyBold>
                             </ddue:para>
-                            <ddue:para>In principal a componentSegment can combine any number
-                                of segments. But if in one section two elements are defined, the
-                                componentSegment has to start/end there as no well-defined
-                                relative coordinates can be defined if steps in the wing occur.
+                            <ddue:list class="bullet">
+                                <ddue:listItem>
+                                    <ddue:para>A component segment is defined like a segment, from one element to another. Unlike a segment, its start and end element do not have to be neighbours; the component segment then combines all segments in between.</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>The component segment follows the direction of its segments: starting at the start element, each of its segments begins at the element at which the previous one ends, up to the end element. The start element is therefore the inner and the end element the outer element of the component segment.</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>Each segment can only be part of one component segment. A wing therefore has at most as many component segments as segments.</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>If a section has two elements, e.g. at a step in the wing, a component segment has to start or end there, since no well-defined relative coordinates can be defined across the step.</ddue:para>
+                                </ddue:listItem>
+                            </ddue:list>
+                            <ddue:para>
+                                <ddue:legacyBold>Relative coordinates</ddue:legacyBold>
                             </ddue:para>
-                            <ddue:para>An example for wing componentSegments can be found in
-                                the picture below:</ddue:para>
+                            <ddue:para>
+                                A position in a component segment is given either in the coordinates of one of its segments or in the coordinates of the component segment.
+                                The <ddue:codeInline>referenceUID</ddue:codeInline> of the position (e.g. in <ddue:codeInline>etaXsiPointType</ddue:codeInline> or <ddue:codeInline>etaIsoLineType</ddue:codeInline>) selects the coordinates: it references either the segment or the component segment.
+                                Segment coordinates are defined on the chord surface of the segment (see <ddue:codeInline>wingSegmentType</ddue:codeInline>).
+                            </ddue:para>
+                            <ddue:para>
+                                The coordinates of the component segment join the segment coordinates of its segments along the span.
+                                The elements are placed along the mid-chord line, the line through the middle points M of the chord lines of the elements.
+                                Numbering the elements from 0 at the start to n at the end element, element k lies at
+                            </ddue:para>
                             <ddue:mediaLink>
-                                <ddue:image xlink:href="wingcomponentsegments"/>
-                            </ddue:mediaLink>
-                            <ddue:para>Within componentSegments a relative spanwise
-                                coordinate (eta) and a relative chordwise coordinate (xsi) is
-                                defined. Those coordinates are used for the definition of e.g.
-                                wing structures and control surfaces. there are two types of eta xsi coordinates.
-                                Segment (eta, xsi) coordinates define the relative local coordinate system for a segment ranging from (0,0) to (1,1).
-                            </ddue:para>
-                            <ddue:mediaLink>
-                                <ddue:image xlink:href="componentsegments_1"/>
+                                <ddue:image xlink:href="eq_componentSegmentEta"/>
                             </ddue:mediaLink>
                             <ddue:para>
-                                The eta xsi coordinates for a component segment are based on the segment eta xsi planes.
-                                As a reference length for the component segment eta coordinate the
-                                mid chord lines of all the segments are used.
-                                The beginning of this line at from-element equals eta = 0, while the end of this line
-                                at the to-element equals eta = 1. All wing positions that lie on the same
-                                element (segment border) have the same eta coordinate. The points in between
-                                two elements are defined by the iso xsi lines of the segment eta xsi space.
-                                An example for the definition of the relative axes can
-                                be found in the picture below:</ddue:para>
+                                where l<ddue:subscript>j</ddue:subscript> is the straight distance between the middle points of the chords of elements j−1 and j, measured in space, and P<ddue:subscript>LE</ddue:subscript> and P<ddue:subscript>TE</ddue:subscript> are the leading and trailing edge points of an element.
+                                η is 0 at the start element and 1 at the end element.
+                                In the component segment of the example below, the mid-chord line is 5.78 m long between the root and the kink element and 8.58 m between the kink and the tip element, so that the kink element lies at η = 5.78 / (5.78 + 8.58) = 0.403.
+                            </ddue:para>
                             <ddue:mediaLink>
-                                <ddue:image xlink:href="componentsegments_2"/>
+                                <ddue:image xlink:href="componentSegmentEta"/>
                             </ddue:mediaLink>
                             <ddue:para>
-                                In order to calculate the global coordinates of a component segment eta xsi point
-                                one first has to calculate the eta point on the xsi iso line of (xsi=0.5),
-                                and then walk along the iso eta lineof the segment.
+                                Between the elements k−1 and k, a point of the component segment is the point of the segment k in between with the coordinates
                             </ddue:para>
-                            <ddue:para>An example for determining the a component
-                            eta xsi point can be found in the picture below:</ddue:para>
                             <ddue:mediaLink>
-                                <ddue:image xlink:href="componentsegments_3"/>
+                                <ddue:image xlink:href="eq_componentSegmentToSegment"/>
                             </ddue:mediaLink>
+                            <ddue:para>
+                                ξ is thus the same in both coordinates, and η is scaled linearly within each segment.
+                                Lines of constant η run straight from the leading to the trailing edge; lines of constant ξ are straight within each segment and bend at the elements.
+                                To find the point with given η and ξ, go to η on the mid-chord line and then along the line of constant η to ξ.
+                            </ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="componentSegmentEtaXsi"/>
+                            </ddue:mediaLink>
+                            <ddue:para>
+                                The figure shows the lines of constant η and ξ of the component segment of the example below.
+                                The point B with η = 0.201 and ξ = 0.75 is found at A, η = 0.201 on the mid-chord line, and then along the line of constant η; in the coordinates of segment 1, it is the point with η = 0.5 and ξ = 0.75.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Example</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The component segment of the wing shown in <ddue:codeInline>wingType</ddue:codeInline>, from the root to the tip element:
+                            </ddue:para>
+                            <ddue:code language="XML" title="Component segment from the root to the tip element">
+                                <![CDATA[
+<componentSegments>
+    <componentSegment uID="Wing_componentSegment">
+        <name>Component segment</name>
+        <fromElementUID>Wing_root_element</fromElementUID>
+        <toElementUID>Wing_tip_element</toElementUID>
+    </componentSegment>
+</componentSegments>
+                                ]]>
+                            </ddue:code>
+                            <ddue:para>
+                                The two spar positions below describe the point of the figure, once in the coordinates of the component segment and once in the coordinates of segment 1; they differ only by the rounding of η:
+                            </ddue:para>
+                            <ddue:code language="XML" title="Spar positions in component segment and in segment coordinates">
+                                <![CDATA[
+<sparPositions>
+    <sparPosition uID="Wing_sparPosition_componentSegment">
+        <sparPositionEtaXsi>
+            <eta>0.2013</eta>
+            <xsi>0.75</xsi>
+            <referenceUID>Wing_componentSegment</referenceUID>
+        </sparPositionEtaXsi>
+    </sparPosition>
+    <sparPosition uID="Wing_sparPosition_segment">
+        <sparPositionEtaXsi>
+            <eta>0.5</eta>
+            <xsi>0.75</xsi>
+            <referenceUID>Wing_segment1</referenceUID>
+        </sparPositionEtaXsi>
+    </sparPosition>
+</sparPositions>
+                                ]]>
+                            </ddue:code>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -8531,23 +8582,17 @@ cpacs@dlr.de
                     </xsd:element>
                     <xsd:element name="fromElementUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>
-                                Reference to the element from which the
-                                componentSegment shall start
-                            </xsd:documentation>
+                            <xsd:documentation>Element at which the component segment starts (η = 0)</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="toElementUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>
-                                Reference to the element from which the
-                                componentSegment shall end
-                            </xsd:documentation>
+                            <xsd:documentation>Element at which the component segment ends (η = 1)</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="structure" minOccurs="0" type="wingComponentSegmentStructureType">
                         <xsd:annotation>
-                            <xsd:documentation>Structural layout</xsd:documentation>
+                            <xsd:documentation>Structure</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="controlSurfaces" minOccurs="0" type="controlSurfacesType">
@@ -8557,19 +8602,17 @@ cpacs@dlr.de
                     </xsd:element>
                     <xsd:element name="path" minOccurs="0" type="componentSegmentPathType">
                         <xsd:annotation>
-                            <xsd:documentation>
-                                Deflection path of componentSegments (e.g. used for trimmable HTPs)
-                            </xsd:documentation>
+                            <xsd:documentation>Deflection path of the component segment, e.g. of a trimmable horizontal tail</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="wingFuselageAttachments" minOccurs="0" type="wingFuselageAttachmentsType">
                         <xsd:annotation>
-                            <xsd:documentation>Attachments between the componentSegment and a fuselage</xsd:documentation>
+                            <xsd:documentation>Attachments to a fuselage</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="wingWingAttachments" minOccurs="0" type="wingWingAttachmentsType">
                         <xsd:annotation>
-                            <xsd:documentation>Attachments between the componentSegment and another wing</xsd:documentation>
+                            <xsd:documentation>Attachments to another wing</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="wingFuelTanks" minOccurs="0" type="wingFuelTanksType">
@@ -50738,6 +50781,32 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                                 Guide curves (<ddue:codeInline>guideCurveType</ddue:codeInline>) can shape the surface between the airfoils.
                             </ddue:para>
                             <ddue:para>
+                                <ddue:legacyBold>Segment coordinates</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                Positions on a segment, e.g. of spars, ribs or control surfaces, are given in the relative coordinates η (<ddue:codeInline>eta</ddue:codeInline>) along the span and ξ (<ddue:codeInline>xsi</ddue:codeInline>) along the chord.
+                                They are defined on the chord surface of the segment, the surface between the chord lines of its start and end element.
+                                A chord line runs from the leading to the trailing edge of the airfoil as it is placed in the wing, so that a point with the coordinates η and ξ lies at
+                            </ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="eq_segmentEtaXsi"/>
+                            </ddue:mediaLink>
+                            <ddue:para>
+                                where P<ddue:subscript>LE</ddue:subscript> and P<ddue:subscript>TE</ddue:subscript> are the leading and trailing edge points of the start element (from) and the end element (to).
+                                η runs from 0 at the start element to 1 at the end element, and ξ from 0 at the leading edge to 1 at the trailing edge.
+                                Lines of constant η and lines of constant ξ are straight.
+                                The points lie on the chord surface, not on the upper or lower surface of the wing; guide curves do not change them.
+                                Component segments (<ddue:codeInline>componentSegmentType</ddue:codeInline>) combine the coordinates of several segments.
+                            </ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="segmentEtaXsi"/>
+                            </ddue:mediaLink>
+                            <ddue:para>
+                                The figure shows the coordinates of the two segments of the example below in the top view.
+                                Each segment has its own coordinates from 0 to 1.
+                                The marked point lies halfway between the root and the kink element (η = 0.5) at three quarters of the chord (ξ = 0.75) of segment 1.
+                            </ddue:para>
+                            <ddue:para>
                                 <ddue:legacyBold>Example</ddue:legacyBold>
                             </ddue:para>
                             <ddue:para>
@@ -51216,12 +51285,12 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                             </ddue:para>
                             <ddue:para>
                                 A wing with three sections, attached to the fuselage with <ddue:codeInline>parentUID</ddue:codeInline> and mirrored at the x-z plane.
-                                Its sections, positionings and segments are shown in the documentation of <ddue:codeInline>wingSectionType</ddue:codeInline>, <ddue:codeInline>positioningType</ddue:codeInline> and <ddue:codeInline>wingSegmentType</ddue:codeInline>.
+                                Its sections, positionings, segments and component segment are shown in the documentation of <ddue:codeInline>wingSectionType</ddue:codeInline>, <ddue:codeInline>positioningType</ddue:codeInline>, <ddue:codeInline>wingSegmentType</ddue:codeInline> and <ddue:codeInline>componentSegmentType</ddue:codeInline>.
                                 The transformations in the examples are written out in full.
                                 Since rotation and translation default to 0 and scaling to 1, <ddue:codeInline>rotation</ddue:codeInline>, <ddue:codeInline>translation</ddue:codeInline> and <ddue:codeInline>scaling</ddue:codeInline> elements with these values can be omitted to write the dataset more compactly.
                                 A <ddue:codeInline>scaling</ddue:codeInline> that is given should list all three components.
                             </ddue:para>
-                            <ddue:code language="XML" title="Wing attached to the fuselage, with sections, positionings and segments">
+                            <ddue:code language="XML" title="Wing attached to the fuselage, with sections, positionings, segments and component segments">
                                 <![CDATA[
 <wing uID="Wing" symmetry="x-z-plane">
     <name>Wing</name>
@@ -51255,6 +51324,9 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
     <segments>
         ...
     </segments>
+    <componentSegments>
+        ...
+    </componentSegments>
 </wing>
                                 ]]>
                             </ddue:code>

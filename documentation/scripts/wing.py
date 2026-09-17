@@ -7,6 +7,8 @@
 # ///
 """Figures, equations and example data for the documentation of the wing geometry
 (wingType, wingSectionType, wingElementType, positioningType, wingSegmentType).
+The component segment of the example wing is defined here as well; its figures
+and equations are written by componentSegment.py.
 
 Run from the repository root:
 
@@ -77,6 +79,9 @@ SECTIONS = [("root", 5.0, 0.0), ("kink", 3.4, -1.5), ("tip", 1.4, -3.0)]
 
 # Positionings: (to section, from section or None, length, sweepAngle, dihedralAngle)
 POSITIONINGS = [("root", None, 0.0, 0.0, 0.0), ("kink", "root", 6.0, 20.0, 6.0), ("tip", "kink", 9.0, 28.0, 6.0)]
+
+# Component segment: (uID suffix, from section, to section)
+COMPONENT_SEGMENT = ("componentSegment", "root", "tip")
 
 
 # -------------------------------------------------------------------- geometry
@@ -621,6 +626,15 @@ def segment_xml(index):
     ])
 
 
+def component_segments_xml():
+    uid, start, end = COMPONENT_SEGMENT
+    return "\n".join([
+        "<componentSegments>", f'    <componentSegment uID="{WING_UID}_{uid}">', "        <name>Component segment</name>",
+        f"        <fromElementUID>{WING_UID}_{start}_element</fromElementUID>",
+        f"        <toElementUID>{WING_UID}_{end}_element</toElementUID>", "    </componentSegment>", "</componentSegments>",
+    ])
+
+
 def collection(tag, items):
     return "\n".join([f"<{tag}>", *(indent(item, 1) for item in items), f"</{tag}>"])
 
@@ -642,6 +656,7 @@ def wing_xml():
         indent(collection("sections", [section_xml(s) for s in SECTIONS]), 1),
         indent(positionings_xml(), 1),
         indent(segments_xml(), 1),
+        indent(component_segments_xml(), 1),
         "</wing>",
     ])
 
@@ -705,6 +720,7 @@ def excerpt_wing_xml():
         "    </sections>",
         "    <positionings>", "        ...", "    </positionings>",
         "    <segments>", "        ...", "    </segments>",
+        "    <componentSegments>", "        ...", "    </componentSegments>",
         "</wing>",
     ])
 
@@ -714,7 +730,7 @@ def write_example():
         EXAMPLE_FILE,
         generator=Path(__file__),
         name="Wing geometry",
-        description="A wing built from sections, elements, positionings and segments, attached to a fuselage.",
+        description="A wing built from sections, elements, positionings, segments and a component segment, attached to a fuselage.",
         model_uid="WingGeometryAircraft",
         model_name="Wing geometry example",
         components_tag="fuselages",
