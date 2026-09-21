@@ -6438,17 +6438,11 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Cap</ddue:para>
+                        <ddue:para>Cap of a spar</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>Cross section area of the spar cap and the material properties.</ddue:para>
-                            <ddue:para>Please find below a picture where all spar cross
-                                section parameters as well as the orientation references for
-                                the material definition can be found:</ddue:para>
-                            <ddue:mediaLink>
-                                <ddue:image xlink:href="spars2"/>
-                            </ddue:mediaLink>
+                            <ddue:para>A cap runs along the line where the spar meets the upper or the lower surface of the wing. It is given by the area of its cross section (<ddue:codeInline>area</ddue:codeInline>) and its material. How the area is spread over the cross section is not laid down.</ddue:para>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -6459,12 +6453,12 @@ cpacs@dlr.de
                 <xsd:sequence>
                     <xsd:element name="area" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Area</xsd:documentation>
+                            <xsd:documentation>Area of the cross section of the cap [m²]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="material" type="materialDefinitionType">
                         <xsd:annotation>
-                            <xsd:documentation>Material properties</xsd:documentation>
+                            <xsd:documentation>Material of the cap</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -6665,12 +6659,27 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Chordwise positioning of wing cells.</ddue:para>
+                        <ddue:para>Border of a cell at its leading or trailing edge</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>CellPositioningChordwise defines the chordwise direction of a wing cell either in two xsi
-                            (xsi1 at innerBorder and xsi2 at outerBorder) coordinates, via referencing a spar-uID or via a
-                            contour coordinate in chordwise direction.</ddue:para>
+                        <ddue:content>
+                            <ddue:para>The border is given in one of three ways:</ddue:para>
+                            <ddue:list class="bullet">
+                                <ddue:listItem>
+                                    <ddue:para>
+                                        <ddue:codeInline>xsi1</ddue:codeInline> and <ddue:codeInline>xsi2</ddue:codeInline>: the relative chordwise position of the border at the inner and at the outer end of the cell, so that the border may run at an angle to the lines of constant ξ;</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>
+                                        <ddue:codeInline>sparUID</ddue:codeInline>: the border follows that spar;</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>
+                                        <ddue:codeInline>contourCoordinate</ddue:codeInline>: the border follows the skin at that position, from 0 at the leading edge to 1 at the trailing edge.</ddue:para>
+                                </ddue:listItem>
+                            </ddue:list>
+                            <ddue:para>A contour coordinate runs on the skin itself, not on the chord surface: it is the relative position along the surface, so a border given this way follows the skin. Because the two kinds of border are of a different nature, either all four borders of a cell are given as contour coordinates or none of them is.</ddue:para>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -6681,23 +6690,23 @@ cpacs@dlr.de
                     <xsd:sequence>
                         <xsd:element name="xsi1" type="doubleBaseType">
                             <xsd:annotation>
-                                <xsd:documentation>Relative chordwise position of the inner end</xsd:documentation>
+                                <xsd:documentation>Relative chordwise position of the border at the inner end</xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
                         <xsd:element name="xsi2" type="doubleBaseType">
                             <xsd:annotation>
-                                <xsd:documentation>Relative chordwise position of the outer end</xsd:documentation>
+                                <xsd:documentation>Relative chordwise position of the border at the outer end</xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
                     </xsd:sequence>
                     <xsd:element name="sparUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Reference to a spar as chordwise border</xsd:documentation>
+                            <xsd:documentation>UID of the spar the border follows</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="contourCoordinate" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Chordwise contour coordinate as chordwise border. 0 equals LE, 1 equals TE.</xsd:documentation>
+                            <xsd:documentation>Position of the border on the skin, from 0 at the leading edge to 1 at the trailing edge</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:choice>
@@ -6710,12 +6719,27 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Spanwise positioning of wing cells.</ddue:para>
+                        <ddue:para>Border of a cell at its inner or outer end</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>CellPositioningSpanwise defines the chordwise direction of a wing cell either in two eta
-                        (eta1 at leadingEdge and eta2 at trailingEdge) coordinates, via referencing a rib-uID or via a contour
-                        coordinate in chordwise direction.</ddue:para>
+                        <ddue:content>
+                            <ddue:para>The border is given in one of three ways:</ddue:para>
+                            <ddue:list class="bullet">
+                                <ddue:listItem>
+                                    <ddue:para>
+                                        <ddue:codeInline>eta1</ddue:codeInline> and <ddue:codeInline>eta2</ddue:codeInline>: the relative spanwise position of the border at the leading and at the trailing edge of the cell, so that the border may run at an angle to the lines of constant η;</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>
+                                        <ddue:codeInline>ribDefinitionUID</ddue:codeInline> with <ddue:codeInline>ribNumber</ddue:codeInline>: the border follows that rib of that rib set;</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>
+                                        <ddue:codeInline>contourCoordinate</ddue:codeInline>: the border follows the skin at that position, from 0 at the root to 1 at the tip.</ddue:para>
+                                </ddue:listItem>
+                            </ddue:list>
+                            <ddue:para>A contour coordinate runs on the skin itself, not on the chord surface: it is the relative position along the surface, so a border given this way follows the skin. Because the two kinds of border are of a different nature, either all four borders of a cell are given as contour coordinates or none of them is.</ddue:para>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -6726,30 +6750,30 @@ cpacs@dlr.de
                     <xsd:sequence>
                         <xsd:element name="eta1" type="etaIsoLineType">
                             <xsd:annotation>
-                                <xsd:documentation>Relative spanwise position of the forward end</xsd:documentation>
+                                <xsd:documentation>Relative spanwise position of the border at the leading edge</xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
                         <xsd:element name="eta2" type="etaIsoLineType">
                             <xsd:annotation>
-                                <xsd:documentation>Relative spanwise position of the rear end</xsd:documentation>
+                                <xsd:documentation>Relative spanwise position of the border at the trailing edge</xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
                     </xsd:sequence>
                     <xsd:sequence>
                         <xsd:element name="ribNumber" type="integerBaseType">
                             <xsd:annotation>
-                                <xsd:documentation>RibNumber is the reference to the rib number of the rib set which is referenced by 'ribDefinitionUID'.</xsd:documentation>
+                                <xsd:documentation>Number of the rib within its set</xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
                         <xsd:element name="ribDefinitionUID" type="stringUIDBaseType">
                             <xsd:annotation>
-                                <xsd:documentation>Reference to a ribDefinition set. The single rib of this ribDefinition set is defined by using 'ribNumber'.</xsd:documentation>
+                                <xsd:documentation>UID of the rib or rib set the border follows</xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
                     </xsd:sequence>
                     <xsd:element name="contourCoordinate" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Spanwise contour coordinate as spanwise border. 0 equals root, 1 equals tip.</xsd:documentation>
+                            <xsd:documentation>Position of the border on the skin, from 0 at the root to 1 at the tip</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:choice>
@@ -13133,11 +13157,13 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Point on a curve</ddue:para>
+                        <ddue:para>Point on a curve, given as a relative coordinate</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Point on a curve in normalized curve coordinates.
-                        The referenceUID must reference a one-dimensional curve such as spars.</ddue:para>
+                        <ddue:content>
+                            <ddue:para>A point on a curve of the aircraft, given by the relative coordinate η (<ddue:codeInline>eta</ddue:codeInline>) along it, which runs from 0 at the beginning to 1 at the end of the curve.</ddue:para>
+                            <ddue:para>The <ddue:codeInline>referenceUID</ddue:codeInline> references the curve. It is a spar, and η is then the relative arc length along the mid line of the spar (see <ddue:codeInline>wingSparType</ddue:codeInline>).</ddue:para>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -13147,14 +13173,12 @@ cpacs@dlr.de
                 <xsd:all>
                     <xsd:element name="eta" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Relative position on the referenced line/curve</xsd:documentation>
+                            <xsd:documentation>Relative position along the referenced curve</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="referenceUID" type="stringBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>This reference UID determines the reference curve.
-                            If it points to a spar, then the eta value is considered to be a spar coordinate
-                            between start (eta=0) and end (eta=1) of the spar.</xsd:documentation>
+                            <xsd:documentation>UID of the curve, e.g. of a spar</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -16661,11 +16685,14 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Eta iso line</ddue:para>
+                        <ddue:para>Spanwise position, given as a relative coordinate</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Iso line described by point of the same eta coordinate.
-                        Can be either segment or component segment coordinates.</ddue:para>
+                        <ddue:content>
+                            <ddue:para>A position along the span, given by the relative coordinate η (<ddue:codeInline>eta</ddue:codeInline>), which runs from 0 to 1. It describes the line of all points of the chord surface with this η.</ddue:para>
+                            <ddue:para>The <ddue:codeInline>referenceUID</ddue:codeInline> selects the coordinates: it references either a segment of the wing, and the values are then the coordinates of that segment (<ddue:codeInline>wingSegmentType</ddue:codeInline>), or a component segment, and the values are then the coordinates of the component segment (<ddue:codeInline>componentSegmentType</ddue:codeInline>).</ddue:para>
+                            <ddue:para>Where the element that uses this type says so, the <ddue:codeInline>referenceUID</ddue:codeInline> may also reference a curve, e.g. a spar; η is then measured along that curve (see <ddue:codeInline>wingSparType</ddue:codeInline>).</ddue:para>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -16675,15 +16702,12 @@ cpacs@dlr.de
                 <xsd:all>
                     <xsd:element name="eta" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Relative spanwise position. Eta refers to the segment or componentSegment depending on the referenced UID.</xsd:documentation>
+                            <xsd:documentation>Relative spanwise position</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="referenceUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>This reference UID determines the reference coordinate system.
-                            If it points to a segment, then the eta value is considered to be in segment
-                            eta coordinate; if it points to a componentSegment,
-                            then componentSegment eta coordinate is used.</xsd:documentation>
+                            <xsd:documentation>UID of the segment, component segment or curve along which the position is measured</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -16696,11 +16720,14 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Point in eta and xsi coordinates</ddue:para>
+                        <ddue:para>Point on the chord surface, given in relative coordinates</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Point described by eta-xsi coordinates.
-                        Can be either segment or component segment coordinates.</ddue:para>
+                        <ddue:content>
+                            <ddue:para>A point of the chord surface of the component segment, the surface spanned by the chord lines of its elements (see <ddue:codeInline>componentSegmentType</ddue:codeInline>), given by the relative spanwise coordinate η (<ddue:codeInline>eta</ddue:codeInline>) and the relative chordwise coordinate ξ (<ddue:codeInline>xsi</ddue:codeInline>). Both run from 0 to 1.</ddue:para>
+                            <ddue:para>The <ddue:codeInline>referenceUID</ddue:codeInline> selects the coordinates: it references either a segment of the wing, and the values are then the coordinates of that segment (<ddue:codeInline>wingSegmentType</ddue:codeInline>), or a component segment, and the values are then the coordinates of the component segment (<ddue:codeInline>componentSegmentType</ddue:codeInline>).</ddue:para>
+                            <ddue:para>In the coordinates of a component segment, η = 0 and η = 1 lie on its inner and its outer section element, ξ = 0 on the leading and ξ = 1 on the trailing edge.</ddue:para>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -16710,20 +16737,17 @@ cpacs@dlr.de
                 <xsd:all>
                     <xsd:element name="eta" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Relative spanwise position. Eta refers to the segment or componentSegment depending on the referenced UID.</xsd:documentation>
+                            <xsd:documentation>Relative spanwise position on the chord surface</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="xsi" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Relative chordwise position. Xsi refers to the segment or componentSegment depending on the referenced UID.</xsd:documentation>
+                            <xsd:documentation>Relative chordwise position on the chord surface</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="referenceUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>This reference UID determines the reference coordinate system.
-                            If it points to a segment, then the eta-xsi values are considered to be in segment
-                            eta-xsi coordinates; if it points to a componentSegment,
-                            then componentSegment eta-xsi coordinates are used.</xsd:documentation>
+                            <xsd:documentation>UID of the segment or component segment whose coordinates are used</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -16736,12 +16760,15 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Relative height at eta, xsi position</ddue:para>
+                        <ddue:para>Point between the lower and the upper surface of the wing</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Point described by eta-xsi and a relative height coordinate.
-                        Can be either segment or component segment coordinates.
-                        If relHeight is not given, the point has no offset from the eta-xsi plane</ddue:para>
+                        <ddue:content>
+                            <ddue:para>A point above or below the chord surface of the component segment, the surface spanned by the chord lines of its elements (see <ddue:codeInline>componentSegmentType</ddue:codeInline>): it lies on the normal of the chord surface through the point with the relative coordinates η (<ddue:codeInline>eta</ddue:codeInline>) and ξ (<ddue:codeInline>xsi</ddue:codeInline>).</ddue:para>
+                            <ddue:para>
+                                <ddue:codeInline>relHeight</ddue:codeInline> gives its position on that normal, relative to the thickness of the wing at this place: 0 is the point on the lower and 1 the point on the upper surface of the wing, and values in between are interpolated linearly. Without relHeight the point lies on the chord surface.</ddue:para>
+                            <ddue:para>The <ddue:codeInline>referenceUID</ddue:codeInline> selects the coordinates: it references either a segment of the wing, and the values are then the coordinates of that segment (<ddue:codeInline>wingSegmentType</ddue:codeInline>), or a component segment, and the values are then the coordinates of the component segment (<ddue:codeInline>componentSegmentType</ddue:codeInline>).</ddue:para>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -16751,26 +16778,22 @@ cpacs@dlr.de
                 <xsd:all>
                     <xsd:element name="eta" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Relative spanwise position. Eta refers to the segment or componentSegment depending on the referenced UID.</xsd:documentation>
+                            <xsd:documentation>Relative spanwise position on the chord surface</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="xsi" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Relative chordwise position. Xsi refers to the segment or componentSegment depending on the referenced UID.</xsd:documentation>
+                            <xsd:documentation>Relative chordwise position on the chord surface</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="relHeight" minOccurs="0" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Relative height position.
-                                relHeight is relative to the local airfoil thickness.</xsd:documentation>
+                            <xsd:documentation>Position on the normal of the chord surface, from 0 on the lower to 1 on the upper surface of the wing</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="referenceUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>This reference UID determines the reference coordinate system.
-                            If it points to a segment, then the eta-xsi values are considered to be in segment
-                            eta-xsi coordinates; if it points to a componentSegment,
-                            then componentSegment eta-xsi coordinates are used.</xsd:documentation>
+                            <xsd:documentation>UID of the segment or component segment whose coordinates are used</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -25803,10 +25826,24 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Material Definition</ddue:para>
+                        <ddue:para>Material of a sheet or of a cross section</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Material definition (Reference to material and thickness)</ddue:para>
+                        <ddue:content>
+                            <ddue:para>The material of a part of the structure, e.g. of a skin, a stringer, a spar web or a spar cap, and how thick it is. It is either a single material or a composite:</ddue:para>
+                            <ddue:list class="bullet">
+                                <ddue:listItem>
+                                    <ddue:para>
+                                        <ddue:codeInline>materialUID</ddue:codeInline> references a single material of the material library, and <ddue:codeInline>thickness</ddue:codeInline> gives the thickness of the sheet in metres.</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>
+                                        <ddue:codeInline>compositeUID</ddue:codeInline> references a composite. The thicknesses of its layers are part of the composite itself; <ddue:codeInline>thicknessScaling</ddue:codeInline> scales them all by the same factor.</ddue:para>
+                                </ddue:listItem>
+                            </ddue:list>
+                            <ddue:para>
+                                <ddue:codeInline>orthotropyDirection</ddue:codeInline> turns the orthotropy direction of the composite within the plane of the part, in degrees. Which direction it is measured from is defined by the part that carries the material.</ddue:para>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -25821,34 +25858,29 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     <xsd:sequence>
                         <xsd:element name="compositeUID" type="stringUIDBaseType">
                             <xsd:annotation>
-                                <xsd:documentation>UID of a composite definition
-                                </xsd:documentation>
+                                <xsd:documentation>UID of a composite of the material library</xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
                         <xsd:element name="orthotropyDirection" minOccurs="0" type="doubleBaseType">
                             <xsd:annotation>
-                                <xsd:documentation>Orthotropy direction of the composite
-                                </xsd:documentation>
+                                <xsd:documentation>Orthotropy direction of the composite within the plane of the part [deg]</xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
                         <xsd:element name="thicknessScaling" minOccurs="0" type="doubleBaseType">
                             <xsd:annotation>
-                                <xsd:documentation>Scaling factor of the composite thickness.
-                                    Absolute thicknesses are defined in each composite material
-                                    separately.</xsd:documentation>
+                                <xsd:documentation>Factor by which the thicknesses of the composite are scaled</xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
                     </xsd:sequence>
                     <xsd:sequence>
                         <xsd:element name="materialUID" type="stringUIDBaseType">
                             <xsd:annotation>
-                                <xsd:documentation>UID of a material definition
-                                </xsd:documentation>
+                                <xsd:documentation>UID of a material of the material library</xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
                         <xsd:element name="thickness" minOccurs="0" type="doubleBaseType">
                             <xsd:annotation>
-                                <xsd:documentation>Absolute thickness</xsd:documentation>
+                                <xsd:documentation>Thickness of the sheet [m]</xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
                     </xsd:sequence>
@@ -33797,10 +33829,12 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Point: x</ddue:para>
+                        <ddue:para>Point given by its x coordinate</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>X data.</ddue:para>
+                        <ddue:content>
+                            <ddue:para>A point that is fixed by one coordinate alone. The coordinate system and the meaning of the other coordinates follow from the element that uses it.</ddue:para>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -33810,7 +33844,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:all>
                     <xsd:element name="x" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>X-Component</xsd:documentation>
+                            <xsd:documentation>X coordinate</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -36347,13 +36381,28 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Definition of the rib rotation</ddue:para>
+                        <ddue:para>Direction of the ribs</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>The rotation around z describes the rotation around the
-                            wings midplane normal axis. The defaults to 90°. The reference
-                            for the 'zero-angle' of the z-rotation is defined in
-                            ribRotationReference.</ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                <ddue:codeInline>z</ddue:codeInline> turns the ribs about the normal of the chord surface, in degrees. The direction from which the angle is measured follows from <ddue:codeInline>ribRotationReference</ddue:codeInline>:</ddue:para>
+                            <ddue:list class="bullet">
+                                <ddue:listItem>
+                                    <ddue:para>without it, the direction of growing η on the chord surface, so that 90 degrees puts the ribs across the wing;</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>the UID of a spar, or the keyword leadingEdge or trailingEdge: the direction of that line where the rib meets it, so that 90 degrees puts the ribs perpendicular to it;</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>the keyword globalX or globalY: the x or the y axis of the wing, so that the ribs of the set all run in the same direction, e.g. in flight direction.</ddue:para>
+                                </ddue:listItem>
+                            </ddue:list>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="ribRotation"/>
+                            </ddue:mediaLink>
+                            <ddue:para>Panel (a) shows a rib of the outer set of the example: its reference is the rear spar, and z = 90 degrees puts it perpendicular to that spar. Panel (b) shows the second angle, x of the cross section (<ddue:codeInline>wingRibCrossSectionType</ddue:codeInline>), which tilts the plane of the rib against the chord surface; the value shown there is illustrative.</ddue:para>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -36363,24 +36412,12 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:all>
                     <xsd:element name="ribRotationReference" minOccurs="0" type="stringBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>RotationReference defines the reference for
-                                the z-rotation it is either sparUID, „LeadingEdge“,
-                                „TrailingEdge“, "globalX", "globalY" or "globalZ".
-                                If it is not defined the rotation reference is
-                                the eta-axis (=leading edge, that is projected on the wings
-                                y-z-plane). A z-rotation angle of 90 degrees means, that the rib
-                                is perpendicular on the ribRotationReference (e.g. spar, leading
-                                edge...). The rib itself is always straight, and the rotation
-                                is defined with respect of the intersection point of the rib
-                                with the ribRotationReference.</xsd:documentation>
+                            <xsd:documentation>Direction from which z is measured: the UID of a spar, leadingEdge, trailingEdge, globalX or globalY</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="z" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>The rotation around z describes the rotation
-                                around the wings midplane normal axis. The defaults to 90°. The
-                                reference for the 'zero-angle' of the z-rotation is defined in
-                                ribRotationReference.</xsd:documentation>
+                            <xsd:documentation>Angle about the normal of the chord surface [deg]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -38570,12 +38607,12 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>SparCells of current spar.</ddue:para>
+                        <ddue:para>Parts of the spar with a cross section of their own</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>sparCells are an optional Element. They are defined via
-                            the etaCoordinates and define a region of special cross section
-                            and material properties.</ddue:para>
+                        <ddue:content>
+                            <ddue:para>A spar cell replaces the cross section of the spar over a part of its length, e.g. where a thicker web is needed.</ddue:para>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -38585,7 +38622,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:sequence>
                     <xsd:element name="sparCell" maxOccurs="unbounded" type="sparCellType">
                         <xsd:annotation>
-                            <xsd:documentation>Spar cell</xsd:documentation>
+                            <xsd:documentation>Part of the spar with a cross section of its own</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -38598,17 +38635,12 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Spar cell of the spar.</ddue:para>
+                        <ddue:para>Part of a spar with a cross section of its own</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>Within spar cells a special area of the spar is
-                                defined where different cross section and material properties
-                                shall be defined.</ddue:para>
-                            <ddue:para>The area of the spar is defined by using the
-                                parameters 'fromEta' and 'toEta'. The definition of the caps,
-                                webs and rotation is equivalent to the cross section definition
-                                of the complete spar.</ddue:para>
+                            <ddue:para>Between <ddue:codeInline>fromEta</ddue:codeInline> and <ddue:codeInline>toEta</ddue:codeInline> the spar has the caps, webs and rotation given here instead of those of its cross section. The two borders are positions along the spar, so they reference the spar itself (see <ddue:codeInline>wingSparType</ddue:codeInline>).</ddue:para>
+                            <ddue:para>The caps, the webs and the rotation have the same meaning as in the cross section of the spar (<ddue:codeInline>sparCrossSectionType</ddue:codeInline>).</ddue:para>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -38619,44 +38651,37 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:all>
                     <xsd:element name="fromEta" type="etaIsoLineType">
                         <xsd:annotation>
-                            <xsd:documentation>Beginning (= inner border)</xsd:documentation>
+                            <xsd:documentation>Inner border of the cell, as a position along the spar</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="toEta" type="etaIsoLineType">
                         <xsd:annotation>
-                            <xsd:documentation>Ending (= outer border)</xsd:documentation>
+                            <xsd:documentation>Outer border of the cell, as a position along the spar</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="upperCap" minOccurs="0" type="capType">
                         <xsd:annotation>
-                            <xsd:documentation>Upper Cap
-                            </xsd:documentation>
+                            <xsd:documentation>Cap where the cell meets the upper surface of the wing</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="lowerCap" minOccurs="0" type="capType">
                         <xsd:annotation>
-                            <xsd:documentation>Lower Cap
-                            </xsd:documentation>
+                            <xsd:documentation>Cap where the cell meets the lower surface of the wing</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="web1" type="webType">
                         <xsd:annotation>
-                            <xsd:documentation>Web 1
-                            </xsd:documentation>
+                            <xsd:documentation>Web through the spar positions</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="web2" minOccurs="0" type="webType">
                         <xsd:annotation>
-                            <xsd:documentation>Web 2
-                            </xsd:documentation>
+                            <xsd:documentation>Second web, making the cell a box</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="rotation" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>The angle between the wing middle plane and
-                                web 1 [deg]. Default is 90 degrees. Positive rotation is around the
-                                spar axis heading along with the positive eta-axis.
-                            </xsd:documentation>
+                            <xsd:documentation>Angle between the chord surface and web1, about the axis of the spar in the direction of increasing eta [deg]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -38674,17 +38699,24 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Definition of the spar cross section.</ddue:para>
+                        <ddue:para>Cross section of a spar</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>Cross section definition of a spar. The spar middle point is defined by the intersection of the wing middle plane and web1. This equals the coordinate defined within the sparPosition.</ddue:para>
-                            <ddue:para>Please find below a picture where all spar cross
-                                section parameters as well as the orientation references for
-                                the material definition can be found:</ddue:para>
+                            <ddue:para>
+                                <ddue:codeInline>web1</ddue:codeInline> is the web that carries the spar positions: the middle point of the spar, the point given by the spar position, is the intersection of the chord surface with web1. A second web (<ddue:codeInline>web2</ddue:codeInline>) makes the spar a box spar.</ddue:para>
+                            <ddue:para>
+                                <ddue:codeInline>upperCap</ddue:codeInline> and <ddue:codeInline>lowerCap</ddue:codeInline> are the caps where the spar meets the upper and the lower surface of the wing. A cap is given by the area of its cross section and its material; how this area is spread over the cross section, and the length to which the position of a web between the caps (<ddue:codeInline>relPos</ddue:codeInline>) refers, are not laid down.</ddue:para>
+                            <ddue:para>
+                                <ddue:codeInline>rotation</ddue:codeInline> is the angle between the chord surface and web1, in degrees, measured about the axis of the spar in the direction of increasing η. With 90 degrees web1 is perpendicular to the chord surface. The value has to be given.</ddue:para>
+                            <ddue:para>The material of a cap or of a web is defined on its surface. Its x reference direction runs along the spar in the direction of increasing η, its z reference direction is the normal of the cap or of the web.</ddue:para>
                             <ddue:mediaLink>
-                                <ddue:image xlink:href="spars2"/>
+                                <ddue:image xlink:href="sparCrossSection"/>
                             </ddue:mediaLink>
+                            <ddue:para>The upper panel of the figure shows a section through a wing at η = 0.25 with the front and the rear spar, both with a rotation of 90 degrees. The lower panel shows the cross section of the rear spar with two webs, the caps on the skins between them and a rotation of 70 degrees; its values are illustrative.</ddue:para>
+                            <ddue:alert class="tigl">
+                                <ddue:para>TiGL 3.5 does not evaluate rotation: it always spans the surface of a spar along the z axis of the wing and reports a warning. As soon as the wing has dihedral or twist, this axis is not perpendicular to the chord surface, so the surface of the spar differs from the one described here even for the value 90. TiGL builds the caps as the lines along which the spar meets the upper and the lower surface of the wing and evaluates neither their area nor relPos nor the spar cells.</ddue:para>
+                            </ddue:alert>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -38695,36 +38727,32 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:all>
                     <xsd:element name="upperCap" minOccurs="0" type="capType">
                         <xsd:annotation>
-                            <xsd:documentation>Upper cap</xsd:documentation>
+                            <xsd:documentation>Cap where the spar meets the upper surface of the wing</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="lowerCap" minOccurs="0" type="capType">
                         <xsd:annotation>
-                            <xsd:documentation>Lower cap</xsd:documentation>
+                            <xsd:documentation>Cap where the spar meets the lower surface of the wing</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="web1" type="webType">
                         <xsd:annotation>
-                            <xsd:documentation>First web</xsd:documentation>
+                            <xsd:documentation>Web through the spar positions</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="web2" minOccurs="0" type="webType">
                         <xsd:annotation>
-                            <xsd:documentation>Second web</xsd:documentation>
+                            <xsd:documentation>Second web, making the spar a box spar</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="sparCells" minOccurs="0" type="sparCellsType">
                         <xsd:annotation>
-                            <xsd:documentation>Cells</xsd:documentation>
+                            <xsd:documentation>Parts of the spar with a cross section of their own</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="rotation" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>The angle between the wing middle plane and
-                                web1. Default is 90 degrees. Positive rotation is around the
-                                intersection axis of the spar and the wing middle plane. The
-                                positive heading of this axis is inline with the positive
-                                heading of the componentSegment eta-axis.</xsd:documentation>
+                            <xsd:documentation>Angle between the chord surface and web1, about the axis of the spar in the direction of increasing eta [deg]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -38737,19 +38765,11 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Spar definition points on the wing.</ddue:para>
+                        <ddue:para>Points on the chord surface at which the spars are fixed</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>sparPositionType, a sparPostion defines a location
-                                within the componentSegment where a spar in mounted. Eta and xsi
-                                are relative to the componentSegment.</ddue:para>
-                            <ddue:para>Please find below a picture for an example definition
-                                of 3 spars in one wing, by using spar position points and spar
-                                segments:</ddue:para>
-                            <ddue:mediaLink>
-                                <ddue:image width="500" xlink:href="spars1"/>
-                            </ddue:mediaLink>
+                            <ddue:para>Every point at which a spar of this component segment is fixed is defined here once and referenced by the spars (<ddue:codeInline>sparSegmentType</ddue:codeInline>). A point may be used by several spars.</ddue:para>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -38760,7 +38780,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:sequence>
                     <xsd:element name="sparPosition" minOccurs="2" maxOccurs="unbounded" type="sparPositionType">
                         <xsd:annotation>
-                            <xsd:documentation>Spar position</xsd:documentation>
+                            <xsd:documentation>Point at which a spar is fixed</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -38773,23 +38793,28 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Spar position on the wing</ddue:para>
+                        <ddue:para>Point on the chord surface at which a spar is fixed</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>sparPositionType, a sparPostion defines a location
-                                within the componentSegment where a spar in mounted. Eta and xsi
-                                are relative to the componentSegment.</ddue:para>
-                            <ddue:para>Please find below a picture for an example definition
-                                of 3 spars in one wing, by using spar position points and spar
-                                segments:</ddue:para>
-                            <ddue:mediaLink>
-                                <ddue:image width="500" xlink:href="spars1"/>
-                            </ddue:mediaLink>
-                            <ddue:para>As an alternative to the relative eta coordinate it is
-                                possible to specify an elementUID so that the spar position is
-                                relative to the outer geometry, e.g. kink, of the wing.
-                            </ddue:para>
+                            <ddue:para>The point is given in one of three ways:</ddue:para>
+                            <ddue:list class="bullet">
+                                <ddue:listItem>
+                                    <ddue:para>
+                                        <ddue:codeInline>sparPositionEtaXsi</ddue:codeInline> gives it in the relative coordinates of the component segment or of a segment (<ddue:codeInline>etaXsiPointType</ddue:codeInline>). This is the usual way.</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>
+                                        <ddue:codeInline>sparPositionRib</ddue:codeInline> puts it on a rib, at a relative chordwise position on that rib (<ddue:codeInline>wingRibPointType</ddue:codeInline>), so that the spar follows the rib when the rib is moved.</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>
+                                        <ddue:codeInline>sparPositionCurve</ddue:codeInline> puts it on another spar, at a relative position along that spar (<ddue:codeInline>curvePointType</ddue:codeInline>), so that the spar starts or ends on the other one.</ddue:para>
+                                </ddue:listItem>
+                            </ddue:list>
+                            <ddue:alert class="tigl">
+                                <ddue:para>TiGL 3.5 reads sparPositionCurve but does not evaluate it: as soon as a spar uses such a position, it aborts with "Unknown SparPosition InputType".</ddue:para>
+                            </ddue:alert>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -38800,17 +38825,17 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:choice>
                     <xsd:element name="sparPositionRib" type="wingRibPointType">
                         <xsd:annotation>
-                            <xsd:documentation>Spar position on an existing rib using a relative xsi coordinate to determine the chord wise position on that rib</xsd:documentation>
+                            <xsd:documentation>Position on a rib, at a relative chordwise position on that rib</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="sparPositionEtaXsi" type="etaXsiPointType">
                         <xsd:annotation>
-                            <xsd:documentation>Spar position using relative eta/xsi coordinates</xsd:documentation>
+                            <xsd:documentation>Position in the relative coordinates of a segment or of the component segment</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="sparPositionCurve" type="curvePointType">
                         <xsd:annotation>
-                            <xsd:documentation>Spar position via a point on a curve</xsd:documentation>
+                            <xsd:documentation>Position on another spar, at a relative position along it</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:choice>
@@ -38828,26 +38853,11 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>sparPositionUIDs of the spar.</ddue:para>
+                        <ddue:para>Spar positions the spar runs through</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>sparPositionType, a sparPostion defines a location
-                                within the componentSegment where a spar in mounted. Those
-                                positions are combined to spars by using a list of spar position
-                                uIDs. The order of the sparPositionUIDs must be the same as the
-                                order of the points on the real spar (from root to tip or from
-                                tip to root).</ddue:para>
-                            <ddue:para>Please note: orientation of a spar must be always
-                                outbound or always inbound. A zigzag spar orientation where
-                                e.g. the spar starts at the root, goes to the tip and goes back
-                                to another point at the root is not allowed.</ddue:para>
-                            <ddue:para>Please find below a picture for an example definition
-                                of 3 spars in one wing, by using spar position points and spar
-                                segments:</ddue:para>
-                            <ddue:mediaLink>
-                                <ddue:image xlink:href="spars1"/>
-                            </ddue:mediaLink>
+                            <ddue:para>The spar runs through these positions in the order in which they are listed, from root to tip or from tip to root. At least two positions are needed. A position may also be used by other spars.</ddue:para>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -38858,8 +38868,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:sequence>
                     <xsd:element name="sparPositionUID" minOccurs="2" maxOccurs="unbounded" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>List of spar position uIDs
-                            </xsd:documentation>
+                            <xsd:documentation>UID of a spar position, in the order of the points on the spar</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -38872,11 +38881,12 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Spar segments of the wing.</ddue:para>
+                        <ddue:para>Spars of the wing</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>sparSegmentsType, containing multiple sparSegment
-                            (=spars) of the wing.</ddue:para>
+                        <ddue:content>
+                            <ddue:para>Each <ddue:codeInline>sparSegment</ddue:codeInline> is one spar of the component segment.</ddue:para>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -38886,7 +38896,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:sequence>
                     <xsd:element name="sparSegment" maxOccurs="unbounded" type="sparSegmentType">
                         <xsd:annotation>
-                            <xsd:documentation>Spar segment</xsd:documentation>
+                            <xsd:documentation>One spar</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -38899,12 +38909,12 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>SparSegments (=spars) of the wing.</ddue:para>
+                        <ddue:para>One spar</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>SparSegmentType, each spar is defined by multiple
-                            sparPositions that are referenced via their uID. The spar cross
-                            section is defined in 'sparCrossSection'.</ddue:para>
+                        <ddue:content>
+                            <ddue:para>A spar runs through the spar positions referenced in <ddue:codeInline>sparPositionUIDs</ddue:codeInline> and has the cross section given in <ddue:codeInline>sparCrossSection</ddue:codeInline>. The cross section holds for the whole spar; spar cells (<ddue:codeInline>sparCellType</ddue:codeInline>) can replace it over a part of the spar.</ddue:para>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -38914,22 +38924,22 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:all>
                     <xsd:element name="name" type="stringBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Name</xsd:documentation>
+                            <xsd:documentation>Name of the spar</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="description" minOccurs="0" type="stringBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Description</xsd:documentation>
+                            <xsd:documentation>Description of the spar</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="sparPositionUIDs" type="sparPositionUIDsType">
                         <xsd:annotation>
-                            <xsd:documentation>References to the spar positions the spar segment runs through</xsd:documentation>
+                            <xsd:documentation>The spar positions the spar runs through, in order</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="sparCrossSection" type="sparCrossSectionType">
                         <xsd:annotation>
-                            <xsd:documentation>Cross section</xsd:documentation>
+                            <xsd:documentation>Caps, webs and orientation of the cross section</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -49013,17 +49023,11 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Spar web</ddue:para>
+                        <ddue:para>Web of a spar</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>Cross section area of the spar web and the material properties.</ddue:para>
-                            <ddue:para>Please find below a picture where all spar cross
-                                section parameters as well as the orientation references for
-                                the material definition can be found:</ddue:para>
-                            <ddue:mediaLink>
-                                <ddue:image xlink:href="spars2"/>
-                            </ddue:mediaLink>
+                            <ddue:para>A web is a sheet between the caps of the spar, given by its material and by <ddue:codeInline>relPos</ddue:codeInline>, its position between the caps from 0 to 1. The length to which relPos refers is not laid down; web1 always runs through the spar positions (see <ddue:codeInline>sparCrossSectionType</ddue:codeInline>).</ddue:para>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -49034,15 +49038,12 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:all>
                     <xsd:element name="material" type="materialDefinitionType">
                         <xsd:annotation>
-                            <xsd:documentation>Material definition of the spar web
-                            </xsd:documentation>
+                            <xsd:documentation>Material of the web</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="relPos" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>relPos ranges from 0 to 1 It defines the
-                                position of the web relative to the caps (see picture below)
-                            </xsd:documentation>
+                            <xsd:documentation>Position of the web between the caps, from 0 to 1</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -49637,10 +49638,12 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Cells of the wing.</ddue:para>
+                        <ddue:para>Regions of a shell with a skin and stringers of their own</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>The cells of the wing.</ddue:para>
+                        <ddue:content>
+                            <ddue:para>Each <ddue:codeInline>cell</ddue:codeInline> covers a part of the shell it belongs to.</ddue:para>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -49650,7 +49653,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:sequence>
                     <xsd:element name="cell" maxOccurs="unbounded" type="wingCellType">
                         <xsd:annotation>
-                            <xsd:documentation>Cell</xsd:documentation>
+                            <xsd:documentation>One region of the shell</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -49663,36 +49666,16 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Cell of the wing</ddue:para>
+                        <ddue:para>Region of a shell with a skin and stringers of its own</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>A cell defines a special region of the wing. Within
-                                this region skin and stringer properties can be defined that
-                                differer from the properties of the rest of the wing. In general
-                                a cell is defined by defining four borders â€“ the cell leading
-                                and trailing edge and the inner border and the outer border.
-                                Those borders can either be defined by using eta/xsi coordinates
-                                or by referencing to spars and ribs. Mixed definitions (e.g.
-                                forward border is defined due to a spar, side borders due to eta
-                                coordinates) is allowed. In general a cell is quadrilateral. But
-                                if e.g. the spar, which is used for the definition of the
-                                trailing edge, has a kink, the cell can have more than four
-                                corners.</ddue:para>
-                            <ddue:para>The cell leading and trailing edge (= forward and rear
-                                border) can either be defined by referencing to a spar
-                                (-&gt;sparUID) or by the defining the xsi (=relative chord)
-                                coordinates of the border (xsi1 = inner end; xsi2 = outer end).
-                            </ddue:para>
-                            <ddue:para>The cell inner and outer border can either be defined
-                                by referencing to a rib (-&gt;ribDefinitionUID and ribNumber) or
-                                by the defining the eta (=relative spanwise) coordinates of the
-                                border (eta1 = forward end; eta2 = rear end).</ddue:para>
-                            <ddue:para>Some examples for wing cells can be found in the
-                                picture below:</ddue:para>
+                            <ddue:para>A cell is the part of its shell inside four borders: one at its leading and one at its trailing edge (<ddue:codeInline>cellPositioningChordwiseType</ddue:codeInline>) and one at its inner and one at its outer end (<ddue:codeInline>cellPositioningSpanwiseType</ddue:codeInline>). Its corners are the points where these borders meet, so a cell bounded by two spars and two ribs has its corners where those ribs meet those spars.</ddue:para>
+                            <ddue:para>The four borders may be given in different ways, e.g. the leading edge by a spar and the inner end by relative coordinates. A cell is usually a quadrilateral; if a spar that bounds it has a kink inside the cell, it has more corners. Where a border is given as a contour coordinate, all four borders have to be.</ddue:para>
                             <ddue:mediaLink>
-                                <ddue:image xlink:href="cells"/>
+                                <ddue:image xlink:href="wingCells"/>
                             </ddue:mediaLink>
+                            <ddue:para>The figure shows the two cells of the upper shell of the example in the top view: the inner one is bounded by the two spars and by the third and the sixth rib of the inner set, the outer one by relative coordinates. The third cell of the example, on the lower shell, is bounded by contour coordinates and is not shown; its borders run on the skin itself.</ddue:para>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -49703,32 +49686,32 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:all>
                     <xsd:element name="skin" type="wingSkinType">
                         <xsd:annotation>
-                            <xsd:documentation>Skin</xsd:documentation>
+                            <xsd:documentation>Skin of the cell, in place of the skin of the shell</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="stringer" minOccurs="0" type="wingStringerType">
                         <xsd:annotation>
-                            <xsd:documentation>Stringers of the cell</xsd:documentation>
+                            <xsd:documentation>Stringers of the cell, in place of the stringers of the shell</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="positioningLeadingEdge" type="cellPositioningChordwiseType">
                         <xsd:annotation>
-                            <xsd:documentation>Chordwise position of the leading edge border of the cell</xsd:documentation>
+                            <xsd:documentation>Border of the cell towards the leading edge</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="positioningTrailingEdge" type="cellPositioningChordwiseType">
                         <xsd:annotation>
-                            <xsd:documentation>Chordwise position of the trailing edge border of the cell</xsd:documentation>
+                            <xsd:documentation>Border of the cell towards the trailing edge</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="positioningInnerBorder" type="cellPositioningSpanwiseType">
                         <xsd:annotation>
-                            <xsd:documentation>Spanwise position of the inner border of the cell</xsd:documentation>
+                            <xsd:documentation>Border of the cell at its inner end</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="positioningOuterBorder" type="cellPositioningSpanwiseType">
                         <xsd:annotation>
-                            <xsd:documentation>Spanwise position of the outer border of the cell</xsd:documentation>
+                            <xsd:documentation>Border of the cell at its outer end</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -49746,10 +49729,38 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Structure of the wing</ddue:para>
+                        <ddue:para>Structure of a component segment of the wing</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Whole structure (skins, ribs, spars...) of the wing.</ddue:para>
+                        <ddue:content>
+                            <ddue:para>The structure of a wing is defined per component segment, and everything in it is positioned on the chord surface of that component segment (<ddue:codeInline>componentSegmentType</ddue:codeInline>), in the relative coordinates η and ξ or by reference to a spar or a rib.</ddue:para>
+                            <ddue:list class="bullet">
+                                <ddue:listItem>
+                                    <ddue:para>
+                                        <ddue:codeInline>spars</ddue:codeInline> run along the span through spar positions on the chord surface (<ddue:codeInline>wingSparType</ddue:codeInline>).</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>
+                                        <ddue:codeInline>ribsDefinitions</ddue:codeInline> stand across the wing, spaced along a reference line or placed one by one (<ddue:codeInline>wingRibsDefinitionsType</ddue:codeInline>).</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>
+                                        <ddue:codeInline>upperShell</ddue:codeInline> and <ddue:codeInline>lowerShell</ddue:codeInline> are the outer surface above and below the chord surface, with their skin, their stringers and the cells that give a region properties of its own (<ddue:codeInline>wingShellType</ddue:codeInline>).</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>
+                                        <ddue:codeInline>intermediateStructure</ddue:codeInline> fills the space between the two shells where a wing has no hollow box (<ddue:codeInline>wingIntermediateStructureCellType</ddue:codeInline>).</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>
+                                        <ddue:codeInline>wingCutOuts</ddue:codeInline> take the skin away where the wing needs an opening (<ddue:codeInline>wingCutOutType</ddue:codeInline>).</ddue:para>
+                                </ddue:listItem>
+                            </ddue:list>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="wingStructureSection"/>
+                            </ddue:mediaLink>
+                            <ddue:para>The figure shows a section through the wing of the example between its two spars: the shells above and below, the filling between them and the cut-out that leaves an opening in the lower shell.</ddue:para>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -49759,32 +49770,32 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:all>
                     <xsd:element name="upperShell" type="wingShellType">
                         <xsd:annotation>
-                            <xsd:documentation>Upper shell</xsd:documentation>
+                            <xsd:documentation>Skin, stringers and cells of the upper side</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="lowerShell" type="wingShellType">
                         <xsd:annotation>
-                            <xsd:documentation>Lower shell</xsd:documentation>
+                            <xsd:documentation>Skin, stringers and cells of the lower side</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="intermediateStructure" minOccurs="0" type="wingIntermediateStructureCellsType">
                         <xsd:annotation>
-                            <xsd:documentation>Intermediate structure between the shells</xsd:documentation>
+                            <xsd:documentation>Filling between the two shells</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="ribsDefinitions" minOccurs="0" type="wingRibsDefinitionsType">
                         <xsd:annotation>
-                            <xsd:documentation>Ribs</xsd:documentation>
+                            <xsd:documentation>Ribs of the component segment</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="spars" minOccurs="0" type="wingSparType">
                         <xsd:annotation>
-                            <xsd:documentation>Spars</xsd:documentation>
+                            <xsd:documentation>Spars of the component segment</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="wingCutOuts" minOccurs="0" type="wingCutOutsType">
                         <xsd:annotation>
-                            <xsd:documentation>Cut outs</xsd:documentation>
+                            <xsd:documentation>Openings in the shells</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -49797,8 +49808,13 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>CutOuts of the wing</ddue:para>
+                        <ddue:para>Openings in the shells of the wing</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>Each <ddue:codeInline>cutOut</ddue:codeInline> takes the skin away over one region, e.g. for an inspection opening or for the bay of the landing gear.</ddue:para>
+                        </ddue:content>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -49807,7 +49823,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:sequence>
                     <xsd:element name="cutOut" maxOccurs="unbounded" type="wingCutOutType">
                         <xsd:annotation>
-                            <xsd:documentation>Cut out</xsd:documentation>
+                            <xsd:documentation>One opening in a shell</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -49820,27 +49836,52 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>CutOut of the wing</ddue:para>
+                        <ddue:para>Opening in a shell of the wing</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>A wing cutout is defined using any combination of eta-xsi-spar-rib-uids.
-                                It has the similar syntax to a wingCell.
+                            <ddue:para>The skin of the side named in <ddue:codeInline>cutOutSides</ddue:codeInline> — the upper shell, the lower shell or both — is taken away over the region of the cut-out. The spars, ribs and stringers that run through the region are not affected; where they have to make way, their own borders say so.</ddue:para>
+                            <ddue:para>The region is bounded like a cell of a shell: a border at its leading and one at its trailing edge (<ddue:codeInline>cellPositioningChordwiseType</ddue:codeInline>) and one at its inner and one at its outer end (<ddue:codeInline>cellPositioningSpanwiseType</ddue:codeInline>). Each of them is given by relative coordinates, by a spar or by a rib, and the corners of the region are the points where the borders meet.</ddue:para>
+                            <ddue:para>This cut-out belongs to the structure of the wing. The cut-out that makes room for a control surface is defined at the device itself and takes away a part of the wing including its outer shape (see <ddue:codeInline>controlSurfaceWingCutOutType</ddue:codeInline>).</ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Example</ddue:legacyBold>
                             </ddue:para>
-                            <ddue:para>The cell leading and trailing edge (= forward and rear
-                                border) can either be defined by referencing to a spar
-                                (-&gt;sparUID) or by the defining the xsi (=relative chord)
-                                coordinates of the border (xsi1 = inner end; xsi2 = outer end).
-                            </ddue:para>
-                            <ddue:para>The cell inner and outer border can either be defined
-                                by referencing to a rib (-&gt;ribDefinitionUID and ribNumber) or
-                                by the defining the eta (=relative spanwise) coordinates of the
-                                border (eta1 = forward end; eta2 = rear end).</ddue:para>
-                            <ddue:para>Some examples for wing cells can be found in the
-                                picture below:</ddue:para>
-                            <ddue:mediaLink>
-                                <ddue:image xlink:href="cells"/>
-                            </ddue:mediaLink>
+                            <ddue:para>An inspection opening in the lower shell of the example, between two relative chordwise and two relative spanwise positions:</ddue:para>
+                            <ddue:code language="XML" title="Opening in the lower shell">
+&lt;wingCutOuts&gt;
+    &lt;cutOut uID="Wing_inspectionOpening"&gt;
+        &lt;positioningLeadingEdge&gt;
+            &lt;xsi1&gt;0.4&lt;/xsi1&gt;
+            &lt;xsi2&gt;0.4&lt;/xsi2&gt;
+        &lt;/positioningLeadingEdge&gt;
+        &lt;positioningTrailingEdge&gt;
+            &lt;xsi1&gt;0.55&lt;/xsi1&gt;
+            &lt;xsi2&gt;0.55&lt;/xsi2&gt;
+        &lt;/positioningTrailingEdge&gt;
+        &lt;positioningInnerBorder&gt;
+            &lt;eta1&gt;
+                &lt;eta&gt;0.6&lt;/eta&gt;
+                &lt;referenceUID&gt;Wing_componentSegment&lt;/referenceUID&gt;
+            &lt;/eta1&gt;
+            &lt;eta2&gt;
+                &lt;eta&gt;0.6&lt;/eta&gt;
+                &lt;referenceUID&gt;Wing_componentSegment&lt;/referenceUID&gt;
+            &lt;/eta2&gt;
+        &lt;/positioningInnerBorder&gt;
+        &lt;positioningOuterBorder&gt;
+            &lt;eta1&gt;
+                &lt;eta&gt;0.66&lt;/eta&gt;
+                &lt;referenceUID&gt;Wing_componentSegment&lt;/referenceUID&gt;
+            &lt;/eta1&gt;
+            &lt;eta2&gt;
+                &lt;eta&gt;0.66&lt;/eta&gt;
+                &lt;referenceUID&gt;Wing_componentSegment&lt;/referenceUID&gt;
+            &lt;/eta2&gt;
+        &lt;/positioningOuterBorder&gt;
+        &lt;cutOutSides&gt;lower&lt;/cutOutSides&gt;
+    &lt;/cutOut&gt;
+&lt;/wingCutOuts&gt;
+</ddue:code>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -49851,28 +49892,27 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:sequence>
                     <xsd:element name="positioningLeadingEdge" type="cellPositioningChordwiseType">
                         <xsd:annotation>
-                            <xsd:documentation>Chordwise position of the leading edge border of the cut out</xsd:documentation>
+                            <xsd:documentation>Border of the opening towards the leading edge</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="positioningTrailingEdge" type="cellPositioningChordwiseType">
                         <xsd:annotation>
-                            <xsd:documentation>Chordwise position of the trailing edge border of the cut out</xsd:documentation>
+                            <xsd:documentation>Border of the opening towards the trailing edge</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="positioningInnerBorder" type="cellPositioningSpanwiseType">
                         <xsd:annotation>
-                            <xsd:documentation>Spanwise position of the inner border of the cut out</xsd:documentation>
+                            <xsd:documentation>Border of the opening at its inner end</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="positioningOuterBorder" type="cellPositioningSpanwiseType">
                         <xsd:annotation>
-                            <xsd:documentation>Spanwise position of the outer border of the cut out</xsd:documentation>
+                            <xsd:documentation>Border of the opening at its outer end</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="cutOutSides">
                         <xsd:annotation>
-                            <xsd:documentation>Type of the cutout (upper|lower|both): upper shell, lower shell or both
-                            </xsd:documentation>
+                            <xsd:documentation>Which skin is taken away: upper, lower or both</xsd:documentation>
                         </xsd:annotation>
                         <xsd:complexType>
                             <xsd:simpleContent>
@@ -50432,11 +50472,12 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>IntermediateStructure cells</ddue:para>
+                        <ddue:para>Filling between the two shells</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Definition of the intermediateStructure of the
-                            componentSegment of the wing.</ddue:para>
+                        <ddue:content>
+                            <ddue:para>Each <ddue:codeInline>cell</ddue:codeInline> fills one region between the upper and the lower shell. Without this element the wing is hollow between its shells.</ddue:para>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -50446,7 +50487,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:sequence>
                     <xsd:element name="cell" maxOccurs="unbounded" type="wingIntermediateStructureCellType">
                         <xsd:annotation>
-                            <xsd:documentation>Cell</xsd:documentation>
+                            <xsd:documentation>One filled region between the shells</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -50459,58 +50500,48 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Definition of the cell of the intermediateStructure
-                        </ddue:para>
+                        <ddue:para>Filled region between the two shells</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>IntermediateStructure:</ddue:para>
-                            <ddue:para>It defines the filling materials between the upper and
-                                lower shell (e.g. honeycombe structures in a smeared
-                                representation). IntermediateStructure is optional.The position
-                                of the intermediateStructure is defined in so called cells (=
-                                special areas on the wing). Default is no intermediateStructure.
-                            </ddue:para>
-                            <ddue:para>Material Definition of intermediateStructure:
-                            </ddue:para>
-                            <ddue:para>The material of the intermediateStructure is reference
-                                by 'material'. The material orientation is defined by 'rotX' and
-                                'rotZ'. 'rotZ' is defined equivalent to the stringer angle resp.
-                                the skin orthotropyDirection. 'rotX' equals a positive rotation
-                                around the wings x-axis, while a rotation of zero is equivalent
-                                to the wing middle plane.</ddue:para>
-                            <ddue:para>A picture to clarify the reference direction of rotZ
-                                (equivalent to orthothropy direction of the wing) can be found
-                                in the picture below:</ddue:para>
+                            <ddue:para>Between the upper and the lower shell the wing is filled with a material, e.g. with a honeycomb core described by its smeared properties.</ddue:para>
+                            <ddue:para>The region is bounded like a cell of a shell: a border at its leading and one at its trailing edge (<ddue:codeInline>cellPositioningChordwiseType</ddue:codeInline>) and one at its inner and one at its outer end (<ddue:codeInline>cellPositioningSpanwiseType</ddue:codeInline>). Each of them is given by relative coordinates, by a spar or by a rib, and the corners of the region are the points where the borders meet.</ddue:para>
+                            <ddue:para>
+                                <ddue:codeInline>rotZ</ddue:codeInline> turns the material in the plane of the chord surface. It is measured like the angle of the stringers and the orthotropy direction of the skin, from the straight line through the leading edge points of the first and the last element of the component segment (see <ddue:codeInline>wingStringerType</ddue:codeInline>). <ddue:codeInline>rotX</ddue:codeInline> turns it about the x axis of the wing, and 0 keeps it in the chord surface.</ddue:para>
                             <ddue:mediaLink>
-                                <ddue:image xlink:href="wingskinorthotropydir"/>
+                                <ddue:image xlink:href="wingStructureSection"/>
                             </ddue:mediaLink>
-                            <ddue:para>Position definition by using cells:</ddue:para>
-                            <ddue:para>A cell defines a special region of the wing. Within
-                                this region the cell properties are defined. In general a cell
-                                is defined by defining four borders â€“ the cell leading and
-                                trailing edge and the inner border and the outer border. Those
-                                borders can either be defined by using eta/xsi coordinates or by
-                                referencing to spars and ribs. Mixed definitions (e.g. forward
-                                border is defined due to a spar, side borders due to eta
-                                coordinates) is allowed. In general a cell is quadrilateral. But
-                                if e.g. the spar, which is used for the definition of the
-                                trailing edge, has a kink, the cell can have more than four
-                                corners.</ddue:para>
-                            <ddue:para>The cell leading and trailing edge (= forward and rear
-                                border) can either be defined by referencing to a spar
-                                (-&gt;sparUID) or by the defining the xsi (=relative chord)
-                                coordinates of the border (xsi1 = inner end; xsi2 = outer end).
+                            <ddue:para>The figure shows the filling in a section of the example, between the two spars and the two shells.</ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Example</ddue:legacyBold>
                             </ddue:para>
-                            <ddue:para>The cell inner and outer border can either be defined
-                                by referencing to a rib (-&gt;ribDefinitionUID and ribNumber) or
-                                by the defining the eta (=relative spanwise) coordinates of the
-                                border (eta1 = forward end; eta2 = rear end).</ddue:para>
-                            <ddue:para>Some examples for wing cells can be found in the
-                                picture below:</ddue:para>
-                            <ddue:mediaLink>
-                                <ddue:image xlink:href="cells"/>
-                            </ddue:mediaLink>
+                            <ddue:para>One filled bay of the example, between the two spars and between two ribs of the outer rib set:</ddue:para>
+                            <ddue:code language="XML" title="Filling between the shells">
+&lt;intermediateStructure&gt;
+    &lt;cell uID="Wing_outerBay"&gt;
+        &lt;positioningLeadingEdge&gt;
+            &lt;sparUID&gt;Wing_frontSpar&lt;/sparUID&gt;
+        &lt;/positioningLeadingEdge&gt;
+        &lt;positioningTrailingEdge&gt;
+            &lt;sparUID&gt;Wing_rearSpar&lt;/sparUID&gt;
+        &lt;/positioningTrailingEdge&gt;
+        &lt;positioningInnerBorder&gt;
+            &lt;ribNumber&gt;2&lt;/ribNumber&gt;
+            &lt;ribDefinitionUID&gt;Wing_outerRibs&lt;/ribDefinitionUID&gt;
+        &lt;/positioningInnerBorder&gt;
+        &lt;positioningOuterBorder&gt;
+            &lt;ribNumber&gt;5&lt;/ribNumber&gt;
+            &lt;ribDefinitionUID&gt;Wing_outerRibs&lt;/ribDefinitionUID&gt;
+        &lt;/positioningOuterBorder&gt;
+        &lt;material&gt;
+            &lt;materialUID&gt;Aluminium2024&lt;/materialUID&gt;
+            &lt;thickness&gt;0.02&lt;/thickness&gt;
+        &lt;/material&gt;
+        &lt;rotX&gt;0&lt;/rotX&gt;
+        &lt;rotZ&gt;8&lt;/rotZ&gt;
+    &lt;/cell&gt;
+&lt;/intermediateStructure&gt;
+</ddue:code>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -50521,40 +50552,37 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:all>
                     <xsd:element name="positioningLeadingEdge" type="cellPositioningChordwiseType">
                         <xsd:annotation>
-                            <xsd:documentation>Chordwise position of the leading edge border of the cell</xsd:documentation>
+                            <xsd:documentation>Border of the region towards the leading edge</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="positioningTrailingEdge" type="cellPositioningChordwiseType">
                         <xsd:annotation>
-                            <xsd:documentation>Chordwise position of the trailing edge border of the cell</xsd:documentation>
+                            <xsd:documentation>Border of the region towards the trailing edge</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="positioningInnerBorder" type="cellPositioningSpanwiseType">
                         <xsd:annotation>
-                            <xsd:documentation>Spanwise position of the inner border of the cell</xsd:documentation>
+                            <xsd:documentation>Border of the region at its inner end</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="positioningOuterBorder" type="cellPositioningSpanwiseType">
                         <xsd:annotation>
-                            <xsd:documentation>Spanwise position of the outer border of the cell</xsd:documentation>
+                            <xsd:documentation>Border of the region at its outer end</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="material" type="materialDefinitionType">
                         <xsd:annotation>
-                            <xsd:documentation>Reference to the material</xsd:documentation>
+                            <xsd:documentation>Material of the filling</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="rotX" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>'rotX' equals a positive rotation around the
-                                wings x-axis, while a rotation of zero is equivalent to the wing
-                                middle plane direction</xsd:documentation>
+                            <xsd:documentation>Angle of the material about the x axis of the wing; 0 keeps it in the chord surface [deg]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="rotZ" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>'rotZ' is defined equivalent to the stringer
-                                angle resp. the skin orthotropyDirection</xsd:documentation>
+                            <xsd:documentation>Angle of the material in the chord surface, measured like the angle of the stringers [deg]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -50572,12 +50600,13 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Definition of a ribCell</ddue:para>
+                        <ddue:para>Part of a rib set with a cross section of its own</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>RibCells are optional elements. They are defined via a
-                            fromRib and a toRib. The enumeration is within the ribSet.
-                            RibNumber 1 starts at etaStart.</ddue:para>
+                        <ddue:content>
+                            <ddue:para>Between the ribs named in <ddue:codeInline>fromRib</ddue:codeInline> and <ddue:codeInline>toRib</ddue:codeInline> the ribs of the set have the material, the caps and the rotation given here instead of those of the cross section, e.g. where the ribs carry the landing gear.</ddue:para>
+                            <ddue:para>The ribs are numbered within their set: rib 1 is the rib at the beginning of the set, and the numbering follows the reference line outwards.</ddue:para>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -50587,47 +50616,32 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:all>
                     <xsd:element name="fromRib" type="stringBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Beginning of the ribCell. The enumeration is within the ribSet.</xsd:documentation>
+                            <xsd:documentation>Number of the first rib of the cell within its set</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="toRib" type="stringBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Ending of the ribCell. The enumeration is within the ribSet.</xsd:documentation>
+                            <xsd:documentation>Number of the last rib of the cell within its set</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="ribRotation" type="pointXType">
                         <xsd:annotation>
-                            <xsd:documentation>WING: The Rotation along the x describes a
-                                rotation around a line, that is defined by the intersection of
-                                the rib with the wing middle plane (orientated from leading to
-                                trailing edge). This angle defaults to 90° which means, that the
-                                rib is perpendicular on the wings middle plane. PYLON: The
-                                Rotation along the z describes a rotation around the pylons
-                                z-axis (= rotation in top view). This angle defaults to 90°
-                                which means, that the rib is perpendicular to the pylons x-axis.
-                            </xsd:documentation>
+                            <xsd:documentation>Angle x between the chord surface and the plane of the rib [deg]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="material" type="materialDefinitionType">
                         <xsd:annotation>
-                            <xsd:documentation>The orthotropyDirection is defined as rotation
-                                around the ribs z-axis. The rib coordinate system is defined as
-                                follows: x-axis is from leading to trailingeEdge of the
-                                componentSegment in the direction of the rib elongation. z-axis
-                                is normal to the rib in the direction of positive eta. y is
-                                defined by right hand rule. Rotation is around the z-axis. Zero
-                                degrees are at the x-axis positive direction.
-                            </xsd:documentation>
+                            <xsd:documentation>Material and thickness of the sheet of the ribs of the cell</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="upperCap" type="capType">
                         <xsd:annotation>
-                            <xsd:documentation>Upper cap</xsd:documentation>
+                            <xsd:documentation>Cap where the ribs meet the upper surface of the wing</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="lowerCap" type="capType">
                         <xsd:annotation>
-                            <xsd:documentation>Lower cap</xsd:documentation>
+                            <xsd:documentation>Cap where the ribs meet the lower surface of the wing</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -50645,11 +50659,38 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Cross section properties of a wing rib</ddue:para>
+                        <ddue:para>Cross section of a rib</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>wingRibCrossSectionType, containing the definition of
-                            ribsCrossSection</ddue:para>
+                        <ddue:content>
+                            <ddue:para>The cross section holds for every rib of the definition.</ddue:para>
+                            <ddue:list class="bullet">
+                                <ddue:listItem>
+                                    <ddue:para>
+                                        <ddue:codeInline>material</ddue:codeInline> is the material and the thickness of the sheet of the rib.</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>
+                                        <ddue:codeInline>upperCap</ddue:codeInline> and <ddue:codeInline>lowerCap</ddue:codeInline> are the caps along the lines where the rib meets the upper and the lower surface of the wing (<ddue:codeInline>capType</ddue:codeInline>).</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>
+                                        <ddue:codeInline>ribRotation</ddue:codeInline> holds the angle x between the chord surface and the plane of the rib, measured about the line along which the rib meets the chord surface. With 90 degrees, which is the value without the element, the rib stands perpendicular to the chord surface; see the figure in <ddue:codeInline>ribRotationType</ddue:codeInline>.</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>
+                                        <ddue:codeInline>ribPost</ddue:codeInline> is meant for the posts where the rib meets a spar. It carries an area and a material; how the post is shaped and where it sits is not laid down.</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>
+                                        <ddue:codeInline>ribCell</ddue:codeInline> gives a part of the set its own cross section (<ddue:codeInline>wingRibCellType</ddue:codeInline>).</ddue:para>
+                                </ddue:listItem>
+                            </ddue:list>
+                            <ddue:para>The material of the sheet and of the caps is defined on their surface. Its x reference direction runs along the rib from its beginning to its end, its z reference direction is the normal of the sheet or of the cap.</ddue:para>
+                            <ddue:alert class="tigl">
+                                <ddue:para>TiGL 3.5 turns the plane of a single rib about the x axis of the wing instead of about the line along which the rib meets the chord surface, so a value of x other than 90 places such a rib differently from the description above; for a rib of a set it turns the plane as described. Where a rib starts at a spar position or at the beginning or the end of a spar, and where the rotation reference is globalX or globalY, it also uses the z axis of the wing in place of the normal of the chord surface, which differs as soon as the wing has dihedral or twist. It evaluates neither ribPost nor ribCell nor ribCrossingBehaviour.</ddue:para>
+                            </ddue:alert>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -50659,49 +50700,32 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:all>
                     <xsd:element name="material" type="materialDefinitionType">
                         <xsd:annotation>
-                            <xsd:documentation>The orthotropyDirection is defined as rotation
-                                around the ribs z-axis. The rib coordinate system is defined as
-                                follows: x-axis is from leading to trailingeEdge of the
-                                componentSegment in the direction of the rib elongation. z-axis
-                                is normal to the rib in the direction of positive eta. y is
-                                defined by right hand rule. Rotation is around the z-axis. Zero
-                                degrees are at the x-axis positive direction.
-                            </xsd:documentation>
+                            <xsd:documentation>Material and thickness of the sheet of the rib</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="ribRotation" minOccurs="0" type="pointXType">
                         <xsd:annotation>
-                            <xsd:documentation>WING: The Rotation along the x describes a
-                                rotation around a line, that is defined by the intersection of
-                                the rib with the wing middle plane (orientated from leading to
-                                trailing edge). This angle defaults to 90° which means, that the
-                                rib is perpendicular on the wings middle plane. The rotation
-                                angle is defined at the intersection point of the rib with the
-                                ribReference line. The rib itself is always straight and not
-                                twisted. PYLON: The Rotation along the z describes a rotation
-                                around the pylons z-axis (= rotation in top view). This angle
-                                defaults to 90° which means, that the rib is perpendicular to
-                                the pylons x-axis.</xsd:documentation>
+                            <xsd:documentation>Angle x between the chord surface and the plane of the rib [deg]; without it, 90 degrees</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="ribCell" minOccurs="0" type="wingRibCellType">
                         <xsd:annotation>
-                            <xsd:documentation>Cell of the rib with deviating properties</xsd:documentation>
+                            <xsd:documentation>Part of the rib set with a cross section of its own</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="upperCap" minOccurs="0" type="capType">
                         <xsd:annotation>
-                            <xsd:documentation>Upper cap</xsd:documentation>
+                            <xsd:documentation>Cap where the rib meets the upper surface of the wing</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="lowerCap" minOccurs="0" type="capType">
                         <xsd:annotation>
-                            <xsd:documentation>Lower cap</xsd:documentation>
+                            <xsd:documentation>Cap where the rib meets the lower surface of the wing</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="ribPost" minOccurs="0" type="capType">
                         <xsd:annotation>
-                            <xsd:documentation>Post element definition applied to all vertical intersections with spars</xsd:documentation>
+                            <xsd:documentation>Post where the rib meets a spar</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -50714,13 +50738,28 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Explicit positioning of a wing rib</ddue:para>
+                        <ddue:para>A single rib between two points</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>Use this type for an explicit positioning of a rib. As opposed to
-                                ribsPositioning, this defines a single rib connecting a specified start
-                                and end point.</ddue:para>
+                            <ddue:para>The rib runs from the first to the second point; both are given in one of three ways:</ddue:para>
+                            <ddue:list class="bullet">
+                                <ddue:listItem>
+                                    <ddue:para>
+                                        <ddue:codeInline>startEtaXsiPoint</ddue:codeInline> and <ddue:codeInline>endEtaXsiPoint</ddue:codeInline> give the point in the relative coordinates of a segment or of the component segment (<ddue:codeInline>etaXsiPointType</ddue:codeInline>).</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>
+                                        <ddue:codeInline>startCurvePoint</ddue:codeInline> and <ddue:codeInline>endCurvePoint</ddue:codeInline> put it on a curve, e.g. at a relative position along a spar (<ddue:codeInline>curvePointType</ddue:codeInline>).</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>
+                                        <ddue:codeInline>startSparPositionUID</ddue:codeInline> and <ddue:codeInline>endSparPositionUID</ddue:codeInline> put it on a spar position (<ddue:codeInline>sparPositionType</ddue:codeInline>), so that the rib follows the spar when the spar position is moved.</ddue:para>
+                                </ddue:listItem>
+                            </ddue:list>
+                            <ddue:para>
+                                <ddue:codeInline>ribStart</ddue:codeInline> and <ddue:codeInline>ribEnd</ddue:codeInline> bound each rib in chordwise direction: both are either the UID of a spar or the keyword leadingEdge or trailingEdge. A rib therefore runs from the leading edge or from a spar to another spar or to the trailing edge.</ddue:para>
+                            <ddue:para>If both points lie on the same section element of the wing, the rib is the face of that section, e.g. a root rib in the plane of the root element.</ddue:para>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -50732,62 +50771,45 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     <xsd:choice>
                         <xsd:element name="startEtaXsiPoint" type="etaXsiPointType">
                             <xsd:annotation>
-                                <xsd:documentation>
-                                    Start of the rib defined in eta-xsi coordinates of a reference plane
-                                </xsd:documentation>
+                                <xsd:documentation>Beginning of the rib, in the relative coordinates of a segment or of the component segment</xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
                         <xsd:element name="startCurvePoint" type="curvePointType">
                             <xsd:annotation>
-                                <xsd:documentation>
-                                    Start of the rib defined by a point on a reference curve such as a spar, but not an explicit sparPosition
-                                </xsd:documentation>
+                                <xsd:documentation>Beginning of the rib, at a relative position along a curve</xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
                         <xsd:element name="startSparPositionUID" type="stringUIDBaseType">
                             <xsd:annotation>
-                                <xsd:documentation>
-                                    Location of the beginning of the rib using a specific sparPosition
-                                </xsd:documentation>
+                                <xsd:documentation>Beginning of the rib, at a spar position</xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
                     </xsd:choice>
                     <xsd:choice>
                         <xsd:element name="endEtaXsiPoint" type="etaXsiPointType">
                             <xsd:annotation>
-                                <xsd:documentation>
-                                    End of the rib defined in eta-xsi coordinates of a reference plane
-                                </xsd:documentation>
+                                <xsd:documentation>End of the rib, in the relative coordinates of a segment or of the component segment</xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
                         <xsd:element name="endCurvePoint" type="curvePointType">
                             <xsd:annotation>
-                                <xsd:documentation>
-                                    End of the rib given by a point on a reference curve such as a spar, but not an explicit sparPosition
-                                </xsd:documentation>
+                                <xsd:documentation>End of the rib, at a relative position along a curve</xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
                         <xsd:element name="endSparPositionUID" type="stringUIDBaseType">
                             <xsd:annotation>
-                                <xsd:documentation>
-                                    Location of the end of the rib using a specific sparPosition
-                                </xsd:documentation>
+                                <xsd:documentation>End of the rib, at a spar position</xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
                     </xsd:choice>
                     <xsd:element name="ribStart" type="stringBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>
-                                Forward beginning of the ribs. It can either be a sparUID or "trailingEdge" or "leadingEdge".
-                            </xsd:documentation>
+                            <xsd:documentation>Forward bound of the rib: the UID of a spar, leadingEdge or trailingEdge</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="ribEnd" type="stringBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>
-                                RibEnd defines the backward ending of the ribs. It can either be a
-                                sparUID or "trailingEdge" or "leadingEdge".
-                            </xsd:documentation>
+                            <xsd:documentation>Aft bound of the rib: the UID of a spar, leadingEdge or trailingEdge</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -50804,9 +50826,9 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>The wingRibPointType is used to define reference points on ribs.
-                                It can be used for rib set definitions (wingRibsPositioningType) as
-                                well as explicit rib definitions (wingRibExplicitPositioningType).</ddue:para>
+                            <ddue:para>The point lies on the rib named in <ddue:codeInline>ribDefinitionUID</ddue:codeInline>. Where that definition is a set of ribs, <ddue:codeInline>ribNumber</ddue:codeInline> selects one of them; rib 1 is the rib at the beginning of the set. Without it, rib 1 is meant.</ddue:para>
+                            <ddue:para>
+                                <ddue:codeInline>xsi</ddue:codeInline> gives the position along the rib, from 0 at its beginning to 1 at its end, that is from <ddue:codeInline>ribStart</ddue:codeInline> to <ddue:codeInline>ribEnd</ddue:codeInline> of the rib.</ddue:para>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -50817,26 +50839,17 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:all>
                     <xsd:element name="ribDefinitionUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>
-                                    The UID of the rib definition. Can be a reference to nodes
-                                    of either wingRibsPositioningType or wingRibExplicitPositioningType.
-                            </xsd:documentation>
+                            <xsd:documentation>UID of the rib or of the rib set the point lies on</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="ribNumber" minOccurs="0" type="integerBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>
-                                For references of type wingRibsPositioningType this node indicates the rib number of the rib set.
-                                If not given it defaults to 1.
-                            </xsd:documentation>
+                            <xsd:documentation>Number of the rib within its set; without it, rib 1</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="xsi" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>
-                                Normalized xsi coordinate of the rib point which is measured along the rib
-                                from the start point [0] towards the end point [1]
-                            </xsd:documentation>
+                            <xsd:documentation>Position along the rib, from 0 at its beginning to 1 at its end</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -50849,10 +50862,12 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Wing ribs</ddue:para>
+                        <ddue:para>Ribs of the wing</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Definition of all ribs of the wing.</ddue:para>
+                        <ddue:content>
+                            <ddue:para>Each <ddue:codeInline>ribsDefinition</ddue:codeInline> is either a set of ribs that are spaced along a reference line, or a single rib between two points.</ddue:para>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -50862,7 +50877,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:sequence>
                     <xsd:element name="ribsDefinition" maxOccurs="unbounded" type="wingRibsDefinitionType">
                         <xsd:annotation>
-                            <xsd:documentation>Rib set</xsd:documentation>
+                            <xsd:documentation>A set of ribs or a single rib</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -50875,15 +50890,66 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Definition of a set of ribs</ddue:para>
+                        <ddue:para>A set of ribs or a single rib</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>RibDefinitionType, containing the definition for ribs.
-                                Ribs are defined in sets of one or more ribs. The positions of
-                                the rib, as well as the orientation of the ribs are defined in
-                                'ribPositioning'. The cross section properties, as e.g.
-                                materials, are defined in 'ribCrossSection'.</ddue:para>
+                            <ddue:para>Ribs are defined in sets: one definition holds either several ribs of the same kind, spaced along a reference line (<ddue:codeInline>ribsPositioning</ddue:codeInline>), or one rib between two given points (<ddue:codeInline>ribExplicitPositioning</ddue:codeInline>). The cross section (<ddue:codeInline>ribCrossSection</ddue:codeInline>) holds for every rib of the definition.</ddue:para>
+                            <ddue:para>A rib is a plane surface, bounded by the wing and by the spars or edges at which it starts and ends. Its direction and its inclination follow from the rotations described with the positioning and the cross section.</ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="wingRibs"/>
+                            </ddue:mediaLink>
+                            <ddue:para>The figure shows the ribs of the example below in the top view: an inner set whose ribs run in flight direction, a single rib at the kink of the wing, and an outer set whose ribs stand perpendicular to the rear spar. All of them run from the front to the rear spar, and both sets are spaced on the rear spar.</ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Example</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>The outer rib set: eight ribs between two points of the rear spar, perpendicular to it, each from the front to the rear spar:</ddue:para>
+                            <ddue:code language="XML" title="A set of ribs of a wing">
+&lt;ribsDefinitions&gt;
+    &lt;ribsDefinition uID="Wing_outerRibs"&gt;
+        &lt;name&gt;Outer ribs&lt;/name&gt;
+        &lt;ribsPositioning&gt;
+            &lt;startCurvePoint&gt;
+                &lt;eta&gt;0.47&lt;/eta&gt;
+                &lt;referenceUID&gt;Wing_rearSpar&lt;/referenceUID&gt;
+            &lt;/startCurvePoint&gt;
+            &lt;endCurvePoint&gt;
+                &lt;eta&gt;0.95&lt;/eta&gt;
+                &lt;referenceUID&gt;Wing_rearSpar&lt;/referenceUID&gt;
+            &lt;/endCurvePoint&gt;
+            &lt;ribStart&gt;Wing_frontSpar&lt;/ribStart&gt;
+            &lt;ribEnd&gt;Wing_rearSpar&lt;/ribEnd&gt;
+            &lt;numberOfRibs&gt;8&lt;/numberOfRibs&gt;
+            &lt;ribReference&gt;Wing_rearSpar&lt;/ribReference&gt;
+            &lt;ribCrossingBehaviour&gt;cross&lt;/ribCrossingBehaviour&gt;
+            &lt;ribRotation&gt;
+                &lt;ribRotationReference&gt;Wing_rearSpar&lt;/ribRotationReference&gt;
+                &lt;z&gt;90&lt;/z&gt;
+            &lt;/ribRotation&gt;
+        &lt;/ribsPositioning&gt;
+        &lt;ribCrossSection&gt;
+            &lt;material&gt;
+                &lt;materialUID&gt;Aluminium2024&lt;/materialUID&gt;
+                &lt;thickness&gt;0.0025&lt;/thickness&gt;
+            &lt;/material&gt;
+            &lt;upperCap uID="Wing_outerRibs_upperCap"&gt;
+                &lt;area&gt;0.0006&lt;/area&gt;
+                &lt;material&gt;
+                    &lt;materialUID&gt;Aluminium2024&lt;/materialUID&gt;
+                    &lt;thickness&gt;0.003&lt;/thickness&gt;
+                &lt;/material&gt;
+            &lt;/upperCap&gt;
+            &lt;lowerCap uID="Wing_outerRibs_lowerCap"&gt;
+                &lt;area&gt;0.0006&lt;/area&gt;
+                &lt;material&gt;
+                    &lt;materialUID&gt;Aluminium2024&lt;/materialUID&gt;
+                    &lt;thickness&gt;0.003&lt;/thickness&gt;
+                &lt;/material&gt;
+            &lt;/lowerCap&gt;
+        &lt;/ribCrossSection&gt;
+    &lt;/ribsDefinition&gt;
+&lt;/ribsDefinitions&gt;
+</ddue:code>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -50894,29 +50960,29 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:sequence>
                     <xsd:element name="name" type="stringBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Name</xsd:documentation>
+                            <xsd:documentation>Name of the rib or of the rib set</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="description" minOccurs="0" type="stringBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Description</xsd:documentation>
+                            <xsd:documentation>Description of the rib or of the rib set</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:choice>
                         <xsd:element name="ribsPositioning" type="wingRibsPositioningType">
                             <xsd:annotation>
-                                <xsd:documentation>Positioning of the ribs as a set</xsd:documentation>
+                                <xsd:documentation>Several ribs, spaced along a reference line</xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
                         <xsd:element name="ribExplicitPositioning" type="wingRibExplicitPositioningType">
                             <xsd:annotation>
-                                <xsd:documentation>Explicit positioning of a single rib</xsd:documentation>
+                                <xsd:documentation>A single rib between two points</xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
                     </xsd:choice>
                     <xsd:element name="ribCrossSection" type="wingRibCrossSectionType">
                         <xsd:annotation>
-                            <xsd:documentation>Cross section</xsd:documentation>
+                            <xsd:documentation>Cross section of every rib of this definition</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -50934,25 +51000,60 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Positioning of a set of wing ribs</ddue:para>
+                        <ddue:para>Ribs spaced along a reference line</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>The ribsPositioning type allows the definition of a set
-                                of ribs which is distributed over a specified spanwise area.</ddue:para>
-                            <ddue:para>The positions of the ribs are defined by placing the
-                                ribs on a reference line on the wing (ribReference). The inner
-                                and the outer beginning of the rib set is defined using etaStart
-                                and etaEnd. The position of the forward and rear end of the ribs
-                                is defined by ribStart and ribEnd. The orientation of the ribs
-                                is defined in ribRotation. The number of ribs of the current rib
-                                set is either defined by ribNumber or by spacing.</ddue:para>
-                            <ddue:para>Three examples how ribs can be placed on the wing are
-                                illustrated in the picture below. For more detailed information,
-                                please refer to the description of each parameter.</ddue:para>
-                            <ddue:mediaLink>
-                                <ddue:image xlink:href="ribs"/>
-                            </ddue:mediaLink>
+                            <ddue:para>The ribs of the set are placed on a reference line (<ddue:codeInline>ribReference</ddue:codeInline>): the leading edge, the trailing edge of the component segment or a spar. A position on that line is given as the relative arc length η along it, measured from its beginning; on a spar this is the η of the spar (<ddue:codeInline>wingSparType</ddue:codeInline>).</ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Where the set begins and ends</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>The first and the last rib of the set stand at the two points given here. Each of them is given in one of three ways:</ddue:para>
+                            <ddue:list class="bullet">
+                                <ddue:listItem>
+                                    <ddue:para>
+                                        <ddue:codeInline>startEtaXsiPoint</ddue:codeInline> and <ddue:codeInline>endEtaXsiPoint</ddue:codeInline> give the point in the relative coordinates of a segment or of the component segment (<ddue:codeInline>etaXsiPointType</ddue:codeInline>).</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>
+                                        <ddue:codeInline>startCurvePoint</ddue:codeInline> and <ddue:codeInline>endCurvePoint</ddue:codeInline> put it on a curve, e.g. at a relative position along a spar (<ddue:codeInline>curvePointType</ddue:codeInline>).</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>
+                                        <ddue:codeInline>startSparPositionUID</ddue:codeInline> and <ddue:codeInline>endSparPositionUID</ddue:codeInline> put it on a spar position (<ddue:codeInline>sparPositionType</ddue:codeInline>), so that the rib follows the spar when the spar position is moved.</ddue:para>
+                                </ddue:listItem>
+                            </ddue:list>
+                            <ddue:para>A point that does not lie on the reference line is carried onto it by the plane of the rib through that point.</ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>How many ribs</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:list class="bullet">
+                                <ddue:listItem>
+                                    <ddue:para>
+                                        <ddue:codeInline>numberOfRibs</ddue:codeInline> spreads that many ribs evenly along the reference line, the first at the beginning and the last at the end of the set.</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>
+                                        <ddue:codeInline>spacing</ddue:codeInline> gives the distance between two ribs along the reference line. The first rib stands at the beginning of the set and each further rib one spacing further out, so the last rib of the set is the last one that still fits and may stay short of the end.</ddue:para>
+                                </ddue:listItem>
+                            </ddue:list>
+                            <ddue:para>
+                                <ddue:legacyBold>Shape of the ribs</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:list class="bullet">
+                                <ddue:listItem>
+                                    <ddue:para>
+                                        <ddue:codeInline>ribStart</ddue:codeInline> and <ddue:codeInline>ribEnd</ddue:codeInline> bound each rib in chordwise direction: both are either the UID of a spar or the keyword leadingEdge or trailingEdge. A rib therefore runs from the leading edge or from a spar to another spar or to the trailing edge.</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>
+                                        <ddue:codeInline>ribRotation</ddue:codeInline> turns the ribs about the normal of the chord surface (<ddue:codeInline>ribRotationType</ddue:codeInline>).</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>
+                                        <ddue:codeInline>ribCrossingBehaviour</ddue:codeInline> says what a rib does where it meets a rib of another set: cross it or end there.</ddue:para>
+                                </ddue:listItem>
+                            </ddue:list>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -50964,92 +51065,67 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     <xsd:choice>
                         <xsd:element name="startEtaXsiPoint" type="etaXsiPointType">
                             <xsd:annotation>
-                                <xsd:documentation>
-                                    Start of the rib defined in eta-xsi coordinates of a reference plane
-                                </xsd:documentation>
+                                <xsd:documentation>Beginning of the set, in the relative coordinates of a segment or of the component segment</xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
                         <xsd:element name="startCurvePoint" type="curvePointType">
                             <xsd:annotation>
-                                <xsd:documentation>
-                                    Start of the rib by a point on a reference curve, such as a spar, but not an explicit sparPosition
-                                </xsd:documentation>
+                                <xsd:documentation>Beginning of the set, at a relative position along a curve</xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
                         <xsd:element name="startSparPositionUID" type="stringUIDBaseType">
                             <xsd:annotation>
-                                <xsd:documentation>
-                                    Location of the beginning of the rib using a specific sparPosition
-                                </xsd:documentation>
+                                <xsd:documentation>Beginning of the set, at a spar position</xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
                     </xsd:choice>
                     <xsd:choice>
                         <xsd:element name="endEtaXsiPoint" type="etaXsiPointType">
                             <xsd:annotation>
-                                <xsd:documentation>
-                                    End of the rib defined in eta-xsi coordinates of a reference plane
-                                </xsd:documentation>
+                                <xsd:documentation>End of the set, in the relative coordinates of a segment or of the component segment</xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
                         <xsd:element name="endCurvePoint" type="curvePointType">
                             <xsd:annotation>
-                                <xsd:documentation>
-                                    End of the rib defined by a point on a reference curve such as a spar, but not an explicit sparPosition
-                                </xsd:documentation>
+                                <xsd:documentation>End of the set, at a relative position along a curve</xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
                         <xsd:element name="endSparPositionUID" type="stringUIDBaseType">
                             <xsd:annotation>
-                                <xsd:documentation>
-                                    Location of the end of the rib using a specific sparPosition
-                                </xsd:documentation>
+                                <xsd:documentation>End of the set, at a spar position</xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
                     </xsd:choice>
                     <xsd:element name="ribStart" type="stringBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>
-                                Forward beginning of the ribs. It can either be a sparUID or "trailingEdge" or "leadingEdge".
-                            </xsd:documentation>
+                            <xsd:documentation>Forward bound of the ribs: the UID of a spar, leadingEdge or trailingEdge</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="ribEnd" type="stringBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>
-                                Backward ending of the ribs. It can either be a sparUID or "trailingEdge" or "leadingEdge".
-                            </xsd:documentation>
+                            <xsd:documentation>Aft bound of the ribs: the UID of a spar, leadingEdge or trailingEdge</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:choice>
                         <xsd:element name="spacing" type="doubleBaseType">
                             <xsd:annotation>
-                                <xsd:documentation>
-                                    The spacing of the ribs defines the distance between two ribs,
-                                    measured on the
-                                    ribReferenceLine. First rib is placed at etaStart.
-                                </xsd:documentation>
+                                <xsd:documentation>Distance between two ribs along the reference line [m]</xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
                         <xsd:element name="numberOfRibs" type="integerBaseType">
                             <xsd:annotation>
-                                <xsd:documentation>
-                                    Number of ribs in this ribSet. First rib is at etaStart on the referenceLine, last rib is at etaEnd. The spacing is constant on the ribReferenceLine.
-                                </xsd:documentation>
+                                <xsd:documentation>Number of ribs, spread evenly along the reference line</xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
                     </xsd:choice>
                     <xsd:element name="ribReference" type="stringBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>
-                                The ribReference is the reference line for the computation of the rib set spacing.
-                                It can either be a sparUID or "trailingEdge" or "leadingEdge"
-                            </xsd:documentation>
+                            <xsd:documentation>Line along which the ribs are spaced: the UID of a spar, leadingEdge or trailingEdge</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="ribCrossingBehaviour">
                         <xsd:annotation>
-                            <xsd:documentation>Behaviour of the ribs when crossing other structural elements</xsd:documentation>
+                            <xsd:documentation>What a rib does where it meets a rib of another set: cross or end</xsd:documentation>
                         </xsd:annotation>
                         <xsd:complexType>
                             <xsd:annotation>
@@ -51071,7 +51147,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     </xsd:element>
                     <xsd:element name="ribRotation" type="ribRotationType">
                         <xsd:annotation>
-                            <xsd:documentation>Rotation</xsd:documentation>
+                            <xsd:documentation>Direction of the ribs</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -51389,18 +51465,74 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Shells of the wing</ddue:para>
+                        <ddue:para>Skin, stringers and cells of one side of the wing</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Within the wingShellType the upper and lower skin of a
-                            and the skin stringers are defined. At 'skin' and 'stringer' the
-                            skin and stringer properties of the complete componentSegment are
-                            defined. If different skin or stringer properties should be
-                            defined in a special region of the wing this can be done within
-                            'cells'.</ddue:para>
-                        <ddue:para>If the stringer should not be defined explicitly, they
-                            can be defined implizite by defining an equivalent material layer
-                            and using a composite as material.</ddue:para>
+                        <ddue:content>
+                            <ddue:para>The upper and the lower shell are the outer surface of the component segment above and below its chord surface. <ddue:codeInline>skin</ddue:codeInline> and <ddue:codeInline>stringer</ddue:codeInline> hold for the whole shell; a cell (<ddue:codeInline>cells</ddue:codeInline>) gives a region of it a skin and stringers of its own.</ddue:para>
+                            <ddue:para>Stringers do not have to be given as parts of their own: a skin of a composite material can carry them as an equivalent layer instead.</ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Example</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>The upper shell of the example, with its skin, its stringers and the first of its cells:</ddue:para>
+                            <ddue:code language="XML" title="Upper shell of a wing">
+&lt;upperShell uID="Wing_componentSegment_structure_upperShell"&gt;
+    &lt;skin&gt;
+        &lt;material&gt;
+            &lt;materialUID&gt;Aluminium2024&lt;/materialUID&gt;
+            &lt;thickness&gt;0.003&lt;/thickness&gt;
+        &lt;/material&gt;
+    &lt;/skin&gt;
+    &lt;stringer&gt;
+        &lt;stringerStructureUID&gt;TStringer&lt;/stringerStructureUID&gt;
+        &lt;pitch&gt;0.18&lt;/pitch&gt;
+        &lt;refPoint&gt;
+            &lt;eta&gt;0.2&lt;/eta&gt;
+            &lt;xsi&gt;0.35&lt;/xsi&gt;
+            &lt;relHeight&gt;1&lt;/relHeight&gt;
+            &lt;referenceUID&gt;Wing_componentSegment&lt;/referenceUID&gt;
+        &lt;/refPoint&gt;
+        &lt;angle&gt;8&lt;/angle&gt;
+    &lt;/stringer&gt;
+    &lt;cells&gt;
+        &lt;cell uID="Wing_upperPanel"&gt;
+            &lt;skin&gt;
+                &lt;material&gt;
+                    &lt;materialUID&gt;Aluminium2024&lt;/materialUID&gt;
+                    &lt;thickness&gt;0.005&lt;/thickness&gt;
+                &lt;/material&gt;
+            &lt;/skin&gt;
+            &lt;stringer&gt;
+                &lt;stringerStructureUID&gt;TStringer&lt;/stringerStructureUID&gt;
+                &lt;pitch&gt;0.12&lt;/pitch&gt;
+                &lt;refPoint&gt;
+                    &lt;eta&gt;0.2&lt;/eta&gt;
+                    &lt;xsi&gt;0.35&lt;/xsi&gt;
+                    &lt;relHeight&gt;1&lt;/relHeight&gt;
+                    &lt;referenceUID&gt;Wing_componentSegment&lt;/referenceUID&gt;
+                &lt;/refPoint&gt;
+                &lt;angle&gt;8&lt;/angle&gt;
+            &lt;/stringer&gt;
+            &lt;positioningLeadingEdge&gt;
+                &lt;sparUID&gt;Wing_frontSpar&lt;/sparUID&gt;
+            &lt;/positioningLeadingEdge&gt;
+            &lt;positioningTrailingEdge&gt;
+                &lt;sparUID&gt;Wing_rearSpar&lt;/sparUID&gt;
+            &lt;/positioningTrailingEdge&gt;
+            &lt;positioningInnerBorder&gt;
+                &lt;ribNumber&gt;3&lt;/ribNumber&gt;
+                &lt;ribDefinitionUID&gt;Wing_innerRibs&lt;/ribDefinitionUID&gt;
+            &lt;/positioningInnerBorder&gt;
+            &lt;positioningOuterBorder&gt;
+                &lt;ribNumber&gt;6&lt;/ribNumber&gt;
+                &lt;ribDefinitionUID&gt;Wing_innerRibs&lt;/ribDefinitionUID&gt;
+            &lt;/positioningOuterBorder&gt;
+        &lt;/cell&gt;
+        ...
+    &lt;/cells&gt;
+&lt;/upperShell&gt;
+</ddue:code>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -51410,17 +51542,17 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:all>
                     <xsd:element name="skin" type="wingSkinType">
                         <xsd:annotation>
-                            <xsd:documentation>Skin</xsd:documentation>
+                            <xsd:documentation>Skin of the whole shell</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="stringer" minOccurs="0" type="wingStringerType">
                         <xsd:annotation>
-                            <xsd:documentation>Stringers of the shell</xsd:documentation>
+                            <xsd:documentation>Stringers of the whole shell</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="cells" minOccurs="0" type="wingCellsType">
                         <xsd:annotation>
-                            <xsd:documentation>Cells</xsd:documentation>
+                            <xsd:documentation>Regions of the shell with a skin and stringers of their own</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -51438,24 +51570,12 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Material properties of the wing skin.</ddue:para>
+                        <ddue:para>Skin of a shell or of a cell</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>The wingSkinType describes the material properties of
-                                the wing.</ddue:para>
-                            <ddue:para>For composites materials: the positive z-direction is
-                                from the outer side to the inner side.</ddue:para>
-                            <ddue:para>For composites materials: the reference axis for the
-                                orthotropyDirection is defined by the two leading edge points of
-                                the 'from'- and the 'to'-element of the componentSegment
-                                definition. The angle between the reference axis and the
-                                orthotropyDirection equals the rotation around the z-reference
-                                axis. For details, please refer to the picture below:
-                            </ddue:para>
-                            <ddue:mediaLink>
-                                <ddue:image xlink:href="wingskinorthotropydir"/>
-                            </ddue:mediaLink>
+                            <ddue:para>The material and the thickness of the skin (<ddue:codeInline>materialDefinitionType</ddue:codeInline>).</ddue:para>
+                            <ddue:para>For a composite, the positive z direction of the layers runs from the outside of the wing inwards, and the orthotropy direction is measured from the straight line through the leading edge points of the first and the last element of the component segment — the same direction from which the angle of the stringers is measured (see <ddue:codeInline>wingStringerType</ddue:codeInline>).</ddue:para>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -51466,7 +51586,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:all>
                     <xsd:element name="material" type="materialDefinitionType">
                         <xsd:annotation>
-                            <xsd:documentation>Material properties</xsd:documentation>
+                            <xsd:documentation>Material and thickness of the skin</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -51479,29 +51599,102 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Wing spars</ddue:para>
+                        <ddue:para>Spars of the wing</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>Spar is defined by sparSegments that stretch between multiple sparPositions. The spar definition is very flexible in CPACS. Spars can start and end at any position of the wing, spars can have kinks at any position of the wing and spars can cross each other or merge.</ddue:para>
-                            <ddue:para>At first the spar points (-&gt;sparPositions) have to
-                                be defined. Spar points are defined using the relative
-                                coordinates eta and xsi. Spar points do lay on wing middle
-                                plane.</ddue:para>
-                            <ddue:para>Two or more spar points are connected to on spar
-                                segment (-&gt;sparSegments). Each spar segment can be seen as
-                                one spar. The spar geometry between two spar points is defined
-                                as a direct/straight connection in global coordinate system
-                                and not in eta xsi coordinates of the component segment.
-                                One spar point can be used by more than one spar, if
-                                e.g. two spars are merging. The detailed cross section of the
-                                spar is also defined with sparSegments.</ddue:para>
-                            <ddue:para>Please find below a picture for an example definition
-                                of 3 spars in one wing, by using spar position points and spar
-                                segments:</ddue:para>
+                            <ddue:para>The spars of a component segment are defined in two steps. First the spar positions (<ddue:codeInline>sparPositions</ddue:codeInline>) are given as points of the chord surface of the component segment, the surface spanned by the chord lines of its elements (see <ddue:codeInline>componentSegmentType</ddue:codeInline>). Then each spar (<ddue:codeInline>sparSegments</ddue:codeInline>) is built from two or more of these positions and carries its own cross section.</ddue:para>
+                            <ddue:para>A spar is the surface through its positions, bounded by the surface of the wing. Between two consecutive positions it is a plane surface: it runs straight from one position to the other, not along the lines of constant ξ of the component segment. Its orientation about that line follows from the rotation of the cross section (<ddue:codeInline>sparCrossSectionType</ddue:codeInline>). On a swept or tapered wing the relative chordwise position therefore drifts between two positions, and the more so the more the chord changes: a spar that is to keep its chordwise position needs a position at each element at which the planform bends.</ddue:para>
                             <ddue:mediaLink>
-                                <ddue:image xlink:href="spars1"/>
+                                <ddue:image xlink:href="wingSpars"/>
                             </ddue:mediaLink>
+                            <ddue:para>The figure shows three spars of a wing in the top view: a front and a rear spar that both bend at the kink of the wing and keep their chordwise position, and a short auxiliary spar in the inner wing that starts at the same spar position as the rear spar.</ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Rules</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:list class="bullet">
+                                <ddue:listItem>
+                                    <ddue:para>The order of the spar positions is the order of the points along the spar, either from root to tip or from tip to root. A spar must not run outward and back inward again.</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>A spar bends at each of its positions. Where it bends is independent of the elements of the wing; a spar may run straight past an element and bend where no element is.</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>One spar position may be used by several spars, e.g. where two spars meet or where an auxiliary spar branches off another one. Spars may also cross each other.</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>A spar position with η = 0 or η = 1 in the coordinates of the component segment lies on its inner or its outer section element, and the spar ends flush with that element.</ddue:para>
+                                </ddue:listItem>
+                            </ddue:list>
+                            <ddue:para>
+                                <ddue:legacyBold>Position along a spar</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>Some elements give a position along a spar, e.g. a spar position on another spar (<ddue:codeInline>curvePointType</ddue:codeInline>) or the borders of a spar cell (<ddue:codeInline>sparCellType</ddue:codeInline>). They use the mid line of the spar, the line of the spar on the chord surface: it runs straight within each segment of the wing and bends where it crosses an element. η is the relative arc length along this line, 0 at the first and 1 at the last position of the spar.</ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Example</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>The front spar of the figure, with the three positions it runs through and its cross section. Its middle position is given in the coordinates of segment 1, so that it lies exactly on the kink element of the wing; the other two are given in the coordinates of the component segment:</ddue:para>
+                            <ddue:code language="XML" title="Front spar of a wing">
+&lt;spars&gt;
+    &lt;sparPositions&gt;
+        &lt;sparPosition uID="Wing_frontSpar_root"&gt;
+            &lt;sparPositionEtaXsi&gt;
+                &lt;eta&gt;0&lt;/eta&gt;
+                &lt;xsi&gt;0.15&lt;/xsi&gt;
+                &lt;referenceUID&gt;Wing_componentSegment&lt;/referenceUID&gt;
+            &lt;/sparPositionEtaXsi&gt;
+        &lt;/sparPosition&gt;
+        &lt;sparPosition uID="Wing_frontSpar_kink"&gt;
+            &lt;sparPositionEtaXsi&gt;
+                &lt;eta&gt;1&lt;/eta&gt;
+                &lt;xsi&gt;0.2&lt;/xsi&gt;
+                &lt;referenceUID&gt;Wing_segment1&lt;/referenceUID&gt;
+            &lt;/sparPositionEtaXsi&gt;
+        &lt;/sparPosition&gt;
+        &lt;sparPosition uID="Wing_frontSpar_tip"&gt;
+            &lt;sparPositionEtaXsi&gt;
+                &lt;eta&gt;1&lt;/eta&gt;
+                &lt;xsi&gt;0.25&lt;/xsi&gt;
+                &lt;referenceUID&gt;Wing_componentSegment&lt;/referenceUID&gt;
+            &lt;/sparPositionEtaXsi&gt;
+        &lt;/sparPosition&gt;
+    &lt;/sparPositions&gt;
+    &lt;sparSegments&gt;
+        &lt;sparSegment uID="Wing_frontSpar"&gt;
+            &lt;name&gt;Front spar&lt;/name&gt;
+            &lt;sparPositionUIDs&gt;
+                &lt;sparPositionUID&gt;Wing_frontSpar_root&lt;/sparPositionUID&gt;
+                &lt;sparPositionUID&gt;Wing_frontSpar_kink&lt;/sparPositionUID&gt;
+                &lt;sparPositionUID&gt;Wing_frontSpar_tip&lt;/sparPositionUID&gt;
+            &lt;/sparPositionUIDs&gt;
+            &lt;sparCrossSection&gt;
+                &lt;upperCap uID="Wing_frontSpar_upperCap"&gt;
+                    &lt;area&gt;0.0024&lt;/area&gt;
+                    &lt;material&gt;
+                        &lt;materialUID&gt;Aluminium2024&lt;/materialUID&gt;
+                        &lt;thickness&gt;0.006&lt;/thickness&gt;
+                    &lt;/material&gt;
+                &lt;/upperCap&gt;
+                &lt;lowerCap uID="Wing_frontSpar_lowerCap"&gt;
+                    &lt;area&gt;0.0024&lt;/area&gt;
+                    &lt;material&gt;
+                        &lt;materialUID&gt;Aluminium2024&lt;/materialUID&gt;
+                        &lt;thickness&gt;0.006&lt;/thickness&gt;
+                    &lt;/material&gt;
+                &lt;/lowerCap&gt;
+                &lt;web1&gt;
+                    &lt;material&gt;
+                        &lt;materialUID&gt;Aluminium2024&lt;/materialUID&gt;
+                        &lt;thickness&gt;0.004&lt;/thickness&gt;
+                    &lt;/material&gt;
+                    &lt;relPos&gt;0.5&lt;/relPos&gt;
+                &lt;/web1&gt;
+                &lt;rotation&gt;90&lt;/rotation&gt;
+            &lt;/sparCrossSection&gt;
+        &lt;/sparSegment&gt;
+    &lt;/sparSegments&gt;
+&lt;/spars&gt;
+</ddue:code>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -51512,12 +51705,12 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:all>
                     <xsd:element name="sparPositions" type="sparPositionsType">
                         <xsd:annotation>
-                            <xsd:documentation>Positions defining the spars</xsd:documentation>
+                            <xsd:documentation>Points on the chord surface at which the spars are fixed</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="sparSegments" type="sparSegmentsType">
                         <xsd:annotation>
-                            <xsd:documentation>Spar segments running through the spar positions</xsd:documentation>
+                            <xsd:documentation>The spars themselves, each running through spar positions</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -51530,22 +51723,25 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Definition of the wing stringers.</ddue:para>
+                        <ddue:para>Stringers of a shell or of a cell</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>Within the wingStringerType wing stringers are
-                                defined. The stringer are defined by referencing on the
-                                stringerStructureUID, where the shape and material settings of
-                                one single stringer is defined. In addition the orientation and
-                                the stringer pitch have to be defined:</ddue:para>
-                            <ddue:para>One stringer intersects the point at the given xsi and
-                                eta position.</ddue:para>
+                            <ddue:para>All stringers of a shell or of a cell have the same cross section, that of the structural element referenced in <ddue:codeInline>stringerStructureUID</ddue:codeInline>. They are given in one of two ways:</ddue:para>
+                            <ddue:list class="bullet">
+                                <ddue:listItem>
+                                    <ddue:para>with a <ddue:codeInline>pitch</ddue:codeInline>: one stringer runs through the point given in <ddue:codeInline>refPoint</ddue:codeInline>, the others parallel to it, each one pitch further, measured perpendicular to the stringers;</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>explicitly with <ddue:codeInline>numberOfStringers</ddue:codeInline>: the stringers are spread between four chordwise borders, their inner ends between <ddue:codeInline>innerBorderXsiLE</ddue:codeInline> and <ddue:codeInline>innerBorderXsiTE</ddue:codeInline>, their outer ends between <ddue:codeInline>outerBorderXsiLE</ddue:codeInline> and <ddue:codeInline>outerBorderXsiTE</ddue:codeInline>. This way the stringers can fan out towards the tip.</ddue:para>
+                                </ddue:listItem>
+                            </ddue:list>
+                            <ddue:para>
+                                <ddue:codeInline>angle</ddue:codeInline> turns the stringers in the surface. It is measured from the straight line through the leading edge points of the first and the last element of the component segment, about the normal of that surface. <ddue:codeInline>angleReference</ddue:codeInline> replaces that direction by the leading edge, the trailing edge, the y axis of the wing (globalY) or a spar of the structure.</ddue:para>
                             <ddue:mediaLink>
-                                <ddue:image xlink:href="wingstringer"/>
+                                <ddue:image xlink:href="wingStringers"/>
                             </ddue:mediaLink>
-                            <ddue:para>Alternatively, an explicit stringer definition can be
-                                applied if the stringers shall be tapered.</ddue:para>
+                            <ddue:para>The figure shows a part of the upper skin of the example with its stringers: one of them runs through the reference point, the others at the pitch from it, all turned by the angle from the reference direction.</ddue:para>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -51556,7 +51752,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:sequence>
                     <xsd:element name="stringerStructureUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Reference to the structural element</xsd:documentation>
+                            <xsd:documentation>UID of the structural element that gives the cross section of every stringer</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:choice>
@@ -51567,14 +51763,12 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                             </xsd:annotation>
                             <xsd:element name="pitch" type="doubleBaseType">
                                 <xsd:annotation>
-                                    <xsd:documentation>The pitch describes the distance between to
-                                        adjacent stringers in the plane rectangular to the stringer
-                                        elongation direction.</xsd:documentation>
+                                    <xsd:documentation>Distance between two stringers, measured perpendicular to them [m]</xsd:documentation>
                                 </xsd:annotation>
                             </xsd:element>
                             <xsd:element name="refPoint" type="etaXsiRelHeightPointType">
                                 <xsd:annotation>
-                                    <xsd:documentation>Reference point of the stringer definition</xsd:documentation>
+                                    <xsd:documentation>Point through which one of the stringers runs</xsd:documentation>
                                 </xsd:annotation>
                             </xsd:element>
                             <xsd:element name="angle" type="doubleBaseType">
@@ -51609,8 +51803,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                             </xsd:annotation>
                             <xsd:element name="numberOfStringers" minOccurs="0" type="integerBaseType">
                                 <xsd:annotation>
-                                    <xsd:documentation>The number of stringers; default is 0
-                                    </xsd:documentation>
+                                    <xsd:documentation>Number of stringers spread between the four borders</xsd:documentation>
                                 </xsd:annotation>
                             </xsd:element>
                             <xsd:element name="angle" minOccurs="0" type="doubleBaseType">
@@ -51635,26 +51828,22 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                             </xsd:element>
                             <xsd:element name="innerBorderXsiLE" minOccurs="0" type="xsiIsoLineType">
                                 <xsd:annotation>
-                                    <xsd:documentation>Inner border xsi coordinate at the leading
-                                        edge of the stringer definition</xsd:documentation>
+                                    <xsd:documentation>Chordwise position of the foremost stringer at its inner end</xsd:documentation>
                                 </xsd:annotation>
                             </xsd:element>
                             <xsd:element name="outerBorderXsiLE" minOccurs="0" type="xsiIsoLineType">
                                 <xsd:annotation>
-                                    <xsd:documentation>Outer border xsi coordinate at the leading
-                                        edge of the stringer definition</xsd:documentation>
+                                    <xsd:documentation>Chordwise position of the foremost stringer at its outer end</xsd:documentation>
                                 </xsd:annotation>
                             </xsd:element>
                             <xsd:element name="innerBorderXsiTE" minOccurs="0" type="xsiIsoLineType">
                                 <xsd:annotation>
-                                    <xsd:documentation>Inner border xsi coordinate at the trailing
-                                        edge of the stringer definition</xsd:documentation>
+                                    <xsd:documentation>Chordwise position of the rearmost stringer at its inner end</xsd:documentation>
                                 </xsd:annotation>
                             </xsd:element>
                             <xsd:element name="outerBorderXsiTE" minOccurs="0" type="xsiIsoLineType">
                                 <xsd:annotation>
-                                    <xsd:documentation>Outer border xsi coordinate at the trailing
-                                        edge of the stringer definition</xsd:documentation>
+                                    <xsd:documentation>Chordwise position of the rearmost stringer at its outer end</xsd:documentation>
                                 </xsd:annotation>
                             </xsd:element>
                         </xsd:sequence>
@@ -52099,11 +52288,13 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Xsi iso line</ddue:para>
+                        <ddue:para>Chordwise position, given as a relative coordinate</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Iso line described by point of same xsi coordinate.
-                        Can be either segment or component segment coordinates.</ddue:para>
+                        <ddue:content>
+                            <ddue:para>A position along the chord, given by the relative coordinate ξ (<ddue:codeInline>xsi</ddue:codeInline>), which runs from 0 at the leading edge to 1 at the trailing edge. It describes the line of all points of the chord surface with this ξ.</ddue:para>
+                            <ddue:para>The <ddue:codeInline>referenceUID</ddue:codeInline> selects the coordinates: it references either a segment of the wing, and the values are then the coordinates of that segment (<ddue:codeInline>wingSegmentType</ddue:codeInline>), or a component segment, and the values are then the coordinates of the component segment (<ddue:codeInline>componentSegmentType</ddue:codeInline>).</ddue:para>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -52113,15 +52304,12 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:all>
                     <xsd:element name="xsi" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Relative spanwise position. Xsi refers to the segment or componentSegment depending on the referenced UID.</xsd:documentation>
+                            <xsd:documentation>Relative chordwise position</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="referenceUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>This reference UID determines the reference coordinate system.
-                            If it points to a segment, then the eta value is considered to be in segment
-                            eta coordinate; if it points to a componentSegment,
-                            then componentSegment eta coordinate is used.</xsd:documentation>
+                            <xsd:documentation>UID of the segment or component segment whose coordinates are used</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>

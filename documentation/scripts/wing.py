@@ -626,13 +626,17 @@ def segment_xml(index):
     ])
 
 
-def component_segments_xml(control_surfaces=None):
-    """Component segments of the example wing; control_surfaces is the XML of a controlSurfaces element, if any."""
+def component_segments_xml(control_surfaces=None, structure=None):
+    """Component segments of the example wing.
+
+    control_surfaces and structure are the XML of a controlSurfaces and a structure element, if any.
+    """
     uid, start, end = COMPONENT_SEGMENT
     return "\n".join([
         "<componentSegments>", f'    <componentSegment uID="{WING_UID}_{uid}">', "        <name>Component segment</name>",
         f"        <fromElementUID>{WING_UID}_{start}_element</fromElementUID>",
         f"        <toElementUID>{WING_UID}_{end}_element</toElementUID>",
+        *([indent(structure, 2)] if structure else []),
         *([indent(control_surfaces, 2)] if control_surfaces else []),
         "    </componentSegment>", "</componentSegments>",
     ])
@@ -650,7 +654,7 @@ def segments_xml():
     return collection("segments", [segment_xml(i) for i in range(len(SECTIONS) - 1)])
 
 
-def wing_xml(control_surfaces=None):
+def wing_xml(control_surfaces=None, structure=None):
     return "\n".join([
         f'<wing uID="{WING_UID}" symmetry="x-z-plane">', "    <name>Wing</name>",
         "    <description>Wing with a kink, swept and with dihedral outboard of the kink</description>",
@@ -659,7 +663,7 @@ def wing_xml(control_surfaces=None):
         indent(collection("sections", [section_xml(s) for s in SECTIONS]), 1),
         indent(positionings_xml(), 1),
         indent(segments_xml(), 1),
-        indent(component_segments_xml(control_surfaces), 1),
+        indent(component_segments_xml(control_surfaces, structure), 1),
         "</wing>",
     ])
 
