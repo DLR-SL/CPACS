@@ -43,6 +43,8 @@ Furthermore, we should avoid using mathematical symbols or abbreviations as thei
 
 Every element and every attribute carries an `xsd:annotation/xsd:documentation` text. It is the string a user sees next to the node in the generated documentation, so it should read as a caption for *that* node — not as a sentence about the schema. §8 to §13 below apply to elements and attributes alike; §14 adds what is specific to attributes.
 
+How the parts of a type page are assembled, and how a page stays consistent with the pages around it, is described in §29 to §35.
+
 - **§8: A documentation describes the node itself. It does not repeat the parent element, the enclosing type or the dataset.**
 
 The path already tells the reader where the element sits, so restating it only adds noise. Where the surrounding context is stripped away and nothing meaningful is left, use the element name written out as a readable phrase.
@@ -301,6 +303,40 @@ The parameters of TiGL's API functions are not CPACS parameters, even where they
 | "TiGL 3.5 does not build the spar if its position lies on an element." | No note; measured over a range of values only one rounded coordinate pair fails — a bug report for TiGL (§27) |
 | "Use tiglWingSetGetPointBehavior(onLinearLoft) to …" | Nothing in the schema; a hint in the TiGL documentation |
 
+## Putting a documentation page together
+
+The sections above describe the parts of a page: the wording of an element documentation (§8 to §15), the XML examples (§16 to §20), the figures and equations (§21 to §25) and the notes on TiGL (§26 to §28). This section describes how they are assembled into a page, and how a page stays consistent with the pages around it.
+
+- **§29: A page is built in one order: what the node is, the concept, the topics, the rules, the example.**
+
+The `ddue:summary` is one line saying what the node *is*. The `ddue:remarks` open with a paragraph of two or three sentences giving the purpose and the underlying concept, and continue with the topics, each under a bold pseudo-heading (`<ddue:para><ddue:legacyBold>Coordinates</ddue:legacyBold></ddue:para>`) and each with its definition. Rules that constrain the data follow as a `ddue:list class="bullet"`. A TiGL note stands directly after the statement it qualifies (§27). The example comes last, introduced by one paragraph saying what the excerpt shows (§16 to §19).
+
+A figure or an equation is placed directly after the sentence it illustrates, and a figure is followed by one paragraph telling the reader what to see in it; panels are referred to as "figure (a)". A reader who stops after the first paragraph still knows what the node is for, and a reader who works through the page never has to jump back to understand a rule.
+
+- **§30: A collection type is documented in one or two sentences. The generated page already lists who references it.**
+
+A type that only holds a list of others — `profilesType`, `guideCurveProfilesType` — needs its content and its purpose, not a description of each child, which the children document themselves. The "Used by" list of the generated page is complete and stays up to date by itself, so repeating it in the text only creates a second list that ages.
+
+- **§31: The same thing is said the same way, and a convention is defined in one place.**
+
+Where a type defines a convention — the point order and the relative circumference in `profileGeometryType` and `guideCurveType`, the base of point indices — the other pages name that type instead of repeating the definition. A definition that exists twice drifts apart at the next change, and the reader cannot tell which of the two is normative.
+
+- **§32: The documentation text is self-contained. It contains no file paths and no links into `examples/`.**
+
+An excerpt shows the data it needs to show, and the repetition against the example files is accepted. A reference to a file ties the text to a repository layout that the reader of the generated documentation does not have, and it rots as soon as files are renamed. Inside a `ddue:para`, one sentence per line, so that a change shows as one line in a diff; element names are `ddue:codeInline`. An element documentation (`xsd:documentation`) is plain text: no markup and no symbols such as `e_x` (§5). It states the meaning of the node, its value range where one applies, and its default.
+
+- **§33: One script per topic, and figure, example file and excerpt come from the same data.**
+
+The script in `documentation/scripts/` (§21) defines its data once as module constants and derives the figures, the generated example file and the excerpt printed for the documentation from them, so that the three cannot disagree. Geometry that only illustrates a concept — an exaggerated thickness, a case no tool can load — is kept as separate constants, is not written into the example file, and is called an illustration in the text below the figure. Prefer one concrete, recognizable case over an abstract one. Example files are written with `example_xml.write_cpacs_file(..., generator=Path(__file__))`, which records the script that produced them; further collections are passed through `extra_components` and `extra_profiles`. A generated file is never edited by hand. After a change to a shared helper, all scripts are run again: that `git status` then shows no unintended diff is what proves the figures reproducible.
+
+- **§34: Before an old figure is replaced, write down what it shows and check that the new figures cover it.**
+
+Old figures often carry an aspect that no text states — `wingelements.jpg` was the only figure showing an element coordinate system translated and rotated within its section — and without that list the information disappears silently with the file. Every new image is added to `documentation/media.json` in alphabetical order, without reordering the existing entries, with an `alt` text that describes the content; for an equation, the formula in plain words. A replaced image and its entry are removed together, after a search for references that are still open.
+
+- **§35: A statement about geometry is checked against an implementation before it becomes normative text.**
+
+The documentation defines what the data means, and a definition that no implementation reproduces is a guess. Build the generated example, evaluate the quantity the text defines — points, lengths, angles, volumes — and compare it with the formula in the text, and record which version of the implementation was used and how large the deviation was. Where the two differ, the difference is a finding about the tool, not a licence to change the text: only the cases of §27 become TiGL notes, and the rest belongs in the notes for the tool developers.
+
 ## Development Guidelines by Example
 
 ### Example analysis node
@@ -349,6 +385,8 @@ From a geometric point of view, the goal of the hierarchical representation is a
 **Note**: In current CPACS releases the `refType` attribute can only be used for the `translation` node. For new developments, it should be checked whether the `transformation` element itself can carry the `refType` attribute, since it not only contains `translation` but also `rotation`.
 
 **Important**: Make sure that it is described in detail via the documentation how to interpret the specification of the hierarchical coordinate system placement (e.g., what is default value; describe different cases, etc.)!
+
+Say at the component itself which parent it typically hangs on, and let the example file contain that parent, so that the reference resolves and the reader sees the practice rather than an isolated fragment. Where examples write transformations out in full, state once that elements with their default values (rotation and translation 0, scaling 1) may be omitted, but that a point which is given lists all of its components.
 
 
 ### Duplication vs Single Type Reference vs Hidden Changes
