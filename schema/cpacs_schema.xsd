@@ -8368,8 +8368,28 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Deflection path of a component segment</ddue:para>
+                        <ddue:para>Deflection of a whole component segment</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>A component segment can be deflected as a whole, e.g. a wing that folds or a tilting wing. It turns about its hinge line, and the steps give its position for increasing values of the control parameter, as they do for a control surface (<ddue:codeInline>controlSurfacePathType</ddue:codeInline>).</ddue:para>
+                            <ddue:list class="bullet">
+                                <ddue:listItem>
+                                    <ddue:para>
+                                        <ddue:codeInline>hingePoint</ddue:codeInline> is the point the hinge line runs through, given in the relative coordinates of the component segment and at a relative height between the lower and the upper surface of the wing (<ddue:codeInline>etaXsiRelHeightPointType</ddue:codeInline>).</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>
+                                        <ddue:codeInline>hingeRotation</ddue:codeInline> gives the direction of the hinge line as three angles. With all three at 0 the hinge line points along the y axis of the global coordinate system; the angles turn it about the x, then the turned y and finally the twice turned z axis, in the same order as the rotation of a transformation (<ddue:codeInline>transformationType</ddue:codeInline>).</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>
+                                        <ddue:codeInline>steps</ddue:codeInline> hold the deflection itself (<ddue:codeInline>componentSegmentStepType</ddue:codeInline>).</ddue:para>
+                                </ddue:listItem>
+                            </ddue:list>
+                            <ddue:para>The hinge point and the hinge line together span the hinge coordinate system: its origin is the hinge point and its axes are the axes of the global coordinate system turned by the three angles, so that its y axis is the hinge line.</ddue:para>
+                        </ddue:content>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -8378,17 +8398,17 @@ cpacs@dlr.de
                 <xsd:sequence>
                     <xsd:element name="hingePoint" type="etaXsiRelHeightPointType">
                         <xsd:annotation>
-                            <xsd:documentation>Reference point of the deflection</xsd:documentation>
+                            <xsd:documentation>Point the hinge line runs through</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="hingeRotation" type="pointXYZType">
                         <xsd:annotation>
-                            <xsd:documentation>Orientation of the hinge line as three Euler angles. With all angles 0, the hinge line points along the global y-axis.</xsd:documentation>
+                            <xsd:documentation>Direction of the hinge line as three angles about the x, the turned y and the twice turned z axis [deg]; with 0, 0, 0 it points along the global y axis</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="steps" minOccurs="0" maxOccurs="unbounded" type="componentSegmentStepsType">
                         <xsd:annotation>
-                            <xsd:documentation>Steps of the deflection path</xsd:documentation>
+                            <xsd:documentation>Positions of the component segment over the control parameter</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -8401,8 +8421,13 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Steps of the deflection path of a component segment</ddue:para>
+                        <ddue:para>Steps of the deflection of a component segment</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>Each step holds the position of the component segment at one value of the control parameter; between two steps the values are interpolated linearly.</ddue:para>
+                        </ddue:content>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -8411,7 +8436,7 @@ cpacs@dlr.de
                 <xsd:sequence>
                     <xsd:element name="step" maxOccurs="unbounded" type="componentSegmentStepType">
                         <xsd:annotation>
-                            <xsd:documentation>Step</xsd:documentation>
+                            <xsd:documentation>One position of the component segment</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -8424,8 +8449,13 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Step of the deflection path of a component segment</ddue:para>
+                        <ddue:para>One position of a component segment</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>The position of the component segment at one value of the control parameter: it is moved by <ddue:codeInline>hingeTranslation</ddue:codeInline> along the axes of the hinge coordinate system and turned by <ddue:codeInline>hingeLineRotation</ddue:codeInline> about the hinge line (see <ddue:codeInline>componentSegmentPathType</ddue:codeInline>).</ddue:para>
+                        </ddue:content>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -8434,17 +8464,17 @@ cpacs@dlr.de
                 <xsd:all>
                     <xsd:element name="controlParameter" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Control parameter referencing this state of the deflection, e.g. in a load case. It can have any value and is not limited to the range from -1 to 1.</xsd:documentation>
+                            <xsd:documentation>Control parameter of the step, see the control parameters in cpacsType</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="hingeTranslation" minOccurs="0" type="pointXYZType">
                         <xsd:annotation>
-                            <xsd:documentation>Translation along the x-, y- and z-axis of the rotated hinge coordinate system</xsd:documentation>
+                            <xsd:documentation>Translation along the axes of the hinge coordinate system [m]; without it the component segment is not moved</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="hingeLineRotation" minOccurs="0" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Rotation about the hinge line</xsd:documentation>
+                            <xsd:documentation>Rotation about the hinge line, right-handed about its direction [deg]; without it the component segment is not turned</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -8750,7 +8780,7 @@ cpacs@dlr.de
                     </xsd:element>
                     <xsd:element name="parentUID" minOccurs="0" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Optional UID reference to the parent object used for relative positioning</xsd:documentation>
+                            <xsd:documentation>Component this one is attached to, if any. The translation of this component is then given relative to the position of that component.</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="transformation" minOccurs="0" type="transformationSE3Type">
@@ -14135,7 +14165,7 @@ cpacs@dlr.de
                     </xsd:element>
                     <xsd:element name="parentUID" minOccurs="0" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of the object used as parent coordinate system (typically the fuselage UID)</xsd:documentation>
+                            <xsd:documentation>Component the deck is attached to, usually the fuselage. The translation of the deck is then given relative to the position of this component.</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="floorStructureUID" minOccurs="0" type="stringUIDBaseType">
@@ -15233,10 +15263,7 @@ cpacs@dlr.de
                     </xsd:element>
                     <xsd:element name="parentUID" minOccurs="0" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>
-                                 UID of part to which the duct is
-                                 mounted (if any)
-                             </xsd:documentation>
+                            <xsd:documentation>Component the duct assembly is attached to, if any. The translation of the assembly is then given relative to the position of this component.</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="transformation" minOccurs="0" type="transformationType">
@@ -16406,8 +16433,7 @@ cpacs@dlr.de
                     </xsd:element>
                     <xsd:element name="parentUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Component, to which the engine is mounted
-                            </xsd:documentation>
+                            <xsd:documentation>Component the engine is attached to, usually a pylon or the fuselage. The translation of the engine is then given relative to the position of this component.</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="transformation" type="transformationType">
@@ -16478,8 +16504,7 @@ cpacs@dlr.de
                     </xsd:element>
                     <xsd:element name="parentUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of the parent (normally wing or fuselage)
-                            </xsd:documentation>
+                            <xsd:documentation>Component the pylon is attached to, usually the wing or the fuselage. The translation of the pylon is then given relative to the position of this component.</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="transformation" type="transformationType">
@@ -19084,8 +19109,7 @@ cpacs@dlr.de
                     </xsd:element>
                     <xsd:element name="parentUID" minOccurs="0" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Parent component
-                            </xsd:documentation>
+                            <xsd:documentation>Component the fuel tank is attached to, usually a wing or the fuselage. The translation of the tank is then given relative to the position of this component.</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="transformation" type="transformationType">
@@ -19991,10 +20015,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     </xsd:element>
                     <xsd:element name="parentUID" minOccurs="0" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>
-                                UID of part to which the fuselage is
-                                mounted (if any)
-                            </xsd:documentation>
+                            <xsd:documentation>Component the fuselage is attached to, if any. The translation of the fuselage is then given relative to the position of this component.</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="transformation" type="transformationType">
@@ -20540,8 +20561,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     </xsd:element>
                     <xsd:element name="parentUID" minOccurs="0" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of part to which the component is mounted
-                                (if any)</xsd:documentation>
+                            <xsd:documentation>Component this geometric component is attached to, if any. Its translation is then given relative to the position of that component.</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="transformation" type="transformationType">
@@ -20769,9 +20789,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     </xsd:element>
                     <xsd:element name="parentUID" minOccurs="0" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of the component which serves as parent element, i.e. whose coordinate system is to be used as a reference for the mass properties (CoG location, orientation and massInertia). Thus, two cases can occur: (1)
-                                it is set: local coordinate system of the parent; (2) it is not set: global CPACS coordinate system.
-                            </xsd:documentation>
+                            <xsd:documentation>Component the mass belongs to. The mass properties — the centre of gravity, the orientation and the moments of inertia — then refer to the coordinate system of this component; without it they refer to the global coordinate system.</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="componentUID" minOccurs="0" type="stringUIDBaseType">
@@ -22640,7 +22658,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     </xsd:element>
                     <xsd:element name="parentUID" minOccurs="0" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of the parent component. If set, the position of the main strut is defined relative to the parent coordinate system.</xsd:documentation>
+                            <xsd:documentation>Component the landing gear is attached to, usually the fuselage or a wing. The position of the main strut is then given relative to the position of this component.</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="control" minOccurs="0" type="landingGearControlType">
@@ -37587,11 +37605,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     </xsd:element>
                     <xsd:element name="parentUID" minOccurs="0" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of the part to which the rotor is mounted
-                                (if any). The parent of the rotor can e.g. be the fuselage. In
-                                each rotorcraft model, there is exactly one part without a
-                                parent part (The root of the connection hierarchy).
-                            </xsd:documentation>
+                            <xsd:documentation>Component the rotor is attached to, usually the fuselage. The translation of the rotor is then given relative to the position of this component. In each rotorcraft model exactly one component has no parent; it is the root of the hierarchy.</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="type" minOccurs="0">
