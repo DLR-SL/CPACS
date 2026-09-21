@@ -52,7 +52,7 @@ from controlSurface import (CONTOURS, Frame, LE_INDEX, draw_wing_section, midpla
 from example_xml import indent, write_cpacs_file
 from figure_style import COLORS, FULL_WIDTH, LINE, figure_style, leader, save_figure
 from structuralProfile import ELEMENT_UID, MATERIAL_UID, element_xml as structural_element_xml, material_xml, profile_xml
-from wing import (AIRFOIL, DOCUMENTATION, FIGURES, INK, INK2, MUTED, NOTE, WING_UID, airfoil_xml,
+from wing import (AIRFOIL, DOCUMENTATION, FIGURES, INK, INK2, MUTED, NOTE, WING_UID, airfoil_xml, arrow,
                   circle_profile_xml,
                   fuselage_xml, wing_xml)
 
@@ -743,24 +743,43 @@ def reference_direction():
     return (last - first) / np.linalg.norm(last - first)
 
 
-def stringer_path(offset, angle, inside=None, samples=160):
+def stringer_path(offset, angle, inside=None, samples=60):
     """One stringer on the upper skin: a straight line in the top view, lifted onto the skin.
 
-    offset is the distance from the reference point, measured perpendicular to the stringer.
+    offset is the distance from the reference point, measured perpendicular to the stringer. The
+    stringer ends where it leaves the skin, found by halving the interval, not at the last sample
+    inside it, so that neighbouring stringers end on a smooth edge.
     """
     direction = rotation_z(angle) @ reference_direction()
     across = np.array([-direction[1], direction[0], 0.0])
     eta, xsi, _ = SHELLS["upperShell"]["stringer"]["refPoint"]
     start = component_segment_point(eta, xsi) + offset * across
-    points = []
-    for t in np.linspace(-20.0, 20.0, samples):
+
+    def on_skin(t):
         try:
             eta, xsi = chord_surface_eta_xsi(start + t * direction)
         except (ValueError, np.linalg.LinAlgError):
-            continue
+            return None
         if 0.0 <= eta <= 1.0 and 0.0 <= xsi <= 1.0 and (inside is None or inside(eta)):
-            points.append(upper_skin_point(eta, xsi))
-    return np.array(points)
+            return upper_skin_point(eta, xsi)
+        return None
+
+    coarse = [t for t in np.linspace(-20.0, 20.0, 400) if on_skin(t) is not None]
+    if len(coarse) < 2:
+        return np.array([])
+
+    def edge(t_in, t_out):
+        for _ in range(40):
+            middle = 0.5 * (t_in + t_out)
+            if on_skin(middle) is None:
+                t_out = middle
+            else:
+                t_in = middle
+        return t_in
+
+    first = edge(coarse[0], coarse[0] - (40.0 / 399))
+    last = edge(coarse[-1], coarse[-1] + (40.0 / 399))
+    return np.array([p for p in (on_skin(t) for t in np.linspace(first, last, samples)) if p is not None])
 
 
 def section_frame(eta):
@@ -962,12 +981,18 @@ def figure_stringers():
     def inside(eta):
         return eta_a <= eta <= eta_b
 
+    def draw(ax, points, color, width, zorder=2, alpha=1.0):
+        ax.plot(*project(np.asarray(points)).T, color=color, lw=width, zorder=zorder, alpha=alpha,
+                solid_capstyle="round")
+
     with figure_style():
-        fig = plt.figure(figsize=(FULL_WIDTH, 3.6))
+        fig = plt.figure(figsize=(FULL_WIDTH, 3.5))
         ax = fig.add_axes((0.0, 0.0, 1.0, 1.0))
 
         # the patch of the upper skin, drawn as its outline
-        etas, xsis = np.linspace(eta_a, eta_b, 40), np.linspace(0.0, 1.0, 40)
+        # the skin turns fastest at the nose, so the chordwise samples are closer together there
+        etas = np.linspace(eta_a, eta_b, 60)
+        xsis = 0.5 * (1.0 - np.cos(np.linspace(0.0, np.pi, 90)))
         leading = np.array([upper_skin_point(eta, 0.0) for eta in etas])
         trailing = np.array([upper_skin_point(eta, 1.0) for eta in etas])
         inner = np.array([upper_skin_point(eta_a, xsi) for xsi in xsis])
@@ -975,37 +1000,67 @@ def figure_stringers():
         ax.add_patch(Polygon(project(np.vstack([leading, outer, trailing[::-1], inner[::-1]])), closed=True,
                              facecolor=SERIES1, alpha=WASH, edgecolor="none", zorder=0))
         for curve in (leading, trailing, inner, outer):
-            ax.plot(*project(curve).T, color=MUTED, lw=LINE["reference"], zorder=1)
+            draw(ax, curve, MUTED, LINE["reference"], zorder=1)
 
-        # the stringers: one runs through the reference point, the others at the pitch from it
+        # the two spars on the skin, so that the reader knows where the wing box is
+        for uid in ("frontSpar", "rearSpar"):
+            vertices = spar_mid_line(uid)
+            trace = [upper_skin_point(*chord_surface_eta_xsi(line_point(vertices, t)[0]))
+                     for t in np.linspace(0.0, 1.0, 120)]
+            trace = [p for p, t in zip(trace, np.linspace(0.0, 1.0, 120))
+                     if inside(chord_surface_eta_xsi(line_point(vertices, t)[0])[0])]
+            draw(ax, trace, SPAR, LINE["reference"], zorder=2)
+        for uid, name, at in (("frontSpar", "front spar", 0.17), ("rearSpar", "rear spar", 0.17)):
+            vertices = spar_mid_line(uid)
+            here = [line_point(vertices, t)[0] for t in (at - 0.01, at, at + 0.01)]
+            on_skin = [project(upper_skin_point(*chord_surface_eta_xsi(q))) for q in here]
+            edge_text(ax, on_skin[0], on_skin[2], on_skin[1], name, distance=GAP, up=True, rotate=True, color=INK2)
+
+        # the stringers: the one through the reference point leads, the others follow at the pitch
         paths = {}
         for k in range(-14, 15):
             path = stringer_path(pitch * k, angle, inside)
             if len(path) > 1:
                 paths[k] = path
-                ax.plot(*project(path).T, color=CELL, lw=LINE["secondary"], zorder=2)
+                draw(ax, path, CELL if k == 0 else COLORS["series1Light"],
+                     LINE["data"] if k == 0 else LINE["secondary"], zorder=4 if k == 0 else 3)
 
-        # the reference direction of the angle, from the reference point of the stringers
+        # the angle, between the reference direction and the stringer through the reference point
         reference = reference_direction()
         corner = component_segment_point(*stringer["refPoint"][:2])
         span = 3.6  # length of the drawn reference direction [m]
-        ax.plot(*project(np.array([corner, corner + span * reference])).T, color=INK2, lw=LINE["secondary"], zorder=3)
+        draw(ax, [corner, corner + span * reference], INK2, LINE["secondary"], zorder=5)
         sector = np.array([corner + 0.82 * span * (rotation_z(a) @ reference) for a in np.linspace(0.0, angle, 40)])
-        ax.plot(*project(sector).T, color=INK2, lw=LINE["reference"], zorder=3)
+        draw(ax, sector, INK2, LINE["reference"], zorder=5)
         text(ax, project(corner + span * reference), "reference direction", (GAP, 2), ha="left", va="bottom",
              color=INK2)
         text(ax, project(corner + 0.92 * span * (rotation_z(0.5 * angle) @ reference)), f"angle {angle:g}°",
              (-GAP, -GAP - 2), ha="right", va="top", color=INK2)
         point_marker(ax, project(corner))
-        text(ax, project(corner), "refPoint", (-GAP, 0), ha="right", color=INK2)
+        text(ax, project(corner), "refPoint", (-GAP, 0), ha="right", color=INK)
 
-        # the pitch, measured perpendicular to the stringers
-        a, b = paths[2], paths[3]
-        i, j = int(0.5 * len(a)), int(0.5 * len(b))
-        ax.plot(*project(np.array([a[i], b[j]])).T, color=INK2, lw=LINE["reference"], zorder=4)
-        text(ax, project(0.5 * (a[i] + b[j])), "pitch", (GAP, -2), ha="left", va="top", color=INK2)
-        text(ax, project(upper_skin_point(eta_a, 0.85)), "upper skin", (-GAP, -GAP), ha="right", va="top",
-             color=INK)
+        # the pitch: a dimension between two neighbouring stringers, perpendicular to them
+        a, b = paths[-9], paths[-8]
+        i = int(0.62 * len(a))
+        foot, head = a[i], b[int(0.62 * len(b))]
+        draw(ax, [foot, head], INK2, LINE["reference"], zorder=6)
+        along = (a[min(i + 4, len(a) - 1)] - a[max(i - 4, 0)])
+        along = 0.06 * along / np.linalg.norm(along)
+        for at in (foot, head):
+            draw(ax, [at - along, at + along], INK2, LINE["reference"], zorder=6)
+        text(ax, project(0.5 * (foot + head)), "pitch", (-GAP, 0), ha="right", color=INK2)
+
+        # what the reader is looking at: the edges of the patch and the axes of the wing
+        edge_text(ax, project(leading[5]), project(leading[-5]), project(leading[len(leading) // 2]),
+                  "leading edge", distance=GAP, up=True, rotate=True, color=INK2)
+        edge_text(ax, project(trailing[5]), project(trailing[-5]), project(trailing[len(trailing) // 2]),
+                  "trailing edge", distance=GAP, up=False, rotate=True, color=INK2)
+        origin = upper_skin_point(eta_a, 0.45) + np.array([0.0, -1.7, 0.0])
+        for direction, label_text, offset in (((1.0, 0.0, 0.0), "x", (-2, -8)), ((0.0, 1.0, 0.0), "y", (6, 0)),
+                                              ((0.0, 0.0, 1.0), "z", (0, 7))):
+            tip = origin + 0.8 * np.asarray(direction)
+            arrow(ax, project(origin), project(tip), color=INK2, lw=LINE["reference"], head=6)
+            text(ax, project(tip), label_text, offset, color=INK2)
 
         ax.set_aspect("equal")
         ax.axis("off")
