@@ -337,6 +337,20 @@ Old figures often carry an aspect that no text states — `wingelements.jpg` was
 
 The documentation defines what the data means, and a definition that no implementation reproduces is a guess. Build the generated example, evaluate the quantity the text defines — points, lengths, angles, volumes — and compare it with the formula in the text, and record which version of the implementation was used and how large the deviation was. Where the two differ, the difference is a finding about the tool, not a licence to change the text: only the cases of §27 become TiGL notes, and the rest belongs in the notes for the tool developers.
 
+- **§36: A type name written as `ddue:codeInline` links to that type by itself. Everything else that should link is written as `ddue:link`.**
+
+Nothing has to be marked up for the first case. Where the text of a `ddue:codeInline` is exactly the name of a type in the schema, the generated page turns it into a link to that type — so `<ddue:codeInline>wingSectionType</ddue:codeInline>` needs no further attention, and §32 already has type and element names written this way.
+
+Element names are deliberately left alone. 186 of them are declared with more than one type, so `sections` does not say on its own whether the reader should end up at `wingSectionsType` or somewhere else. Where such a reference is worth making, or where the sentence reads better in words of your own, write the link out:
+
+```xml
+<ddue:para>The same shape describes the <ddue:link xlink:href="rotorBladesType">rotor blades</ddue:link> of a rotorcraft.</ddue:para>
+```
+
+The target in `xlink:href` is the type name, as `ddue:image` names its media entry, and an empty `ddue:link` is labelled with its target. A target that names no type in the schema is an error in `cpacs-doc report`, so a typo surfaces in the build rather than in the reader's browser.
+
+Set a `ddue:link` only where the sentence really makes that reference; §31 already sends the reader to one place for a convention, and a second link to it a paragraph later says nothing new. An automatic link is not worth avoiding by rewording — a type name is named where it is named, and in CPACS 3.5.1 only ten of the 243 names in the documentation repeat within the same type.
+
 ## Development Guidelines by Example
 
 ### Example analysis node
