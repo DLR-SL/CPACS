@@ -179,6 +179,8 @@ An example does not follow the schema by itself. Renaming an element includes se
 
 Three cases are exempt. An example that deliberately shows invalid data says so in its title (`Example 4: invalid double vector due to string entry`). A placeholder name standing for any element of a type (`doubleVectorTest`) is fine where the surrounding text makes that clear. And an XML declaration (`<?xml version="1.0" encoding="utf-8"?>`) is only written where the example shows a complete file.
 
+Correct also means plausible. Readers take an example as a model of how the data is meant to be used, so its values follow the practice of the domain: each part sits where that kind of part sits, keeps the proportions its kind has, and nothing ends in mid-air — a wing box has a front and a rear spar that keep their relative chord position, fuselage frames stand at a regular pitch, a landing gear reaches the ground when it is extended. Check the quantities that *follow* from the data, not only the ones that are written down. A rear spar given at 65 % of the chord at the root and 70 % at the tip drifts to 84 % at the kink of a swept, tapered wing, because a spar runs straight in space between its positions: the input values look right, the structure does not. Computing the derived quantity along the component — here the relative chord position at several η — takes a few lines in the script that writes the example and catches what reading the input cannot.
+
 - **§20: The documentation shows data, not code. How to read or write a node with a library is shown in a script in `examples/python/`, which the documentation names and the tests run.**
 
 Program code in the schema would make the documentation long, tie it to particular libraries, and could not be checked by the documentation generator, which runs nothing. A script in `examples/python/` can be run and is tested by `scripts/tests/test_examples.py`; the XML examples it uses stay in `examples/`. Where the documentation shows an excerpt of a file from `examples/`, the same test compares the two, so that neither changes without the other. The documentation of `toolspecificType` is the reference: it shows the tool data of `examples/toolspecific.xml` and the schema `examples/toolspecific_combined.xsd`, and names the scripts `examples/python/toolspecific_lxml.py` and `examples/python/toolspecific_tixi.py`.
@@ -190,6 +192,8 @@ Figures and equations are images referenced from the schema with `ddue:mediaLink
 - **§21: A generated figure or equation is reproducible from source. The script lives in `documentation/scripts/`, is run with `uv run`, and is committed together with the images it writes.**
 
 A figure that exists only as a PNG cannot be corrected, restyled or regenerated after a schema change. A script can. Each script declares its dependencies with pinned versions as [inline script metadata](https://packaging.python.org/en/latest/specifications/inline-script-metadata/), so `uv run documentation/scripts/<name>.py` from the repository root needs no further setup, and it writes byte-identical files when run again. Data shown in a figure is computed or read by the script, never typed in by hand. `documentation/scripts/cst2D.py` is the reference: it writes the figures and equations of `cst2DType` and the example file `examples/wingAirfoils_cst.xml`. Example files are written with the helpers in `documentation/scripts/example_xml.py`, so that all generated examples share one layout and name their script in a comment at the top and in the version information of the header. A generated example is changed in its script, never by hand; a manual change is lost the next time the script runs.
+
+Where the script samples a curve or a surface, the samples follow the geometry rather than a convenient step: closer together where it bends most — towards the nose of an airfoil, say, where the upper surface rises by 9 cm over the first per cent of the chord — and cut exactly at the border of the drawn region, by halving the interval instead of keeping the last sample inside it. A figure that shows its sampling, a nose cut off by a chord or the ends of neighbouring lines in a staircase, is read as a statement about the geometry and is therefore wrong.
 
 - **§22: Figures use the shared style in `documentation/scripts/figure_style.py`.**
 
@@ -217,6 +221,18 @@ The series colors are validated as a categorical palette (lightness, chroma, sep
 
 Symmetric components follow the colors users know from TiGL, which renders mirrored geometry in gold: the defined side is drawn in series 1 and the mirrored side in the muted amber of the table, never the other way round. Other marks in such a figure, e.g. a component attached to the symmetric one, use series 3, so that they are not mistaken for a side of the component.
 
+Within one subject area the same kind of part keeps its color across all figures, so that a reader who has understood one figure recognizes the parts in the next. The figures of the wing structure use the assignment below; a new figure of that area follows it rather than starting from series 1 again.
+
+| Part | Color |
+| ---------- | ---------- |
+| Skin of a shell, its cells and its stringers | Series 1, a single highlighted stringer in full width and the field in series 1 light |
+| Spars | Series 2 |
+| Ribs | Series 3 |
+| Chord of an element, in top views of the planform | Series 1 |
+| Chord surface, leading and trailing edge, filling between the shells | Muted |
+
+The table grows with the documentation: whoever works on another area adds the assignment of its parts here, in the same form, so that the next author of that area finds it instead of choosing again.
+
 - **§23: Color identifies, text explains. Text is set in ink, never in a series color, and identity never depends on color alone.**
 
 Series colors are for marks: lines, markers, arrows, areas. Every label, value and legend entry uses ink or secondary ink, with a colored line key or a leader line next to it to show what it belongs to. Two or more series get a legend or a direct label for each series. To highlight one curve among alternatives, draw it in series 1 and the others in muted gray, each with a direct label. Leader lines share the muted gray, so a panel with gray curves identifies its labels by position or line key instead; a leader line there reads as one more curve.
@@ -235,6 +251,18 @@ Collisions depend on the rendered text size and are not visible in the code. Che
 
 Lines collide as well: a helper line that runs close and parallel to a data line, or an axis that lies along a vector in an oblique view, reads as a drawing error and hides what the figure is about. Remove such a line, or choose the view so that the lines separate. Where a scale is exaggerated to make a shape visible, the figure states it with its ratio (`vertical scale exaggerated 3:1`); an exaggerated but readable figure is preferred over a true-to-scale one in which the effect cannot be seen.
 
+Collisions are easiest to avoid by placing each label at the object it belongs to instead of in the free space around the figure:
+
+| Case | Placement |
+| ---------- | ---------- |
+| Name of a line (a spar, a rib, a reference line) | Along the line, turned with it, at a fixed distance in points |
+| Name of an area (a cell, a panel) | Inside it, turned with its longer direction |
+| Note that fits nowhere near its object | In free space with a leader line in muted gray; two or three such notes per figure at most |
+| A distance (a pitch, a spacing) | On the line along which it is measured, with end ticks perpendicular to it |
+| Groups of like objects (a set of ribs, a field of stringers) | One name per group, not one per line |
+
+An oblique view carries a small axes cross and names the edges a reader needs in order to orient, e.g. the leading and the trailing edge of a skin patch: unlike a top view or a section, it gives no other clue which way the reader is looking. Text that explains is set in secondary ink, the names of the parts in ink, so that the two layers stay apart (§23).
+
 - **§25: An equation is written as LaTeX and rendered in Computer Modern. The `.tex` source is stored next to the image in `documentation/equations/`.**
 
 `save_equation` in `figure_style.py` writes both files from the same lines, so source and image cannot diverge. It renders with matplotlib's mathtext, which needs no LaTeX installation and understands a large subset of LaTeX math (`\frac`, `\dfrac`, `\sum`, `\left(`…`\right)`, `\mathrm`); stay within that subset. Symbols inside the running text use `ddue:subscript` and `ddue:superscript` rather than an image. Write them so that no inline element directly follows another one or closes its parent (e.g. `B<ddue:subscript>0</ddue:subscript>²/2`, not `B<ddue:subscript>0</ddue:subscript><ddue:superscript>2</ddue:superscript>/2`): the schema formatter puts a line break after such an element, which is displayed as a space.
@@ -251,7 +279,7 @@ A convention that TiGL established in practice is stated as a rule of CPACS, wit
 
 Many parts of CPACS are not evaluated by TiGL, and a note for each of them would bury the few that matter. A note is justified where TiGL builds a different geometry from valid data than the text describes (e.g. it counts indices from 0 instead of 1), silently changes the data (e.g. reverses a point list), or where valid data leads to an error or unusable result without a workaround. That TiGL ignores an element or does not build a component at all is not stated in the schema.
 
-The generator sets the note apart from the text and labels it *TiGL*, so that readers can tell the standard from the state of its main tool at a glance. A note states only behaviour that was checked in a released TiGL version; features still under development in TiGL (at the time of writing, the approximation of point lists) get no note until their behaviour has settled. Place it in the remarks of the type, directly after the statement it qualifies; an element documentation (`xsd:documentation`) is plain text and cannot hold one. Where a TiGL issue exists, link it. A note that applies to no particular tool uses `class="note"` instead of a bold or italic "Note:".
+The generator sets the note apart from the text and labels it *TiGL*, so that readers can tell the standard from the state of its main tool at a glance. A note states only behaviour that was checked in a released TiGL version; features still under development in TiGL (at the time of writing, the approximation of point lists) get no note until their behaviour has settled. Place it in the remarks of the type, directly after the statement it qualifies; an element documentation (`xsd:documentation`) is plain text and cannot hold one. Where a TiGL issue exists, link it. A note that applies to no particular tool uses `class="note"` instead of a bold or italic "Note:". A single numerical coincidence is no reason for a note either: where valid data fails only for particular values — an intersection that falls exactly on the border of a face, say — the case belongs in the notes for the tool developers. Measure such a case over a range of values before deciding. A failure that holds for one input and not for its neighbours is a bug report, not a property of the data, and a reader cannot act on it.
 
 ```XML
 <ddue:para>... the point indices start at 1.</ddue:para>
@@ -270,6 +298,7 @@ The parameters of TiGL's API functions are not CPACS parameters, even where they
 | A TiGL remark inside a normative paragraph | A separate `ddue:alert class="tigl"` after it |
 | "TiGL counts the indices from 0." | "TiGL 3.5 counts the indices from 0." |
 | "TiGL 3.5 does not evaluate continuityAtP1." | No note; a feature TiGL does not implement is not a reason for one (§27) |
+| "TiGL 3.5 does not build the spar if its position lies on an element." | No note; measured over a range of values only one rounded coordinate pair fails — a bug report for TiGL (§27) |
 | "Use tiglWingSetGetPointBehavior(onLinearLoft) to …" | Nothing in the schema; a hint in the TiGL documentation |
 
 ## Development Guidelines by Example

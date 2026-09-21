@@ -10011,7 +10011,7 @@ cpacs@dlr.de
                         <ddue:content>
                             <ddue:para>
                                 The airfoil (<ddue:codeInline>airfoilUID</ddue:codeInline>) is placed at the spanwise position <ddue:codeInline>eta</ddue:codeInline> with its leading edge on the leading edge of the control surface.
-                                Its chord is given by the outer shape of the control surface; it can be rotated about the chord and about the normal of the middle plane of the control surface, and scaled in spanwise and thickness direction.
+                                Its chord is given by the outer shape of the control surface; it can be rotated about the chord and about the normal of the chord surface of the control surface, and scaled in spanwise and thickness direction.
                             </ddue:para>
                             <ddue:para>
                                 Like the contour of a border (<ddue:codeInline>contourReferenceType</ddue:codeInline>), it is a closed contour that describes the complete section of the control surface.
@@ -10041,7 +10041,7 @@ cpacs@dlr.de
                     </xsd:element>
                     <xsd:element name="rotZ" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Rotation about the normal of the middle plane of the control surface, about the foremost point of the airfoil; 90 aligns the airfoil with the x-axis of the wing [deg]</xsd:documentation>
+                            <xsd:documentation>Rotation about the normal of the chord surface of the control surface, about the foremost point of the airfoil; 90 aligns the airfoil with the x-axis of the wing [deg]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="scalY" type="doubleBaseType">
@@ -10537,7 +10537,7 @@ cpacs@dlr.de
                         <ddue:content>
                             <ddue:para>
                                 The hinge point lies in the section of the wing at the leading edge position <ddue:codeInline>etaLE</ddue:codeInline> of the border.
-                                Through the point of the chord surface of the component segment at this η and at <ddue:codeInline>hingeXsi</ddue:codeInline>, a straight line runs along the normal of the middle plane of the component segment; the hinge point lies on this line at the relative height <ddue:codeInline>hingeRelHeight</ddue:codeInline> between the lower (0) and the upper (1) surface of the wing, and is then moved by <ddue:codeInline>translation</ddue:codeInline>:
+                                Through the point of the chord surface of the component segment at this η and at <ddue:codeInline>hingeXsi</ddue:codeInline>, a straight line runs along the normal of the chord surface of the component segment; the hinge point lies on this line at the relative height <ddue:codeInline>hingeRelHeight</ddue:codeInline> between the lower (0) and the upper (1) surface of the wing, and is then moved by <ddue:codeInline>translation</ddue:codeInline>:
                             </ddue:para>
                             <ddue:mediaLink>
                                 <ddue:image xlink:href="eq_controlSurfaceHingePoint"/>
@@ -51787,22 +51787,12 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                             </xsd:element>
                             <xsd:element name="angle" type="doubleBaseType">
                                 <xsd:annotation>
-                                    <xsd:documentation>Stringer angle: the reference axis for the
-                                        stringer angle is defined by the two leading edge points of
-                                        the 'from'- and the 'to'-element of the componentSegment
-                                        definition. The angle between the reference axis and the
-                                        stringers equals the rotation around the z-reference axis. For
-                                        details, please refer to the picture below.
-                                    </xsd:documentation>
+                                    <xsd:documentation>Angle of the stringers in the surface, measured from the reference direction about the normal of the surface [deg]</xsd:documentation>
                                 </xsd:annotation>
                             </xsd:element>
                             <xsd:element name="angleReference" minOccurs="0" type="stringBaseType">
                                 <xsd:annotation>
-                                    <xsd:documentation>If the reference of the stringer angle shall
-                                        be different from the default implementation then this
-                                        parameter may be set. Allowed values include: leadingEdge,
-                                        trailingEdge and globalY. Furthermore, it is possible to
-                                        provide the UID of a spar.</xsd:documentation>
+                                    <xsd:documentation>Direction the angle is measured from, in place of the reference direction: the UID of a spar, leadingEdge, trailingEdge or globalY</xsd:documentation>
                                 </xsd:annotation>
                             </xsd:element>
                         </xsd:sequence>
@@ -51822,22 +51812,12 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                             </xsd:element>
                             <xsd:element name="angle" minOccurs="0" type="doubleBaseType">
                                 <xsd:annotation>
-                                    <xsd:documentation>Stringer angle: the reference axis for the
-                                        stringer angle is defined by the two leading edge points of
-                                        the 'from'- and the 'to'-element of the componentSegment
-                                        definition. The angle between the reference axis and the
-                                        stringers equals the rotation around the z-reference axis. For
-                                        details, please refer to the picture below.
-                                    </xsd:documentation>
+                                    <xsd:documentation>Angle of the stringers in the surface, measured from the reference direction about the normal of the surface [deg]</xsd:documentation>
                                 </xsd:annotation>
                             </xsd:element>
                             <xsd:element name="angleReference" minOccurs="0" type="stringBaseType">
                                 <xsd:annotation>
-                                    <xsd:documentation>If the reference of the stringer angle shall
-                                        be different from the default implementation then this
-                                        parameter may be set. Allowed values include: leadingEdge,
-                                        trailingEdge and globalY. Furthermore, it is possible to
-                                        provide the UID of a spar.</xsd:documentation>
+                                    <xsd:documentation>Direction the angle is measured from, in place of the reference direction: the UID of a spar, leadingEdge, trailingEdge or globalY</xsd:documentation>
                                 </xsd:annotation>
                             </xsd:element>
                             <xsd:element name="innerBorderXsiLE" minOccurs="0" type="xsiIsoLineType">
