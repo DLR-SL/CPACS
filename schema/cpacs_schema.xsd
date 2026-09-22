@@ -9454,19 +9454,18 @@ cpacs@dlr.de
                         <ddue:content>
                             <ddue:para>
                                 The airfoil (<ddue:codeInline>airfoilUID</ddue:codeInline>) replaces the section of the wing at the border.
-                                Its leading and trailing edge are the points P<ddue:subscript>LE</ddue:subscript> and P<ddue:subscript>TE</ddue:subscript> of the border; it can be rotated about the chord between them and scaled in spanwise and thickness direction.
+                                Its chord lies on the chord of the border, from P<ddue:subscript>LE</ddue:subscript> to P<ddue:subscript>TE</ddue:subscript>, and the contour is scaled with the length of that chord in the chordwise as well as in the thickness direction.
+                                <ddue:codeInline>rotX</ddue:codeInline> rotates it about that chord.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:codeInline>scalY</ddue:codeInline> and <ddue:codeInline>scalZ</ddue:codeInline> are factors on that scaling, not lengths: with <ddue:codeInline>scalZ</ddue:codeInline> = 1 the contour keeps the thickness ratio of the airfoil, with <ddue:codeInline>scalZ</ddue:codeInline> = 0.5 it is half as thick.
+                                An airfoil of 12 % thickness on a border with a chord of 0.3 m is therefore 0.036 m thick at <ddue:codeInline>scalZ</ddue:codeInline> = 1.
                             </ddue:para>
                             <ddue:para>
                                 Like every airfoil, it is a closed contour that runs from the trailing edge over the leading edge back to the trailing edge (<ddue:codeInline>profileGeometryType</ddue:codeInline>), and it describes the complete section of the control surface: the part that follows the surface of the wing as well as the part inside it, e.g. the hollow rear side of a leading edge device.
                                 The control surface is then the shape between the contours of its borders and is no longer cut out of the wing, so that its surface can deviate from the surface of the wing.
                                 To describe only the part inside the wing and take the rest from the wing, use <ddue:codeInline>innerShape</ddue:codeInline> or <ddue:codeInline>leadingEdgeShape</ddue:codeInline> instead.
                             </ddue:para>
-                            <ddue:alert class="tigl">
-                                <ddue:para>
-                                    TiGL 3.5 scales the airfoil in the thickness direction with <ddue:codeInline>scalZ</ddue:codeInline> alone, so that its thickness is a length in metres instead of a fraction of the chord between P<ddue:subscript>LE</ddue:subscript> and P<ddue:subscript>TE</ddue:subscript>.
-                                    With <ddue:codeInline>scalZ</ddue:codeInline> = 1, the control surface is then far thicker than the wing; setting it to the length of that chord gives the described contour.
-                                </ddue:para>
-                            </ddue:alert>
                             <ddue:para>
                                 The contour of a border, referencing an airfoil that describes the complete section of the control surface:
                             </ddue:para>
@@ -9508,7 +9507,7 @@ cpacs@dlr.de
                     </xsd:element>
                     <xsd:element name="scalZ" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Scaling in thickness direction [-]</xsd:documentation>
+                            <xsd:documentation>Scaling in thickness direction, as a factor on the chord of the border; 1 keeps the thickness ratio of the airfoil [-]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>

@@ -668,20 +668,14 @@ def variant_profiles():
 def airfoil_reference_xml(uid, chord=None):
     """Reference to an airfoil contour.
 
-    TiGL 3.5 scales the thickness of the airfoil with scalZ alone, so that the contour only fits the wing if
-    scalZ is the length of the chord of the border. By the definition of scalZ the value would be 1, because
-    the airfoil is placed on that chord and scaled with it.
+    The airfoil is placed on the chord of the border and scaled with it in both directions, so that scalZ,
+    the scaling in thickness direction, is 1 for a contour that keeps the thickness of the airfoil.
     """
     lines = ["<airfoil>", f"    <airfoilUID>{uid}</airfoilUID>", "    <rotX>90</rotX>", "    <scalY>1</scalY>"]
     if chord is not None:
         lines += ["    <!-- scalZ = 1: the airfoil is placed on the chord between the leading and the trailing",
                   "         edge point of this border and is scaled with it, here a chord of "
-                  f"{chord:.4f} m.",
-                  "         TiGL 3.5 scales the thickness with scalZ alone, as a length in metres instead of a",
-                  "         fraction of that chord, and does not cut the control surface out of the wing. It",
-                  "         therefore shows the contour far too thick, the more so the shorter the chord is.",
-                  "         Setting scalZ to the length of the chord shows the contour correctly in TiGL; the",
-                  "         point is being clarified with the TiGL developers. -->"]
+                  f"{chord:.4f} m. -->"]
     lines.append("    <scalZ>1</scalZ>")
     return "\n".join(lines + ["</airfoil>"])
 
