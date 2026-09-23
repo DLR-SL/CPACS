@@ -14709,8 +14709,31 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Dome type</ddue:para>
+                        <ddue:para>Shape of the domes that close a vessel</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>
+                                Both domes of a vessel have this shape, so the vessel is symmetric about the middle of its cylinder.
+                                The shape also sets the dome height h, and with it the length of the vessel, which is the cylinder length plus twice h (see <ddue:codeInline>vesselType</ddue:codeInline>).
+                            </ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="vesselDomeTypes"/>
+                            </ddue:mediaLink>
+                            <ddue:para>
+                                Each panel shows the meridian section of a forward dome above the axis of revolution, all three at the same cylinder radius R and the same scale.
+                                In figure (a) the height of an ellipsoidal dome is R times its half axis fraction, drawn for the fractions 0.5, 1 and 1.5.
+                                Figure (b) names the two radii of a torispherical dome, the point at which they meet and the angle under which they meet; R<ddue:subscript>1</ddue:subscript> is the dish radius and R<ddue:subscript>2</ddue:subscript> the knuckle radius.
+                                Figure (c) shows an isotensoid dome, which does not reach the axis but ends at a flat polar opening.
+                            </ddue:para>
+                            <ddue:para>
+                                The three shapes serve different purposes.
+                                An ellipsoidal dome is the general case and the one to use where no particular head is meant.
+                                A torispherical dome is the head that pressure vessels are usually built from, because dish and knuckle can be pressed from sheet.
+                                An isotensoid dome is the shape a filament-wound vessel takes when every filament carries the same tension.
+                            </ddue:para>
+                        </ddue:content>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -15649,8 +15672,36 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Ellipsoid dome</ddue:para>
+                        <ddue:para>Ellipsoidal dome</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>
+                                The meridian of the dome is a quarter of an ellipse whose radial semi-axis is the cylinder radius R and whose axial semi-axis is the dome height h.
+                                <ddue:codeInline>halfAxisFraction</ddue:codeInline> is the ratio of the two, so h = R times that fraction.
+                            </ddue:para>
+                            <ddue:para>
+                                A fraction of 1 gives a hemisphere, a fraction of 0 a flat end face, and a fraction above 1 a dome taller than the cylinder radius.
+                                The fraction is zero or larger.
+                            </ddue:para>
+                            <ddue:para>
+                                The excerpt is the vacuum jacket of the example tank, whose domes are 0.94 m high at a cylinder radius of 1.45 m.
+                            </ddue:para>
+                            <ddue:code language="XML" title="Ellipsoidal dome">
+                                <![CDATA[
+<vessel uID="rearTank_outerVessel">
+    ...
+    <domeType>
+        <ellipsoid>
+            <halfAxisFraction>0.65</halfAxisFraction>
+        </ellipsoid>
+    </domeType>
+    ...
+</vessel>
+                                ]]>
+                            </ddue:code>
+                        </ddue:content>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -15659,7 +15710,7 @@ cpacs@dlr.de
                 <xsd:all>
                     <xsd:element name="halfAxisFraction" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Half axis fraction</xsd:documentation>
+                            <xsd:documentation>Ratio of the dome height to the cylinder radius [-]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -19064,6 +19115,14 @@ cpacs@dlr.de
                     <ddue:summary>
                         <ddue:para>Fuel tanks</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>
+                                The fuel tanks of the model.
+                                Each tank is placed in the aircraft on its own and is built from the vessels that hold the fuel.
+                            </ddue:para>
+                        </ddue:content>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -19087,6 +19146,68 @@ cpacs@dlr.de
                     <ddue:summary>
                         <ddue:para>Fuel tank</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>
+                                A fuel tank groups the vessels that are filled and emptied together.
+                                The tank has no shape of its own: its geometry is the set of its vessels, and what it adds is the place in the aircraft that they share.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Placement</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                A tank is placed like any other component of the model, and the rules of <ddue:codeInline>transformationType</ddue:codeInline> apply to it unchanged.
+                                With <ddue:codeInline>parentUID</ddue:codeInline> the tank names the component it is attached to, usually a fuselage or a wing, and then follows the translation of that component but neither its rotation nor its scaling.
+                                Without a parent the transformation is read in the global coordinate system.
+                            </ddue:para>
+                            <ddue:para>
+                                The attribute <ddue:codeInline>symmetry</ddue:codeInline> mirrors the whole tank, with all its vessels, at the named plane, so that a tank which exists on both sides of the aircraft is written once.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Vessels</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The vessels of a tank are nested in its coordinate system, so the transformation of the tank scales and rotates them together with their own translation.
+                                Several vessels form one tank wherever they are filled as one, for example a pressure vessel inside a vacuum jacket, or a row of cylinders below the cabin floor.
+                            </ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="fuelTankVessels"/>
+                            </ddue:mediaLink>
+                            <ddue:para>
+                                Figure (a) shows three tanks in the fuselage they are attached to, and the translation of the rear tank measured from the origin of that fuselage.
+                                Figure (b) enlarges the rear tank: the pressure vessel sits inside the vacuum jacket, and the two vessels have different origins because each of them starts at the apex of its own forward dome.
+                            </ddue:para>
+                            <ddue:para>
+                                The excerpt shows the rear tank of the figure, with the two vessels shortened; <ddue:codeInline>vesselType</ddue:codeInline> gives them in full.
+                            </ddue:para>
+                            <ddue:code language="XML" title="Liquid hydrogen tank attached to a fuselage">
+                                <![CDATA[
+<fuelTank uID="rearTank">
+    <name>Rear tank</name>
+    <description>Liquid hydrogen tank behind the cabin: a pressure vessel with torispherical domes inside a vacuum jacket with ellipsoidal domes.</description>
+    <parentUID>Fuselage</parentUID>
+    <transformation>
+        <translation>
+            <x>13.6</x>
+            <y>0</y>
+            <z>0</z>
+        </translation>
+    </transformation>
+    <vessels>
+        <vessel uID="rearTank_outerVessel">
+            <name>Outer vessel</name>
+            ...
+        </vessel>
+        <vessel uID="rearTank_innerVessel">
+            <name>Inner vessel</name>
+            ...
+        </vessel>
+    </vessels>
+</fuelTank>
+                                ]]>
+                            </ddue:code>
+                        </ddue:content>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -19107,7 +19228,7 @@ cpacs@dlr.de
                     </xsd:element>
                     <xsd:element name="parentUID" minOccurs="0" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Component the fuel tank is attached to, usually a wing or the fuselage. The translation of the tank is then given relative to the position of this component.</xsd:documentation>
+                            <xsd:documentation>Component the fuel tank is attached to, usually a fuselage or a wing. The tank then follows the translation of that component.</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="transformation" type="transformationType">
@@ -19140,9 +19261,34 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Definition of different volumes of the fuel tank.
-                        </ddue:para>
+                        <ddue:para>Volumes of a tank</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>
+                                Three volumes of the same tank, each smaller than the one before it.
+                                <ddue:codeInline>optimalVolume</ddue:codeInline> is the volume the shape encloses, with no allowance for anything inside it.
+                                The real volume is what is left once structure and systems have taken their share, and the usable volume is the part of that which can be fed to the engines in flight; fuel below the pump inlets, or trapped in a corner, is not usable.
+                            </ddue:para>
+                            <ddue:para>
+                                The two smaller volumes are given either as volumes or as factors, never mixed.
+                                As factors they form a chain: the real volume is <ddue:codeInline>realVolumeFactor</ddue:codeInline> times the optimal volume, and the usable volume is <ddue:codeInline>useableVolumeFactor</ddue:codeInline> times the real volume.
+                                Both factors therefore lie between 0 and 1.
+                            </ddue:para>
+                            <ddue:para>
+                                The excerpt is the pressure vessel of the example tank, whose shape encloses 25.6 m³; of that, 97 % is really available and 95 % of the remainder can be used.
+                            </ddue:para>
+                            <ddue:code language="XML" title="Volumes given as factors">
+                                <![CDATA[
+<volume>
+    <optimalVolume>25.640</optimalVolume>
+    <useableVolumeFactor>0.95</useableVolumeFactor>
+    <realVolumeFactor>0.97</realVolumeFactor>
+</volume>
+                                ]]>
+                            </ddue:code>
+                        </ddue:content>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -19151,37 +19297,31 @@ cpacs@dlr.de
                 <xsd:sequence>
                     <xsd:element name="optimalVolume" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Theoretical volume if material thicknesses
-                                (ribs, spars, skins, stringers) and systems (fuel pumps,
-                                pipes...) are neglected</xsd:documentation>
+                            <xsd:documentation>Volume enclosed by the shape, with material thicknesses (ribs, spars, skins, stringers) and systems (fuel pumps, pipes) neglected [m^3]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:choice>
                         <xsd:sequence>
                             <xsd:element name="usableVolume" minOccurs="0" type="doubleBaseType">
                                 <xsd:annotation>
-                                    <xsd:documentation>Usable fuel volume aircraft operations
-                                    </xsd:documentation>
+                                    <xsd:documentation>Volume of fuel that can be used in flight [m^3]</xsd:documentation>
                                 </xsd:annotation>
                             </xsd:element>
                             <xsd:element name="realVolume" minOccurs="0" type="doubleBaseType">
                                 <xsd:annotation>
-                                    <xsd:documentation>Total real fuel tank volume
-                                    </xsd:documentation>
+                                    <xsd:documentation>Volume that is really available inside the tank [m^3]</xsd:documentation>
                                 </xsd:annotation>
                             </xsd:element>
                         </xsd:sequence>
                         <xsd:sequence>
                             <xsd:element name="useableVolumeFactor" minOccurs="0" type="doubleBaseType">
                                 <xsd:annotation>
-                                    <xsd:documentation>Factor between the usalbe fuel volume and
-                                        the real fuel volume</xsd:documentation>
+                                    <xsd:documentation>Ratio of the usable volume to the real volume [-]</xsd:documentation>
                                 </xsd:annotation>
                             </xsd:element>
                             <xsd:element name="realVolumeFactor" minOccurs="0" type="doubleBaseType">
                                 <xsd:annotation>
-                                    <xsd:documentation>Factor between the real fuel volume and the
-                                        theoretical optimum fuel volume</xsd:documentation>
+                                    <xsd:documentation>Ratio of the real volume to the volume enclosed by the shape [-]</xsd:documentation>
                                 </xsd:annotation>
                             </xsd:element>
                         </xsd:sequence>
@@ -22455,6 +22595,54 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     <ddue:summary>
                         <ddue:para>Isotensoid dome</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>
+                                The shape a filament-wound dome takes when every filament carries the same tension.
+                                It does not reach the axis: the filaments turn around a polar opening of radius r<ddue:subscript>p</ddue:subscript>, and the dome is closed there by a flat disk of that radius.
+                            </ddue:para>
+                            <ddue:para>
+                                The meridian has no closed form. It is the solution of
+                            </ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="eq_vesselIsotensoidDome"/>
+                            </ddue:mediaLink>
+                            <ddue:para>
+                                integrated from the cylinder towards the pole, where r is the radius, x the distance along the axis, φ the angle between the meridian and the axis, and r<ddue:subscript>p</ddue:subscript> is the polar opening radius.
+                                The integration starts at the junction with the cylinder, at r = R and φ = 0.
+                                It ends where r has fallen to the square root of 1.5 times r<ddue:subscript>p</ddue:subscript>, the radius at which the equation becomes singular and the meridian angle stops turning.
+                                From there the meridian carries on along its tangent down to the polar opening, which closes the dome without a kink.
+                                The distance from the cylinder to that opening is the dome height h.
+                            </ddue:para>
+                            <ddue:para>
+                                The singular radius also limits the polar opening: a dome exists only while it is smaller than the cylinder radius, that is for a polar opening radius below R divided by the square root of 1.5, about 0.816 R.
+                                Well below that limit the dome height hardly depends on the opening, between 0.60 R for a small opening and 0.63 R at an opening of 0.3 R.
+                                Towards the limit it grows without bound: 0.88 R at an opening of 0.7 R, 1.14 R at 0.75 R and 3.09 R at 0.80 R.
+                                A vessel whose dome is much taller than its radius is a sign that the opening is too large, not a shape anyone intended.
+                            </ddue:para>
+                            <ddue:alert class="tigl">
+                                <ddue:para>
+                                    TiGL 3.5 integrates the contour in 50 steps and fits a spline through the result, so the vessel it builds is 0.3 % to 0.4 % smaller in volume than the contour above gives; measured for polar openings between 0.1 and 0.7 times the cylinder radius, and growing towards the limit. Two cases fail outright. A polar opening radius of 0.82 R or more, which TiGL accepts although no dome exists there, produces a bare cylinder with flat end faces and no error message. And an isotensoid dome together with a cylinder length of zero produces a broken shape whose volume is about half of the correct one.
+                                </ddue:para>
+                            </ddue:alert>
+                            <ddue:para>
+                                The excerpt is one of the wound cylinders of the example, whose polar opening is 0.05 m wide at a cylinder radius of 0.28 m.
+                            </ddue:para>
+                            <ddue:code language="XML" title="Isotensoid dome">
+                                <![CDATA[
+<vessel uID="bellyTank_vessel1">
+    ...
+    <domeType>
+        <isotensoid>
+            <polarOpeningRadius>0.05</polarOpeningRadius>
+        </isotensoid>
+    </domeType>
+    ...
+</vessel>
+                                ]]>
+                            </ddue:code>
+                        </ddue:content>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -22463,7 +22651,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:all>
                     <xsd:element name="polarOpeningRadius" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Radius of the fitting/smaller polar opening</xsd:documentation>
+                            <xsd:documentation>Radius of the polar opening that closes the dome [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -46453,6 +46641,38 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     <ddue:summary>
                         <ddue:para>Torispherical dome</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>
+                                The meridian of the dome is a spherical dish of radius R<ddue:subscript>1</ddue:subscript> at the apex, joined tangentially to a knuckle of radius R<ddue:subscript>2</ddue:subscript> at the cylinder.
+                                Because the two arcs are tangent, their centres and the point at which they meet lie on one line, and the dome height h and the polar angle of that point follow from the two radii and the cylinder radius R alone.
+                            </ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="eq_vesselTorisphericalDome"/>
+                            </ddue:mediaLink>
+                            <ddue:para>
+                                R<ddue:subscript>1</ddue:subscript> is larger than the cylinder radius, and R<ddue:subscript>2</ddue:subscript> lies between zero and the cylinder radius.
+                                The flatter the dish, the larger R<ddue:subscript>1</ddue:subscript> and the smaller the dome height.
+                            </ddue:para>
+                            <ddue:para>
+                                The excerpt is the pressure vessel of the example tank: a dish radius of 2.4 m and a knuckle radius of 0.4 m give a dome 0.61 m high at a cylinder radius of 1.3 m.
+                            </ddue:para>
+                            <ddue:code language="XML" title="Torispherical dome">
+                                <![CDATA[
+<vessel uID="rearTank_innerVessel">
+    ...
+    <domeType>
+        <torispherical>
+            <dishRadius>2.4</dishRadius>
+            <knuckleRadius>0.4</knuckleRadius>
+        </torispherical>
+    </domeType>
+    ...
+</vessel>
+                                ]]>
+                            </ddue:code>
+                        </ddue:content>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -46461,12 +46681,12 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:all>
                     <xsd:element name="dishRadius" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>R1: dish radius</xsd:documentation>
+                            <xsd:documentation>Radius of the spherical dish at the apex [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="knuckleRadius" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>R2: knuckle radius</xsd:documentation>
+                            <xsd:documentation>Radius of the knuckle between dish and cylinder [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -48464,8 +48684,35 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Skin Layers</ddue:para>
+                        <ddue:para>Layers of the vessel wall</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>
+                                The wall of a vessel is usually built from several layers with different jobs, for example a liner that keeps the fuel in, a load-carrying layer around it and an insulation on the outside.
+                                The layers are given from the inside outwards: the first one lies on the reference surface of the vessel, which is the surface its cylinder radius and its domes describe, and every further layer lies on the one before it.
+                            </ddue:para>
+                            <ddue:para>
+                                Each layer names the sheet-based structural element that carries its material and its thickness.
+                                A layer has neither a uID nor a name of its own, so its place in the list is the only thing that tells it from the others, and the order is therefore part of the data rather than a matter of taste.
+                            </ddue:para>
+                            <ddue:para>
+                                The excerpt is the wall of the pressure vessel of the example: an aluminium liner of 1.2 mm with a carbon fibre overwrap of 8.5 mm on top of it.
+                            </ddue:para>
+                            <ddue:code language="XML" title="Wall of a pressure vessel, from the inside outwards">
+                                <![CDATA[
+<skinLayers>
+    <skinLayer>
+        <standardSheetElementUID>linerSheet</standardSheetElementUID>
+    </skinLayer>
+    <skinLayer>
+        <standardSheetElementUID>overwrapSheet</standardSheetElementUID>
+    </skinLayer>
+</skinLayers>
+                                ]]>
+                            </ddue:code>
+                        </ddue:content>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -48487,8 +48734,19 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Structure</ddue:para>
+                        <ddue:para>Structural layout of a vessel</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>
+                                Frames, stringers and walls are described by the same types as the structure of a fuselage (see <ddue:codeInline>fuselageStructureType</ddue:codeInline>) and are positioned in the same way.
+                                A vessel given by design parameters has no sections, so its frames and stringers are placed by an absolute position rather than by a section element.
+                            </ddue:para>
+                            <ddue:para>
+                                The one part that differs from a fuselage is the wall: a fuselage carries a single skin, while a vessel carries a stack of layers, given under <ddue:codeInline>skinLayers</ddue:codeInline> and described in <ddue:codeInline>vesselSkinLayersType</ddue:codeInline>.
+                            </ddue:para>
+                        </ddue:content>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -48507,7 +48765,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     </xsd:element>
                     <xsd:element name="skinLayers" minOccurs="0" type="vesselSkinLayersType">
                         <xsd:annotation>
-                            <xsd:documentation>Skin layers</xsd:documentation>
+                            <xsd:documentation>Layers of the vessel wall, from the inside outwards</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="walls" minOccurs="0" type="wallsType">
@@ -48527,6 +48785,14 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     <ddue:summary>
                         <ddue:para>Vessels</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>
+                                The vessels of one fuel tank.
+                                They are filled and emptied together and move with the tank, but each of them has its own shape and its own place inside it.
+                            </ddue:para>
+                        </ddue:content>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -48550,6 +48816,124 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     <ddue:summary>
                         <ddue:para>Vessel</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>
+                                A vessel is the closed shell that holds the fuel.
+                                Its shape is given in one of two ways: either by sections and segments, as a fuselage is built, or by a few design parameters that describe a cylinder closed by two domes.
+                                The choice in the type keeps the two apart; a vessel uses one of them, never both.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Sections and segments</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                This branch uses the same types as a fuselage, including guide curves, and its cross sections are taken from the <ddue:codeInline>fuselageProfilesType</ddue:codeInline> collection.
+                                What a section and a segment mean, and how the profiles are placed and lofted, is defined in <ddue:codeInline>fuselageType</ddue:codeInline> and holds here without change.
+                                Use this branch wherever the vessel is not a body of revolution, for example where it follows the cross section of the fuselage around it.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Design parameters</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The other branch describes a body of revolution by <ddue:codeInline>cylinderRadius</ddue:codeInline>, <ddue:codeInline>cylinderLength</ddue:codeInline> and a dome shape.
+                                Its meridian contour lies in the local x-z plane and is revolved about the local x-axis: it starts at the apex of the forward dome, reaches the cylinder radius R after the dome height h, runs along the cylinder for the length L and is mirrored at the middle of the cylinder.
+                                The origin of the vessel coordinate system is therefore the apex of the forward dome, not the centre of the vessel, and the vessel is L + 2h long.
+                                The dome height h follows from the dome shape and is defined with it in <ddue:codeInline>domeTypeType</ddue:codeInline>.
+                            </ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="vesselParameters"/>
+                            </ddue:mediaLink>
+                            <ddue:para>
+                                Figure (a) names the three lengths and marks the origin; the pale ellipse is the cross section that the contour sweeps out.
+                                Figure (b) shows that a <ddue:codeInline>cylinderLength</ddue:codeInline> of zero is a vessel in its own right, in which the two domes meet directly.
+                            </ddue:para>
+                            <ddue:alert class="tigl">
+                                <ddue:para>
+                                    TiGL 3.5 builds this branch from exact spherical, conical and toroidal surfaces and converts them to splines as soon as the vessel or its tank is scaled by different factors in x, y and z. The converted shape is slightly too large: measured over scaling factors from 0.5 to 3 and over all three dome shapes, the volume comes out 1.3 % above the exact value, while a scaling by one common factor is exact.
+                                </ddue:para>
+                            </ddue:alert>
+                            <ddue:para>
+                                <ddue:legacyBold>Structure</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The structural layout is described in <ddue:codeInline>vesselStructureType</ddue:codeInline>, which uses the frames, stringers and walls of the fuselage structure and adds skin layers, because the wall of a vessel is usually built from more than one layer.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Volume and burst pressure</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:codeInline>volume</ddue:codeInline> states how much fuel the vessel holds and how much of it can be used, in the form defined by <ddue:codeInline>fuelTankVolumeType</ddue:codeInline>.
+                                <ddue:codeInline>burstPressure</ddue:codeInline> is the internal pressure at which the vessel fails, not the pressure it is operated at.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Rules</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:list class="bullet">
+                                <ddue:listItem>
+                                    <ddue:para>
+                                        <ddue:codeInline>cylinderRadius</ddue:codeInline> and <ddue:codeInline>cylinderLength</ddue:codeInline> describe the reference surface of the vessel, the surface the contour sweeps out. Layers given under <ddue:codeInline>skinLayers</ddue:codeInline> lie on it, towards the outside.</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>
+                                        <ddue:codeInline>cylinderRadius</ddue:codeInline> is larger than zero, <ddue:codeInline>cylinderLength</ddue:codeInline> is zero or larger. The largest radius of the vessel is the cylinder radius, whatever the dome shape.</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>Both domes of a vessel have the same shape, so a vessel is symmetric about the middle of its cylinder.</ddue:para>
+                                </ddue:listItem>
+                            </ddue:list>
+                            <ddue:para>
+                                The two excerpts show one vessel of each branch, taken from the tanks of the example.
+                            </ddue:para>
+                            <ddue:code language="XML" title="Vessel given by design parameters">
+                                <![CDATA[
+<vessel uID="rearTank_outerVessel">
+    <name>Outer vessel</name>
+    <transformation>
+        <translation>
+            <x>0</x>
+            <y>0</y>
+            <z>0</z>
+        </translation>
+    </transformation>
+    <cylinderRadius>1.45</cylinderRadius>
+    <cylinderLength>4</cylinderLength>
+    <domeType>
+        <ellipsoid>
+            <halfAxisFraction>0.65</halfAxisFraction>
+        </ellipsoid>
+    </domeType>
+</vessel>
+                                ]]>
+                            </ddue:code>
+                            <ddue:code language="XML" title="Vessel built from sections and segments">
+                                <![CDATA[
+<vessel uID="forwardTank_vessel">
+    <name>Vessel</name>
+    <transformation>
+        <translation>
+            <x>0</x>
+            <y>0</y>
+            <z>0</z>
+        </translation>
+    </transformation>
+    <sections>
+        <section uID="forwardTank_front">
+            ...
+        </section>
+        ...
+    </sections>
+    <segments>
+        <segment uID="forwardTank_segment1">
+            <fromElementUID>forwardTank_front_element</fromElementUID>
+            <toElementUID>forwardTank_middle_element</toElementUID>
+        </segment>
+        ...
+    </segments>
+</vessel>
+                                ]]>
+                            </ddue:code>
+                        </ddue:content>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -48589,17 +48973,17 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                         <xsd:sequence>
                             <xsd:element name="cylinderRadius" type="doubleBaseType">
                                 <xsd:annotation>
-                                    <xsd:documentation>Inner radius of the cylinder</xsd:documentation>
+                                    <xsd:documentation>Radius of the cylindrical part [m]</xsd:documentation>
                                 </xsd:annotation>
                             </xsd:element>
                             <xsd:element name="cylinderLength" type="doubleBaseType">
                                 <xsd:annotation>
-                                    <xsd:documentation>Inner length of the cylinder</xsd:documentation>
+                                    <xsd:documentation>Length of the cylindrical part, without the domes [m]</xsd:documentation>
                                 </xsd:annotation>
                             </xsd:element>
                             <xsd:element name="domeType" type="domeTypeType">
                                 <xsd:annotation>
-                                    <xsd:documentation>Shape of the vessel domes</xsd:documentation>
+                                    <xsd:documentation>Shape of the two domes that close the vessel</xsd:documentation>
                                 </xsd:annotation>
                             </xsd:element>
                         </xsd:sequence>
@@ -48616,7 +49000,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     </xsd:element>
                     <xsd:element name="burstPressure" minOccurs="0" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Burst pressure</xsd:documentation>
+                            <xsd:documentation>Internal pressure at which the vessel fails [Pa]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
