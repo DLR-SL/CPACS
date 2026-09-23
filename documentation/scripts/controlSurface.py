@@ -787,14 +787,6 @@ SLAT_CUT_OUT_COMMENT = [
     "skins, and the control point places the nose of the remaining wing inside the hollow rear side",
     "of the slat. Its borders are 0.02 further in and out than the borders of the slat.",
 ]
-TIGL_CUT_OUT_COMMENT = [
-    "TiGL 3.5 reads this file and builds the clean wing, but aborts as soon as it builds the wing",
-    "with its cut-outs, whatever a wingCutOut contains; the wing can therefore be neither shown nor",
-    "exported with that version. The point is being clarified with the TiGL developers.",
-    "examples/controlSurfaces.xml shows the same wing without cut-outs.",
-]
-
-
 def comment_xml(lines):
     return "\n".join(["<!-- " + lines[0]] + ["     " + line for line in lines[1:-1]]
                      + ["     " + lines[-1] + " -->"]) if len(lines) > 1 else f"<!-- {lines[0]} -->"
@@ -833,7 +825,6 @@ def cut_out_device_xml(tag, device, border_xml, cutout, comment):
 
 def cut_outs_control_surfaces_xml():
     return "\n".join([
-        comment_xml(TIGL_CUT_OUT_COMMENT),
         "<controlSurfaces>",
         "    <leadingEdgeDevices>",
         indent(cut_out_device_xml("leadingEdgeDevice", SLAT, slat_border_xml, SLAT_CUTOUT, SLAT_CUT_OUT_COMMENT), 2),
