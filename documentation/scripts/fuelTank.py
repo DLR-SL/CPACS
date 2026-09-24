@@ -768,7 +768,7 @@ def write_example():
         EXAMPLE_FILE,
         generator=Path(__file__),
         name="Fuel tanks",
-        description="Hydrogen tanks in a fuselage: vessels given by design parameters with the three dome types, "
+        description="Fuel tanks in a fuselage: vessels given by design parameters with the three dome types, "
                     "and a vessel built from sections and segments.",
         model_uid="TankAircraft",
         model_name="Fuel tank example",
