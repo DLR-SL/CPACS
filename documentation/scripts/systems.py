@@ -68,8 +68,8 @@ NOTE = FONT_SIZE["annotation"]
 
 # Colors of the kinds of connection, as recorded in developmentGuidelines.md
 # (section "Figures and equations"): electric in series 1, mechanical in series 2,
-# fluid in series 3, a connection without connectionType (heat) muted.
-KIND_COLORS = {"electric": SERIES1, "mechanical": SERIES2, "fluid": SERIES3, None: MUTED}
+# fluid in series 3, heat muted.
+KIND_COLORS = {"electric": SERIES1, "mechanical": SERIES2, "fluid": SERIES3, "heat": MUTED}
 
 # ------------------------------------------------------------------ design values (take-off, one pod)
 PROPELLER_POWER = 400e3  # W, shaft power at the propeller
@@ -270,8 +270,8 @@ CONNECTIONS = [
     ("airIntake", "Air intake", "fluid", ("external", "ambient"), "compressor", False),
     ("airSupply", "Compressed air", "fluid", "compressor", "fuelCellStack", False),
     ("hydrogenSupply", "Hydrogen supply", "fluid", ("ata", "ata28"), "fuelCellStack", False),
-    ("coolantLoop", "Coolant loop", None, "fuelCellStack", "heatExchanger", False),
-    ("heatRejection", "Heat rejection", None, "heatExchanger", ("external", "ambient"), False),
+    ("coolantLoop", "Coolant loop", "heat", "fuelCellStack", "heatExchanger", False),
+    ("heatRejection", "Heat rejection", "heat", "heatExchanger", ("external", "ambient"), False),
 ]
 CONNECTION = {c[0]: c for c in CONNECTIONS}
 CONTROL_DEVICE_UID = f"batteryContactor_{POD}"
@@ -496,8 +496,8 @@ def figure_architecture():
                 ax.annotate("controlDevices", xy=mid, xytext=(-9, 0), textcoords="offset points", ha="right",
                             va="center", fontsize=NOTE, color=INK2, zorder=5)
         handles = [plt.Line2D([], [], color=KIND_COLORS[k], lw=LINE["data"]) for k in
-                   ("electric", "mechanical", "fluid", None)]
-        ax.legend(handles, ["electric", "mechanical", "fluid", "without connectionType (heat)"], loc="lower left",
+                   ("electric", "mechanical", "fluid", "heat")]
+        ax.legend(handles, ["electric", "mechanical", "fluid", "heat"], loc="lower left",
                   bbox_to_anchor=(0.0, 1.0), ncol=4, handlelength=1.8, columnspacing=1.6, borderaxespad=0.0)
         ax.autoscale_view()
         fig.subplots_adjust(left=0.01, right=0.99)
