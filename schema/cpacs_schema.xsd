@@ -19809,10 +19809,13 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Fuselage section elements</ddue:para>
+                        <ddue:para>Elements of a section</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Elements of a fuselage section</ddue:para>
+                        <ddue:para>
+                            The profiles placed in a section (<ddue:codeInline>fuselageElementType</ddue:codeInline>).
+                            Most sections have one element.
+                        </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -19822,7 +19825,7 @@ cpacs@dlr.de
                 <xsd:sequence>
                     <xsd:element name="element" maxOccurs="unbounded" type="fuselageElementType">
                         <xsd:annotation>
-                            <xsd:documentation>Fuselage element</xsd:documentation>
+                            <xsd:documentation>Element</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -19835,10 +19838,78 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Fuselage section element</ddue:para>
+                        <ddue:para>Profile placed in a section</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Fuselage element data</ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                An element places a fuselage profile (<ddue:codeInline>profileUID</ddue:codeInline>) in the section coordinate system.
+                                The transformation of the element defines the element coordinate system within the section, and the profile, defined in the y-z plane (<ddue:codeInline>profileGeometryType</ddue:codeInline>), lies in this coordinate system.
+                                A scaling in y and z gives the width and the height; the superellipse of a standard profile, for example, is 1 wide and 1 high (<ddue:codeInline>standardProfileType</ddue:codeInline>), so that a scaling of 2 in y and 1.75 in z turns the circle into an ellipse 2 m wide and 1.75 m high.
+                                A translation moves the profile within the section, e.g. upwards towards the tail.
+                            </ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="fuselageProfileTransformation"/>
+                            </ddue:mediaLink>
+                            <ddue:para>
+                                The figure shows the steps for the element of a tail section of the example in <ddue:codeInline>fuselageType</ddue:codeInline>: the profile (a), a circle of diameter 1, is scaled to a width of 2 and a height of 1.75 (b) and translated upwards by 0.525 (c).
+                                The pale contours show the profile before each step.
+                                How the section in turn is placed in the fuselage is described in <ddue:codeInline>fuselageSectionType</ddue:codeInline>.
+                            </ddue:para>
+                            <ddue:para>
+                                A pointed nose or tail is an element with a scaling of 0 in y and z: its profile shrinks to a point, at which the surface closes.
+                                The nose of the example is such an element.
+                            </ddue:para>
+                            <ddue:para>
+                                Segments start and end at elements, not at sections (<ddue:codeInline>fuselageSegmentType</ddue:codeInline>).
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Several elements in a section</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                A section can hold several elements with different profiles or transformations.
+                                They allow a step in the surface at the section: one segment ends at the first element, and the next segment starts at the second element.
+                            </ddue:para>
+                            <ddue:alert class="tigl">
+                                <ddue:para>
+                                    TiGL 3.5 requires the segments of a fuselage to form a continuous chain, i.e. each segment starts at the element at which the previous segment ends.
+                                    A fuselage with a step is not loaded.
+                                </ddue:para>
+                            </ddue:alert>
+                            <ddue:para>
+                                <ddue:legacyBold>Example</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The element of the tail section at x = 24 m of the fuselage shown in <ddue:codeInline>fuselageType</ddue:codeInline>, scaling the circle to a width of 2 m and a height of 1.75 m and moving it upwards by 0.525 m:
+                            </ddue:para>
+                            <ddue:code language="XML" title="Fuselage element scaled to width and height and moved upwards">
+                                <![CDATA[
+<elements>
+    <element uID="Fuselage_tail2_element">
+        <name>Tail 2 element</name>
+        <profileUID>Circle</profileUID>
+        <transformation>
+            <rotation>
+                <x>0</x>
+                <y>0</y>
+                <z>0</z>
+            </rotation>
+            <scaling>
+                <x>1</x>
+                <y>2</y>
+                <z>1.75</z>
+            </scaling>
+            <translation>
+                <x>0</x>
+                <y>0</y>
+                <z>0.525</z>
+            </translation>
+        </transformation>
+    </element>
+</elements>
+                                ]]>
+                            </ddue:code>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -19858,13 +19929,12 @@ cpacs@dlr.de
                     </xsd:element>
                     <xsd:element name="profileUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Reference to a fuselage profile
-                            </xsd:documentation>
+                            <xsd:documentation>Reference to a fuselage profile</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="transformation" type="transformationType">
                         <xsd:annotation>
-                            <xsd:documentation>Position and orientation</xsd:documentation>
+                            <xsd:documentation>Position and orientation relative to the section coordinate system</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -20003,8 +20073,14 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Fuselage sections</ddue:para>
+                        <ddue:para>Sections of a fuselage</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>
+                            The stations along a fuselage, a duct or another component built from fuselage profiles at which the profiles are placed (<ddue:codeInline>fuselageSectionType</ddue:codeInline>).
+                            There are at least two sections, e.g. at the nose and at the tail.
+                        </ddue:para>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -20013,7 +20089,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:sequence>
                     <xsd:element name="section" minOccurs="2" maxOccurs="unbounded" type="fuselageSectionType">
                         <xsd:annotation>
-                            <xsd:documentation>Fuselage section</xsd:documentation>
+                            <xsd:documentation>Section</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -20026,10 +20102,77 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Fuselage section</ddue:para>
+                        <ddue:para>Station along a fuselage at which profiles are placed</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Fusleage section and element data</ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                A section is a coordinate system at a station along the fuselage, e.g. at the nose, along the cabin or at the tail.
+                                Its elements place the profiles in it (<ddue:codeInline>fuselageElementType</ddue:codeInline>).
+                                Ducts, fuel tank vessels and the other components built from fuselage profiles use sections in the same way.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Position</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The transformation of the section scales, rotates and translates the section coordinate system relative to the fuselage coordinate system.
+                                The positioning of the section (<ddue:codeInline>positioningType</ddue:codeInline>) adds a translation in the fuselage coordinate system: the origin of the section lies at the end of its positioning plus the translation of the section, and the positioning does not rotate the section.
+                                The sections of a fuselage follow its x-axis; they are placed along it either by the translation of each section, as in the example, or by positionings with a sweep angle of 90°.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Example</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The section at x = 24 m in the tail of the fuselage shown in <ddue:codeInline>fuselageType</ddue:codeInline>, holding one element that scales the circle to a width of 2 m and a height of 1.75 m and moves it upwards by 0.525 m:
+                            </ddue:para>
+                            <ddue:code language="XML" title="Fuselage section with one element">
+                                <![CDATA[
+<section uID="Fuselage_tail2">
+    <name>Tail 2 section</name>
+    <transformation>
+        <rotation>
+            <x>0</x>
+            <y>0</y>
+            <z>0</z>
+        </rotation>
+        <scaling>
+            <x>1</x>
+            <y>1</y>
+            <z>1</z>
+        </scaling>
+        <translation>
+            <x>24</x>
+            <y>0</y>
+            <z>0</z>
+        </translation>
+    </transformation>
+    <elements>
+        <element uID="Fuselage_tail2_element">
+            <name>Tail 2 element</name>
+            <profileUID>Circle</profileUID>
+            <transformation>
+                <rotation>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0</z>
+                </rotation>
+                <scaling>
+                    <x>1</x>
+                    <y>2</y>
+                    <z>1.75</z>
+                </scaling>
+                <translation>
+                    <x>0</x>
+                    <y>0</y>
+                    <z>0.525</z>
+                </translation>
+            </transformation>
+        </element>
+    </elements>
+</section>
+                                ]]>
+                            </ddue:code>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -20049,12 +20192,12 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     </xsd:element>
                     <xsd:element name="transformation" type="transformationType">
                         <xsd:annotation>
-                            <xsd:documentation>Position and orientation</xsd:documentation>
+                            <xsd:documentation>Position and orientation relative to the coordinate system of the component</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="elements" type="fuselageElementsType">
                         <xsd:annotation>
-                            <xsd:documentation>Elements</xsd:documentation>
+                            <xsd:documentation>Elements placing the profiles in the section</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -20072,10 +20215,13 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Fuselage segments</ddue:para>
+                        <ddue:para>Segments of a fuselage</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Fuselage segment definitions (from sections and elements)</ddue:para>
+                        <ddue:para>
+                            The parts of the surface of a fuselage, a duct or another component built from fuselage profiles, each between two elements (<ddue:codeInline>fuselageSegmentType</ddue:codeInline>).
+                            Together, the segments describe the surface from the first to the last section.
+                        </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -20085,7 +20231,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:sequence>
                     <xsd:element name="segment" maxOccurs="unbounded" type="fuselageSegmentType">
                         <xsd:annotation>
-                            <xsd:documentation>Fuselage segment</xsd:documentation>
+                            <xsd:documentation>Segment</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -20098,10 +20244,40 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Fuselage segment</ddue:para>
+                        <ddue:para>Part of the fuselage surface between two elements</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Data of a fuselage segment</ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                A segment connects the profile of its start element (<ddue:codeInline>fromElementUID</ddue:codeInline>) with the profile of its end element (<ddue:codeInline>toElementUID</ddue:codeInline>).
+                                The segments of a fuselage follow each other from the nose to the tail; usually, each segment starts at the element at which the previous one ends.
+                                The surface is lofted through the profiles of all segments at once, so that it is smooth across the sections, and its shape within a segment also depends on the neighbouring segments (see Surface in <ddue:codeInline>fuselageType</ddue:codeInline>).
+                                Guide curves (<ddue:codeInline>guideCurveType</ddue:codeInline>) can shape the surface between the profiles.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Example</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The first two of the fifteen segments of the fuselage shown in <ddue:codeInline>fuselageType</ddue:codeInline>, from the pointed nose over the first nose section to the second:
+                            </ddue:para>
+                            <ddue:code language="XML" title="Fuselage segments from the nose">
+                                <![CDATA[
+<segments>
+    <segment uID="Fuselage_segment1">
+        <name>Segment 1</name>
+        <fromElementUID>Fuselage_nose_element</fromElementUID>
+        <toElementUID>Fuselage_nose1_element</toElementUID>
+    </segment>
+    <segment uID="Fuselage_segment2">
+        <name>Segment 2</name>
+        <fromElementUID>Fuselage_nose1_element</fromElementUID>
+        <toElementUID>Fuselage_nose2_element</toElementUID>
+    </segment>
+    ...
+</segments>
+                                ]]>
+                            </ddue:code>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -20121,20 +20297,17 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     </xsd:element>
                     <xsd:element name="fromElementUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Reference to element from which the segment
-                                shall start</xsd:documentation>
+                            <xsd:documentation>Element at which the segment starts</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="toElementUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Reference to element at which the segment
-                                shall end</xsd:documentation>
+                            <xsd:documentation>Element at which the segment ends</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="guideCurves" minOccurs="0" type="guideCurvesType">
                         <xsd:annotation>
-                            <xsd:documentation>Optional and additional guidecurves to shape
-                                the outer geometry</xsd:documentation>
+                            <xsd:documentation>Guide curves shaping the surface between the profiles</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -20301,10 +20474,13 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Fuselages</ddue:para>
+                        <ddue:para>Fuselages of a model</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Fuselages of the configuration</ddue:para>
+                        <ddue:para>
+                            The fuselages of an aircraft or rotorcraft model (<ddue:codeInline>fuselageType</ddue:codeInline>), usually one.
+                            A mirrored pair, e.g. the two fuselages of a twin-fuselage aircraft, is defined once with the <ddue:codeInline>symmetry</ddue:codeInline> attribute.
+                        </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -20327,14 +20503,135 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Fuselage</ddue:para>
+                        <ddue:para>Fuselage of an aircraft or rotorcraft</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>Data related to a fuselage</ddue:para>
+                            <ddue:para>
+                                A fuselage describes the outer shape of a body along its x-axis.
+                                Its profiles are placed at stations along the axis, the sections, and the surface is lofted through them.
+                                The structure, the cabin, the fuel tanks and the cut-outs of the fuselage refer to this geometry.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Geometry</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The outer shape is built from the same four parts as that of a wing (<ddue:codeInline>wingType</ddue:codeInline>):
+                            </ddue:para>
+                            <ddue:list class="bullet">
+                                <ddue:listItem>
+                                    <ddue:para>
+                                        <ddue:codeInline>sections</ddue:codeInline> (<ddue:codeInline>fuselageSectionType</ddue:codeInline>) are coordinate systems at stations along the x-axis, e.g. at the nose, along the cabin and at the tail. A fuselage has at least two sections.</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>The <ddue:codeInline>elements</ddue:codeInline> of a section (<ddue:codeInline>fuselageElementType</ddue:codeInline>) each reference a profile in the y-z plane and scale, rotate and translate it within the section, e.g. to the width and height of the fuselage at that station. Most sections have one element.</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>
+                                        <ddue:codeInline>positionings</ddue:codeInline> (<ddue:codeInline>positioningType</ddue:codeInline>) translate the sections by a length and two angles; with a sweep angle of 90°, a positioning points along the x-axis. They are optional.</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>
+                                        <ddue:codeInline>segments</ddue:codeInline> (<ddue:codeInline>fuselageSegmentType</ddue:codeInline>) each connect two elements; the surface of the fuselage is lofted through their profiles.</ddue:para>
+                                </ddue:listItem>
+                            </ddue:list>
                             <ddue:mediaLink>
-                                <ddue:image xlink:href="geomBlock"/>
+                                <ddue:image xlink:href="fuselageParts"/>
                             </ddue:mediaLink>
+                            <ddue:para>
+                                The figure shows these parts on the example fuselage below.
+                                Each section is a coordinate system on the x-axis, and its element places a circle in it, scaled to the width and height of the fuselage at that station.
+                                The element of the nose section is scaled to a point, and the elements of the tail sections are moved upwards.
+                                A segment is the part of the surface between the profiles of two neighbouring sections.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Coordinate systems</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                A point p of a profile is placed in the fuselage coordinate system at
+                            </ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="eq_profilePoint"/>
+                            </ddue:mediaLink>
+                            <ddue:para>
+                                where T<ddue:subscript>element</ddue:subscript> and T<ddue:subscript>section</ddue:subscript> are the transformations of the element and the section (<ddue:codeInline>transformationType</ddue:codeInline>), and t<ddue:subscript>positioning</ddue:subscript> is the translation of the section by its positioning, or zero for a section without positioning.
+                                This is the same placement as for the airfoils of a wing.
+                                The transformation of the fuselage places the fuselage coordinate system in the model.
+                                Wings, tanks and other components usually reference the fuselage with <ddue:codeInline>parentUID</ddue:codeInline>, so that they move with it (see the local coordinate systems in <ddue:codeInline>cpacsType</ddue:codeInline>).
+                            </ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="fuselageGeometry"/>
+                            </ddue:mediaLink>
+                            <ddue:para>
+                                The figure shows the example below in the side and the top view.
+                                The sections lie on the x-axis, from the nose at the origin to the tail at x = 28 m.
+                                Along the cabin, they follow at a pitch of 2 m with the same circle of diameter 3.2 m.
+                                The element of the pointed nose is moved slightly downwards, and those of the tail upwards to a small end profile.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Surface</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The surface of a fuselage is lofted through the profiles of all its segments as one surface, continuous in curvature across the sections (<ddue:codeInline>loftContinuity</ddue:codeInline> C2, the default).
+                                It passes through every profile, and its shape between two sections also depends on the neighbouring sections.
+                                A part of constant cross section, such as the cabin, therefore stays constant only where its sections follow at a close pitch.
+                            </ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="fuselageLoftPitch"/>
+                            </ddue:mediaLink>
+                            <ddue:para>
+                                The figure shows the upper edge of a simple fuselage in the side view, with sections of the same circle at the ends of its cylindrical part.
+                                With no sections in between, the surface bulges out above the radius of the sections, because it also runs smoothly through the sections at the nose and the tail.
+                                Further sections of the same circle at a pitch of 2 m keep the upper edge at the radius.
+                                The fuselage is an illustration.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Structure, cabin and tanks</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The structure (<ddue:codeInline>fuselageStructureType</ddue:codeInline>), the compartments and decks of the cabin (<ddue:codeInline>compartmentsType</ddue:codeInline>, <ddue:codeInline>decksType</ddue:codeInline>), the fuel tanks (<ddue:codeInline>fuselageFuelTanksType</ddue:codeInline>) and the cut-outs (<ddue:codeInline>fuselageCutOutsType</ddue:codeInline>) of the fuselage are described in their own types.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Example</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The fuselage of a short-range airliner, 28 m long, with sixteen sections placed along the x-axis by their translation.
+                                Its sections, elements and segments are shown in the documentation of <ddue:codeInline>fuselageSectionType</ddue:codeInline>, <ddue:codeInline>fuselageElementType</ddue:codeInline> and <ddue:codeInline>fuselageSegmentType</ddue:codeInline>.
+                                The transformations in the examples are written out in full; <ddue:codeInline>rotation</ddue:codeInline>, <ddue:codeInline>translation</ddue:codeInline> and <ddue:codeInline>scaling</ddue:codeInline> elements with their default values can be omitted (<ddue:codeInline>transformationType</ddue:codeInline>).
+                            </ddue:para>
+                            <ddue:code language="XML" title="Fuselage with sections and segments">
+                                <![CDATA[
+<fuselage uID="Fuselage">
+    <name>Fuselage</name>
+    <transformation>
+        <rotation>
+            <x>0</x>
+            <y>0</y>
+            <z>0</z>
+        </rotation>
+        <scaling>
+            <x>1</x>
+            <y>1</y>
+            <z>1</z>
+        </scaling>
+        <translation>
+            <x>0</x>
+            <y>0</y>
+            <z>0</z>
+        </translation>
+    </transformation>
+    <sections>
+        <section uID="Fuselage_nose">
+            ...
+        </section>
+        ...
+    </sections>
+    <segments>
+        ...
+    </segments>
+</fuselage>
+                                ]]>
+                            </ddue:code>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -20360,22 +20657,22 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     </xsd:element>
                     <xsd:element name="transformation" type="transformationType">
                         <xsd:annotation>
-                            <xsd:documentation>Position and orientation</xsd:documentation>
+                            <xsd:documentation>Position and orientation of the fuselage coordinate system</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="sections" type="fuselageSectionsType">
                         <xsd:annotation>
-                            <xsd:documentation>Sections</xsd:documentation>
+                            <xsd:documentation>Sections at which the profiles are placed</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="positionings" minOccurs="0" type="positioningsType">
                         <xsd:annotation>
-                            <xsd:documentation>Positionings of the fuselage sections</xsd:documentation>
+                            <xsd:documentation>Translations of the sections by length, sweep angle and dihedral angle</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="segments" type="fuselageSegmentsType">
                         <xsd:annotation>
-                            <xsd:documentation>Segments</xsd:documentation>
+                            <xsd:documentation>Segments connecting the elements of the sections</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="structure" minOccurs="0" type="fuselageStructureType">
@@ -20416,7 +20713,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 </xsd:attribute>
                 <xsd:attribute name="loftContinuity" type="loftContinuityType">
                     <xsd:annotation>
-                        <xsd:documentation>Continuity used for lofting this component (default: C2 for fuselages and ducts, C0 for wings)</xsd:documentation>
+                        <xsd:documentation>Continuity of the surface across the sections, C0 or C2 (default: C2)</xsd:documentation>
                     </xsd:annotation>
                 </xsd:attribute>
             </xsd:extension>
@@ -20878,9 +21175,6 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                             <ddue:para>A generic geometric component may be applied to include
                                 such a geometry from an external file (preferably STEP) in the
                                 context of the overall aircraft.</ddue:para>
-                            <ddue:mediaLink>
-                                <ddue:image xlink:href="geomBlock"/>
-                            </ddue:mediaLink>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -53226,7 +53520,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                                 A point p of an airfoil is placed in the wing coordinate system at
                             </ddue:para>
                             <ddue:mediaLink>
-                                <ddue:image xlink:href="eq_wingProfilePoint"/>
+                                <ddue:image xlink:href="eq_profilePoint"/>
                             </ddue:mediaLink>
                             <ddue:para>
                                 where T<ddue:subscript>element</ddue:subscript> and T<ddue:subscript>section</ddue:subscript> are the transformations of the element and the section (<ddue:codeInline>transformationType</ddue:codeInline>), and t<ddue:subscript>positioning</ddue:subscript> is the translation of the section by its positioning, or zero for a section without positioning.

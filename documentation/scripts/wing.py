@@ -22,7 +22,7 @@ The script writes
     documentation/figures/wingProfileTransformation.png
     documentation/figures/wingElementCoordinates.png
     documentation/figures/positioningVector.png
-    documentation/equations/wingProfilePoint.{tex,png}
+    documentation/equations/profilePoint.{tex,png}  (shown for wings and fuselages)
     documentation/equations/positioningVector.{tex,png}
     examples/wingGeometry.xml
 
@@ -49,7 +49,9 @@ from matplotlib.lines import Line2D
 from matplotlib.patches import Arc, Polygon
 
 from example_xml import indent, transformation_xml, vector, write_cpacs_file
-from figure_style import COLORS, FONT_SIZE, FULL_WIDTH, LINE, figure_style, leader, save_equation, save_figure
+from fuselage import FUSELAGE_UID, circle_profile_xml, fuselage_xml
+from figure_style import (COLORS, FONT_SIZE, FULL_WIDTH, LINE, arrow, axes_cross, dot, figure_style, label, leader,
+                          save_equation, save_figure)
 from nacaProfile import naca4
 
 DOCUMENTATION = Path(__file__).resolve().parents[1]
@@ -68,11 +70,6 @@ NOTE = FONT_SIZE["annotation"]
 WING_UID = "Wing"
 WING_TRANSLATION = (10.0, 0.0, -0.5)  # relative to the fuselage, the parent of the wing
 AIRFOIL_UID = "NACA2412"
-
-# Fuselage the wing is attached to (parentUID): (uID suffix, x, diameter) of its circular sections
-FUSELAGE_UID = "Fuselage"
-FUSELAGE_PROFILE_UID = "Circle"
-FUSELAGE_SECTIONS = [("nose", 0.0, 0.8), ("front", 6.0, 3.2), ("rear", 20.0, 3.2), ("tail", 28.0, 1.0)]
 
 # Sections: (uID suffix, chord = element scaling in x and z, twist = section rotation about y [deg])
 SECTIONS = [("root", 5.0, 0.0), ("kink", 3.4, -1.5), ("tip", 1.4, -3.0)]
@@ -162,30 +159,6 @@ PROFILE_POINT_LINES = [
 POSITIONING_VECTOR_LINES = [
     r"v = L\,\left(\sin\varphi,\ \cos\varphi\,\cos\nu,\ \cos\varphi\,\sin\nu\right)",
 ]
-
-
-# --------------------------------------------------------------------- helpers
-def arrow(ax, start, end, color=INK, lw=None, head=7):
-    ax.annotate("", xy=end, xytext=start, zorder=5, arrowprops={
-        "arrowstyle": "-|>", "lw": lw or LINE["secondary"], "mutation_scale": head, "shrinkA": 0, "shrinkB": 0,
-        "color": color})
-    ax.plot(*np.array([start, end]).T, alpha=0)  # include the arrow in the axis limits
-
-
-def label(ax, xy, text, offset=(0, 0), ha="center", va="center", color=INK):
-    ax.annotate(text, xy=xy, xytext=offset, textcoords="offset points", ha=ha, va=va, fontsize=NOTE, color=color,
-                zorder=7)
-
-
-def dot(ax, xy, color=INK, size=4.5, marker="o"):
-    ax.plot(*xy, ls="none", marker=marker, ms=size, color=color, mec=COLORS["surface"], mew=1.0, zorder=6)
-
-
-def axes_cross(ax, origin, directions, names, length, offsets):
-    for direction, name, offset in zip(directions, names, offsets, strict=True):
-        tip = np.asarray(origin) + length * np.asarray(direction)
-        arrow(ax, origin, tip, color=INK2, lw=LINE["reference"], head=6)
-        label(ax, tip, name, offset, color=INK2)
 
 
 # --------------------------------------------------------------------- figures
@@ -677,44 +650,6 @@ def airfoil_xml():
     ])
 
 
-def fuselage_xml():
-    """A simple fuselage with circular sections, the parent of the wing."""
-    sections, segments = [], []
-    for name, x, diameter in FUSELAGE_SECTIONS:
-        sections.append("\n".join([
-            f'<section uID="{FUSELAGE_UID}_{name}">', f"    <name>{name.capitalize()} section</name>",
-            indent(transformation_xml(translation=(x, 0.0, 0.0)), 1),
-            "    <elements>", f'        <element uID="{FUSELAGE_UID}_{name}_element">',
-            f"            <name>{name.capitalize()} element</name>",
-            f"            <profileUID>{FUSELAGE_PROFILE_UID}</profileUID>",
-            indent(transformation_xml(scaling=(1.0, diameter, diameter)), 3),
-            "        </element>", "    </elements>", "</section>",
-        ]))
-    for index, (inner, outer) in enumerate(zip(FUSELAGE_SECTIONS[:-1], FUSELAGE_SECTIONS[1:]), start=1):
-        segments.append("\n".join([
-            f'<segment uID="{FUSELAGE_UID}_segment{index}">', f"    <name>Segment {index}</name>",
-            f"    <fromElementUID>{FUSELAGE_UID}_{inner[0]}_element</fromElementUID>",
-            f"    <toElementUID>{FUSELAGE_UID}_{outer[0]}_element</toElementUID>", "</segment>",
-        ]))
-    return "\n".join([
-        f'<fuselage uID="{FUSELAGE_UID}">', "    <name>Fuselage</name>",
-        indent(transformation_xml(), 1),
-        indent(collection("sections", sections), 1),
-        indent(collection("segments", segments), 1),
-        "</fuselage>",
-    ])
-
-
-def circle_profile_xml():
-    return "\n".join([
-        f'<fuselageProfile uID="{FUSELAGE_PROFILE_UID}">', "    <name>Circle</name>", "    <standardProfile>",
-        "        <superEllipse>", "            <mUpper>2</mUpper>", "            <nUpper>2</nUpper>",
-        "            <mLower>2</mLower>", "            <nLower>2</nLower>",
-        "            <lowerHeightFraction>0.5</lowerHeightFraction>", "        </superEllipse>",
-        "    </standardProfile>", "</fuselageProfile>",
-    ])
-
-
 def excerpt_wing_xml():
     translation = indent(transformation_xml(translation=WING_TRANSLATION), 1).splitlines()
     return "\n".join([
@@ -751,7 +686,7 @@ def write_example():
 
 # ------------------------------------------------------------------------ main
 def main():
-    save_equation(PROFILE_POINT_LINES, EQUATIONS / "wingProfilePoint")
+    save_equation(PROFILE_POINT_LINES, EQUATIONS / "profilePoint")
     save_equation(POSITIONING_VECTOR_LINES, EQUATIONS / "positioningVector")
     figure_parts()
     figure_split_wingtip()

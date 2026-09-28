@@ -44,8 +44,9 @@ from componentSegment import (GAP, GAP_WIDE, LEGEND_SPACE, CHORD, SERIES1, SERIE
                               outline, planform, point_marker, text, to_segment, view)
 from example_xml import indent, vector, write_cpacs_file
 from figure_style import COLORS, FONT_SIZE, LINE, figure_style, leader, save_equation, save_figure
+from fuselage import circle_profile_xml, fuselage_xml
 from wing import (AIRFOIL, COMPONENT_SEGMENT, DOCUMENTATION, EQUATIONS, FIGURES, INK, INK2, MUTED, NOTE, SECTIONS, WING_UID,
-                  airfoil_xml, arrow, circle_profile_xml, fuselage_xml, section_airfoil, wing_xml)
+                  airfoil_xml, arrow, section_airfoil, wing_xml)
 
 EXAMPLE_FILE = DOCUMENTATION.parent / "examples" / "controlSurfaces.xml"
 CS_UID = f"{WING_UID}_{COMPONENT_SEGMENT[0]}"

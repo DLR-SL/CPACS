@@ -22,6 +22,7 @@ import matplotlib
 matplotlib.use("Agg")
 
 import matplotlib.pyplot as plt  # noqa: E402
+import numpy as np  # noqa: E402
 
 COLORS = {
     # Series, assigned in this order. Validated as categorical palette
@@ -114,6 +115,33 @@ def figure_style():
 def leader(color=None):
     """Arrow properties for a thin leader line from a label to a feature."""
     return {"arrowstyle": "-", "color": color or COLORS["muted"], "lw": LINE["reference"], "shrinkA": 2, "shrinkB": 1}
+
+
+def arrow(ax, start, end, color=COLORS["ink"], lw=None, head=7):
+    """Arrow from start to end, e.g. a vector or an axis of a coordinate system."""
+    ax.annotate("", xy=end, xytext=start, zorder=5, arrowprops={
+        "arrowstyle": "-|>", "lw": lw or LINE["secondary"], "mutation_scale": head, "shrinkA": 0, "shrinkB": 0,
+        "color": color})
+    ax.plot(*np.array([start, end]).T, alpha=0)  # include the arrow in the axis limits
+
+
+def label(ax, xy, text, offset=(0, 0), ha="center", va="center", color=COLORS["ink"]):
+    """Annotation text at a point, shifted by an offset in points."""
+    ax.annotate(text, xy=xy, xytext=offset, textcoords="offset points", ha=ha, va=va,
+                fontsize=FONT_SIZE["annotation"], color=color, zorder=7)
+
+
+def dot(ax, xy, color=COLORS["ink"], size=4.5, marker="o"):
+    """Marker for a point, with a thin ring in the plate color so that it stays legible on a line."""
+    ax.plot(*xy, ls="none", marker=marker, ms=size, color=color, mec=COLORS["surface"], mew=1.0, zorder=6)
+
+
+def axes_cross(ax, origin, directions, names, length, offsets):
+    """Small axes cross: one arrow per direction, labelled with its name."""
+    for direction, name, offset in zip(directions, names, offsets, strict=True):
+        tip = np.asarray(origin) + length * np.asarray(direction)
+        arrow(ax, origin, tip, color=COLORS["inkSecondary"], lw=LINE["reference"], head=6)
+        label(ax, tip, name, offset, color=COLORS["inkSecondary"])
 
 
 def save_figure(fig, path: Path):

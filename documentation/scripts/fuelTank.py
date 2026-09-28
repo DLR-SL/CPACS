@@ -60,8 +60,8 @@ from matplotlib.patches import Arc
 
 from example_xml import indent, transformation_xml, write_cpacs_file
 from figure_style import COLORS, FONT_SIZE, FULL_WIDTH, LINE, figure_style, leader, save_equation, save_figure
-from wing import (FUSELAGE_PROFILE_UID, FUSELAGE_SECTIONS, FUSELAGE_UID, INK, INK2, MUTED, arrow, circle_profile_xml,
-                  collection, dot, fuselage_xml, label)
+from fuselage import FUSELAGE_PROFILE_UID, FUSELAGE_UID, LOFT, circle_profile_xml, fuselage_xml
+from wing import INK, INK2, MUTED, arrow, collection, dot, label
 
 DOCUMENTATION = Path(__file__).resolve().parents[1]
 FIGURES = DOCUMENTATION / "figures"
@@ -78,9 +78,9 @@ NOTE = FONT_SIZE["annotation"]
 # the vessel wall in series 1, a second vessel of the same tank in series 2, the fuselage muted.
 
 # ------------------------------------------------------------------ example data
-# A liquid hydrogen tank in the rear of the fuselage of wing.py (constant cross
-# section of 3.2 m diameter up to x = 20 m): a pressure vessel with torispherical
-# domes inside a vacuum jacket with ellipsoidal domes.
+# A liquid hydrogen tank in the rear of the fuselage of fuselage.py (constant cross
+# section of 3.2 m diameter from x = 5 m to x = 19 m): a pressure vessel with
+# torispherical domes inside a vacuum jacket with ellipsoidal domes.
 REAR_TANK_UID = "rearTank"
 REAR_TANK_TRANSLATION = (13.6, 0.0, 0.0)
 REAR_TANK_DESCRIPTION = ("Liquid hydrogen tank behind the cabin: a pressure vessel with torispherical domes "
@@ -315,7 +315,7 @@ def check_layout():
     inside, apart = [], []
     for name, x0, x1, y, z, radius in placements():
         x = np.linspace(x0, x1, 200)
-        margin = float(np.min(fuselage_radius(x) - (math.hypot(y, z) + radius)))
+        margin = float(np.min(fuselage_clearance(x, y, z, radius)))
         inside.append((name, margin))
         if margin <= 0.0:
             raise ValueError(f"{name} reaches out of the fuselage by {-margin:.3f} m")
@@ -333,11 +333,14 @@ def check_layout():
     return inside, apart
 
 
-def fuselage_radius(x):
-    """Radius of the fuselage of wing.py at station x, linear between its sections."""
-    stations = [station for _, station, _ in FUSELAGE_SECTIONS]
-    radii = [diameter / 2 for _, _, diameter in FUSELAGE_SECTIONS]
-    return np.interp(x, stations, radii)
+def fuselage_clearance(x, y, z, radius):
+    """Distance between a circle of the given radius about (y, z) at the stations x and the fuselage surface.
+
+    The cross section of the fuselage of fuselage.py is an ellipse of the width and height the loft has at x;
+    the distance is taken to the circle inscribed in it, so that it is never too large.
+    """
+    width, height, centre = LOFT.station(x).T
+    return np.minimum(width, height) / 2 - (np.hypot(y, z - centre) + radius)
 
 
 # --------------------------------------------------------------------- figures
@@ -519,9 +522,10 @@ def figure_tank_vessels():
         # ------------------------------------- (a) the three tanks in the fuselage
         ax = axes[0]
         ax.set_title("(a) the tanks of the example in the fuselage")
-        x_fuselage = np.linspace(0.0, 28.0, 600)
-        for sign in (1, -1):
-            ax.plot(x_fuselage, sign * fuselage_radius(x_fuselage), color=MUTED, lw=LINE["secondary"], zorder=2)
+        contour = LOFT.sample()
+        for sign in (1, -1):  # upper and lower edge of the fuselage in the side view
+            ax.plot(contour[:, 0], contour[:, 3] + sign * contour[:, 2] / 2, color=MUTED, lw=LINE["secondary"],
+                    zorder=2)
 
         # forward tank: a vessel built from sections, drawn through its section radii
         tx, _, tz = FORWARD_TANK_TRANSLATION
@@ -549,8 +553,8 @@ def figure_tank_vessels():
         dot(ax, (0.0, 0.0), color=INK2, size=3.5)
         _dimension(ax, (0.0, 2.72), (outer_x0, 2.72), "translation of rearTank", (0, 7), ticks=0.18)
         _hairline(ax, outer_x0, 1.45, 2.78)
-        label(ax, (0.30, 2.05), "origin of the fuselage", (0, 0), ha="left", color=INK2)
-        ax.annotate("", xy=(0.04, 0.07), xytext=(0.26, 1.90), arrowprops=leader())
+        label(ax, (0.30, 2.2), "origin of the fuselage", (0, 0), ha="left", color=INK2)
+        ax.annotate("", xy=(0.04, 0.07), xytext=(0.26, 2.05), arrowprops=leader())
 
         label(ax, (FORWARD_TANK_TRANSLATION[0] + 1.2, -1.62), "forwardTank", (0, -11), color=INK)
         label(ax, (BELLY_TANK_TRANSLATION[0] + 2.0, -1.62), "bellyTank", (0, -23), color=INK)
@@ -872,7 +876,7 @@ def report():
 
     x0 = REAR_TANK_TRANSLATION[0]
     _, x, r = meridian(*outer)
-    margin = float(np.min(fuselage_radius(x + x0) - r))
+    margin = float(np.min(fuselage_clearance(x + x0, 0.0, 0.0, r)))
     print(f"  outer vessel from x = {x0 + x[0]:.2f} m to x = {x0 + x[-1]:.2f} m, "
           f"smallest clearance to the fuselage {margin:.4f} m")
 
@@ -887,7 +891,7 @@ def report():
                           + vessel_length(radius, length, spec), 200)
     reach = math.hypot(y, z) + radius
     print(f"  vessels reach {reach:.4f} m from the fuselage axis, "
-          f"smallest fuselage radius over their length {float(np.min(fuselage_radius(x_belly))):.4f} m")
+          f"smallest clearance to the fuselage {float(np.min(fuselage_clearance(x_belly, y, z, radius))):.4f} m")
 
     print("Forward tank")
     radius = max(diameter for _, _, diameter in FORWARD_SECTIONS) / 2

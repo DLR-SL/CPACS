@@ -50,7 +50,8 @@ from matplotlib.patches import Polygon
 
 from example_xml import indent, write_cpacs_file
 from figure_style import COLORS, FONT_SIZE, FULL_WIDTH, LINE, figure_style, leader, save_figure
-from wing import FUSELAGE_PROFILE_UID, arrow, circle_profile_xml, collection, dot, label
+from fuselage import FUSELAGE_PROFILE_UID, circle_profile_xml
+from wing import arrow, collection, dot, label
 
 DOCUMENTATION = Path(__file__).resolve().parents[1]
 FIGURES = DOCUMENTATION / "figures"

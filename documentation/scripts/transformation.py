@@ -44,8 +44,8 @@ from matplotlib.patches import Arc, Polygon
 from example_xml import indent, transformation_xml, vector, write_cpacs_file
 from figure_style import COLORS, FULL_WIDTH, LINE, figure_style, save_equation, save_figure
 from nacaProfile import naca4
-from wing import (FUSELAGE_UID, INK, INK2, MUTED, arrow, circle_profile_xml, dot, fuselage_xml, label, rotation_x,
-                  rotation_y, rotation_z, transform)
+from fuselage import FUSELAGE_UID, circle_profile_xml, fuselage_xml
+from wing import INK, INK2, MUTED, arrow, dot, label, rotation_x, rotation_y, rotation_z, transform
 
 DOCUMENTATION = Path(__file__).resolve().parents[1]
 FIGURES = DOCUMENTATION / "figures"
@@ -57,7 +57,7 @@ LIGHT = COLORS["series1Light"]
 WASH = 0.1
 
 # ------------------------------------------------------------------ example data
-# Vertical tail attached to the fuselage of wing.py: its wing coordinate system is rotated by 90° about x,
+# Vertical tail attached to the fuselage of fuselage.py: its wing coordinate system is rotated by 90° about x,
 # so that the span (y) points upwards (z), and translated relative to the origin of the fuselage.
 TAIL_UID = "VerticalTail"
 TAIL_ROTATION = (90.0, 0.0, 0.0)

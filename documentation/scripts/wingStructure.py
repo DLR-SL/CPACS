@@ -52,9 +52,8 @@ from controlSurface import (CONTOURS, Frame, LE_INDEX, draw_wing_section, midpla
 from example_xml import indent, write_cpacs_file
 from figure_style import COLORS, FULL_WIDTH, LINE, figure_style, leader, save_figure
 from structuralProfile import ELEMENT_UID, MATERIAL_UID, element_xml as structural_element_xml, material_xml, profile_xml
-from wing import (AIRFOIL, DOCUMENTATION, FIGURES, INK, INK2, MUTED, NOTE, WING_UID, airfoil_xml, arrow,
-                  circle_profile_xml,
-                  fuselage_xml, wing_xml)
+from fuselage import circle_profile_xml, fuselage_xml
+from wing import AIRFOIL, DOCUMENTATION, FIGURES, INK, INK2, MUTED, NOTE, WING_UID, airfoil_xml, arrow, wing_xml
 
 EXAMPLE_FILE = DOCUMENTATION.parent / "examples" / "wingStructure.xml"
 CS_UID = f"{WING_UID}_componentSegment"

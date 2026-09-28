@@ -44,8 +44,8 @@ from controlSurface import (CS_UID, FLAP, SLAT, SPOILER, Frame, DEVICE_COLOR, de
 from example_xml import indent, write_cpacs_file
 from figure_style import COLORS, LINE, figure_style, save_figure
 from structuralProfile import MATERIAL_UID, PROFILE_UID, material_xml as structural_material_xml, profile_xml
-from wing import (DOCUMENTATION, FIGURES, INK, INK2, MUTED, WING_UID, airfoil_xml, circle_profile_xml,
-                  fuselage_xml, wing_xml)
+from fuselage import circle_profile_xml, fuselage_xml
+from wing import DOCUMENTATION, FIGURES, INK, INK2, MUTED, WING_UID, airfoil_xml, wing_xml
 
 EXAMPLE_FILE = DOCUMENTATION.parent / "examples" / "controlSurfaceTracks.xml"
 TRACK_COLOR = COLORS["series3"]
