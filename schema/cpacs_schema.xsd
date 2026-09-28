@@ -14976,6 +14976,11 @@ cpacs@dlr.de
                             <xsd:documentation>External geometry files referenced by the element</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
+                    <xsd:element name="routings" minOccurs="0" type="sysElemRoutingsType">
+                        <xsd:annotation>
+                            <xsd:documentation>Routings</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                     <xsd:element name="transformation" minOccurs="0" type="transformationType">
                         <xsd:annotation>
                             <xsd:documentation>Position and orientation</xsd:documentation>
@@ -33129,6 +33134,61 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
         </xsd:complexContent>
     </xsd:complexType>
 
+    <xsd:complexType name="portsType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>...</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>...</ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="port" maxOccurs="unbounded" type="portType">
+                        <xsd:annotation>
+                            <xsd:documentation>...
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="portType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>...</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>...</ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="name" type="stringBaseType"/>
+                    <xsd:element name="description" minOccurs="0" type="stringBaseType"/>
+                    <xsd:choice minOccurs="0">
+                        <xsd:element name="routePositionUID" type="stringUIDBaseType"/>
+                        <xsd:element name="point" type="pointType"/>
+                    </xsd:choice>
+                </xsd:sequence>
+                <xsd:attribute name="uID" use="required" type="xsd:ID"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
     <xsd:complexType name="positioningsType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -36606,31 +36666,19 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
         </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:choice minOccurs="0">
-                        <xsd:element name="componentUID" type="stringUIDBaseType">
-                            <xsd:annotation>
-                                <xsd:documentation>UID reference to a system component the point is referred to</xsd:documentation>
-                            </xsd:annotation>
-                        </xsd:element>
-                        <xsd:element name="fuselageSectionUID" type="stringUIDBaseType">
-                            <xsd:annotation>
-                                <xsd:documentation>UID reference to a fuselage section the point is referred to</xsd:documentation>
-                            </xsd:annotation>
-                        </xsd:element>
-                        <xsd:element name="wingSectionUID" type="stringUIDBaseType">
-                            <xsd:annotation>
-                                <xsd:documentation>UID reference to a wing section the point is referred to</xsd:documentation>
-                            </xsd:annotation>
-                        </xsd:element>
-                    </xsd:choice>
+                <xsd:all>
+                    <xsd:element name="parentUID" type="stringUIDBaseType">
+                        <xsd:annotation>
+                            <xsd:documentation>...</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                     <xsd:element name="point" type="pointType">
                         <xsd:annotation>
                             <xsd:documentation>Coordinates of the supporting point, given in the coordinate system of the
                                 routing or, if a reference object is given, relative to its origin [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                </xsd:sequence>
+                </xsd:all>
                 <xsd:attribute name="uID" use="required" type="xsd:ID">
                     <xsd:annotation>
                         <xsd:documentation>UID</xsd:documentation>
@@ -36908,17 +36956,6 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                             <xsd:documentation>Description</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="parentUID" minOccurs="0" type="stringUIDBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Optional UID reference to the parent object used for relative positioning</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="transformation" minOccurs="0" type="transformationSE3Type">
-                        <xsd:annotation>
-                            <xsd:documentation>Optional rigid transformation defining position and orientation of the
-                                routing</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
                     <xsd:element name="routePositions" type="routePositionsType">
                         <xsd:annotation>
                             <xsd:documentation>Supporting points of the routing</xsd:documentation>
@@ -36932,6 +36969,11 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     <xsd:element name="mass" minOccurs="0" type="elementMassType">
                         <xsd:annotation>
                             <xsd:documentation>Mass properties overriding the values derived from geometry and material</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="ports" minOccurs="0" type="portsType">
+                        <xsd:annotation>
+                            <xsd:documentation>...</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -37865,6 +37907,12 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                         <xsd:element name="subComponentUID" minOccurs="0" maxOccurs="unbounded" type="stringUIDBaseType">
                             <xsd:annotation>
                                 <xsd:documentation>UID of a sub-component
+                                </xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element name="portUID" minOccurs="0" type="stringUIDBaseType">
+                            <xsd:annotation>
+                                <xsd:documentation>...
                                 </xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
@@ -43836,6 +43884,91 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
         </xsd:complexContent>
     </xsd:complexType>
 
+    <xsd:complexType name="sysElemRoutePositionsType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>...</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>...</ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="routePosition" minOccurs="2" maxOccurs="unbounded" type="pointType">
+                        <xsd:annotation>
+                            <xsd:documentation>Route position</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="sysElemRoutingsType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>Routings</ddue:para>
+                    </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>...</ddue:para>
+                    </ddue:remarks>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:sequence>
+                    <xsd:element name="routing" maxOccurs="unbounded" type="sysElemRoutingType">
+                        <xsd:annotation>
+                            <xsd:documentation>Routing</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="sysElemRoutingType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <sd:schemaDoc>
+                    <ddue:summary>
+                        <ddue:para>...</ddue:para>
+                    </ddue:summary>
+                </sd:schemaDoc>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="complexBaseType">
+                <xsd:all>
+                    <xsd:element name="routePositions" type="sysElemRoutePositionsType">
+                        <xsd:annotation>
+                            <xsd:documentation>Supporting points of the routing</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="routeSegments" type="routeSegmentsType">
+                        <xsd:annotation>
+                            <xsd:documentation>Segments of the routing</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:all>
+                <xsd:attribute name="uID" use="required" type="xsd:ID">
+                    <xsd:annotation>
+                        <xsd:documentation>UID</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
     <xsd:complexType name="sysElemShutOffValvesType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -46961,6 +47094,11 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     <xsd:element name="mass" minOccurs="0" type="elementMassType">
                         <xsd:annotation>
                             <xsd:documentation>Mass properties</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="ports" minOccurs="0" type="portsType">
+                        <xsd:annotation>
+                            <xsd:documentation>...</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
