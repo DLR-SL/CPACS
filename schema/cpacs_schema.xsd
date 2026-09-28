@@ -6145,8 +6145,13 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Cabin aisles</ddue:para>
+                        <ddue:para>Aisles</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>
+                            Aisles of the deck; a single-aisle cabin has two, the aisle along the cabin and the one leading to the cockpit.
+                        </ddue:para>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -6155,7 +6160,7 @@ cpacs@dlr.de
                 <xsd:sequence>
                     <xsd:element name="aisle" maxOccurs="unbounded" type="cabinAisleType">
                         <xsd:annotation>
-                            <xsd:documentation>Cabin aisle</xsd:documentation>
+                            <xsd:documentation>Aisle</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -6171,9 +6176,57 @@ cpacs@dlr.de
                         <ddue:para>Aisle</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Aisles has as many entries as there are aisles in the
-                            cabin. In a normal single aisle there are two aisles: the cabin
-                            aisle and the aisle leading to the cockpit.</ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                An aisle is a path on the floor of the deck that is kept free for passengers and crew.
+                                It is given by its centre line through the points (<ddue:codeInline>x</ddue:codeInline>, <ddue:codeInline>y</ddue:codeInline>) and its width at each point.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Geometry</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The points lie on the floor, in the deck coordinate system.
+                                <ddue:codeInline>widthY</ddue:codeInline> is the width of the aisle in the y-direction, measured at the floor and divided equally to both sides of the centre line.
+                                Between the points, the centre line and the width vary linearly.
+                            </ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="deckLayout"/>
+                            </ddue:mediaLink>
+                            <ddue:para>
+                                In the forward part of the example deck (b), the aisle runs from the rear wall of the cockpit, where it is 0.7 m wide between the galley and the lavatory, and narrows to 0.5 m at the first row of seats.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Rules</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:list class="bullet">
+                                <ddue:listItem>
+                                    <ddue:para>
+                                        <ddue:codeInline>x</ddue:codeInline>, <ddue:codeInline>y</ddue:codeInline> and <ddue:codeInline>widthY</ddue:codeInline> have the same number of values, at least two.</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>
+                                        <ddue:codeInline>x</ddue:codeInline> is ascending.</ddue:para>
+                                </ddue:listItem>
+                            </ddue:list>
+                            <ddue:para>
+                                <ddue:legacyBold>Example</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The aisle of the example deck, from the rear wall of the cockpit to the aft galley:
+                            </ddue:para>
+                            <ddue:code language="XML" title="Aisle narrowing to the seat rows">
+                                <![CDATA[
+<aisles>
+    <aisle uID="mainDeck_aisle">
+        <name>Main aisle</name>
+        <x>0;2;2.18;14.35</x>
+        <y>0;0;0;0</y>
+        <widthY>0.7;0.7;0.5;0.5</widthY>
+    </aisle>
+</aisles>
+                                ]]>
+                            </ddue:code>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -6193,24 +6246,17 @@ cpacs@dlr.de
                     </xsd:element>
                     <xsd:element name="x" type="doubleVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Longitudinal coordinates. The
-                                number of coordinates can be chosen as appropriate, the minimum
-                                number is two. The coordinates are relative to the cabin origin.
-                            </xsd:documentation>
+                            <xsd:documentation>x of the points of the centre line [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="y" type="doubleVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Center points of the aisle. The
-                                y-vector has to have same length as the x-vector. The aisle
-                                stretches equally left and right of the provided y-coordinate.
-                            </xsd:documentation>
+                            <xsd:documentation>y of the points of the centre line [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="widthY" type="doubleVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Width of the aisle at floor level at each
-                                y-coordinate</xsd:documentation>
+                            <xsd:documentation>Width in the y-direction at the floor at each point [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -6228,11 +6274,11 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Cabin geometry contours</ddue:para>
+                        <ddue:para>Contours</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Cabin geometry contour line collection type. By providing more than one entry,
-                        a 3D cabin space can be described.
+                        <ddue:para>
+                            Contour lines of the cabin geometry, ordered by ascending height.
                         </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -6243,7 +6289,7 @@ cpacs@dlr.de
                 <xsd:sequence>
                     <xsd:element name="contour" maxOccurs="unbounded" type="cabinGeometryContourType">
                         <xsd:annotation>
-                            <xsd:documentation>Cabin geometry contour</xsd:documentation>
+                            <xsd:documentation>Contour</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -6256,11 +6302,11 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Cabin geometry contour</ddue:para>
+                        <ddue:para>Contour line of constant height</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Type to define a lateral position value "y" at a given height "z" (in the parent deck coordinate system)
-                        for each entry "x" in the parent cabin geometry definition.
+                        <ddue:para>
+                            At the height <ddue:codeInline>z</ddue:codeInline>, <ddue:codeInline>y</ddue:codeInline> gives the distance of the cabin wall from the x-z plane of the deck at every value of <ddue:codeInline>x</ddue:codeInline> of the cabin geometry (<ddue:codeInline>cabinGeometryType</ddue:codeInline>).
                         </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -6271,12 +6317,12 @@ cpacs@dlr.de
                 <xsd:all>
                     <xsd:element name="y" type="doubleVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Vector with y-coordinates</xsd:documentation>
+                            <xsd:documentation>Distance of the cabin wall from the x-z plane of the deck at each x of the cabin geometry [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="z" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Height z</xsd:documentation>
+                            <xsd:documentation>Height above the floor [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -6289,24 +6335,74 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Geometry</ddue:para>
+                        <ddue:para>Space available for the cabin</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
                             <ddue:para>
-                                [<ddue:legacyBold>WARNING</ddue:legacyBold>: This type is known to be susceptible to inconsistencies and might therefore be removed in a future version of CPACS]
+                                The cabin geometry describes the space available for the cabin of a deck, roughly the inside of the fuselage less its lining.
+                                It is given by contour lines of constant height, which all share the vector <ddue:codeInline>x</ddue:codeInline>.
+                                The cabin is symmetric to the x-z plane of the deck.
                             </ddue:para>
                             <ddue:para>
-                                The geometry of the cabin roughly corresponds to the available design space in the cabin.
-                                It is given in terms of constant height contour lines.
-                                The lines all share a common <ddue:legacyItalic>x</ddue:legacyItalic>-vector.
-                                The <ddue:legacyItalic>y</ddue:legacyItalic> vector provides the lateral contour at z-coordinate provided by the constant value <ddue:legacyItalic>z</ddue:legacyItalic>.
-                                One or more contour lines can be given.
-                                The cabin geometry is assumed to be symmetric.
+                                The cabin geometry is not derived from the fuselage or its structure; it has to be updated when they change.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Contours</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                Each contour lies at the height <ddue:codeInline>z</ddue:codeInline> above the floor and gives with <ddue:codeInline>y</ddue:codeInline> the distance of the cabin wall from the x-z plane of the deck, i.e. half the width of the cabin, at every value of <ddue:codeInline>x</ddue:codeInline> (<ddue:codeInline>cabinGeometryContourType</ddue:codeInline>).
+                                All values are given in the deck coordinate system.
                             </ddue:para>
                             <ddue:mediaLink>
-                                <ddue:image xlink:href="deckContours"/>
+                                <ddue:image xlink:href="deckCabinGeometry"/>
                             </ddue:mediaLink>
+                            <ddue:para>
+                                The figure shows the five contours of the example below.
+                                In the section at x = 7.2 m (a), each contour gives one point on each side of the cabin wall: y is 1.430 m at the height of 1.0 m and 1.160 m at 1.5 m.
+                                Seen from the side (b), every contour runs from the rear wall of the cockpit through the same values of x, spaced 0.8 m apart.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Rules</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:list class="bullet">
+                                <ddue:listItem>
+                                    <ddue:para>
+                                        <ddue:codeInline>x</ddue:codeInline> is ascending.</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>Every <ddue:codeInline>y</ddue:codeInline> has as many values as <ddue:codeInline>x</ddue:codeInline>.</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>The contours are ordered by ascending <ddue:codeInline>z</ddue:codeInline>.</ddue:para>
+                                </ddue:listItem>
+                            </ddue:list>
+                            <ddue:para>
+                                <ddue:legacyBold>Example</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The cabin of the example deck is the space inside a lining of 0.1 m, from the rear wall of the cockpit to the rear wall of the aft galley, with contours at the floor and 0.5 m, 1.0 m, 1.5 m and 2.0 m above it.
+                                The first two contours are shown:
+                            </ddue:para>
+                            <ddue:code language="XML" title="Cabin geometry with its first two contours">
+                                <![CDATA[
+<cabinGeometry>
+    <name>Cabin</name>
+    <contours>
+        <contour>
+            <y>1.394;1.395;1.395;1.395;1.395;1.395;1.395;1.395;1.395;1.395;1.395;1.395;1.396;1.395;1.393;1.393;1.399;1.405;1.395;1.356</y>
+            <z>0</z>
+        </contour>
+        <contour>
+            <y>1.497;1.499;1.499;1.499;1.499;1.499;1.499;1.499;1.499;1.499;1.499;1.499;1.499;1.499;1.497;1.497;1.501;1.505;1.499;1.476</y>
+            <z>0.5</z>
+        </contour>
+        ...
+    </contours>
+    <x>0;0.8;1.6;2.4;3.2;4;4.8;5.6;6.4;7.2;8;8.8;9.6;10.4;11.2;12;12.8;13.6;14.4;15.2</x>
+</cabinGeometry>
+                                ]]>
+                            </ddue:code>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -6327,12 +6423,12 @@ cpacs@dlr.de
                     </xsd:element>
                     <xsd:element name="contours" type="cabinGeometryContoursType">
                         <xsd:annotation>
-                            <xsd:documentation>Contours</xsd:documentation>
+                            <xsd:documentation>Contour lines of constant height</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="x" type="doubleVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Vector of x coordinates</xsd:documentation>
+                            <xsd:documentation>Positions along the deck shared by all contours, ascending [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -6345,8 +6441,13 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Cabin spaces</ddue:para>
+                        <ddue:para>Spaces</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>
+                            Areas of the deck that are kept clear, e.g. the passageways to the exits.
+                        </ddue:para>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -6355,7 +6456,7 @@ cpacs@dlr.de
                 <xsd:sequence>
                     <xsd:element name="space" maxOccurs="unbounded" type="cabinSpaceType">
                         <xsd:annotation>
-                            <xsd:documentation>Cabin space</xsd:documentation>
+                            <xsd:documentation>Space</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -6368,14 +6469,59 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Space</ddue:para>
+                        <ddue:para>Area of the floor kept clear up to a height</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>spaces describe areas in the cabin that need to be
-                            clear for use as emergency area. Depending on the type of area,
-                            it can have a height limit. The spaces are required for
-                            downstream cabin design, for example to describe an empty cabin.
-                        </ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                A space is an area of the deck that has to be kept clear of any object, e.g. the passageway from the aisle to an exit, a cross aisle or the assist space beside an exit.
+                                Spaces describe the cabin for its design and for evacuation analyses, e.g. before any component is installed.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Geometry</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The space is the polygon through the points (<ddue:codeInline>x</ddue:codeInline>, <ddue:codeInline>y</ddue:codeInline>) on the floor of the deck, extruded upwards by <ddue:codeInline>height</ddue:codeInline>.
+                                The polygon is closed: its last point connects to the first, which is not repeated.
+                            </ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="deckLayout"/>
+                            </ddue:mediaLink>
+                            <ddue:para>
+                                In the forward part of the example deck (b), the space in front of the forward door is the rectangle through the points 1 to 4, as wide as the door and reaching from the cabin wall to the aisle.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Rules</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:list class="bullet">
+                                <ddue:listItem>
+                                    <ddue:para>
+                                        <ddue:codeInline>x</ddue:codeInline> and <ddue:codeInline>y</ddue:codeInline> have the same number of values, at least three.</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>The polygon does not intersect itself.</ddue:para>
+                                </ddue:listItem>
+                            </ddue:list>
+                            <ddue:para>
+                                <ddue:legacyBold>Example</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The passageway to the forward door of the example deck, kept clear up to the height of the door:
+                            </ddue:para>
+                            <ddue:code language="XML" title="Passageway from the aisle to a door">
+                                <![CDATA[
+<spaces>
+    <space uID="mainDeck_doorL1Passage">
+        <name>Passageway to the forward door</name>
+        <x>1.195;2.005;2.005;1.195</x>
+        <y>-1.39;-1.39;-0.35;-0.35</y>
+        <height>1.85</height>
+    </space>
+    ...
+</spaces>
+                                ]]>
+                            </ddue:code>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -6395,22 +6541,17 @@ cpacs@dlr.de
                     </xsd:element>
                     <xsd:element name="x" type="doubleVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Vector with x-coordinates. These describe an area, so they
-                                are not monotonous ascending.</xsd:documentation>
+                            <xsd:documentation>x of the points of the polygon [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="y" type="doubleVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Vector with y-coordinates at given x-coordinates. Warning:
-                                x-y do not represent a function as single x-positions can have
-                                multiple y-coordinates. Hence, no interpolation is possible.
-                            </xsd:documentation>
+                            <xsd:documentation>y of the points of the polygon [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="height" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Height above the floor that is required to
-                                be empty of any objects</xsd:documentation>
+                            <xsd:documentation>Height above the floor up to which the space is kept clear [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -6469,7 +6610,9 @@ cpacs@dlr.de
                         <ddue:para>Cargo container elements</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Cargo container element collection type</ddue:para>
+                        <ddue:para>
+                            Cargo containers of the library, installed on a deck by the components of <ddue:codeInline>cargoContainersType</ddue:codeInline>.
+                        </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -6495,7 +6638,9 @@ cpacs@dlr.de
                         <ddue:para>Cargo containers</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Cargo container instance collection type.</ddue:para>
+                        <ddue:para>
+                            Cargo containers installed on the deck, each referencing a cargo container element of the library (<ddue:codeInline>cargoContainerElementsType</ddue:codeInline>).
+                        </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -6596,10 +6741,12 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Ceiling panel</ddue:para>
+                        <ddue:para>Ceiling panel elements</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Ceiling panel element collection type</ddue:para>
+                        <ddue:para>
+                            Ceiling panels of the library, installed on a deck by the components of <ddue:codeInline>ceilingPanelsType</ddue:codeInline>.
+                        </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -6609,7 +6756,7 @@ cpacs@dlr.de
                 <xsd:sequence>
                     <xsd:element name="ceilingPanelElement" maxOccurs="unbounded" type="vehicleElementBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Ceiling panel element for use in the decks</xsd:documentation>
+                            <xsd:documentation>Ceiling panel element</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -6625,7 +6772,9 @@ cpacs@dlr.de
                         <ddue:para>Ceiling panels</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Ceiling panel instance collection type.</ddue:para>
+                        <ddue:para>
+                            Ceiling panels installed on the deck, each referencing a ceiling panel element of the library (<ddue:codeInline>ceilingPanelElementsType</ddue:codeInline>).
+                        </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -6635,8 +6784,7 @@ cpacs@dlr.de
                 <xsd:sequence>
                     <xsd:element name="ceilingPanel" maxOccurs="unbounded" type="deckComponentBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Ceiling panel
-                            </xsd:documentation>
+                            <xsd:documentation>Ceiling panel</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -7493,10 +7641,12 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Class divider</ddue:para>
+                        <ddue:para>Class divider elements</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Class divider element collection type</ddue:para>
+                        <ddue:para>
+                            Class dividers of the library, installed on a deck by the components of <ddue:codeInline>classDividersType</ddue:codeInline>.
+                        </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -7506,7 +7656,7 @@ cpacs@dlr.de
                 <xsd:sequence>
                     <xsd:element name="classDividerElement" maxOccurs="unbounded" type="vehicleElementBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Class divider element for use in the decks</xsd:documentation>
+                            <xsd:documentation>Class divider element</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -7522,7 +7672,9 @@ cpacs@dlr.de
                         <ddue:para>Class dividers</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Class divider instance collection type.</ddue:para>
+                        <ddue:para>
+                            Class dividers installed on the deck, each referencing a class divider element of the library (<ddue:codeInline>classDividerElementsType</ddue:codeInline>).
+                        </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -7532,8 +7684,7 @@ cpacs@dlr.de
                 <xsd:sequence>
                     <xsd:element name="classDivider" maxOccurs="unbounded" type="deckComponentBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Class divider
-                            </xsd:documentation>
+                            <xsd:documentation>Class divider</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -8224,8 +8375,13 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Compartment geometry</ddue:para>
+                        <ddue:para>Boundary of a compartment</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>
+                            Structural components that bound the compartment together with the skin of the fuselage.
+                        </ddue:para>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -8234,12 +8390,7 @@ cpacs@dlr.de
                 <xsd:sequence>
                     <xsd:element name="boundaryElementUID" maxOccurs="unbounded" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>
-                                UIDs of 2d structural fuselage elements
-                                (e.g., pressure bulkheads, walls or
-                                floors). The compartment will be
-                                enclosed with the fuselage skin.
-                            </xsd:documentation>
+                            <xsd:documentation>UID of a structural component with an area that bounds the compartment, e.g. a pressure bulkhead, a wall or a floor panel</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -8254,6 +8405,11 @@ cpacs@dlr.de
                     <ddue:summary>
                         <ddue:para>Compartments</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>
+                            Enclosed volumes of the fuselage, e.g. a cargo hold or the pressurised cabin.
+                        </ddue:para>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -8262,7 +8418,7 @@ cpacs@dlr.de
                 <xsd:sequence>
                     <xsd:element name="compartment" maxOccurs="unbounded" type="compartmentType">
                         <xsd:annotation>
-                            <xsd:documentation>The compartment defines an enclosed volume within the fuselage. It is defined by a set of border geometries. This could be pressureBulkheads, walls or floors and they are referred by their uIDs. The volume is closed with the fuselage skin. The geometry tool has to check, if the compartment definition gives a closed geometry.</xsd:documentation>
+                            <xsd:documentation>Compartment</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -8275,27 +8431,34 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Compartment</ddue:para>
+                        <ddue:para>Enclosed volume of the fuselage</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>
+                                A compartment is a volume inside the fuselage, e.g. a cargo hold or the pressurised part of the fuselage.
+                                It is bounded by structural components with an area, such as pressure bulkheads, walls and floor panels, which it references by UID (<ddue:codeInline>compartmentGeometryType</ddue:codeInline>), and it is closed by the skin of the fuselage.
+                                <ddue:codeInline>designVolume</ddue:codeInline> is the volume the compartment is designed for.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Rules</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:list class="bullet">
+                                <ddue:listItem>
+                                    <ddue:para>The boundary components and the skin enclose a volume.</ddue:para>
+                                </ddue:listItem>
+                            </ddue:list>
+                        </ddue:content>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
-            <xsd:documentation>
-                The compartment defines an enclosed volume in the
-                fuselage. It is defined by a set of border geometries.
-                This could be pressureBulkheads, walls or floors and
-                they are referenced by their uIDs. The volume is closed
-                with the fuselage skin. The geometry tool has to check,
-                if the compartment definition gives a closed geometry.
-            </xsd:documentation>
         </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
                     <xsd:element name="geometry" type="compartmentGeometryType">
                         <xsd:annotation>
-                            <xsd:documentation>
-                                Compartment geometry uIDs list
-                            </xsd:documentation>
+                            <xsd:documentation>Boundary</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="name" minOccurs="0" type="stringBaseType">
@@ -8310,7 +8473,7 @@ cpacs@dlr.de
                     </xsd:element>
                     <xsd:element name="designVolume" minOccurs="0">
                         <xsd:annotation>
-                            <xsd:documentation>Ideal design volume</xsd:documentation>
+                            <xsd:documentation>Volume the compartment is designed for [m³]</xsd:documentation>
                         </xsd:annotation>
                         <xsd:complexType>
                             <xsd:simpleContent>
@@ -13985,8 +14148,92 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Deck component</ddue:para>
+                        <ddue:para>Component installed on a deck</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>
+                                A component installs an element of the library of deck elements on the deck, e.g. a seat module, a galley or a lavatory.
+                                It references the element by <ddue:codeInline>deckElementUID</ddue:codeInline> and gives only its position; shape and mass are those of the element (<ddue:codeInline>vehicleElementBaseType</ddue:codeInline>).
+                                One element can be installed any number of times.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Position</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The <ddue:codeInline>transformation</ddue:codeInline> scales, rotates and translates the element coordinate system relative to the origin of the deck (<ddue:codeInline>transformationType</ddue:codeInline>).
+                                Like the deck itself, the component follows only the translation of its deck: a rotation or scaling of the deck does not apply to it (see <ddue:codeInline>decksDeckType</ddue:codeInline>).
+                                Without a transformation, the element stands at the origin of the deck.
+                            </ddue:para>
+                            <ddue:para>
+                                Components that stand on the floor, such as seats, galleys and lavatories, are usually translated in x and y only and rotated about z.
+                                Components of the lining, such as sidewall panels, luggage compartments and ceiling panels, are placed freely.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Scaling and mass</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                A scaling stretches the element, e.g. a ceiling panel to the length it has to cover.
+                                The mass of the component scales with the volume, i.e. with the product of the three scaling factors, also where the element gives its mass directly, and the centre of gravity moves with the geometry.
+                                How the inertia changes is not specified.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Structural mounts</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:codeInline>structuralMounts</ddue:codeInline> names the structural components that the component is attached to, e.g. the floor cross beams under a seat module.
+                                The link carries no attachment points.
+                                It belongs to the component rather than to the element, since two installations of the same element can be attached to different structure.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Rules</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:list class="bullet">
+                                <ddue:listItem>
+                                    <ddue:para>
+                                        <ddue:codeInline>deckElementUID</ddue:codeInline> references an element of the kind of the component, e.g. a seat module a seat element.</ddue:para>
+                                </ddue:listItem>
+                            </ddue:list>
+                            <ddue:para>
+                                <ddue:legacyBold>Example</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The two lavatories of the example deck: the forward one on the left side, the aft one on the right side, rotated by 180° about z so that its door faces the aisle as well.
+                                The element has its origin at the centre of its front lower edge, which the rotation turns into the aft edge; the translation of the aft lavatory therefore gives its aft end:
+                            </ddue:para>
+                            <ddue:code language="XML" title="Lavatories placed on the deck">
+                                <![CDATA[
+<lavatories>
+    <lavatory uID="mainDeck_lavatoryForward">
+        <name>Forward lavatory</name>
+        <deckElementUID>lavatory</deckElementUID>
+        <transformation>
+            <translation>
+                <x>0.05</x>
+                <y>-0.85</y>
+                <z>0</z>
+            </translation>
+        </transformation>
+    </lavatory>
+    <lavatory uID="mainDeck_lavatoryAft">
+        <name>Aft lavatory</name>
+        <deckElementUID>lavatory</deckElementUID>
+        <transformation>
+            <rotation>
+                <z>180</z>
+            </rotation>
+            <translation>
+                <x>13.95</x>
+                <y>0.85</y>
+                <z>0</z>
+            </translation>
+        </transformation>
+    </lavatory>
+</lavatories>
+                                ]]>
+                            </ddue:code>
+                        </ddue:content>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -14005,17 +14252,17 @@ cpacs@dlr.de
                     </xsd:element>
                     <xsd:element name="deckElementUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of the corresponding element in the cpacs/vehicles/deckElemets node</xsd:documentation>
+                            <xsd:documentation>UID of the element in the library of deck elements</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="structuralMounts" minOccurs="0" type="deckStructuralMountsType">
                         <xsd:annotation>
-                            <xsd:documentation>Structural mounts</xsd:documentation>
+                            <xsd:documentation>Structural components the component is attached to</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="transformation" minOccurs="0" type="transformationType">
                         <xsd:annotation>
-                            <xsd:documentation>Position and orientation</xsd:documentation>
+                            <xsd:documentation>Position and orientation of the element coordinate system relative to the deck</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -14033,8 +14280,13 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Deck doors</ddue:para>
+                        <ddue:para>Doors</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>
+                            Doors of the deck: the exits through which passengers, crew or cargo enter or leave it.
+                        </ddue:para>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -14043,7 +14295,7 @@ cpacs@dlr.de
                 <xsd:sequence>
                     <xsd:element name="deckDoor" maxOccurs="unbounded" type="deckDoorType">
                         <xsd:annotation>
-                            <xsd:documentation>Deck door</xsd:documentation>
+                            <xsd:documentation>Door</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -14056,16 +14308,43 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Deck door</ddue:para>
+                        <ddue:para>Door of a deck</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>doors describe all doors of the cabin. They are linked
-                            to a structural door description. The cabin door is usually equal
-                            in size to the door, but does not need to be. The structural door
-                            might describe a wider cut-out, while the cabin door is primarily
-                            intended for evacuation modeling and cabin layout. In order to
-                            obtain a 3-dimensional door representation, the local cabin
-                            geometry shall be used.</ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                A door describes an exit of the deck as seen from the cabin: its purpose and the number of passengers that can leave through it in an evacuation.
+                                Its <ddue:codeInline>opening</ddue:codeInline> refers to a cut-out of the fuselage (<ddue:codeInline>fuselageCutOutType</ddue:codeInline>), from which position and size of the door follow.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Opening</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The opening is the UID of a cut-out of the fuselage (<ddue:codeInline>doorOpeningType</ddue:codeInline>).
+                                The legacy description by position and size on the deck (<ddue:codeInline>doorOpeningLegacyType</ddue:codeInline>) is kept for existing data; new data refers to a cut-out.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Example</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The forward door of the example deck, a boarding door in the cut-out of the forward passenger door of the fuselage:
+                            </ddue:para>
+                            <ddue:code language="XML" title="Door referencing a cut-out of the fuselage">
+                                <![CDATA[
+<deckDoors>
+    <deckDoor uID="mainDeck_doorL1">
+        <name>Forward door</name>
+        <paxCapacity>22</paxCapacity>
+        <opening>
+            <cutOutUID>Fuselage_paxDoorL1</cutOutUID>
+        </opening>
+        <doorType>boarding</doorType>
+    </deckDoor>
+    ...
+</deckDoors>
+                                ]]>
+                            </ddue:code>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -14085,18 +14364,17 @@ cpacs@dlr.de
                     </xsd:element>
                     <xsd:element name="paxCapacity" type="integerBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Number of passengers this door adds to the
-                                overall exit capacity limit of the aircraft</xsd:documentation>
+                            <xsd:documentation>Number of passengers the door adds to the exit capacity of the aircraft</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="opening" type="doorOpeningType">
                         <xsd:annotation>
-                            <xsd:documentation>Opening geometry</xsd:documentation>
+                            <xsd:documentation>Opening in the fuselage</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="doorType" minOccurs="0">
                         <xsd:annotation>
-                            <xsd:documentation>Door type (boarding, cargo, evacuation or service)</xsd:documentation>
+                            <xsd:documentation>Purpose of the door: boarding, cargo, evacuation or service</xsd:documentation>
                         </xsd:annotation>
                         <xsd:complexType>
                             <xsd:simpleContent>
@@ -14124,10 +14402,22 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Deck elements</ddue:para>
+                        <ddue:para>Library of deck elements</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>A list of predefined elements which can be linked in the actual deck of the aircraft or rotorcraft model via referencing its uID.</ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                Elements of the cabin that are defined once and installed on the decks of any model by reference, grouped by kind: seats, galleys, lavatories, class dividers, other floor modules, sidewall panels, luggage compartments, ceiling panels and cargo containers.
+                                Each element gives its shape and its mass in its own coordinate system (<ddue:codeInline>vehicleElementBaseType</ddue:codeInline>); a component of a deck places it (<ddue:codeInline>deckComponentBaseType</ddue:codeInline>).
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Element coordinate system</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The origin of an element should lie at the centre of the front lower edge of its box: at its smallest x, halfway between its smallest and its largest y and at its smallest z, with x pointing aft and z up in the installed position.
+                                An element that stands on the floor then stands on the floor of the deck when its component is translated in x and y only.
+                            </ddue:para>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -14137,47 +14427,47 @@ cpacs@dlr.de
                 <xsd:all>
                     <xsd:element name="ceilingPanelElements" minOccurs="0" type="ceilingPanelElementsType">
                         <xsd:annotation>
-                            <xsd:documentation>Ceiling panel elements for use in the decks</xsd:documentation>
+                            <xsd:documentation>Ceiling panel elements</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="classDividerElements" minOccurs="0" type="classDividerElementsType">
                         <xsd:annotation>
-                            <xsd:documentation>Class divider elements for use in the decks</xsd:documentation>
+                            <xsd:documentation>Class divider elements</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="galleyElements" minOccurs="0" type="galleyElementsType">
                         <xsd:annotation>
-                            <xsd:documentation>Galley elements for use in the decks</xsd:documentation>
+                            <xsd:documentation>Galley elements</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="genericFloorElements" minOccurs="0" type="genericFloorElementsType">
                         <xsd:annotation>
-                            <xsd:documentation>Generic floor elements for use in the decks</xsd:documentation>
+                            <xsd:documentation>Generic floor elements</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="lavatoryElements" minOccurs="0" type="lavatoryElementsType">
                         <xsd:annotation>
-                            <xsd:documentation>Lavatory elements for use in the decks</xsd:documentation>
+                            <xsd:documentation>Lavatory elements</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="luggageCompartmentElements" minOccurs="0" type="luggageCompartmentElementsType">
                         <xsd:annotation>
-                            <xsd:documentation>Luggage compartment elements for use in the decks</xsd:documentation>
+                            <xsd:documentation>Luggage compartment elements</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="seatElements" minOccurs="0" type="seatElementsType">
                         <xsd:annotation>
-                            <xsd:documentation>Seat elements for use in the decks</xsd:documentation>
+                            <xsd:documentation>Seat elements</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="sidewallPanelElements" minOccurs="0" type="sidewallPanelElementsType">
                         <xsd:annotation>
-                            <xsd:documentation>Sidewall panel elements for use in the decks</xsd:documentation>
+                            <xsd:documentation>Sidewall panel elements</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="cargoContainerElements" minOccurs="0" type="cargoContainerElementsType">
                         <xsd:annotation>
-                            <xsd:documentation>Cargo container elements for use in the decks</xsd:documentation>
+                            <xsd:documentation>Cargo container elements</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -14190,10 +14480,82 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Deck</ddue:para>
+                        <ddue:para>Deck of the fuselage with its cabin layout</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Data of an aircraft or rotorcraft deck</ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                A deck is a floor level of the fuselage, e.g. the passenger cabin of an airliner, with everything that belongs to it: the space available for the cabin, the aisles and spaces that are kept clear, the doors and the components installed on it, such as seats, galleys and lavatories.
+                                The components are elements of the library of deck elements (<ddue:codeInline>deckElementsType</ddue:codeInline>); the deck only gives where each of them stands.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Deck coordinate system</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The deck is placed by its <ddue:codeInline>transformation</ddue:codeInline> relative to its parent, which is the fuselage that contains the deck unless <ddue:codeInline>parentUID</ddue:codeInline> names another component.
+                                Like every component with a parent, it follows only the translation of its parent (see <ddue:codeInline>transformationType</ddue:codeInline>).
+                                The origin of a passenger deck usually lies at the rear wall of the cockpit and at the height of the floor.
+                            </ddue:para>
+                            <ddue:para>
+                                Everything the deck holds is given relative to the origin of the deck, with the floor at z = 0: the cabin geometry, the aisles, the spaces, the legacy door openings and the components.
+                                It follows only the translation of the deck, as a component follows its parent: a rotation or scaling of the deck does not apply to it, so a deck is usually only translated.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Layout</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                Each component references an element of the library by <ddue:codeInline>deckElementUID</ddue:codeInline> and places it with its own <ddue:codeInline>transformation</ddue:codeInline> (<ddue:codeInline>deckComponentBaseType</ddue:codeInline>).
+                                The cabin geometry describes the space available for the cabin (<ddue:codeInline>cabinGeometryType</ddue:codeInline>), aisles and spaces the areas of the floor that are kept clear (<ddue:codeInline>cabinAisleType</ddue:codeInline>, <ddue:codeInline>cabinSpaceType</ddue:codeInline>), and each door refers to its cut-out in the fuselage (<ddue:codeInline>deckDoorType</ddue:codeInline>).
+                            </ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="deckLayout"/>
+                            </ddue:mediaLink>
+                            <ddue:para>
+                                The figure shows the deck of the example below from above (a) and its forward part in detail (b).
+                                The origin lies at the rear wall of the cockpit; 13 rows of double seats stand on both sides of the aisle, galleys and lavatories at the ends of the cabin, and a space leads from the aisle to each door.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Rules</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:list class="bullet">
+                                <ddue:listItem>
+                                    <ddue:para>The components, aisles and spaces lie inside the fuselage and, where a cabin geometry is given, inside it.</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>The components overlap neither each other nor the spaces; components on the floor keep the aisles free.</ddue:para>
+                                </ddue:listItem>
+                            </ddue:list>
+                            <ddue:para>
+                                <ddue:legacyBold>Example</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The main deck of a short-range airliner, with its origin at the rear wall of the cockpit, 4.6 m behind the nose, and at the height of the floor, 0.55 m below the axis of the fuselage:
+                            </ddue:para>
+                            <ddue:code language="XML" title="Main deck placed in the fuselage">
+                                <![CDATA[
+<decks>
+    <deck uID="mainDeck">
+        <name>Main deck</name>
+        <transformation>
+            <translation>
+                <x>4.6</x>
+                <y>0</y>
+                <z>-0.55</z>
+            </translation>
+        </transformation>
+        <deckType>passenger</deckType>
+        <cabinGeometry>
+            ...
+        </cabinGeometry>
+        <seatModules>
+            ...
+        </seatModules>
+        ...
+    </deck>
+</decks>
+                                ]]>
+                            </ddue:code>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -14213,26 +14575,22 @@ cpacs@dlr.de
                     </xsd:element>
                     <xsd:element name="parentUID" minOccurs="0" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Component the deck is attached to, usually the fuselage. The translation of the deck is then given relative to the position of this component.</xsd:documentation>
+                            <xsd:documentation>UID of the component the deck is attached to; without it, the fuselage that contains the deck</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="floorStructureUID" minOccurs="0" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of the floor structure which supports this deck</xsd:documentation>
+                            <xsd:documentation>UID of the floor structure that supports the deck, e.g. a group of its cross beams and floor panels</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="transformation" type="transformationType">
                         <xsd:annotation>
-                            <xsd:documentation>The reference point of the deck/cabin. In a
-                                conventional aircraft like the A320, it would be the rear wall
-                                of the cockpit. The transformation is relative to the parent object
-                                defined by “parentUID”, which should be the fuselage.
-                            </xsd:documentation>
+                            <xsd:documentation>Position of the deck origin relative to the parent</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="deckType">
                         <xsd:annotation>
-                            <xsd:documentation>Deck type: passanger, VIP, cargo or livestock</xsd:documentation>
+                            <xsd:documentation>Use of the deck: passenger, VIP, cargo or livestock</xsd:documentation>
                         </xsd:annotation>
                         <xsd:complexType>
                             <xsd:simpleContent>
@@ -14247,7 +14605,7 @@ cpacs@dlr.de
                     </xsd:element>
                     <xsd:element name="cabinGeometry" minOccurs="0" type="cabinGeometryType">
                         <xsd:annotation>
-                            <xsd:documentation>Geometry of the cabin on this deck</xsd:documentation>
+                            <xsd:documentation>Space available for the cabin</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="seatModules" minOccurs="0" type="seatModulesType">
@@ -14328,7 +14686,10 @@ cpacs@dlr.de
                         <ddue:para>Structural mounts</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Structural mount type containing the structural connections of cabin elements</ddue:para>
+                        <ddue:para>
+                            Structural components that a deck component is attached to, e.g. the floor cross beams under a seat module.
+                            The link carries no attachment points.
+                        </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -14351,10 +14712,12 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Structural mount</ddue:para>
+                        <ddue:para>Link of a deck component to a structural component</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Structural mount type containing the structural connections of cabin elements</ddue:para>
+                        <ddue:para>
+                            Names one structural component, e.g. a frame or a floor cross beam, that the deck component is attached to.
+                        </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -14374,7 +14737,7 @@ cpacs@dlr.de
                     </xsd:element>
                     <xsd:element name="componentUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of the component to connect to</xsd:documentation>
+                            <xsd:documentation>UID of the structural component, e.g. a frame or a floor cross beam</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -14395,7 +14758,8 @@ cpacs@dlr.de
                         <ddue:para>Decks</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>List of decks
+                        <ddue:para>
+                            Decks of the fuselage, e.g. the main deck and the lower deck of an airliner, each with its own coordinate system and cabin layout (<ddue:codeInline>decksDeckType</ddue:codeInline>).
                         </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -14971,16 +15335,19 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Door opening (legacy)</ddue:para>
+                        <ddue:para>Opening of a door given on the deck (legacy)</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>doors describe all doors of the cabin. They are linked
-                            to a structural door description. The cabin door is usually equal
-                            in size to the door, but does not need to be. The structural door
-                            might describe a wider cut-out, while the cabin door is primarily
-                            intended for evacuation modeling and cabin layout. In order to
-                            obtain a 3-dimensional door representation, the local cabin
-                            geometry shall be used.</ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                The legacy description gives the opening of a door by its position and size in the deck coordinate system, without reference to the fuselage.
+                                It is kept for existing data; new data refers to a cut-out of the fuselage instead (<ddue:codeInline>doorOpeningType</ddue:codeInline>).
+                            </ddue:para>
+                            <ddue:para>
+                                The opening reaches from <ddue:codeInline>x</ddue:codeInline> to <ddue:codeInline>x</ddue:codeInline> + <ddue:codeInline>width</ddue:codeInline> along the deck and from the sill at <ddue:codeInline>z</ddue:codeInline> to <ddue:codeInline>z</ddue:codeInline> + <ddue:codeInline>height</ddue:codeInline>, in the wall of the cabin on the given <ddue:codeInline>side</ddue:codeInline>.
+                                Its shape on the wall follows from the cabin geometry of the deck at that position.
+                            </ddue:para>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -14990,30 +15357,27 @@ cpacs@dlr.de
                 <xsd:all>
                     <xsd:element name="x" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>This is the forward x-coordinate of the door
-                                relative to the cabin origin.</xsd:documentation>
+                            <xsd:documentation>x of the forward edge [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="z" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>The door sill height relative to cabin origin
-                            </xsd:documentation>
+                            <xsd:documentation>Height of the sill [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="width" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>The width of the door in x-direction
-                            </xsd:documentation>
+                            <xsd:documentation>Width along the x-axis [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="height" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>The effective height</xsd:documentation>
+                            <xsd:documentation>Clear height above the sill [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="side">
                         <xsd:annotation>
-                            <xsd:documentation>Side of the fuselage the door is located on</xsd:documentation>
+                            <xsd:documentation>Side of the cabin: port (left) or starboard (right) in flight direction</xsd:documentation>
                         </xsd:annotation>
                         <xsd:complexType>
                             <xsd:simpleContent>
@@ -15034,10 +15398,12 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Door opening</ddue:para>
+                        <ddue:para>Opening of a door</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Ceiling panel instance collection type.</ddue:para>
+                        <ddue:para>
+                            Either the UID of a cut-out of the fuselage (<ddue:codeInline>fuselageCutOutType</ddue:codeInline>), or the legacy description on the deck (<ddue:codeInline>doorOpeningLegacyType</ddue:codeInline>); new data uses the cut-out.
+                        </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -15047,12 +15413,12 @@ cpacs@dlr.de
                 <xsd:choice>
                     <xsd:element name="cutOutUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Reference to the cut out</xsd:documentation>
+                            <xsd:documentation>UID of the cut-out in the fuselage</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="doorOpeningLegacy" type="doorOpeningLegacyType">
                         <xsd:annotation>
-                            <xsd:documentation>Legacy description</xsd:documentation>
+                            <xsd:documentation>Position and size on the deck (legacy)</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:choice>
@@ -20821,7 +21187,9 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                         <ddue:para>Galley elements</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Galley element collection type</ddue:para>
+                        <ddue:para>
+                            Galleys of the library, installed on a deck by the components of <ddue:codeInline>galleysType</ddue:codeInline>.
+                        </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -20831,7 +21199,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:sequence>
                     <xsd:element name="galleyElement" maxOccurs="unbounded" type="galleyElementType">
                         <xsd:annotation>
-                            <xsd:documentation>Galley element for use in the decks</xsd:documentation>
+                            <xsd:documentation>Galley element</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -20847,7 +21215,9 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                         <ddue:para>Galley element</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Galley element type, containing the base elements of the cabin</ddue:para>
+                        <ddue:para>
+                            A galley of the library; <ddue:codeInline>numberOfTrolleys</ddue:codeInline> says how many trolleys it holds.
+                        </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -20857,7 +21227,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:sequence>
                     <xsd:element name="numberOfTrolleys" minOccurs="0" type="posExcl0IntBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Number of trolleys</xsd:documentation>
+                            <xsd:documentation>Number of trolleys the galley holds</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -20873,7 +21243,9 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                         <ddue:para>Galleys</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Galley instance collection type.</ddue:para>
+                        <ddue:para>
+                            Galleys installed on the deck, each referencing a galley element of the library (<ddue:codeInline>galleyElementsType</ddue:codeInline>).
+                        </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -21208,7 +21580,9 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                         <ddue:para>Generic floor elements</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Generic floor element collection type</ddue:para>
+                        <ddue:para>
+                            Floor modules of other kinds, e.g. stowage units or wardrobes, of the library, installed on a deck by the components of <ddue:codeInline>genericFloorModulesType</ddue:codeInline>.
+                        </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -21218,7 +21592,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:sequence>
                     <xsd:element name="genericFloorElement" maxOccurs="unbounded" type="vehicleElementBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Generic floor element for use in the decks</xsd:documentation>
+                            <xsd:documentation>Generic floor element</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -21234,7 +21608,9 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                         <ddue:para>Generic floor modules</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Generic floor module instance collection type.</ddue:para>
+                        <ddue:para>
+                            Floor modules of other kinds, e.g. stowage units or wardrobes, installed on the deck, each referencing a generic floor element of the library (<ddue:codeInline>genericFloorElementsType</ddue:codeInline>).
+                        </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -24576,7 +24952,9 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                         <ddue:para>Lavatories</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Lavatory instance collection type.</ddue:para>
+                        <ddue:para>
+                            Lavatories installed on the deck, each referencing a lavatory element of the library (<ddue:codeInline>lavatoryElementsType</ddue:codeInline>).
+                        </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -24602,7 +24980,9 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                         <ddue:para>Lavatory elements</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Lavatory element collection type</ddue:para>
+                        <ddue:para>
+                            Lavatories of the library, installed on a deck by the components of <ddue:codeInline>lavatoriesType</ddue:codeInline>.
+                        </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -24612,7 +24992,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:sequence>
                     <xsd:element name="lavatoryElement" maxOccurs="unbounded" type="vehicleElementBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Lavatory element for use in the decks</xsd:documentation>
+                            <xsd:documentation>Lavatory element</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -26023,7 +26403,9 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                         <ddue:para>Luggage compartment elements</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Luggage compartment element collection type</ddue:para>
+                        <ddue:para>
+                            Overhead luggage compartments of the library, installed on a deck by the components of <ddue:codeInline>luggageCompartmentsType</ddue:codeInline>.
+                        </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -26033,7 +26415,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:sequence>
                     <xsd:element name="luggageCompartmentElement" maxOccurs="unbounded" type="vehicleElementBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Luggage compartment element for use in the decks</xsd:documentation>
+                            <xsd:documentation>Luggage compartment element</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -26048,6 +26430,11 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     <ddue:summary>
                         <ddue:para>Luggage compartments</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>
+                            Overhead luggage compartments installed on the deck, each referencing a luggage compartment element of the library (<ddue:codeInline>luggageCompartmentElementsType</ddue:codeInline>).
+                        </ddue:para>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -26056,8 +26443,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:sequence>
                     <xsd:element name="luggageCompartment" maxOccurs="unbounded" type="deckComponentBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Luggage compartment
-                            </xsd:documentation>
+                            <xsd:documentation>Luggage compartment</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -38943,7 +39329,9 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                         <ddue:para>Seat elements</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Seat element collection type</ddue:para>
+                        <ddue:para>
+                            Seats of the library, installed on a deck by the components of <ddue:codeInline>seatModulesType</ddue:codeInline>.
+                        </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -38953,7 +39341,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:sequence>
                     <xsd:element name="seatElement" maxOccurs="unbounded" type="seatElementType">
                         <xsd:annotation>
-                            <xsd:documentation>Seat element for use in the decks</xsd:documentation>
+                            <xsd:documentation>Seat element</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -38969,7 +39357,51 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                         <ddue:para>Seat element</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Seat element type, containing the base elements of the cabin</ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                A seat of the library: a single seat or a row of seats installed as one piece, such as a double or a triple seat.
+                                <ddue:codeInline>numberOfSeats</ddue:codeInline> says how many passengers it seats; geometry and mass are those of the whole module.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Example</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The double seat of the example: its envelope is a box 0.72 m long, 1.02 m wide and 1.12 m high, translated by half its width in y so that the origin of the element lies at the centre of its front lower edge.
+                                Since the geometry is an envelope, the mass is given directly:
+                            </ddue:para>
+                            <ddue:code language="XML" title="Double seat in the library">
+                                <![CDATA[
+<seatElements>
+    <seatElement uID="doubleSeat">
+        <name>Double seat</name>
+        <geometry representation="envelope">
+            <cuboids>
+                <cuboid>
+                    <lengthX>0.72</lengthX>
+                    <depthY>1.02</depthY>
+                    <heightZ>1.12</heightZ>
+                    <transformation>
+                        <translation>
+                            <y>-0.51</y>
+                        </translation>
+                    </transformation>
+                </cuboid>
+            </cuboids>
+        </geometry>
+        <mass>
+            <mass>22</mass>
+            <location>
+                <x>0.36</x>
+                <y>0</y>
+                <z>0.42</z>
+            </location>
+        </mass>
+        <numberOfSeats>2</numberOfSeats>
+    </seatElement>
+</seatElements>
+                                ]]>
+                            </ddue:code>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -38979,7 +39411,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:sequence>
                     <xsd:element name="numberOfSeats" minOccurs="0" type="posExcl0IntBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Number</xsd:documentation>
+                            <xsd:documentation>Number of seats of the module</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -38995,7 +39427,9 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                         <ddue:para>Seat modules</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Seat module instance collection type.</ddue:para>
+                        <ddue:para>
+                            Seat modules installed on the deck, each referencing a seat element of the library (<ddue:codeInline>seatElementsType</ddue:codeInline>).
+                        </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -39413,7 +39847,9 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                         <ddue:para>Sidewall panel elements</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Sidewall panel element collection type</ddue:para>
+                        <ddue:para>
+                            Sidewall panels of the library, installed on a deck by the components of <ddue:codeInline>sidewallPanelsType</ddue:codeInline>.
+                        </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -39423,7 +39859,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:sequence>
                     <xsd:element name="sidewallPanelElement" maxOccurs="unbounded" type="vehicleElementBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Sidewall panel element for use in the decks</xsd:documentation>
+                            <xsd:documentation>Sidewall panel element</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -39439,7 +39875,9 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                         <ddue:para>Sidewall panels</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Sidewall panel instance collection type.</ddue:para>
+                        <ddue:para>
+                            Sidewall panels installed on the deck, each referencing a sidewall panel element of the library (<ddue:codeInline>sidewallPanelElementsType</ddue:codeInline>).
+                        </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -39449,8 +39887,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:sequence>
                     <xsd:element name="sidewallPanel" maxOccurs="unbounded" type="deckComponentBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Sidewall panel
-                            </xsd:documentation>
+                            <xsd:documentation>Sidewall panel</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -48912,7 +49349,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                                 <ddue:legacyBold>Nested transformations</ddue:legacyBold>
                             </ddue:para>
                             <ddue:para>
-                                Where nodes are nested, e.g. an element in a section of a wing, the transformation of the inner node is applied first and the transformation of its parent after it (see <ddue:codeInline>wingType</ddue:codeInline>).
+                                Where the parts of a component are nested, e.g. an element in a section of a wing, the transformation of the inner node is applied first and the transformation of its parent after it (see <ddue:codeInline>wingType</ddue:codeInline>).
                                 The scaling and rotation of the parent therefore also scale and rotate the translation of the inner node, whereas the transformation of the inner node does not change its parent.
                             </ddue:para>
                             <ddue:para>
@@ -48929,6 +49366,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                                 where o<ddue:subscript>parent</ddue:subscript> is the origin of the coordinate system of the parent in the global coordinate system.
                                 The translation is added along the global axes; the rotation and scaling of the parent do not apply to the component.
                                 With <ddue:codeInline>refType="absGlobal"</ddue:codeInline>, the transformation refers to the global coordinate system, as for a component without parent (see the local coordinate systems in <ddue:codeInline>cpacsType</ddue:codeInline>).
+                                The same holds for a component that is nested in its parent without <ddue:codeInline>parentUID</ddue:codeInline>: a deck in its fuselage and a component of a deck in its deck (<ddue:codeInline>decksDeckType</ddue:codeInline>).
                             </ddue:para>
                             <ddue:para>
                                 <ddue:legacyBold>Rules</ddue:legacyBold>
