@@ -19659,10 +19659,12 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Fuselage cut-outs</ddue:para>
+                        <ddue:para>Cut-outs</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Fuselage cutouts</ddue:para>
+                        <ddue:para>
+                            Openings in the fuselage, such as doors, emergency exits and windows (<ddue:codeInline>fuselageCutOutType</ddue:codeInline>).
+                        </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -19672,7 +19674,7 @@ cpacs@dlr.de
                 <xsd:sequence>
                     <xsd:element name="element" maxOccurs="unbounded" type="fuselageCutOutType">
                         <xsd:annotation>
-                            <xsd:documentation>Fuselage cut-out</xsd:documentation>
+                            <xsd:documentation>Cut-out</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -19685,10 +19687,93 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Fuselage cut-out</ddue:para>
+                        <ddue:para>Opening in the fuselage</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Fuselage cutout definition</ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                A cut-out describes an opening in the fuselage, such as a door, an emergency exit, a window or a ramp.
+                                It is a rectangle with rounded corners, extruded along <ddue:codeInline>orientationVector</ddue:codeInline>, and removes the fuselage surface around its centre; the opposite side of the fuselage is not affected.
+                                A door of a deck refers to its cut-out by UID (<ddue:codeInline>doorOpeningType</ddue:codeInline>).
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Position</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                All values are given in the fuselage coordinate system.
+                                A ray starts at the reference point (<ddue:codeInline>positionX</ddue:codeInline>, <ddue:codeInline>referenceY</ddue:codeInline>, <ddue:codeInline>referenceZ</ddue:codeInline>) and runs in the plane x = <ddue:codeInline>positionX</ddue:codeInline>, in the direction of the z-axis rotated about the x-axis by <ddue:codeInline>referenceAngle</ddue:codeInline>: 0° points up, 90° towards −y, i.e. to the left side in flight direction, 180° down and −90° towards +y.
+                                The centre of the cut-out is the point where the ray meets the fuselage surface.
+                                Stringers and frames are positioned in the same way (<ddue:codeInline>stringerFramePositionType</ddue:codeInline>).
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Shape</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The cut-out coordinate system has its origin at the centre.
+                                Its x-axis is the <ddue:codeInline>orientationVector</ddue:codeInline>, which points out of the fuselage and is the direction of the extrusion.
+                                Its y-axis is the <ddue:codeInline>alignmentVector</ddue:codeInline>, projected onto the plane normal to the x-axis, and its z-axis completes the right-handed system.
+                                The cut-out is the rectangle in the y-z plane that is centred at the origin, <ddue:codeInline>deltaY</ddue:codeInline> wide along y and <ddue:codeInline>deltaZ</ddue:codeInline> high along z, with its corners rounded by <ddue:codeInline>filletRadius</ddue:codeInline>.
+                            </ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="fuselageCutOut"/>
+                            </ddue:mediaLink>
+                            <ddue:para>
+                                The figure shows the forward passenger door of the example below.
+                                In the section at <ddue:codeInline>positionX</ddue:codeInline>, seen from behind (a), the ray runs from the reference point to the left and meets the surface at the centre; the cut-out removes the arc of the contour between its upper and its lower edge.
+                                Seen from outside (b), the cut-out is the rounded rectangle around the centre, 0.81 m wide along the <ddue:codeInline>alignmentVector</ddue:codeInline> and 1.85 m high.
+                            </ddue:para>
+                            <ddue:para>
+                                Without <ddue:codeInline>alignmentVector</ddue:codeInline>, the orientation of the rectangle about the x-axis is not yet specified, and neither is the meaning of <ddue:codeInline>deltaY1</ddue:codeInline> and <ddue:codeInline>deltaZ1</ddue:codeInline>.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Rules</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:list class="bullet">
+                                <ddue:listItem>
+                                    <ddue:para>The reference point lies inside the fuselage.</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>The <ddue:codeInline>alignmentVector</ddue:codeInline> is not parallel to the <ddue:codeInline>orientationVector</ddue:codeInline>.</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>The <ddue:codeInline>filletRadius</ddue:codeInline> is at most half the smaller of <ddue:codeInline>deltaY</ddue:codeInline> and <ddue:codeInline>deltaZ</ddue:codeInline>.</ddue:para>
+                                </ddue:listItem>
+                            </ddue:list>
+                            <ddue:para>
+                                <ddue:legacyBold>Example</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The forward passenger door of a short-range airliner, 0.81 m wide and 1.85 m high, on the left side of the fuselage with its sill at the cabin floor at z = −0.55 m:
+                            </ddue:para>
+                            <ddue:code language="XML" title="Passenger door on the left side of the fuselage">
+                                <![CDATA[
+<cutOuts>
+    <element uID="Fuselage_paxDoorL1">
+        <name>Forward passenger door</name>
+        <positionX>6.2</positionX>
+        <referenceY>0</referenceY>
+        <referenceZ>0.375</referenceZ>
+        <referenceAngle>90</referenceAngle>
+        <orientationVector>
+            <x>0</x>
+            <y>-1</y>
+            <z>0</z>
+        </orientationVector>
+        <alignmentVector>
+            <x>1</x>
+            <y>0</y>
+            <z>0</z>
+        </alignmentVector>
+        <deltaY>0.81</deltaY>
+        <deltaZ>1.85</deltaZ>
+        <filletRadius>0.2</filletRadius>
+        <cutoutType>paxDoor</cutoutType>
+    </element>
+    ...
+</cutOuts>
+                                ]]>
+                            </ddue:code>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -19708,88 +19793,96 @@ cpacs@dlr.de
                     </xsd:element>
                     <xsd:element name="positionX" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>X position of the cutout center point
-                            </xsd:documentation>
+                            <xsd:documentation>Position of the reference point and of the centre along the x-axis [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="referenceY" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Y offset of the cutout reference point
-                            </xsd:documentation>
+                            <xsd:documentation>Y-coordinate of the reference point [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="referenceZ" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Z offset of the cutout reference point
-                            </xsd:documentation>
+                            <xsd:documentation>Z-coordinate of the reference point [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="referenceAngle" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Angle in degrees of the vector pointing from
-                                the cutout reference point to the cutout center point, measured
-                                relative to the direction of the fuselage z axis
-                            </xsd:documentation>
+                            <xsd:documentation>Direction of the ray from the reference point to the centre: the z-axis rotated about the x-axis, 90 pointing towards -y [deg]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="orientationVector" type="pointXYZType">
                         <xsd:annotation>
-                            <xsd:documentation>Coordinates of the unit vector defining the
-                                direction of extrusion</xsd:documentation>
+                            <xsd:documentation>Direction of the extrusion, pointing out of the fuselage; x-axis of the cut-out coordinate system</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="alignmentVector" minOccurs="0" type="pointXYZType">
                         <xsd:annotation>
-                            <xsd:documentation>Coordinates of the unit vector defining the
-                                y-axis of the local cutout coordinate system. Must be normal to
-                                the orientationVector.</xsd:documentation>
+                            <xsd:documentation>Direction of the width; projected onto the plane normal to the orientationVector, it is the y-axis of the cut-out coordinate system</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="deltaY" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>This value is used to define the width of the
-                                cutout</xsd:documentation>
+                            <xsd:documentation>Width along the y-axis of the cut-out coordinate system [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="deltaZ" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>This value is used to define the height of the
-                                cutout</xsd:documentation>
+                            <xsd:documentation>Height along the z-axis of the cut-out coordinate system [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="deltaY1" minOccurs="0" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>This value is used to define the width of the
-                                cutout</xsd:documentation>
+                            <xsd:documentation>Further width, meaning not yet specified [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="deltaZ1" minOccurs="0" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>This value is used to define the height of the
-                                cutout</xsd:documentation>
+                            <xsd:documentation>Further height, meaning not yet specified [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="filletRadius" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Fillet radius of the cut element (absolute
-                                value)</xsd:documentation>
+                            <xsd:documentation>Corner radius of the rectangle [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="cutoutType">
                         <xsd:annotation>
-                            <xsd:documentation>Cutout type. Determines the type of the cutout
-                                and how it is treated by the tools. Possible values:
-                                ("window"|"door"|"ramp")</xsd:documentation>
+                            <xsd:documentation>Kind of opening</xsd:documentation>
                         </xsd:annotation>
                         <xsd:complexType>
                             <xsd:simpleContent>
                                 <xsd:restriction base="stringBaseType">
-                                    <xsd:enumeration value="window"/>
-                                    <xsd:enumeration value="door"/>
-                                    <xsd:enumeration value="paxDoor"/>
-                                    <xsd:enumeration value="emergencyDoor"/>
-                                    <xsd:enumeration value="cargoDoor"/>
-                                    <xsd:enumeration value="ramp"/>
+                                    <xsd:enumeration value="window">
+                                        <xsd:annotation>
+                                            <xsd:documentation>Window</xsd:documentation>
+                                        </xsd:annotation>
+                                    </xsd:enumeration>
+                                    <xsd:enumeration value="door">
+                                        <xsd:annotation>
+                                            <xsd:documentation>Door of unspecified purpose</xsd:documentation>
+                                        </xsd:annotation>
+                                    </xsd:enumeration>
+                                    <xsd:enumeration value="paxDoor">
+                                        <xsd:annotation>
+                                            <xsd:documentation>Passenger door</xsd:documentation>
+                                        </xsd:annotation>
+                                    </xsd:enumeration>
+                                    <xsd:enumeration value="emergencyDoor">
+                                        <xsd:annotation>
+                                            <xsd:documentation>Emergency exit</xsd:documentation>
+                                        </xsd:annotation>
+                                    </xsd:enumeration>
+                                    <xsd:enumeration value="cargoDoor">
+                                        <xsd:annotation>
+                                            <xsd:documentation>Cargo door</xsd:documentation>
+                                        </xsd:annotation>
+                                    </xsd:enumeration>
+                                    <xsd:enumeration value="ramp">
+                                        <xsd:annotation>
+                                            <xsd:documentation>Loading ramp</xsd:documentation>
+                                        </xsd:annotation>
+                                    </xsd:enumeration>
                                 </xsd:restriction>
                             </xsd:simpleContent>
                         </xsd:complexType>
