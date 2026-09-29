@@ -4832,8 +4832,30 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Stringer and frame alignment</ddue:para>
+                        <ddue:para>Offset and rotation of a profile against its path</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>
+                                Moves the profile of a stringer or a frame away from its position on the surface, e.g. to set a frame on top of the stringers or to keep a stringer profile from penetrating the skin.
+                                The values refer to the profile coordinate system at the position (<ddue:codeInline>stringerFramePositionType</ddue:codeInline>): x along the path, z normal to the surface and pointing into the fuselage, y completing the right-handed system.
+                                The profile is first rotated about the x-axis by <ddue:codeInline>rotationLocX</ddue:codeInline> and then moved by <ddue:codeInline>translationLocY</ddue:codeInline> along y and by <ddue:codeInline>translationLocZ</ddue:codeInline> along z; a value that is not given is 0.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Example</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The frames of the example of <ddue:codeInline>frameType</ddue:codeInline> stand on stringers 25 mm high:
+                            </ddue:para>
+                            <ddue:code language="XML" title="Frame profile moved inwards onto the stringers">
+                                <![CDATA[
+<alignment uID="Fuselage_frame1_position1_alignment">
+    <translationLocZ>0.025</translationLocZ>
+</alignment>
+                                ]]>
+                            </ddue:code>
+                        </ddue:content>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -4842,20 +4864,17 @@ cpacs@dlr.de
                 <xsd:all>
                     <xsd:element name="rotationLocX" minOccurs="0" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Rotation around local x axis (extrusion axis)
-                            </xsd:documentation>
+                            <xsd:documentation>Rotation of the profile about the x-axis of the profile coordinate system, i.e. about the path [deg]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="translationLocY" minOccurs="0" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Translation along local y axis (perpendicular
-                                to extrusion axis)</xsd:documentation>
+                            <xsd:documentation>Offset of the profile along the y-axis of the profile coordinate system [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="translationLocZ" minOccurs="0" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Translation along local z axis (perpendicular
-                                to x ynd y axes)</xsd:documentation>
+                            <xsd:documentation>Offset of the profile along the z-axis of the profile coordinate system, positive into the fuselage [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -19436,8 +19455,11 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Frames assembly</ddue:para>
+                        <ddue:para>Frames</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>The frames of the structure, each running around the fuselage.</ddue:para>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -19462,7 +19484,76 @@ cpacs@dlr.de
                         <ddue:para>Frame</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Frame definition (V1.5+)</ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                A frame is a circumferential stiffener of the fuselage shell: the profile of a structural element swept along a path around the fuselage on its surface.
+                                A frame with one position (<ddue:codeInline>stringerFramePositionType</ddue:codeInline>) is a whole ring: its path is the cross section of the surface in the plane x = <ddue:codeInline>positionX</ddue:codeInline>, starting at the position and running in the direction of increasing <ddue:codeInline>referenceAngle</ddue:codeInline>.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Several positions</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                A frame with several positions runs on the surface from each position to the next, in the direction of increasing <ddue:codeInline>referenceAngle</ddue:codeInline>, and ends at its last position.
+                                The order of the positions therefore decides which way the frame runs: from 255° to 210°, it passes 270°, 0°, 90° and 180°; from 210° to 255°, it covers only the 45° between them.
+                                Such a frame can be part of a ring, e.g. a frame interrupted by a door, or a whole ring whose profile changes around the circumference; a whole ring repeats its first position at the end, e.g. at 0°, 90°, 180°, 270° and 360°.
+                                Positions with different <ddue:codeInline>positionX</ddue:codeInline> give a frame that is not planar.
+                            </ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="stringerFramePosition"/>
+                            </ddue:mediaLink>
+                            <ddue:para>
+                                The figure shows the frame of the example below that is interrupted by the forward cargo door, in the section at x = 8 m seen from behind.
+                                It starts at the stringer above the door at 255°, runs over the top, the left side and the bottom, and ends at the stringer below the door at 210°.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Example</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The first frame of the barrel shown in <ddue:codeInline>fuselageStructureType</ddue:codeInline>, a whole ring at x = 7 m starting at the top, and the frame interrupted by the cargo door.
+                                Both use a Z-profile that is moved inwards by the height of the stringers, so that the frames stand on the stringers (<ddue:codeInline>alignmentStringFrameType</ddue:codeInline>).
+                            </ddue:para>
+                            <ddue:code language="XML" title="A whole frame and a frame interrupted by a door">
+                                <![CDATA[
+<frames>
+    <frame uID="Fuselage_frame1">
+        <framePosition uID="Fuselage_frame1_position1">
+            <structuralElementUID>ZFrame</structuralElementUID>
+            <positionX>7</positionX>
+            <referenceY>0</referenceY>
+            <referenceZ>0</referenceZ>
+            <referenceAngle>0</referenceAngle>
+            <alignment uID="Fuselage_frame1_position1_alignment">
+                <translationLocZ>0.025</translationLocZ>
+            </alignment>
+        </framePosition>
+    </frame>
+    <frame uID="Fuselage_frame3">
+        <framePosition uID="Fuselage_frame3_position1">
+            <structuralElementUID>ZFrame</structuralElementUID>
+            <positionX>8</positionX>
+            <referenceY>0</referenceY>
+            <referenceZ>0</referenceZ>
+            <referenceAngle>255</referenceAngle>
+            <alignment uID="Fuselage_frame3_position1_alignment">
+                <translationLocZ>0.025</translationLocZ>
+            </alignment>
+        </framePosition>
+        <framePosition uID="Fuselage_frame3_position2">
+            <structuralElementUID>ZFrame</structuralElementUID>
+            <positionX>8</positionX>
+            <referenceY>0</referenceY>
+            <referenceZ>0</referenceZ>
+            <referenceAngle>210</referenceAngle>
+            <alignment uID="Fuselage_frame3_position2_alignment">
+                <translationLocZ>0.025</translationLocZ>
+            </alignment>
+        </framePosition>
+    </frame>
+    ...
+</frames>
+                                ]]>
+                            </ddue:code>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -19472,7 +19563,7 @@ cpacs@dlr.de
                 <xsd:sequence>
                     <xsd:element name="framePosition" maxOccurs="unbounded" type="stringerFramePositionType">
                         <xsd:annotation>
-                            <xsd:documentation>Position</xsd:documentation>
+                            <xsd:documentation>Position; one for a whole ring, several for a frame running from position to position</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -20067,9 +20158,8 @@ cpacs@dlr.de
                             </ddue:para>
                             <ddue:para>
                                 All values are given in the fuselage coordinate system.
-                                A ray starts at the reference point (<ddue:codeInline>positionX</ddue:codeInline>, <ddue:codeInline>referenceY</ddue:codeInline>, <ddue:codeInline>referenceZ</ddue:codeInline>) and runs in the plane x = <ddue:codeInline>positionX</ddue:codeInline>, in the direction of the z-axis rotated about the x-axis by <ddue:codeInline>referenceAngle</ddue:codeInline>: 0° points up, 90° towards −y, i.e. to the left side in flight direction, 180° down and −90° towards +y.
-                                The centre of the cut-out is the point where the ray meets the fuselage surface.
-                                Stringers and frames are positioned in the same way (<ddue:codeInline>stringerFramePositionType</ddue:codeInline>).
+                                The centre of the cut-out is a point on the surface, given in the same way as the position of a stringer or a frame (<ddue:codeInline>stringerFramePositionType</ddue:codeInline>): the point where the ray from the reference point (<ddue:codeInline>positionX</ddue:codeInline>, <ddue:codeInline>referenceY</ddue:codeInline>, <ddue:codeInline>referenceZ</ddue:codeInline>) in the direction of <ddue:codeInline>referenceAngle</ddue:codeInline> meets the surface.
+                                The ray runs in the plane x = <ddue:codeInline>positionX</ddue:codeInline>; 0° points up and 90° towards −y, i.e. to the left side in flight direction.
                             </ddue:para>
                             <ddue:para>
                                 <ddue:legacyBold>Shape</ddue:legacyBold>
@@ -20807,10 +20897,33 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Fuselage structure</ddue:para>
+                        <ddue:para>Structure of a fuselage</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Data of the fuselage's structure</ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                The load-carrying structure of a fuselage: the shell of skin, stringers and frames, the floors with their cross beams, struts and longitudinal beams, the pressure bulkheads, walls, doors, windows and intercostals, and the areas where the wing and the tailplane are attached.
+                                All parts are given in the fuselage coordinate system; stringers and frames are placed on the surface of the fuselage by positions (<ddue:codeInline>stringerFramePositionType</ddue:codeInline>).
+                                Their cross sections and sheets are structural elements of the vehicle (<ddue:codeInline>structuralElementsType</ddue:codeInline>), referenced by UID.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Shell</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                Stringers run along the fuselage and frames around it, each a profile swept along a path on the surface (<ddue:codeInline>stringerType</ddue:codeInline>, <ddue:codeInline>frameType</ddue:codeInline>).
+                                The skin is the surface itself; skin panels between two frames and two stringers give parts of it a sheet of their own (<ddue:codeInline>skinType</ddue:codeInline>, <ddue:codeInline>skinSegmentType</ddue:codeInline>).
+                                Ducts and vessels describe their shells with the same types.
+                            </ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="fuselageStructure"/>
+                            </ddue:mediaLink>
+                            <ddue:para>
+                                The figure shows the shell of a barrel of the example fuselage around its forward cargo door, developed into the plane: along x from 7 m to 9.5 m, around the fuselage by <ddue:codeInline>referenceAngle</ddue:codeInline>.
+                                Six frames stand at a pitch of 0.5 m, and 24 stringers run every 15°.
+                                The frame at x = 8 m runs over the top from the stringer above the door to the stringer below it, and the two stringers through the door end at the frames at its edges.
+                                Three skin panels cover the top across 0°, the bottom and the surroundings of the door; the rest of the skin is the standard sheet.
+                            </ddue:para>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -39949,10 +40062,10 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Skin segments</ddue:para>
+                        <ddue:para>Skin panels</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Material on skin over circumference</ddue:para>
+                        <ddue:para>The parts of the skin that have a sheet of their own, each between two frames and two stringers.</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -39962,7 +40075,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:sequence>
                     <xsd:element name="skinSegment" maxOccurs="unbounded" type="skinSegmentType">
                         <xsd:annotation>
-                            <xsd:documentation>Skin segment</xsd:documentation>
+                            <xsd:documentation>Skin panel</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -39975,10 +40088,50 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Skin segment</ddue:para>
+                        <ddue:para>Skin panel</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Panel of the fuselage between stringers/ frames (new in V1.5)</ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                A skin panel is a part of the skin that has a sheet of its own, e.g. a thicker skin around a door or along the bottom of the fuselage.
+                                It is bounded by two frames and two stringers and may span several bays between them; the smallest panel is one bay between neighbouring frames and stringers.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Extent</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                Along the fuselage, the panel extends from the frame <ddue:codeInline>startFrameUID</ddue:codeInline> to the frame <ddue:codeInline>endFrameUID</ddue:codeInline>.
+                                Around the fuselage, it extends from the stringer <ddue:codeInline>startStringerUID</ddue:codeInline> in the direction of increasing <ddue:codeInline>referenceAngle</ddue:codeInline> (<ddue:codeInline>stringerFramePositionType</ddue:codeInline>) to the stringer <ddue:codeInline>endStringerUID</ddue:codeInline>.
+                                The order of the two stringers therefore selects one of the two parts of the circumference between them: from a stringer at 315° to one at 45°, the panel covers the top of the fuselage over 90°; from 45° to 315°, it covers the other 270°.
+                            </ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="fuselageStructure"/>
+                            </ddue:mediaLink>
+                            <ddue:para>
+                                In the barrel of the figure, the crown panel runs from the stringer at 315° across 0° to the stringer at 45°, the keel panel from 135° to 210°, and the door surround from 210° to 270°, between the first and the fifth frame.
+                                The example of <ddue:codeInline>skinType</ddue:codeInline> shows the crown panel.
+                            </ddue:para>
+                            <ddue:para>
+                                Without <ddue:codeInline>endStringerUID</ddue:codeInline>, the extent around the fuselage is not yet specified.
+                            </ddue:para>
+                            <ddue:alert class="tigl">
+                                <ddue:para>
+                                    TiGL 3.5 does not take the order of startStringerUID and endStringerUID into account: both orders give the same panel.
+                                    Nor does it reliably cut the surface along the stringers: of 61 panels one, three and six bays wide between the stringers of the example of skinType, 27 came out larger than their stringers bound them, up to five times.
+                                </ddue:para>
+                            </ddue:alert>
+                            <ddue:para>
+                                <ddue:legacyBold>Rules</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:list class="bullet">
+                                <ddue:listItem>
+                                    <ddue:para>Skin panels do not overlap.</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>The stringers that bound a panel run along its whole length, and the frames that bound it around its whole width.</ddue:para>
+                                </ddue:listItem>
+                            </ddue:list>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -39988,32 +40141,27 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:all>
                     <xsd:element name="sheetElementUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of sheetBasedStructuralElement used for
-                                the panel</xsd:documentation>
+                            <xsd:documentation>UID of the sheetBasedStructuralElement of the panel</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="startFrameUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of frame at start of the skin segment
-                            </xsd:documentation>
+                            <xsd:documentation>UID of the frame at which the panel starts along the fuselage</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="endFrameUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of frame at end of the skin segment
-                            </xsd:documentation>
+                            <xsd:documentation>UID of the frame at which the panel ends along the fuselage</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="startStringerUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of stringer at start of the skin segment
-                            </xsd:documentation>
+                            <xsd:documentation>UID of the stringer at which the panel starts around the fuselage</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="endStringerUID" minOccurs="0" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of stringer at end of the skin segment
-                            </xsd:documentation>
+                            <xsd:documentation>UID of the stringer at which the panel ends, reached from the start stringer in the direction of increasing referenceAngle</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -40034,7 +40182,36 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                         <ddue:para>Skin</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Containing data defining the skin</ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                The skin is the surface of the fuselage as a structural part.
+                                Its sheet, i.e. its material and thickness, is the sheet-based structural element <ddue:codeInline>standardSheetElementUID</ddue:codeInline>, except where a skin panel gives a part of the skin a sheet of its own (<ddue:codeInline>skinSegmentType</ddue:codeInline>).
+                                The same type describes the skin of a duct and a layer of the wall of a vessel (<ddue:codeInline>vesselSkinLayersType</ddue:codeInline>).
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Example</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The skin of the barrel shown in <ddue:codeInline>fuselageStructureType</ddue:codeInline> has a standard sheet of 1.6 mm and three panels; the excerpt shows the panel across the top, 1.8 mm thick:
+                            </ddue:para>
+                            <ddue:code language="XML" title="Skin with a standard sheet and a panel across the top">
+                                <![CDATA[
+<skin>
+    <standardSheetElementUID>SkinStandard</standardSheetElementUID>
+    <skinSegments>
+        <skinSegment uID="Fuselage_crownPanel">
+            <sheetElementUID>SkinCrown</sheetElementUID>
+            <startFrameUID>Fuselage_frame1</startFrameUID>
+            <endFrameUID>Fuselage_frame6</endFrameUID>
+            <startStringerUID>Fuselage_stringer315</startStringerUID>
+            <endStringerUID>Fuselage_stringer045</endStringerUID>
+        </skinSegment>
+        ...
+    </skinSegments>
+</skin>
+                                ]]>
+                            </ddue:code>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -40044,14 +40221,12 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:all>
                     <xsd:element name="standardSheetElementUID" minOccurs="0" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Default UID of sheetBasedStructuralElement
-                                used for the fuselage skin not covered by individual panels
-                            </xsd:documentation>
+                            <xsd:documentation>UID of the sheetBasedStructuralElement of the skin outside all skin panels</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="skinSegments" minOccurs="0" type="skinSegmentsType">
                         <xsd:annotation>
-                            <xsd:documentation>Skin segments with individual material definitions</xsd:documentation>
+                            <xsd:documentation>Skin panels with a sheet of their own</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -41539,14 +41714,92 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Stringer and frame position</ddue:para>
+                        <ddue:para>Position of a stringer or a frame</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>Description of individual stringer / frame positions</ddue:para>
+                            <ddue:para>
+                                A position is a point on the surface of the fuselage through which a stringer or a frame runs (<ddue:codeInline>stringerType</ddue:codeInline>, <ddue:codeInline>frameType</ddue:codeInline>).
+                                It also names the cross section of the part from this position to the next and says how the part is aligned and joined there.
+                                In a duct or a vessel, the surface and the coordinate system are those of that component.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Point on the surface</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                All values are given in the fuselage coordinate system.
+                                A ray starts at the reference point (<ddue:codeInline>positionX</ddue:codeInline>, <ddue:codeInline>referenceY</ddue:codeInline>, <ddue:codeInline>referenceZ</ddue:codeInline>) and runs in the plane x = <ddue:codeInline>positionX</ddue:codeInline>, in the direction of the z-axis rotated about the x-axis by <ddue:codeInline>referenceAngle</ddue:codeInline>: 0° points up, 90° towards −y, i.e. to the left side in flight direction, 180° down and 270° or −90° towards +y.
+                                The position is the point where the ray meets the surface.
+                                With the reference point on the axis of the fuselage, <ddue:codeInline>referenceAngle</ddue:codeInline> is the angle around the fuselage.
+                            </ddue:para>
                             <ddue:mediaLink>
-                                <ddue:image xlink:href="stringerFramePositioning"/>
+                                <ddue:image xlink:href="stringerFramePosition"/>
                             </ddue:mediaLink>
+                            <ddue:para>
+                                The figure shows the two positions of the frame around the cargo door of the example of <ddue:codeInline>frameType</ddue:codeInline>: both rays start at the reference point on the axis, at 255° and at 210°.
+                            </ddue:para>
+                            <ddue:para>
+                                Instead of <ddue:codeInline>positionX</ddue:codeInline>, <ddue:codeInline>sectionElementUID</ddue:codeInline> can give the plane in which the position lies: the plane of the profile of that section element (<ddue:codeInline>fuselageElementType</ddue:codeInline>), i.e. the y-z plane of its coordinate system.
+                                The reference point is then the point of this plane with y = <ddue:codeInline>referenceY</ddue:codeInline> and z = <ddue:codeInline>referenceZ</ddue:codeInline>, and the ray runs in this plane; its angle is measured from the projection of the z-axis of the fuselage onto the plane, in the same sense as above.
+                                For an element whose profile lies in a plane normal to the x-axis, this is the same as giving the x-coordinate of that plane as <ddue:codeInline>positionX</ddue:codeInline>.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Profile</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                From a position to the next, the part is the profile of the <ddue:codeInline>profileBasedStructuralElementType</ddue:codeInline> named by <ddue:codeInline>structuralElementUID</ddue:codeInline>, swept along the path; the profile itself is a <ddue:codeInline>structuralProfileType</ddue:codeInline>.
+                                At each point of the path, the profile coordinate system has its x-axis along the path, its z-axis normal to the surface and pointing into the fuselage, and its y-axis completing the right-handed system.
+                                The x-axis of the profile lies along this y-axis and the y-axis of the profile along this z-axis, with the origin of the profile on the surface: a profile drawn at y ≥ 0 lies on the inner side of the skin.
+                                A stringer runs from its first to its last position and a frame in the direction of increasing <ddue:codeInline>referenceAngle</ddue:codeInline>, so at the top of the fuselage the x-axis of a stringer profile points to the left side and that of a frame profile forward.
+                                The <ddue:codeInline>alignment</ddue:codeInline> moves the profile away from this position (<ddue:codeInline>alignmentStringFrameType</ddue:codeInline>).
+                            </ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="stringerFrameProfile"/>
+                            </ddue:mediaLink>
+                            <ddue:para>
+                                The figure shows both at the top of the fuselage, enlarged: the T-profile of a stringer (a) with its flange on the surface and its web pointing inwards, and the Z-profile of a frame (b), moved inwards by 25 mm onto the stringer.
+                            </ddue:para>
+                            <ddue:alert class="tigl">
+                                <ddue:para>
+                                    TiGL 3.5 places the profile turned by 180° about the path: the y-axis of the profile points out of the fuselage, and its x-axis the opposite way to the one described here.
+                                    A profile drawn at y ≥ 0 then lies on the outer side of the skin.
+                                </ddue:para>
+                            </ddue:alert>
+                            <ddue:para>
+                                <ddue:legacyBold>Between two positions</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The <ddue:codeInline>continuity</ddue:codeInline> of a position says whether the part may have a kink there (0, the default) or is continuous in curvature there (2).
+                                Between a position and the next, the part has the profile of the first of them; with <ddue:codeInline>interpolation</ddue:codeInline> = 1 at the first, the profile blends linearly along the path into that of the next, e.g. to change the height of a stringer.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Rules</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:list class="bullet">
+                                <ddue:listItem>
+                                    <ddue:para>The reference point lies inside the fuselage.</ddue:para>
+                                </ddue:listItem>
+                            </ddue:list>
+                            <ddue:para>
+                                <ddue:legacyBold>Example</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The position of the first frame of the example of <ddue:codeInline>frameType</ddue:codeInline>: a whole ring at x = 7 m, starting at the top, with its Z-profile moved inwards by the 25 mm height of the stringers.
+                            </ddue:para>
+                            <ddue:code language="XML" title="Position of a frame, starting at the top of the fuselage">
+                                <![CDATA[
+<framePosition uID="Fuselage_frame1_position1">
+    <structuralElementUID>ZFrame</structuralElementUID>
+    <positionX>7</positionX>
+    <referenceY>0</referenceY>
+    <referenceZ>0</referenceZ>
+    <referenceAngle>0</referenceAngle>
+    <alignment uID="Fuselage_frame1_position1_alignment">
+        <translationLocZ>0.025</translationLocZ>
+    </alignment>
+</framePosition>
+                                ]]>
+                            </ddue:code>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -41557,52 +41810,44 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:sequence>
                     <xsd:element name="structuralElementUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of profile based structural element
-                            </xsd:documentation>
+                            <xsd:documentation>UID of the profileBasedStructuralElement whose profile the part has from this position to the next</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:choice>
                         <xsd:element name="positionX" type="doubleBaseType">
                             <xsd:annotation>
-                                <xsd:documentation>X position in absolute value
-                                </xsd:documentation>
+                                <xsd:documentation>Position of the reference point along the x-axis [m]</xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
                         <xsd:element name="sectionElementUID" type="stringUIDBaseType">
                             <xsd:annotation>
-                                <xsd:documentation>UID reference to a fuselageSectionElement
-                                </xsd:documentation>
+                                <xsd:documentation>UID of the section element in whose profile plane the position lies; alternative to positionX</xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
                     </xsd:choice>
                     <xsd:element name="referenceY" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Y coordinate of reference system
-                            </xsd:documentation>
+                            <xsd:documentation>Y-coordinate of the reference point [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="referenceZ" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Z coordinate of reference system
-                            </xsd:documentation>
+                            <xsd:documentation>Z-coordinate of the reference point [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="referenceAngle" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Angle definition to calculate intersection
-                                with loft</xsd:documentation>
+                            <xsd:documentation>Direction of the ray from the reference point to the position: the z-axis rotated about the x-axis, 90 pointing towards -y [deg]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="alignment" minOccurs="0" type="alignmentStringFrameType">
                         <xsd:annotation>
-                            <xsd:documentation>Alignment</xsd:documentation>
+                            <xsd:documentation>Offset and rotation of the profile against the path</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="continuity" minOccurs="0" default="0">
                         <xsd:annotation>
-                            <xsd:documentation>Continuity definition for profile extrusion:
-                                0= C0 (allows sharp edges, default), 2= C2 (defines curvature
-                                continuity)</xsd:documentation>
+                            <xsd:documentation>Continuity of the part at this position: 0 allows a kink (default), 2 continuous in curvature</xsd:documentation>
                         </xsd:annotation>
                         <xsd:complexType>
                             <xsd:simpleContent>
@@ -41615,7 +41860,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     </xsd:element>
                     <xsd:element name="interpolation" minOccurs="0" default="0">
                         <xsd:annotation>
-                            <xsd:documentation>Interpolation between different profiles: 0= no interpolation 1= interpolation of structural profile</xsd:documentation>
+                            <xsd:documentation>Profile between this position and the next: 0 the profile of this position (default), 1 blending linearly into the profile of the next position</xsd:documentation>
                         </xsd:annotation>
                         <xsd:complexType>
                             <xsd:simpleContent>
@@ -41672,10 +41917,10 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Stringers assembly</ddue:para>
+                        <ddue:para>Stringers</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Assembly of stringers (new V1.5)</ddue:para>
+                        <ddue:para>The stringers of the structure, each running along the fuselage from position to position.</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -41701,7 +41946,43 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                         <ddue:para>Stringer</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Stringer definition (CPACS V1.5+)</ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                A stringer is a longitudinal stiffener of the skin: the profile of a structural element swept along a path on the surface of the fuselage.
+                                The path runs from the first position (<ddue:codeInline>stringerFramePositionType</ddue:codeInline>) to the second and on to each further position in the order given, along the fuselage between two positions.
+                                A stringer has at least two positions, usually at the same <ddue:codeInline>referenceAngle</ddue:codeInline>; where they differ, the stringer turns around the fuselage between them, e.g. to follow a tapering tail.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Example</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The stringer at 45° of the barrel shown in <ddue:codeInline>fuselageStructureType</ddue:codeInline> runs from the first frame at x = 7 m to the last at x = 9.5 m.
+                                The stringers at 225° and 240°, which meet the cargo door, are split into two stringers each, one ending at the frame in front of the door and one starting at the frame behind it.
+                            </ddue:para>
+                            <ddue:code language="XML" title="Stringer along the barrel at 45°">
+                                <![CDATA[
+<stringers>
+    <stringer uID="Fuselage_stringer045">
+        <stringerPosition uID="Fuselage_stringer045_position1">
+            <structuralElementUID>TStringer</structuralElementUID>
+            <positionX>7</positionX>
+            <referenceY>0</referenceY>
+            <referenceZ>0</referenceZ>
+            <referenceAngle>45</referenceAngle>
+        </stringerPosition>
+        <stringerPosition uID="Fuselage_stringer045_position2">
+            <structuralElementUID>TStringer</structuralElementUID>
+            <positionX>9.5</positionX>
+            <referenceY>0</referenceY>
+            <referenceZ>0</referenceZ>
+            <referenceAngle>45</referenceAngle>
+        </stringerPosition>
+    </stringer>
+    ...
+</stringers>
+                                ]]>
+                            </ddue:code>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -41711,7 +41992,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:sequence>
                     <xsd:element name="stringerPosition" minOccurs="2" maxOccurs="unbounded" type="stringerFramePositionType">
                         <xsd:annotation>
-                            <xsd:documentation>Position</xsd:documentation>
+                            <xsd:documentation>Position; at least two, in the order along the stringer</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>

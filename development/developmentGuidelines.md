@@ -233,6 +233,18 @@ Within one subject area the same kind of part keeps its color across all figures
 | Chord of an element, in top views of the planform | Series 1 |
 | Chord surface, leading and trailing edge, filling between the shells | Muted |
 
+The figures of the fuselage use the assignment below.
+
+| Part | Color |
+| ---------- | ---------- |
+| Stringers, and the construction of a position (reference point, ray, angle) | Series 1 |
+| Skin panels | Series 1 at area-wash opacity |
+| Cut-outs, and the doors and spaces of a deck that belong to them | Series 2 |
+| Frames | Series 3 |
+| Galleys and lavatories of a deck | Series 3 |
+| Seats of a deck | Series 1 |
+| Contour of the fuselage, aisles | Muted |
+
 The table grows with the documentation: whoever works on another area adds the assignment of its parts here, in the same form, so that the next author of that area finds it instead of choosing again.
 
 - **§23: Color identifies, text explains. Text is set in ink, never in a series color, and identity never depends on color alone.**
