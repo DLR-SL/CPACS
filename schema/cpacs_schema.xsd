@@ -4735,8 +4735,33 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Cross beam alignment</ddue:para>
+                        <ddue:para>Shortening and alignment of a cross beam or a strut</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>
+                                Adjusts a cross beam or a strut against its path, e.g. to keep the end of a cross beam clear of the skin.
+                                The values refer to the profile coordinate system on the path: x along the path, y along the x-axis and z along the y-axis of the profile (<ddue:codeInline>crossBeamAssemblyPositionType</ddue:codeInline>, <ddue:codeInline>crossBeamStrutAssemblyPositionType</ddue:codeInline>).
+                                The path of a cross beam starts at its right end, that of a strut at the cross beam.
+                                <ddue:codeInline>offset1LocX</ddue:codeInline> shortens the member at the start of its path and <ddue:codeInline>offset2LocX</ddue:codeInline> at its end; a negative value lengthens it.
+                                The profile is first rotated about the x-axis by <ddue:codeInline>rotationLocX</ddue:codeInline> and then moved by <ddue:codeInline>translationLocY</ddue:codeInline> along y and by <ddue:codeInline>translationLocZ</ddue:codeInline> along z; a value that is not given is 0.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Example</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The cross beams of the example end 30 mm short of the surface on both sides:
+                            </ddue:para>
+                            <ddue:code language="XML" title="Cross beam shortened at both ends">
+                                <![CDATA[
+<alignment uID="Fuselage_paxCrossBeam1_alignment">
+    <offset1LocX>0.03</offset1LocX>
+    <offset2LocX>0.03</offset2LocX>
+</alignment>
+                                ]]>
+                            </ddue:code>
+                        </ddue:content>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -4745,32 +4770,27 @@ cpacs@dlr.de
                 <xsd:all>
                     <xsd:element name="offset1LocX" minOccurs="0" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Offset in direction of extrusion, first side
-                                (absolute value)</xsd:documentation>
+                            <xsd:documentation>Length by which the member is shortened at the start of its path [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="offset2LocX" minOccurs="0" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Offset in direction of extrusion, second side
-                                (absolute value)</xsd:documentation>
+                            <xsd:documentation>Length by which the member is shortened at the end of its path [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="rotationLocX" minOccurs="0" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Rotation around local x axis (extrusion axis)
-                            </xsd:documentation>
+                            <xsd:documentation>Rotation of the profile about the x-axis of the profile coordinate system, i.e. about the path [deg]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="translationLocY" minOccurs="0" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Translation along local y axis (perpendicular
-                                to extrusion axis)</xsd:documentation>
+                            <xsd:documentation>Offset of the profile along the y-axis of the profile coordinate system [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="translationLocZ" minOccurs="0" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Translation along local z axis (perpendicular
-                                to x ynd y axes)</xsd:documentation>
+                            <xsd:documentation>Offset of the profile along the z-axis of the profile coordinate system [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -4788,8 +4808,33 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Floor panel alignment</ddue:para>
+                        <ddue:para>Offsets of a floor panel against its longitudinal floor beams</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>
+                                Moves the edges of a floor panel and the panel itself away from the paths of its longitudinal floor beams, e.g. to leave a gap at a seat rail or to lay the panel on top of the rails.
+                                The values refer to the local coordinate system of the panel (<ddue:codeInline>floorPanelType</ddue:codeInline>): y from the first longitudinal floor beam to the second, z up.
+                                <ddue:codeInline>offset1LocY</ddue:codeInline> moves the edge at the first beam along y, <ddue:codeInline>offset2LocY</ddue:codeInline> the edge at the second, and <ddue:codeInline>offsetLocZ</ddue:codeInline> the whole panel along z.
+                                The values are lengths with sign; a value that is not given is 0.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Example</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The panel of the example of <ddue:codeInline>floorPanelType</ddue:codeInline>, narrowed by 5 mm at both rails and raised by the height of the rails:
+                            </ddue:para>
+                            <ddue:code language="XML" title="Floor panel on top of the seat rails, clear of their axes">
+                                <![CDATA[
+<alignment uID="Fuselage_paxPanelC1_alignment">
+    <offset1LocY>0.005</offset1LocY>
+    <offset2LocY>-0.005</offset2LocY>
+    <offsetLocZ>0.02</offsetLocZ>
+</alignment>
+                                ]]>
+                            </ddue:code>
+                        </ddue:content>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -4798,23 +4843,17 @@ cpacs@dlr.de
                 <xsd:all>
                     <xsd:element name="offset1LocY" minOccurs="0" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Offset from seat rail 1 reference Position in
-                                local y direction (in plane of panel, absolute value)
-                            </xsd:documentation>
+                            <xsd:documentation>Offset of the edge at the first longitudinal floor beam along the y-axis of the panel [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="offset2LocY" minOccurs="0" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Offset from seat rail 2 reference position in
-                                local y direction (in plane of panel, absolute value)
-                            </xsd:documentation>
+                            <xsd:documentation>Offset of the edge at the second longitudinal floor beam along the y-axis of the panel [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="offsetLocZ" minOccurs="0" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Offset from seat rail 1 reference position in
-                                local z direction (in plane of panel, absolute value))
-                            </xsd:documentation>
+                            <xsd:documentation>Offset of the panel along its z-axis, positive up [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -4892,8 +4931,18 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Structural member alignment</ddue:para>
+                        <ddue:para>Offset and rotation of a longitudinal floor beam against its path</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>
+                                Moves the profile of a longitudinal floor beam away from its position, e.g. to set a rail beside the cross beams instead of on top of them.
+                                The values refer to the profile coordinate system at the position: x along the path, y along the x-axis and z along the y-axis of the profile (<ddue:codeInline>longFloorBeamPositionType</ddue:codeInline>).
+                                The profile is first rotated about the x-axis by <ddue:codeInline>rotationLocX</ddue:codeInline> and then moved by <ddue:codeInline>translationLocY</ddue:codeInline> along y and by <ddue:codeInline>translationLocZ</ddue:codeInline> along z; a value that is not given is 0.
+                                The effect of <ddue:codeInline>offsetLocX</ddue:codeInline> is not specified yet.
+                            </ddue:para>
+                        </ddue:content>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -4902,26 +4951,22 @@ cpacs@dlr.de
                 <xsd:all>
                     <xsd:element name="offsetLocX" minOccurs="0" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Offset in direction of extrusion (absolute
-                                value)</xsd:documentation>
+                            <xsd:documentation>Offset along the path, not specified yet [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="rotationLocX" minOccurs="0" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Rotation around local x axis (extrusion axis)
-                            </xsd:documentation>
+                            <xsd:documentation>Rotation of the profile about the x-axis of the profile coordinate system, i.e. about the path [deg]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="translationLocY" minOccurs="0" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Translation along local y axis (perpendicular
-                                to extrusion axis)</xsd:documentation>
+                            <xsd:documentation>Offset of the profile along the y-axis of the profile coordinate system [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="translationLocZ" minOccurs="0" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Translation along local z axis (perpendicular
-                                to x ynd y axes)</xsd:documentation>
+                            <xsd:documentation>Offset of the profile along the z-axis of the profile coordinate system [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -6682,10 +6727,10 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Cargo cross beams assembly</ddue:para>
+                        <ddue:para>Cross beams of the cargo floor</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Cargo crossBeam assemblies</ddue:para>
+                        <ddue:para>The cross beams of the cargo floor, each attached to a frame (<ddue:codeInline>crossBeamAssemblyPositionType</ddue:codeInline>).</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -6708,10 +6753,10 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Cargo cross beam struts assembly</ddue:para>
+                        <ddue:para>Struts of the cargo floor</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Cargo crossBeam strut assemblies</ddue:para>
+                        <ddue:para>The struts of the cargo floor, each supporting a cross beam against a frame (<ddue:codeInline>crossBeamStrutAssemblyPositionType</ddue:codeInline>).</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -12748,10 +12793,75 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Cross beam assembly position</ddue:para>
+                        <ddue:para>Cross beam of a floor</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Position of a crossBeam assembly</ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                A cross beam is a transverse beam of a floor, attached to a frame: the profile of a structural element swept along a straight line across the fuselage.
+                                The same type describes the cross beams of the passenger floor and of the cargo floor; struts support them (<ddue:codeInline>crossBeamStrutAssemblyPositionType</ddue:codeInline>), and longitudinal floor beams run over them (<ddue:codeInline>longFloorBeamType</ddue:codeInline>).
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Path</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                All values are given in the fuselage coordinate system.
+                                The cross beam lies in the plane of the frame <ddue:codeInline>frameUID</ddue:codeInline> at the height z = <ddue:codeInline>positionZ</ddue:codeInline>: it runs straight between the two points where the path of the frame has this height, i.e. from the surface on one side of the fuselage to the surface on the other.
+                                Its path runs from the end with the larger y to the end with the smaller y, i.e. from the right to the left side in flight direction.
+                                A floor with a slope has cross beams with different values of <ddue:codeInline>positionZ</ddue:codeInline>.
+                            </ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="fuselageFloor"/>
+                            </ddue:mediaLink>
+                            <ddue:para>
+                                The figure shows the lower half of the section at the second frame of the example: the passenger cross beam at z = −0.57 m, 20 mm below the cabin floor, with four seat rails and two vertical struts, and the cargo cross beam at the sill of the cargo door, on struts inclined outwards.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Profile</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The profile of the <ddue:codeInline>profileBasedStructuralElementType</ddue:codeInline> named by <ddue:codeInline>structuralElementUID</ddue:codeInline> is swept along the path, with its origin on the path.
+                                The x-axis of the profile lies along the x-axis of the fuselage, and its y-axis along the direction of the path crossed with the x-axis, i.e. up.
+                                A profile drawn at y ≤ 0 therefore hangs below the path, and <ddue:codeInline>positionZ</ddue:codeInline> is the height of its upper edge.
+                                The <ddue:codeInline>alignment</ddue:codeInline> shortens the cross beam at its ends and moves or rotates the profile (<ddue:codeInline>alignmentCrossBeamType</ddue:codeInline>).
+                            </ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="floorBeamProfile"/>
+                            </ddue:mediaLink>
+                            <ddue:para>
+                                Figure (b) shows the I-profile of the cross beams of the example, 120 mm high below the path, seen from the left, with a seat rail on it; figure (a) shows the seat rail on the cross beam, seen from behind (<ddue:codeInline>longFloorBeamPositionType</ddue:codeInline>).
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Rules</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:list class="bullet">
+                                <ddue:listItem>
+                                    <ddue:para>The frame reaches the height <ddue:codeInline>positionZ</ddue:codeInline> on both sides of the fuselage; a frame that is interrupted there, e.g. by a door, carries no cross beam at this height.</ddue:para>
+                                </ddue:listItem>
+                            </ddue:list>
+                            <ddue:para>
+                                <ddue:legacyBold>Example</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The first passenger cross beam of the example, on the frame at x = 7 m, shortened by 30 mm at both ends:
+                            </ddue:para>
+                            <ddue:code language="XML" title="Cross beam of the passenger floor">
+                                <![CDATA[
+<paxCrossBeams>
+    <paxCrossBeam uID="Fuselage_paxCrossBeam1">
+        <structuralElementUID>CrossBeam</structuralElementUID>
+        <frameUID>Fuselage_frame1</frameUID>
+        <positionZ>-0.57</positionZ>
+        <alignment uID="Fuselage_paxCrossBeam1_alignment">
+            <offset1LocX>0.03</offset1LocX>
+            <offset2LocX>0.03</offset2LocX>
+        </alignment>
+    </paxCrossBeam>
+    ...
+</paxCrossBeams>
+                                ]]>
+                            </ddue:code>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -12761,25 +12871,22 @@ cpacs@dlr.de
                 <xsd:all>
                     <xsd:element name="structuralElementUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of profile based structural element to be
-                                used as crossbeam</xsd:documentation>
+                            <xsd:documentation>UID of the profileBasedStructuralElement whose profile the cross beam has</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="frameUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of the frame to which the crossbeam is
-                                attached</xsd:documentation>
+                            <xsd:documentation>UID of the frame in whose plane the cross beam lies</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="positionZ" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Referenze z position of the crossbeam
-                            </xsd:documentation>
+                            <xsd:documentation>Height of the path of the cross beam in the fuselage coordinate system [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="alignment" minOccurs="0" type="alignmentCrossBeamType">
                         <xsd:annotation>
-                            <xsd:documentation>Alignment</xsd:documentation>
+                            <xsd:documentation>Shortening of the ends, offset and rotation of the profile against the path</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -12797,8 +12904,75 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Cross beam strut assembly position</ddue:para>
+                        <ddue:para>Strut supporting a cross beam</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>
+                                A strut supports a cross beam of a floor against a frame: the profile of a structural element swept along a straight line from the cross beam to the frame.
+                                The same type describes the struts of the passenger floor and of the cargo floor.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Line</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                All values are given in the fuselage coordinate system.
+                                The strut starts at the point of the path of the cross beam <ddue:codeInline>crossBeamUID</ddue:codeInline> with y = <ddue:codeInline>positionYAtCrossBeam</ddue:codeInline> (<ddue:codeInline>crossBeamAssemblyPositionType</ddue:codeInline>).
+                                From there it runs in the direction of the z-axis rotated about the x-axis by <ddue:codeInline>angleX</ddue:codeInline>, measured like <ddue:codeInline>referenceAngle</ddue:codeInline> in <ddue:codeInline>stringerFramePositionType</ddue:codeInline>: 180°, the default, points straight down, a smaller angle inclines the strut towards −y, i.e. to the left side in flight direction, and a larger one towards +y.
+                                It ends where it meets the path of the frame <ddue:codeInline>frameUID</ddue:codeInline>.
+                                Usually this is the frame of the cross beam, and the strut lies in its plane; towards another frame, the strut runs in the half-plane spanned by the x-axis and this direction and is inclined along x.
+                            </ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="fuselageFloor"/>
+                            </ddue:mediaLink>
+                            <ddue:para>
+                                In the figure, the passenger struts stand vertically at y = ±1.1 m (<ddue:codeInline>angleX</ddue:codeInline> = 180°), and the cargo struts are inclined outwards and downwards: 200° on the right side, 160° on the left.
+                            </ddue:para>
+                            <ddue:alert class="tigl">
+                                <ddue:para>
+                                    TiGL 3.5 measures <ddue:codeInline>angleX</ddue:codeInline> from the −y direction instead of the z-axis, in the same sense, and so turns each strut by −90° about the x-axis: a vertical strut needs 90°.
+                                    Struts given as described here, vertical at 180° or inclined like those of the example, lie along the cross beam in TiGL or stop it with an error.
+                                    Without <ddue:codeInline>angleX</ddue:codeInline>, TiGL lays the strut along the cross beam as well.
+                                </ddue:para>
+                            </ddue:alert>
+                            <ddue:para>
+                                <ddue:legacyBold>Profile</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The profile of the <ddue:codeInline>profileBasedStructuralElementType</ddue:codeInline> named by <ddue:codeInline>structuralElementUID</ddue:codeInline> is swept along the line from the cross beam to the frame, with its origin on the line.
+                                The x-axis of the profile lies along the x-axis of the fuselage, and its y-axis along the direction of the strut crossed with the x-axis, i.e. towards −y for a vertical strut.
+                                The <ddue:codeInline>alignment</ddue:codeInline> shortens the strut at its ends and moves or rotates the profile (<ddue:codeInline>alignmentCrossBeamType</ddue:codeInline>).
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Rules</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:list class="bullet">
+                                <ddue:listItem>
+                                    <ddue:para>The line from the cross beam meets the path of the frame.</ddue:para>
+                                </ddue:listItem>
+                            </ddue:list>
+                            <ddue:para>
+                                <ddue:legacyBold>Example</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The right strut under the first passenger cross beam of the example, vertical at y = 1.1 m:
+                            </ddue:para>
+                            <ddue:code language="XML" title="Strut of the passenger floor">
+                                <![CDATA[
+<paxCrossBeamStruts>
+    <paxCrossBeamStrut uID="Fuselage_paxStrut1R">
+        <structuralElementUID>Strut</structuralElementUID>
+        <frameUID>Fuselage_frame1</frameUID>
+        <crossBeamUID>Fuselage_paxCrossBeam1</crossBeamUID>
+        <positionYAtCrossBeam>1.1</positionYAtCrossBeam>
+        <angleX>180</angleX>
+    </paxCrossBeamStrut>
+    ...
+</paxCrossBeamStruts>
+                                ]]>
+                            </ddue:code>
+                        </ddue:content>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -12807,37 +12981,32 @@ cpacs@dlr.de
                 <xsd:all>
                     <xsd:element name="structuralElementUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of profile based structural element to be
-                                used as crossbeam strut</xsd:documentation>
+                            <xsd:documentation>UID of the profileBasedStructuralElement whose profile the strut has</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="frameUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of the frame to which the crossbeam strut
-                                is attached</xsd:documentation>
+                            <xsd:documentation>UID of the frame on which the strut ends</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="crossBeamUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of the crossbeam to which the crossbeam
-                                strut is attached</xsd:documentation>
+                            <xsd:documentation>UID of the cross beam on which the strut starts</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="positionYAtCrossBeam" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Referenze y position of the strut at the
-                                crossbeam intersection</xsd:documentation>
+                            <xsd:documentation>Y-coordinate of the start of the strut on the cross beam, in the fuselage coordinate system [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="angleX" minOccurs="0" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Angle of the strut in global yz plane
-                            </xsd:documentation>
+                            <xsd:documentation>Direction of the strut: the z-axis rotated about the x-axis, 180 pointing down (default) [deg]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="alignment" minOccurs="0" type="alignmentCrossBeamType">
                         <xsd:annotation>
-                            <xsd:documentation>Alignment</xsd:documentation>
+                            <xsd:documentation>Shortening of the ends, offset and rotation of the profile against the line</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -18698,7 +18867,7 @@ cpacs@dlr.de
                         <ddue:para>Floor panels</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Floor panel definitions</ddue:para>
+                        <ddue:para>The floor panels of all floors, each between two longitudinal floor beams (<ddue:codeInline>floorPanelType</ddue:codeInline>).</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -18724,7 +18893,64 @@ cpacs@dlr.de
                         <ddue:para>Floor panel</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Floor panel assembly position</ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                A floor panel is a sheet of a floor between two longitudinal floor beams, e.g. between two seat rails.
+                                Its material and thickness are those of the <ddue:codeInline>sheetBasedStructuralElementType</ddue:codeInline> named by <ddue:codeInline>sheetElementUID</ddue:codeInline>.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Surface</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                All values are given in the fuselage coordinate system.
+                                The panel is the surface between the paths of the longitudinal floor beams <ddue:codeInline>longFloorBeam1UID</ddue:codeInline> and <ddue:codeInline>longFloorBeam2UID</ddue:codeInline>, from x = <ddue:codeInline>startX</ddue:codeInline> to x = <ddue:codeInline>endX</ddue:codeInline>.
+                                Its local y-axis lies in the surface and points from the first beam to the second, and its z-axis is normal to the surface and points up; the <ddue:codeInline>alignment</ddue:codeInline> moves the edges along y and the panel along z (<ddue:codeInline>alignmentFloorPanelType</ddue:codeInline>).
+                            </ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="floorPanel"/>
+                            </ddue:mediaLink>
+                            <ddue:para>
+                                The figure shows the passenger floor of the example from above: cross beams on five frames, four seat rails and panels between neighbouring rails.
+                                The outlined panel lies between the two inner rails from x = 7 m to x = 8.5 m, across the frame over the cargo door, which carries no cross beam.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Rules</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:list class="bullet">
+                                <ddue:listItem>
+                                    <ddue:para>Both longitudinal floor beams run through the whole range from <ddue:codeInline>startX</ddue:codeInline> to <ddue:codeInline>endX</ddue:codeInline>.</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>
+                                        <ddue:codeInline>startX</ddue:codeInline> is smaller than <ddue:codeInline>endX</ddue:codeInline>.</ddue:para>
+                                </ddue:listItem>
+                            </ddue:list>
+                            <ddue:para>
+                                <ddue:legacyBold>Example</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The outlined panel of the figure, which ends 5 mm short of the axis of each rail and lies on top of the rails, 20 mm high:
+                            </ddue:para>
+                            <ddue:code language="XML" title="Floor panel between two seat rails">
+                                <![CDATA[
+<floorPanels>
+    <floorPanel uID="Fuselage_paxPanelC1">
+        <startX>7</startX>
+        <endX>8.5</endX>
+        <longFloorBeam1UID>Fuselage_paxRailL1</longFloorBeam1UID>
+        <longFloorBeam2UID>Fuselage_paxRailR1</longFloorBeam2UID>
+        <sheetElementUID>FloorPanel</sheetElementUID>
+        <alignment uID="Fuselage_paxPanelC1_alignment">
+            <offset1LocY>0.005</offset1LocY>
+            <offset2LocY>-0.005</offset2LocY>
+            <offsetLocZ>0.02</offsetLocZ>
+        </alignment>
+    </floorPanel>
+    ...
+</floorPanels>
+                                ]]>
+                            </ddue:code>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -18734,37 +18960,32 @@ cpacs@dlr.de
                 <xsd:all>
                     <xsd:element name="startX" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>X coordinate of the begin of the floor panel
-                                (absolute value)</xsd:documentation>
+                            <xsd:documentation>X-coordinate of the forward edge of the panel [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="endX" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>X coordinate of the end of the floor panel
-                                (absolute value)</xsd:documentation>
+                            <xsd:documentation>X-coordinate of the rear edge of the panel [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="longFloorBeam1UID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of the first long. floor beam to be
-                                connected to the floor panel</xsd:documentation>
+                            <xsd:documentation>UID of the first longitudinal floor beam bounding the panel</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="longFloorBeam2UID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of the second long. floor beam to be
-                                connected to the floor panel</xsd:documentation>
+                            <xsd:documentation>UID of the second longitudinal floor beam bounding the panel</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="sheetElementUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of structural sheet element used for the
-                                floor panel</xsd:documentation>
+                            <xsd:documentation>UID of the sheetBasedStructuralElement that gives material and thickness of the panel</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="alignment" minOccurs="0" type="alignmentFloorPanelType">
                         <xsd:annotation>
-                            <xsd:documentation>Alignment</xsd:documentation>
+                            <xsd:documentation>Offsets of the edges and of the panel</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -20922,6 +21143,14 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                                 Six frames stand at a pitch of 0.5 m, and 24 stringers run every 15°.
                                 The frame at x = 8 m runs over the top from the stringer above the door to the stringer below it, and the two stringers through the door end at the frames at its edges.
                                 Three skin panels cover the top across 0°, the bottom and the surroundings of the door; the rest of the skin is the standard sheet.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Floors</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                A floor stands on cross beams, which span a frame at the height of the floor (<ddue:codeInline>crossBeamAssemblyPositionType</ddue:codeInline>), and on struts, which support the cross beams against the frames below (<ddue:codeInline>crossBeamStrutAssemblyPositionType</ddue:codeInline>).
+                                Longitudinal floor beams such as seat rails run along the fuselage over the cross beams (<ddue:codeInline>longFloorBeamType</ddue:codeInline>), and floor panels cover the space between two of them (<ddue:codeInline>floorPanelType</ddue:codeInline>).
+                                The passenger floor and the cargo floor are described in the same way, the one in <ddue:codeInline>paxCrossBeams</ddue:codeInline> and <ddue:codeInline>paxCrossBeamStruts</ddue:codeInline>, the other in <ddue:codeInline>cargoCrossBeams</ddue:codeInline> and <ddue:codeInline>cargoCrossBeamStruts</ddue:codeInline>; the longitudinal floor beams and the floor panels of both are listed together.
                             </ddue:para>
                         </ddue:content>
                     </ddue:remarks>
@@ -26381,10 +26610,57 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Longitudinal floor beam position</ddue:para>
+                        <ddue:para>Position of a longitudinal floor beam</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Individual position definition</ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                A position is the point of a cross beam through which a longitudinal floor beam runs (<ddue:codeInline>longFloorBeamType</ddue:codeInline>).
+                                It also names the cross section of the beam from this position to the next and says how the beam is aligned and joined there.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Point</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The position is the point of the path of the cross beam <ddue:codeInline>crossBeamUID</ddue:codeInline> with y = <ddue:codeInline>positionY</ddue:codeInline> in the fuselage coordinate system (<ddue:codeInline>crossBeamAssemblyPositionType</ddue:codeInline>).
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Profile</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                From a position to the next, the beam is the profile of the <ddue:codeInline>profileBasedStructuralElementType</ddue:codeInline> named by <ddue:codeInline>structuralElementUID</ddue:codeInline>, swept along the path, with its origin on the path.
+                                The y-axis of the profile points up, normal to the path in the vertical plane through it, and its x-axis is this y-axis crossed with the direction of the path: for a beam running aft, it points towards +y.
+                                A profile drawn at y ≥ 0 therefore stands on the cross beams, whatever the order of the positions.
+                                The <ddue:codeInline>alignment</ddue:codeInline> moves the profile away from this position (<ddue:codeInline>alignmentStructMemberType</ddue:codeInline>).
+                            </ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="floorBeamProfile"/>
+                            </ddue:mediaLink>
+                            <ddue:para>
+                                Figure (a) shows a seat rail of the example on a cross beam, seen from behind: its I-profile, 20 mm high, stands on the path, and the floor panels lie on top of it; figure (b) shows the cross beam under it, seen from the left.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Between two positions</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:codeInline>continuity</ddue:codeInline> and <ddue:codeInline>interpolation</ddue:codeInline> have the same meaning as at a position of a stringer (<ddue:codeInline>stringerFramePositionType</ddue:codeInline>).
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Example</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The first position of the inner right seat rail of the example:
+                            </ddue:para>
+                            <ddue:code language="XML" title="Position of a seat rail on a cross beam">
+                                <![CDATA[
+<longFloorBeamPosition uID="Fuselage_paxRailR1_position1">
+    <structuralElementUID>SeatRail</structuralElementUID>
+    <crossBeamUID>Fuselage_paxCrossBeam1</crossBeamUID>
+    <positionY>0.52</positionY>
+</longFloorBeamPosition>
+                                ]]>
+                            </ddue:code>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -26394,30 +26670,27 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:all>
                     <xsd:element name="structuralElementUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of structural element</xsd:documentation>
+                            <xsd:documentation>UID of the profileBasedStructuralElement whose profile the beam has from this position to the next</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="crossBeamUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of crossbeam to which the long. beam is
-                                attached</xsd:documentation>
+                            <xsd:documentation>UID of the cross beam on which the position lies</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="positionY" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Y position of long. beam</xsd:documentation>
+                            <xsd:documentation>Y-coordinate of the position on the cross beam, in the fuselage coordinate system [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="alignment" minOccurs="0" type="alignmentStructMemberType">
                         <xsd:annotation>
-                            <xsd:documentation>Alignment</xsd:documentation>
+                            <xsd:documentation>Offset and rotation of the profile against the path</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="continuity" minOccurs="0" default="0">
                         <xsd:annotation>
-                            <xsd:documentation>Continuity definition for profile extrusion:
-                                0= C0 (allows sharp edges, default), 2= C2 (defines curvature
-                                continuity)</xsd:documentation>
+                            <xsd:documentation>Continuity of the beam at this position: 0 allows a kink (default), 2 continuous in curvature</xsd:documentation>
                         </xsd:annotation>
                         <xsd:complexType>
                             <xsd:simpleContent>
@@ -26430,7 +26703,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     </xsd:element>
                     <xsd:element name="interpolation" minOccurs="0" default="0">
                         <xsd:annotation>
-                            <xsd:documentation>Interpolation between different profiles: 0= no interpolation 1= interpolation of structural profile</xsd:documentation>
+                            <xsd:documentation>Profile between this position and the next: 0 the profile of this position (default), 1 blending linearly into the profile of the next position</xsd:documentation>
                         </xsd:annotation>
                         <xsd:complexType>
                             <xsd:simpleContent>
@@ -26456,10 +26729,10 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Longitudinal floor beams assembly</ddue:para>
+                        <ddue:para>Longitudinal floor beams</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Long. floor beam assemblies</ddue:para>
+                        <ddue:para>The longitudinal floor beams of all floors, e.g. seat rails, each running along the fuselage over cross beams (<ddue:codeInline>longFloorBeamType</ddue:codeInline>).</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -26485,7 +26758,39 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                         <ddue:para>Longitudinal floor beam</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Long. floor beam definition</ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                A longitudinal floor beam runs along the fuselage over the cross beams of a floor, e.g. a seat rail: the profile of a structural element swept along a path through its positions (<ddue:codeInline>longFloorBeamPositionType</ddue:codeInline>).
+                                Each position lies on a cross beam, and the path runs from each position to the next.
+                                Floor panels lie between two longitudinal floor beams (<ddue:codeInline>floorPanelType</ddue:codeInline>).
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Example</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The inner right seat rail of the passenger floor of the example, at y = 0.52 m on the cross beams of the five frames that carry one:
+                            </ddue:para>
+                            <ddue:code language="XML" title="Seat rail over the cross beams of the passenger floor">
+                                <![CDATA[
+<longFloorBeams>
+    <longFloorBeam uID="Fuselage_paxRailR1">
+        <longFloorBeamPosition uID="Fuselage_paxRailR1_position1">
+            <structuralElementUID>SeatRail</structuralElementUID>
+            <crossBeamUID>Fuselage_paxCrossBeam1</crossBeamUID>
+            <positionY>0.52</positionY>
+        </longFloorBeamPosition>
+        <longFloorBeamPosition uID="Fuselage_paxRailR1_position2">
+            <structuralElementUID>SeatRail</structuralElementUID>
+            <crossBeamUID>Fuselage_paxCrossBeam2</crossBeamUID>
+            <positionY>0.52</positionY>
+        </longFloorBeamPosition>
+        ...
+    </longFloorBeam>
+    ...
+</longFloorBeams>
+                                ]]>
+                            </ddue:code>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -34064,10 +34369,10 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Passenger cross beams assembly</ddue:para>
+                        <ddue:para>Cross beams of the passenger floor</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Pax crossBeam assemblies</ddue:para>
+                        <ddue:para>The cross beams of the passenger floor, each attached to a frame (<ddue:codeInline>crossBeamAssemblyPositionType</ddue:codeInline>).</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -34090,10 +34395,10 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Passenger cross beam struts assembly</ddue:para>
+                        <ddue:para>Struts of the passenger floor</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Pax crossBeam strut assemblies</ddue:para>
+                        <ddue:para>The struts of the passenger floor, each supporting a cross beam against a frame (<ddue:codeInline>crossBeamStrutAssemblyPositionType</ddue:codeInline>).</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -41759,12 +42064,6 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                             <ddue:para>
                                 The figure shows both at the top of the fuselage, enlarged: the T-profile of a stringer (a) with its flange on the surface and its web pointing inwards, and the Z-profile of a frame (b), moved inwards by 25 mm onto the stringer.
                             </ddue:para>
-                            <ddue:alert class="tigl">
-                                <ddue:para>
-                                    TiGL 3.5 places the profile turned by 180° about the path: the y-axis of the profile points out of the fuselage, and its x-axis the opposite way to the one described here.
-                                    A profile drawn at y ≥ 0 then lies on the outer side of the skin.
-                                </ddue:para>
-                            </ddue:alert>
                             <ddue:para>
                                 <ddue:legacyBold>Between two positions</ddue:legacyBold>
                             </ddue:para>
@@ -54384,7 +54683,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
         <translation>
             <x>10</x>
             <y>0</y>
-            <z>-0.5</z>
+            <z>-1.1</z>
         </translation>
     </transformation>
     <sections>

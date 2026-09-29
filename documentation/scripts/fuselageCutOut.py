@@ -84,9 +84,9 @@ def _normal_right(z):
 CUTOUTS = [
     ("paxDoorL1", "Forward passenger door", "paxDoor", 6.2, 0.0, FLOOR_Z + 1.85 / 2, 90.0, LEFT, ALONG_X,
      0.81, 1.85, 0.2),
-    ("emergencyExitL", "Over-wing exit left", "emergencyDoor", 12.5, 0.0, 0.45, 90.0, LEFT, ALONG_X,
+    ("emergencyExitL", "Over-wing exit left", "emergencyDoor", 12.5, 0.0, 0.35, 90.0, LEFT, ALONG_X,
      0.51, 0.92, 0.15),
-    ("emergencyExitR", "Over-wing exit right", "emergencyDoor", 12.5, 0.0, 0.45, -90.0, RIGHT, ALONG_X,
+    ("emergencyExitR", "Over-wing exit right", "emergencyDoor", 12.5, 0.0, 0.35, -90.0, RIGHT, ALONG_X,
      0.51, 0.92, 0.15),
     ("paxDoorL2", "Aft passenger door", "paxDoor", 18.3, 0.0, FLOOR_Z + 1.85 / 2, 90.0, LEFT, ALONG_X,
      0.81, 1.85, 0.2),

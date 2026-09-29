@@ -239,6 +239,8 @@ The figures of the fuselage use the assignment below.
 | ---------- | ---------- |
 | Stringers, and the construction of a position (reference point, ray, angle) | Series 1 |
 | Skin panels | Series 1 at area-wash opacity |
+| Floor members: cross beams, struts, longitudinal floor beams | Series 1 |
+| Floor panels | Series 1 at area-wash opacity |
 | Cut-outs, and the doors and spaces of a deck that belong to them | Series 2 |
 | Frames | Series 3 |
 | Galleys and lavatories of a deck | Series 3 |

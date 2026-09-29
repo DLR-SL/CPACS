@@ -68,7 +68,7 @@ NOTE = FONT_SIZE["annotation"]
 
 # ------------------------------------------------------------------ example data
 WING_UID = "Wing"
-WING_TRANSLATION = (10.0, 0.0, -0.5)  # relative to the fuselage, the parent of the wing
+WING_TRANSLATION = (10.0, 0.0, -1.1)  # relative to the fuselage (its parent); a low wing, see fuselageStructure.py
 AIRFOIL_UID = "NACA2412"
 
 # Sections: (uID suffix, chord = element scaling in x and z, twist = section rotation about y [deg])
