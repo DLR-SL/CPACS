@@ -75,7 +75,8 @@ WING = {"x_root": 12.5, "z_root": -1.65, "semi_span": 17.05, "root_chord": 6.0, 
         "sweep": 27.0, "dihedral": 5.0, "thickness": (0.13, 0.10), "y_body": 1.2}
 TAILPLANE = {"x_root": 32.0, "z_root": 1.1, "semi_span": 6.2, "root_chord": 4.0, "tip_chord": 1.8,
              "sweep": 32.0, "dihedral": 6.0, "thickness": (0.10, 0.09), "y_body": 0.8}
-FIN = {"root": ((30.5, 1.89), (37.3, 1.5)), "tip": ((34.2, 6.6), (36.2, 6.6)), "thickness": 0.10}
+# Vertical tail: leading edge swept back by about 42 deg, trailing edge by about 14 deg, taper about 0.4
+FIN = {"root": ((30.8, 1.88), (35.6, 1.60)), "tip": ((35.0, 6.6), (36.8, 6.6)), "thickness": 0.10}
 NACELLE = {"x": (12.4, 17.0), "y": 5.75, "radius": 0.98, "drop": 1.35}
 
 # --- Angles of the figures (drawn larger than in cruise, so that the construction is legible) ---
