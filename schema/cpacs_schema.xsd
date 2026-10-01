@@ -13347,6 +13347,13 @@ cpacs@dlr.de
                                 The cuboid is defined in its own coordinate system, with the origin at a corner of its lower face.
                                 The lower face spans x = 0 to <ddue:codeInline>lengthX</ddue:codeInline> and y = 0 to <ddue:codeInline>depthY</ddue:codeInline> in the plane z = 0; the upper face lies in the plane z = <ddue:codeInline>heightZ</ddue:codeInline>.
                             </ddue:para>
+                            <ddue:alert class="note">
+                                <ddue:para>
+                                    The origin lies at a corner because the corner follows from the parameters alone, also for a tapered cuboid or a wedge, whose center would first have to be computed from its upper face.
+                                    To place an element by the center of its cuboid, move the cuboid there with its own <ddue:codeInline>transformation</ddue:codeInline>: a translation by −<ddue:codeInline>lengthX</ddue:codeInline>/2, −<ddue:codeInline>depthY</ddue:codeInline>/2 and −<ddue:codeInline>heightZ</ddue:codeInline>/2 puts the center of a rectangular box at the origin of the element, so that a component positions the box by its center.
+                                    For a tapered cuboid or a wedge, the same translation centers the lower face and the height, not the center of gravity of the body.
+                                </ddue:para>
+                            </ddue:alert>
                             <ddue:para>
                                 Without the <ddue:codeInline>upperFace</ddue:codeInline> values, the upper face equals the lower face and the cuboid is a rectangular box.
                                 <ddue:codeInline>upperFaceXmin</ddue:codeInline>, <ddue:codeInline>upperFaceXmax</ddue:codeInline>, <ddue:codeInline>upperFaceYmin</ddue:codeInline> and <ddue:codeInline>upperFaceYmax</ddue:codeInline> give the upper face a different extent, e.g. for a tapered or sheared body.
@@ -13383,6 +13390,35 @@ cpacs@dlr.de
         <density>600</density>
     </mass>
 </genericElement>
+                                ]]>
+                            </ddue:code>
+                            <ddue:para>
+                                The battery of the fuel cell propulsion unit (see <ddue:codeInline>systemElementsType</ddue:codeInline>), a rectangular box that the transformation of its cuboid moves so that its center lies at the origin of the element:
+                            </ddue:para>
+                            <ddue:code language="XML" title="Cuboid placed by its center">
+                                <![CDATA[
+<battery uID="battery">
+    <name>Battery, 30 kWh</name>
+    <geometry>
+        <cuboids>
+            <cuboid>
+                <lengthX>0.8</lengthX>
+                <depthY>0.45</depthY>
+                <heightZ>0.3</heightZ>
+                <transformation>
+                    <translation>
+                        <x>-0.4</x>
+                        <y>-0.225</y>
+                        <z>-0.15</z>
+                    </translation>
+                </transformation>
+            </cuboid>
+        </cuboids>
+    </geometry>
+    <mass>
+        <mass>150</mass>
+    </mass>
+</battery>
                                 ]]>
                             </ddue:code>
                         </ddue:content>
@@ -22356,9 +22392,9 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <systemElementUID>heatExchanger</systemElementUID>
             <transformation>
                 <translation>
-                    <x>9.3</x>
-                    <y>3.65</y>
-                    <z>0.2</z>
+                    <x>9.36</x>
+                    <y>4</y>
+                    <z>0.45</z>
                 </translation>
             </transformation>
         </component>
@@ -22367,9 +22403,9 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <systemElementUID>fuelCellStack</systemElementUID>
             <transformation>
                 <translation>
-                    <x>10.9</x>
-                    <y>3.75</y>
-                    <z>0.775</z>
+                    <x>11.35</x>
+                    <y>4</y>
+                    <z>1</z>
                 </translation>
             </transformation>
         </component>
@@ -36064,7 +36100,8 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                         <ddue:content>
                             <ddue:para>
                                 A power breakdown gives the power that flows through the systems of the vehicle in a flight condition: the mass flow, heat flow, electric power and mechanical power that the connections of the system architectures carry.
-                                It is the analysis level of the system description, built on the installed components (<ddue:codeInline>genericSystemsType</ddue:codeInline>) and their connections (<ddue:codeInline>systemArchitecturesType</ddue:codeInline>).
+                                It is the analysis level of the system description: each flow references a connection of a system architecture (<ddue:codeInline>systemArchitecturesType</ddue:codeInline>).
+                                The ends of a connection are installed system components (<ddue:codeInline>genericSystemsType</ddue:codeInline>), other parts of the vehicle such as a fuselage, a wing or a fuel tank, other systems, or external elements such as the ambient.
                             </ddue:para>
                             <ddue:para>
                                 <ddue:legacyBold>Static and transient cases</ddue:legacyBold>
@@ -36113,12 +36150,12 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                                 </ddue:listItem>
                                 <ddue:listItem>
                                     <ddue:para>
-                                        Several power flows of a case may reference the same connection, at most one per category, e.g. a fuel line carries a mass flow and the heat that the fuel takes along.
+                                        Several power flows of a case may reference the same connection, at most one per category.
                                     </ddue:para>
                                 </ddue:listItem>
                                 <ddue:listItem>
                                     <ddue:para>
-                                        There is no element for losses. The losses of a component follow from the balance of its incoming and outgoing flows.
+                                        There is no explicit element for losses. A loss can be marked as a heat flow, e.g. the waste heat that a component gives off to a cooling system or to the ambient, as for the fuel cell in the example below; otherwise the losses of a component follow from the balance of its incoming and outgoing flows.
                                     </ddue:para>
                                 </ddue:listItem>
                             </ddue:list>
@@ -36128,7 +36165,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                             <ddue:para>
                                 The figure shows the electric and mechanical power flows at take-off of the propulsion unit whose architecture is shown for <ddue:codeInline>systemArchitectureType</ddue:codeInline>.
                                 The fuel cell stack and the battery deliver 517 kW to the power management unit, of which 400 kW reach the propeller as shaft power.
-                                The losses are not part of the data; they follow from the balance of each component, e.g. 17.0 kW at the motor, which takes 425 kW and delivers 408 kW.
+                                The losses drawn are not part of the data; they follow from the balance of each component, e.g. 17.0 kW at the motor, which takes 425 kW and delivers 408 kW.
                                 The mass flows and heat flows of the same case are not drawn.
                                 The values illustrate the data and are derived from typical efficiencies; they are not those of the study the architecture is taken from.
                             </ddue:para>
@@ -36158,8 +36195,8 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             </specification>
             <powerBreakdownData>
                 <powerFlow>
-                    <name>Battery feeder</name>
-                    <connectionUID>batteryFeeder_pod1</connectionUID>
+                    <name>Battery to power management unit</name>
+                    <connectionUID>batteryToPmu_pod1</connectionUID>
                     <electricPower>
                         <electricPowerValue>147100</electricPowerValue>
                         <directCurrent>800</directCurrent>
@@ -40554,7 +40591,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                             <ddue:list class="bullet">
                                 <ddue:listItem>
                                     <ddue:para>
-                                        <ddue:codeInline>componentUID</ddue:codeInline> references a component of the model by its <ddue:codeInline>uID</ddue:codeInline>. This can be any component with a <ddue:codeInline>uID</ddue:codeInline>, e.g. a system component, a fuel tank, an engine or a fuselage.
+                                        <ddue:codeInline>componentUID</ddue:codeInline> references a part of the model by its <ddue:codeInline>uID</ddue:codeInline>. This can be a system component, but also any other part with a <ddue:codeInline>uID</ddue:codeInline>, e.g. a fuselage, a wing, a fuel tank or an engine.
                                     </ddue:para>
                                 </ddue:listItem>
                                 <ddue:listItem>
@@ -40592,7 +40629,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     <xsd:sequence>
                         <xsd:element name="componentUID" type="stringUIDBaseType">
                             <xsd:annotation>
-                                <xsd:documentation>UID of a component of the model, e.g. a system component, a fuel tank, an engine or a fuselage</xsd:documentation>
+                                <xsd:documentation>UID of a part of the model, e.g. a system component, a fuselage, a wing, a fuel tank or an engine</xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
                         <xsd:element name="subComponentUID" minOccurs="0" maxOccurs="unbounded" type="stringUIDBaseType">
@@ -47732,15 +47769,18 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     <ddue:remarks>
                         <ddue:content>
                             <ddue:para>
-                                Logical view of a system: which components are connected and what the connections transmit.
-                                It complements the physical description in <ddue:codeInline>genericSystems</ddue:codeInline>, which says where the components are and what they weigh, with the connections between them and to other systems.
+                                Logical view of a system: which components are connected, and by what kind of connection.
+                                The physical description in <ddue:link xlink:href="genericSystemsType">genericSystems</ddue:link> says which elements are installed and where; the architecture adds the connections between the components and to other systems.
+                                What a connection carries in a given flight condition is stated in <ddue:link xlink:href="powerBreakdownsType">powerBreakdowns</ddue:link>.
                             </ddue:para>
                             <ddue:para>
                                 In the top-down approach of CPACS, an architecture can first be declared by its <ddue:codeInline>systemType</ddue:codeInline> alone, i.e. by an ATA chapter or as <ddue:codeInline>generic</ddue:codeInline>, and the connections are added as the design matures.
                             </ddue:para>
                             <ddue:para>
-                                <ddue:codeInline>controlDevices</ddue:codeInline> make the whole architecture switchable, e.g. a backup system that is only active after a failure; a static power breakdown case sets its state (see <ddue:codeInline>systemControlDevicesType</ddue:codeInline>).
-                                <ddue:codeInline>connections</ddue:codeInline> lists the connections (<ddue:codeInline>systemConnectionType</ddue:codeInline>).
+                                <ddue:link xlink:href="systemConnectionsType">connections</ddue:link> holds the connections of the system, each directed from a source to a target.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:link xlink:href="systemControlDevicesType">controlDevices</ddue:link> make the whole architecture switchable, e.g. a backup system that is only active after a failure; a static power breakdown case sets its state.
                             </ddue:para>
                             <ddue:mediaLink>
                                 <ddue:image xlink:href="systemArchitectureGraph"/>
@@ -47753,13 +47793,13 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                                     <ddue:linkUri>https://doi.org/10.3390/aerospace12050373</ddue:linkUri>
                                 </ddue:externalLink>
                                 in section 4.2; the dimensions, masses and power values are illustrative.
-                                A fuel cell stack and a battery feed a power management unit, which supplies the electric power train, the compressor of the air supply and the electrical power supply system of the aircraft.
+                                A fuel cell stack and a battery deliver electric power to a power management unit, which supplies the electric power train, the compressor of the air supply and the electrical power supply system of the aircraft.
                                 A heat exchanger takes the waste heat of the fuel cell to the ambient air, along two connections of the type <ddue:codeInline>heat</ddue:codeInline>.
                                 The connection from the battery has a control device, so that a case can switch the battery on or off.
                                 Outside the unit, the connections end at the ambient and at two systems that are known only by their ATA chapter, the fuel system and the electrical power supply.
                             </ddue:para>
                             <ddue:para>
-                                Part of this architecture: the feeders from the fuel cell and from the battery, the latter with its control device, the feeder to the electrical power supply system and the air intake from the ambient:
+                                Part of this architecture: the connections from the fuel cell stack and from the battery to the power management unit, the latter with its control device, from the power management unit to the electrical power supply (ata24), and from the ambient to the compressor:
                             </ddue:para>
                             <ddue:code language="XML" title="Connections of a propulsion unit">
                                 <![CDATA[
@@ -47767,8 +47807,8 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
     <name>Propulsion unit, pod 1</name>
     <systemType>generic</systemType>
     <connections>
-        <connection uID="fuelCellFeeder_pod1">
-            <name>Fuel cell feeder</name>
+        <connection uID="fuelCellToPmu_pod1">
+            <name>Fuel cell stack to power management unit</name>
             <connectionType>electric</connectionType>
             <source>
                 <componentUID>fuelCellStack_pod1</componentUID>
@@ -47777,8 +47817,8 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <componentUID>pmu_pod1</componentUID>
             </target>
         </connection>
-        <connection uID="batteryFeeder_pod1">
-            <name>Battery feeder</name>
+        <connection uID="batteryToPmu_pod1">
+            <name>Battery to power management unit</name>
             <connectionType>electric</connectionType>
             <controlDevices uID="batteryContactor_pod1">
                 <state>
@@ -47793,8 +47833,8 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <componentUID>pmu_pod1</componentUID>
             </target>
         </connection>
-        <connection uID="epssFeeder_pod1">
-            <name>Feeder to the electrical power supply system</name>
+        <connection uID="pmuToEpss_pod1">
+            <name>Power management unit to the electrical power supply system</name>
             <connectionType>electric</connectionType>
             <source>
                 <componentUID>pmu_pod1</componentUID>
@@ -47894,11 +47934,11 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     <ddue:remarks>
                         <ddue:content>
                             <ddue:para>
-                                Directed connection from a <ddue:codeInline>source</ddue:codeInline> to a <ddue:codeInline>target</ddue:codeInline> within a system architecture, e.g. a fuel line from a tank to a pump or a feeder from a bus bar to a consumer.
+                                Directed connection from a <ddue:codeInline>source</ddue:codeInline> to a <ddue:codeInline>target</ddue:codeInline> within a system architecture, e.g. a fuel line from a tank to a pump or an electric connection from a bus bar to a consumer.
                                 Power flows along a connection in its direction, from the source to the target (see <ddue:codeInline>powerBreakdownsType</ddue:codeInline>).
                             </ddue:para>
                             <ddue:para>
-                                Depending on the level of detail, source and target reference a component of the model, an element outside the model such as the ambient air, an ATA chapter or another system architecture (<ddue:codeInline>sourceTargetType</ddue:codeInline>).
+                                Depending on the level of detail, source and target reference a system component or another part of the model such as a fuselage or a fuel tank, an element outside the model such as the ambient air, an ATA chapter or another system architecture (<ddue:codeInline>sourceTargetType</ddue:codeInline>).
                                 <ddue:codeInline>controlDevices</ddue:codeInline> make the connection alone switchable, e.g. a line that a valve can close (see <ddue:codeInline>systemControlDevicesType</ddue:codeInline>).
                             </ddue:para>
                             <ddue:para>
@@ -48076,7 +48116,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                                 The input that drives the element does not decide the domain.
                                 An electric motor, for example, delivers mechanical power and is therefore a mechanical conversion element, whereas a generator, driven by a shaft, delivers electrical power and is an electrical conversion element.
                                 The domains are <ddue:codeInline>electricalElements</ddue:codeInline>, <ddue:codeInline>mechanicalElements</ddue:codeInline>, <ddue:codeInline>pneumaticElements</ddue:codeInline>, <ddue:codeInline>hydraulicElements</ddue:codeInline> and <ddue:codeInline>thermoFluidElements</ddue:codeInline>.
-                                Some kinds of element, e.g. pipes or valves, occur in several domains; the domain container an element is placed in says which domain applies.
+                                Some kinds of element, e.g. pipes or valves, occur in several domains.
                             </ddue:para>
                             <ddue:para>
                                 <ddue:legacyBold>Roles</ddue:legacyBold>
@@ -48107,7 +48147,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                                 </ddue:listItem>
                                 <ddue:listItem>
                                     <ddue:para>
-                                        <ddue:codeInline>consumerElements</ddue:codeInline> use electrical power to provide a service, e.g. light or a display, without delivering power to another domain. Only the electrical domain has consumer elements; an element that delivers power to another domain, e.g. an electric motor, is a conversion element of that domain.
+                                        <ddue:codeInline>consumerElements</ddue:codeInline> use electrical power to provide a service, e.g. light or a display, without delivering power to another domain. Only the electrical domain has consumer elements.
                                     </ddue:para>
                                 </ddue:listItem>
                             </ddue:list>
@@ -48148,6 +48188,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                             <ddue:para>
                                 Two elements of a fuel cell propulsion unit, sorted by the quantity they deliver:
                                 the battery delivers electrical power and is an electrical storage element, the motor delivers mechanical power and is a mechanical conversion element.
+                                The transformation of its cuboid moves the battery so that the origin of the element lies in the center of the box.
                             </ddue:para>
                             <ddue:code language="XML" title="Elements sorted into domain, role and class">
                                 <![CDATA[
@@ -48163,6 +48204,13 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                                 <lengthX>0.8</lengthX>
                                 <depthY>0.45</depthY>
                                 <heightZ>0.3</heightZ>
+                                <transformation>
+                                    <translation>
+                                        <x>-0.4</x>
+                                        <y>-0.225</y>
+                                        <z>-0.15</z>
+                                    </translation>
+                                </transformation>
                             </cuboid>
                         </cuboids>
                     </geometry>
@@ -50767,6 +50815,8 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                             <ddue:para>
                                 Geometry and mass are given in the coordinate system of the element.
                                 Each installation places this coordinate system in the vehicle with its own transformation, so that one definition serves all positions at which the element is installed.
+                                Its origin is the point that an installation places; the geometric center or the mounting point of the element are convenient choices.
+                                Where a primitive has its origin elsewhere, e.g. a cuboid at a corner of its lower face, its own transformation moves it there (see <ddue:codeInline>cuboidType</ddue:codeInline>).
                             </ddue:para>
                             <ddue:para>
                                 <ddue:legacyBold>Geometry and mass</ddue:legacyBold>

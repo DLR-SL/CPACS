@@ -125,9 +125,11 @@ D = design()
 
 # ------------------------------------------------------------------ library
 # (key, domain path, leaf container, element tag, name, primitives, mass, representation)
-# The primitives are given in the element coordinate system: boxes with the origin
-# at a corner, bodies of revolution about z with the origin in the centre of their
-# lower face. Installed along x, the bodies of revolution are rotated by 90 deg about y.
+# The origin of the element coordinate system is the point that a component places.
+# A box is moved by the transformation of its cuboid so that the origin lies in its
+# centre; a body of revolution keeps the origin of its primitive, in the centre of its
+# lower face on the axis z. Installed along x, the bodies of revolution are rotated by
+# 90 deg about y.
 POD = "pod1"
 BOX, ROUND = "cuboid", "cylinder"
 ELEMENTS = [
@@ -158,13 +160,18 @@ def element_uid(key):
     return key
 
 
+def box_centre(params):
+    return np.array([params["lengthX"], params["depthY"], params["heightZ"]]) / 2
+
+
 def element_xml(key):
     _, _, _, tag, name, (shape, params), mass, representation = ELEMENT[key]
     plural = {"cuboid": "cuboids", "cylinder": "cylinders"}[shape]
     attribute = f' representation="{representation}"' if representation else ""
+    centring = se3_xml(translation=-box_centre(params)) if shape == BOX else None
     return "\n".join([
         f'<{tag} uID="{element_uid(key)}">', f"    <name>{name}</name>", f"    <geometry{attribute}>",
-        indent(collection(plural, [primitive_xml(shape, params)]), 2), "    </geometry>", "    <mass>",
+        indent(collection(plural, [primitive_xml(shape, params, centring)]), 2), "    </geometry>", "    <mass>",
         f"        <mass>{mass:g}</mass>", "    </mass>", f"</{tag}>",
     ])
 
@@ -197,12 +204,12 @@ COMPONENTS = [
     ("propeller", "Propeller, pod 1", "powerTrain", (8.6, AXIS[0], AXIS[1]), True),
     ("gearBox", "Gearbox, pod 1", "powerTrain", (9.0, AXIS[0], AXIS[1]), True),
     ("electricMotor", "Motor, pod 1", "powerTrain", (9.3, AXIS[0], AXIS[1]), True),
-    ("heatExchanger", "Heat exchanger, pod 1", "fuelCellSystem", (9.3, 3.65, 0.2), False),
-    ("inverter", "Inverter, pod 1", "powerTrain", (9.8, 3.85, 0.925), False),
-    ("pmu", "Power management unit, pod 1", "powerTrain", (10.3, 3.825, 0.9), False),
-    ("fuelCellStack", "Fuel cell stack, pod 1", "fuelCellSystem", (10.9, 3.75, 0.775), False),
+    ("heatExchanger", "Heat exchanger, pod 1", "fuelCellSystem", (9.36, AXIS[0], 0.45), False),
+    ("inverter", "Inverter, pod 1", "powerTrain", (10.0, AXIS[0], AXIS[1]), False),
+    ("pmu", "Power management unit, pod 1", "powerTrain", (10.525, AXIS[0], AXIS[1]), False),
+    ("fuelCellStack", "Fuel cell stack, pod 1", "fuelCellSystem", (11.35, AXIS[0], AXIS[1]), False),
     ("compressor", "Compressor, pod 1", "fuelCellSystem", (10.9, AXIS[0], 0.55), True),
-    ("battery", "Battery, pod 1", "powerTrain", (11.95, 3.775, 0.85), False),
+    ("battery", "Battery, pod 1", "powerTrain", (12.35, AXIS[0], AXIS[1]), False),
 ]
 COMPONENT = {c[0]: c for c in COMPONENTS}
 
@@ -232,7 +239,7 @@ def bounding_box(key):
     _, _, _, translation, rotated = COMPONENT[key]
     shape, p = ELEMENT[key][5]
     if shape == BOX:
-        lo, hi = np.zeros(3), np.array([p["lengthX"], p["depthY"], p["heightZ"]])
+        lo, hi = -box_centre(p), box_centre(p)
     else:
         r, h = p["radius"], p["height"]
         lo, hi = np.array([-r, -r, 0.0]), np.array([r, r, h])
@@ -259,14 +266,15 @@ def clearances():
 # ("external", "ambient") or ("ata", "ata28").
 ARCHITECTURE_UID = f"propulsionUnit_{POD}"
 CONNECTIONS = [
-    ("fuelCellFeeder", "Fuel cell feeder", "electric", "fuelCellStack", "pmu", False),
-    ("batteryFeeder", "Battery feeder", "electric", "battery", "pmu", True),
-    ("inverterFeeder", "Inverter feeder", "electric", "pmu", "inverter", False),
-    ("motorFeeder", "Motor feeder", "electric", "inverter", "electricMotor", False),
+    ("fuelCellToPmu", "Fuel cell stack to power management unit", "electric", "fuelCellStack", "pmu", False),
+    ("batteryToPmu", "Battery to power management unit", "electric", "battery", "pmu", True),
+    ("pmuToInverter", "Power management unit to inverter", "electric", "pmu", "inverter", False),
+    ("inverterToMotor", "Inverter to motor", "electric", "inverter", "electricMotor", False),
     ("motorShaft", "Motor shaft", "mechanical", "electricMotor", "gearBox", False),
     ("propellerShaft", "Propeller shaft", "mechanical", "gearBox", "propeller", False),
-    ("compressorFeeder", "Compressor feeder", "electric", "pmu", "compressor", False),
-    ("epssFeeder", "Feeder to the electrical power supply system", "electric", "pmu", ("ata", "ata24"), False),
+    ("pmuToCompressor", "Power management unit to compressor", "electric", "pmu", "compressor", False),
+    ("pmuToEpss", "Power management unit to the electrical power supply system", "electric", "pmu",
+     ("ata", "ata24"), False),
     ("airIntake", "Air intake", "fluid", ("external", "ambient"), "compressor", False),
     ("airSupply", "Compressed air", "fluid", "compressor", "fuelCellStack", False),
     ("hydrogenSupply", "Hydrogen supply", "fluid", ("ata", "ata28"), "fuelCellStack", False),
@@ -336,16 +344,16 @@ def power_flows():
     air = ["<massComposition>", "    <species>", "        <share>1</share>", "        <type>Air</type>",
            "    </species>", "</massComposition>"]
     return [
-        ("fuelCellFeeder", "electricPower", FUEL_CELL_POWER, dc),
-        ("batteryFeeder", "electricPower", d["battery"], dc),
-        ("inverterFeeder", "electricPower", d["inverter_in"], dc),
-        ("motorFeeder", "electricPower", d["motor_in"],
+        ("fuelCellToPmu", "electricPower", FUEL_CELL_POWER, dc),
+        ("batteryToPmu", "electricPower", d["battery"], dc),
+        ("pmuToInverter", "electricPower", d["inverter_in"], dc),
+        ("inverterToMotor", "electricPower", d["motor_in"],
          ["<alternatingCurrent>", f"    <effectiveVoltage>{AC_VOLTAGE:g}</effectiveVoltage>",
           f"    <frequency>{d['frequency']:g}</frequency>", "</alternatingCurrent>"]),
         ("motorShaft", "mechanicalPower", d["gear_in"], [f"<torque>{_fmt(d['motor_torque'])}</torque>"]),
         ("propellerShaft", "mechanicalPower", PROPELLER_POWER, [f"<torque>{_fmt(d['propeller_torque'])}</torque>"]),
-        ("compressorFeeder", "electricPower", d["compressor_in"], dc),
-        ("epssFeeder", "electricPower", EPSS_POWER, [f"<directCurrent>{EPSS_VOLTAGE:g}</directCurrent>"]),
+        ("pmuToCompressor", "electricPower", d["compressor_in"], dc),
+        ("pmuToEpss", "electricPower", EPSS_POWER, [f"<directCurrent>{EPSS_VOLTAGE:g}</directCurrent>"]),
         ("airIntake", "massFlow", d["air"],
          ["<singlePhaseMassFlow>", f"    <pressure>{p0:g}</pressure>", f"    <temperature>{t0:g}</temperature>",
           *("    " + line for line in air), "</singlePhaseMassFlow>"]),
@@ -606,7 +614,7 @@ def figure_levels():
         ("Library", "systemElements", f"<{ELEMENT['fuelCellStack'][3]}>", element_uid("fuelCellStack"),
          "geometry and mass"),
         ("Installed components", "genericSystems", "<component>", component_uid("fuelCellStack"), "position"),
-        ("System architecture", "systemArchitectures", "<connection>", connection_uid("fuelCellFeeder"),
+        ("System architecture", "systemArchitectures", "<connection>", connection_uid("fuelCellToPmu"),
          "source and target"),
         ("Power breakdown", "powerBreakdowns", "<powerFlow>", f"in case {CASE_UID}", f"{FUEL_CELL_POWER / 1e3:.0f} kW"),
     ]
@@ -669,12 +677,12 @@ def excerpts():
     """(type, excerpt) for the documentation, each as it is shown there."""
     return [
         ("systemElementsType", collection("systemElements", [library_xml(["battery", "electricMotor"])])),
+        ("cuboidType", element_xml("battery")),
         ("geometryRepresentationType", element_xml("propeller")),
         ("genericSystemType", system_xml("fuelCellSystem")),
-        ("systemArchitectureType", architecture_xml(["fuelCellFeeder", "batteryFeeder", "epssFeeder",
-                                                     "airIntake"])),
+        ("systemArchitectureType", architecture_xml(["fuelCellToPmu", "batteryToPmu", "pmuToEpss", "airIntake"])),
         ("powerBreakdownsType", collection("powerBreakdowns", [collection("staticCases", [
-            static_case_xml(["batteryFeeder", "motorShaft", "airSupply", "coolantLoop"])])])),
+            static_case_xml(["batteryToPmu", "motorShaft", "airSupply", "coolantLoop"])])])),
     ]
 
 
