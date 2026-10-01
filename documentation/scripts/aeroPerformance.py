@@ -186,7 +186,7 @@ def rounded(values, digits=4):
 def aero_performance_map_xml():
     rows = aero_map()
     names = ("altitude", "machNumber", "angleOfSideslip", "angleOfAttack", "cd", "cs", "cl", "cmd", "cms", "cml")
-    return "\n".join(f'<{name} mapType="vector">{vector(rounded(row[name] for row in rows))}</{name}>'
+    return "\n".join(f'<{name}>{vector(rounded(row[name] for row in rows))}</{name}>'
                      for name in names)
 
 
