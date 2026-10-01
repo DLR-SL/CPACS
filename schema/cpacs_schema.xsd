@@ -135,44 +135,22 @@ cpacs@dlr.de
                                         <ddue:legacyBold>3.1. CPACS coordinate system</ddue:legacyBold>
                                     </ddue:para>
                                     <ddue:para>
-                                        Coordinate systems are a regular cause for ambiguous interpretation of data.
-                                        In CPACS, the reference coordinate system is the CPACS-coordinate system.
-                                        This coordinate system is used for most of the data.
-                                        A single exception is made in order to keep aerodynamic data in an aerodynamic coordinate system.
-                                        The following paragraphs outline the determination to known coordinate systems.
-                                </ddue:para>
+                                        The CPACS coordinate system is the global reference coordinate system of a CPACS dataset.
+                                        It is a right-handed Cartesian coordinate system with the axes <ddue:codeInline>x</ddue:codeInline>, <ddue:codeInline>y</ddue:codeInline> and <ddue:codeInline>z</ddue:codeInline>.
+                                        All other coordinate systems are defined relative to it: the aerodynamic coordinate system (section 3.2) and the local coordinate systems of components (section 3.3).
+                                    </ddue:para>
                                     <ddue:para>
-                                        The CPACS coordinate system is the coordinate system identified by
-                                        <ddue:externalLink>
-                                            <ddue:linkText>TiGL</ddue:linkText>
-                                            <ddue:linkUri>https://dlr-sc.github.io/tigl</ddue:linkUri>
-                                        </ddue:externalLink>, CPACS's geometry library.
-                                        It is a right-handed coordinate system. If an aircraft is defined in the CPACS coordinate system it will usually follow the directions listed in the table below.
-                                </ddue:para>
-                                    <ddue:para>
-                                        Therefore, the CPACS coordinate system can be confused with the body-fixed coordinate system.
-                                        While often the CPACS coordinate system and the body-fixed coordinate system overlap, this must not always be true.
-                                        Several definitions for body-fixed coordinate systems exist (x-axis through nose and tail, x-axis perpendicular to nose plane).
-                                        For non-symmetric aircraft, body-fixed coordinate systems become even more complicated.
-                                        Hence, analysis tools should stick to the CPACS coordinate system.
-                                        It remains to the designer to model the geometry accordingly.
-                                </ddue:para>
-                                    <ddue:para>
-                                        The CPACS coordinate system does not rotate with flow.
-                                        Hence, aerodynamic calculations do rotate their flow relative to the CPACS coordinate system.
-                                        If not stated explicitly different, e.g. for target lift-coefficients, results are returned in the CPACS coordinate system, i.e. the cfx-coefficient is parallel to the CPACS x-coordinate, regardless of the way the geometry is defined.
-                                </ddue:para>
-                                    <ddue:para>
-                                        The following table gives a "best-practice" advice on how to locate a geometry within CPACS.
-                                        Different approaches are, of course, valid as well.
-                                </ddue:para>
+                                        Typically, an aircraft is placed in the CPACS coordinate system so that its axes follow the directions in the table below, often with the origin at the nose.
+                                        This placement is common practice rather than a requirement: a vehicle that is shifted or rotated against these directions is valid as well.
+                                        Tools should therefore evaluate the data in the CPACS coordinate system rather than assume a particular body axis, such as a fuselage axis through nose and tail.
+                                    </ddue:para>
                                     <ddue:table>
                                         <ddue:row>
                                             <ddue:entry>
                                                 <ddue:legacyBold>Axis</ddue:legacyBold>
                                             </ddue:entry>
                                             <ddue:entry>
-                                                <ddue:legacyBold>Direction</ddue:legacyBold>
+                                                <ddue:legacyBold>Typical direction</ddue:legacyBold>
                                             </ddue:entry>
                                             <ddue:entry>
                                                 <ddue:legacyBold>Description</ddue:legacyBold>
@@ -180,55 +158,77 @@ cpacs@dlr.de
                                         </ddue:row>
                                         <ddue:row>
                                             <ddue:entry>x</ddue:entry>
-                                            <ddue:entry>tailwards</ddue:entry>
-                                            <ddue:entry>from nose to tail</ddue:entry>
+                                            <ddue:entry>to the rear</ddue:entry>
+                                            <ddue:entry>from the nose to the tail</ddue:entry>
                                         </ddue:row>
                                         <ddue:row>
                                             <ddue:entry>y</ddue:entry>
-                                            <ddue:entry>spanwise</ddue:entry>
-                                            <ddue:entry>from symmetry plane to the right wingtip</ddue:entry>
+                                            <ddue:entry>to the right</ddue:entry>
+                                            <ddue:entry>from the plane of symmetry to the right wing tip</ddue:entry>
                                         </ddue:row>
                                         <ddue:row>
                                             <ddue:entry>z</ddue:entry>
                                             <ddue:entry>upwards</ddue:entry>
-                                            <ddue:entry>from landing gear to tip of vertical tailplane</ddue:entry>
+                                            <ddue:entry>from the bottom to the top of the aircraft</ddue:entry>
                                         </ddue:row>
                                     </ddue:table>
                                     <ddue:para>
-                                        The following figures show an example of a geometry that is aligned with the CPACS coordinate system, i.e. the body-fixed coordinate system corresponds to the CPACS coordinate system.
-                                </ddue:para>
+                                        <ddue:legacyBold>3.2. Aerodynamic coordinate system</ddue:legacyBold>
+                                    </ddue:para>
+                                    <ddue:para>
+                                        The aerodynamic coefficients of an aircraft, i.e. the force coefficients <ddue:codeInline>cd</ddue:codeInline>, <ddue:codeInline>cs</ddue:codeInline>, <ddue:codeInline>cl</ddue:codeInline> and the moment coefficients <ddue:codeInline>cmd</ddue:codeInline>, <ddue:codeInline>cms</ddue:codeInline>, <ddue:codeInline>cml</ddue:codeInline> of the aerodynamic maps (<ddue:codeInline>aeroPerformanceMapType</ddue:codeInline>), their increments and their derivatives, are given in the aerodynamic coordinate system.
+                                        Its axes follow the free stream: the d-axis (drag) points in the direction of the free stream, i.e. to the rear, the l-axis (lift) upwards perpendicular to it, and the s-axis (side force) to the right.
+                                        The aerodynamic coordinate system is turned against the CPACS coordinate system by the angle of attack α and the sideslip angle β.
+                                        The coefficients are therefore neither body-fixed nor given along the CPACS axes.
+                                    </ddue:para>
                                     <ddue:mediaLink>
-                                        <ddue:image xlink:href="cosys01"/>
+                                        <ddue:image xlink:href="aeroAxesSide"/>
                                     </ddue:mediaLink>
                                     <ddue:para>
-                                        The aerodynamic analysis is relative to the CPACS coordinate system.
-                                        That is, the angle of attack is represented by the dashed orange line.
-                                        Results of the aerodynamic calculation are given in the CPACS coordinate system.
-                                </ddue:para>
+                                        The side view shows an aircraft from the left with the free stream V<ddue:subscript>∞</ddue:subscript> coming from below.
+                                        The angle of attack α turns the axes d and l out of the CPACS axes x and z about the y-axis, which coincides with the s-axis here.
+                                    </ddue:para>
                                     <ddue:mediaLink>
-                                        <ddue:image xlink:href="cosys02"/>
+                                        <ddue:image xlink:href="aeroAxesTop"/>
                                     </ddue:mediaLink>
                                     <ddue:para>
-                                        The following figures give an example of a geometry that is not defined in alignment with the CPACS coordinate system.
-                                        It is a valid CPACS file, but only used in this example for demonstrative purposes.
-                                </ddue:para>
+                                        The top view shows the free stream coming from the right.
+                                        The sideslip angle β turns the axes d and s out of the CPACS axes x and y about the l-axis, which coincides with the z-axis here.
+                                    </ddue:para>
+                                    <ddue:para>In the CPACS coordinate system, the unit vectors of the three axes are:</ddue:para>
                                     <ddue:mediaLink>
-                                        <ddue:image xlink:href="cosys1"/>
+                                        <ddue:image xlink:href="eq_aeroAxes"/>
                                     </ddue:mediaLink>
                                     <ddue:para>
-                                        The body axes and the CPACS coordinate system do not align.
-                                        That is, the origin of the geometry is not at CPACS (0,0,0) but at a point in positive x- and z-direction.
-                                </ddue:para>
-                                    <ddue:mediaLink>
-                                        <ddue:image xlink:href="cosys2"/>
-                                    </ddue:mediaLink>
+                                        Turning the free stream first by β about the l-axis and then by α about the y-axis brings it onto the x-axis.
+                                        Hence, α is the angle between the x-axis and the projection of the free stream onto the x-z plane, and β is the angle between the free stream and the x-z plane.
+                                        The l-axis always lies in the x-z plane.
+                                    </ddue:para>
+                                    <ddue:list class="bullet">
+                                        <ddue:listItem>
+                                            <ddue:para>The angle of attack α and the sideslip angle β are positive about their axes (right-hand rule) from the free stream to the CPACS axes. A positive α means a free stream from below, a positive β a free stream from the right, i.e. onto the right-hand side of the cockpit.</ddue:para>
+                                        </ddue:listItem>
+                                        <ddue:listItem>
+                                            <ddue:para>Both angles refer to the CPACS axes, not to the fuselage. For a vehicle that is rotated in the CPACS coordinate system, α = 0 does not mean a free stream along the fuselage.</ddue:para>
+                                        </ddue:listItem>
+                                        <ddue:listItem>
+                                            <ddue:para>The force coefficients are positive along their axes: <ddue:codeInline>cd</ddue:codeInline> in the direction of the free stream, <ddue:codeInline>cl</ddue:codeInline> upwards and <ddue:codeInline>cs</ddue:codeInline> to the right.</ddue:para>
+                                        </ddue:listItem>
+                                        <ddue:listItem>
+                                            <ddue:para>The moment coefficients are positive about their axes by the right-hand rule: a positive rolling moment <ddue:codeInline>cmd</ddue:codeInline> lifts the right wing, a positive pitching moment <ddue:codeInline>cms</ddue:codeInline> raises the nose, and a positive yawing moment <ddue:codeInline>cml</ddue:codeInline> turns the nose to the left.</ddue:para>
+                                        </ddue:listItem>
+                                        <ddue:listItem>
+                                            <ddue:para>The moments refer to the moment reference point of the model (<ddue:codeInline>.../model/reference/point</ddue:codeInline>), not to the center of gravity. All coefficients are normalized with the reference area (<ddue:codeInline>.../model/reference/area</ddue:codeInline>), and all three moment coefficients in addition with the same reference length (<ddue:codeInline>.../model/reference/length</ddue:codeInline>); <ddue:codeInline>aeroPerformanceMapType</ddue:codeInline> gives the definitions.</ddue:para>
+                                        </ddue:listItem>
+                                    </ddue:list>
+                                    <ddue:alert class="note">
+                                        <ddue:para>Compared with the aerodynamic axes of the aeronautical standards (ISO 1151, LN 9300), the d- and l-axis point the other way: to the rear and upwards instead of forwards and downwards. The angles α and β have the same sign as there, and so has the pitching moment. The rolling moment <ddue:codeInline>cmd</ddue:codeInline> and the yawing moment <ddue:codeInline>cml</ddue:codeInline> have the opposite sign, and they are normalized with the reference length instead of the span.</ddue:para>
+                                    </ddue:alert>
                                     <ddue:para>
-                                        Again, the aerodynamic analysis is relative to the CPACS coordinate system.
-                                        That is, the angle of attack is represented by the dashed orange line.
-                                        Results of the aerodynamic calculation are given in the CPACS coordinate system.
-                                </ddue:para>
+                                        The aerodynamic maps of rotorcraft (<ddue:codeInline>aeroPerformanceMapRCType</ddue:codeInline>) are an exception: their coefficients <ddue:codeInline>cfx</ddue:codeInline> to <ddue:codeInline>cmz</ddue:codeInline> are given along and about the axes of the CPACS coordinate system.
+                                    </ddue:para>
                                     <ddue:para>
-                                        <ddue:legacyBold>3.2. Local coordinate systems via parentUID and transformation</ddue:legacyBold>
+                                        <ddue:legacyBold>3.3. Local coordinate systems via parentUID and transformation</ddue:legacyBold>
                                     </ddue:para>
                                     <ddue:para>
                                         Some elements in CPACS, in particular the geometric components, are described in local coordinates.
@@ -795,7 +795,7 @@ cpacs@dlr.de
 <altitude>1000.;2000.;3000.</altitude> <!-- vector element -->
 <incrementMaps>
     <incrementMap uID="incMap_b3ac2">
-        <controlSurfaceUID>InnerWingFlap</controlSurfaceUID>
+        <controlDeviceUID>InnerWingFlap</controlDeviceUID>
         <controlParameters>-1;-0.5;0;1</controlParameters> <!-- vector element -->
         <!-- array of dimension length(altitude) x length(controlParameters): -->
         <dcl>11.;12.;13.;14.;21.;22.;23.;24.;31.;32.;33.;34.</dcl>
@@ -3301,11 +3301,10 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Increment maps for limitation values due to movable device deflections</ddue:para>
+                        <ddue:para>Increment maps of the angle-of-attack limits</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Specification of aerodynamic coefficient increments due to movable device deflections (e.g., control
-                        surfaces or landing gears).</ddue:para>
+                        <ddue:para>Changes of the permitted range of the angle of attack due to the deflection of movable devices, e.g. control surfaces or landing gears.</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -3328,11 +3327,13 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Increment maps for limitation values due to movable device deflections</ddue:para>
+                        <ddue:para>Increment map of the angle-of-attack limits</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Specification of aerodynamic coefficient increments due to movable device deflections (e.g., control
-                        surfaces or landing gears).</ddue:para>
+                        <ddue:para>
+                            Changes of the permitted range of the angle of attack for one deflection of movable devices.
+                            The map refers either to an increment map of the aerodynamic coefficients (<ddue:codeInline>aeroPerformanceIncrementMapUID</ddue:codeInline>), whose control parameters or command inputs it follows, or to a configuration definition (<ddue:codeInline>configurationDefinitionUID</ddue:codeInline>).
+                        </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -3343,12 +3344,12 @@ cpacs@dlr.de
                     <xsd:choice>
                         <xsd:element name="configurationDefinitionUID" type="stringUIDBaseType">
                             <xsd:annotation>
-                                <xsd:documentation>Configuration UID</xsd:documentation>
+                                <xsd:documentation>Reference to a configuration definition</xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
                         <xsd:element name="aeroPerformanceIncrementMapUID" type="stringUIDBaseType">
                             <xsd:annotation>
-                                <xsd:documentation>Reference to an increment map of the aeroPerformanceMap</xsd:documentation>
+                                <xsd:documentation>Reference to an increment map of the aerodynamic coefficients</xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
                     </xsd:choice>
@@ -3377,22 +3378,22 @@ cpacs@dlr.de
                     <ddue:remarks>
                         <ddue:content>
                             <ddue:para>
-                                This map explicitly specifies limitations of a vehicle in terms of angles of attack and sideslip angles.
-                                All vectors, i.e. <ddue:legacyItalic>altitude</ddue:legacyItalic>, <ddue:legacyItalic>machNumber</ddue:legacyItalic>, <ddue:legacyItalic>angleOfSideslip</ddue:legacyItalic> and <ddue:legacyItalic>angleOfAttack</ddue:legacyItalic>,
-                                must have the same length. To avoid redundancy with the <ddue:legacyItalic>aeroPerformanceMap</ddue:legacyItalic>, this type does not contain any aerodynamic coefficients.
+                                Permitted range of the angle of attack over altitude, Mach number and sideslip angle.
+                                The vectors <ddue:codeInline>altitude</ddue:codeInline>, <ddue:codeInline>machNumber</ddue:codeInline> and <ddue:codeInline>angleOfSideslip</ddue:codeInline> have equal length, and the entries with the same index form one point of the map.
+                                For each point, <ddue:codeInline>operationLimit</ddue:codeInline> gives the smallest and the largest permitted angle of attack.
+                                Angle of attack and sideslip angle are defined as in the aerodynamic coordinate system, see section 3.2 of <ddue:codeInline>cpacsType</ddue:codeInline>.
                             </ddue:para>
                             <ddue:para>
-                                Since <ddue:legacyItalic>angleOfSideslip</ddue:legacyItalic> and <ddue:legacyItalic>angleOfAttack</ddue:legacyItalic> are closely interdependent for a given <ddue:legacyItalic>machNumber</ddue:legacyItalic> and <ddue:legacyItalic>altitude</ddue:legacyItalic> combination,
-                                a positive and negative maximum <ddue:legacyItalic>angleOfAttack</ddue:legacyItalic> is defined for a given combination of <ddue:legacyItalic>machNumber</ddue:legacyItalic>, <ddue:legacyItalic>altitude</ddue:legacyItalic> and <ddue:legacyItalic>angleOfSideslip</ddue:legacyItalic>.
-                                The limits of <ddue:legacyItalic>angleOfSideslip</ddue:legacyItalic> can be determined by evaluating the nominal decrease of <ddue:legacyItalic>angleOfAttack</ddue:legacyItalic> values
-                                or by agreeint with the data supplier that the minimum and maximum value of the <ddue:legacyItalic>angleOfSideslip</ddue:legacyItalic> vector corresponds with physical limits.
+                                Since the angle of attack and the sideslip angle depend closely on each other, the limits of the angle of attack are given per sideslip angle.
+                                The limits of the sideslip angle follow from where the permitted range of the angle of attack closes, or, by agreement with the supplier of the data, from the smallest and largest value of <ddue:codeInline>angleOfSideslip</ddue:codeInline>.
                             </ddue:para>
                             <ddue:para>
-                                In order to avoid data redundancy, the operational limits should not reflect the extrema of aerodynamic coefficients as these can be extracted from the performanceMap via interpolation.
+                                The map contains no coefficients; those at the limits are interpolated from the <ddue:codeInline>aeroPerformanceMap</ddue:codeInline> of the same aerodynamic map.
+                                For the same reason, the limits should not merely repeat extrema of the coefficients, such as the angle of attack of maximum lift, which can be found there.
                             </ddue:para>
-                            <ddue:para>
-                                <ddue:legacyBold>Note:</ddue:legacyBold> In future CPACS versions, a revision of the <ddue:legacyItalic>aeroLimitsMap</ddue:legacyItalic> will be targeted, since operational limits are not a purely aerodynamic issue.
-                            </ddue:para>
+                            <ddue:alert class="note">
+                                <ddue:para>A revision of the limitation map is planned for future CPACS versions, since operation limits are not a purely aerodynamic issue.</ddue:para>
+                            </ddue:alert>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -3410,26 +3411,22 @@ cpacs@dlr.de
                     </xsd:element>
                     <xsd:element name="machNumber" type="doubleVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>
-                                Mach number
-                            </xsd:documentation>
+                            <xsd:documentation>Mach number [-]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="angleOfSideslip" type="doubleVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>
-                                Angle of sideslip
-                            </xsd:documentation>
+                            <xsd:documentation>Sideslip angle, positive for a free stream from the right [deg]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="operationLimit" minOccurs="0" type="aeroMapOperationLimitType">
                         <xsd:annotation>
-                            <xsd:documentation>Operation limits belonging to the aerodynamic map</xsd:documentation>
+                            <xsd:documentation>Smallest and largest permitted angle of attack at each point</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="incrementMaps" minOccurs="0" type="aeroLimitsIncrementMapsType">
                         <xsd:annotation>
-                            <xsd:documentation>Increments of the limitation values due to movable device deflections</xsd:documentation>
+                            <xsd:documentation>Increments of the limits due to movable device deflections</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -3446,14 +3443,8 @@ cpacs@dlr.de
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>
-                            Vehicle operation limit defined by sets of minimum and maximum
-                            <ddue:legacyItalic>angleOfSideslip</ddue:legacyItalic>
-                            and minimum and maximum
-                            <ddue:legacyItalic>angleOfAttack</ddue:legacyItalic>
-                            for a given altitude and Mach number.
-                        This might be, e.g., a safety margin to the angle of attack at maximum lift or the flight
-                        attitude a fighter aircraft is capable to fly in stalled conditions. The corresponding aerodynamic coefficients must
-                        be extracted from the aeroPerformanceMap.
+                            Smallest and largest permitted angle of attack at each point of the limitation map, e.g. a safety margin to the angle of attack of maximum lift, or the attitude a fighter aircraft can fly in stalled conditions.
+                            The corresponding coefficients are interpolated from the aerodynamic map.
                         </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -3464,12 +3455,12 @@ cpacs@dlr.de
                 <xsd:all>
                     <xsd:element name="angleOfAttackMin" type="doubleVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Minimum angle of attack defining the operation limit. Must be a vector of the same length as angleOfSideslip, machNumber and altitude. [deg]</xsd:documentation>
+                            <xsd:documentation>Smallest permitted angle of attack, one value per point of the limitation map [deg]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="angleOfAttackMax" type="doubleVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Maximum angle of attack defining the operation limit. Must be a vector of the same length as angleOfSideslip, machNumber and altitude. [deg]</xsd:documentation>
+                            <xsd:documentation>Largest permitted angle of attack, one value per point of the limitation map [deg]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -3485,23 +3476,14 @@ cpacs@dlr.de
                         <ddue:para>Aerodynamic map</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:content>
-                            <ddue:para>
-                                The aeroMap contains aerodynamic coefficients and derivatives for a specific set of aerodynamic
-                                and configurative boundary conditions.
-                            </ddue:para>
-                            <ddue:para>
-                                The
-                                <ddue:legacyItalic>aeroMap</ddue:legacyItalic>
-                                allows for the simultaneous specification of multiple
-                                <ddue:legacyItalic>controlDevice</ddue:legacyItalic>
-                                settings.
-                                In this case, it is assumed that a cumulative setting is built by summing up the individual settings. The correct
-                                sequence of this summation is described in the
-                                <ddue:legacyItalic>controlDistributorType</ddue:legacyItalic>
-                                documentation.
-                            </ddue:para>
-                        </ddue:content>
+                        <ddue:para>
+                            Aerodynamic coefficients and derivatives of the aircraft for one set of boundary conditions.
+                            The atmospheric model and the configuration the map is valid for are given in <ddue:codeInline>boundaryConditions</ddue:codeInline>, the coefficients over altitude, Mach number, sideslip angle and angle of attack in <ddue:codeInline>aeroPerformanceMap</ddue:codeInline>, and the permitted range of the angle of attack, optionally, in <ddue:codeInline>aeroLimitsMap</ddue:codeInline>.
+                        </ddue:para>
+                        <ddue:para>
+                            The configuration can set several control devices at the same time.
+                            Their settings are then superposed by summing them up, in the order described in section 10 of <ddue:codeInline>cpacsType</ddue:codeInline>.
+                        </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -3552,7 +3534,9 @@ cpacs@dlr.de
                         <ddue:para>Boundary conditions</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Specification of boundary conditions.</ddue:para>
+                        <ddue:para>
+                            Conditions an aerodynamic map is valid for: the atmospheric model, which relates the altitudes of the map to temperature, pressure and density, an optional temperature offset, and the configuration of the aircraft.
+                        </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -3562,25 +3546,17 @@ cpacs@dlr.de
                 <xsd:all>
                     <xsd:element name="atmosphericModel" type="atmosphericModelType">
                         <xsd:annotation>
-                            <xsd:documentation>Atmospheric model the boundary conditions refer to</xsd:documentation>
+                            <xsd:documentation>Atmospheric model the altitudes of the map refer to</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="deltaTemperature" minOccurs="0" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>
-                                Offset from temperature of the
-                                atmospheric model [K]. For more details
-                                on atmospheric models, please refer to
-                                documentation of the &lt;CPACS&gt; root
-                                element.
-                            </xsd:documentation>
+                            <xsd:documentation>Temperature offset from the atmospheric model, see section 11 of the documentation of the root element [K]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="configuration" minOccurs="0" type="configurationType">
                         <xsd:annotation>
-                            <xsd:documentation>
-                                Configuration settings
-                            </xsd:documentation>
+                            <xsd:documentation>Configuration of the aircraft: configuration definition and settings of the control elements</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -3593,8 +3569,14 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Increment maps for aerodynamic coefficients </ddue:para>
+                        <ddue:para>Increment maps of the aerodynamic coefficients</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>
+                            Increments of the coefficients of the aerodynamic map due to the deflection of movable devices, one map per control device or control distributor.
+                            The increments are added to the coefficients of the map.
+                        </ddue:para>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -3616,13 +3598,15 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Increment map from aerodynamic coefficients</ddue:para>
+                        <ddue:para>Increment map of the aerodynamic coefficients</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>The increment map is composed of two-dimensional arrays. The first dimension is given by the
-                            length of the input vectors of the baseline aeroPerformanceMap and the second dimension by the vector of relative
-                            deflections (or command inputs) of control surfaces (or control distributors). An example is described in the &lt;CPACS&gt;
-                            root element.</ddue:para>
+                        <ddue:para>
+                            Increments of the coefficients of the aerodynamic map due to one control device or one control distributor.
+                            The increments <ddue:codeInline>dcd</ddue:codeInline> to <ddue:codeInline>dcml</ddue:codeInline> are two-dimensional arrays: the first dimension runs over the points of the aerodynamic map, i.e. it has the length of its parameter vectors, the second over the <ddue:codeInline>controlParameters</ddue:codeInline> of the control device or the <ddue:codeInline>commandInputs</ddue:codeInline> of the control distributor.
+                            The second index runs fastest, as in the example in section 9 of <ddue:codeInline>cpacsType</ddue:codeInline>.
+                            Like the coefficients themselves, the increments are given in the aerodynamic coordinate system.
+                        </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -3639,7 +3623,7 @@ cpacs@dlr.de
                             </xsd:element>
                             <xsd:element name="controlParameters" type="doubleVectorBaseType">
                                 <xsd:annotation>
-                                    <xsd:documentation>Value of the command parameters of a control distributor. If not given explicitly in the control distributor, linear interpolation between the neighboring points is required.</xsd:documentation>
+                                    <xsd:documentation>Control parameters of the control device, one per column of the increment arrays. Between them, the increments are interpolated linearly.</xsd:documentation>
                                 </xsd:annotation>
                             </xsd:element>
                         </xsd:sequence>
@@ -3651,39 +3635,39 @@ cpacs@dlr.de
                             </xsd:element>
                             <xsd:element name="commandInputs" type="doubleVectorBaseType">
                                 <xsd:annotation>
-                                    <xsd:documentation>Command inputs of a control distributor given as vector. If not given explicitly in the control distributor, linear interpolation between the neighboring points is required.</xsd:documentation>
+                                    <xsd:documentation>Command inputs of the control distributor, one per column of the increment arrays. Between them, the increments are interpolated linearly.</xsd:documentation>
                                 </xsd:annotation>
                             </xsd:element>
                         </xsd:sequence>
                     </xsd:choice>
                     <xsd:element name="dcd" minOccurs="0" type="doubleArrayBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Increment of drag coefficient in aerodynamic coordinates</xsd:documentation>
+                            <xsd:documentation>Increment of the drag coefficient cd [-]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="dcs" minOccurs="0" type="doubleArrayBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Increment of coefficient of the side force vector in aerodynamic coordinates (perpendicular to lift and drag)</xsd:documentation>
+                            <xsd:documentation>Increment of the side force coefficient cs [-]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="dcl" minOccurs="0" type="doubleArrayBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Increment of lift coefficient in aerodynamic coordinates</xsd:documentation>
+                            <xsd:documentation>Increment of the lift coefficient cl [-]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="dcmd" minOccurs="0" type="doubleArrayBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Increment of cmd</xsd:documentation>
+                            <xsd:documentation>Increment of the rolling moment coefficient cmd [-]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="dcms" minOccurs="0" type="doubleArrayBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Increment of cms</xsd:documentation>
+                            <xsd:documentation>Increment of the pitching moment coefficient cms [-]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="dcml" minOccurs="0" type="doubleArrayBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Increment of cml</xsd:documentation>
+                            <xsd:documentation>Increment of the yawing moment coefficient cml [-]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -3835,42 +3819,51 @@ cpacs@dlr.de
                                 <ddue:title>Description</ddue:title>
                                 <ddue:content>
                                     <ddue:para>
-                                        The aeroPerformanceMap contains a map with aerodynamic data of the complete aircraft in the form of nondimensional coefficients.
-                                        The force coefficients in <ddue:legacyItalic>i</ddue:legacyItalic>-direction (<ddue:legacyItalic>ci</ddue:legacyItalic>) are nondimensionalized by dynamic pressure and reference area,
-                                        the moment coefficients (<ddue:legacyItalic>cmi</ddue:legacyItalic>) by dynamic pressure, reference area and reference length.
-                                </ddue:para>
-                                    <ddue:para>All coefficients in the aeroPerformanceMap relate to
-                                        the aerodynamic coordinate system which is deducted from the CPACS coordinate system by
-                                        the transformations of angle of attack and angle of yaw. See the documentation of the
-                                        CPACS element for further details.
-                                </ddue:para>
+                                        Aerodynamic coefficients of the complete aircraft over altitude, Mach number, sideslip angle and angle of attack.
+                                        The force and moment coefficients are given in the aerodynamic coordinate system, i.e. along and about the axes d, s and l, which follow the free stream.
+                                        Their directions and signs are defined in section 3.2 of <ddue:codeInline>cpacsType</ddue:codeInline>.
+                                    </ddue:para>
                                     <ddue:para>
-                                        The dependent parameters of the aeroPerformanceMap are
-                                        <ddue:legacyItalic>altitude</ddue:legacyItalic>,
-                                        <ddue:legacyItalic>machNumber</ddue:legacyItalic>,
-                                        <ddue:legacyItalic>angleOfSideslip</ddue:legacyItalic> and
-                                        <ddue:legacyItalic>angleOfAttack</ddue:legacyItalic>.
-                                        These elements are vectors of equal length, where values with identical indices belong together. The solution vectors <ddue:legacyItalic>ci</ddue:legacyItalic> and <ddue:legacyItalic>cmi</ddue:legacyItalic> have the same length as the input vectors. Shown below is an example where with 10 values per vector:
-                                </ddue:para>
-                                    <ddue:code language="XML" title="Vectors of an aeroPerformanceMap">
+                                        <ddue:legacyBold>Coefficients</ddue:legacyBold>
+                                    </ddue:para>
+                                    <ddue:para>
+                                        The force coefficients <ddue:codeInline>cd</ddue:codeInline>, <ddue:codeInline>cs</ddue:codeInline> and <ddue:codeInline>cl</ddue:codeInline> are the components of the resulting aerodynamic force <ddue:legacyBold>F</ddue:legacyBold> along the axes d, s and l, divided by the dynamic pressure of the free stream and the reference area S.
+                                        The moment coefficients <ddue:codeInline>cmd</ddue:codeInline>, <ddue:codeInline>cms</ddue:codeInline> and <ddue:codeInline>cml</ddue:codeInline> are the components of the resulting moment <ddue:legacyBold>M</ddue:legacyBold> about the moment reference point, divided in addition by the reference length l:
+                                    </ddue:para>
+                                    <ddue:mediaLink>
+                                        <ddue:image xlink:href="eq_aeroCoefficients"/>
+                                    </ddue:mediaLink>
+                                    <ddue:para>
+                                        S, l and the moment reference point are the reference values of the model (<ddue:codeInline>.../model/reference/area</ddue:codeInline>, <ddue:codeInline>.../model/reference/length</ddue:codeInline> and <ddue:codeInline>.../model/reference/point</ddue:codeInline>, see <ddue:codeInline>referenceType</ddue:codeInline>).
+                                        There is only one reference length, typically the mean aerodynamic chord, and it normalizes all three moment coefficients, the rolling and the yawing moment included.
+                                        The moment reference point is fixed; a tool that needs the moments about the center of gravity transfers them to the current center of gravity itself.
+                                    </ddue:para>
+                                    <ddue:para>
+                                        <ddue:legacyBold>Map</ddue:legacyBold>
+                                    </ddue:para>
+                                    <ddue:para>
+                                        The parameters <ddue:codeInline>altitude</ddue:codeInline>, <ddue:codeInline>machNumber</ddue:codeInline>, <ddue:codeInline>angleOfSideslip</ddue:codeInline> and <ddue:codeInline>angleOfAttack</ddue:codeInline> are vectors of equal length, and the entries with the same index form one point of the map.
+                                        The coefficients and the damping derivatives are vectors of the same length, holding the values at these points.
+                                    </ddue:para>
+                                    <ddue:para>
+                                        The example shows the map of a short-range airliner at low speed with five angles of attack at the sideslip angles 0° and 4°; the reference area is 129.58 m², the reference length 4.225 m, and the moment reference point lies at the leading edge of the mean aerodynamic chord.
+                                        At the fourth point (α = 4°, β = 0°), the lift coefficient is 0.5672 and the drag coefficient 0.0365.
+                                        At β = 4°, the free stream comes from the right: the side force points to the left (<ddue:codeInline>cs</ddue:codeInline> &lt; 0), the right wing is lifted (<ddue:codeInline>cmd</ddue:codeInline> &gt; 0) and the nose turns to the right into the wind (<ddue:codeInline>cml</ddue:codeInline> &lt; 0).
+                                    </ddue:para>
+                                    <ddue:code language="XML" title="Coefficients over angle of attack and sideslip angle">
                                         <![CDATA[
-<altitude mapType="vector">12e+02;12e+02;12e+02;12e+02;12e+02;12e+02;12e+02;12e+02;12e+02;12e+02</altitude>
+<altitude mapType="vector">1200;1200;1200;1200;1200;1200;1200;1200;1200;1200</altitude>
 <machNumber mapType="vector">0.2;0.2;0.2;0.2;0.2;0.2;0.2;0.2;0.2;0.2</machNumber>
-<angleOfSideslip mapType="vector">0;0;0;0;0;2;2;2;2;2</angleOfSideslip>
+<angleOfSideslip mapType="vector">0;0;0;0;0;4;4;4;4;4</angleOfSideslip>
 <angleOfAttack mapType="vector">-2;0;2;4;6;-2;0;2;4;6</angleOfAttack>
-<cd mapType="vector">0.056;0.094;0.132;0.17;0.208;0.072;0.11;0.148;0.186;0.224</cd>
-<cs mapType="vector">0.;0.;0.;0.;0.;0.01;0.015;0.02;0.025;0.03</cs>
-<cl mapType="vector">-0.1;0.04;0.18;0.32;0.46;-0.08;0.03;0.14;0.25;0.36</cl>
+<cd mapType="vector">0.0221;0.0241;0.0289;0.0365;0.0468;0.0235;0.0256;0.0304;0.0379;0.0482</cd>
+<cs mapType="vector">0;0;0;0;0;-0.0628;-0.0628;-0.0628;-0.0628;-0.0628</cs>
+<cl mapType="vector">0.0436;0.2182;0.3927;0.5672;0.7418;0.0436;0.2182;0.3927;0.5672;0.7418</cl>
+<cmd mapType="vector">0;0;0;0;0;0.0559;0.0559;0.0559;0.0559;0.0559</cmd>
+<cms mapType="vector">0.0804;0.0018;-0.0767;-0.1553;-0.2338;0.0804;0.0018;-0.0767;-0.1553;-0.2338</cms>
+<cml mapType="vector">0;0;0;0;0;-0.0698;-0.0698;-0.0698;-0.0698;-0.0698</cml>
                                         ]]>
                                     </ddue:code>
-                                    <ddue:para>
-                                        The aerodynamic coefficients for
-                                        <ddue:legacyItalic>altitude</ddue:legacyItalic>=1200m,
-                                        <ddue:legacyItalic>machNumber</ddue:legacyItalic>=0.2,
-                                        <ddue:legacyItalic>angleOfSideslip</ddue:legacyItalic>=0° and
-                                        <ddue:legacyItalic>angleOfAttack</ddue:legacyItalic>=6° can be found at the 5th index:
-                                        <ddue:legacyItalic>cd</ddue:legacyItalic>=0.208, <ddue:legacyItalic>cs</ddue:legacyItalic>=0 and <ddue:legacyItalic>cl</ddue:legacyItalic>=0.46.
-                                </ddue:para>
                                 </ddue:content>
                             </ddue:section>
                         </ddue:content>
@@ -3883,66 +3876,52 @@ cpacs@dlr.de
                 <xsd:all>
                     <xsd:element name="altitude" type="doubleVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>
-                                Altitude [m]
-                            </xsd:documentation>
+                            <xsd:documentation>Altitude [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="machNumber" type="doubleVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>
-                                Mach number
-                            </xsd:documentation>
+                            <xsd:documentation>Mach number [-]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="angleOfSideslip" type="doubleVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>
-                                Sideslip angle [deg]
-                            </xsd:documentation>
+                            <xsd:documentation>Sideslip angle, positive for a free stream from the right [deg]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="angleOfAttack" type="doubleVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>
-                                Angle of attack [deg]
-                            </xsd:documentation>
+                            <xsd:documentation>Angle of attack, positive for a free stream from below [deg]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="cd" minOccurs="0" type="doubleVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>
-                                Drag coefficient in aerodynamic coordinates
-                            </xsd:documentation>
+                            <xsd:documentation>Drag coefficient, along the d-axis (direction of the free stream) [-]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="cs" minOccurs="0" type="doubleVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>
-                                Coefficient of the side force vector in aerodynamic coordinates (perpendicular to lift and drag)
-                            </xsd:documentation>
+                            <xsd:documentation>Side force coefficient, along the s-axis (to the right) [-]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="cl" minOccurs="0" type="doubleVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>
-                                Lift coefficient in aerodynamic coordinates
-                            </xsd:documentation>
+                            <xsd:documentation>Lift coefficient, along the l-axis (upwards) [-]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="cmd" minOccurs="0" type="doubleVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Aerodynamic moment around d-axis of the aerodynamic coordinate system</xsd:documentation>
+                            <xsd:documentation>Rolling moment coefficient, about the d-axis [-]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="cms" minOccurs="0" type="doubleVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Aerodynamic moment around s-axis of the aerodynamic coordinate system</xsd:documentation>
+                            <xsd:documentation>Pitching moment coefficient, about the s-axis [-]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="cml" minOccurs="0" type="doubleVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Aerodynamic moment around l-axis of the aerodynamic coordinate system</xsd:documentation>
+                            <xsd:documentation>Yawing moment coefficient, about the l-axis [-]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="dampingDerivatives" minOccurs="0" type="dampingDerivativesRatesType">
@@ -4020,8 +3999,9 @@ cpacs@dlr.de
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>
-                            The aerodynamic coefficients and derivatives are stored in aerodynamic maps. Individual maps can be used to
-                            gather the aerodynamic characteristics for specific boundary conditions.
+                            Aerodynamic maps of the aircraft.
+                            Each map holds the aerodynamic coefficients for one set of boundary conditions, e.g. one setting of the high-lift devices, so that a tool picks the map that matches the case it evaluates.
+                            The coefficients are given in the aerodynamic coordinate system defined in section 3.2 of <ddue:codeInline>cpacsType</ddue:codeInline>.
                         </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -14102,30 +14082,10 @@ cpacs@dlr.de
                         <ddue:para>Damping derivatives for positive and negative rotation rates</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:content>
-                            <ddue:section>
-                                <ddue:title>0. General overview</ddue:title>
-                                <ddue:content>
-                                    <ddue:para>This type contains the damping derivatives. They are
-                                        split up into those derivatives for positive rotation rates,
-                                        and those for negative rotation rates.</ddue:para>
-                                </ddue:content>
-                            </ddue:section>
-                            <ddue:section>
-                                <ddue:title>1. &lt;positiveRates&gt; (optional)</ddue:title>
-                                <ddue:content>
-                                    <ddue:para>Damping derivatives, calculated by positive rotation
-                                        rates.</ddue:para>
-                                </ddue:content>
-                            </ddue:section>
-                            <ddue:section>
-                                <ddue:title>2. &lt;negativeRates&gt; (optional)</ddue:title>
-                                <ddue:content>
-                                    <ddue:para>Damping derivatives, calculated by negative rotation
-                                        rates.</ddue:para>
-                                </ddue:content>
-                            </ddue:section>
-                        </ddue:content>
+                        <ddue:para>
+                            Damping derivatives of the aerodynamic coefficients with respect to the rotation rates.
+                            Derivatives determined with positive and with negative rates are given separately, so that a response that is not symmetric in the rate can be described.
+                        </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -14156,15 +14116,12 @@ cpacs@dlr.de
                         <ddue:para>Damping derivatives</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>This type contains aerodynamic performance maps with
-                            the damping derivatives. The derivatives are calculated using
-                            rotational rates [rad/s], normalized by:
-                            Rate*ReferenceLength/flow speed. The rotations are performed
-                            around the global axis directions with the aircraft model's
-                            global reference point as origin. The damping derivative
-                            performance maps are vectors of the same length as the input
-                            vectors of the baseline aerodynamic performance maps, consisting of
-                            semicolon separated values.
+                        <ddue:para>
+                            Derivatives of the six aerodynamic coefficients with respect to the normalized rotation rates.
+                            The roll, pitch and yaw rates p, q and r [rad/s] are rotations about the x-, y- and z-direction of the CPACS coordinate system through the moment reference point of the model, positive by the right-hand rule.
+                            They are normalized with the reference length l and the free-stream velocity, e.g. p* = p l / V<ddue:subscript>∞</ddue:subscript> for the roll rate.
+                            Each derivative is a vector with one value per point of the aerodynamic map, i.e. of the same length as its parameter vectors.
+                            The coefficients themselves are given in the aerodynamic coordinate system (section 3.2 of <ddue:codeInline>cpacsType</ddue:codeInline>).
                         </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -14175,92 +14132,92 @@ cpacs@dlr.de
                 <xsd:all>
                     <xsd:element name="dcddpStar" minOccurs="0" type="doubleVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Change of cd by normalized roll rate</xsd:documentation>
+                            <xsd:documentation>Derivative of cd with respect to the normalized roll rate [1/rad]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="dcddqStar" minOccurs="0" type="doubleVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Change of cd by normalized pitch rate</xsd:documentation>
+                            <xsd:documentation>Derivative of cd with respect to the normalized pitch rate [1/rad]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="dcddrStar" minOccurs="0" type="doubleVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Change of cd by normalized yaw rate</xsd:documentation>
+                            <xsd:documentation>Derivative of cd with respect to the normalized yaw rate [1/rad]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="dcsdpStar" minOccurs="0" type="doubleVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Change of cs by normalized roll rate</xsd:documentation>
+                            <xsd:documentation>Derivative of cs with respect to the normalized roll rate [1/rad]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="dcsdqStar" minOccurs="0" type="doubleVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Change of cs by normalized pitch rate</xsd:documentation>
+                            <xsd:documentation>Derivative of cs with respect to the normalized pitch rate [1/rad]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="dcsdrStar" minOccurs="0" type="doubleVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Change of cs by normalized yaw rate</xsd:documentation>
+                            <xsd:documentation>Derivative of cs with respect to the normalized yaw rate [1/rad]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="dcldpStar" minOccurs="0" type="doubleVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Change of cl by normalized roll rate</xsd:documentation>
+                            <xsd:documentation>Derivative of cl with respect to the normalized roll rate [1/rad]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="dcldqStar" minOccurs="0" type="doubleVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Change of cl by normalized pitch rate</xsd:documentation>
+                            <xsd:documentation>Derivative of cl with respect to the normalized pitch rate [1/rad]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="dcldrStar" minOccurs="0" type="doubleVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Change of cl by normalized yaw rate</xsd:documentation>
+                            <xsd:documentation>Derivative of cl with respect to the normalized yaw rate [1/rad]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="dcmddpStar" minOccurs="0" type="doubleVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Change of cmd by normalized roll rate</xsd:documentation>
+                            <xsd:documentation>Derivative of cmd with respect to the normalized roll rate [1/rad]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="dcmddqStar" minOccurs="0" type="doubleVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Change of cmd by normalized pitch rate</xsd:documentation>
+                            <xsd:documentation>Derivative of cmd with respect to the normalized pitch rate [1/rad]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="dcmddrStar" minOccurs="0" type="doubleVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Change of cmd by normalized yaw rate</xsd:documentation>
+                            <xsd:documentation>Derivative of cmd with respect to the normalized yaw rate [1/rad]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="dcmsdpStar" minOccurs="0" type="doubleVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Change of cms by normalized roll rate</xsd:documentation>
+                            <xsd:documentation>Derivative of cms with respect to the normalized roll rate [1/rad]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="dcmsdqStar" minOccurs="0" type="doubleVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Change of cms by normalized pitch rate</xsd:documentation>
+                            <xsd:documentation>Derivative of cms with respect to the normalized pitch rate [1/rad]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="dcmsdrStar" minOccurs="0" type="doubleVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Change of cms by normalized yaw rate</xsd:documentation>
+                            <xsd:documentation>Derivative of cms with respect to the normalized yaw rate [1/rad]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="dcmldpStar" minOccurs="0" type="doubleVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Change of cml by normalized roll rate</xsd:documentation>
+                            <xsd:documentation>Derivative of cml with respect to the normalized roll rate [1/rad]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="dcmldqStar" minOccurs="0" type="doubleVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Change of cml by normalized pitch rate</xsd:documentation>
+                            <xsd:documentation>Derivative of cml with respect to the normalized pitch rate [1/rad]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="dcmldrStar" minOccurs="0" type="doubleVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Change of cml by normalized yaw rate</xsd:documentation>
+                            <xsd:documentation>Derivative of cml with respect to the normalized yaw rate [1/rad]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -33900,11 +33857,13 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Operation Limit Increments</ddue:para>
+                        <ddue:para>Increments of the angle-of-attack limits</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Changes of the deltas of operation limit angles with respect to the corresponding increment aeroPerformanceMaps.</ddue:para>
-                        <ddue:para>Values are specified as an array with same indices like the corresponding increment map.</ddue:para>
+                        <ddue:para>
+                            Changes of the smallest and the largest permitted angle of attack, added to <ddue:codeInline>angleOfAttackMin</ddue:codeInline> and <ddue:codeInline>angleOfAttackMax</ddue:codeInline> of the limitation map.
+                            The values are arrays with the same indices as the referenced increment map.
+                        </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -33914,12 +33873,12 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:all>
                     <xsd:element name="deltaAngleOfAttackMin" type="doubleArrayBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Minimum delta angle of attack [deg]</xsd:documentation>
+                            <xsd:documentation>Increment of the smallest permitted angle of attack [deg]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="deltaAngleOfAttackMax" type="doubleArrayBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Maximum delta angle of attack [deg]</xsd:documentation>
+                            <xsd:documentation>Increment of the largest permitted angle of attack [deg]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -38006,7 +37965,9 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                         <ddue:para>Reference values</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Reference values of the aircraft model</ddue:para>
+                        <ddue:para>
+                            Reference values of the model: the reference area and length that normalize the aerodynamic coefficients, and the moment reference point the moment coefficients refer to (see <ddue:codeInline>aeroPerformanceMapType</ddue:codeInline>).
+                        </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -38016,29 +37977,17 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:all>
                     <xsd:element name="area" minOccurs="0" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Reference area (typically planform area)
-                            </xsd:documentation>
+                            <xsd:documentation>Reference area, typically the planform area of the wing [m^2]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="length" minOccurs="0" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Reference length (typically Mean Aerodynamic
-                                Chord MAC). In CPACS, only one reference length exists (and is
-                                used, e.g. for all three moment coefficients. Coordinates given
-                                relative to MAC shall always use this length as MAC.
-                            </xsd:documentation>
+                            <xsd:documentation>Reference length, typically the mean aerodynamic chord (MAC). It is the only reference length in CPACS and normalizes all three moment coefficients, the rolling and the yawing moment included; positions given in per cent of the MAC refer to it. [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="point" minOccurs="0" type="pointType">
                         <xsd:annotation>
-                            <xsd:documentation>Moment reference point (in global coordinate
-                                system). The x-coordinate is typically chosen same as of the
-                                leading edge of the wing in the spanwise section having a
-                                chordlength identical to MAC. Coordinates given as %MAC shall
-                                always use this x-coordinate and length (e.g. 0%MAC = x, 100%MAC
-                                = x + length). The y coordinate is typically 0. The z coordinate
-                                is often chosen either as 0., or as z of fueselage nose or as z
-                                of middle of center fuselage part.</xsd:documentation>
+                            <xsd:documentation>Moment reference point in the CPACS coordinate system. Its x-coordinate is typically that of the leading edge of the mean aerodynamic chord, so that positions in per cent of the MAC run from x (0 %) to x + length (100 %). y is typically 0, z often 0, the height of the fuselage nose or the middle of the center fuselage. [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
