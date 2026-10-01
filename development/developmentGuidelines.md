@@ -404,7 +404,7 @@ CPACS is a hierarchical data model. There are two approaches to setting up this 
 | (1) XML hierarchy | (2) Hierarchy via `parentUID` |
 | ---------- | ---------- |
 | <img src="./images/parentUID2.png" width="400"> | <img src="./images/parentUID1.png" width="220">|
-| <ul><li>(+) explicit and clear data structure</li><li>(+) user-friendly, intuitive</li><li>(-) difficult to realize varying hierarchies, e.g. via choice elements</li></ul> | <ul><li>(+) flexibility for the user </li><li>(-) high risk of incorrect use, since there must always be a top-level main element in a hierarchy. Consequently, the user must specify exactly one element without parentUID, but all others with parentUID. This condition cannot be checked via XSD. </li></ul> |
+| <ul><li>(+) explicit and clear data structure</li><li>(+) user-friendly, intuitive</li><li>(-) difficult to realize varying hierarchies, e.g. via choice elements</li></ul> | <ul><li>(+) flexibility for the user </li><li>(-) risk of incorrect use that the XSD cannot detect: a component whose parentUID is forgotten is not an error but is placed in the global coordinate system, and a parentUID may point to a wrong or cyclic parent. Any number of components may be without parentUID; each is the top of its own hierarchy. </li></ul> |
 | **prefer if**: the hierarchy is clear in advance and should not be changed by the user | **prefer if**: the hierarchy cannot be defined in advance and the flexibility should be left to the user |
 
 #### Combination of `parentUID` and `transformation`

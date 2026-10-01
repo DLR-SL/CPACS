@@ -231,81 +231,60 @@ cpacs@dlr.de
                                         <ddue:legacyBold>3.3. Local coordinate systems via parentUID and transformation</ddue:legacyBold>
                                     </ddue:para>
                                     <ddue:para>
-                                        Some elements in CPACS, in particular the geometric components, are described in local coordinates.
-                                        The hierarchical data structure allows to define a local coordinate system either with respect to the coordinate system of the parent element or with respect to the global CPACS coordinate system.
-                                        This is achieved by combining the two elements <ddue:codeInline>&lt;parentUID&gt;</ddue:codeInline> and <ddue:codeInline>&lt;transformation&gt;</ddue:codeInline>:
-                                </ddue:para>
+                                        Geometric components such as fuselages, wings, engines or fuel tanks are each defined in a local coordinate system, which their <ddue:codeInline>transformation</ddue:codeInline> places in the coordinate system of their parent.
+                                        The parent is set with the optional <ddue:codeInline>parentUID</ddue:codeInline> element, which references the <ddue:codeInline>uID</ddue:codeInline> of another component.
+                                        In this way, the user builds the hierarchy of the vehicle, e.g. attaches an engine to a wing or to the fuselage, instead of having it prescribed by the XML tree.
+                                    </ddue:para>
                                     <ddue:list class="bullet">
                                         <ddue:listItem>
-                                            <ddue:para>
-                                                <ddue:legacyBold>parentUID</ddue:legacyBold>: An individual data hierarchy can be set up using the optional <ddue:codeInline>&lt;parentUID&gt;</ddue:codeInline> element.
-                                                Here it is <ddue:legacyBold>important that exactly one element does not contain the <ddue:codeInline>&lt;parentUID&gt;</ddue:codeInline>
-                                                </ddue:legacyBold> in order to identify the top element of this user-specific hierarchy.
-                                                As soon as the <ddue:codeInline>parentUID</ddue:codeInline> (which refers to the <ddue:codeInline>uID</ddue:codeInline> of the parent element) is set, a local coordinate system of the corresponding node is instantiated.
-                                </ddue:para>
+                                            <ddue:para>A component without <ddue:codeInline>parentUID</ddue:codeInline> is placed by its transformation directly in the CPACS coordinate system. Any number of components may be without <ddue:codeInline>parentUID</ddue:codeInline>; each of them is the top of its own hierarchy.</ddue:para>
                                         </ddue:listItem>
                                         <ddue:listItem>
-                                            <ddue:para>
-                                                <ddue:legacyBold>transformation</ddue:legacyBold>: This allows the coordinate system to be transformed via
-                                                <ddue:codeInline>&lt;translation&gt;</ddue:codeInline>,
-                                                <ddue:codeInline>&lt;rotation&gt;</ddue:codeInline> and
-                                                <ddue:codeInline>&lt;scaling&gt;</ddue:codeInline>.
-                                                As soon as the <ddue:codeInline>&lt;parentUID&gt;</ddue:codeInline> is set, this transformation refers to the local coordinate system (in the current CPACS version this only affects <ddue:codeInline>&lt;translation&gt;</ddue:codeInline>).
-                                                An attribute <ddue:codeInline>refType</ddue:codeInline> is used to either make this explicit (<ddue:codeInline>refType="absLocal"</ddue:codeInline>) or to override this and reference the global CPACS coordinate system instead (<ddue:codeInline>refType="absGlobal"</ddue:codeInline>).
-                                </ddue:para>
+                                            <ddue:para>A component with <ddue:codeInline>parentUID</ddue:codeInline> follows only the translation of its parent. With <ddue:codeInline>refType="absLocal"</ddue:codeInline> of its translation, which is the default, the translation is measured from the origin of the parent coordinate system along the CPACS axes; the rotation and scaling of the parent do not apply. With <ddue:codeInline>refType="absGlobal"</ddue:codeInline>, the translation is given in the CPACS coordinate system, as for a component without parent.</ddue:para>
+                                        </ddue:listItem>
+                                        <ddue:listItem>
+                                            <ddue:para>The <ddue:codeInline>refType</ddue:codeInline> only has a meaning for a component with <ddue:codeInline>parentUID</ddue:codeInline> and is omitted elsewhere.</ddue:para>
+                                        </ddue:listItem>
+                                        <ddue:listItem>
+                                            <ddue:para>Parts that are nested in another node by the XML structure, e.g. the sections and elements of a wing or a deck in its fuselage, have that node as parent and need no <ddue:codeInline>parentUID</ddue:codeInline>.</ddue:para>
                                         </ddue:listItem>
                                     </ddue:list>
-                                    <ddue:para>
-                                        The following table summarizes the possible combinations of <ddue:codeInline>&lt;parentUID&gt;</ddue:codeInline> and <ddue:codeInline>&lt;transformation&gt;</ddue:codeInline> and the resulting coordinate system (local or global):
-                                </ddue:para>
+                                    <ddue:para>The equations and an example are given in <ddue:codeInline>transformationType</ddue:codeInline>. The following table summarizes where the translation of a component refers to:</ddue:para>
                                     <ddue:table>
                                         <ddue:row>
                                             <ddue:entry/>
                                             <ddue:entry>
-                                                <ddue:codeInline>&lt;parentUID&gt;</ddue:codeInline> not set
+                                                <ddue:legacyBold>
+                                                    <ddue:codeInline>parentUID</ddue:codeInline> not set</ddue:legacyBold>
                                             </ddue:entry>
                                             <ddue:entry>
-                                                <ddue:codeInline>&lt;parentUID&gt;</ddue:codeInline> set
+                                                <ddue:legacyBold>
+                                                    <ddue:codeInline>parentUID</ddue:codeInline> set</ddue:legacyBold>
                                             </ddue:entry>
                                         </ddue:row>
                                         <ddue:row>
                                             <ddue:entry>
-                                                <ddue:codeInline>&lt;transformation&gt;</ddue:codeInline> without <ddue:codeInline>refType</ddue:codeInline>
-                                            </ddue:entry>
-                                            <ddue:entry>global</ddue:entry>
-                                            <ddue:entry>local</ddue:entry>
+                                                <ddue:codeInline>refType="absLocal"</ddue:codeInline> of the translation (default)</ddue:entry>
+                                            <ddue:entry>CPACS coordinate system</ddue:entry>
+                                            <ddue:entry>origin of the parent</ddue:entry>
                                         </ddue:row>
                                         <ddue:row>
                                             <ddue:entry>
-                                                <ddue:codeInline>&lt;transformation&gt;</ddue:codeInline> with <ddue:codeInline>refType="absLocal"</ddue:codeInline>
-                                            </ddue:entry>
-                                            <ddue:entry>global</ddue:entry>
-                                            <ddue:entry>local</ddue:entry>
-                                        </ddue:row>
-                                        <ddue:row>
-                                            <ddue:entry>
-                                                <ddue:codeInline>&lt;transformation&gt;</ddue:codeInline> with <ddue:codeInline>refType="absGlobal"</ddue:codeInline>
-                                            </ddue:entry>
-                                            <ddue:entry>global</ddue:entry>
-                                            <ddue:entry>global</ddue:entry>
+                                                <ddue:codeInline>refType="absGlobal"</ddue:codeInline> of the translation</ddue:entry>
+                                            <ddue:entry>CPACS coordinate system</ddue:entry>
+                                            <ddue:entry>CPACS coordinate system</ddue:entry>
                                         </ddue:row>
                                     </ddue:table>
-                                    <ddue:para>
-                                        <ddue:legacyBold>Note:</ddue:legacyBold>
-                                        The combination of <ddue:codeInline>&lt;transformation&gt;</ddue:codeInline> with <ddue:codeInline>refType="absLocal"</ddue:codeInline> and no <ddue:codeInline>&lt;parentUID&gt;</ddue:codeInline> is global,
-                                        because the local coordinate system to which the transformation is referring to via <ddue:codeInline>refType</ddue:codeInline> equals the global coordinate system (see fuselage in the following example).
-                                </ddue:para>
-                                    <ddue:para>
-                                        An exemplary use case further illustrates the concept of the coordinate system hierarchy.
-                                        The CPACS schema shall not specify in advance that a wing is always be part of the fuselage and engines must always be part of the wing.
-                                        In other cases the engine could be attached to the fuselage, which would not be possible via a predefined XML tree.
-                                        The following figure shows how components of the aircraft are related to each other via the <ddue:codeInline>&lt;parentUID&gt;</ddue:codeInline>.
-                                        The fairing is a child of the wing and is therefore automatically translated when the wing is translated.
-                                        Likewise, the horizontal tailplane is a part of the vertical tailplane and is therefore affected by translation of the latter:
-                                </ddue:para>
                                     <ddue:mediaLink>
-                                        <ddue:image xlink:href="parentUID_transformations"/>
+                                        <ddue:image xlink:href="componentHierarchy"/>
                                     </ddue:mediaLink>
+                                    <ddue:para>
+                                        The figure shows an aircraft with two hierarchies.
+                                        The fuselage and the main wing have no <ddue:codeInline>parentUID</ddue:codeInline>, so that each of them is placed directly in the CPACS coordinate system.
+                                        The vertical tail references the fuselage, the horizontal tail the vertical tail, and the engine pylons the main wing.
+                                        Translating the main wing therefore also moves the engine pylons, but not the fuselage or the tail.
+                                        Equally, the main wing could reference the fuselage; it would then follow the translation of the fuselage as well.
+                                    </ddue:para>
                                 </ddue:content>
                             </ddue:section>
                             <ddue:section>
