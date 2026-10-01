@@ -15,9 +15,12 @@ The script writes
 
     documentation/figures/basicPrinciple.png
     documentation/figures/dataHierarchy.png
+    documentation/figures/toolInterfaces.png
 
 Definitions shown (as in the documentation):
 
+- toolInterfaces.png: n tools exchanging data directly need up to n(n - 1)/2 interfaces, one per pair;
+  through a common format each tool needs one.
 - basicPrinciple.png: the schema defines the structure of a CPACS dataset and carries the documentation,
   which is generated from it. Tools and users write and read the dataset; an XML processor validates the
   dataset against the schema.
@@ -152,11 +155,37 @@ def symbol_users(ax, center, size, color, back_color):
     bust(cx - 0.1 * size, cy - 0.04 * size, color, 4.5)
 
 
+def symbol_documentation(ax, center, size, color):
+    """A browser window with a title bar and lines of text: the documentation as HTML pages."""
+    cx, cy = center
+    w, h, bar = 0.9 * size, 0.72 * size, 0.18 * size
+    x0, y0 = cx - w / 2, cy - h / 2
+    ax.add_patch(FancyBboxPatch((x0, y0), w, h, boxstyle=f"round,pad=0,rounding_size={0.06 * size}",
+                                lw=LINE["secondary"], ec=color, fc=PLATE, zorder=4))
+    ax.plot([x0, x0 + w], [y0 + h - bar, y0 + h - bar], color=color, lw=LINE["reference"], zorder=4.1)
+    for k in range(3):
+        ax.plot(x0 + (0.1 + 0.11 * k) * w, y0 + h - bar / 2, ls="none", marker="o", ms=1.1, mfc=color, mec=color,
+                zorder=4.2)
+    for k, length in enumerate((0.7, 0.55, 0.62)):
+        y = y0 + h - bar - (0.2 + 0.2 * k) * h
+        ax.plot([x0 + 0.14 * w, x0 + (0.14 + length) * w], [y, y], color=color, lw=LINE["reference"],
+                solid_capstyle="round", zorder=4.1)
+
+
+def symbol_validation(ax, center, size, color):
+    """A circle with a check mark: the XML processor confirms that the dataset follows the schema."""
+    cx, cy = center
+    ax.add_patch(Circle((cx, cy), 0.34 * size, lw=LINE["secondary"], ec=color, fc=PLATE, zorder=4))
+    check = np.array([(-0.15, 0.0), (-0.045, -0.115), (0.16, 0.11)]) * size + np.asarray(center)
+    ax.plot(*check.T, color=color, lw=LINE["secondary"] * 1.3, solid_capstyle="round", solid_joinstyle="round",
+            zorder=4.1)
+
+
 def figure_basic_principle():
     """The schema, the dataset, the documentation, the tools and the XML processor, and how they relate.
 
-    The middle row, which the figure is about, carries a symbol in each box; the documentation and the XML
-    processor are context and have none.
+    Each box carries a symbol: the schema and the dataset, which the figure is about, in series 1, the
+    documentation, the tools and users and the XML processor as context in secondary ink.
     """
     width, height = FULL_WIDTH, 3.25
     w, h = 1.85, 0.62
@@ -166,11 +195,12 @@ def figure_basic_principle():
     symbol_size, symbol_inset, text_inset = 0.36, 0.3, 0.56
 
     nodes = {
-        "documentation": (mid["dataset"] - w / 2, row_top, MUTED, "documentation", "HTML pages", None),
+        "documentation": (mid["dataset"] - w / 2, row_top, MUTED, "documentation", "HTML pages", "documentation"),
         "schema": (cols["schema"], row_mid, COLORS["series1"], "cpacs_schema.xsd", "XML schema", "schema"),
         "dataset": (cols["dataset"], row_mid, COLORS["series1"], "aircraft.xml", "CPACS dataset", "aircraft"),
         "tools": (cols["tools"], row_mid, MUTED, "tools and users", "design and analysis", "users"),
-        "processor": (mid["dataset"] - w / 2, row_bottom, MUTED, "XML processor", "e.g. TiXI or xmllint", None),
+        "processor": (mid["dataset"] - w / 2, row_bottom, MUTED, "XML processor", "e.g. TiXI or xmllint",
+                      "validation"),
     }
     with figure_style():
         fig = plt.figure(figsize=(width, height))
@@ -178,17 +208,18 @@ def figure_basic_principle():
         for x, y, color, title, note, symbol in nodes.values():
             box(ax, x, y, w, h, color)
             family = MONO if title.endswith((".xsd", ".xml")) else None
-            if symbol is None:
-                text_x, ha = x + w / 2, "center"
+            text_x, ha = x + text_inset, "left"
+            at = (x + symbol_inset, y)
+            if symbol == "schema":
+                symbol_schema(ax, at, symbol_size, color)
+            elif symbol == "aircraft":
+                symbol_aircraft(ax, at, symbol_size, color)
+            elif symbol == "users":
+                symbol_users(ax, at, symbol_size, INK2, MUTED)
+            elif symbol == "documentation":
+                symbol_documentation(ax, at, symbol_size, INK2)
             else:
-                text_x, ha = x + text_inset, "left"
-                at = (x + symbol_inset, y)
-                if symbol == "schema":
-                    symbol_schema(ax, at, symbol_size, color)
-                elif symbol == "aircraft":
-                    symbol_aircraft(ax, at, symbol_size, color)
-                else:
-                    symbol_users(ax, at, symbol_size, INK2, MUTED)
+                symbol_validation(ax, at, symbol_size, INK2)
             ax.text(text_x, y + 0.1, title, ha=ha, va="center", fontsize=FONT_SIZE["base"], color=INK,
                     family=family, zorder=3)
             ax.text(text_x, y - 0.12, note, ha=ha, va="center", fontsize=NOTE, color=INK2, zorder=3)
@@ -322,7 +353,73 @@ def figure_data_hierarchy():
         save_figure(fig, FIGURES / "dataHierarchy.png")
 
 
+# Tools of the interface figure, one per discipline, placed on a circle starting at the top
+TOOLS = ["aerodynamics", "structures", "flight mechanics", "propulsion", "mission analysis", "overall design"]
+
+
+def figure_tool_interfaces():
+    """Interfaces between n tools: (a) direct exchange, one per pair; (b) through a common format, one per tool.
+
+    The numbers in the captions are computed from the list of tools.
+    """
+    n = len(TOOLS)
+    pairs = [(i, j) for i in range(n) for j in range(i + 1, n)]
+    assert len(pairs) == n * (n - 1) // 2
+    radius, w, h = 1.12, 1.18, 0.3
+    hub_w, hub_h = 1.34, 0.52
+    panel_w, height = FULL_WIDTH / 2, 3.25
+    centre_y = 1.45
+    angles = np.radians(90.0 - 360.0 / n * np.arange(n))
+    interface = COLORS["series2"]
+
+    def tools(ax, cx):
+        points = [(cx + radius * 1.05 * np.cos(a), centre_y + radius * np.sin(a)) for a in angles]
+        for (x, y), name in zip(points, TOOLS, strict=True):
+            box(ax, x - w / 2, y, w, h, MUTED, zorder=3)
+            ax.add_patch(FancyBboxPatch((x - w / 2, y - h / 2), w, h, boxstyle="round,pad=0,rounding_size=0.04",
+                                        lw=0, fc=PLATE, zorder=2.9))
+            ax.text(x, y, name, ha="center", va="center", fontsize=NOTE, color=INK, zorder=4)
+        return points
+
+    def caption(ax, x, title, count):
+        ax.text(x, height - 0.05, title, ha="left", va="top", fontsize=FONT_SIZE["base"], color=INK)
+        ax.text(x, height - 0.27, count, ha="left", va="top", fontsize=NOTE, color=INK2)
+
+    with figure_style():
+        fig = plt.figure(figsize=(FULL_WIDTH, height))
+        ax = fig.add_axes((0.0, 0.0, 1.0, 1.0))
+        # (a) every pair of tools has an interface of its own
+        cx = panel_w / 2
+        points = tools(ax, cx)
+        for i, j in pairs:
+            ax.plot(*zip(points[i], points[j]), color=interface, lw=LINE["secondary"], zorder=1,
+                    solid_capstyle="butt")
+        caption(ax, 0.05, "(a) direct exchange between the tools",
+                f"{len(pairs)} interfaces for {n} tools, one per pair")
+        # (b) each tool has one interface, to the common dataset
+        cx = panel_w + panel_w / 2
+        points = tools(ax, cx)
+        for x, y in points:
+            ax.plot([cx, x], [centre_y, y], color=interface, lw=LINE["secondary"], zorder=1, solid_capstyle="butt")
+        box(ax, cx - hub_w / 2, centre_y, hub_w, hub_h, COLORS["series1"], zorder=3)
+        ax.add_patch(FancyBboxPatch((cx - hub_w / 2, centre_y - hub_h / 2), hub_w, hub_h,
+                                    boxstyle="round,pad=0,rounding_size=0.04", lw=0, fc=PLATE, zorder=2.9))
+        symbol_aircraft(ax, (cx - hub_w / 2 + 0.26, centre_y), 0.32, COLORS["series1"])
+        ax.text(cx - hub_w / 2 + 0.5, centre_y + 0.08, "CPACS", ha="left", va="center",
+                fontsize=FONT_SIZE["base"], color=INK, zorder=4)
+        ax.text(cx - hub_w / 2 + 0.5, centre_y - 0.11, "dataset", ha="left", va="center", fontsize=NOTE,
+                color=INK2, zorder=4)
+        caption(ax, panel_w + 0.15, "(b) exchange through a common format",
+                f"{n} interfaces for {n} tools, one per tool")
+        ax.set_xlim(0.0, FULL_WIDTH)
+        ax.set_ylim(0.0, height)
+        ax.set_aspect("equal")
+        ax.axis("off")
+        save_figure(fig, FIGURES / "toolInterfaces.png")
+
+
 def main():
+    figure_tool_interfaces()
     figure_basic_principle()
     figure_data_hierarchy()
 
