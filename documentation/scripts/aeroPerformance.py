@@ -451,19 +451,22 @@ def free_stream(ax, origin, direction):
     return start
 
 
+def reference_point(ax):
+    """Moment reference point on the plane of symmetry, labelled inside the fuselage (no leader line needed)."""
+    _, _, x_ref = wing_reference()
+    dot(ax, (x_ref, 0.0), color=INK)
+    label(ax, (x_ref, 0.0), "reference point", (-6, 0), ha="right", color=INK2)
+
+
 def figure_side():
     """Side view (x-z plane, seen from the left): angle of attack, axes d and l, positive pitching moment."""
     e_d, _, e_l = aero_axes(ALPHA_FIGURE, 0.0)
     d, l = e_d[[0, 2]], e_l[[0, 2]]
     origin = np.array([-12.0, -7.5])
-    _, _, x_ref = wing_reference()
     with figure_style():
         fig, ax = plt.subplots(figsize=(FULL_WIDTH, 2.6))
         draw_aircraft_side(ax)
-        dot(ax, (x_ref, 0.0), color=INK)
-        ax.annotate("reference point", xy=(x_ref, 0.0), xytext=(x_ref - 4.0, 5.2), ha="center", va="bottom",
-                    fontsize=NOTE, color=INK2, arrowprops={"arrowstyle": "-", "color": MUTED,
-                                                            "lw": LINE["reference"], "shrinkA": 2, "shrinkB": 3})
+        reference_point(ax)
         angle_wedge(ax, origin, 0.0, ALPHA_FIGURE, 5.6, r"$\alpha$", 6.4)
         axes_pair(ax, origin, ("x", "z"), ((6, 0), (0, 7)), (d, l), ("d", "l"), ((7, 0), (-6, 4)))
         axis_through_page(ax, origin, towards_viewer=False)
@@ -485,6 +488,7 @@ def figure_top():
     with figure_style():
         fig, ax = plt.subplots(figsize=(FULL_WIDTH, 4.6))
         draw_aircraft_top(ax)
+        reference_point(ax)
         angle_wedge(ax, origin, -BETA_FIGURE, 0.0, 5.6, r"$\beta$", 6.4)
         axes_pair(ax, origin, ("x", "y"), ((6, 0), (0, 7)), (d, s), ("d", "s"), ((7, -2), (6, 5)))
         axis_through_page(ax, origin, towards_viewer=True)
