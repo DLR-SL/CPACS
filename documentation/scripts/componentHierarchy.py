@@ -5,7 +5,7 @@
 #     "matplotlib==3.10.3",
 # ]
 # ///
-"""Figure for the documentation of local coordinate systems via parentUID (cpacsType, section 3.3).
+"""Figure for the documentation of local coordinate systems via parentUID (cpacsType, section 4.3).
 
 Run from the repository root:
 

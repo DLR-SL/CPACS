@@ -5,7 +5,7 @@
 #     "matplotlib==3.10.3",
 # ]
 # ///
-"""Figures for the documentation of symmetry (cpacsType, section 8): the symmetry attribute of
+"""Figures for the documentation of symmetry (cpacsType, section 7): the symmetry attribute of
 components and the symmetry attribute of references to them (stringUIDBaseType).
 
 Run from the repository root:

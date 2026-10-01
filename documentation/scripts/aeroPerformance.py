@@ -6,7 +6,7 @@
 # ]
 # ///
 """Figures, equations and example data for the documentation of the aerodynamic
-coordinate system (cpacsType, section 3) and of the aerodynamic maps
+coordinate system (cpacsType, section 4) and of the aerodynamic maps
 (aeroPerformanceType, aeroPerformanceMapType).
 
 Run from the repository root:

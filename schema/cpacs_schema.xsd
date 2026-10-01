@@ -118,12 +118,11 @@ cpacs@dlr.de
                                         ]]>
                                     </ddue:code>
                                     <ddue:para>
-                                        The <ddue:codeInline>&lt;header&gt;</ddue:codeInline> identifies the dataset and records its versions; <ddue:codeInline>&lt;vehicles&gt;</ddue:codeInline> holds the aircraft with its components, here the main wing, and the library of shared parts such as airfoils.
+                                        The <ddue:codeInline>&lt;header&gt;</ddue:codeInline> identifies the dataset and records its versions (section 3); <ddue:codeInline>&lt;vehicles&gt;</ddue:codeInline> holds the aircraft with its components, here the main wing, and the library of shared parts such as airfoils.
                                         Section 2 explains this structure.
                                     </ddue:para>
                                     <ddue:para>
                                         The attribute <ddue:codeInline>@xsi:noNamespaceSchemaLocation</ddue:codeInline> of the root element names the schema file, so that an XML processor finds it without further input; a relative path is resolved against the directory of the dataset.
-                                        Each <ddue:codeInline>&lt;versionInfo&gt;</ddue:codeInline> records in <ddue:codeInline>&lt;cpacsVersion&gt;</ddue:codeInline> the CPACS version that this version of the dataset follows, and the dataset is validated against the schema of the CPACS version of its current version.
                                     </ddue:para>
                                     <ddue:para>
                                         <ddue:legacyBold>Schema and validation</ddue:legacyBold>
@@ -140,23 +139,10 @@ cpacs@dlr.de
                                     <ddue:para>
                                         The figure shows how the parts relate: the schema defines the structure of the dataset, tools and users write and read the data, and the documentation generated from the schema tells them what the data means.
                                         The validation checks the structure and the data types, that every UID is unique and that every reference names an existing UID.
-                                        It does not check whether the values are plausible, whether they are given in the right units (section 4), or whether a reference points to an element of the right kind (section 6).
-                                        A dataset that is split into several files is validated only after its files have been merged (section 5).
+                                        It does not check whether the values are plausible, whether they are given in the right units (section 5), or whether a reference points to an element of the right kind (section 6.1).
+                                        A dataset that is split into several files is validated only after its files have been merged (section 11).
                                     </ddue:para>
-                                    <ddue:para>
-                                        Two open source libraries of the DLR support working with CPACS:
-                                        <ddue:externalLink>
-                                            <ddue:linkText>TiXI</ddue:linkText>
-                                            <ddue:linkUri>https://github.com/DLR-SC/tixi</ddue:linkUri>
-                                        </ddue:externalLink>
-                                        reads, writes and validates XML datasets, and
-                                        <ddue:externalLink>
-                                            <ddue:linkText>TiGL</ddue:linkText>
-                                            <ddue:linkUri>https://dlr-sc.github.io/tigl</ddue:linkUri>
-                                        </ddue:externalLink>
-                                        builds the geometry of the vehicle from the data.
-                                        Any other XML tool, such as xmllint or lxml, reads and validates a dataset as well.
-                                    </ddue:para>
+                                    <ddue:para>How to read and write a dataset, by hand with an editor or automated with libraries such as TiXI and TiGL, is described in section 3.</ddue:para>
                                     <ddue:para>
                                         <ddue:legacyBold>Reading this documentation</ddue:legacyBold>
                                     </ddue:para>
@@ -171,9 +157,10 @@ cpacs@dlr.de
                                         <ddue:legacyBold>Where to go next</ddue:legacyBold>
                                     </ddue:para>
                                     <ddue:para>
-                                        The following sections define what applies to every type of the schema: the data structure (section 2), the coordinate systems (section 3), the units (section 4), datasets split into several files (section 5), UIDs and references (sections 6 and 7), symmetry (section 8), vectors and arrays (section 9), control parameters (section 10) and the atmosphere (section 11).
-                                        Whoever writes or reads CPACS data should know them, since the pages of the individual types build on them without repeating them.
-                                        For a first dataset, continue with section 2 and then with a component, e.g. the wing (<ddue:codeInline>wingType</ddue:codeInline>) or the fuselage (<ddue:codeInline>fuselageType</ddue:codeInline>).
+                                        The following sections define what applies to every type of the schema; the pages of the individual types build on them without repeating them.
+                                        Everyone who writes or reads CPACS data needs the data structure (section 2), reading and writing a dataset (section 3), the CPACS coordinate system and the local coordinate systems of components (sections 4.1 and 4.3), the units (section 5) and UIDs and references (section 6).
+                                        The other sections are needed when working with the respective data: the aerodynamic coordinate system (section 4.2) for aerodynamic coefficients, symmetry (section 7) for mirrored components, vectors and arrays (section 8) for maps and other large sets of numbers, control parameters (section 9) for control surfaces and landing gears, the atmosphere (section 10) for flight conditions, and datasets split into several files (section 11).
+                                        For a first dataset, continue with sections 2 and 3 and then with a component, e.g. the wing (<ddue:codeInline>wingType</ddue:codeInline>) or the fuselage (<ddue:codeInline>fuselageType</ddue:codeInline>).
                                     </ddue:para>
                                     <ddue:para>
                                         CPACS is an open source project published by the
@@ -219,15 +206,131 @@ cpacs@dlr.de
                                 </ddue:content>
                             </ddue:section>
                             <ddue:section>
-                                <ddue:title>3. Coordinate Systems</ddue:title>
+                                <ddue:title>3. Reading and writing a dataset</ddue:title>
                                 <ddue:content>
                                     <ddue:para>
-                                        <ddue:legacyBold>3.1. CPACS coordinate system</ddue:legacyBold>
+                                        A dataset is plain text, so it can be read and written with any text editor.
+                                        An editor with XML support makes this easier: it indents and folds the hierarchy and, depending on the editor, checks the dataset against the schema while it is written and suggests the elements that may follow.
+                                        Examples are Visual Studio Code with an XML extension, Notepad++ with its XML Tools plugin, and XML Notepad.
+                                    </ddue:para>
+                                    <ddue:para>
+                                        In a process chain, reading and writing is automated.
+                                        A dataset passes through many tools, and each of them reads the part it needs in a pre-processing step and writes its results back in a post-processing step.
+                                        These steps use libraries such as TiXI for reading and writing the data, TiGL for the geometry, or general XML libraries such as libxml2 or lxml.
+                                    </ddue:para>
+                                    <ddue:para>
+                                        Whether a dataset is edited by hand or by a tool, the following rules make sure that each tool understands what the others wrote and that no data gets lost on the way.
+                                        They apply to every element of the schema, independently of the language or library a tool uses.
+                                    </ddue:para>
+                                    <ddue:para>
+                                        <ddue:legacyBold>Structure and values</ddue:legacyBold>
+                                    </ddue:para>
+                                    <ddue:list class="bullet">
+                                        <ddue:listItem>
+                                            <ddue:para>The order of child elements matters where a type defines them as a sequence, and is free where it defines them as <ddue:codeInline>all</ddue:codeInline>. The table of child elements on each type page shows which applies. A tool writes the elements of a sequence in the order of the table, and reads the elements of an <ddue:codeInline>all</ddue:codeInline> group in any order.</ddue:para>
+                                        </ddue:listItem>
+                                        <ddue:listItem>
+                                            <ddue:para>An optional element without a value is left out, not written empty. An empty element is not the same as a missing one, and for a number it is invalid.</ddue:para>
+                                        </ddue:listItem>
+                                        <ddue:listItem>
+                                            <ddue:para>Where an optional element or attribute is missing, its default value applies, e.g. <ddue:codeInline>absLocal</ddue:codeInline> for <ddue:codeInline>translation/@refType</ddue:codeInline> or <ddue:codeInline>inherit</ddue:codeInline> for <ddue:codeInline>@symmetry</ddue:codeInline>. The documentation of each element states its default. A tool that reads the dataset uses the default; a tool that writes it may leave out values equal to their default.</ddue:para>
+                                        </ddue:listItem>
+                                        <ddue:listItem>
+                                            <ddue:para>Numbers are written with a decimal point, optionally with an exponent, e.g. <ddue:codeInline>0.25</ddue:codeInline> or <ddue:codeInline>2.5e-1</ddue:codeInline>; <ddue:codeInline>NaN</ddue:codeInline> and <ddue:codeInline>INF</ddue:codeInline> are valid values. A decimal comma makes the dataset invalid. Boolean values are <ddue:codeInline>true</ddue:codeInline> or <ddue:codeInline>false</ddue:codeInline> (or <ddue:codeInline>1</ddue:codeInline> and <ddue:codeInline>0</ddue:codeInline>), and points in time follow ISO 8601, e.g. <ddue:codeInline>2026-10-01T14:30:00</ddue:codeInline>. Vectors and arrays are described in section 8, units in section 5.</ddue:para>
+                                        </ddue:listItem>
+                                        <ddue:listItem>
+                                            <ddue:para>Elements whose documentation marks them as deprecated may still occur in older datasets and are understood when they are read, but they are no longer written.</ddue:para>
+                                        </ddue:listItem>
+                                    </ddue:list>
+                                    <ddue:para>
+                                        <ddue:legacyBold>Keeping the data of other tools</ddue:legacyBold>
+                                    </ddue:para>
+                                    <ddue:list class="bullet">
+                                        <ddue:listItem>
+                                            <ddue:para>A tool that writes its results back into a dataset keeps everything else unchanged, including elements it does not know or does not use. Otherwise the data of the tools before it would be lost for the tools after it. In practice, the results are therefore merged into the incoming dataset rather than the dataset being written anew; this is typically done with XSLT, which is beyond the scope of this documentation.</ddue:para>
+                                        </ddue:listItem>
+                                        <ddue:listItem>
+                                            <ddue:para>Data that the schema does not define belongs under <ddue:codeInline>&lt;toolspecific&gt;</ddue:codeInline>, the only place of a dataset that takes elements of any kind (<ddue:codeInline>toolspecificType</ddue:codeInline>). Anywhere else, an unknown element makes the dataset invalid.</ddue:para>
+                                        </ddue:listItem>
+                                    </ddue:list>
+                                    <ddue:para>
+                                        <ddue:legacyBold>Recording changes</ddue:legacyBold>
+                                    </ddue:para>
+                                    <ddue:para>
+                                        The <ddue:codeInline>&lt;header&gt;</ddue:codeInline> keeps the history of a dataset.
+                                        Each <ddue:codeInline>&lt;versionInfo&gt;</ddue:codeInline> describes one version, identified by its <ddue:codeInline>@version</ddue:codeInline> according to Semantic Versioning, and <ddue:codeInline>header/version</ddue:codeInline> names the current one; it has to match the <ddue:codeInline>@version</ddue:codeInline> of one of the <ddue:codeInline>&lt;versionInfo&gt;</ddue:codeInline> elements.
+                                        Each <ddue:codeInline>&lt;versionInfo&gt;</ddue:codeInline> also records in <ddue:codeInline>&lt;cpacsVersion&gt;</ddue:codeInline> the CPACS version that this version of the dataset follows, and the dataset is validated against the schema of the CPACS version of its current version.
+                                    </ddue:para>
+                                    <ddue:list class="bullet">
+                                        <ddue:listItem>
+                                            <ddue:para>A tool that changes the dataset records this in a <ddue:codeInline>&lt;logEntry&gt;</ddue:codeInline> in the <ddue:codeInline>&lt;changeLog&gt;</ddue:codeInline> of the current version, with its name as <ddue:codeInline>&lt;creator&gt;</ddue:codeInline>, the time and a short description. A log entry is sufficient for a single change.</ddue:para>
+                                        </ddue:listItem>
+                                        <ddue:listItem>
+                                            <ddue:para>A new <ddue:codeInline>&lt;versionInfo&gt;</ddue:codeInline> with a higher <ddue:codeInline>@version</ddue:codeInline> marks a milestone of the design rather than the work of a single tool, e.g. when a design and analysis workflow has run through. <ddue:codeInline>header/version</ddue:codeInline> then names the new version.</ddue:para>
+                                        </ddue:listItem>
+                                    </ddue:list>
+                                    <ddue:code language="XML" title="Change recorded by a tool in the log of the current version">
+                                        <![CDATA[
+<header>
+    <name>Short-range airliner</name>
+    <version>1.0.0</version>
+    <versionInfos>
+        <versionInfo version="1.0.0">
+            <creator>Aircraft design team</creator>
+            <timestamp>2026-10-01T12:00:00</timestamp>
+            <description>Initial sizing</description>
+            <cpacsVersion>3.5</cpacsVersion>
+            <changeLog>
+                <logEntry>
+                    <description>Wing span increased to 34.1 m to meet the take-off field length</description>
+                    <timestamp>2026-10-01T14:30:00</timestamp>
+                    <creator>Wing sizing tool</creator>
+                </logEntry>
+            </changeLog>
+        </versionInfo>
+    </versionInfos>
+</header>
+                                        ]]>
+                                    </ddue:code>
+                                    <ddue:para>
+                                        <ddue:legacyBold>Common mistakes</ddue:legacyBold>
+                                    </ddue:para>
+                                    <ddue:para>The following mistakes occur most often in practice:</ddue:para>
+                                    <ddue:list class="bullet">
+                                        <ddue:listItem>
+                                            <ddue:para>A decimal comma instead of a decimal point, or an empty element instead of a missing one (this section).</ddue:para>
+                                        </ddue:listItem>
+                                        <ddue:listItem>
+                                            <ddue:para>Expecting a component to follow the rotation or scaling of its parent: only the translation is passed on along <ddue:codeInline>&lt;parentUID&gt;</ddue:codeInline> (section 4.3).</ddue:para>
+                                        </ddue:listItem>
+                                        <ddue:listItem>
+                                            <ddue:para>Values in feet, knots or radians where the documentation states [m], [m/s] or [deg] (section 5).</ddue:para>
+                                        </ddue:listItem>
+                                        <ddue:listItem>
+                                            <ddue:para>Deriving the meaning of an element from its UID instead of its <ddue:codeInline>&lt;name&gt;</ddue:codeInline> (section 6.1).</ddue:para>
+                                        </ddue:listItem>
+                                        <ddue:listItem>
+                                            <ddue:para>Expecting a component to be mirrored at a plane through its parent: the symmetry planes always pass through the origin of the CPACS coordinate system (section 7.1).</ddue:para>
+                                        </ddue:listItem>
+                                        <ddue:listItem>
+                                            <ddue:para>Appending <ddue:codeInline>_symm</ddue:codeInline> or <ddue:codeInline>_def</ddue:codeInline> to a referenced UID instead of setting <ddue:codeInline>@symmetry</ddue:codeInline> of the reference (section 7.2).</ddue:para>
+                                        </ddue:listItem>
+                                        <ddue:listItem>
+                                            <ddue:para>Writing a dataset anew from the data a tool knows, which loses the data of all other tools (this section).</ddue:para>
+                                        </ddue:listItem>
+                                    </ddue:list>
+                                </ddue:content>
+                            </ddue:section>
+                            <ddue:section>
+                                <ddue:title>4. Coordinate Systems</ddue:title>
+                                <ddue:content>
+                                    <ddue:para>
+                                        <ddue:legacyBold>4.1. CPACS coordinate system</ddue:legacyBold>
                                     </ddue:para>
                                     <ddue:para>
                                         The CPACS coordinate system is the global reference coordinate system of a CPACS dataset.
                                         It is a right-handed Cartesian coordinate system with the axes <ddue:codeInline>x</ddue:codeInline>, <ddue:codeInline>y</ddue:codeInline> and <ddue:codeInline>z</ddue:codeInline>.
-                                        All other coordinate systems are defined relative to it: the aerodynamic coordinate system (section 3.2) and the local coordinate systems of components (section 3.3).
+                                        All other coordinate systems are defined relative to it: the aerodynamic coordinate system (section 4.2) and the local coordinate systems of components (section 4.3).
                                     </ddue:para>
                                     <ddue:para>
                                         Typically, an aircraft is placed in the CPACS coordinate system so that its axes follow the directions in the table below, often with the origin at the nose.
@@ -263,8 +366,9 @@ cpacs@dlr.de
                                         </ddue:row>
                                     </ddue:table>
                                     <ddue:para>
-                                        <ddue:legacyBold>3.2. Aerodynamic coordinate system</ddue:legacyBold>
+                                        <ddue:legacyBold>4.2. Aerodynamic coordinate system</ddue:legacyBold>
                                     </ddue:para>
+                                    <ddue:para>This part is needed for aerodynamic data only; readers working with other data can skip it.</ddue:para>
                                     <ddue:para>
                                         The aerodynamic coefficients of an aircraft, i.e. the force coefficients <ddue:codeInline>&lt;cd&gt;</ddue:codeInline>, <ddue:codeInline>&lt;cs&gt;</ddue:codeInline>, <ddue:codeInline>&lt;cl&gt;</ddue:codeInline> and the moment coefficients <ddue:codeInline>&lt;cmd&gt;</ddue:codeInline>, <ddue:codeInline>&lt;cms&gt;</ddue:codeInline>, <ddue:codeInline>&lt;cml&gt;</ddue:codeInline> of the aerodynamic maps (<ddue:codeInline>aeroPerformanceMapType</ddue:codeInline>), their increments and their derivatives, are given in the aerodynamic coordinate system.
                                         Its axes follow the free stream: the d-axis (drag) points in the direction of the free stream, i.e. to the rear, the l-axis (lift) upwards perpendicular to it, and the s-axis (side force) to the right.
@@ -318,7 +422,7 @@ cpacs@dlr.de
                                         The aerodynamic maps of rotorcraft (<ddue:codeInline>aeroPerformanceMapRCType</ddue:codeInline>) are an exception: their coefficients <ddue:codeInline>&lt;cfx&gt;</ddue:codeInline> to <ddue:codeInline>&lt;cmz&gt;</ddue:codeInline> are given along and about the axes of the CPACS coordinate system.
                                     </ddue:para>
                                     <ddue:para>
-                                        <ddue:legacyBold>3.3. Local coordinate systems via parentUID and transformation</ddue:legacyBold>
+                                        <ddue:legacyBold>4.3. Local coordinate systems via parentUID and transformation</ddue:legacyBold>
                                     </ddue:para>
                                     <ddue:para>
                                         Geometric components such as fuselages, wings, engines or fuel tanks are each defined in a local coordinate system, which their <ddue:codeInline>&lt;transformation&gt;</ddue:codeInline> places in the coordinate system of their parent.
@@ -379,11 +483,12 @@ cpacs@dlr.de
                                 </ddue:content>
                             </ddue:section>
                             <ddue:section>
-                                <ddue:title>4. Units</ddue:title>
+                                <ddue:title>5. Units</ddue:title>
                                 <ddue:content>
                                     <ddue:para>
                                         CPACS has no attributes for units.
                                         Values are given in SI units or in units derived from them, and the documentation of each element names its unit in square brackets at the end, e.g. [m], or [-] for a dimensionless value.
+                                        Values from aviation practice are converted accordingly: a cruise altitude of FL350 (35000 ft) is written as 10668, a speed of 250 kt as 128.61.
                                         The base units are:
                                     </ddue:para>
                                     <ddue:table>
@@ -458,7 +563,458 @@ cpacs@dlr.de
                                 </ddue:content>
                             </ddue:section>
                             <ddue:section>
-                                <ddue:title>5. Splitting up a CPACS dataset into several files</ddue:title>
+                                <ddue:title>6. Identifying and referencing elements</ddue:title>
+                                <ddue:content>
+                                    <ddue:para>
+                                        <ddue:legacyBold>6.1. UIDs and references</ddue:legacyBold>
+                                    </ddue:para>
+                                    <ddue:para>
+                                        Elements of a dataset often refer to elements elsewhere in the hierarchy: a wing to the fuselage it is attached to, an engine to its pylon, a wing section to its airfoil.
+                                        The referenced element carries a unique identifier, its <ddue:codeInline>@uID</ddue:codeInline>, and the referring element holds this identifier as its value.
+                                        Reference elements are of type <ddue:codeInline>stringUIDBaseType</ddue:codeInline> and usually end in UID, such as <ddue:codeInline>&lt;parentUID&gt;</ddue:codeInline> or <ddue:codeInline>&lt;airfoilUID&gt;</ddue:codeInline>.
+                                    </ddue:para>
+                                    <ddue:code language="XML" title="Wing referencing the fuselage as its parent">
+                                        <![CDATA[
+<fuselages>
+    <fuselage uID="fuselage">
+        <name>Fuselage</name>
+        ...
+    </fuselage>
+</fuselages>
+<wings>
+    <wing uID="w8d2f6a">
+        <name>Main wing</name>
+        <parentUID>fuselage</parentUID>
+        ...
+    </wing>
+</wings>
+                                        ]]>
+                                    </ddue:code>
+                                    <ddue:list class="bullet">
+                                        <ddue:listItem>
+                                            <ddue:para>A UID is unique in the whole dataset, including the content of external files (section 11). Two elements with the same <ddue:codeInline>@uID</ddue:codeInline> make the dataset invalid, even if they are of different kinds.</ddue:para>
+                                        </ddue:listItem>
+                                        <ddue:listItem>
+                                            <ddue:para>
+                                                A UID follows the rules of the XML type
+                                                <ddue:externalLink>
+                                                    <ddue:linkText>xsd:ID</ddue:linkText>
+                                                    <ddue:linkUri>https://www.w3.org/TR/xmlschema-2/#ID</ddue:linkUri>
+                                                </ddue:externalLink>: it starts with a letter or an underscore and contains letters, digits, underscores, hyphens and periods, but no spaces and no colons.
+                                            </ddue:para>
+                                        </ddue:listItem>
+                                        <ddue:listItem>
+                                            <ddue:para>A reference names an existing UID of the dataset; a reference to a UID that does not exist makes the dataset invalid. The validation does not check, however, whether the referenced element is of the right kind, e.g. that a <ddue:codeInline>&lt;parentUID&gt;</ddue:codeInline> points to a component and not to a section. Tools that resolve a reference check this themselves.</ddue:para>
+                                        </ddue:listItem>
+                                        <ddue:listItem>
+                                            <ddue:para>A UID only links elements and carries no meaning. Any valid string may be used, such as <ddue:codeInline>w8d2f6a</ddue:codeInline> in the example, and tools must not derive the meaning of an element from its UID. The meaning is stated in <ddue:codeInline>&lt;name&gt;</ddue:codeInline> and <ddue:codeInline>&lt;description&gt;</ddue:codeInline> (section 6.2).</ddue:para>
+                                        </ddue:listItem>
+                                    </ddue:list>
+                                    <ddue:para>
+                                        Older datasets mark references with the attribute <ddue:codeInline>isLink="True"</ddue:codeInline>.
+                                        It is not needed, since the schema already defines which elements are references, and it is kept only for compatibility with these datasets: it remains valid, but may be removed in a future version.
+                                    </ddue:para>
+                                    <ddue:para>
+                                        <ddue:legacyBold>6.2. Name, description and UID</ddue:legacyBold>
+                                    </ddue:para>
+                                    <ddue:para>
+                                        A dataset is read by tools and by people.
+                                        The <ddue:codeInline>&lt;name&gt;</ddue:codeInline> and <ddue:codeInline>&lt;description&gt;</ddue:codeInline> elements and the <ddue:codeInline>@uID</ddue:codeInline> attribute serve the two:
+                                    </ddue:para>
+                                    <ddue:list class="bullet">
+                                        <ddue:listItem>
+                                            <ddue:para>
+                                                <ddue:codeInline>&lt;name&gt;</ddue:codeInline> is a short, human-readable label, usually one word or a few words. It is mostly required where elements occur in a list, such as <ddue:codeInline>wings/wing</ddue:codeInline>, <ddue:codeInline>aeroPerformance/aeroMap</ddue:codeInline> or <ddue:codeInline>missions/mission</ddue:codeInline>, so that tools can list the elements, e.g. in a report or a viewer, and the reader sees which wing, map or mission is meant.</ddue:para>
+                                        </ddue:listItem>
+                                        <ddue:listItem>
+                                            <ddue:para>
+                                                <ddue:codeInline>&lt;description&gt;</ddue:codeInline> is an optional explanation for human readers, usually one sentence or more. Tools do not interpret it.</ddue:para>
+                                        </ddue:listItem>
+                                        <ddue:listItem>
+                                            <ddue:para>
+                                                <ddue:codeInline>@uID</ddue:codeInline> is the machine-readable identifier by which elements are referenced (section 6.1). It does not need to be readable for humans. Name and UID may be the same string where the name is a valid UID, i.e. contains no spaces, but tools must not rely on that.</ddue:para>
+                                        </ddue:listItem>
+                                    </ddue:list>
+                                    <ddue:code language="XML" title="Usage of name, description and uID">
+                                        <![CDATA[
+<wing uID="mainWing">
+    <name>Main wing</name>
+    <description>Main wing after the second sizing loop: span increased to 34.1 m to meet the take-off field length.</description>
+    ...
+</wing>
+                                        ]]>
+                                    </ddue:code>
+                                </ddue:content>
+                            </ddue:section>
+                            <ddue:section>
+                                <ddue:title>7. Symmetry</ddue:title>
+                                <ddue:content>
+                                    <ddue:para>
+                                        <ddue:legacyBold>7.1. Symmetric components</ddue:legacyBold>
+                                    </ddue:para>
+                                    <ddue:para>
+                                        Many components are symmetric, e.g. the left and the right side of a wing.
+                                        Instead of storing both sides, such a component can be described once and mirrored with the <ddue:codeInline>@symmetry</ddue:codeInline> attribute:
+                                </ddue:para>
+                                    <ddue:code language="XML" title="Symmetry attribute applied to a wing">
+                                        <![CDATA[
+<wing uID="mainWing" symmetry="x-z-plane">
+    ...
+</wing>
+                                        ]]>
+                                    </ddue:code>
+                                    <ddue:para>The attribute can take the following values; the documentation of each element states which of them are allowed:</ddue:para>
+                                    <ddue:table>
+                                        <ddue:row>
+                                            <ddue:entry>
+                                                <ddue:legacyBold>Value</ddue:legacyBold>
+                                            </ddue:entry>
+                                            <ddue:entry>
+                                                <ddue:legacyBold>Meaning</ddue:legacyBold>
+                                            </ddue:entry>
+                                        </ddue:row>
+                                        <ddue:row>
+                                            <ddue:entry>
+                                                <ddue:codeInline>x-y-plane</ddue:codeInline>, <ddue:codeInline>x-z-plane</ddue:codeInline>, <ddue:codeInline>y-z-plane</ddue:codeInline>
+                                            </ddue:entry>
+                                            <ddue:entry>The component is mirrored at this plane of the CPACS coordinate system, i.e. at a plane through its origin. Mirroring creates a second component: the component described by the data (defined side) is complemented by its mirror image (mirrored side), which is a component of its own.</ddue:entry>
+                                        </ddue:row>
+                                        <ddue:row>
+                                            <ddue:entry>
+                                                <ddue:codeInline>inherit</ddue:codeInline>
+                                            </ddue:entry>
+                                            <ddue:entry>The component takes the symmetry of its parent component (<ddue:codeInline>&lt;parentUID&gt;</ddue:codeInline>); a component without parent is not mirrored. This is the default, i.e. it also applies if the attribute is not set.</ddue:entry>
+                                        </ddue:row>
+                                        <ddue:row>
+                                            <ddue:entry>
+                                                <ddue:codeInline>none</ddue:codeInline>
+                                            </ddue:entry>
+                                            <ddue:entry>The component is not mirrored, even if its parent component is.</ddue:entry>
+                                        </ddue:row>
+                                    </ddue:table>
+                                    <ddue:para>Components with a <ddue:codeInline>@symmetry</ddue:codeInline> attribute are e.g. wings, fuselages, ducts, engines, engine pylons, fuel tanks, landing gears, rotors and generic geometric components.</ddue:para>
+                                    <ddue:para>
+                                        Because the symmetry is inherited along the <ddue:codeInline>&lt;parentUID&gt;</ddue:codeInline> hierarchy, it can be passed on, switched off and set anew.
+                                        The following example shows four wings, each the parent of the next:
+                                    </ddue:para>
+                                    <ddue:list class="bullet">
+                                        <ddue:listItem>
+                                            <ddue:para>
+                                                <ddue:codeInline>wing1</ddue:codeInline> is mirrored at the x-z plane.</ddue:para>
+                                        </ddue:listItem>
+                                        <ddue:listItem>
+                                            <ddue:para>
+                                                <ddue:codeInline>wing2</ddue:codeInline> has <ddue:codeInline>wing1</ddue:codeInline> as parent, but switches the symmetry off. It therefore exists only once.</ddue:para>
+                                        </ddue:listItem>
+                                        <ddue:listItem>
+                                            <ddue:para>
+                                                <ddue:codeInline>wing3</ddue:codeInline> has <ddue:codeInline>wing2</ddue:codeInline> as parent and sets a new symmetry at the x-y plane.</ddue:para>
+                                        </ddue:listItem>
+                                        <ddue:listItem>
+                                            <ddue:para>
+                                                <ddue:codeInline>wing4</ddue:codeInline> has <ddue:codeInline>wing3</ddue:codeInline> as parent and no <ddue:codeInline>@symmetry</ddue:codeInline> attribute. It inherits the symmetry of <ddue:codeInline>wing3</ddue:codeInline> and is mirrored at the x-y plane as well.</ddue:para>
+                                        </ddue:listItem>
+                                    </ddue:list>
+                                    <ddue:code language="XML" title="Symmetry set, switched off and inherited along the parentUID hierarchy">
+                                        <![CDATA[
+<wings>
+    <wing uID="wing1" symmetry="x-z-plane">
+        <name>Wing 1</name>
+        ...
+    </wing>
+    <wing uID="wing2" symmetry="none">
+        <name>Wing 2</name>
+        <parentUID>wing1</parentUID>
+        ...
+    </wing>
+    <wing uID="wing3" symmetry="x-y-plane">
+        <name>Wing 3</name>
+        <parentUID>wing2</parentUID>
+        ...
+    </wing>
+    <wing uID="wing4">
+        <name>Wing 4</name>
+        <parentUID>wing3</parentUID>
+        ...
+    </wing>
+</wings>
+                                        ]]>
+                                    </ddue:code>
+                                    <ddue:mediaLink>
+                                        <ddue:image xlink:href="symmetryInheritance"/>
+                                    </ddue:mediaLink>
+                                    <ddue:para>
+                                        The figure shows the four wings from behind, with their translations and their rotations about the x-axis, which the excerpt omits.
+                                        <ddue:codeInline>wing1</ddue:codeInline> and its mirrored side lie in the x-y plane, <ddue:codeInline>wing2</ddue:codeInline> stands upright at its tip and exists only once, and <ddue:codeInline>wing3</ddue:codeInline> continues outwards from the top of <ddue:codeInline>wing2</ddue:codeInline>.
+                                        The mirrored sides of <ddue:codeInline>wing3</ddue:codeInline> and <ddue:codeInline>wing4</ddue:codeInline> lie below the x-y plane, so that <ddue:codeInline>wing4</ddue:codeInline> and its mirrored side form one upright strut.
+                                        The planes are those of the CPACS coordinate system: <ddue:codeInline>wing3</ddue:codeInline> is mirrored at the x-y plane through the origin, not at a plane through its parent.
+                                    </ddue:para>
+                                    <ddue:para>
+                                        <ddue:legacyBold>7.2. References to symmetric components</ddue:legacyBold>
+                                    </ddue:para>
+                                    <ddue:para>
+                                        Elements that reference a component by its <ddue:codeInline>@uID</ddue:codeInline> (<ddue:codeInline>stringUIDBaseType</ddue:codeInline>, e.g. <ddue:codeInline>&lt;parentUID&gt;</ddue:codeInline>) refer to both components created by a symmetry, i.e. to the defined and the mirrored side.
+                                        The <ddue:codeInline>@symmetry</ddue:codeInline> attribute of the reference selects a single side instead:
+                                </ddue:para>
+                                    <ddue:table>
+                                        <ddue:row>
+                                            <ddue:entry>
+                                                <ddue:legacyBold>Value</ddue:legacyBold>
+                                            </ddue:entry>
+                                            <ddue:entry>
+                                                <ddue:legacyBold>Referenced part of the component</ddue:legacyBold>
+                                            </ddue:entry>
+                                        </ddue:row>
+                                        <ddue:row>
+                                            <ddue:entry>
+                                                <ddue:codeInline>def</ddue:codeInline>
+                                            </ddue:entry>
+                                            <ddue:entry>defined side only</ddue:entry>
+                                        </ddue:row>
+                                        <ddue:row>
+                                            <ddue:entry>
+                                                <ddue:codeInline>symm</ddue:codeInline>
+                                            </ddue:entry>
+                                            <ddue:entry>mirrored side only</ddue:entry>
+                                        </ddue:row>
+                                        <ddue:row>
+                                            <ddue:entry>
+                                                <ddue:codeInline>full</ddue:codeInline>
+                                            </ddue:entry>
+                                            <ddue:entry>both sides, i.e. the defined and the mirrored component (default)</ddue:entry>
+                                        </ddue:row>
+                                    </ddue:table>
+                                    <ddue:para>The attribute is only used in references to components with a <ddue:codeInline>@symmetry</ddue:codeInline> attribute.</ddue:para>
+                                    <ddue:mediaLink>
+                                        <ddue:image xlink:href="uidReferenceSymmetry"/>
+                                    </ddue:mediaLink>
+                                    <ddue:para>
+                                        The figure shows an engine pylon whose <ddue:codeInline>&lt;parentUID&gt;</ddue:codeInline> references the main wing, mirrored at the x-z plane.
+                                        With <ddue:codeInline>def</ddue:codeInline>, the pylon belongs to the defined side of the wing only, with <ddue:codeInline>symm</ddue:codeInline> to the mirrored side only, and with <ddue:codeInline>full</ddue:codeInline> to both sides.
+                                </ddue:para>
+                                    <ddue:code language="XML" title="Engine pylon located only on the mirrored side of the wing">
+                                        <![CDATA[
+<enginePylons>
+    <enginePylon uID="pylon">
+        <parentUID symmetry="symm">mainWing</parentUID>
+        ...
+    </enginePylon>
+</enginePylons>
+                                        ]]>
+                                    </ddue:code>
+                                    <ddue:para>
+                                        Older datasets often append the side to the referenced <ddue:codeInline>@uID</ddue:codeInline> instead, e.g. <ddue:codeInline>mainWing_symm</ddue:codeInline> for the mirrored side of the wing <ddue:codeInline>mainWing</ddue:codeInline> or <ddue:codeInline>engine1_def</ddue:codeInline> for the defined side of <ddue:codeInline>engine1</ddue:codeInline>.
+                                        This is not intended and must not be used: the string does not match the <ddue:codeInline>@uID</ddue:codeInline> of the referenced element.
+                                        Reference the <ddue:codeInline>@uID</ddue:codeInline> unchanged and select the side with the <ddue:codeInline>@symmetry</ddue:codeInline> attribute, as in the example above.
+                                </ddue:para>
+                                    <ddue:code language="XML" title="Not intended: side appended to the referenced uID (do not use)">
+                                        <![CDATA[
+<enginePylons>
+    <enginePylon uID="pylon">
+        <parentUID>mainWing_symm</parentUID>
+        ...
+    </enginePylon>
+</enginePylons>
+                                        ]]>
+                                    </ddue:code>
+                                    <ddue:alert class="note">
+                                        <ddue:para>Symmetry quickly leads to complex configurations, in particular when it is inherited along the <ddue:codeInline>&lt;parentUID&gt;</ddue:codeInline> hierarchy and combined with references to single sides. Evaluating such configurations, e.g. masses, loads or structural models, can then become difficult. Use the symmetry attribute with care.</ddue:para>
+                                    </ddue:alert>
+                                </ddue:content>
+                            </ddue:section>
+                            <ddue:section>
+                                <ddue:title>8. Vectors and arrays</ddue:title>
+                                <ddue:content>
+                                    <ddue:para>
+                                        Large sets of numbers, such as the coefficients of an aerodynamic map, are written as lists in a single element instead of one element per value.
+                                        The values are separated by semicolons and written with a decimal point.
+                                        Whether an element holds a vector or an array, and what its entries stand for, is stated in its documentation.
+                                        The permitted values are defined in <ddue:codeInline>doubleVectorBaseType</ddue:codeInline> and <ddue:codeInline>doubleArrayBaseType</ddue:codeInline>.
+                                    </ddue:para>
+                                    <ddue:para>
+                                        <ddue:legacyBold>Vectors</ddue:legacyBold>
+                                    </ddue:para>
+                                    <ddue:para>A vector is a one-dimensional list of values:</ddue:para>
+                                    <ddue:code language="XML" title="Vector">
+                                        <![CDATA[
+<angleOfAttack>-2;0;2;4;6</angleOfAttack>
+                                        ]]>
+                                    </ddue:code>
+                                    <ddue:para>
+                                        <ddue:legacyBold>Arrays</ddue:legacyBold>
+                                    </ddue:para>
+                                    <ddue:para>
+                                        An array has two or more dimensions, but it is written as one list like a vector: nothing in the list marks where a dimension ends.
+                                        Each dimension is spanned by a vector given next to the array, and the documentation of the array names these vectors and their order.
+                                        The values are listed with the last index running fastest, i.e. for a two-dimensional array row by row.
+                                    </ddue:para>
+                                    <ddue:para>
+                                        The increment map of a flap is an example.
+                                        Its increments of the lift coefficient <ddue:codeInline>&lt;dcl&gt;</ddue:codeInline> form a two-dimensional array: the first dimension runs over the three points of the aerodynamic map, the second over the three control parameters of the flap (section 9).
+                                    </ddue:para>
+                                    <ddue:code language="XML" title="Two-dimensional array of lift increments over the points of the map and the control parameters">
+                                        <![CDATA[
+<aeroPerformanceMap>
+    <altitude>0;0;0</altitude>
+    <machNumber>0.2;0.2;0.2</machNumber>
+    <angleOfSideslip>0;0;0</angleOfSideslip>
+    <angleOfAttack>0;4;8</angleOfAttack>
+    ...
+    <incrementMaps>
+        <incrementMap uID="innerFlapIncrements">
+            <controlDeviceUID>innerFlap</controlDeviceUID>
+            <controlParameters>0;0.5;1</controlParameters>
+            <dcl>0;0.21;0.38;0;0.2;0.36;0;0.18;0.33</dcl>
+        </incrementMap>
+    </incrementMaps>
+</aeroPerformanceMap>
+                                        ]]>
+                                    </ddue:code>
+                                    <ddue:para>Arranged in rows and columns, the nine values read:</ddue:para>
+                                    <ddue:table>
+                                        <ddue:row>
+                                            <ddue:entry/>
+                                            <ddue:entry>
+                                                <ddue:legacyBold>control parameter 0</ddue:legacyBold>
+                                            </ddue:entry>
+                                            <ddue:entry>
+                                                <ddue:legacyBold>control parameter 0.5</ddue:legacyBold>
+                                            </ddue:entry>
+                                            <ddue:entry>
+                                                <ddue:legacyBold>control parameter 1</ddue:legacyBold>
+                                            </ddue:entry>
+                                        </ddue:row>
+                                        <ddue:row>
+                                            <ddue:entry>
+                                                <ddue:legacyBold>point 1, α = 0°</ddue:legacyBold>
+                                            </ddue:entry>
+                                            <ddue:entry>0</ddue:entry>
+                                            <ddue:entry>0.21</ddue:entry>
+                                            <ddue:entry>0.38</ddue:entry>
+                                        </ddue:row>
+                                        <ddue:row>
+                                            <ddue:entry>
+                                                <ddue:legacyBold>point 2, α = 4°</ddue:legacyBold>
+                                            </ddue:entry>
+                                            <ddue:entry>0</ddue:entry>
+                                            <ddue:entry>0.2</ddue:entry>
+                                            <ddue:entry>0.36</ddue:entry>
+                                        </ddue:row>
+                                        <ddue:row>
+                                            <ddue:entry>
+                                                <ddue:legacyBold>point 3, α = 8°</ddue:legacyBold>
+                                            </ddue:entry>
+                                            <ddue:entry>0</ddue:entry>
+                                            <ddue:entry>0.18</ddue:entry>
+                                            <ddue:entry>0.33</ddue:entry>
+                                        </ddue:row>
+                                    </ddue:table>
+                                    <ddue:para>
+                                        The increments are zero at control parameter 0, where the flap is retracted and the map without increments applies.
+                                        The number of values is the product of the lengths of the spanning vectors, here 3 × 3 = 9.
+                                    </ddue:para>
+                                </ddue:content>
+                            </ddue:section>
+                            <ddue:section>
+                                <ddue:title>9. Control parameters</ddue:title>
+                                <ddue:content>
+                                    <ddue:para>
+                                        A control parameter is a dimensionless number that stands for the state of a control device, e.g. the deflection of a control surface or the extension of a landing gear.
+                                        Other parts of the dataset, such as configurations and aerodynamic increment maps, refer to a state only by this number.
+                                        What the number means is defined once, at the control device itself: a control surface translates it into a deflection with the steps of its <ddue:codeInline>&lt;path&gt;</ddue:codeInline> (<ddue:codeInline>controlSurfacePathType</ddue:codeInline>), a landing gear into its extension and steering with the steps of its functions.
+                                        A device with several functions, such as a landing gear that extends, steers and brakes, has a control parameter for each of them.
+                                    </ddue:para>
+                                    <ddue:para>The steps of a control device follow these rules:</ddue:para>
+                                    <ddue:list class="bullet">
+                                        <ddue:listItem>
+                                            <ddue:para>The steps are sorted by increasing control parameter, and no value occurs twice.</ddue:para>
+                                        </ddue:listItem>
+                                        <ddue:listItem>
+                                            <ddue:para>The values are arbitrary, but the range from -1 to 1 is recommended for a device that moves in both directions, such as an aileron, and the range from 0 to 1 for a device that moves in one direction, such as a flap.</ddue:para>
+                                        </ddue:listItem>
+                                        <ddue:listItem>
+                                            <ddue:para>The first and the last step limit the range. A control parameter outside it is invalid.</ddue:para>
+                                        </ddue:listItem>
+                                        <ddue:listItem>
+                                            <ddue:para>The value 0 lies within the range. The state at control parameter 0 is the undeflected state of the device, which forms the clean configuration of the aircraft, e.g. the one the aerodynamic map without increments refers to. A step at 0 is recommended, but not required.</ddue:para>
+                                        </ddue:listItem>
+                                        <ddue:listItem>
+                                            <ddue:para>Between two steps, the state is interpolated linearly.</ddue:para>
+                                        </ddue:listItem>
+                                    </ddue:list>
+                                    <ddue:para>
+                                        The following path of an aileron covers the range from -1 to 1.
+                                        At control parameter 0.5, the aileron is rotated by 10° about its hinge line, at -0.5 by -10°.
+                                    </ddue:para>
+                                    <ddue:code language="XML" title="Control parameters in the deflection path of an aileron">
+                                        <![CDATA[
+<trailingEdgeDevice uID="aileron">
+    ...
+    <path>
+        ...
+        <steps>
+            <step>
+                <controlParameter>-1</controlParameter>
+                <hingeLineRotation>-20</hingeLineRotation>
+            </step>
+            <step>
+                <controlParameter>0</controlParameter>
+                <hingeLineRotation>0</hingeLineRotation>
+            </step>
+            <step>
+                <controlParameter>1</controlParameter>
+                <hingeLineRotation>20</hingeLineRotation>
+            </step>
+        </steps>
+    </path>
+</trailingEdgeDevice>
+                                        ]]>
+                                    </ddue:code>
+                                    <ddue:para>
+                                        <ddue:legacyBold>Superposition of commands</ddue:legacyBold>
+                                    </ddue:para>
+                                    <ddue:para>
+                                        A control device can receive several commands at the same time, e.g. from a <ddue:codeInline>&lt;configurationDefinition&gt;</ddue:codeInline> and from an explicit setting, directly or through one or more control distributors (<ddue:codeInline>controlDistributorType</ddue:codeInline>).
+                                        Because a path is linear only between its steps, the result depends on where the commands are summed up, so this happens in a fixed order:
+                                    </ddue:para>
+                                    <ddue:list class="ordered">
+                                        <ddue:listItem>
+                                            <ddue:para>The command inputs of each control distributor are summed up to a total command input.</ddue:para>
+                                        </ddue:listItem>
+                                        <ddue:listItem>
+                                            <ddue:para>Each control distributor is evaluated with its total command input, which gives control parameters for its control devices.</ddue:para>
+                                        </ddue:listItem>
+                                        <ddue:listItem>
+                                            <ddue:para>The control parameters of each control device, from the control distributors and from direct commands, are summed up to a total control parameter.</ddue:para>
+                                        </ddue:listItem>
+                                        <ddue:listItem>
+                                            <ddue:para>Each control device is evaluated with its total control parameter, which gives its state.</ddue:para>
+                                        </ddue:listItem>
+                                    </ddue:list>
+                                    <ddue:para>
+                                        A partial sum may leave the range of a control distributor or a control device.
+                                        The totals evaluated in steps 2 and 4, however, lie within the range; otherwise the evaluation reports an error.
+                                        For example, if a configuration sets the aileron of the example above to 0.3 and an explicit command adds 0.4, its total control parameter is 0.7, and its path gives a rotation of 14°.
+                                    </ddue:para>
+                                </ddue:content>
+                            </ddue:section>
+                            <ddue:section>
+                                <ddue:title>10. Atmosphere</ddue:title>
+                                <ddue:content>
+                                    <ddue:para>
+                                        Where an altitude has to be related to pressure, temperature or density, CPACS uses a single atmospheric model: the ICAO Standard Atmosphere of 1993 (ICAO Doc 7488/3, Manual of the ICAO Standard Atmosphere, third edition), selected as <ddue:codeInline>ISA</ddue:codeInline> in <ddue:codeInline>&lt;atmosphericModel&gt;</ddue:codeInline>.
+                                        It gives the temperature, pressure, density, speed of sound and the dynamic and kinematic viscosity over altitude, from -5000 m to 80000 m.
+                                        An <ddue:codeInline>&lt;altitude&gt;</ddue:codeInline> in CPACS is the geopotential altitude H of the ISA manual (section 2.3), given in [m].
+                                    </ddue:para>
+                                    <ddue:para>
+                                        A temperature offset ΔT (<ddue:codeInline>&lt;deltaTemperature&gt;</ddue:codeInline> [K]) describes a day warmer or colder than the standard, which the ISA manual itself does not cover.
+                                        At a given altitude, the pressure keeps its ISA value, so that the altitude remains a pressure altitude, and the temperature is shifted by the offset: T = T<ddue:subscript>ISA</ddue:subscript>(H) + ΔT.
+                                        The density ρ = p/(R T), the speed of sound and the viscosities follow from this temperature with the relations of the ISA manual.
+                                    </ddue:para>
+                                </ddue:content>
+                            </ddue:section>
+                            <ddue:section>
+                                <ddue:title>11. Splitting up a CPACS dataset into several files</ddue:title>
                                 <ddue:content>
                                     <ddue:para>
                                         A dataset can be split into several files, e.g. to keep a library of airfoils in files of its own and share it between datasets.
@@ -622,456 +1178,6 @@ cpacs@dlr.de
 </cpacs>
                                         ]]>
                                     </ddue:code>
-                                </ddue:content>
-                            </ddue:section>
-                            <ddue:section>
-                                <ddue:title>6. UIDs and references</ddue:title>
-                                <ddue:content>
-                                    <ddue:para>
-                                        Elements of a dataset often refer to elements elsewhere in the hierarchy: a wing to the fuselage it is attached to, an engine to its pylon, a wing element to its airfoil.
-                                        The referenced element carries a unique identifier, its <ddue:codeInline>@uID</ddue:codeInline>, and the referring element holds this identifier as its value.
-                                        Reference elements are of type <ddue:codeInline>stringUIDBaseType</ddue:codeInline> and usually end in UID, such as <ddue:codeInline>&lt;parentUID&gt;</ddue:codeInline> or <ddue:codeInline>&lt;airfoilUID&gt;</ddue:codeInline>.
-                                    </ddue:para>
-                                    <ddue:code language="XML" title="Wing referencing the fuselage as its parent">
-                                        <![CDATA[
-<fuselages>
-    <fuselage uID="fuselage">
-        <name>Fuselage</name>
-        ...
-    </fuselage>
-</fuselages>
-<wings>
-    <wing uID="w8d2f6a">
-        <name>Main wing</name>
-        <parentUID>fuselage</parentUID>
-        ...
-    </wing>
-</wings>
-                                        ]]>
-                                    </ddue:code>
-                                    <ddue:list class="bullet">
-                                        <ddue:listItem>
-                                            <ddue:para>A UID is unique in the whole dataset, including the content of external files (section 5). Two elements with the same <ddue:codeInline>@uID</ddue:codeInline> make the dataset invalid, even if they are of different kinds.</ddue:para>
-                                        </ddue:listItem>
-                                        <ddue:listItem>
-                                            <ddue:para>
-                                                A UID follows the rules of the XML type
-                                                <ddue:externalLink>
-                                                    <ddue:linkText>xsd:ID</ddue:linkText>
-                                                    <ddue:linkUri>https://www.w3.org/TR/xmlschema-2/#ID</ddue:linkUri>
-                                                </ddue:externalLink>: it starts with a letter or an underscore and contains letters, digits, underscores, hyphens and periods, but no spaces and no colons.
-                                            </ddue:para>
-                                        </ddue:listItem>
-                                        <ddue:listItem>
-                                            <ddue:para>A reference names an existing UID of the dataset; a reference to a UID that does not exist makes the dataset invalid. The validation does not check, however, whether the referenced element is of the right kind, e.g. that a <ddue:codeInline>&lt;parentUID&gt;</ddue:codeInline> points to a component and not to a section. Tools that resolve a reference check this themselves.</ddue:para>
-                                        </ddue:listItem>
-                                        <ddue:listItem>
-                                            <ddue:para>A UID only links elements and carries no meaning. Any valid string may be used, such as <ddue:codeInline>w8d2f6a</ddue:codeInline> in the example, and tools must not derive the meaning of an element from its UID. The meaning is stated in <ddue:codeInline>&lt;name&gt;</ddue:codeInline> and <ddue:codeInline>&lt;description&gt;</ddue:codeInline> (section 7).</ddue:para>
-                                        </ddue:listItem>
-                                    </ddue:list>
-                                    <ddue:para>
-                                        Older datasets mark references with the attribute <ddue:codeInline>isLink="True"</ddue:codeInline>.
-                                        It is not needed, since the schema already defines which elements are references, and it is kept only for compatibility with these datasets: it remains valid, but may be removed in a future version.
-                                    </ddue:para>
-                                </ddue:content>
-                            </ddue:section>
-                            <ddue:section>
-                                <ddue:title>7. Usage of name, description and uID</ddue:title>
-                                <ddue:content>
-                                    <ddue:para>
-                                        CPACS serves as the exchange format of automated process chains, so tools have to be able to read an incoming dataset without help.
-                                        At the same time, users have to be able to understand it.
-                                        The <ddue:codeInline>&lt;name&gt;</ddue:codeInline> and <ddue:codeInline>&lt;description&gt;</ddue:codeInline> elements and the <ddue:codeInline>@uID</ddue:codeInline> attribute serve these two needs:
-                                    </ddue:para>
-                                    <ddue:list class="bullet">
-                                        <ddue:listItem>
-                                            <ddue:para>
-                                                <ddue:codeInline>&lt;name&gt;</ddue:codeInline> is a short, human-readable label, usually one word or a few words. It is mostly required where elements occur in a list, such as <ddue:codeInline>wings/wing</ddue:codeInline>, <ddue:codeInline>aeroPerformance/aeroMap</ddue:codeInline> or <ddue:codeInline>missions/mission</ddue:codeInline>, so that tools can list the elements, e.g. in a report or a viewer, and the reader sees which wing, map or mission is meant.</ddue:para>
-                                        </ddue:listItem>
-                                        <ddue:listItem>
-                                            <ddue:para>
-                                                <ddue:codeInline>&lt;description&gt;</ddue:codeInline> is an optional explanation for human readers, usually one sentence or more. Tools do not interpret it.</ddue:para>
-                                        </ddue:listItem>
-                                        <ddue:listItem>
-                                            <ddue:para>
-                                                <ddue:codeInline>@uID</ddue:codeInline> is the machine-readable identifier by which elements are referenced (section 6). It does not need to be readable for humans. Name and UID may be the same string where the name is a valid UID, i.e. contains no spaces, but tools must not rely on that.</ddue:para>
-                                        </ddue:listItem>
-                                    </ddue:list>
-                                    <ddue:code language="XML" title="Usage of name, description and uID">
-                                        <![CDATA[
-<wing uID="mainWing">
-    <name>Main wing</name>
-    <description>Main wing after the second sizing loop: span increased to 34.1 m to meet the take-off field length.</description>
-    ...
-</wing>
-                                        ]]>
-                                    </ddue:code>
-                                </ddue:content>
-                            </ddue:section>
-                            <ddue:section>
-                                <ddue:title>8. Symmetry</ddue:title>
-                                <ddue:content>
-                                    <ddue:para>
-                                        <ddue:legacyBold>8.1. Symmetric components</ddue:legacyBold>
-                                    </ddue:para>
-                                    <ddue:para>
-                                        Many components are symmetric, e.g. the left and the right side of a wing.
-                                        Instead of storing both sides, such a component can be described once and mirrored with the <ddue:codeInline>@symmetry</ddue:codeInline> attribute:
-                                </ddue:para>
-                                    <ddue:code language="XML" title="Symmetry attribute applied to a wing">
-                                        <![CDATA[
-<wing uID="wing" symmetry="x-z-plane">
-    ...
-</wing>
-                                        ]]>
-                                    </ddue:code>
-                                    <ddue:para>The attribute can take the following values; the documentation of each element states which of them are allowed:</ddue:para>
-                                    <ddue:table>
-                                        <ddue:row>
-                                            <ddue:entry>
-                                                <ddue:legacyBold>Value</ddue:legacyBold>
-                                            </ddue:entry>
-                                            <ddue:entry>
-                                                <ddue:legacyBold>Meaning</ddue:legacyBold>
-                                            </ddue:entry>
-                                        </ddue:row>
-                                        <ddue:row>
-                                            <ddue:entry>
-                                                <ddue:codeInline>x-y-plane</ddue:codeInline>, <ddue:codeInline>x-z-plane</ddue:codeInline>, <ddue:codeInline>y-z-plane</ddue:codeInline>
-                                            </ddue:entry>
-                                            <ddue:entry>The component is mirrored at this plane of the CPACS coordinate system, i.e. at a plane through its origin. Mirroring creates a second component: the component described by the data (defined side) is complemented by its mirror image (mirrored side), which is a component of its own.</ddue:entry>
-                                        </ddue:row>
-                                        <ddue:row>
-                                            <ddue:entry>
-                                                <ddue:codeInline>inherit</ddue:codeInline>
-                                            </ddue:entry>
-                                            <ddue:entry>The component takes the symmetry of its parent component (<ddue:codeInline>&lt;parentUID&gt;</ddue:codeInline>); a component without parent is not mirrored. This is the default, i.e. it also applies if the attribute is not set.</ddue:entry>
-                                        </ddue:row>
-                                        <ddue:row>
-                                            <ddue:entry>
-                                                <ddue:codeInline>none</ddue:codeInline>
-                                            </ddue:entry>
-                                            <ddue:entry>The component is not mirrored, even if its parent component is.</ddue:entry>
-                                        </ddue:row>
-                                    </ddue:table>
-                                    <ddue:para>Components with a <ddue:codeInline>@symmetry</ddue:codeInline> attribute are e.g. wings, fuselages, ducts, engines, engine pylons, fuel tanks, landing gears, rotors and generic geometric components.</ddue:para>
-                                    <ddue:para>
-                                        Because the symmetry is inherited along the <ddue:codeInline>&lt;parentUID&gt;</ddue:codeInline> hierarchy, it can be passed on, switched off and set anew.
-                                        The following example shows four wings, each the parent of the next:
-                                    </ddue:para>
-                                    <ddue:list class="bullet">
-                                        <ddue:listItem>
-                                            <ddue:para>
-                                                <ddue:codeInline>wing1</ddue:codeInline> is mirrored at the x-z plane.</ddue:para>
-                                        </ddue:listItem>
-                                        <ddue:listItem>
-                                            <ddue:para>
-                                                <ddue:codeInline>wing2</ddue:codeInline> has <ddue:codeInline>wing1</ddue:codeInline> as parent, but switches the symmetry off. It therefore exists only once.</ddue:para>
-                                        </ddue:listItem>
-                                        <ddue:listItem>
-                                            <ddue:para>
-                                                <ddue:codeInline>wing3</ddue:codeInline> has <ddue:codeInline>wing2</ddue:codeInline> as parent and sets a new symmetry at the x-y plane.</ddue:para>
-                                        </ddue:listItem>
-                                        <ddue:listItem>
-                                            <ddue:para>
-                                                <ddue:codeInline>wing4</ddue:codeInline> has <ddue:codeInline>wing3</ddue:codeInline> as parent and no <ddue:codeInline>@symmetry</ddue:codeInline> attribute. It inherits the symmetry of <ddue:codeInline>wing3</ddue:codeInline> and is mirrored at the x-y plane as well.</ddue:para>
-                                        </ddue:listItem>
-                                    </ddue:list>
-                                    <ddue:code language="XML" title="Symmetry set, switched off and inherited along the parentUID hierarchy">
-                                        <![CDATA[
-<wings>
-    <wing uID="wing1" symmetry="x-z-plane">
-        <name>Wing 1</name>
-        ...
-    </wing>
-    <wing uID="wing2" symmetry="none">
-        <name>Wing 2</name>
-        <parentUID>wing1</parentUID>
-        ...
-    </wing>
-    <wing uID="wing3" symmetry="x-y-plane">
-        <name>Wing 3</name>
-        <parentUID>wing2</parentUID>
-        ...
-    </wing>
-    <wing uID="wing4">
-        <name>Wing 4</name>
-        <parentUID>wing3</parentUID>
-        ...
-    </wing>
-</wings>
-                                        ]]>
-                                    </ddue:code>
-                                    <ddue:mediaLink>
-                                        <ddue:image xlink:href="symmetryInheritance"/>
-                                    </ddue:mediaLink>
-                                    <ddue:para>
-                                        The figure shows the four wings from behind, with their translations and their rotations about the x-axis, which the excerpt omits.
-                                        <ddue:codeInline>wing1</ddue:codeInline> and its mirrored side lie in the x-y plane, <ddue:codeInline>wing2</ddue:codeInline> stands upright at its tip and exists only once, and <ddue:codeInline>wing3</ddue:codeInline> continues outwards from the top of <ddue:codeInline>wing2</ddue:codeInline>.
-                                        The mirrored sides of <ddue:codeInline>wing3</ddue:codeInline> and <ddue:codeInline>wing4</ddue:codeInline> lie below the x-y plane, so that <ddue:codeInline>wing4</ddue:codeInline> and its mirrored side form one upright strut.
-                                        The planes are those of the CPACS coordinate system: <ddue:codeInline>wing3</ddue:codeInline> is mirrored at the x-y plane through the origin, not at a plane through its parent.
-                                    </ddue:para>
-                                    <ddue:para>
-                                        <ddue:legacyBold>8.2. References to symmetric components</ddue:legacyBold>
-                                    </ddue:para>
-                                    <ddue:para>
-                                        Elements that reference a component by its <ddue:codeInline>@uID</ddue:codeInline> (<ddue:codeInline>stringUIDBaseType</ddue:codeInline>, e.g. <ddue:codeInline>&lt;parentUID&gt;</ddue:codeInline>) refer to both components created by a symmetry, i.e. to the defined and the mirrored side.
-                                        The <ddue:codeInline>@symmetry</ddue:codeInline> attribute of the reference selects a single side instead:
-                                </ddue:para>
-                                    <ddue:table>
-                                        <ddue:row>
-                                            <ddue:entry>
-                                                <ddue:legacyBold>Value</ddue:legacyBold>
-                                            </ddue:entry>
-                                            <ddue:entry>
-                                                <ddue:legacyBold>Referenced part of the component</ddue:legacyBold>
-                                            </ddue:entry>
-                                        </ddue:row>
-                                        <ddue:row>
-                                            <ddue:entry>
-                                                <ddue:codeInline>def</ddue:codeInline>
-                                            </ddue:entry>
-                                            <ddue:entry>defined side only</ddue:entry>
-                                        </ddue:row>
-                                        <ddue:row>
-                                            <ddue:entry>
-                                                <ddue:codeInline>symm</ddue:codeInline>
-                                            </ddue:entry>
-                                            <ddue:entry>mirrored side only</ddue:entry>
-                                        </ddue:row>
-                                        <ddue:row>
-                                            <ddue:entry>
-                                                <ddue:codeInline>full</ddue:codeInline>
-                                            </ddue:entry>
-                                            <ddue:entry>both sides, i.e. the defined and the mirrored component (default)</ddue:entry>
-                                        </ddue:row>
-                                    </ddue:table>
-                                    <ddue:para>The attribute is only used in references to components with a <ddue:codeInline>@symmetry</ddue:codeInline> attribute.</ddue:para>
-                                    <ddue:mediaLink>
-                                        <ddue:image xlink:href="uidReferenceSymmetry"/>
-                                    </ddue:mediaLink>
-                                    <ddue:para>
-                                        The figure shows an engine pylon whose <ddue:codeInline>&lt;parentUID&gt;</ddue:codeInline> references a wing mirrored at the x-z plane.
-                                        With <ddue:codeInline>def</ddue:codeInline>, the pylon belongs to the defined side of the wing only, with <ddue:codeInline>symm</ddue:codeInline> to the mirrored side only, and with <ddue:codeInline>full</ddue:codeInline> to both sides.
-                                </ddue:para>
-                                    <ddue:code language="XML" title="Engine pylon located only on the mirrored side of the wing">
-                                        <![CDATA[
-<enginePylons>
-    <enginePylon uID="pylon">
-        <parentUID symmetry="symm">wing</parentUID>
-        ...
-    </enginePylon>
-</enginePylons>
-                                        ]]>
-                                    </ddue:code>
-                                    <ddue:para>
-                                        Older datasets often append the side to the referenced <ddue:codeInline>@uID</ddue:codeInline> instead, e.g. <ddue:codeInline>wing_symm</ddue:codeInline> for the mirrored side of the wing <ddue:codeInline>&lt;wing&gt;</ddue:codeInline> or <ddue:codeInline>engine1_def</ddue:codeInline> for the defined side of <ddue:codeInline>engine1</ddue:codeInline>.
-                                        This is not intended and must not be used: the string does not match the <ddue:codeInline>@uID</ddue:codeInline> of the referenced element.
-                                        Reference the <ddue:codeInline>@uID</ddue:codeInline> unchanged and select the side with the <ddue:codeInline>@symmetry</ddue:codeInline> attribute, as in the example above.
-                                </ddue:para>
-                                    <ddue:code language="XML" title="Not intended: side appended to the referenced uID (do not use)">
-                                        <![CDATA[
-<enginePylons>
-    <enginePylon uID="pylon">
-        <parentUID>wing_symm</parentUID>
-        ...
-    </enginePylon>
-</enginePylons>
-                                        ]]>
-                                    </ddue:code>
-                                    <ddue:alert class="note">
-                                        <ddue:para>Symmetry quickly leads to complex configurations, in particular when it is inherited along the <ddue:codeInline>&lt;parentUID&gt;</ddue:codeInline> hierarchy and combined with references to single sides. Evaluating such configurations, e.g. masses, loads or structural models, can then become difficult. Use the symmetry attribute with care.</ddue:para>
-                                    </ddue:alert>
-                                </ddue:content>
-                            </ddue:section>
-                            <ddue:section>
-                                <ddue:title>9. Vectors and arrays</ddue:title>
-                                <ddue:content>
-                                    <ddue:para>
-                                        Large sets of numbers, such as the coefficients of an aerodynamic map, are written as lists in a single element instead of one element per value.
-                                        The values are separated by semicolons and written with a decimal point.
-                                        Whether an element holds a vector or an array, and what its entries stand for, is stated in its documentation.
-                                        The permitted values are defined in <ddue:codeInline>doubleVectorBaseType</ddue:codeInline> and <ddue:codeInline>doubleArrayBaseType</ddue:codeInline>.
-                                    </ddue:para>
-                                    <ddue:para>
-                                        <ddue:legacyBold>Vectors</ddue:legacyBold>
-                                    </ddue:para>
-                                    <ddue:para>A vector is a one-dimensional list of values:</ddue:para>
-                                    <ddue:code language="XML" title="Vector">
-                                        <![CDATA[
-<angleOfAttack>-2;0;2;4;6</angleOfAttack>
-                                        ]]>
-                                    </ddue:code>
-                                    <ddue:para>
-                                        <ddue:legacyBold>Arrays</ddue:legacyBold>
-                                    </ddue:para>
-                                    <ddue:para>
-                                        An array has two or more dimensions, but it is written as one list like a vector: nothing in the list marks where a dimension ends.
-                                        Each dimension is spanned by a vector given next to the array, and the documentation of the array names these vectors and their order.
-                                        The values are listed with the last index running fastest, i.e. for a two-dimensional array row by row.
-                                    </ddue:para>
-                                    <ddue:para>
-                                        The increment map of a flap is an example.
-                                        Its increments of the lift coefficient <ddue:codeInline>&lt;dcl&gt;</ddue:codeInline> form a two-dimensional array: the first dimension runs over the three points of the aerodynamic map, the second over the three control parameters of the flap (section 10).
-                                    </ddue:para>
-                                    <ddue:code language="XML" title="Two-dimensional array of lift increments over the points of the map and the control parameters">
-                                        <![CDATA[
-<aeroPerformanceMap>
-    <altitude>0;0;0</altitude>
-    <machNumber>0.2;0.2;0.2</machNumber>
-    <angleOfSideslip>0;0;0</angleOfSideslip>
-    <angleOfAttack>0;4;8</angleOfAttack>
-    ...
-    <incrementMaps>
-        <incrementMap uID="innerFlapIncrements">
-            <controlDeviceUID>innerFlap</controlDeviceUID>
-            <controlParameters>0;0.5;1</controlParameters>
-            <dcl>0;0.21;0.38;0;0.2;0.36;0;0.18;0.33</dcl>
-        </incrementMap>
-    </incrementMaps>
-</aeroPerformanceMap>
-                                        ]]>
-                                    </ddue:code>
-                                    <ddue:para>Arranged in rows and columns, the nine values read:</ddue:para>
-                                    <ddue:table>
-                                        <ddue:row>
-                                            <ddue:entry/>
-                                            <ddue:entry>
-                                                <ddue:legacyBold>control parameter 0</ddue:legacyBold>
-                                            </ddue:entry>
-                                            <ddue:entry>
-                                                <ddue:legacyBold>control parameter 0.5</ddue:legacyBold>
-                                            </ddue:entry>
-                                            <ddue:entry>
-                                                <ddue:legacyBold>control parameter 1</ddue:legacyBold>
-                                            </ddue:entry>
-                                        </ddue:row>
-                                        <ddue:row>
-                                            <ddue:entry>
-                                                <ddue:legacyBold>point 1, α = 0°</ddue:legacyBold>
-                                            </ddue:entry>
-                                            <ddue:entry>0</ddue:entry>
-                                            <ddue:entry>0.21</ddue:entry>
-                                            <ddue:entry>0.38</ddue:entry>
-                                        </ddue:row>
-                                        <ddue:row>
-                                            <ddue:entry>
-                                                <ddue:legacyBold>point 2, α = 4°</ddue:legacyBold>
-                                            </ddue:entry>
-                                            <ddue:entry>0</ddue:entry>
-                                            <ddue:entry>0.2</ddue:entry>
-                                            <ddue:entry>0.36</ddue:entry>
-                                        </ddue:row>
-                                        <ddue:row>
-                                            <ddue:entry>
-                                                <ddue:legacyBold>point 3, α = 8°</ddue:legacyBold>
-                                            </ddue:entry>
-                                            <ddue:entry>0</ddue:entry>
-                                            <ddue:entry>0.18</ddue:entry>
-                                            <ddue:entry>0.33</ddue:entry>
-                                        </ddue:row>
-                                    </ddue:table>
-                                    <ddue:para>
-                                        The increments are zero at control parameter 0, where the flap is retracted and the map without increments applies.
-                                        The number of values is the product of the lengths of the spanning vectors, here 3 × 3 = 9.
-                                    </ddue:para>
-                                </ddue:content>
-                            </ddue:section>
-                            <ddue:section>
-                                <ddue:title>10. Control parameters</ddue:title>
-                                <ddue:content>
-                                    <ddue:para>
-                                        A control parameter is a dimensionless number that stands for the state of a control device, e.g. the deflection of a control surface or the extension of a landing gear.
-                                        Other parts of the dataset, such as configurations and aerodynamic increment maps, refer to a state only by this number.
-                                        What the number means is defined once, at the control device itself: a control surface translates it into a deflection with the steps of its <ddue:codeInline>&lt;path&gt;</ddue:codeInline> (<ddue:codeInline>controlSurfacePathType</ddue:codeInline>), a landing gear into its extension and steering with the steps of its functions.
-                                        A device with several functions, such as a landing gear that extends, steers and brakes, has a control parameter for each of them.
-                                    </ddue:para>
-                                    <ddue:para>The steps of a control device follow these rules:</ddue:para>
-                                    <ddue:list class="bullet">
-                                        <ddue:listItem>
-                                            <ddue:para>The steps are sorted by increasing control parameter, and no value occurs twice.</ddue:para>
-                                        </ddue:listItem>
-                                        <ddue:listItem>
-                                            <ddue:para>The values are arbitrary, but the range from -1 to 1 is recommended for a device that moves in both directions, such as an aileron, and the range from 0 to 1 for a device that moves in one direction, such as a flap.</ddue:para>
-                                        </ddue:listItem>
-                                        <ddue:listItem>
-                                            <ddue:para>The first and the last step limit the range. A control parameter outside it is invalid.</ddue:para>
-                                        </ddue:listItem>
-                                        <ddue:listItem>
-                                            <ddue:para>The value 0 lies within the range. The state at control parameter 0 is the undeflected state of the device, which forms the clean configuration of the aircraft, e.g. the one the aerodynamic map without increments refers to. A step at 0 is recommended, but not required.</ddue:para>
-                                        </ddue:listItem>
-                                        <ddue:listItem>
-                                            <ddue:para>Between two steps, the state is interpolated linearly.</ddue:para>
-                                        </ddue:listItem>
-                                    </ddue:list>
-                                    <ddue:para>
-                                        The following path of an aileron covers the range from -1 to 1.
-                                        At control parameter 0.5, the aileron is rotated by 10° about its hinge line, at -0.5 by -10°.
-                                    </ddue:para>
-                                    <ddue:code language="XML" title="Control parameters in the deflection path of an aileron">
-                                        <![CDATA[
-<trailingEdgeDevice uID="aileron">
-    ...
-    <path>
-        ...
-        <steps>
-            <step>
-                <controlParameter>-1</controlParameter>
-                <hingeLineRotation>-20</hingeLineRotation>
-            </step>
-            <step>
-                <controlParameter>0</controlParameter>
-                <hingeLineRotation>0</hingeLineRotation>
-            </step>
-            <step>
-                <controlParameter>1</controlParameter>
-                <hingeLineRotation>20</hingeLineRotation>
-            </step>
-        </steps>
-    </path>
-</trailingEdgeDevice>
-                                        ]]>
-                                    </ddue:code>
-                                    <ddue:para>
-                                        <ddue:legacyBold>Superposition of commands</ddue:legacyBold>
-                                    </ddue:para>
-                                    <ddue:para>
-                                        A control device can receive several commands at the same time, e.g. from a <ddue:codeInline>&lt;configurationDefinition&gt;</ddue:codeInline> and from an explicit setting, directly or through one or more control distributors (<ddue:codeInline>controlDistributorType</ddue:codeInline>).
-                                        Because a path is linear only between its steps, the result depends on where the commands are summed up, so this happens in a fixed order:
-                                    </ddue:para>
-                                    <ddue:list class="ordered">
-                                        <ddue:listItem>
-                                            <ddue:para>The command inputs of each control distributor are summed up to a total command input.</ddue:para>
-                                        </ddue:listItem>
-                                        <ddue:listItem>
-                                            <ddue:para>Each control distributor is evaluated with its total command input, which gives control parameters for its control devices.</ddue:para>
-                                        </ddue:listItem>
-                                        <ddue:listItem>
-                                            <ddue:para>The control parameters of each control device, from the control distributors and from direct commands, are summed up to a total control parameter.</ddue:para>
-                                        </ddue:listItem>
-                                        <ddue:listItem>
-                                            <ddue:para>Each control device is evaluated with its total control parameter, which gives its state.</ddue:para>
-                                        </ddue:listItem>
-                                    </ddue:list>
-                                    <ddue:para>
-                                        A partial sum may leave the range of a control distributor or a control device.
-                                        The totals evaluated in steps 2 and 4, however, lie within the range; otherwise the evaluation reports an error.
-                                    </ddue:para>
-                                </ddue:content>
-                            </ddue:section>
-                            <ddue:section>
-                                <ddue:title>11. Atmosphere</ddue:title>
-                                <ddue:content>
-                                    <ddue:para>
-                                        Where an altitude has to be related to pressure, temperature or density, CPACS uses a single atmospheric model: the ICAO Standard Atmosphere of 1993 (ICAO Doc 7488/3, Manual of the ICAO Standard Atmosphere, third edition), selected as <ddue:codeInline>ISA</ddue:codeInline> in <ddue:codeInline>&lt;atmosphericModel&gt;</ddue:codeInline>.
-                                        It gives the temperature, pressure, density, speed of sound and the dynamic and kinematic viscosity over altitude, from -5000 m to 80000 m.
-                                        An <ddue:codeInline>&lt;altitude&gt;</ddue:codeInline> in CPACS is the geopotential altitude H of the ISA manual (section 2.3), given in [m].
-                                    </ddue:para>
-                                    <ddue:para>
-                                        A temperature offset ΔT (<ddue:codeInline>&lt;deltaTemperature&gt;</ddue:codeInline> [K]) describes a day warmer or colder than the standard, which the ISA manual itself does not cover.
-                                        At a given altitude, the pressure keeps its ISA value, so that the altitude remains a pressure altitude, and the temperature is shifted by the offset: T = T<ddue:subscript>ISA</ddue:subscript>(H) + ΔT.
-                                        The density ρ = p/(R T), the speed of sound and the viscosities follow from this temperature with the relations of the ISA manual.
-                                    </ddue:para>
                                 </ddue:content>
                             </ddue:section>
                             <ddue:section>
@@ -2581,13 +2687,13 @@ cpacs@dlr.de
                                 <ddue:image xlink:href="uidReferenceSymmetry"/>
                             </ddue:mediaLink>
                             <ddue:para>
-                                The figure shows an engine pylon whose <ddue:codeInline>&lt;parentUID&gt;</ddue:codeInline> references a wing mirrored at the x-z plane.
+                                The figure shows an engine pylon whose <ddue:codeInline>&lt;parentUID&gt;</ddue:codeInline> references the main wing, mirrored at the x-z plane.
                                 With <ddue:codeInline>def</ddue:codeInline>, the pylon belongs to the defined side of the wing only, with <ddue:codeInline>symm</ddue:codeInline> to the mirrored side only, and with <ddue:codeInline>full</ddue:codeInline> to both sides.
                             </ddue:para>
                             <ddue:code language="XML" title="Engine pylon located only on the mirrored side of the wing">
                                 <![CDATA[
 <enginePylon uID="pylon">
-    <parentUID symmetry="symm">wing</parentUID>
+    <parentUID symmetry="symm">mainWing</parentUID>
     ...
 </enginePylon>
                                 ]]>
@@ -2596,14 +2702,14 @@ cpacs@dlr.de
                                 <ddue:legacyBold>Side appended to the uID in older datasets</ddue:legacyBold>
                             </ddue:para>
                             <ddue:para>
-                                Older datasets often append the side to the referenced <ddue:codeInline>@uID</ddue:codeInline> instead, e.g. <ddue:codeInline>wing_symm</ddue:codeInline> for the mirrored side of the wing <ddue:codeInline>&lt;wing&gt;</ddue:codeInline> or <ddue:codeInline>engine1_def</ddue:codeInline> for the defined side of <ddue:codeInline>engine1</ddue:codeInline>.
+                                Older datasets often append the side to the referenced <ddue:codeInline>@uID</ddue:codeInline> instead, e.g. <ddue:codeInline>mainWing_symm</ddue:codeInline> for the mirrored side of the wing <ddue:codeInline>mainWing</ddue:codeInline> or <ddue:codeInline>engine1_def</ddue:codeInline> for the defined side of <ddue:codeInline>engine1</ddue:codeInline>.
                                 This is not intended and must not be used: the string does not match the <ddue:codeInline>@uID</ddue:codeInline> of the referenced element.
                                 Reference the <ddue:codeInline>@uID</ddue:codeInline> unchanged and select the side with the <ddue:codeInline>@symmetry</ddue:codeInline> attribute, as in the example above.
                             </ddue:para>
                             <ddue:code language="XML" title="Not intended: side appended to the referenced uID (do not use)">
                                 <![CDATA[
 <enginePylon uID="pylon">
-    <parentUID>wing_symm</parentUID>
+    <parentUID>mainWing_symm</parentUID>
     ...
 </enginePylon>
                                 ]]>
@@ -3512,7 +3618,7 @@ cpacs@dlr.de
                                 Permitted range of the angle of attack over altitude, Mach number and sideslip angle.
                                 The vectors <ddue:codeInline>&lt;altitude&gt;</ddue:codeInline>, <ddue:codeInline>&lt;machNumber&gt;</ddue:codeInline> and <ddue:codeInline>&lt;angleOfSideslip&gt;</ddue:codeInline> have equal length, and the entries with the same index form one point of the map.
                                 For each point, <ddue:codeInline>&lt;operationLimit&gt;</ddue:codeInline> gives the smallest and the largest permitted angle of attack.
-                                Angle of attack and sideslip angle are defined as in the aerodynamic coordinate system, see section 3.2 of <ddue:codeInline>cpacsType</ddue:codeInline>.
+                                Angle of attack and sideslip angle are defined as in the aerodynamic coordinate system, see section 4.2 of <ddue:codeInline>cpacsType</ddue:codeInline>.
                             </ddue:para>
                             <ddue:para>
                                 Since the angle of attack and the sideslip angle depend closely on each other, the limits of the angle of attack are given per sideslip angle.
@@ -3613,7 +3719,7 @@ cpacs@dlr.de
                         </ddue:para>
                         <ddue:para>
                             The configuration can set several control devices at the same time.
-                            Their settings are then superposed by summing them up, in the order described in section 10 of <ddue:codeInline>cpacsType</ddue:codeInline>.
+                            Their settings are then superposed by summing them up, in the order described in section 9 of <ddue:codeInline>cpacsType</ddue:codeInline>.
                         </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -3682,7 +3788,7 @@ cpacs@dlr.de
                     </xsd:element>
                     <xsd:element name="deltaTemperature" minOccurs="0" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Temperature offset from the atmospheric model, see section 11 of the documentation of the root element [K]</xsd:documentation>
+                            <xsd:documentation>Temperature offset from the atmospheric model, see section 10 of the documentation of the root element [K]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="configuration" minOccurs="0" type="configurationType">
@@ -3735,7 +3841,7 @@ cpacs@dlr.de
                         <ddue:para>
                             Increments of the coefficients of the aerodynamic map due to one control device or one control distributor.
                             The increments <ddue:codeInline>&lt;dcd&gt;</ddue:codeInline> to <ddue:codeInline>&lt;dcml&gt;</ddue:codeInline> are two-dimensional arrays: the first dimension runs over the points of the aerodynamic map, i.e. it has the length of its parameter vectors, the second over the <ddue:codeInline>&lt;controlParameters&gt;</ddue:codeInline> of the control device or the <ddue:codeInline>&lt;commandInputs&gt;</ddue:codeInline> of the control distributor.
-                            The second index runs fastest, as in the example in section 9 of <ddue:codeInline>cpacsType</ddue:codeInline>.
+                            The second index runs fastest, as in the example in section 8 of <ddue:codeInline>cpacsType</ddue:codeInline>.
                             Like the coefficients themselves, the increments are given in the aerodynamic coordinate system.
                         </ddue:para>
                     </ddue:remarks>
@@ -3952,7 +4058,7 @@ cpacs@dlr.de
                                     <ddue:para>
                                         Aerodynamic coefficients of the complete aircraft over altitude, Mach number, sideslip angle and angle of attack.
                                         The force and moment coefficients are given in the aerodynamic coordinate system, i.e. along and about the axes d, s and l, which follow the free stream.
-                                        Their directions and signs are defined in section 3.2 of <ddue:codeInline>cpacsType</ddue:codeInline>.
+                                        Their directions and signs are defined in section 4.2 of <ddue:codeInline>cpacsType</ddue:codeInline>.
                                     </ddue:para>
                                     <ddue:para>
                                         <ddue:legacyBold>Coefficients</ddue:legacyBold>
@@ -4132,7 +4238,7 @@ cpacs@dlr.de
                         <ddue:para>
                             Aerodynamic maps of the aircraft.
                             Each map holds the aerodynamic coefficients for one set of boundary conditions, e.g. one setting of the high-lift devices, so that a tool picks the map that matches the case it evaluates.
-                            The coefficients are given in the aerodynamic coordinate system defined in section 3.2 of <ddue:codeInline>cpacsType</ddue:codeInline>.
+                            The coefficients are given in the aerodynamic coordinate system defined in section 4.2 of <ddue:codeInline>cpacsType</ddue:codeInline>.
                         </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -14252,7 +14358,7 @@ cpacs@dlr.de
                             The roll, pitch and yaw rates p, q and r [rad/s] are rotations about the x-, y- and z-direction of the CPACS coordinate system through the moment reference point of the model, positive by the right-hand rule.
                             They are normalized with the reference length l and the free-stream velocity, e.g. p* = p l / V<ddue:subscript>∞</ddue:subscript> for the roll rate.
                             Each derivative is a vector with one value per point of the aerodynamic map, i.e. of the same length as its parameter vectors.
-                            The coefficients themselves are given in the aerodynamic coordinate system (section 3.2 of <ddue:codeInline>cpacsType</ddue:codeInline>).
+                            The coefficients themselves are given in the aerodynamic coordinate system (section 4.2 of <ddue:codeInline>cpacsType</ddue:codeInline>).
                         </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
