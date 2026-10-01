@@ -19,7 +19,8 @@ Definition shown (as in the documentation): a component without parentUID is pla
 transformation directly in the CPACS coordinate system, and any number of components may be
 without parentUID. A component with parentUID follows the translation of its parent. The figure
 shows two such hierarchies of one aircraft: the fuselage with the vertical and the horizontal
-tail, and the main wing with the engine pylons. The aircraft is the one of aeroPerformance.py.
+tail, and the main wing with the engine pylons and the engines on them. The aircraft is the one of
+aeroPerformance.py.
 """
 
 from __future__ import annotations
@@ -47,7 +48,7 @@ WING_TREE = COLORS["series2"]
 # Hierarchy as rows of the tree: each row is a chain of (component, parentUID) from a component without parent.
 CHAINS = [
     (FUSELAGE_TREE, [("fuselage", None), ("vertical tail", "fuselage"), ("horizontal tail", "vertical tail")]),
-    (WING_TREE, [("main wing", None), ("engine pylons", "main wing")]),
+    (WING_TREE, [("main wing", None), ("engine pylons", "main wing"), ("engines", "engine pylons")]),
 ]
 
 
@@ -77,7 +78,7 @@ def side_view(ax):
     name((fin_tip_te[0] + 0.8, fin_tip_te[1] - 0.6), "vertical tail")
     name((x_ht + chord_ht + 1.0, z_ht), "horizontal tail")
     name((x_tip + chord_tip + 0.6, z_tip), "main wing")
-    name((sum(NACELLE["x"]) / 2, nacelle_center_z() - NACELLE["radius"] - 0.5), "engine pylons", ha="center",
+    name((sum(NACELLE["x"]) / 2, nacelle_center_z() - NACELLE["radius"] - 0.5), "engines", ha="center",
          va="top")
     ax.set_xlim(-1.0, 47.0)
     ax.set_ylim(-5.6, 7.2)
