@@ -28,7 +28,7 @@ from __future__ import annotations
 from pathlib import Path
 
 import matplotlib.pyplot as plt
-from matplotlib.patches import FancyBboxPatch, Polygon
+from matplotlib.patches import FancyBboxPatch, Patch, Polygon
 
 from aeroPerformance import (FIN, TAILPLANE, WING, fin_side, fuselage_side, lifting_surface_section,
                              lifting_surface_side, nacelle_center_z, nacelle_side, pylon_side, NACELLE)
@@ -80,6 +80,11 @@ def side_view(ax):
     name((x_tip + chord_tip + 0.6, z_tip), "main wing")
     name((sum(NACELLE["x"]) / 2, nacelle_center_z() - NACELLE["radius"] - 0.5), "engines", ha="center",
          va="top")
+    # color key: text in ink, the color shown by a swatch (one entry per hierarchy)
+    handles = [Patch(fc=(color, 0.10), ec=color, lw=LINE["secondary"]) for color, _ in CHAINS]
+    texts = [f"hierarchy {k + 1}: {chain[0][0]} and the components below it" for k, (_, chain) in enumerate(CHAINS)]
+    ax.legend(handles, texts, loc="upper left", bbox_to_anchor=(0.0, 0.96), frameon=False, fontsize=NOTE,
+              handlelength=1.6, handleheight=0.9, labelcolor=INK, borderaxespad=0.0)
     ax.set_xlim(-1.0, 47.0)
     ax.set_ylim(-5.6, 7.2)
     ax.set_aspect("equal")
