@@ -86,7 +86,7 @@ Decide by grammatical form, not by length. A noun phrase is a label and takes no
 
 - **§12: In running text, `UID` is written in capitals. `uID` refers to the XML attribute only.**
 
-`uID` is the name of the attribute and is spelled that way when the attribute itself is meant, ideally in backticks. Used as a word — *"Reference to the UID of the analysed airfoil"* — it is an abbreviation and takes capitals.
+`uID` is the name of the attribute and is spelled that way when the attribute itself is meant, in the documentation markup as `@uID` (§37). Used as a word — *"Reference to the UID of the analysed airfoil"* — it is an abbreviation and takes capitals.
 
 - **§13: Physical units are given in square brackets at the end of the text, e.g. `Tilt angle of the bogie [deg]`.**
 
@@ -337,7 +337,7 @@ Where a type defines a convention — the point order and the relative circumfer
 
 - **§32: The documentation text is self-contained. It contains no file paths and no links into `examples/`.**
 
-An excerpt shows the data it needs to show, and the repetition against the example files is accepted. A reference to a file ties the text to a repository layout that the reader of the generated documentation does not have, and it rots as soon as files are renamed. Inside a `ddue:para`, one sentence per line, so that a change shows as one line in a diff; element names are `ddue:codeInline`. An element documentation (`xsd:documentation`) is plain text: no markup and no symbols such as `e_x` (§5). It states the meaning of the node, its value range where one applies, and its default.
+An excerpt shows the data it needs to show, and the repetition against the example files is accepted. A reference to a file ties the text to a repository layout that the reader of the generated documentation does not have, and it rots as soon as files are renamed. Inside a `ddue:para`, one sentence per line, so that a change shows as one line in a diff; element and attribute names are `ddue:codeInline`, marked as §37 says. An element documentation (`xsd:documentation`) is plain text: no markup and no symbols such as `e_x` (§5). It states the meaning of the node, its value range where one applies, and its default.
 
 - **§33: One script per topic, and figure, example file and excerpt come from the same data.**
 
@@ -364,6 +364,25 @@ Element names are deliberately left alone. 186 of them are declared with more th
 The target in `xlink:href` is the type name, as `ddue:image` names its media entry, and an empty `ddue:link` is labelled with its target. A target that names no type in the schema is an error in `cpacs-doc report`, so a typo surfaces in the build rather than in the reader's browser.
 
 Set a `ddue:link` only where the sentence really makes that reference; §31 already sends the reader to one place for a convention, and a second link to it a paragraph later says nothing new. An automatic link is not worth avoiding by rewording — a type name is named where it is named, and in CPACS 3.5.1 only ten of the 243 names in the documentation repeat within the same type.
+
+- **§37: In the documentation markup, an element is written as `<name>`, an attribute as `@name` and a path as XPath. Type names and values are written as they are.**
+
+A bare name in code font does not say what it names. `uID`, `version`, `b` and `c` are declared both as elements and as attributes, many element names are also enumeration values, and the reader cannot tell `symmetry` the attribute from `symmetry` a value. The marks settle that without a word of explanation, and they are the ones XML and XPath already use:
+
+| Meant | Written | In the schema |
+| ----- | ------- | ------------- |
+| Element | `<sections>` | `<ddue:codeInline>&lt;sections&gt;</ddue:codeInline>` |
+| Attribute | `@uID` | `<ddue:codeInline>@uID</ddue:codeInline>` |
+| Attribute of a given element | `translation/@refType` | `<ddue:codeInline>translation/@refType</ddue:codeInline>` |
+| Path | `wings/wing/sections` | `<ddue:codeInline>wings/wing/sections</ddue:codeInline>` |
+| Type | `wingSectionType` | `<ddue:codeInline>wingSectionType</ddue:codeInline>` |
+| Value | `absGlobal` | `<ddue:codeInline>absGlobal</ddue:codeInline>` |
+
+An element is written as its start tag, `<transformation>`, not as an empty element `<transformation/>`. A path names several steps and is unambiguous already, so its steps take no angle brackets. Type names stay bare, because §36 turns exactly them into links; a name in angle brackets is never a type and never linked. The mark makes the words "element" and "attribute" after the name unnecessary — *"set `@symmetry` to `x-z-plane`"* says the same as *"set the `symmetry` attribute to `x-z-plane`"*.
+
+The rule applies to `ddue:para`, lists and tables, not to the element documentation in `xsd:documentation`, which is plain text (§32) and names its own node anyway.
+
+A name is never set in italics. Older text uses `ddue:legacyItalic` as a stand-in for the code font; that hides from the reader that a name is meant, and a type name in italics is not linked (§36). Italics are left for mathematical symbols in running text — *x*, *t*, *Δx*, *η* — as in the rendered equations (§25). They do not mark emphasis either: what is required is said in the sentence (*"… is required"*), and a remark that has to stand out is a `ddue:alert` (§27).
 
 ## Development Guidelines by Example
 
