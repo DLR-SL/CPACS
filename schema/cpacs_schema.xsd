@@ -60,49 +60,124 @@ cpacs@dlr.de
                                 <ddue:content>
                                     <ddue:para>
                                         The Common Parametric Aircraft Configuration Schema (CPACS) is an XML-based data format for describing aircraft, rotorcraft and their missions, together with the data of their design and analysis.
-                                        A CPACS dataset is an XML file, e.g. <ddue:codeInline>aircraft.xml</ddue:codeInline>, which tools of different disciplines read and write, so that they exchange their data through one common description of the vehicle.
+                                        In aircraft design, many tools work on the same vehicle: aerodynamics, structures, flight mechanics, propulsion, mission analysis and more.
+                                        If each pair of tools exchanged data directly, n tools would need up to n(n − 1)/2 interfaces, and each of them would have to be kept consistent with the others.
+                                        With a common format, each tool needs only one: it reads its input from the CPACS dataset and writes its results back.
+                                        This is what makes automated multidisciplinary process chains possible.
+                                    </ddue:para>
+                                    <ddue:para>
+                                        <ddue:legacyBold>A dataset</ddue:legacyBold>
+                                    </ddue:para>
+                                    <ddue:para>
+                                        A CPACS dataset is an XML file with any name, e.g. <ddue:codeInline>aircraft.xml</ddue:codeInline>.
+                                        It consists of nested elements, such as <ddue:codeInline>&lt;wing&gt;</ddue:codeInline>, which hold values or further elements, and of attributes, such as <ddue:codeInline>@uID</ddue:codeInline>, which add information to an element.
+                                        The skeleton of a dataset with a single wing reads:
+                                    </ddue:para>
+                                    <ddue:code language="XML" title="Skeleton of a CPACS dataset">
+                                        <![CDATA[
+<?xml version="1.0" encoding="utf-8"?>
+<cpacs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="cpacs_schema.xsd">
+    <header>
+        <name>Short-range airliner</name>
+        <version>1.0.0</version>
+        <versionInfos>
+            <versionInfo version="1.0.0">
+                <creator>Aircraft design team</creator>
+                <timestamp>2026-10-01T12:00:00</timestamp>
+                <description>Initial sizing</description>
+                <cpacsVersion>3.5</cpacsVersion>
+            </versionInfo>
+        </versionInfos>
+    </header>
+    <vehicles>
+        <aircraft>
+            <model uID="aircraft">
+                <name>Short-range airliner</name>
+                <wings>
+                    <wing uID="mainWing" symmetry="x-z-plane">
+                        <name>Main wing</name>
+                        ...
+                    </wing>
+                </wings>
+            </model>
+        </aircraft>
+        <profiles>
+            ...
+        </profiles>
+    </vehicles>
+</cpacs>
+                                        ]]>
+                                    </ddue:code>
+                                    <ddue:para>
+                                        The <ddue:codeInline>&lt;header&gt;</ddue:codeInline> identifies the dataset and records its versions; <ddue:codeInline>&lt;vehicles&gt;</ddue:codeInline> holds the aircraft with its components, here the main wing, and the library of shared parts such as airfoils.
+                                        Section 2 explains this structure.
+                                    </ddue:para>
+                                    <ddue:para>
+                                        The attribute <ddue:codeInline>@xsi:noNamespaceSchemaLocation</ddue:codeInline> of the root element names the schema file, so that an XML processor finds it without further input; a relative path is resolved against the directory of the dataset.
+                                        Each <ddue:codeInline>&lt;versionInfo&gt;</ddue:codeInline> records in <ddue:codeInline>&lt;cpacsVersion&gt;</ddue:codeInline> the CPACS version that this version of the dataset follows, and the dataset is validated against the schema of the CPACS version of its current version.
+                                    </ddue:para>
+                                    <ddue:para>
+                                        <ddue:legacyBold>Schema and validation</ddue:legacyBold>
                                     </ddue:para>
                                     <ddue:para>
                                         The XML schema <ddue:codeInline>cpacs_schema.xsd</ddue:codeInline> serves two purposes.
                                         It defines the structure of a dataset: the elements, their order and their number, the attributes, and the data type of every value.
                                         And it carries the documentation of each element and each type, from which these pages are generated.
-                                        An XML processor such as
-                                        <ddue:externalLink>
-                                            <ddue:linkText>TiXI</ddue:linkText>
-                                            <ddue:linkUri>https://github.com/DLR-SC/tixi</ddue:linkUri>
-                                        </ddue:externalLink>
-                                        or xmllint reads the schema and the dataset and checks that the dataset follows the schema (validation).
+                                        An XML processor reads the schema and the dataset and checks that the dataset follows the schema (validation).
                                     </ddue:para>
                                     <ddue:mediaLink>
                                         <ddue:image xlink:href="basicPrinciple"/>
                                     </ddue:mediaLink>
                                     <ddue:para>
                                         The figure shows how the parts relate: the schema defines the structure of the dataset, tools and users write and read the data, and the documentation generated from the schema tells them what the data means.
-                                        The validation checks the structure and the data types, not whether the values are plausible.
+                                        The validation checks the structure and the data types, and that every UID is unique.
+                                        It does not check whether the values are plausible, whether they are given in the right units (section 4), or whether a reference points to an existing element (section 6).
+                                        A dataset that is split into several files is validated only after its files have been merged (section 5).
                                     </ddue:para>
                                     <ddue:para>
-                                        The documentation explains the elements and their data types.
-                                        A simple type holds a single value, such as a string, a number or a boolean; a complex type defines attributes and child elements and thus builds up the hierarchy of the dataset.
-                                        For each element, the documentation also states its position in the sequence and how often it may occur.
+                                        Two open source libraries of the DLR support working with CPACS:
+                                        <ddue:externalLink>
+                                            <ddue:linkText>TiXI</ddue:linkText>
+                                            <ddue:linkUri>https://github.com/DLR-SC/tixi</ddue:linkUri>
+                                        </ddue:externalLink>
+                                        reads, writes and validates XML datasets, and
+                                        <ddue:externalLink>
+                                            <ddue:linkText>TiGL</ddue:linkText>
+                                            <ddue:linkUri>https://dlr-sc.github.io/tigl</ddue:linkUri>
+                                        </ddue:externalLink>
+                                        builds the geometry of the vehicle from the data.
+                                        Any other XML tool, such as xmllint or lxml, reads and validates a dataset as well.
                                     </ddue:para>
                                     <ddue:para>
-                                        The root element of a dataset can name the schema it follows.
-                                        An XML processor then finds the schema without being told:
+                                        <ddue:legacyBold>Reading this documentation</ddue:legacyBold>
                                     </ddue:para>
-                                    <ddue:code language="XML" title="Schema reference in the root element">
-                                        <![CDATA[
-<cpacs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:noNamespaceSchemaLocation="pathToSchemaFile/cpacs_schema.xsd">
-    ...
-</cpacs>
-                                        ]]>
-                                    </ddue:code>
+                                    <ddue:para>
+                                        Each type of the schema has a page of its own.
+                                        It opens with a one-line summary, followed by the explanation of the type, with figures and examples where they help.
+                                        The table of child elements lists for each element its type, which links to the page of that type, its constraints, its default value, and its occurrence: <ddue:codeInline>[1..1]</ddue:codeInline> for a required element, <ddue:codeInline>[0..1]</ddue:codeInline> for an optional one, and <ddue:codeInline>[1..∞]</ddue:codeInline> for an element that occurs once or more.
+                                        Attributes are listed the same way.
+                                        Under "Used by", a page lists all places of the dataset where the type occurs, and "Show in tree" shows the type in the hierarchy below the root element.
+                                    </ddue:para>
+                                    <ddue:para>
+                                        <ddue:legacyBold>Where to go next</ddue:legacyBold>
+                                    </ddue:para>
+                                    <ddue:para>
+                                        The following sections define what applies to every type of the schema: the data structure (section 2), the coordinate systems (section 3), the units (section 4), datasets split into several files (section 5), UIDs and references (sections 6 and 7), symmetry (section 8), vectors and arrays (section 9), control parameters (section 10) and the atmosphere (section 11).
+                                        Whoever writes or reads CPACS data should know them, since the pages of the individual types build on them without repeating them.
+                                        For a first dataset, continue with section 2 and then with a component, e.g. the wing (<ddue:codeInline>wingType</ddue:codeInline>) or the fuselage (<ddue:codeInline>fuselageType</ddue:codeInline>).
+                                    </ddue:para>
                                     <ddue:para>
                                         CPACS is an open source project published by the
                                         <ddue:externalLink>
                                             <ddue:linkText>German Aerospace Center (DLR)</ddue:linkText>
                                             <ddue:linkUri>https://www.dlr.de/</ddue:linkUri>
-                                        </ddue:externalLink>. For further information, please visit
+                                        </ddue:externalLink>.
+                                        The schema, the examples and the release history are available in the
+                                        <ddue:externalLink>
+                                            <ddue:linkText>CPACS repository on GitHub</ddue:linkText>
+                                            <ddue:linkUri>https://github.com/DLR-SL/CPACS</ddue:linkUri>
+                                        </ddue:externalLink>; further information is given on
                                         <ddue:externalLink>
                                             <ddue:linkText>www.cpacs.de</ddue:linkText>
                                             <ddue:linkUri>https://www.cpacs.de</ddue:linkUri>

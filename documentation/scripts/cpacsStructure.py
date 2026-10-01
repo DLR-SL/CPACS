@@ -32,7 +32,8 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 
 import matplotlib.pyplot as plt
-from matplotlib.patches import FancyBboxPatch
+import numpy as np
+from matplotlib.patches import Circle, FancyBboxPatch, Polygon
 
 from figure_style import COLORS, FONT_SIZE, FULL_WIDTH, LINE, figure_style, save_figure
 
@@ -103,29 +104,94 @@ def flow_arrow(ax, points, text=None, text_at=None, ha="center", va="center"):
         ax.text(*text_at, text, ha=ha, va=va, fontsize=NOTE, color=INK2, linespacing=1.3, zorder=3)
 
 
+# Symbols of the boxes in the middle row, drawn as line glyphs in a square of side 1 centred at the origin.
+# Right half of an airliner in top view, nose up: fuselage, swept wing, horizontal tail.
+AIRLINER_HALF = [(0.0, 0.5), (0.035, 0.45), (0.05, 0.36), (0.05, 0.1), (0.47, -0.15), (0.47, -0.22), (0.05, -0.08),
+                 (0.05, -0.3), (0.19, -0.41), (0.19, -0.46), (0.035, -0.43), (0.0, -0.49)]
+
+
+def symbol_schema(ax, center, size, color):
+    """A sheet with a folded corner, carrying a small tree: the schema as a hierarchy."""
+    cx, cy = center
+    w, h, fold = 0.66 * size, 0.86 * size, 0.2 * size
+    x0, y0 = cx - w / 2, cy - h / 2
+    outline = [(x0, y0), (x0 + w, y0), (x0 + w, y0 + h - fold), (x0 + w - fold, y0 + h), (x0, y0 + h)]
+    ax.add_patch(Polygon(outline, closed=True, lw=LINE["secondary"], ec=color, fc=PLATE, joinstyle="round",
+                         zorder=4))
+    ax.plot([x0 + w - fold, x0 + w - fold, x0 + w], [y0 + h, y0 + h - fold, y0 + h - fold], color=color,
+            lw=LINE["secondary"], solid_joinstyle="round", zorder=4)
+    # tree: a root and two children, connected by an elbow
+    root = (x0 + 0.22 * w, y0 + 0.66 * h)
+    children = [(x0 + 0.62 * w, y0 + 0.45 * h), (x0 + 0.62 * w, y0 + 0.2 * h)]
+    ax.plot([root[0], root[0]], [root[1], children[-1][1]], color=color, lw=LINE["reference"], zorder=4)
+    for child in children:
+        ax.plot([root[0], child[0]], [child[1], child[1]], color=color, lw=LINE["reference"], zorder=4)
+    for node in [root, *children]:
+        ax.plot(*node, ls="none", marker="s", ms=2.6, mfc=color, mec=color, zorder=5)
+
+
+def symbol_aircraft(ax, center, size, color):
+    """An airliner in top view, nose up, drawn like the components in the other figures."""
+    half = np.array(AIRLINER_HALF)
+    outline = np.vstack([half, (half * [-1.0, 1.0])[::-1]]) * size + np.asarray(center)
+    ax.add_patch(Polygon(outline, closed=True, lw=LINE["secondary"], ec=color, fc=(color, 0.10),
+                         joinstyle="round", zorder=4))
+
+
+def symbol_users(ax, center, size, color, back_color):
+    """Two busts, the one behind lighter: tools and their users."""
+    def bust(cx, cy, edge, zorder):
+        head = Circle((cx, cy + 0.2 * size), 0.15 * size, lw=LINE["secondary"], ec=edge, fc=PLATE, zorder=zorder)
+        t = np.linspace(0.0, np.pi, 40)
+        shoulders = np.column_stack([cx + 0.3 * size * np.cos(t), cy - 0.36 * size + 0.36 * size * np.sin(t)])
+        ax.add_patch(Polygon(shoulders, closed=True, lw=LINE["secondary"], ec=edge, fc=PLATE, joinstyle="round",
+                             zorder=zorder))
+        ax.add_patch(head)
+    cx, cy = center
+    bust(cx + 0.17 * size, cy + 0.08 * size, back_color, 4)
+    bust(cx - 0.1 * size, cy - 0.04 * size, color, 4.5)
+
+
 def figure_basic_principle():
-    """The schema, the dataset, the documentation, the tools and the XML processor, and how they relate."""
-    width, height = FULL_WIDTH, 3.15
-    w, h = 1.75, 0.56
-    cols = {"schema": 0.15, "dataset": 2.925, "tools": 5.7}
+    """The schema, the dataset, the documentation, the tools and the XML processor, and how they relate.
+
+    The middle row, which the figure is about, carries a symbol in each box; the documentation and the XML
+    processor are context and have none.
+    """
+    width, height = FULL_WIDTH, 3.25
+    w, h = 1.85, 0.62
+    cols = {"schema": 0.12, "dataset": 2.875, "tools": 5.63}
     mid = {key: x + w / 2 for key, x in cols.items()}
-    row_top, row_mid, row_bottom = 2.75, 1.55, 0.35
+    row_top, row_mid, row_bottom = 2.85, 1.6, 0.36
+    symbol_size, symbol_inset, text_inset = 0.36, 0.3, 0.56
 
     nodes = {
-        "documentation": (mid["dataset"] - w / 2, row_top, MUTED, "documentation", "HTML pages"),
-        "schema": (cols["schema"], row_mid, COLORS["series1"], "cpacs_schema.xsd", "XML schema"),
-        "dataset": (cols["dataset"], row_mid, COLORS["series1"], "aircraft.xml", "CPACS dataset"),
-        "tools": (cols["tools"], row_mid, MUTED, "tools and users", "design and analysis"),
-        "processor": (mid["dataset"] - w / 2, row_bottom, MUTED, "XML processor", "e.g. TiXI or xmllint"),
+        "documentation": (mid["dataset"] - w / 2, row_top, MUTED, "documentation", "HTML pages", None),
+        "schema": (cols["schema"], row_mid, COLORS["series1"], "cpacs_schema.xsd", "XML schema", "schema"),
+        "dataset": (cols["dataset"], row_mid, COLORS["series1"], "aircraft.xml", "CPACS dataset", "aircraft"),
+        "tools": (cols["tools"], row_mid, MUTED, "tools and users", "design and analysis", "users"),
+        "processor": (mid["dataset"] - w / 2, row_bottom, MUTED, "XML processor", "e.g. TiXI or xmllint", None),
     }
     with figure_style():
         fig = plt.figure(figsize=(width, height))
         ax = fig.add_axes((0.0, 0.0, 1.0, 1.0))
-        for x, y, color, title, note in nodes.values():
+        for x, y, color, title, note, symbol in nodes.values():
             box(ax, x, y, w, h, color)
-            ax.text(x + w / 2, y + 0.1, title, ha="center", va="center", fontsize=FONT_SIZE["base"], color=INK,
-                    family=MONO if title.endswith((".xsd", ".xml")) else None, zorder=3)
-            ax.text(x + w / 2, y - 0.12, note, ha="center", va="center", fontsize=NOTE, color=INK2, zorder=3)
+            family = MONO if title.endswith((".xsd", ".xml")) else None
+            if symbol is None:
+                text_x, ha = x + w / 2, "center"
+            else:
+                text_x, ha = x + text_inset, "left"
+                at = (x + symbol_inset, y)
+                if symbol == "schema":
+                    symbol_schema(ax, at, symbol_size, color)
+                elif symbol == "aircraft":
+                    symbol_aircraft(ax, at, symbol_size, color)
+                else:
+                    symbol_users(ax, at, symbol_size, INK2, MUTED)
+            ax.text(text_x, y + 0.1, title, ha=ha, va="center", fontsize=FONT_SIZE["base"], color=INK,
+                    family=family, zorder=3)
+            ax.text(text_x, y - 0.12, note, ha=ha, va="center", fontsize=NOTE, color=INK2, zorder=3)
 
         left, right = mid["schema"], mid["tools"]
         # schema -> documentation and documentation -> tools along the top row
