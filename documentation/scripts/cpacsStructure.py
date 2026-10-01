@@ -20,8 +20,8 @@ The script writes
 
 Definitions shown (as in the documentation):
 
-- datasetAccess.png: a dataset is read and written by hand in an editor with XML support, or automated in the
-  pre- and post-processing of the tools of a process chain.
+- datasetAccess.png: a dataset is read and written by hand in an editor with XML support, interactively in the
+  TiGL Creator, or automated in the pre- and post-processing of the tools of a process chain.
 - toolInterfaces.png: n tools exchanging data directly need up to n(n - 1)/2 interfaces, one per pair;
   through a common format each tool needs one.
 - basicPrinciple.png: the schema defines the structure of a CPACS dataset and carries the documentation,
@@ -426,16 +426,21 @@ EDITOR_LINES = [(0, "<cpacs>", False), (1, "<header>…</header>", True), (1, "<
                 (2, "<aircraft>", False), (3, '<model uID="aircraft">', False),
                 (4, "<name>Short-range airliner</name>", False), (4, "<wings>…</wings>", True)]
 EDITOR_USED = ["name", "wings"]  # children of the model written so far
-EDITOR_SUGGESTIONS = 5  # number of suggestions shown
+EDITOR_SUGGESTIONS = 4  # number of suggestions shown
+# The CPACS tree of the TiGL Creator in figure (b): (level, name); the selected item is highlighted in 3D as well.
+CREATOR_TREE = [(0, "cpacs"), (1, "vehicles"), (2, "aircraft"), (3, "model"), (4, "fuselages"), (4, "wings"),
+                (5, "Main wing"), (5, "Horizontal tail"), (5, "Vertical tail")]
+CREATOR_SELECTED = "Main wing"
 
 
 def figure_dataset_access():
-    """(a) Writing a dataset by hand in an editor with XML support; (b) reading and writing automated in a tool.
+    """(a) Writing a dataset by hand in an editor with XML support; (b) inspecting and changing it interactively in the
+    TiGL Creator; (c) reading and writing automated in the tools of a process chain.
 
     The suggestions of the editor are the children of aircraftModelType that are not written yet, read from the
     schema; the model is an xsd:all group, so each of them is allowed at the cursor.
     """
-    width, height = FULL_WIDTH, 5.6
+    width, height = FULL_WIDTH, 9.6
     mono = {"family": MONO, "fontsize": NOTE - 1.0}
     pitch, char = 0.165, 0.0625  # line pitch and width of a character of the code font [in]
     leader_props = {"arrowstyle": "-", "color": MUTED, "lw": LINE["reference"], "shrinkA": 3, "shrinkB": 2}
@@ -516,9 +521,66 @@ def figure_dataset_access():
              "elements the schema\nallows at the cursor")
         note(ax, (nx, y_status), (x0 + 2.1, y_status), "checked against the schema\nwhile writing")
 
-        # ---- (b) process chain ----
-        y_b = bottom - 0.42
-        ax.text(0.0, y_b, "(b) automated, in a process chain", ha="left", va="top", fontsize=FONT_SIZE["base"],
+        # ---- (b) TiGL Creator: 3D view on the left, parameters top right, CPACS tree bottom right ----
+        y_title = bottom - 0.42
+        ax.text(0.0, y_title, "(b) interactively, in the TiGL Creator", ha="left", va="top", fontsize=FONT_SIZE["base"],
+                color=INK)
+        top_b = y_title - 0.37
+        side_w, param_h, tree_pitch = 1.4, 0.56, 0.155
+        h_b = title_h + param_h + len(CREATOR_TREE) * tree_pitch + 0.2
+        bottom_b = top_b - h_b
+        ax.add_patch(FancyBboxPatch((x0, bottom_b), w, h_b, boxstyle="round,pad=0,rounding_size=0.05",
+                                    lw=LINE["secondary"], ec=MUTED, fc=PLATE, zorder=1))
+        ax.plot([x0, x0 + w], [top_b - title_h] * 2, color=MUTED, lw=LINE["reference"], zorder=2)
+        for k in range(3):
+            ax.plot(x0 + 0.13 + 0.1 * k, top_b - title_h / 2, ls="none", marker="o", ms=2.6, mfc=COLORS["axis"],
+                    mec=COLORS["axis"], zorder=3)
+        ax.text(x0 + w / 2, top_b - title_h / 2, "TiGL Creator – aircraft.xml", ha="center", va="center",
+                fontsize=NOTE - 0.5, color=INK, zorder=3)
+        side_x0, inner_top = x0 + w - side_w, top_b - title_h
+        param_y0 = inner_top - param_h
+        ax.plot([side_x0] * 2, [bottom_b, inner_top], color=COLORS["grid"], lw=LINE["reference"], zorder=2)
+        ax.plot([side_x0, x0 + w], [param_y0] * 2, color=COLORS["grid"], lw=LINE["reference"], zorder=2)
+        # 3D view over the full height on the left: the airliner in top view, its main wing selected
+        centre = np.array([(x0 + side_x0) / 2, (bottom_b + inner_top) / 2])
+        size = min(side_x0 - x0, inner_top - bottom_b) * 0.82
+        half = np.array(AIRLINER_HALF)
+        outline = np.vstack([half, (half * [-1.0, 1.0])[::-1]]) * size + centre
+        ax.add_patch(Polygon(outline, closed=True, lw=LINE["secondary"], ec=MUTED, fc=(MUTED, 0.10),
+                             joinstyle="round", zorder=3))
+        wing = half[3:7]
+        for side in (1.0, -1.0):
+            ax.add_patch(Polygon(wing * [side, 1.0] * size + centre, closed=True, lw=LINE["data"],
+                                 ec=COLORS["series1"], fc=(COLORS["series1"], 0.22), joinstyle="round", zorder=3.5))
+        # parameters of the selected wing, top right
+        px, field_x = side_x0 + 0.1, side_x0 + 0.86
+        y_param = (param_y0 + inner_top) / 2
+        for k, (label_text, value) in enumerate((("sweep [deg]", "25.0"), ("dihedral [deg]", "5.0"))):
+            y = y_param + 0.11 - 0.22 * k
+            ax.text(px, y, label_text, ha="left", va="center", fontsize=NOTE - 1.5, color=INK2, zorder=3)
+            ax.add_patch(FancyBboxPatch((field_x, y - 0.08), 0.42, 0.16, boxstyle="round,pad=0,rounding_size=0.02",
+                                        lw=LINE["reference"], ec=MUTED, fc=PLATE, zorder=3))
+            ax.text(field_x + 0.36, y, value, ha="right", va="center", color=INK, zorder=4,
+                    **{**mono, "fontsize": NOTE - 1.5})
+        # CPACS tree, bottom right, the selected component highlighted
+        selected_y = None
+        for k, (level, name) in enumerate(CREATOR_TREE):
+            y = param_y0 - 0.12 - (k + 0.5) * tree_pitch
+            if name == CREATOR_SELECTED:
+                ax.add_patch(FancyBboxPatch((side_x0 + 0.05, y - tree_pitch / 2), side_w - 0.1, tree_pitch,
+                                            boxstyle="round,pad=0,rounding_size=0.02", lw=0,
+                                            fc=(COLORS["series1"], 0.16), zorder=2.5))
+                selected_y = y
+            ax.text(side_x0 + 0.1 + 0.08 * level, y, name, ha="left", va="center", fontsize=NOTE - 1.5, color=INK,
+                    zorder=3)
+        # both notes point at the right column, so that no leader crosses the 3D view
+        note(ax, (nx, y_param), (x0 + w - 0.04, y_param), "components changed in dialogs,\ne.g. sweep and dihedral")
+        note(ax, (nx, selected_y), (x0 + w - 0.04, selected_y),
+             "selection linked between the\nCPACS tree and the 3D view")
+
+        # ---- (c) process chain ----
+        y_b = bottom_b - 0.42
+        ax.text(0.0, y_b, "(c) automated, in a process chain", ha="left", va="top", fontsize=FONT_SIZE["base"],
                 color=INK)
         row = y_b - 1.0
         bw, bh = 1.12, 0.5
@@ -528,7 +590,10 @@ def figure_dataset_access():
         sx = [ds_x + 1.6 + k * (bw + 0.3) for k in range(3)]
         # the tool frame, with two more tools of the chain behind it
         fx0, fx1 = sx[0] - 0.12, sx[-1] + bw + 0.12
-        fy0, fy1 = row - bh / 2 - 0.12, row + bh / 2 + 0.3
+        # the libraries below the steps, called by pre- and post-processing only
+        lib_h = 0.26
+        lib_y = row - bh / 2 - 0.3 - lib_h / 2
+        fy0, fy1 = lib_y - lib_h / 2 - 0.12, row + bh / 2 + 0.3
         for k in (2, 1):
             off = 0.07 * k
             ax.add_patch(FancyBboxPatch((fx0 + off, fy0 + off), fx1 - fx0, fy1 - fy0,
@@ -548,6 +613,13 @@ def figure_dataset_access():
                     linespacing=1.15, zorder=3)
         for a, b in zip(sx[:-1], sx[1:], strict=True):
             flow_arrow(ax, [(a + bw, row), (b, row)])
+        box(ax, sx[0], lib_y, sx[-1] + bw - sx[0], lib_h, MUTED, zorder=2)
+        ax.text(sx[0] + (sx[-1] + bw - sx[0]) / 2, lib_y,
+                "libraries, called through their APIs: TiXI, TiGL, libxml2, lxml",
+                ha="center", va="center", fontsize=NOTE - 1.0, color=INK, zorder=3)
+        for x in (sx[0], sx[-1]):
+            ax.plot([x + bw / 2] * 2, [row - bh / 2, lib_y + lib_h / 2], color=COLORS["series3"],
+                    lw=LINE["secondary"], zorder=1.5, solid_capstyle="butt")
         # the dataset, read before and written after the tool
         box(ax, ds_x, row, ds_w, bh + 0.08, COLORS["series1"], zorder=2)
         symbol_aircraft(ax, (ds_x + 0.25, row), 0.3, COLORS["series1"])
@@ -561,9 +633,6 @@ def figure_dataset_access():
         ax.text((ds_x + ds_w / 2 + sx[-1] + bw / 2) / 2, y_back - 0.1,
                 "results written back into the same dataset, which the next tool reads", ha="center", va="top",
                 fontsize=NOTE, color=INK2)
-        ax.text((ds_x + ds_w / 2 + sx[-1] + bw / 2) / 2, y_back - 0.42,
-                "Pre- and post-processing use libraries such as TiXI, TiGL, libxml2 or lxml.",
-                ha="center", va="top", fontsize=NOTE, color=INK2)
 
         ax.set_xlim(0.0, width)
         ax.set_ylim(0.0, height)

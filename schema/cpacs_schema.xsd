@@ -142,7 +142,7 @@ cpacs@dlr.de
                                         It does not check whether the values are plausible, whether they are given in the right units (section 5), or whether a reference points to an element of the right kind (section 6.1).
                                         A dataset that is split into several files is validated only after its files have been merged (section 11).
                                     </ddue:para>
-                                    <ddue:para>How to read and write a dataset, by hand with an editor or automated with libraries such as TiXI and TiGL, is described in section 3.</ddue:para>
+                                    <ddue:para>How to read and write a dataset, by hand with an editor, interactively in the TiGL Creator or automated with libraries such as TiXI and TiGL, is described in section 3.</ddue:para>
                                     <ddue:para>
                                         <ddue:legacyBold>Reading this documentation</ddue:legacyBold>
                                     </ddue:para>
@@ -214,16 +214,28 @@ cpacs@dlr.de
                                         Examples are Visual Studio Code with an XML extension, Notepad++ with its XML Tools plugin, and XML Notepad.
                                     </ddue:para>
                                     <ddue:para>
+                                        Between editing by hand and the automated process chain described below lies the
+                                        <ddue:externalLink>
+                                            <ddue:linkText>TiGL Creator</ddue:linkText>
+                                            <ddue:linkUri>https://dlr-sc.github.io/tigl</ddue:linkUri>
+                                        </ddue:externalLink>, the graphical user interface of TiGL.
+                                        It shows the geometry of a dataset in 3D next to its hierarchy, so that the effect of the data can be inspected directly, and selecting a component in one selects it in the other.
+                                        It also creates new datasets from templates and changes components such as wings and fuselages through dialogs, e.g. their sweep or dihedral, and writes the result back as a CPACS dataset.
+                                    </ddue:para>
+                                    <ddue:para>
                                         In a process chain, reading and writing is automated.
                                         A dataset passes through many tools, and each of them reads the part it needs in a pre-processing step and writes its results back in a post-processing step.
-                                        These steps use libraries such as TiXI for reading and writing the data, TiGL for the geometry, or general XML libraries such as libxml2 or lxml.
+                                        These steps call libraries through their programming interfaces (APIs): TiXI for reading and writing the data, TiGL for the geometry, or general XML libraries such as libxml2 or lxml.
+                                        Unlike the TiGL Creator, which is operated by hand, the libraries are used from within the program of the tool.
                                     </ddue:para>
                                     <ddue:mediaLink>
                                         <ddue:image xlink:href="datasetAccess"/>
                                     </ddue:mediaLink>
                                     <ddue:para>
                                         Figure (a) shows a dataset being written in an editor: the hierarchy is indented and partly folded, the editor suggests the elements the schema allows at the cursor, and the status bar reports that the dataset follows the schema.
-                                        Figure (b) shows one tool of a process chain: its pre-processing reads the part of the dataset it needs, the analysis code works with its own input and output, and the post-processing writes the results back into the same dataset, which the next tool then reads.
+                                        Figure (b) shows the TiGL Creator with the main wing selected: it is highlighted in the 3D view on the left and in the tree on the right, and its sweep and dihedral can be changed in the fields above the tree.
+                                        Figure (c) shows one tool of a process chain: its pre-processing reads the part of the dataset it needs, the analysis code works with its own input and output, and the post-processing writes the results back into the same dataset, which the next tool then reads.
+                                        Only pre- and post-processing call the libraries; the analysis code does not need to know CPACS.
                                     </ddue:para>
                                     <ddue:para>
                                         Whether a dataset is edited by hand or by a tool, the following rules make sure that each tool understands what the others wrote and that no data gets lost on the way.
