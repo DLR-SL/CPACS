@@ -59,36 +59,36 @@ cpacs@dlr.de
                                 <ddue:title>1. Overview</ddue:title>
                                 <ddue:content>
                                     <ddue:para>
-                                        The <ddue:legacyBold>C</ddue:legacyBold>ommon
-                                        <ddue:legacyBold>P</ddue:legacyBold>arametric
-                                        <ddue:legacyBold>A</ddue:legacyBold>ircraft
-                                        <ddue:legacyBold>C</ddue:legacyBold>onfiguration
-                                        <ddue:legacyBold>S</ddue:legacyBold>cheme
-                                        (CPACS) is an XML-based data format for describing aircraft configurations and their corresponding data.
-                                </ddue:para>
+                                        The Common Parametric Aircraft Configuration Schema (CPACS) is an XML-based data format for describing aircraft, rotorcraft and their missions, together with the data of their design and analysis.
+                                        A CPACS dataset is an XML file, e.g. <ddue:codeInline>aircraft.xml</ddue:codeInline>, which tools of different disciplines read and write, so that they exchange their data through one common description of the vehicle.
+                                    </ddue:para>
                                     <ddue:para>
-                                        This XML-Schema document (<ddue:legacyBold>XSD</ddue:legacyBold>) serves two purposes:
-                                        (1) it defines the CPACS data structure used in the <ddue:legacyBold>XML</ddue:legacyBold> file (e.g., aircraft.xml) and
-                                        (2) it provides the corresponding documentation (see picture below).
-                                        An XML processor (e.g.,
+                                        The XML schema <ddue:codeInline>cpacs_schema.xsd</ddue:codeInline> serves two purposes.
+                                        It defines the structure of a dataset: the elements, their order and their number, the attributes, and the data type of every value.
+                                        And it carries the documentation of each element and each type, from which these pages are generated.
+                                        An XML processor such as
                                         <ddue:externalLink>
                                             <ddue:linkText>TiXI</ddue:linkText>
                                             <ddue:linkUri>https://github.com/DLR-SC/tixi</ddue:linkUri>
                                         </ddue:externalLink>
-                                        or XML tools in Eclipse) parses the XSD and XML files and validates whether the data set defined by the user (or tool) conforms to the given structure defined by the schema.
-                                </ddue:para>
+                                        or xmllint reads the schema and the dataset and checks that the dataset follows the schema (validation).
+                                    </ddue:para>
                                     <ddue:mediaLink>
                                         <ddue:image xlink:href="basicPrinciple"/>
                                     </ddue:mediaLink>
                                     <ddue:para>
-                                        This documentation explains the <ddue:legacyBold>elements</ddue:legacyBold> defined in CPACS and its corresponding <ddue:legacyBold>data types</ddue:legacyBold>.
-                                        Data types can either be <ddue:legacyBold>simple types</ddue:legacyBold> (string, double, boolean, etc.) or <ddue:legacyBold>complex types</ddue:legacyBold> (definition of attributes and sub-elements to build a hierarchical structure).
-                                        In addition, the sequence of the elements and their occurrence is documented.
-                                </ddue:para>
+                                        The figure shows how the parts relate: the schema defines the structure of the dataset, tools and users write and read the data, and the documentation generated from the schema tells them what the data means.
+                                        The validation checks the structure and the data types, not whether the values are plausible.
+                                    </ddue:para>
                                     <ddue:para>
-                                        To link the XML file to the XSD file, the header of the XML file should specify the path of the schema file.
-                                        An example could look like this:
-                                </ddue:para>
+                                        The documentation explains the elements and their data types.
+                                        A simple type holds a single value, such as a string, a number or a boolean; a complex type defines attributes and child elements and thus builds up the hierarchy of the dataset.
+                                        For each element, the documentation also states its position in the sequence and how often it may occur.
+                                    </ddue:para>
+                                    <ddue:para>
+                                        The root element of a dataset can name the schema it follows.
+                                        An XML processor then finds the schema without being told:
+                                    </ddue:para>
                                     <ddue:code language="XML" title="Schema reference in the root element">
                                         <![CDATA[
 <cpacs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -100,32 +100,39 @@ cpacs@dlr.de
                                     <ddue:para>
                                         CPACS is an open source project published by the
                                         <ddue:externalLink>
-                                            <ddue:linkText>German Aerospace Center (DLR e.V.)</ddue:linkText>
+                                            <ddue:linkText>German Aerospace Center (DLR)</ddue:linkText>
                                             <ddue:linkUri>https://www.dlr.de/</ddue:linkUri>
-                                        </ddue:externalLink>. For further information please visit
+                                        </ddue:externalLink>. For further information, please visit
                                         <ddue:externalLink>
                                             <ddue:linkText>www.cpacs.de</ddue:linkText>
                                             <ddue:linkUri>https://www.cpacs.de</ddue:linkUri>
                                         </ddue:externalLink>.
-                                </ddue:para>
+                                    </ddue:para>
                                 </ddue:content>
                             </ddue:section>
                             <ddue:section>
                                 <ddue:title>2. Data structure</ddue:title>
                                 <ddue:content>
                                     <ddue:para>
-                                        CPACS data is modeled in a hierarchical structure whose underlying concept follows a top-down description of a system-of-systems which decomposes a generic concept
-                                        (e.g., an aircraft or rotorcraft)  into  a  more  detailed  description  of  its  components.
-                                        This originates from the conceptual and preliminary design of aircraft, where the level of detail is initially low and continues to increase as the design process progresses.
-                                </ddue:para>
+                                        CPACS describes a system of systems from the top down: a generic concept such as an aircraft is broken down into its components, and these into ever more detailed parts.
+                                        This follows the design process, which starts with few parameters in the conceptual design and adds detail as the design matures.
+                                    </ddue:para>
                                     <ddue:para>
-                                        For some concepts within CPACS, however, a bottom-up approach is applied where the components are first defined in detail (sometimes referred to as “library”) and then linked within an instantiated higher-level concept.
-                                        This is advantageous when used multiple times within complex systems, such as engines, which only have to be defined once in order to be referenced several times on the aircraft.
-                                        The combination of these two methodologies is known as middle-out  approach  and  enables  the  goal  to  fully  parametrize aeronautical systems.
-                                </ddue:para>
+                                        Some data is described from the bottom up instead.
+                                        Parts that are used several times, such as airfoils, materials or engines, are defined once in a library and referenced by their <ddue:codeInline>@uID</ddue:codeInline> wherever they are used (section 6).
+                                        The combination of both directions is called a middle-out approach.
+                                    </ddue:para>
                                     <ddue:mediaLink>
                                         <ddue:image xlink:href="dataHierarchy"/>
                                     </ddue:mediaLink>
+                                    <ddue:para>
+                                        The figure shows the top levels of the hierarchy.
+                                        Below the root element <ddue:codeInline>&lt;cpacs&gt;</ddue:codeInline>, the <ddue:codeInline>&lt;header&gt;</ddue:codeInline> identifies the dataset and its version, and <ddue:codeInline>&lt;vehicles&gt;</ddue:codeInline> holds the vehicles.
+                                        An aircraft or rotorcraft is described by one or more models, each with its components, i.e. the geometry and what is built into it, and with the data that belongs to the model as a whole: reference values, configurations, global parameters, analyses and requirements.
+                                        The model of a rotorcraft is built up in the same way, with rotors, rotor blades and drive systems among its components.
+                                        Next to the vehicles, <ddue:codeInline>&lt;vehicles&gt;</ddue:codeInline> holds the library that the models reference.
+                                        The other children of the root describe what lies beyond a single vehicle, such as airports, flights, airlines and studies, and <ddue:codeInline>&lt;toolspecific&gt;</ddue:codeInline> holds data of individual tools outside the standardized structure.
+                                    </ddue:para>
                                 </ddue:content>
                             </ddue:section>
                             <ddue:section>
@@ -292,182 +299,240 @@ cpacs@dlr.de
                                 <ddue:title>4. Units</ddue:title>
                                 <ddue:content>
                                     <ddue:para>
-                                        There are no explicit attributes describing units in CPACS.
-                                        The general convention is that all values must be given in the following SI-units:
-                                </ddue:para>
+                                        CPACS has no attributes for units.
+                                        Values are given in SI units or in units derived from them, and the documentation of each element names its unit in square brackets at the end, e.g. [m], or [-] for a dimensionless value.
+                                        The base units are:
+                                    </ddue:para>
                                     <ddue:table>
                                         <ddue:row>
+                                            <ddue:entry>
+                                                <ddue:legacyBold>Unit</ddue:legacyBold>
+                                            </ddue:entry>
+                                            <ddue:entry>
+                                                <ddue:legacyBold>Quantity</ddue:legacyBold>
+                                            </ddue:entry>
+                                        </ddue:row>
+                                        <ddue:row>
                                             <ddue:entry>[m]</ddue:entry>
-                                            <ddue:entry>Position, Distance</ddue:entry>
-                                        </ddue:row>
-                                        <ddue:row>
-                                            <ddue:entry>
-                                                [m<ddue:superscript>2</ddue:superscript>]
-                                            </ddue:entry>
-                                            <ddue:entry>Area</ddue:entry>
-                                        </ddue:row>
-                                        <ddue:row>
-                                            <ddue:entry>
-                                                [m<ddue:superscript>3</ddue:superscript>]
-                                            </ddue:entry>
-                                            <ddue:entry>Volume</ddue:entry>
+                                            <ddue:entry>length, position, distance</ddue:entry>
                                         </ddue:row>
                                         <ddue:row>
                                             <ddue:entry>[kg]</ddue:entry>
-                                            <ddue:entry>Mass</ddue:entry>
+                                            <ddue:entry>mass</ddue:entry>
                                         </ddue:row>
                                         <ddue:row>
                                             <ddue:entry>[s]</ddue:entry>
-                                            <ddue:entry>Time</ddue:entry>
+                                            <ddue:entry>time</ddue:entry>
                                         </ddue:row>
                                         <ddue:row>
                                             <ddue:entry>[K]</ddue:entry>
-                                            <ddue:entry>Temperature</ddue:entry>
+                                            <ddue:entry>temperature</ddue:entry>
+                                        </ddue:row>
+                                        <ddue:row>
+                                            <ddue:entry>[A]</ddue:entry>
+                                            <ddue:entry>electric current</ddue:entry>
                                         </ddue:row>
                                     </ddue:table>
-                                    <ddue:para>or in derived units, e.g.:</ddue:para>
+                                    <ddue:para>Derived units are, for example:</ddue:para>
                                     <ddue:table>
                                         <ddue:row>
+                                            <ddue:entry>
+                                                <ddue:legacyBold>Unit</ddue:legacyBold>
+                                            </ddue:entry>
+                                            <ddue:entry>
+                                                <ddue:legacyBold>Quantity</ddue:legacyBold>
+                                            </ddue:entry>
+                                        </ddue:row>
+                                        <ddue:row>
+                                            <ddue:entry>[m^2], [m^3]</ddue:entry>
+                                            <ddue:entry>area, volume</ddue:entry>
+                                        </ddue:row>
+                                        <ddue:row>
+                                            <ddue:entry>[m/s]</ddue:entry>
+                                            <ddue:entry>velocity</ddue:entry>
+                                        </ddue:row>
+                                        <ddue:row>
                                             <ddue:entry>[N]</ddue:entry>
-                                            <ddue:entry>Force</ddue:entry>
+                                            <ddue:entry>force</ddue:entry>
                                         </ddue:row>
                                         <ddue:row>
                                             <ddue:entry>[Nm]</ddue:entry>
-                                            <ddue:entry>Moment</ddue:entry>
+                                            <ddue:entry>moment</ddue:entry>
                                         </ddue:row>
                                         <ddue:row>
-                                            <ddue:entry>[W]</ddue:entry>
-                                            <ddue:entry>Power</ddue:entry>
+                                            <ddue:entry>[N/m^2]</ddue:entry>
+                                            <ddue:entry>pressure, stress</ddue:entry>
                                         </ddue:row>
                                         <ddue:row>
-                                            <ddue:entry>[J]</ddue:entry>
-                                            <ddue:entry>Energy</ddue:entry>
+                                            <ddue:entry>[J], [W]</ddue:entry>
+                                            <ddue:entry>energy, power</ddue:entry>
                                         </ddue:row>
                                     </ddue:table>
                                     <ddue:para>
-                                        The only non SI unit used throughout CPACS is the angle in degrees [°].
-                                        For the sake of an intuitive use the angles are given in degrees rather than in radian [rad].
-                                </ddue:para>
-                                    <ddue:table>
-                                        <ddue:row>
-                                            <ddue:entry>[°]</ddue:entry>
-                                            <ddue:entry>Angle</ddue:entry>
-                                        </ddue:row>
-                                    </ddue:table>
+                                        Angles are the exception: they are given in degrees [deg], which are easier to read than radians.
+                                        Where an element uses another unit, e.g. radians for a phase angle or radians per second for a rotational rate, its documentation says so, and the unit stated there applies.
+                                    </ddue:para>
                                 </ddue:content>
                             </ddue:section>
                             <ddue:section>
-                                <ddue:title>
-                                    5. Splitting up a CPACS dataset into several files
-                                </ddue:title>
+                                <ddue:title>5. Splitting up a CPACS dataset into several files</ddue:title>
                                 <ddue:content>
                                     <ddue:para>
-                                        To provide a better overview, it is possible to split up a CPACS dataset into several files.
-                                        This can be done by inserting an <ddue:codeInline>&lt;externaldata&gt;</ddue:codeInline> node at an arbitrary position into the dataset.
-                                        This node contains a <ddue:codeInline>&lt;path&gt;</ddue:codeInline> node with a URI to the external file(s), followed by one or more <ddue:codeInline>&lt;filename&gt;</ddue:codeInline> nodes, containing each a name of a file to be included at that position.
-                                        Below, an example of such external data is given:
-                                </ddue:para>
-                                    <ddue:code language="XML" title="Linking external data">
+                                        A dataset can be split into several files, e.g. to keep a library of airfoils in files of its own and share it between datasets.
+                                        An <ddue:codeInline>&lt;externaldata&gt;</ddue:codeInline> element, which may stand at any position of the dataset, takes the place of the content of external files.
+                                        Its <ddue:codeInline>&lt;path&gt;</ddue:codeInline> names the directory of the files as a URI, and each following <ddue:codeInline>&lt;filename&gt;</ddue:codeInline> names one file in it.
+                                        When the dataset is read, the root element of each file is inserted at the position of the <ddue:codeInline>&lt;externaldata&gt;</ddue:codeInline> element, which it replaces.
+                                    </ddue:para>
+                                    <ddue:para>
+                                        The following dataset takes two airfoils from external files, one <ddue:codeInline>&lt;externaldata&gt;</ddue:codeInline> element for each, and defines a third one itself:
+                                    </ddue:para>
+                                    <ddue:code language="XML" title="Dataset with two airfoils in external files">
                                         <![CDATA[
 <?xml version="1.0" encoding="utf-8"?>
 <cpacs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="pathToSchemaFile/cpacs_schema.xsd">
+    ...
     <vehicles>
         <profiles>
             <wingAirfoils>
                 <externaldata>
                     <path>file://airfoils</path>
                     <filename>NACA0010.xml</filename>
+                </externaldata>
+                <externaldata>
+                    <path>file://airfoils</path>
                     <filename>NACA2412.xml</filename>
                 </externaldata>
-                <airfoil uID="NACA0012">
-                    <name>NACA 0012 Airfoil</name>
+                <wingAirfoil uID="NACA0012">
+                    <name>NACA 0012</name>
                     <pointList>...</pointList>
-                </airfoil>
+                </wingAirfoil>
             </wingAirfoils>
         </profiles>
     </vehicles>
 </cpacs>
                                         ]]>
                                     </ddue:code>
-                                    <ddue:para>Such an external file would look like:</ddue:para>
-                                    <ddue:code language="XML" title="External data for linking in CPACS">
+                                    <ddue:para>An external file is a complete XML file whose root element is the element to be inserted:</ddue:para>
+                                    <ddue:code language="XML" title="External file airfoils/NACA0010.xml">
                                         <![CDATA[
 <?xml version="1.0" encoding="utf-8"?>
-<airfoil uID="NACA0010">
-    <name>NACA 0010 Airfoil</name>
+<wingAirfoil uID="NACA0010">
+    <name>NACA 0010</name>
     <pointList>...</pointList>
-</airfoil>
+</wingAirfoil>
                                         ]]>
                                     </ddue:code>
-                                    <ddue:para>
-                                        The file would be included completely, except for its title line <ddue:codeInline>&lt;?xml version="1.0" encoding="utf-8"?&gt;</ddue:codeInline>.
-                                        This concept can also be used recursively (external files of external files), but it is important to prevent circle connections (file "A" loading file "B" loading file "C" loading again file "A" ...).
-                                </ddue:para>
-                                    <ddue:para>For path URI addresses, the trailing file separator "/" may be omitted. Below, some examples for path URIs are given:</ddue:para>
                                     <ddue:list class="bullet">
                                         <ddue:listItem>
-                                            Absolute local path:
-                                            <ddue:codeInline>file:///tmp</ddue:codeInline> or <ddue:codeInline>file:///c:/windows/tmp</ddue:codeInline>
+                                            <ddue:para>The schema does not define <ddue:codeInline>&lt;externaldata&gt;</ddue:codeInline>. A split dataset is therefore validated after its files have been merged.</ddue:para>
                                         </ddue:listItem>
                                         <ddue:listItem>
-                                            Relative local directory:
-                                            <ddue:codeInline>file://relativeDirectory</ddue:codeInline> or <ddue:codeInline>file://../anotherRelativeDirectory</ddue:codeInline>
+                                            <ddue:para>An external file may contain <ddue:codeInline>&lt;externaldata&gt;</ddue:codeInline> elements itself. The files must not include each other in a cycle, e.g. file A including file B, which includes file A again.</ddue:para>
                                         </ddue:listItem>
                                         <ddue:listItem>
-                                            Remote net resource:
-                                            <ddue:codeInline>http://www.someurl.de</ddue:codeInline>
+                                            <ddue:para>A relative path is resolved against the directory of the main dataset, also where it stands in an external file.</ddue:para>
+                                        </ddue:listItem>
+                                        <ddue:listItem>
+                                            <ddue:para>The trailing separator <ddue:codeInline>/</ddue:codeInline> of a path may be omitted.</ddue:para>
                                         </ddue:listItem>
                                     </ddue:list>
+                                    <ddue:para>Paths are written as URIs, for example:</ddue:para>
+                                    <ddue:table>
+                                        <ddue:row>
+                                            <ddue:entry>
+                                                <ddue:legacyBold>Location</ddue:legacyBold>
+                                            </ddue:entry>
+                                            <ddue:entry>
+                                                <ddue:legacyBold>Path</ddue:legacyBold>
+                                            </ddue:entry>
+                                        </ddue:row>
+                                        <ddue:row>
+                                            <ddue:entry>absolute local directory</ddue:entry>
+                                            <ddue:entry>
+                                                <ddue:codeInline>file:///tmp/airfoils</ddue:codeInline>, <ddue:codeInline>file:///c:/data/airfoils</ddue:codeInline>
+                                            </ddue:entry>
+                                        </ddue:row>
+                                        <ddue:row>
+                                            <ddue:entry>relative local directory</ddue:entry>
+                                            <ddue:entry>
+                                                <ddue:codeInline>file://airfoils</ddue:codeInline>, <ddue:codeInline>file://../library/airfoils</ddue:codeInline>
+                                            </ddue:entry>
+                                        </ddue:row>
+                                        <ddue:row>
+                                            <ddue:entry>remote resource</ddue:entry>
+                                            <ddue:entry>
+                                                <ddue:codeInline>https://www.example.org/airfoils</ddue:codeInline>
+                                            </ddue:entry>
+                                        </ddue:row>
+                                    </ddue:table>
                                     <ddue:para>
-                                        With the help of the <ddue:legacyBold>Ti</ddue:legacyBold>XI <ddue:legacyBold>X</ddue:legacyBold>ML <ddue:legacyBold>I</ddue:legacyBold>nterface
-
-                                            <ddue:externalLink>
+                                        The XML processor
+                                        <ddue:externalLink>
                                             <ddue:linkText>TiXI</ddue:linkText>
                                             <ddue:linkUri>https://github.com/DLR-SC/tixi</ddue:linkUri>
                                         </ddue:externalLink>
-                                        , a CPACS dataset that is split into multiple files can be reassembled into a single tree structure for subsequent validation against the CPACS schema.
-                                        The following commands are used to link external data sets:
-                                </ddue:para>
-                                    <ddue:list class="bullet">
-                                        <ddue:listItem>
-                                            <ddue:codeInline>@externalFileName</ddue:codeInline>:
-                                            Name of the external data file
-                                        </ddue:listItem>
-                                        <ddue:listItem>
-                                            <ddue:codeInline>@externalDataDirectory</ddue:codeInline>:
-                                            Directory of the external data file. Its content is analogous to the <ddue:codeInline>externaldata/path</ddue:codeInline> element described above.
-                                        </ddue:listItem>
-                                        <ddue:listItem>
-                                            <ddue:codeInline>@externalDataNodePath</ddue:codeInline>:
-                                            <ddue:externalLink>
-                                                <ddue:linkText>XPath</ddue:linkText>
-                                                <ddue:linkUri>https://www.w3schools.com/xml/xpath_intro.asp</ddue:linkUri>
-                                            </ddue:externalLink>
-                                            of the node which is replaced with the content of the external file.
-                                            In case that it is an external file of an external file, then it is the XPath in the outer external file.
-                                            If, e.g., in the example above the <ddue:codeInline>&lt;pointList&gt;</ddue:codeInline> element would have also been loaded from an external file, then the entry would just be:<ddue:codeInline>externalDataNodePath="/airfoil"</ddue:codeInline>.
-                                            This is used primarily for loop-detection.
-                                        </ddue:listItem>
-                                    </ddue:list>
-                                    <ddue:para>The merged data tree for the example above would look like:</ddue:para>
-                                    <ddue:code language="XML" title="External data merged into the main dataset using TiXI">
+                                        merges a split dataset into a single tree, which can then be validated against the schema.
+                                        It marks each inserted element with three attributes, so that the dataset can be split again into the same files when it is saved:
+                                    </ddue:para>
+                                    <ddue:table>
+                                        <ddue:row>
+                                            <ddue:entry>
+                                                <ddue:legacyBold>Attribute</ddue:legacyBold>
+                                            </ddue:entry>
+                                            <ddue:entry>
+                                                <ddue:legacyBold>Meaning</ddue:legacyBold>
+                                            </ddue:entry>
+                                        </ddue:row>
+                                        <ddue:row>
+                                            <ddue:entry>
+                                                <ddue:codeInline>@externalFileName</ddue:codeInline>
+                                            </ddue:entry>
+                                            <ddue:entry>name of the file the element was read from, as in <ddue:codeInline>&lt;filename&gt;</ddue:codeInline>
+                                            </ddue:entry>
+                                        </ddue:row>
+                                        <ddue:row>
+                                            <ddue:entry>
+                                                <ddue:codeInline>@externalDataDirectory</ddue:codeInline>
+                                            </ddue:entry>
+                                            <ddue:entry>directory of that file, as in <ddue:codeInline>&lt;path&gt;</ddue:codeInline>
+                                            </ddue:entry>
+                                        </ddue:row>
+                                        <ddue:row>
+                                            <ddue:entry>
+                                                <ddue:codeInline>@externalDataNodePath</ddue:codeInline>
+                                            </ddue:entry>
+                                            <ddue:entry>path of the parent element in the merged dataset, i.e. where the <ddue:codeInline>&lt;externaldata&gt;</ddue:codeInline> element stood</ddue:entry>
+                                        </ddue:row>
+                                    </ddue:table>
+                                    <ddue:para>
+                                        The schema permits these attributes on every complex element, so that the merged dataset is valid.
+                                        For an element read from an external file that was itself included by an external file, the path also refers to the merged dataset, e.g. <ddue:codeInline>/cpacs/vehicles/profiles/wingAirfoils/wingAirfoil[1]</ddue:codeInline>.
+                                        Merged, the dataset of the example reads:
+                                    </ddue:para>
+                                    <ddue:code language="XML" title="Dataset after merging the external files">
                                         <![CDATA[
 <?xml version="1.0" encoding="utf-8"?>
 <cpacs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="pathToSchemaFile/cpacs_schema.xsd">
+    ...
     <vehicles>
         <profiles>
             <wingAirfoils>
-                <airfoil uID="NACA0010" externalFileName="NACA0010.xml" externalDataDirectory="file://airfoils" externalDataNodePath="/cpacs/vehicles/profiles/wingAirfoils">
-                    <name>NACA 0010 Airfoil</name>
+                <wingAirfoil uID="NACA0010" externalFileName="NACA0010.xml" externalDataDirectory="file://airfoils"
+                             externalDataNodePath="/cpacs/vehicles/profiles/wingAirfoils">
+                    <name>NACA 0010</name>
                     <pointList>...</pointList>
-                </airfoil>
-                ...
-                <airfoil uID="NACA0012">
-                    <name>NACA 0012 Airfoil</name>
+                </wingAirfoil>
+                <wingAirfoil uID="NACA2412" externalFileName="NACA2412.xml" externalDataDirectory="file://airfoils"
+                             externalDataNodePath="/cpacs/vehicles/profiles/wingAirfoils">
+                    <name>NACA 2412</name>
                     <pointList>...</pointList>
-                </airfoil>
+                </wingAirfoil>
+                <wingAirfoil uID="NACA0012">
+                    <name>NACA 0012</name>
+                    <pointList>...</pointList>
+                </wingAirfoil>
             </wingAirfoils>
         </profiles>
     </vehicles>
@@ -480,96 +545,81 @@ cpacs@dlr.de
                                 <ddue:title>6. UIDs and references</ddue:title>
                                 <ddue:content>
                                     <ddue:para>
-                                        The CPACS-dataset often uses references between nodes.
-                                        Typically, these references define connections between elements which are located somewhere else in the hierarchical dataset (e.g. a <ddue:codeInline>&lt;wing&gt;</ddue:codeInline> is connected to a <ddue:codeInline>&lt;fuselage&gt;</ddue:codeInline>;
-                                        a specific <ddue:codeInline>&lt;engine&gt;</ddue:codeInline> is connected to a <ddue:codeInline>&lt;pylon&gt;</ddue:codeInline>; etc.).
-                                        These connections are defined by <ddue:legacyBold>unique identifiers</ddue:legacyBold> (uID) which are specified as attributes.
-                                        Thus, there are elements which can be referenced via a <ddue:codeInline>@uID</ddue:codeInline> attribute, e.g. a fuselage:
-                                </ddue:para>
-                                    <ddue:code language="XML" title="CPACS element with uID attribute">
+                                        Elements of a dataset often refer to elements elsewhere in the hierarchy: a wing to the fuselage it is attached to, an engine to its pylon, a wing element to its airfoil.
+                                        The referenced element carries a unique identifier, its <ddue:codeInline>@uID</ddue:codeInline>, and the referring element holds this identifier as its value.
+                                        Reference elements are of type <ddue:codeInline>stringUIDBaseType</ddue:codeInline> and usually end in UID, such as <ddue:codeInline>&lt;parentUID&gt;</ddue:codeInline> or <ddue:codeInline>&lt;airfoilUID&gt;</ddue:codeInline>.
+                                    </ddue:para>
+                                    <ddue:code language="XML" title="Wing referencing the fuselage as its parent">
                                         <![CDATA[
-<fuselage uID="ATTAS_fuselage">
-    ...
-</fuselage>
+<fuselages>
+    <fuselage uID="fuselage">
+        <name>Fuselage</name>
+        ...
+    </fuselage>
+</fuselages>
+<wings>
+    <wing uID="w8d2f6a">
+        <name>Main wing</name>
+        <parentUID>fuselage</parentUID>
+        ...
+    </wing>
+</wings>
                                         ]]>
                                     </ddue:code>
+                                    <ddue:list class="bullet">
+                                        <ddue:listItem>
+                                            <ddue:para>A UID is unique in the whole dataset, including the content of external files (section 5). Two elements with the same <ddue:codeInline>@uID</ddue:codeInline> make the dataset invalid, even if they are of different kinds.</ddue:para>
+                                        </ddue:listItem>
+                                        <ddue:listItem>
+                                            <ddue:para>
+                                                A UID follows the rules of the XML type
+                                                <ddue:externalLink>
+                                                    <ddue:linkText>xsd:ID</ddue:linkText>
+                                                    <ddue:linkUri>https://www.w3.org/TR/xmlschema-2/#ID</ddue:linkUri>
+                                                </ddue:externalLink>: it starts with a letter or an underscore and contains letters, digits, underscores, hyphens and periods, but no spaces and no colons.
+                                            </ddue:para>
+                                        </ddue:listItem>
+                                        <ddue:listItem>
+                                            <ddue:para>The validation checks that every UID is unique, but not that a reference points to an existing element, nor to an element of the right kind. Tools that resolve a reference check this themselves.</ddue:para>
+                                        </ddue:listItem>
+                                        <ddue:listItem>
+                                            <ddue:para>A UID only links elements and carries no meaning. Any valid string may be used, such as <ddue:codeInline>w8d2f6a</ddue:codeInline> in the example, and tools must not derive the meaning of an element from its UID. The meaning is stated in <ddue:codeInline>&lt;name&gt;</ddue:codeInline> and <ddue:codeInline>&lt;description&gt;</ddue:codeInline> (section 7).</ddue:para>
+                                        </ddue:listItem>
+                                    </ddue:list>
                                     <ddue:para>
-                                        as well as elements which refer to the former, e.g. a wing pointing to its geometrical parent:
-                                </ddue:para>
-                                    <ddue:code language="XML" title="Referencing a uID via the parentUID element">
-                                        <![CDATA[
-<wing uID="e382bf5j">
-    <name>ATTAS main wing</name>
-    <parentUID isLink="True">ATTAS_fuselage</parentUID>
-    ...
-</wing>
-                                        ]]>
-                                    </ddue:code>
-                                    <ddue:para>
-                                        In previous CPACS versions, referencing elements were identified via the <ddue:codeInline>isLink="True"</ddue:codeInline> attribute.
-                                        Since this is superfluous due to the explicit definition of the element properties via the CPACS schema, this attribute no longer needs to be listed.
-                                        It is nevertheless a valid optional attribute to ensure compatibility with older datasets, but might be removed in future versions.
-                                </ddue:para>
-                                    <ddue:para>
-                                        Since UIDs are only used to link nodes within the XML file, no naming convention is required.
-                                        The characters only have to conform to the conventions of the
-                                        <ddue:externalLink>
-                                            <ddue:linkText>xsd:ID</ddue:linkText>
-                                            <ddue:linkUri>http://books.xmlschemata.org/relaxng/ch19-77151.html</ddue:linkUri>
-                                        </ddue:externalLink>
-                                        type standardized by the
-                                        <ddue:externalLink>
-                                            <ddue:linkText>W3C</ddue:linkText>
-                                            <ddue:linkUri>https://www.w3.org/</ddue:linkUri>
-                                        </ddue:externalLink>.
-                                        <ddue:legacyBold>UIDs, however, must be unique!</ddue:legacyBold>
-                                        Although a common practice for naming UIDs is their position in the data hierarchy (e.g. <ddue:codeInline>uID="mainWingSection3"</ddue:codeInline>), UIDs as shown in the above example are absolutely valid as well.
-                                        It is therefore recommended to use the <ddue:codeInline>&lt;name&gt;</ddue:codeInline> element to convey human-readable meanings.
-                                </ddue:para>
+                                        Older datasets mark references with the attribute <ddue:codeInline>isLink="True"</ddue:codeInline>.
+                                        It is not needed, since the schema already defines which elements are references, and it is kept only for compatibility with these datasets: it remains valid, but may be removed in a future version.
+                                    </ddue:para>
                                 </ddue:content>
                             </ddue:section>
                             <ddue:section>
-                                <ddue:title>
-                                    7. Usage of name, description and uID
-                                </ddue:title>
+                                <ddue:title>7. Usage of name, description and uID</ddue:title>
                                 <ddue:content>
                                     <ddue:para>
-                                        CPACS is designed to serve as a central data exchange format in fully automated process chains.
-                                        A key requirement is therefore that tools can automatically read and process an incoming CPACS file.
-                                        A second requirement is that users can interpret the data set.
-                                        To address both requirements, the following usage of the <ddue:codeInline>&lt;name&gt;</ddue:codeInline> and <ddue:codeInline>&lt;description&gt;</ddue:codeInline> elements in combination with the <ddue:codeInline>@uID</ddue:codeInline> attribute is proposed:
-                                </ddue:para>
+                                        CPACS serves as the exchange format of automated process chains, so tools have to be able to read an incoming dataset without help.
+                                        At the same time, users have to be able to understand it.
+                                        The <ddue:codeInline>&lt;name&gt;</ddue:codeInline> and <ddue:codeInline>&lt;description&gt;</ddue:codeInline> elements and the <ddue:codeInline>@uID</ddue:codeInline> attribute serve these two needs:
+                                    </ddue:para>
                                     <ddue:list class="bullet">
                                         <ddue:listItem>
                                             <ddue:para>
-                                                <ddue:legacyBold>name</ddue:legacyBold>: A specification of the <ddue:codeInline>&lt;name&gt;</ddue:codeInline> element is usually mandatory for sequences of elements (e.g., if max occurrence is unbounded <ddue:codeInline>[1..*]</ddue:codeInline>).
-                                                Typical examples are <ddue:codeInline>wings/wing</ddue:codeInline>, <ddue:codeInline>aeroPerformance/aeroMap</ddue:codeInline> or <ddue:codeInline>missions/mission</ddue:codeInline>.
-                                                Such elements must be able to be listed by tools, especially for visualization and reporting purposes, where the <ddue:codeInline>&lt;name&gt;</ddue:codeInline> element serves as a <ddue:legacyBold>concise and human-readable</ddue:legacyBold> indicator of the actual meaning of the corresponding element in the list
-                                                (e.g., which wing, which aeroMap, which mission). This is usually a single word or a small number of words.
-                                </ddue:para>
+                                                <ddue:codeInline>&lt;name&gt;</ddue:codeInline> is a short, human-readable label, usually one word or a few words. It is mostly required where elements occur in a list, such as <ddue:codeInline>wings/wing</ddue:codeInline>, <ddue:codeInline>aeroPerformance/aeroMap</ddue:codeInline> or <ddue:codeInline>missions/mission</ddue:codeInline>, so that tools can list the elements, e.g. in a report or a viewer, and the reader sees which wing, map or mission is meant.</ddue:para>
                                         </ddue:listItem>
                                         <ddue:listItem>
                                             <ddue:para>
-                                                <ddue:legacyBold>description</ddue:legacyBold>:
-                                                The <ddue:codeInline>&lt;description&gt;</ddue:codeInline> element is usually optional and is used to add <ddue:legacyBold>comprehensive and human-readable</ddue:legacyBold> explanations.
-                                                This is usually at least one explanatory sentence.
-                                </ddue:para>
+                                                <ddue:codeInline>&lt;description&gt;</ddue:codeInline> is an optional explanation for human readers, usually one sentence or more. Tools do not interpret it.</ddue:para>
                                         </ddue:listItem>
                                         <ddue:listItem>
                                             <ddue:para>
-                                                <ddue:legacyBold>uID</ddue:legacyBold>: As described in more detail in Section 6, the <ddue:codeInline>@uID</ddue:codeInline> attribute is mainly used for internal referencing of CPACS elements.
-                                                Further processing software, e.g. TiXI and TiGL, also use the UIDs to improve the robustness of the data query.
-                                                Consequently, the <ddue:codeInline>@uID</ddue:codeInline> attribute serves as a <ddue:legacyBold>machine-readable</ddue:legacyBold> indicator and does not claim to be interpretable by human users.
-                                                In some practical use cases, the same string is chosen for <ddue:codeInline>@uID</ddue:codeInline> and <ddue:codeInline>&lt;name&gt;</ddue:codeInline>.
-                                                However, restrictions on the choice of characters for the <ddue:codeInline>@uID</ddue:codeInline> attribute must be considered, for example that no spaces may be used and the <ddue:codeInline>@uID</ddue:codeInline> must be unique.
-                                </ddue:para>
+                                                <ddue:codeInline>@uID</ddue:codeInline> is the machine-readable identifier by which elements are referenced (section 6). It does not need to be readable for humans. Name and UID may be the same string where the name is a valid UID, i.e. contains no spaces, but tools must not rely on that.</ddue:para>
                                         </ddue:listItem>
                                     </ddue:list>
                                     <ddue:code language="XML" title="Usage of name, description and uID">
                                         <![CDATA[
-<wing uID="main_wing">
+<wing uID="mainWing">
     <name>Main wing</name>
-    <description>This is the main wing which was designed by my awesome wing sizing design tool. Your tool should not try to read and interpret what I'm writing here as typos are not recognized by XML processors.</description>
+    <description>Main wing after the second sizing loop: span increased to 34.1 m to meet the take-off field length.</description>
+    ...
 </wing>
                                         ]]>
                                     </ddue:code>
@@ -624,11 +674,8 @@ cpacs@dlr.de
                                     <ddue:para>Components with a <ddue:codeInline>@symmetry</ddue:codeInline> attribute are e.g. wings, fuselages, ducts, engines, engine pylons, fuel tanks, landing gears, rotors and generic geometric components.</ddue:para>
                                     <ddue:para>
                                         Because the symmetry is inherited along the <ddue:codeInline>&lt;parentUID&gt;</ddue:codeInline> hierarchy, it can be passed on, switched off and set anew.
-                                        The following example shows four wings that form a box:
-                                </ddue:para>
-                                    <ddue:mediaLink>
-                                        <ddue:image xlink:href="symmetry1"/>
-                                    </ddue:mediaLink>
+                                        The following example shows four wings, each the parent of the next:
+                                    </ddue:para>
                                     <ddue:list class="bullet">
                                         <ddue:listItem>
                                             <ddue:para>
@@ -672,6 +719,15 @@ cpacs@dlr.de
 </wings>
                                         ]]>
                                     </ddue:code>
+                                    <ddue:mediaLink>
+                                        <ddue:image xlink:href="symmetryInheritance"/>
+                                    </ddue:mediaLink>
+                                    <ddue:para>
+                                        The figure shows the four wings from behind, with their translations and their rotations about the x-axis, which the excerpt omits.
+                                        <ddue:codeInline>wing1</ddue:codeInline> and its mirrored side lie in the x-y plane, <ddue:codeInline>wing2</ddue:codeInline> stands upright at its tip and exists only once, and <ddue:codeInline>wing3</ddue:codeInline> continues outwards from the top of <ddue:codeInline>wing2</ddue:codeInline>.
+                                        The mirrored sides of <ddue:codeInline>wing3</ddue:codeInline> and <ddue:codeInline>wing4</ddue:codeInline> lie below the x-y plane, so that <ddue:codeInline>wing4</ddue:codeInline> and its mirrored side form one upright strut.
+                                        The planes are those of the CPACS coordinate system: <ddue:codeInline>wing3</ddue:codeInline> is mirrored at the x-y plane through the origin, not at a plane through its parent.
+                                    </ddue:para>
                                     <ddue:para>
                                         <ddue:legacyBold>8.2. References to symmetric components</ddue:legacyBold>
                                     </ddue:para>
@@ -749,160 +805,174 @@ cpacs@dlr.de
                                 <ddue:title>9. Vectors and arrays</ddue:title>
                                 <ddue:content>
                                     <ddue:para>
-                                        For large data sets (e.g. increments of aerodynamic coefficients due to control surface deflections) it is advantageous to map them via vectors and arrays instead of using a sequence of nodes for each data value.
-                                        Therefore vectors and arrays are defined as semicolon-separated lists in CPACS.
-                                        Via the documentation (derived from the XSD) of the corresponding nodes it has to be checked whether it is a vector or an array.
-                                </ddue:para>
-                                    <ddue:list class="bullet">
-                                        <ddue:listItem>
-                                            Vector
-                                            <ddue:para>
-                                                The vector is meant as a one-dimensional-array. In such a node, the values are given in a semicolon separated list:
-                                </ddue:para>
-                                            <ddue:code language="XML" title="CPACS vector element">
-                                                <![CDATA[
-<angleOfAttack>0.;1.5;3.;4.5;6;7.5;9.</angleOfAttack>
-                                                ]]>
-                                            </ddue:code>
-                                        </ddue:listItem>
-                                        <ddue:listItem>
-                                            Array
-                                            <ddue:para>
-                                                As for vectors, multi-dimensional arrays provide values in a semicolon separated list. An array is always preceded by a sequence of vectors, containing the dimensions and index values. Which vectors of an array are dimensioning is specified in the respective documentation of the array.
-                                </ddue:para>
-                                            <ddue:code language="XML" title="Usage of a CPACS array element">
-                                                <![CDATA[
-<altitude>1000.;2000.;3000.</altitude> <!-- vector element -->
-<incrementMaps>
-    <incrementMap uID="incMap_b3ac2">
-        <controlDeviceUID>InnerWingFlap</controlDeviceUID>
-        <controlParameters>-1;-0.5;0;1</controlParameters> <!-- vector element -->
-        <!-- array of dimension length(altitude) x length(controlParameters): -->
-        <dcl>11.;12.;13.;14.;21.;22.;23.;24.;31.;32.;33.;34.</dcl>
-        ...
-    </incrementMap>
-</incrementMaps>
-                                                ]]>
-                                            </ddue:code>
-                                            <ddue:table>
-                                                <ddue:title>
-                                                    <ddue:legacyBold>Values for cl increments:</ddue:legacyBold>
-                                                </ddue:title>
-                                                <ddue:row>
-                                                    <ddue:entry/>
-                                                    <ddue:entry>Control parameter = -1</ddue:entry>
-                                                    <ddue:entry>Control parameter = -0.5</ddue:entry>
-                                                    <ddue:entry>Control parameter =  0</ddue:entry>
-                                                    <ddue:entry>Control parameter =  1</ddue:entry>
-                                                </ddue:row>
-                                                <ddue:row>
-                                                    <ddue:entry>Altitude = 1000m</ddue:entry>
-                                                    <ddue:entry>11.</ddue:entry>
-                                                    <ddue:entry>12.</ddue:entry>
-                                                    <ddue:entry>13.</ddue:entry>
-                                                    <ddue:entry>14.</ddue:entry>
-                                                </ddue:row>
-                                                <ddue:row>
-                                                    <ddue:entry>Altitude = 2000m</ddue:entry>
-                                                    <ddue:entry>21.</ddue:entry>
-                                                    <ddue:entry>22.</ddue:entry>
-                                                    <ddue:entry>23.</ddue:entry>
-                                                    <ddue:entry>24.</ddue:entry>
-                                                </ddue:row>
-                                                <ddue:row>
-                                                    <ddue:entry>Altitude = 3000m</ddue:entry>
-                                                    <ddue:entry>31.</ddue:entry>
-                                                    <ddue:entry>32.</ddue:entry>
-                                                    <ddue:entry>33.</ddue:entry>
-                                                    <ddue:entry>34.</ddue:entry>
-                                                </ddue:row>
-                                            </ddue:table>
-                                        </ddue:listItem>
-                                    </ddue:list>
-                                </ddue:content>
-                            </ddue:section>
-                            <ddue:section>
-                                <ddue:title>10. Control Parameters</ddue:title>
-                                <ddue:content>
+                                        Large sets of numbers, such as the coefficients of an aerodynamic map, are written as lists in a single element instead of one element per value.
+                                        The values are separated by semicolons and written with a decimal point.
+                                        Whether an element holds a vector or an array, and what its entries stand for, is stated in its documentation.
+                                        The permitted values are defined in <ddue:codeInline>doubleVectorBaseType</ddue:codeInline> and <ddue:codeInline>doubleArrayBaseType</ddue:codeInline>.
+                                    </ddue:para>
                                     <ddue:para>
-                                        Control parameters are abstract parameters, linking a generic value (i.e., the control parameter) to a configurational state of a control device
-                                        (e.g., control surface, landing gear, engine settings, ...).
-                                        The basic idea is that this control parameter can be used in different CPACS nodes (e.g., aeroMaps), while the relationship between the abstract control parameter and the configurative state of a controllable component is defined in the latter.
-                                        Controllable compents can have multiple control functions (referred to as control devices), e.g., extraction and rotation state as well as the braking state of a landing gear.
-                                </ddue:para>
-                                    <ddue:para>
-                                        Control parameters are predominantly used for control surfaces, which is why they are discussed in more detail below as an example.
-                                        However, the approach also applies to other components, such as landing gears.
-                                        In future the engines and other components will also be controlable via control parameters.</ddue:para>
-                                    <ddue:para>
-                                        For control surfaces, the translation from the abstract control parameter to its physical state (i.e., deflection = rotation + translation)
-                                        is defined in a so-called <ddue:codeInline>&lt;path&gt;</ddue:codeInline>, which is componsed of a list of <ddue:codeInline>&lt;step&gt;</ddue:codeInline> elements.
-                                </ddue:para>
-                                    <ddue:para>
-                                        The control parameter values for each step are arbitrary floating point values.
-                                        However, it is strongly recommended to use values between -1 and +1, or between 0 and +1 (depending on the type of control surface).
-                                        The smallest and the largest value implicitly define the maximum deflection limits.
-                                        It is mandatory, that the value “0” is within the specified range, as this value is treated as undeflected and used to specify a “clean” aircraft configuration (e.g. used in the clean aero performance map).
-                                        Furthermore, it it is mandatory for the <ddue:codeInline>&lt;step&gt;</ddue:codeInline> elements to be sorted in ascending order of the control parameters.
-                                        It is recommended, but not mandatory to specify a <ddue:codeInline>&lt;step&gt;</ddue:codeInline> with a <ddue:codeInline>&lt;controlParameter&gt;</ddue:codeInline> of 0.
-                                        Consequently, no <ddue:codeInline>&lt;controlParameter&gt;</ddue:codeInline> must be used twice within a single <ddue:codeInline>&lt;path&gt;</ddue:codeInline> definition.
-                                        Deflection values between two specified steps are handled by linear interpolation.
-                                </ddue:para>
-                                    <ddue:para>
-                                        The following example shows the usage of control parameters within a control surface deflection path definition:</ddue:para>
-                                    <ddue:code language="XML" title="Control parameters in a control surface deflection path">
+                                        <ddue:legacyBold>Vectors</ddue:legacyBold>
+                                    </ddue:para>
+                                    <ddue:para>A vector is a one-dimensional list of values:</ddue:para>
+                                    <ddue:code language="XML" title="Vector">
                                         <![CDATA[
-<controlSurfaces>
-    <trailingEdgeDevices>
-        <trailingEdgeDevice uID="InnerWingFlap">
-            ...
-            <path>
-                ...
-                <steps>
-                    <step>
-                        <controlParameter>-1</controlParameter>
-                        <hingeLineRotation>-20.</hingeLineRotation>
-                    </step>
-                    <step>
-                        <controlParameter>-0.5</controlParameter>
-                        <hingeLineRotation>-10.</hingeLineRotation>
-                    </step>
-                    <step>
-                        <controlParameter>0</controlParameter>
-                        <hingeLineRotation>0.</hingeLineRotation>
-                    </step>
-                    <step>
-                        <controlParameter>1</controlParameter>
-                        <hingeLineRotation>5.</hingeLineRotation>
-                    </step>
-                </steps>
-                ...
-            </path>
-        </trailingEdgeDevice>
-    </trailingEdgeDevices>
-</controlSurfaces>
+<angleOfAttack>-2;0;2;4;6</angleOfAttack>
                                         ]]>
                                     </ddue:code>
                                     <ddue:para>
-                                        There is a possibility that more than one deflection command is applied to a control surface at the same time (e.g. coming from a <ddue:codeInline>&lt;configurationDefinition&gt;</ddue:codeInline> and from an explicit deflection).
-                                        Furthermore, a control surface could be deflected by one (or even multiple) control distributor and control device command(s) in parallel. In all these cases, the deflection commands have to be superposed in the following way:
-                                        <ddue:list class="ordered">
-                                            <ddue:listItem>
-                                                The commands for each control distributor have to be added up to get a summed-up control distributor command input.
-                                            </ddue:listItem>
-                                            <ddue:listItem>
-                                                The command inputs for each control distributor have to be evaluated to come to a set of control device control parameters.
-                                            </ddue:listItem>
-                                            <ddue:listItem>
-                                                The control device control parameters for each control device (coming from control distributor and from control device commands) have to be added up.
-                                            </ddue:listItem>
-                                            <ddue:listItem>
-                                                The final control device control parameters for each control device have to be evaluated considering the corresponding <ddue:codeInline>&lt;path&gt;</ddue:codeInline> specification to come to the desired movements/deflections.
-                                            </ddue:listItem>
-                                            <ddue:listItem>
-                                                If command inputs or control parameters in step 2.) or 4.) are found to exceed the or boundaries of the defined range, an error should be returned from the evaluation.
-                                            </ddue:listItem>
-                                        </ddue:list>
+                                        <ddue:legacyBold>Arrays</ddue:legacyBold>
+                                    </ddue:para>
+                                    <ddue:para>
+                                        An array has two or more dimensions, but it is written as one list like a vector: nothing in the list marks where a dimension ends.
+                                        Each dimension is spanned by a vector given next to the array, and the documentation of the array names these vectors and their order.
+                                        The values are listed with the last index running fastest, i.e. for a two-dimensional array row by row.
+                                    </ddue:para>
+                                    <ddue:para>
+                                        The increment map of a flap is an example.
+                                        Its increments of the lift coefficient <ddue:codeInline>&lt;dcl&gt;</ddue:codeInline> form a two-dimensional array: the first dimension runs over the three points of the aerodynamic map, the second over the three control parameters of the flap (section 10).
+                                    </ddue:para>
+                                    <ddue:code language="XML" title="Two-dimensional array of lift increments over the points of the map and the control parameters">
+                                        <![CDATA[
+<aeroPerformanceMap>
+    <altitude>0;0;0</altitude>
+    <machNumber>0.2;0.2;0.2</machNumber>
+    <angleOfSideslip>0;0;0</angleOfSideslip>
+    <angleOfAttack>0;4;8</angleOfAttack>
+    ...
+    <incrementMaps>
+        <incrementMap uID="innerFlapIncrements">
+            <controlDeviceUID>innerFlap</controlDeviceUID>
+            <controlParameters>0;0.5;1</controlParameters>
+            <dcl>0;0.21;0.38;0;0.2;0.36;0;0.18;0.33</dcl>
+        </incrementMap>
+    </incrementMaps>
+</aeroPerformanceMap>
+                                        ]]>
+                                    </ddue:code>
+                                    <ddue:para>Arranged in rows and columns, the nine values read:</ddue:para>
+                                    <ddue:table>
+                                        <ddue:row>
+                                            <ddue:entry/>
+                                            <ddue:entry>
+                                                <ddue:legacyBold>control parameter 0</ddue:legacyBold>
+                                            </ddue:entry>
+                                            <ddue:entry>
+                                                <ddue:legacyBold>control parameter 0.5</ddue:legacyBold>
+                                            </ddue:entry>
+                                            <ddue:entry>
+                                                <ddue:legacyBold>control parameter 1</ddue:legacyBold>
+                                            </ddue:entry>
+                                        </ddue:row>
+                                        <ddue:row>
+                                            <ddue:entry>
+                                                <ddue:legacyBold>point 1, α = 0°</ddue:legacyBold>
+                                            </ddue:entry>
+                                            <ddue:entry>0</ddue:entry>
+                                            <ddue:entry>0.21</ddue:entry>
+                                            <ddue:entry>0.38</ddue:entry>
+                                        </ddue:row>
+                                        <ddue:row>
+                                            <ddue:entry>
+                                                <ddue:legacyBold>point 2, α = 4°</ddue:legacyBold>
+                                            </ddue:entry>
+                                            <ddue:entry>0</ddue:entry>
+                                            <ddue:entry>0.2</ddue:entry>
+                                            <ddue:entry>0.36</ddue:entry>
+                                        </ddue:row>
+                                        <ddue:row>
+                                            <ddue:entry>
+                                                <ddue:legacyBold>point 3, α = 8°</ddue:legacyBold>
+                                            </ddue:entry>
+                                            <ddue:entry>0</ddue:entry>
+                                            <ddue:entry>0.18</ddue:entry>
+                                            <ddue:entry>0.33</ddue:entry>
+                                        </ddue:row>
+                                    </ddue:table>
+                                    <ddue:para>
+                                        The increments are zero at control parameter 0, where the flap is retracted and the map without increments applies.
+                                        The number of values is the product of the lengths of the spanning vectors, here 3 × 3 = 9.
+                                    </ddue:para>
+                                </ddue:content>
+                            </ddue:section>
+                            <ddue:section>
+                                <ddue:title>10. Control parameters</ddue:title>
+                                <ddue:content>
+                                    <ddue:para>
+                                        A control parameter is a dimensionless number that stands for the state of a control device, e.g. the deflection of a control surface or the extension of a landing gear.
+                                        Other parts of the dataset, such as configurations and aerodynamic increment maps, refer to a state only by this number.
+                                        What the number means is defined once, at the control device itself: a control surface translates it into a deflection with the steps of its <ddue:codeInline>&lt;path&gt;</ddue:codeInline> (<ddue:codeInline>controlSurfacePathType</ddue:codeInline>), a landing gear into its extension and steering with the steps of its functions.
+                                        A device with several functions, such as a landing gear that extends, steers and brakes, has a control parameter for each of them.
+                                    </ddue:para>
+                                    <ddue:para>The steps of a control device follow these rules:</ddue:para>
+                                    <ddue:list class="bullet">
+                                        <ddue:listItem>
+                                            <ddue:para>The steps are sorted by increasing control parameter, and no value occurs twice.</ddue:para>
+                                        </ddue:listItem>
+                                        <ddue:listItem>
+                                            <ddue:para>The values are arbitrary, but the range from -1 to 1 is recommended for a device that moves in both directions, such as an aileron, and the range from 0 to 1 for a device that moves in one direction, such as a flap.</ddue:para>
+                                        </ddue:listItem>
+                                        <ddue:listItem>
+                                            <ddue:para>The first and the last step limit the range. A control parameter outside it is invalid.</ddue:para>
+                                        </ddue:listItem>
+                                        <ddue:listItem>
+                                            <ddue:para>The value 0 lies within the range. The state at control parameter 0 is the undeflected state of the device, which forms the clean configuration of the aircraft, e.g. the one the aerodynamic map without increments refers to. A step at 0 is recommended, but not required.</ddue:para>
+                                        </ddue:listItem>
+                                        <ddue:listItem>
+                                            <ddue:para>Between two steps, the state is interpolated linearly.</ddue:para>
+                                        </ddue:listItem>
+                                    </ddue:list>
+                                    <ddue:para>
+                                        The following path of an aileron covers the range from -1 to 1.
+                                        At control parameter 0.5, the aileron is rotated by 10° about its hinge line, at -0.5 by -10°.
+                                    </ddue:para>
+                                    <ddue:code language="XML" title="Control parameters in the deflection path of an aileron">
+                                        <![CDATA[
+<trailingEdgeDevice uID="aileron">
+    ...
+    <path>
+        ...
+        <steps>
+            <step>
+                <controlParameter>-1</controlParameter>
+                <hingeLineRotation>-20</hingeLineRotation>
+            </step>
+            <step>
+                <controlParameter>0</controlParameter>
+                <hingeLineRotation>0</hingeLineRotation>
+            </step>
+            <step>
+                <controlParameter>1</controlParameter>
+                <hingeLineRotation>20</hingeLineRotation>
+            </step>
+        </steps>
+    </path>
+</trailingEdgeDevice>
+                                        ]]>
+                                    </ddue:code>
+                                    <ddue:para>
+                                        <ddue:legacyBold>Superposition of commands</ddue:legacyBold>
+                                    </ddue:para>
+                                    <ddue:para>
+                                        A control device can receive several commands at the same time, e.g. from a <ddue:codeInline>&lt;configurationDefinition&gt;</ddue:codeInline> and from an explicit setting, directly or through one or more control distributors (<ddue:codeInline>controlDistributorType</ddue:codeInline>).
+                                        Because a path is linear only between its steps, the result depends on where the commands are summed up, so this happens in a fixed order:
+                                    </ddue:para>
+                                    <ddue:list class="ordered">
+                                        <ddue:listItem>
+                                            <ddue:para>The command inputs of each control distributor are summed up to a total command input.</ddue:para>
+                                        </ddue:listItem>
+                                        <ddue:listItem>
+                                            <ddue:para>Each control distributor is evaluated with its total command input, which gives control parameters for its control devices.</ddue:para>
+                                        </ddue:listItem>
+                                        <ddue:listItem>
+                                            <ddue:para>The control parameters of each control device, from the control distributors and from direct commands, are summed up to a total control parameter.</ddue:para>
+                                        </ddue:listItem>
+                                        <ddue:listItem>
+                                            <ddue:para>Each control device is evaluated with its total control parameter, which gives its state.</ddue:para>
+                                        </ddue:listItem>
+                                    </ddue:list>
+                                    <ddue:para>
+                                        A partial sum may leave the range of a control distributor or a control device.
+                                        The totals evaluated in steps 2 and 4, however, lie within the range; otherwise the evaluation reports an error.
                                     </ddue:para>
                                 </ddue:content>
                             </ddue:section>
@@ -910,17 +980,15 @@ cpacs@dlr.de
                                 <ddue:title>11. Atmosphere</ddue:title>
                                 <ddue:content>
                                     <ddue:para>
-                                        At some places in CPACS, an atmosphere has to be selected (e.g. for connecting an altitude with a certain pressure or density).
-                                        Currently, CPACS does only support a single atmospheric model: The ICAO Standard Atmosphere (ISA) from 1993 (see ICAO Doc 7488/3 'MANUAL OF THE ICAO STANDARD ATMOSPHERE', third edition, 1993).
-                                        It covers temperature, pressure, density, speed of sound, dynamic viscosity and kinematic viscosity with respect to altitude.
-                                        In CPACS, <ddue:codeInline>&lt;altitude&gt;</ddue:codeInline> means what is called 'geopotential altitude' (H) in the ISA reference document and is given in [m].
-                                        For details, see ISA manual, section 2.3, page E-viii f.
-                                        ISA covers a range from -5000 m to 80000 m.
-                                </ddue:para>
+                                        Where an altitude has to be related to pressure, temperature or density, CPACS uses a single atmospheric model: the ICAO Standard Atmosphere of 1993 (ICAO Doc 7488/3, Manual of the ICAO Standard Atmosphere, third edition), selected as <ddue:codeInline>ISA</ddue:codeInline> in <ddue:codeInline>&lt;atmosphericModel&gt;</ddue:codeInline>.
+                                        It gives the temperature, pressure, density, speed of sound and the dynamic and kinematic viscosity over altitude, from -5000 m to 80000 m.
+                                        An <ddue:codeInline>&lt;altitude&gt;</ddue:codeInline> in CPACS is the geopotential altitude H of the ISA manual (section 2.3), given in [m].
+                                    </ddue:para>
                                     <ddue:para>
-                                        Temperature offsets are introduced on top of the definitions in the ISA manual (which does not cover such variations).
-                                        The offset model is based upon the idea that the pressure at a fixed geopotential altitude is independent from temperature offset (pressure altitude).
-                                        The temperature offset changes only the density (following rho = p / Gas Constant / T) (and viscosity, of course)</ddue:para>
+                                        A temperature offset ΔT (<ddue:codeInline>&lt;deltaTemperature&gt;</ddue:codeInline> [K]) describes a day warmer or colder than the standard, which the ISA manual itself does not cover.
+                                        At a given altitude, the pressure keeps its ISA value, so that the altitude remains a pressure altitude, and the temperature is shifted by the offset: T = T<ddue:subscript>ISA</ddue:subscript>(H) + ΔT.
+                                        The density ρ = p/(R T), the speed of sound and the viscosities follow from this temperature with the relations of the ISA manual.
+                                    </ddue:para>
                                 </ddue:content>
                             </ddue:section>
                             <ddue:section>
@@ -1682,17 +1750,17 @@ cpacs@dlr.de
         </xsd:annotation>
         <xsd:attribute name="externalDataNodePath" type="xsd:string">
             <xsd:annotation>
-                <xsd:documentation>Path of the node inside the external data file</xsd:documentation>
+                <xsd:documentation>Path of the parent element in the merged dataset, at which the element was inserted from an external file</xsd:documentation>
             </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="externalFileName" type="xsd:string">
             <xsd:annotation>
-                <xsd:documentation>Name of the external data file</xsd:documentation>
+                <xsd:documentation>Name of the external file the element was read from</xsd:documentation>
             </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="externalDataDirectory" type="xsd:string">
             <xsd:annotation>
-                <xsd:documentation>Directory of the external data file</xsd:documentation>
+                <xsd:documentation>Directory of the external file the element was read from, as URI</xsd:documentation>
             </xsd:annotation>
         </xsd:attribute>
     </xsd:complexType>
@@ -1840,17 +1908,17 @@ cpacs@dlr.de
             <xsd:extension base="xsd:boolean">
                 <xsd:attribute name="externalDataNodePath" type="xsd:string">
                     <xsd:annotation>
-                        <xsd:documentation>Path of the node inside the external data file</xsd:documentation>
+                        <xsd:documentation>Path of the parent element in the merged dataset, at which the element was inserted from an external file</xsd:documentation>
                     </xsd:annotation>
                 </xsd:attribute>
                 <xsd:attribute name="externalFileName" type="xsd:string">
                     <xsd:annotation>
-                        <xsd:documentation>Name of the external data file</xsd:documentation>
+                        <xsd:documentation>Name of the external file the element was read from</xsd:documentation>
                     </xsd:annotation>
                 </xsd:attribute>
                 <xsd:attribute name="externalDataDirectory" type="xsd:string">
                     <xsd:annotation>
-                        <xsd:documentation>Directory of the external data file</xsd:documentation>
+                        <xsd:documentation>Directory of the external file the element was read from, as URI</xsd:documentation>
                     </xsd:annotation>
                 </xsd:attribute>
             </xsd:extension>
@@ -1881,17 +1949,17 @@ cpacs@dlr.de
             <xsd:extension base="xsd:date">
                 <xsd:attribute name="externalDataNodePath" type="xsd:string">
                     <xsd:annotation>
-                        <xsd:documentation>Path of the node inside the external data file</xsd:documentation>
+                        <xsd:documentation>Path of the parent element in the merged dataset, at which the element was inserted from an external file</xsd:documentation>
                     </xsd:annotation>
                 </xsd:attribute>
                 <xsd:attribute name="externalFileName" type="xsd:string">
                     <xsd:annotation>
-                        <xsd:documentation>Name of the external data file</xsd:documentation>
+                        <xsd:documentation>Name of the external file the element was read from</xsd:documentation>
                     </xsd:annotation>
                 </xsd:attribute>
                 <xsd:attribute name="externalDataDirectory" type="xsd:string">
                     <xsd:annotation>
-                        <xsd:documentation>Directory of the external data file</xsd:documentation>
+                        <xsd:documentation>Directory of the external file the element was read from, as URI</xsd:documentation>
                     </xsd:annotation>
                 </xsd:attribute>
             </xsd:extension>
@@ -1916,17 +1984,17 @@ cpacs@dlr.de
             <xsd:extension base="xsd:dateTime">
                 <xsd:attribute name="externalDataNodePath" type="xsd:string">
                     <xsd:annotation>
-                        <xsd:documentation>Path of the node inside the external data file</xsd:documentation>
+                        <xsd:documentation>Path of the parent element in the merged dataset, at which the element was inserted from an external file</xsd:documentation>
                     </xsd:annotation>
                 </xsd:attribute>
                 <xsd:attribute name="externalFileName" type="xsd:string">
                     <xsd:annotation>
-                        <xsd:documentation>Name of the external data file</xsd:documentation>
+                        <xsd:documentation>Name of the external file the element was read from</xsd:documentation>
                     </xsd:annotation>
                 </xsd:attribute>
                 <xsd:attribute name="externalDataDirectory" type="xsd:string">
                     <xsd:annotation>
-                        <xsd:documentation>Directory of the external data file</xsd:documentation>
+                        <xsd:documentation>Directory of the external file the element was read from, as URI</xsd:documentation>
                     </xsd:annotation>
                 </xsd:attribute>
             </xsd:extension>
@@ -2044,17 +2112,17 @@ cpacs@dlr.de
             <xsd:extension base="xsd:double">
                 <xsd:attribute name="externalDataNodePath" type="xsd:string">
                     <xsd:annotation>
-                        <xsd:documentation>Path of the node inside the external data file</xsd:documentation>
+                        <xsd:documentation>Path of the parent element in the merged dataset, at which the element was inserted from an external file</xsd:documentation>
                     </xsd:annotation>
                 </xsd:attribute>
                 <xsd:attribute name="externalFileName" type="xsd:string">
                     <xsd:annotation>
-                        <xsd:documentation>Name of the external data file</xsd:documentation>
+                        <xsd:documentation>Name of the external file the element was read from</xsd:documentation>
                     </xsd:annotation>
                 </xsd:attribute>
                 <xsd:attribute name="externalDataDirectory" type="xsd:string">
                     <xsd:annotation>
-                        <xsd:documentation>Directory of the external data file</xsd:documentation>
+                        <xsd:documentation>Directory of the external file the element was read from, as URI</xsd:documentation>
                     </xsd:annotation>
                 </xsd:attribute>
                 <xsd:attribute name="uncertaintyFunctionName" type="uncertaintyFunctionType">
@@ -2244,17 +2312,17 @@ cpacs@dlr.de
             <xsd:extension base="xsd:integer">
                 <xsd:attribute name="externalDataNodePath" type="xsd:string">
                     <xsd:annotation>
-                        <xsd:documentation>Path of the node inside the external data file</xsd:documentation>
+                        <xsd:documentation>Path of the parent element in the merged dataset, at which the element was inserted from an external file</xsd:documentation>
                     </xsd:annotation>
                 </xsd:attribute>
                 <xsd:attribute name="externalFileName" type="xsd:string">
                     <xsd:annotation>
-                        <xsd:documentation>Name of the external data file</xsd:documentation>
+                        <xsd:documentation>Name of the external file the element was read from</xsd:documentation>
                     </xsd:annotation>
                 </xsd:attribute>
                 <xsd:attribute name="externalDataDirectory" type="xsd:string">
                     <xsd:annotation>
-                        <xsd:documentation>Directory of the external data file</xsd:documentation>
+                        <xsd:documentation>Directory of the external file the element was read from, as URI</xsd:documentation>
                     </xsd:annotation>
                 </xsd:attribute>
             </xsd:extension>
@@ -2360,17 +2428,17 @@ cpacs@dlr.de
             <xsd:extension base="xsd:string">
                 <xsd:attribute name="externalDataNodePath" type="xsd:string">
                     <xsd:annotation>
-                        <xsd:documentation>Path of the node inside the external data file</xsd:documentation>
+                        <xsd:documentation>Path of the parent element in the merged dataset, at which the element was inserted from an external file</xsd:documentation>
                     </xsd:annotation>
                 </xsd:attribute>
                 <xsd:attribute name="externalFileName" type="xsd:string">
                     <xsd:annotation>
-                        <xsd:documentation>Name of the external data file</xsd:documentation>
+                        <xsd:documentation>Name of the external file the element was read from</xsd:documentation>
                     </xsd:annotation>
                 </xsd:attribute>
                 <xsd:attribute name="externalDataDirectory" type="xsd:string">
                     <xsd:annotation>
-                        <xsd:documentation>Directory of the external data file</xsd:documentation>
+                        <xsd:documentation>Directory of the external file the element was read from, as URI</xsd:documentation>
                     </xsd:annotation>
                 </xsd:attribute>
             </xsd:extension>
@@ -2512,17 +2580,17 @@ cpacs@dlr.de
             <xsd:extension base="xsd:time">
                 <xsd:attribute name="externalDataNodePath" type="xsd:string">
                     <xsd:annotation>
-                        <xsd:documentation>Path of the node inside the external data file</xsd:documentation>
+                        <xsd:documentation>Path of the parent element in the merged dataset, at which the element was inserted from an external file</xsd:documentation>
                     </xsd:annotation>
                 </xsd:attribute>
                 <xsd:attribute name="externalFileName" type="xsd:string">
                     <xsd:annotation>
-                        <xsd:documentation>Name of the external data file</xsd:documentation>
+                        <xsd:documentation>Name of the external file the element was read from</xsd:documentation>
                     </xsd:annotation>
                 </xsd:attribute>
                 <xsd:attribute name="externalDataDirectory" type="xsd:string">
                     <xsd:annotation>
-                        <xsd:documentation>Directory of the external data file</xsd:documentation>
+                        <xsd:documentation>Directory of the external file the element was read from, as URI</xsd:documentation>
                     </xsd:annotation>
                 </xsd:attribute>
             </xsd:extension>
