@@ -67,17 +67,14 @@ on a broken schema. Warnings and notes do not fail the build.
 
 ## Updating the Generator
 
-`pixi.toml` pins cpacs-doc to a release tag, and `pixi.lock` records the exact commit. To
-move to a newer release, change the tag in `pixi.toml`, run `pixi install` and commit both
-files.
-
-The `Build documentation` workflow does not use Pixi: it takes the generator from the branch
-named in `CPACS_DOC_REF`. The site it deploys can therefore be built by a newer generator
-than the one in the Pixi environment.
+`pixi.toml` pins cpacs-doc to a release tag, and `pixi.lock` records the exact commit. The
+`Build documentation` workflow runs `pixi run doc-build` in the same environment, so the
+deployed site is built by the same generator that `pixi run doc` shows locally. To move to
+a newer release, change the tag in `pixi.toml`, run `pixi install` and commit both files.
 
 ### Without Pixi
 
-The generator can also be run with [uv](https://docs.astral.sh/uv/), as the workflow does:
+The generator can also be run with [uv](https://docs.astral.sh/uv/), from its own checkout:
 
 ```cmd
 git clone https://github.com/DLR-SL/cpacs-doc.git .cpacs-doc
