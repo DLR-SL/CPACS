@@ -22,8 +22,15 @@ lint-schema = "cpacs-schema lint schema/cpacs_schema.xsd"
 test-examples = "python -m pytest scripts/tests/test_examples.py -v"
 format-schema = "cpacs-schema format schema/cpacs_schema.xsd --in-place"
 
+# Documentation (development/buildDocumentation.md). `doc` serves the working
+# copy and rebuilds on every save.
+doc = "cpacs-doc serve schema/cpacs_schema.xsd --open"
+doc-report = "cpacs-doc report schema/cpacs_schema.xsd"
+doc-build = "cpacs-doc build schema/cpacs_schema.xsd --site --single -o build/doc"
+
 # Run all validation tasks used by CI.
 check = { depends-on = ["test-schema", "lint-schema", "test-examples"] }
 
 [pypi-dependencies]
 cpacs-schema-tool = { git = "https://github.com/DLR-SL/cpacs-schema-tool.git", tag = "v0.1.1" }
+cpacs-doc = { git = "https://github.com/DLR-SL/cpacs-doc.git", tag = "v0.1.0" }

@@ -11,77 +11,82 @@ workflow, which deploys the site to <https://dlr-sl.github.io/CPACS/> on every p
 
 ---
 
-## Step 1: Install uv
+## Viewing the Schema While Working on It
 
-The generator is a Python project managed with [uv](https://docs.astral.sh/uv/), which
-provides both the Python version and the dependencies. Install it once:
+### With Pixi
+
+The generator is part of the [Pixi](https://pixi.sh) environment of this repository (see the
+[readme](../readme.md)). From the root of this repository:
 
 ```cmd
-winget install --id=astral-sh.uv -e
+pixi run doc
 ```
 
-On Linux or macOS:
+This opens the documentation of the working copy in the browser, as it will look online. It
+is rebuilt on every save of the schema or of the media catalogue, and the browser reloads by
+itself; the build report — undocumented types, unknown vocabulary, unresolvable figure
+references — is written to the terminal on every rebuild. Stop it with Ctrl-C.
 
-```bash
-curl -LsSf https://astral.sh/uv/install.sh | sh
-```
+The server takes <http://127.0.0.1:8000>, or any free port if that one is in use, and names
+the address in the terminal.
 
-The generator's README describes two alternatives (`pip` in a virtual environment, or
-conda) for anyone who would rather not add uv.
+### Without a Development Environment
+
+On Windows, `cpacs-doc.exe` from the
+[cpacs-doc releases](https://github.com/DLR-SL/cpacs-doc/releases/latest) needs no
+installation. Drop a schema on it, or double-click it and pick the schema: it does the same
+as `pixi run doc`. The console window that opens shows the build report; closing it stops
+the server. The executable is not signed, so Windows SmartScreen warns on the first start:
+*More info → Run anyway*.
+
+The wording conventions the documentation text follows, and the form of the XML examples in
+it, are described in the [development guidelines](developmentGuidelines.md).
 
 ---
 
-## Step 2: Check Out the Generator
+## Building the Site
 
-Clone it next to this repository, or into the ignored `.cpacs-doc/` directory inside it:
+```cmd
+pixi run doc-build
+```
+
+This writes the static site to `build/doc`, which any web server can serve, and
+`build/doc/cpacs-doc.html`, the whole documentation as one self-contained file with the
+figures embedded. It is roughly 20 MB and opens from disk without a server.
+
+```cmd
+pixi run doc-report
+```
+
+writes only the build report, and no files.
+
+Both exit with status 1 when the report holds errors, which is what makes the workflow fail
+on a broken schema. Warnings and notes do not fail the build.
+
+---
+
+## Updating the Generator
+
+`pixi.toml` pins cpacs-doc to a release tag, and `pixi.lock` records the exact commit. To
+move to a newer release, change the tag in `pixi.toml`, run `pixi install` and commit both
+files.
+
+The `Build documentation` workflow does not use Pixi: it takes the generator from the branch
+named in `CPACS_DOC_REF`. The site it deploys can therefore be built by a newer generator
+than the one in the Pixi environment.
+
+### Without Pixi
+
+The generator can also be run with [uv](https://docs.astral.sh/uv/), as the workflow does:
 
 ```cmd
 git clone https://github.com/DLR-SL/cpacs-doc.git .cpacs-doc
 uv sync --locked --project .cpacs-doc
+uv run --project .cpacs-doc cpacs-doc serve schema/cpacs_schema.xsd --open
 ```
 
-`uv sync --locked` installs the versions the generator was tested against. Repeat it after
-pulling changes into `.cpacs-doc`.
-
----
-
-## Step 3: Build the Documentation
-
-From the root of this repository:
-
-```cmd
-uv run --project .cpacs-doc cpacs-doc build schema/cpacs_schema.xsd --site -o build/doc
-```
-
-This writes the static site to `build/doc`, which any web server can serve. Two further
-options are available:
-
-- `--single` additionally writes `build/doc/cpacs-doc.html`, the whole documentation as one
-  self-contained file with the figures embedded. It is roughly 20 MB and opens from disk
-  without a server.
-- `report` instead of `build` writes only the build report — undocumented types, unknown
-  vocabulary, unresolvable figure references — and writes no files:
-
-  ```cmd
-  uv run --project .cpacs-doc cpacs-doc report schema/cpacs_schema.xsd
-  ```
-
-The command exits with status 1 when the report holds errors, which is what makes the
-workflow fail on a broken schema. Warnings and notes do not fail the build.
-
----
-
-## Working on the Documentation Text
-
-While editing the `xsd:documentation` in the schema, `serve` rebuilds on every save and
-serves the viewer at <http://127.0.0.1:8000>:
-
-```cmd
-uv run --project .cpacs-doc cpacs-doc serve schema/cpacs_schema.xsd
-```
-
-The wording conventions the documentation text follows, and the form of the XML examples in
-it, are described in the [development guidelines](developmentGuidelines.md).
+`.cpacs-doc/` is ignored by this repository. The generator's README describes further ways
+to install it.
 
 ---
 

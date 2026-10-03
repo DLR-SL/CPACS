@@ -47,6 +47,12 @@ pixi run test-schema
 pixi run test-examples
 ```
 
+Show the documentation of the working copy in the browser, rebuilt on every save (see [Building the Documentation](development/buildDocumentation.md)):
+
+```bash
+pixi run doc
+```
+
 Format the schema in place:
 
 ```bash

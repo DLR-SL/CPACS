@@ -7,7 +7,7 @@ A list of tools connected to CPACS development:
 - Python including xml libraries
   -- generateDS for Python library
 - Saxon
-- [uv](https://docs.astral.sh/uv/) and [cpacs-doc](https://github.com/DLR-SL/cpacs-doc) for the documentation build
+- [cpacs-doc](https://github.com/DLR-SL/cpacs-doc) for the documentation, part of the Pixi environment (`pixi run doc`) and available as a Windows executable
 
 ## Version management
 -------------------
