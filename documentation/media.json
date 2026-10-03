@@ -61,9 +61,17 @@
       "file": "equations/Q_EngineeringConstants_orthotropicShell.png",
       "alt": "Q_EngineeringConstants_orthotropicShell"
     },
+    "aeroAxesSide": {
+      "file": "figures/aeroAxesSide.png",
+      "alt": "Side view of an airliner seen from the left, with the CPACS axes x (to the rear) and z (upwards) and the aerodynamic axes d and l turned against them by the angle of attack alpha; the free stream comes from below along d, the s-axis points into the drawing plane, and a curved arrow shows the positive pitching moment cms, which raises the nose; the moment reference point is marked on the aircraft"
+    },
+    "aeroAxesTop": {
+      "file": "figures/aeroAxesTop.png",
+      "alt": "Top view of an airliner, with the CPACS axes x (to the rear) and y (to the right wing) and the aerodynamic axes d and s turned against them by the sideslip angle beta; the free stream comes from the right along d, the l-axis points out of the drawing plane, and a curved arrow shows the positive yawing moment cml, which turns the nose to the left; the moment reference point is marked on the fuselage"
+    },
     "basicPrinciple": {
       "file": "figures/basicPrinciple.png",
-      "alt": "basic principle of CPACS"
+      "alt": "Diagram of the basic principle, with a symbol in each box (a sheet with a tree for the schema, an airliner for the dataset, two persons for tools and users, a browser window for the documentation, a circle with a check mark for the XML processor): the XML schema cpacs_schema.xsd defines the structure of the CPACS dataset aircraft.xml and generates the documentation as HTML pages; tools and users write and read the dataset and use the documentation, which describes the data; an XML processor such as TiXI or xmllint takes the schema and the dataset and checks that the dataset follows the schema"
     },
     "bodyFixCoordSys": {
       "file": "figures/bodyFixCoordSys.png",
@@ -76,6 +84,10 @@
     "cargoContainer": {
       "file": "figures/cargoContainer.png",
       "alt": "Cargo container"
+    },
+    "componentHierarchy": {
+      "file": "figures/componentHierarchy.png",
+      "alt": "(a) Side view of an airliner whose components are colored by hierarchy: fuselage, vertical tail and horizontal tail in one color, main wing and engines in another, named hierarchy 1 and hierarchy 2 in a key; (b) the hierarchy as a tree: the fuselage and the main wing have no parentUID and hang directly on the CPACS coordinate system, the vertical tail has parentUID fuselage, the horizontal tail parentUID vertical tail, the engine pylons parentUID main wing, and the engines parentUID engine pylons"
     },
     "componentSegmentEta": {
       "file": "figures/componentSegmentEta.png",
@@ -93,22 +105,6 @@
       "file": "figures/controls.png",
       "alt": "controls"
     },
-    "cosys01": {
-      "file": "figures/cosys01.png",
-      "alt": "Coordinate systems 1"
-    },
-    "cosys02": {
-      "file": "figures/cosys02.png",
-      "alt": "Coordinate systems 2"
-    },
-    "cosys1": {
-      "file": "figures/cosys1.png",
-      "alt": "Coordinate systems 1 with angleOfAttack"
-    },
-    "cosys2": {
-      "file": "figures/cosys2.png",
-      "alt": "Coordinate systems 2 with angleOfAttack"
-    },
     "cst2D_airfoil": {
       "file": "figures/cst2D_airfoil.png",
       "alt": "CST profile in normalized coordinates with upper and lower side, sampling positions and trailing edge thickness"
@@ -123,7 +119,11 @@
     },
     "dataHierarchy": {
       "file": "figures/dataHierarchy.png",
-      "alt": "CPACS data hierarchy"
+      "alt": "Tree of the top levels of a CPACS dataset: cpacs with header, vehicles, airports, flights, airlines, studies and toolspecific; vehicles with aircraft and rotorcraft and a library framed as referenced by uID (engines, profiles, structuralElements, deckElements, systemElements, materials, energyCarriers, performanceCases, flightPoints); aircraft with one or more models, whose children are framed as components (fuselages, wings, ducts, engines, enginePylons, landingGears, fuelTanks, systems, genericGeometryComponents) and as model data and analyses (reference, configurationDefinitions, global, analyses, performanceRequirements, systemArchitectures)"
+    },
+    "datasetAccess": {
+      "file": "figures/datasetAccess.png",
+      "alt": "(a) An editor window with the file aircraft.xml being written: the lines are indented by hierarchy, the header and the wings are folded, at the cursor a list suggests the elements the schema allows there (analyses, configurationDefinitions, description, ducts), and the status bar reports that the dataset is valid against cpacs_schema.xsd. (b) The TiGL Creator: on the left a 3D view of the airliner with its main wing highlighted, on the right fields for the sweep and the dihedral of the wing above the CPACS tree, in which the main wing is selected. (c) A process chain: an arrow leads from the CPACS dataset to a tool, e.g. aerodynamics, consisting of pre-processing (reads the part it needs), analysis code (own input and output) and post-processing (writes the results back); below them a bar of libraries called through their APIs (TiXI, TiGL, libxml2, lxml), connected to pre- and post-processing only; further tools are stacked behind it, and an arrow leads back to the same dataset, which the next tool reads"
     },
     "deckCabinGeometry": {
       "file": "figures/deckCabinGeometry.png",
@@ -136,6 +136,14 @@
     "earthFixCoordSys": {
       "file": "figures/earthFixCoordSys.png",
       "alt": "earth Fix Coord Sys"
+    },
+    "eq_aeroAxes": {
+      "file": "equations/aeroAxes.png",
+      "alt": "e_d = (cos alpha cos beta, -sin beta, sin alpha cos beta), e_s = (cos alpha sin beta, cos beta, sin alpha sin beta), e_l = (-sin alpha, 0, cos alpha)"
+    },
+    "eq_aeroCoefficients": {
+      "file": "equations/aeroCoefficients.png",
+      "alt": "c_d, c_s, c_l = F . e_d, F . e_s, F . e_l divided by q_inf S; c_md, c_ms, c_ml = M . e_d, M . e_s, M . e_l divided by q_inf S l; q_inf = 1/2 rho_inf V_inf^2"
     },
     "eq_cst2D_classFunction": {
       "file": "equations/cst2D_classFunction.png",
@@ -337,10 +345,6 @@
       "file": "figures/paramamSbot_wingAnsysLc.png",
       "alt": "paramam Sbot wing Ansys Lc"
     },
-    "parentUID_transformations": {
-      "file": "figures/parentUID_transformations.png",
-      "alt": "parentUID and transformations"
-    },
     "positioningVector": {
       "file": "figures/positioningVector.png",
       "alt": "Construction of a positioning vector of length L from the y-axis rotated by the sweep angle phi about the z-axis and by the dihedral angle nu about the x-axis, and a chain of positionings A, B, C in which positioning C starts at the end of positioning B although section B is additionally translated"
@@ -441,9 +445,9 @@
       "file": "figures/superEllipseProfile.png",
       "alt": "Three superellipse profiles with upper and lower half: pointed top with flat bottom, circle and diamond"
     },
-    "symmetry1": {
-      "file": "figures/symmetry1.png",
-      "alt": "Symmetry of wings"
+    "symmetryInheritance": {
+      "file": "figures/symmetryInheritance.png",
+      "alt": "Four wings seen from behind, defined sides in blue and mirrored sides in amber, with the x-z and x-y planes of the CPACS coordinate system: wing1 with symmetry x-z-plane lies in the x-y plane and is mirrored to the left; wing2 with symmetry none stands upright at its tip and has no mirrored side; wing3 with symmetry x-y-plane continues outwards from the top of wing2 and is mirrored below the x-y plane; wing4 without symmetry attribute goes down from the tip of wing3 to the x-y plane and, inheriting the symmetry of wing3, is mirrored below it"
     },
     "systemArchitectureGraph": {
       "file": "figures/systemArchitectureGraph.png",
@@ -468,6 +472,10 @@
     "systemsLevels": {
       "file": "figures/systemsLevels.png",
       "alt": "Four boxes for the levels of the system description, each referencing the one before it: the element fuelCellStack in systemElements, the component fuelCellStack_pod1 in genericSystems (systemElementUID), the connection fuelCellFeeder_pod1 in systemArchitectures (componentUID) and a power flow of 370 kW at take-off in powerBreakdowns (connectionUID)"
+    },
+    "toolInterfaces": {
+      "file": "figures/toolInterfaces.png",
+      "alt": "Six tools (aerodynamics, structures, flight mechanics, propulsion, mission analysis, overall design) arranged in a hexagon, twice: (a) direct exchange, every pair of tools connected by a line of its own, 15 interfaces; (b) exchange through a common format, each tool connected by one line to a CPACS dataset in the middle, 6 interfaces"
     },
     "transformationOrder": {
       "file": "figures/transformationOrder.png",
