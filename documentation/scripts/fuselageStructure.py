@@ -495,12 +495,14 @@ def collection(tag, items, more=False):
 
 
 def structure_xml():
-    from fuselageFloor import floor_xml  # the floors stand on the frames of this shell
+    # the floors, bulkheads, walls and doors are built on the frames of this shell
+    from fuselageBulkheadWall import bulkhead_frames, interior_xml
+    from fuselageFloor import floor_xml
 
     return "\n".join(["<structure>", indent(skin_xml(), 1),
                       indent(collection("stringers", [stringer_xml(*s) for s in stringers()]), 1),
-                      indent(collection("frames", [frame_xml(*f) for f in frames()]), 1), indent(floor_xml(), 1),
-                      "</structure>"])
+                      indent(collection("frames", [frame_xml(*f) for f in frames() + bulkhead_frames()]), 1),
+                      indent(floor_xml(), 1), indent(interior_xml(), 1), "</structure>"])
 
 
 def fuselage_with_structure_xml():
@@ -534,29 +536,31 @@ def frame_element_xml():
                       "</profileBasedStructuralElement>"])
 
 
-def sheet_elements_xml(*more):
+def sheet_elements_xml(*more, sheets=SHEETS):
     return collection("sheetBasedStructuralElements", [*(
         "\n".join([f'<sheetBasedStructuralElement uID="{uid}">', "    <materialDefinition>",
                    f"        <materialUID>{structuralProfile.MATERIAL_UID}</materialUID>",
                    f"        <thickness>{thickness:g}</thickness>", "    </materialDefinition>",
                    "</sheetBasedStructuralElement>"])
-        for uid, thickness in SHEETS), *more])
+        for uid, thickness in sheets), *more])
 
 
 def write_example():
+    from fuselageBulkheadWall import interior_elements_xml, interior_sheets
     from fuselageFloor import floor_elements_xml, floor_profiles_xml, panel_element_xml, panel_material_xml
 
     profiles = "\n".join([structuralProfile.profile_xml(), frame_profile_xml(), *floor_profiles_xml()])
     elements = "\n".join([
         collection("profileBasedStructuralElements",
                    [structuralProfile.element_xml(), frame_element_xml(), *floor_elements_xml()]),
-        sheet_elements_xml(panel_element_xml())])
+        sheet_elements_xml(panel_element_xml(), sheets=SHEETS + interior_sheets()), *interior_elements_xml()])
     write_cpacs_file(
         EXAMPLE_FILE,
         generator=Path(__file__),
         name="Fuselage structure",
         description="Skin, stringers, frames and floors of the barrel around the forward cargo door of a short-range "
-                    "airliner fuselage.",
+                    "airliner fuselage, its pressure bulkheads with their frames, the walls of the bay of the main "
+                    "landing gear, and the structure of the cargo door.",
         model_uid="FuselageStructureAircraft",
         model_name="Fuselage structure example",
         components_tag="fuselages",

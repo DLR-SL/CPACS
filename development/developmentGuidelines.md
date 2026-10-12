@@ -241,6 +241,8 @@ The figures of the fuselage use the assignment below.
 | Skin panels | Series 1 at area-wash opacity |
 | Floor members: cross beams, struts, longitudinal floor beams | Series 1 |
 | Floor panels | Series 1 at area-wash opacity |
+| Sheets of pressure bulkheads and walls | Series 1 at area-wash opacity, the walls seen edge-on as series 1 lines |
+| Reinforcements of pressure bulkheads | Series 1 |
 | Cut-outs, and the doors and spaces of a deck that belong to them | Series 2 |
 | Frames | Series 3 |
 | Galleys and lavatories of a deck | Series 3 |

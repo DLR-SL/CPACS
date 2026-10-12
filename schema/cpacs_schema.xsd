@@ -6382,34 +6382,20 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Bounding element UIDs</ddue:para>
+                        <ddue:para>Bounding elements of a wall</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>The UIDs of the walls or generic geometric components that cut a wall (<ddue:codeInline>wallSegmentType</ddue:codeInline>).</ddue:para>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
-            <xsd:documentation>
-                A list of uIDs referencing other structural/geometric
-                elements that shall serve as a boundary of the wall
-                element. Possible references are floor, wall or
-                genericGeometryComponent. A major requirement is that
-                the referenced element has an intersection with the wall
-                for at least the distance between two wall positions. So
-                that a full geometric face of the wall is bounded by it.
-                Neighbouring wall faces that are not completely bounded
-                by the reference element are not affected.
-            </xsd:documentation>
         </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
                     <xsd:element name="boundingElementUID" maxOccurs="unbounded" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>
-                                UID referencing another
-                                structural/geometric element that shall
-                                serve as a boundary of the wall element.
-                                Possible references are floor, wall or
-                                genericGeometryComponent.
-                            </xsd:documentation>
+                            <xsd:documentation>UID of a wall or generic geometric component</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -7015,10 +7001,10 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Cargo doors assembly</ddue:para>
+                        <ddue:para>Cargo doors</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Cargo door assemblies</ddue:para>
+                        <ddue:para>The cargo doors in the structure of the fuselage (<ddue:codeInline>doorAssemblyPositionType</ddue:codeInline>).</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -14145,10 +14131,15 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Cut-out</ddue:para>
+                        <ddue:para>Window element</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Cut-outs</ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                The opening of a window: a rectangle with rounded corners, and the structural element that reinforces its edge.
+                                The windows in the structure of a fuselage reference it (<ddue:codeInline>windowAssemblyPositionType</ddue:codeInline>).
+                            </ddue:para>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -14168,26 +14159,22 @@ cpacs@dlr.de
                     </xsd:element>
                     <xsd:element name="width" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Width of the cut element (absolute value)
-                            </xsd:documentation>
+                            <xsd:documentation>Width of the opening [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="height" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Height of the cut element (absolute value)
-                            </xsd:documentation>
+                            <xsd:documentation>Height of the opening [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="filletRadius" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Fillet radius of the cut element (absolute
-                                value)</xsd:documentation>
+                            <xsd:documentation>Radius of the corners [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="reinforcementElementUID" minOccurs="0" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of a structural element that reinforces
-                                the cut out</xsd:documentation>
+                            <xsd:documentation>UID of the structural element that reinforces the edge of the opening</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -15616,10 +15603,57 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Door assembly position</ddue:para>
+                        <ddue:para>Door in the structure of the fuselage</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Position of a door assembly</ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                The structure of a door is the area of the shell in which the door sits, bounded by two frames and two stringers.
+                                The opening itself is a cut-out of the fuselage (<ddue:codeInline>fuselageCutOutType</ddue:codeInline>); the radius of its corners and the reinforced structure around it are an element of the library (<ddue:codeInline>doorCutOutType</ddue:codeInline>).
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Extent</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                Along the fuselage, the area extends from the frame <ddue:codeInline>&lt;startFrameUID&gt;</ddue:codeInline> to the frame <ddue:codeInline>&lt;endFrameUID&gt;</ddue:codeInline>.
+                                Around the fuselage, it extends from the stringer <ddue:codeInline>&lt;startStringerUID&gt;</ddue:codeInline> in the direction of increasing <ddue:codeInline>&lt;referenceAngle&gt;</ddue:codeInline> to the stringer <ddue:codeInline>&lt;endStringerUID&gt;</ddue:codeInline>, as a skin panel does (<ddue:codeInline>skinSegmentType</ddue:codeInline>).
+                                On the right side of the fuselage, where the angle increases upwards, the start stringer is therefore the lower one; on the left side, it is the upper one.
+                            </ddue:para>
+                            <ddue:alert class="tigl">
+                                <ddue:para>
+                                    As for a skin panel, TiGL 3.5 builds the area without regard to the order of the two stringers, and not always within its frames: between the frames at x = 7.5 m and 8.5 m of the example and the stringers at 90° and 180°, it builds an area from x = 7 m to 9 m.
+                                </ddue:para>
+                            </ddue:alert>
+                            <ddue:para>
+                                <ddue:legacyBold>Door type and data for evacuation</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:codeInline>&lt;doorType&gt;</ddue:codeInline> classifies the door: pax, service, emergency or cargo.
+                                <ddue:codeInline>&lt;zBase&gt;</ddue:codeInline>, <ddue:codeInline>&lt;minWidth&gt;</ddue:codeInline>, <ddue:codeInline>&lt;minHeight&gt;</ddue:codeInline> and <ddue:codeInline>&lt;ySign&gt;</ddue:codeInline> describe the door for boarding and evacuation analyses, independent of the structure: the height of the sill above the floor, the clear width and height of the opening, and the side of the fuselage, 1 for the right side (+y) and −1 for the left.
+                                A deck describes the same doors from the cabin (<ddue:codeInline>deckDoorType</ddue:codeInline>).
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Example</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The structure of the forward cargo door of the example, on the right side between the frames at x = 7.5 m and 8.5 m and the stringers at 210° and 255°, which run below and above its cut-out:
+                            </ddue:para>
+                            <ddue:code language="XML" title="Structure of a cargo door">
+                                <![CDATA[
+<cargoDoors>
+    <cargoDoor uID="Fuselage_cargoDoorFwdStructure">
+        <name>Forward cargo door</name>
+        <doorType>cargo</doorType>
+        <doorElementUID>CargoDoor</doorElementUID>
+        <startFrameUID>Fuselage_frame2</startFrameUID>
+        <endFrameUID>Fuselage_frame4</endFrameUID>
+        <startStringerUID>Fuselage_stringer210</startStringerUID>
+        <endStringerUID>Fuselage_stringer255</endStringerUID>
+    </cargoDoor>
+</cargoDoors>
+                                ]]>
+                            </ddue:code>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -15639,8 +15673,7 @@ cpacs@dlr.de
                     </xsd:element>
                     <xsd:element name="doorType" minOccurs="0">
                         <xsd:annotation>
-                            <xsd:documentation>Optional definition of door type (restricted to pax,
-                                service, emergency, cargo)</xsd:documentation>
+                            <xsd:documentation>Kind of door: pax, service, emergency or cargo</xsd:documentation>
                         </xsd:annotation>
                         <xsd:complexType>
                             <xsd:simpleContent>
@@ -15655,58 +15688,47 @@ cpacs@dlr.de
                     </xsd:element>
                     <xsd:element name="doorElementUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of the door element
-                                description</xsd:documentation>
+                            <xsd:documentation>UID of the door element of the structural elements</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="startFrameUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of the forward door frame</xsd:documentation>
+                            <xsd:documentation>UID of the frame at the forward edge</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="endFrameUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of the backward door frame</xsd:documentation>
+                            <xsd:documentation>UID of the frame at the rear edge</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="startStringerUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of the stringer at the upper door
-                                edge</xsd:documentation>
+                            <xsd:documentation>UID of the stringer from which the area extends in the direction of increasing referenceAngle</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="endStringerUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of the stringer at the lower door
-                                edge</xsd:documentation>
+                            <xsd:documentation>UID of the stringer at which the area ends</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="zBase" minOccurs="0" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Lower height of the door with respect to the floor.
-                                (Information necessary for boarding and evacuation analysis not
-                                necessarily linked to structures)</xsd:documentation>
+                            <xsd:documentation>Height of the sill above the floor, for boarding and evacuation analyses [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="minWidth" minOccurs="0" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Minimum widh of the door element. (Information
-                                necessary for boarding and evacuation analysis not necessarily
-                                linked to structures)</xsd:documentation>
+                            <xsd:documentation>Clear width of the opening, for boarding and evacuation analyses [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="minHeight" minOccurs="0" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Minimum height of the door element. (Information
-                                necessary for boarding and evacuation analysis not necessarily
-                                linked to structures)</xsd:documentation>
+                            <xsd:documentation>Clear height of the opening, for boarding and evacuation analyses [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="ySign" minOccurs="0" type="integerBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Door on right side of the fuselage = 1; on the left =
-                                -1. (Information necessary for boarding and evacuation analysis not
-                                necessarily linked to structures)</xsd:documentation>
+                            <xsd:documentation>Side of the fuselage, 1 right (+y) and -1 left, for boarding and evacuation analyses</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -15724,10 +15746,15 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Door cut-out</ddue:para>
+                        <ddue:para>Door element</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Cut-outs</ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                Describes the opening of a door in the structure: the radius of its corners and the reinforced structure around it (<ddue:codeInline>doorSurroundStructurePositionType</ddue:codeInline>).
+                                The doors in the structure of a fuselage reference it (<ddue:codeInline>doorAssemblyPositionType</ddue:codeInline>); the opening itself is placed and sized by a cut-out of the fuselage (<ddue:codeInline>fuselageCutOutType</ddue:codeInline>).
+                            </ddue:para>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -15747,14 +15774,12 @@ cpacs@dlr.de
                     </xsd:element>
                     <xsd:element name="filletRadius" minOccurs="0" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Fillet radius of door cutout
-                                element</xsd:documentation>
+                            <xsd:documentation>Radius of the corners of the opening [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="dssDesignUID" minOccurs="0" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Reference UID to the description of a DSS (door
-                                surround structure)</xsd:documentation>
+                            <xsd:documentation>UID of the door surround structure</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -15870,6 +15895,9 @@ cpacs@dlr.de
                     <ddue:summary>
                         <ddue:para>Doors</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>The door elements of the library (<ddue:codeInline>doorCutOutType</ddue:codeInline>), referenced by the doors in the structure of fuselages.</ddue:para>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -15891,10 +15919,16 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Door surround structure position</ddue:para>
+                        <ddue:para>Door surround structure</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Position of a door surround structure</ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                The reinforced structure around a door, given by the number of bays it extends beyond the door.
+                                Along the fuselage, it extends <ddue:codeInline>&lt;framesGapFront&gt;</ddue:codeInline> frame bays in front of the door and <ddue:codeInline>&lt;framesGapRear&gt;</ddue:codeInline> behind it; around the fuselage, <ddue:codeInline>&lt;stringersGapPrimary&gt;</ddue:codeInline> and <ddue:codeInline>&lt;stringersGapSecondary&gt;</ddue:codeInline> stringer bays.
+                                On which side of the door the primary and the secondary stringer bays lie is not specified yet.
+                            </ddue:para>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -15914,24 +15948,22 @@ cpacs@dlr.de
                     </xsd:element>
                     <xsd:element name="framesGapFront" type="integerBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Number of bays affected by DSS in front of
-                                door</xsd:documentation>
+                            <xsd:documentation>Number of frame bays in front of the door</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="framesGapRear" type="integerBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Number of bays affected by DSS in behind of
-                                door</xsd:documentation>
+                            <xsd:documentation>Number of frame bays behind the door</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="stringersGapPrimary" type="integerBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Number of bays affected by DSS</xsd:documentation>
+                            <xsd:documentation>Number of stringer bays on the primary side</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="stringersGapSecondary" type="integerBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Number of bays affected by DSS</xsd:documentation>
+                            <xsd:documentation>Number of stringer bays on the secondary side</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -15949,10 +15981,10 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Door surround structures assembly</ddue:para>
+                        <ddue:para>Door surround structures</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>DorrSurroundStructure definitions</ddue:para>
+                        <ddue:para>The door surround structures of the library (<ddue:codeInline>doorSurroundStructurePositionType</ddue:codeInline>), referenced by door elements.</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -21401,6 +21433,19 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                                 Longitudinal floor beams such as seat rails run along the fuselage over the cross beams (<ddue:codeInline>longFloorBeamType</ddue:codeInline>), and floor panels cover the space between two of them (<ddue:codeInline>floorPanelType</ddue:codeInline>).
                                 The passenger floor and the cargo floor are described in the same way, the one in <ddue:codeInline>&lt;paxCrossBeams&gt;</ddue:codeInline> and <ddue:codeInline>&lt;paxCrossBeamStruts&gt;</ddue:codeInline>, the other in <ddue:codeInline>&lt;cargoCrossBeams&gt;</ddue:codeInline> and <ddue:codeInline>&lt;cargoCrossBeamStruts&gt;</ddue:codeInline>; the longitudinal floor beams and the floor panels of both are listed together.
                             </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Bulkheads and walls</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                Pressure bulkheads close the pressurised fuselage at a frame (<ddue:codeInline>pressureBulkheadAssemblyPositionType</ddue:codeInline>), and walls divide its inside, e.g. around the bay of the main landing gear (<ddue:codeInline>wallsType</ddue:codeInline>).
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Doors, windows and intercostals</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The structure of a door is the area of the shell between two frames and two stringers in which the door sits (<ddue:codeInline>doorAssemblyPositionType</ddue:codeInline>), and intercostals between the frames reinforce it (<ddue:codeInline>intercostalPositionType</ddue:codeInline>).
+                                Windows (<ddue:codeInline>windowAssemblyPositionType</ddue:codeInline>) and general structural members (<ddue:codeInline>generalStructuralMemberType</ddue:codeInline>) are listed as well; for new data, the openings of doors and windows are cut-outs of the fuselage (<ddue:codeInline>fuselageCutOutType</ddue:codeInline>).
+                            </ddue:para>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -21967,10 +22012,15 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>General structural member position</ddue:para>
+                        <ddue:para>Position of a general structural member</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Individual stringer / frame position definition (CPACS V2.1+)</ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                The x-coordinate of the position is given either directly by <ddue:codeInline>&lt;positionX&gt;</ddue:codeInline> or from other elements by <ddue:codeInline>&lt;positionXUidStart&gt;</ddue:codeInline>, <ddue:codeInline>&lt;positionXUidEnd&gt;</ddue:codeInline>, <ddue:codeInline>&lt;positionXUidMin&gt;</ddue:codeInline>, <ddue:codeInline>&lt;positionXUidMid&gt;</ddue:codeInline>, <ddue:codeInline>&lt;positionXUidMax&gt;</ddue:codeInline>, <ddue:codeInline>&lt;positionXAngle&gt;</ddue:codeInline>, <ddue:codeInline>&lt;positionXFact&gt;</ddue:codeInline> and <ddue:codeInline>&lt;positionXoffset&gt;</ddue:codeInline>.
+                                How these combine, and where the position lies across the fuselage, is not specified yet.
+                            </ddue:para>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -21985,7 +22035,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     </xsd:element>
                     <xsd:element name="positionX" minOccurs="0" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Absolute x position</xsd:documentation>
+                            <xsd:documentation>X-coordinate [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="positionXUidStart" minOccurs="0" type="stringUIDBaseType">
@@ -22076,10 +22126,10 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>General structural members assembly</ddue:para>
+                        <ddue:para>General structural members</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Structural member assemblies</ddue:para>
+                        <ddue:para>Profiles of the fuselage structure that are none of its other members (<ddue:codeInline>generalStructuralMemberType</ddue:codeInline>).</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -22104,6 +22154,14 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     <ddue:summary>
                         <ddue:para>General structural member</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>
+                                A profile swept through two or more positions (<ddue:codeInline>generalStructuralMemberPositionType</ddue:codeInline>); <ddue:codeInline>&lt;standardMemberPosition&gt;</ddue:codeInline> gives values that apply to all positions that do not give their own.
+                                The placement of the positions is not specified yet: they give an x-coordinate, but no position across the fuselage.
+                            </ddue:para>
+                        </ddue:content>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -22112,7 +22170,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:sequence>
                     <xsd:element name="standardMemberPosition" minOccurs="0" type="generalStructuralMemberPositionType">
                         <xsd:annotation>
-                            <xsd:documentation>Default position applied to all positions</xsd:documentation>
+                            <xsd:documentation>Values that apply to all positions that do not give their own</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="structuralMemberPosition" minOccurs="2" maxOccurs="unbounded" type="generalStructuralMemberPositionType">
@@ -24131,10 +24189,50 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Intercostal position</ddue:para>
+                        <ddue:para>Intercostal at a door</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Position of intercostals in DSS</ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                An intercostal is a short profile between two frames at a door, e.g. the sill or the header beam that takes up the loads of the stringers interrupted by the opening.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Position</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The intercostal runs on the shell from the frame <ddue:codeInline>&lt;frontFrameUID&gt;</ddue:codeInline> to the frame <ddue:codeInline>&lt;rearFrameUID&gt;</ddue:codeInline>.
+                                Its height is given relative to the door <ddue:codeInline>&lt;doorUID&gt;</ddue:codeInline> (<ddue:codeInline>doorAssemblyPositionType</ddue:codeInline>): <ddue:codeInline>&lt;positionRelZ&gt;</ddue:codeInline> = 0 is the height of the lower and 1 the height of the upper of the two stringers that bound the door, and values in between are interpolated linearly in z.
+                                The profile of the element <ddue:codeInline>&lt;structuralElementUID&gt;</ddue:codeInline> is swept along it; how the profile is oriented is not specified yet.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Example</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The sill and the header beam of the forward cargo door of the example: the stringers that bound the door lie at z = −1.386 m and −0.414 m, the lower and the upper edge of the cut-out at z = −1.249 m and −0.703 m:
+                            </ddue:para>
+                            <ddue:code language="XML" title="Sill and header beam of a cargo door">
+                                <![CDATA[
+<intercostals>
+    <intercostal uID="Fuselage_cargoDoorSill">
+        <name>Sill beam</name>
+        <frontFrameUID>Fuselage_frame2</frontFrameUID>
+        <rearFrameUID>Fuselage_frame4</rearFrameUID>
+        <doorUID>Fuselage_cargoDoorFwdStructure</doorUID>
+        <positionRelZ>0.14</positionRelZ>
+        <structuralElementUID>ZFrame</structuralElementUID>
+    </intercostal>
+    <intercostal uID="Fuselage_cargoDoorHeader">
+        <name>Header beam</name>
+        <frontFrameUID>Fuselage_frame2</frontFrameUID>
+        <rearFrameUID>Fuselage_frame4</rearFrameUID>
+        <doorUID>Fuselage_cargoDoorFwdStructure</doorUID>
+        <positionRelZ>0.705</positionRelZ>
+        <structuralElementUID>ZFrame</structuralElementUID>
+    </intercostal>
+</intercostals>
+                                ]]>
+                            </ddue:code>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -24154,30 +24252,27 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     </xsd:element>
                     <xsd:element name="frontFrameUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of the frame at which intercostal
-                                starts</xsd:documentation>
+                            <xsd:documentation>UID of the frame at which the intercostal starts</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="rearFrameUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of the forward door frame</xsd:documentation>
+                            <xsd:documentation>UID of the frame at which the intercostal ends</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="doorUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of the door</xsd:documentation>
+                            <xsd:documentation>UID of the door at which the intercostal lies</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="positionRelZ" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Non-dimensional value ranging between 0 and 1
-                            </xsd:documentation>
+                            <xsd:documentation>Height between the lower (0) and the upper (1) stringer of the door [-]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="structuralElementUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of profileBasedStructuralElement used for
-                                intercostal</xsd:documentation>
+                            <xsd:documentation>UID of the profileBasedStructuralElement of the intercostal</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -24195,10 +24290,10 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Intercostals assembly</ddue:para>
+                        <ddue:para>Intercostals</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Intercostal definitions</ddue:para>
+                        <ddue:para>The intercostals of the fuselage (<ddue:codeInline>intercostalPositionType</ddue:codeInline>).</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -25509,8 +25604,11 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Lateral cap</ddue:para>
+                        <ddue:para>Cap on the lateral edges of a wall</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>A cap (<ddue:codeInline>capType</ddue:codeInline>) on the edges that run across a wall at its positions (<ddue:codeInline>structuralWallElementType</ddue:codeInline>); <ddue:codeInline>&lt;placement&gt;</ddue:codeInline> selects the positions: all, the first (start), the last (end), or the first and the last (startEnd).</ddue:para>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -25519,7 +25617,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:sequence>
                     <xsd:element name="placement">
                         <xsd:annotation>
-                            <xsd:documentation>Placement</xsd:documentation>
+                            <xsd:documentation>Positions with a cap: all, start, end or startEnd</xsd:documentation>
                         </xsd:annotation>
                         <xsd:simpleType>
                             <xsd:restriction base="xsd:string">
@@ -34672,10 +34770,10 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Passenger doors assembly</ddue:para>
+                        <ddue:para>Passenger doors</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Pax door assemblies</ddue:para>
+                        <ddue:para>The passenger doors in the structure of the fuselage (<ddue:codeInline>doorAssemblyPositionType</ddue:codeInline>).</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -36617,8 +36715,44 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Pressure bulkhead assembly position</ddue:para>
+                        <ddue:para>Pressure bulkhead at a frame</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>
+                                A pressure bulkhead closes the pressurised part of the fuselage at a frame, e.g. in front of the cockpit and behind the cabin.
+                                The position names the frame; how the bulkhead is built — its sheet, whether it is flat or curved, and its reinforcements — is an element of the library of structural elements (<ddue:codeInline>pressureBulkheadType</ddue:codeInline>), and one element may be used at several positions.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Surface</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The bulkhead closes the cross section of the frame <ddue:codeInline>&lt;frameUID&gt;</ddue:codeInline>: it spans the surface enclosed by the path of the frame (<ddue:codeInline>frameType</ddue:codeInline>).
+                                A frame with several positions that does not run around the whole fuselage is closed by the straight line from its last position back to its first.
+                                A curved bulkhead bulges out of this surface as described in <ddue:codeInline>pressureBulkheadType</ddue:codeInline>.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Example</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The two bulkheads of the example: a flat one at the frame in front of the cockpit and a curved one at the frame behind the cabin:
+                            </ddue:para>
+                            <ddue:code language="XML" title="Pressure bulkheads at two frames">
+                                <![CDATA[
+<pressureBulkheads>
+    <pressureBulkhead uID="Fuselage_fwdPressureBulkhead">
+        <frameUID>Fuselage_frameFwdBulkhead</frameUID>
+        <pressureBulkheadElementUID>FwdPressureBulkhead</pressureBulkheadElementUID>
+    </pressureBulkhead>
+    <pressureBulkhead uID="Fuselage_aftPressureBulkhead">
+        <frameUID>Fuselage_frameAftBulkhead</frameUID>
+        <pressureBulkheadElementUID>AftPressureBulkhead</pressureBulkheadElementUID>
+    </pressureBulkhead>
+</pressureBulkheads>
+                                ]]>
+                            </ddue:code>
+                        </ddue:content>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -36627,14 +36761,12 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:all>
                     <xsd:element name="frameUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Frame to which bulkhead is attached to
-                            </xsd:documentation>
+                            <xsd:documentation>UID of the frame whose cross section the bulkhead closes</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="pressureBulkheadElementUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of bulkhead element description
-                            </xsd:documentation>
+                            <xsd:documentation>UID of the pressureBulkhead element of the structural elements that describes the bulkhead</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -36652,10 +36784,10 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Pressure bulkhead assembly</ddue:para>
+                        <ddue:para>Pressure bulkheads</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Pressure bulkhead assemblies</ddue:para>
+                        <ddue:para>The pressure bulkheads of the fuselage, each at a frame (<ddue:codeInline>pressureBulkheadAssemblyPositionType</ddue:codeInline>).</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -36665,7 +36797,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:sequence>
                     <xsd:element name="pressureBulkhead" maxOccurs="unbounded" type="pressureBulkheadAssemblyPositionType">
                         <xsd:annotation>
-                            <xsd:documentation>Pressure bulkhead position</xsd:documentation>
+                            <xsd:documentation>Pressure bulkhead</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -36680,6 +36812,9 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     <ddue:summary>
                         <ddue:para>Pressure bulkheads</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>The pressure bulkhead elements of the library, referenced by the bulkheads of the fuselages (<ddue:codeInline>pressureBulkheadType</ddue:codeInline>).</ddue:para>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -36701,10 +36836,83 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Pressure bulkhead</ddue:para>
+                        <ddue:para>Build-up of a pressure bulkhead</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Data of a pressure bulkhead</ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                Describes how a pressure bulkhead is built: the sheet that closes the cross section of the fuselage, its shape — flat or curved — and its reinforcements.
+                                A bulkhead of a fuselage (<ddue:codeInline>pressureBulkheadAssemblyPositionType</ddue:codeInline>) places it at a frame; the surface it closes is described there.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Flat bulkhead</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                A flat bulkhead is the plane surface enclosed by the frame, typically at the front end of the pressurised fuselage.
+                                It is stiffened by <ddue:codeInline>&lt;reinforcementNumberVertical&gt;</ddue:codeInline> vertical and <ddue:codeInline>&lt;reinforcementNumberHorizontal&gt;</ddue:codeInline> horizontal profiles of the elements <ddue:codeInline>&lt;structuralElementVerticalUID&gt;</ddue:codeInline> and <ddue:codeInline>&lt;structuralElementHorizontalUID&gt;</ddue:codeInline>.
+                                The reinforcements are evenly distributed: n vertical reinforcements divide the width of the surface into n + 1 equal parts, and the horizontal ones divide its height in the same way.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Curved bulkhead</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                A curved bulkhead is a spherical calotte, typically at the rear end of the pressurised fuselage.
+                                In the plane of the frame, the edge of the calotte is a circle with the radius <ddue:legacyItalic>r</ddue:legacyItalic> = <ddue:codeInline>&lt;bulkheadCalotteRadiusAtFrame&gt;</ddue:codeInline> around the centroid of the surface enclosed by the frame.
+                                The calotte is curved backwards, towards +x, and its apex lies <ddue:codeInline>&lt;maxFlectionDepth&gt;</ddue:codeInline> = <ddue:legacyItalic>t</ddue:legacyItalic> behind that plane, so that its sphere has the radius <ddue:legacyItalic>R</ddue:legacyItalic> = (<ddue:legacyItalic>r</ddue:legacyItalic>² + <ddue:legacyItalic>t</ddue:legacyItalic>²) / (2<ddue:legacyItalic>t</ddue:legacyItalic>).
+                                Between the frame and the edge of the calotte, a flat ring closes the bulkhead.
+                                <ddue:codeInline>&lt;reinforcementNumberRadial&gt;</ddue:codeInline> radial reinforcements of the element <ddue:codeInline>&lt;structuralElementRadialUID&gt;</ddue:codeInline> run from the edge to the apex at equal angles.
+                            </ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="pressureBulkhead"/>
+                            </ddue:mediaLink>
+                            <ddue:para>
+                                The figure shows the two bulkheads of the example.
+                                (a) The flat bulkhead at the frame at x = 1.5 m has five vertical and three horizontal reinforcements, which divide its width into six and its height into four equal parts.
+                                (b) The curved bulkhead at the frame at x = 20 m, in the section through its centroid, has a calotte of 1.45 m radius and 0.55 m depth; the flat ring between the frame and the calotte is about 0.1 m wide.
+                            </ddue:para>
+                            <ddue:para>
+                                On which side of the sheet the reinforcements stand, and at which angle the first radial reinforcement lies, is not specified yet.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Rules</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:list class="bullet">
+                                <ddue:listItem>
+                                    <ddue:para>The radius of the calotte is smaller than the smallest distance from the centroid to the frame, so that the flat ring remains.</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>A number of reinforcements greater than 0 comes with the element of their profile.</ddue:para>
+                                </ddue:listItem>
+                            </ddue:list>
+                            <ddue:para>
+                                <ddue:legacyBold>Example</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The elements of the two bulkheads of the example:
+                            </ddue:para>
+                            <ddue:code language="XML" title="Flat and curved pressure bulkhead">
+                                <![CDATA[
+<pressureBulkheads>
+    <pressureBulkhead uID="FwdPressureBulkhead">
+        <name>Forward pressure bulkhead</name>
+        <sheetElementUID>BulkheadFlat</sheetElementUID>
+        <reinforcementNumberVertical>5</reinforcementNumberVertical>
+        <structuralElementVerticalUID>ZFrame</structuralElementVerticalUID>
+        <reinforcementNumberHorizontal>3</reinforcementNumberHorizontal>
+        <structuralElementHorizontalUID>TStringer</structuralElementHorizontalUID>
+    </pressureBulkhead>
+    <pressureBulkhead uID="AftPressureBulkhead">
+        <name>Aft pressure bulkhead</name>
+        <sheetElementUID>BulkheadCalotte</sheetElementUID>
+        <bulkheadCalotteRadiusAtFrame>1.45</bulkheadCalotteRadiusAtFrame>
+        <maxFlectionDepth>0.55</maxFlectionDepth>
+        <reinforcementNumberRadial>16</reinforcementNumberRadial>
+        <structuralElementRadialUID>TStringer</structuralElementRadialUID>
+    </pressureBulkhead>
+</pressureBulkheads>
+                                ]]>
+                            </ddue:code>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -36724,72 +36932,60 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     </xsd:element>
                     <xsd:element name="sheetElementUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of structural sheet element used for the
-                                bulkhead</xsd:documentation>
+                            <xsd:documentation>UID of the sheetBasedStructuralElement of the bulkhead</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:choice>
                         <xsd:annotation>
-                            <xsd:documentation>Choice between flat and curved bulkhead types
-                            </xsd:documentation>
+                            <xsd:documentation>Flat or curved bulkhead</xsd:documentation>
                         </xsd:annotation>
                         <xsd:sequence>
                             <xsd:annotation>
-                                <xsd:documentation>additional data for flat (forward) pressure
-                                    bulkhead</xsd:documentation>
+                                <xsd:documentation>Flat bulkhead</xsd:documentation>
                             </xsd:annotation>
                             <xsd:element name="reinforcementNumberVertical" minOccurs="0" default="0" type="integerBaseType">
                                 <xsd:annotation>
-                                    <xsd:documentation>Number of vertical reinforcements on flat
-                                        bulhhead</xsd:documentation>
+                                    <xsd:documentation>Number of vertical reinforcements, evenly distributed across the width (default 0)</xsd:documentation>
                                 </xsd:annotation>
                             </xsd:element>
                             <xsd:element name="structuralElementVerticalUID" minOccurs="0" type="stringUIDBaseType">
                                 <xsd:annotation>
-                                    <xsd:documentation>UID of structural elements used as vertical
-                                        reinforcements</xsd:documentation>
+                                    <xsd:documentation>UID of the profileBasedStructuralElement of the vertical reinforcements</xsd:documentation>
                                 </xsd:annotation>
                             </xsd:element>
                             <xsd:element name="reinforcementNumberHorizontal" minOccurs="0" default="0" type="integerBaseType">
                                 <xsd:annotation>
-                                    <xsd:documentation>Number of horizontal reinforcements on flat
-                                        bulhhead</xsd:documentation>
+                                    <xsd:documentation>Number of horizontal reinforcements, evenly distributed over the height (default 0)</xsd:documentation>
                                 </xsd:annotation>
                             </xsd:element>
                             <xsd:element name="structuralElementHorizontalUID" minOccurs="0" type="stringUIDBaseType">
                                 <xsd:annotation>
-                                    <xsd:documentation>UID of structural elements used as
-                                        horizontal reinforcements</xsd:documentation>
+                                    <xsd:documentation>UID of the profileBasedStructuralElement of the horizontal reinforcements</xsd:documentation>
                                 </xsd:annotation>
                             </xsd:element>
                         </xsd:sequence>
                         <xsd:sequence>
                             <xsd:annotation>
-                                <xsd:documentation>additional data for curved (rear) pressure
-                                    bulkhead</xsd:documentation>
+                                <xsd:documentation>Curved bulkhead: a calotte, curved backwards</xsd:documentation>
                             </xsd:annotation>
                             <xsd:element name="bulkheadCalotteRadiusAtFrame" type="doubleBaseType">
                                 <xsd:annotation>
-                                    <xsd:documentation>Radius of bulkhead calotte in the plane of
-                                        the adjacent frame</xsd:documentation>
+                                    <xsd:documentation>Radius of the edge of the calotte in the plane of the frame [m]</xsd:documentation>
                                 </xsd:annotation>
                             </xsd:element>
                             <xsd:element name="maxFlectionDepth" type="doubleBaseType">
                                 <xsd:annotation>
-                                    <xsd:documentation>Maximum flection of the pressure bulkhaed
-                                        calotte</xsd:documentation>
+                                    <xsd:documentation>Depth of the calotte: distance of its apex behind the plane of the frame [m]</xsd:documentation>
                                 </xsd:annotation>
                             </xsd:element>
                             <xsd:element name="reinforcementNumberRadial" minOccurs="0" default="0" type="integerBaseType">
                                 <xsd:annotation>
-                                    <xsd:documentation>Number of radial reinforcements (equally
-                                        distributed) on curved bulhhead</xsd:documentation>
+                                    <xsd:documentation>Number of radial reinforcements at equal angles (default 0)</xsd:documentation>
                                 </xsd:annotation>
                             </xsd:element>
                             <xsd:element name="structuralElementRadialUID" minOccurs="0" type="stringUIDBaseType">
                                 <xsd:annotation>
-                                    <xsd:documentation>UID of structural elements used as radial
-                                        reinforcements on curved bulkheads</xsd:documentation>
+                                    <xsd:documentation>UID of the profileBasedStructuralElement of the radial reinforcements</xsd:documentation>
                                 </xsd:annotation>
                             </xsd:element>
                         </xsd:sequence>
@@ -42554,8 +42750,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                         <ddue:para>Structural elements</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>structuralElements Type, containing the different structural
-                            elements</ddue:para>
+                        <ddue:para>The library of structural elements of all vehicles: sheets and profiles, the build-ups of walls and pressure bulkheads, window and door elements, door surround structures and rivets. Components reference them by UID, so that one element can be used in many places.</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -42944,6 +43139,9 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     <ddue:summary>
                         <ddue:para>Structural wall elements</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>The build-ups of walls in the library, referenced by the walls of fuselages and vessels (<ddue:codeInline>structuralWallElementType</ddue:codeInline>).</ddue:para>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -42952,7 +43150,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:sequence>
                     <xsd:element name="structuralWallElement" maxOccurs="unbounded" type="structuralWallElementType">
                         <xsd:annotation>
-                            <xsd:documentation>Structural wall reinforcement definition specifying physical properties of a fuselage wall segment</xsd:documentation>
+                            <xsd:documentation>Structural wall element</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -42965,8 +43163,31 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Structural wall element</ddue:para>
+                        <ddue:para>Build-up of a wall</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>
+                                Describes how a wall (<ddue:codeInline>wallSegmentType</ddue:codeInline>) is built: its sheet, the reinforcements in its plane and the caps along its edges.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Edges</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The longitudinal edges of a wall run along it, through its positions or along the skin; the lateral edges run across it at its positions.
+                                <ddue:codeInline>&lt;innerLongitudinalCap&gt;</ddue:codeInline> lies on the edge through the positions of a wall extruded in one direction; for a wall extruded in both directions, it lies on the edge at the skin opposite to the extrusion direction.
+                                <ddue:codeInline>&lt;outerLongitudinalCap&gt;</ddue:codeInline> lies on the edge at the skin in the extrusion direction.
+                                <ddue:codeInline>&lt;lateralCaps&gt;</ddue:codeInline> lie on the lateral edges at the positions selected by their placement (<ddue:codeInline>lateralCapType</ddue:codeInline>).
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Reinforcements</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:codeInline>&lt;longitudinalReinforcements&gt;</ddue:codeInline> run along the wall and <ddue:codeInline>&lt;lateralReinforcements&gt;</ddue:codeInline> across it, both in its plane; they are described like the stringers of a wing (<ddue:codeInline>wingStringerType</ddue:codeInline>).
+                                How the positions of that type are read on a wall is not specified yet.
+                            </ddue:para>
+                        </ddue:content>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -42975,41 +43196,32 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:all>
                     <xsd:element name="sheetElementUID" type="stringBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Reference to a sheet element definition specifying the physical properties of the wall's shell</xsd:documentation>
+                            <xsd:documentation>UID of the sheetBasedStructuralElement of the wall</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="longitudinalReinforcements" minOccurs="0" type="wingStringerType">
                         <xsd:annotation>
-                            <xsd:documentation>Reinforcements running along the position polygon of the wall positions</xsd:documentation>
+                            <xsd:documentation>Reinforcements along the wall, in its plane</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="lateralReinforcements" minOccurs="0" type="wingStringerType">
                         <xsd:annotation>
-                            <xsd:documentation>Reinforcements running in lateral/radial direction in the wall segment plane</xsd:documentation>
+                            <xsd:documentation>Reinforcements across the wall, in its plane</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="innerLongitudinalCap" minOccurs="0" type="capType">
                         <xsd:annotation>
-                            <xsd:documentation>Reinforcement at inner side of wall. This is either, depending on the extrusion direction flag, the edge of the wall that connects the positions ("positiveDirection") or the edge of the wall where the wall intersects with the fuselage skin in the opposite direction of the extrusion direction.
-                            </xsd:documentation>
+                            <xsd:documentation>Cap on the longitudinal edge through the positions (one-sided extrusion) or at the skin opposite to the extrusion direction (double-sided)</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="outerLongitudinalCap" minOccurs="0" type="capType">
                         <xsd:annotation>
-                            <xsd:documentation>Reinforcement at outer side of wall. The outer side of the wall is defined as the edge of the wall at the intersection of the wall with the fuselage skin running along the main direction of the wall.
-                            </xsd:documentation>
+                            <xsd:documentation>Cap on the longitudinal edge at the skin in the extrusion direction</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="lateralCaps" minOccurs="0" type="lateralCapType">
                         <xsd:annotation>
-                            <xsd:documentation>
-                                Lateral caps are the reinforcements of
-                                the wall at the edges lateral to the
-                                main direction of the wall. These caps
-                                can be either defined at start, end,
-                                start and end or at all wall positions
-                                according to the placement flag.
-                            </xsd:documentation>
+                            <xsd:documentation>Caps on the lateral edges at the positions</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -51710,16 +51922,18 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     <ddue:summary>
                         <ddue:para>Wall positions</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>The points through which the walls run (<ddue:codeInline>wallPositionType</ddue:codeInline>); a wall references them by UID.</ddue:para>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
-            <xsd:documentation>Definition of wall positions to place walls inside fuselage.</xsd:documentation>
         </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:sequence>
                     <xsd:element name="wallPosition" minOccurs="2" maxOccurs="unbounded" type="wallPositionType">
                         <xsd:annotation>
-                            <xsd:documentation>Wall position definition specifying a point in the fuselage to be connected to a wall segment</xsd:documentation>
+                            <xsd:documentation>Wall position</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -51732,65 +51946,72 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Wall position</ddue:para>
+                        <ddue:para>Point of a wall</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>
+                                A point through which a wall runs, in the coordinate system of the fuselage or vessel.
+                                <ddue:codeInline>&lt;y&gt;</ddue:codeInline> and <ddue:codeInline>&lt;z&gt;</ddue:codeInline> are always given; the x-coordinate is given directly or by another element.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>x-coordinate</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:codeInline>&lt;x&gt;</ddue:codeInline> gives the x-coordinate directly.
+                                Otherwise, x is where the line parallel to the x-axis through (y, z) meets an element: the surface of the pressure bulkhead <ddue:codeInline>&lt;bulkheadUID&gt;</ddue:codeInline>, the cross section of the fuselage or vessel at the section <ddue:codeInline>&lt;sectionUID&gt;</ddue:codeInline>, or the wall <ddue:codeInline>&lt;wallSegmentUID&gt;</ddue:codeInline>.
+                                The line meets the element exactly once.
+                                A wall can end flush with the element that gives the x-coordinate of its first or last position (<ddue:codeInline>wallSegmentType</ddue:codeInline>).
+                            </ddue:para>
+                            <ddue:alert class="tigl">
+                                <ddue:para>
+                                    TiGL 3.5 cannot build a wall with a position given by <ddue:codeInline>&lt;wallSegmentUID&gt;</ddue:codeInline>: for every such position it stops with the error "Fuselage wall references itself".
+                                </ddue:para>
+                            </ddue:alert>
+                            <ddue:para>
+                                <ddue:codeInline>&lt;fuselageSectionUID&gt;</ddue:codeInline> is deprecated and means the same as <ddue:codeInline>&lt;sectionUID&gt;</ddue:codeInline>.
+                            </ddue:para>
+                        </ddue:content>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
-            <xsd:documentation>Definition of a wall position to place walls inside fuselage.</xsd:documentation>
         </xsd:annotation>
         <xsd:sequence>
             <xsd:choice>
                 <xsd:element name="bulkheadUID" type="stringUIDBaseType">
                     <xsd:annotation>
-                        <xsd:documentation>
-                            UID of a bulkhead determining the
-                            x-coordinate of the position with the given
-                            y- and z-coordinates
-                        </xsd:documentation>
+                        <xsd:documentation>UID of the pressure bulkhead whose surface gives the x-coordinate</xsd:documentation>
                     </xsd:annotation>
                 </xsd:element>
                 <xsd:element name="wallSegmentUID" type="stringUIDBaseType">
                     <xsd:annotation>
-                        <xsd:documentation>
-                            UID of a wall segment determining the
-                            x-coordinate of the position with the given
-                            y- and z-coordinates
-                        </xsd:documentation>
+                        <xsd:documentation>UID of the wall segment that gives the x-coordinate</xsd:documentation>
                     </xsd:annotation>
                 </xsd:element>
                 <xsd:element name="fuselageSectionUID" type="stringUIDBaseType">
                     <xsd:annotation>
-                        <xsd:documentation>
-                            DEPRECATED: use sectionUID instead.
-                            UID of a fuselage section determining the
-                            x-coordinate of the position with the given
-                            y- and z-coordinates.
-                        </xsd:documentation>
+                        <xsd:documentation>Deprecated: use sectionUID</xsd:documentation>
                     </xsd:annotation>
                 </xsd:element>
                 <xsd:element name="sectionUID" type="stringUIDBaseType">
                     <xsd:annotation>
-                        <xsd:documentation>
-                            UID of a section determining the
-                            x-coordinate of the position with
-                            the given y- and z-coordinates
-                        </xsd:documentation>
+                        <xsd:documentation>UID of the section whose cross section gives the x-coordinate</xsd:documentation>
                     </xsd:annotation>
                 </xsd:element>
                 <xsd:element name="x" type="doubleBaseType">
                     <xsd:annotation>
-                        <xsd:documentation>Absolute x-coordinate of wall position in fuselage coordinate system</xsd:documentation>
+                        <xsd:documentation>X-coordinate [m]</xsd:documentation>
                     </xsd:annotation>
                 </xsd:element>
             </xsd:choice>
             <xsd:element name="y" type="doubleBaseType">
                 <xsd:annotation>
-                    <xsd:documentation>Absolute y-coordinate of wall position in fuselage coordinate system</xsd:documentation>
+                    <xsd:documentation>Y-coordinate [m]</xsd:documentation>
                 </xsd:annotation>
             </xsd:element>
             <xsd:element name="z" type="doubleBaseType">
                 <xsd:annotation>
-                    <xsd:documentation>Absolute z-coordinate of wall position in fuselage coordinate system</xsd:documentation>
+                    <xsd:documentation>Z-coordinate [m]</xsd:documentation>
                 </xsd:annotation>
             </xsd:element>
         </xsd:sequence>
@@ -51806,17 +52027,18 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Wall position UIDs</ddue:para>
+                        <ddue:para>Positions of a wall</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>The UIDs of the wall positions (<ddue:codeInline>wallPositionType</ddue:codeInline>) that a wall runs through, in order.</ddue:para>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
         <xsd:sequence>
             <xsd:element name="wallPositionUID" minOccurs="2" maxOccurs="unbounded" type="stringUIDBaseType">
                 <xsd:annotation>
-                    <xsd:documentation>
-                        Reference to wall position UID
-                    </xsd:documentation>
+                    <xsd:documentation>UID of a wall position</xsd:documentation>
                 </xsd:annotation>
             </xsd:element>
         </xsd:sequence>
@@ -51827,8 +52049,11 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Wall segments</ddue:para>
+                        <ddue:para>Walls</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>The walls, each a chain of plane faces through wall positions (<ddue:codeInline>wallSegmentType</ddue:codeInline>).</ddue:para>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -51837,7 +52062,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:sequence>
                     <xsd:element name="wallSegment" maxOccurs="unbounded" type="wallSegmentType">
                         <xsd:annotation>
-                            <xsd:documentation>Wall segment definition</xsd:documentation>
+                            <xsd:documentation>Wall</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -51850,17 +52075,65 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Wall segment</ddue:para>
+                        <ddue:para>Wall</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>
+                                A wall is a chain of plane faces through two or more wall positions (<ddue:codeInline>wallPositionType</ddue:codeInline>), reaching from these positions to the surface of the fuselage or vessel.
+                                Its sheet, reinforcements and caps are a structural wall element of the library (<ddue:codeInline>structuralWallElementType</ddue:codeInline>), referenced by <ddue:codeInline>&lt;structuralWallElementUID&gt;</ddue:codeInline>.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Faces</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:codeInline>&lt;wallPositionUIDs&gt;</ddue:codeInline> lists the positions in order; there is one face between each pair of consecutive positions.
+                                The face is spanned by the straight line between the two positions and the extrusion direction: the z-axis rotated about the x-axis by <ddue:codeInline>&lt;phi&gt;</ddue:codeInline>, measured like <ddue:codeInline>&lt;referenceAngle&gt;</ddue:codeInline> in <ddue:codeInline>stringerFramePositionType</ddue:codeInline>: 0° points up, 90° towards −y, i.e. to the left in flight direction, and 180° down.
+                                From the line, the face reaches in the extrusion direction to the surface; with <ddue:codeInline>&lt;doubleSidedExtrusion&gt;</ddue:codeInline> set to true, it reaches to the surface in the opposite direction as well.
+                                Along the line, the face ends at the two positions.
+                            </ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="fuselageWall"/>
+                            </ddue:mediaLink>
+                            <ddue:para>
+                                In the figure (b), the ceiling of the bay runs along x through two positions at y = 0, z = −0.75 m; 90° turns its extrusion direction from the z-axis to −y, and the double-sided extrusion takes it to the skin on both sides.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Ends</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The first edge of the wall runs from its first position in the extrusion direction, the last edge from its last position.
+                                With <ddue:codeInline>&lt;flushConnectionStart&gt;</ddue:codeInline> set to true, the first edge lies instead in the plane of the element that gives the x-coordinate of the first position — a pressure bulkhead, a section or another wall — so that the wall meets that element without a gap; <ddue:codeInline>&lt;flushConnectionEnd&gt;</ddue:codeInline> does the same for the last edge.
+                                This requires the first or last position to be given by such an element, and the element to be plane where the position lies on it.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Bounding elements</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:codeInline>&lt;boundingElementUIDs&gt;</ddue:codeInline> names other walls, e.g. one that serves as a floor, or generic geometric components (<ddue:codeInline>genericGeometricComponentType</ddue:codeInline>) that cut this wall.
+                                A bounding wall is extended beyond its first and last position for this.
+                                Of the parts into which they divide the wall, the one that contains the positions of the wall remains.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Rules</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:list class="bullet">
+                                <ddue:listItem>
+                                    <ddue:para>The positions lie inside the fuselage or vessel or on its surface.</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>A wall does not depend on itself: neither the positions nor the bounding elements of a wall refer back to it, directly or through other walls.</ddue:para>
+                                </ddue:listItem>
+                            </ddue:list>
+                        </ddue:content>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
         <xsd:all>
             <xsd:element name="phi" default="0.0">
                 <xsd:annotation>
-                    <xsd:documentation>
-                        Extrusion direction. Rotation angle around fuselage x-axis of extrusion direction. A value of 0deg means fuselage z-axis as extrusion direction. Default: 0.0deg.
-                    </xsd:documentation>
+                    <xsd:documentation>Extrusion direction: angle of the z-axis rotated about the x-axis, 0 up, 90 towards -y [deg]</xsd:documentation>
                 </xsd:annotation>
                 <xsd:complexType>
                     <xsd:simpleContent>
@@ -51873,53 +52146,32 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             </xsd:element>
             <xsd:element name="doubleSidedExtrusion" minOccurs="0" type="booleanBaseType">
                 <xsd:annotation>
-                    <xsd:documentation>By default, the wall is only extruded in positive direction. If doubleSidedExtrusion is true, the wall is additionally extruded in negative direction as well. Default: false.</xsd:documentation>
+                    <xsd:documentation>Whether the wall reaches to the surface in the opposite direction as well (default false)</xsd:documentation>
                 </xsd:annotation>
             </xsd:element>
             <xsd:element name="flushConnectionStart" minOccurs="0" type="booleanBaseType">
                 <xsd:annotation>
-                    <xsd:documentation>Rotates the first edge of the wall segment so that it is adjacent with the structural element defined in the first wall position (bulkhead, fuselage section or another plane wall). Default: false.</xsd:documentation>
+                    <xsd:documentation>Whether the first edge lies in the plane of the element that gives the x-coordinate of the first position (default false)</xsd:documentation>
                 </xsd:annotation>
             </xsd:element>
             <xsd:element name="flushConnectionEnd" minOccurs="0" type="booleanBaseType">
                 <xsd:annotation>
-                    <xsd:documentation>Rotates the last edge of the wall segment so that it is adjacent with the structural element defined in the last wall position (bulkhead, fuselage section or another plane wall). Default: false.</xsd:documentation>
+                    <xsd:documentation>Whether the last edge lies in the plane of the element that gives the x-coordinate of the last position (default false)</xsd:documentation>
                 </xsd:annotation>
             </xsd:element>
             <xsd:element name="boundingElementUIDs" minOccurs="0" type="boundingElementUIDsType">
                 <xsd:annotation>
-                    <xsd:documentation>
-                        A list of uIDs referencing other
-                        structural/geometric elements that shall serve
-                        as a boundary of the wall element. Possible
-                        references are floor, wall or
-                        genericGeometryComponent. A major requirement is
-                        that the referenced element has an intersection
-                        with the wall for at least the distance between
-                        two wall positions. So that a full geometric
-                        face of the wall is bounded by it. Neighbouring
-                        wall faces that are not completely bounded by
-                        the reference element are not affected.
-                    </xsd:documentation>
+                    <xsd:documentation>Walls or generic geometric components that cut the wall</xsd:documentation>
                 </xsd:annotation>
             </xsd:element>
             <xsd:element name="structuralWallElementUID" minOccurs="0" type="stringUIDBaseType">
                 <xsd:annotation>
-                    <xsd:documentation>Reference to the structural property definition</xsd:documentation>
+                    <xsd:documentation>UID of the structuralWallElement of the wall</xsd:documentation>
                 </xsd:annotation>
             </xsd:element>
             <xsd:element name="wallPositionUIDs" type="wallPositionUIDsType">
                 <xsd:annotation>
-                    <xsd:documentation>
-                        List of wall position uIDs that are used for
-                        this wall segment. At least two positions must
-                        be defined (for start and end position of wall).
-                        If more than two positions are referenced here,
-                        the wall is constructed out of several planar
-                        faces that connect two consecutive positions
-                        (Note: Order of position uIDs defines
-                        connectivity).
-                    </xsd:documentation>
+                    <xsd:documentation>Positions the wall runs through, in order</xsd:documentation>
                 </xsd:annotation>
             </xsd:element>
         </xsd:all>
@@ -51935,8 +52187,81 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Walls</ddue:para>
+                        <ddue:para>Walls inside a fuselage or vessel</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>
+                                Walls divide the inside of a fuselage or a vessel, e.g. the pressure deck and the aft wall of the bay of the main landing gear, the walls of a cargo compartment, or the walls between the tanks of a vessel.
+                                Each wall is a chain of plane faces through points, the wall positions, and reaches from these points to the surface of the fuselage or vessel.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Positions and segments</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:codeInline>&lt;wallPositions&gt;</ddue:codeInline> lists the points (<ddue:codeInline>wallPositionType</ddue:codeInline>), all in the coordinate system of the fuselage or vessel.
+                                <ddue:codeInline>&lt;wallSegments&gt;</ddue:codeInline> lists the walls (<ddue:codeInline>wallSegmentType</ddue:codeInline>); each connects two or more of the points in its own order and extrudes the connection in one direction.
+                                Walls may share points, so that they meet along a common edge.
+                            </ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="fuselageWall"/>
+                            </ddue:mediaLink>
+                            <ddue:para>
+                                The figure shows the walls of the bay of the main landing gear in the example, behind the wing box and below the cabin floor.
+                                The ceiling <ddue:codeInline>Fuselage_mlgBayCeiling</ddue:codeInline> runs at z = −0.75 m from the rear spar at x = 13.25 m to x = 15.4 m, and the aft wall <ddue:codeInline>Fuselage_mlgBayAftWall</ddue:codeInline> runs from the common position <ddue:codeInline>Fuselage_mlgBayAft</ddue:codeInline> down to the keel.
+                                Both are extruded sideways in both directions, to the skin on either side: (a) shows the section at y = 0, (b) the section through the ceiling, whose two positions both lie at y = 0, z = −0.75 m.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Example</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The walls of the bay of the main landing gear:
+                            </ddue:para>
+                            <ddue:code language="XML" title="Walls of the bay of the main landing gear">
+                                <![CDATA[
+<walls>
+    <wallPositions>
+        <wallPosition uID="Fuselage_mlgBayFwd">
+            <x>13.25</x>
+            <y>0</y>
+            <z>-0.75</z>
+        </wallPosition>
+        <wallPosition uID="Fuselage_mlgBayAft">
+            <x>15.4</x>
+            <y>0</y>
+            <z>-0.75</z>
+        </wallPosition>
+        <wallPosition uID="Fuselage_mlgBayKeel">
+            <x>15.4</x>
+            <y>0</y>
+            <z>-1.6</z>
+        </wallPosition>
+    </wallPositions>
+    <wallSegments>
+        <wallSegment uID="Fuselage_mlgBayCeiling">
+            <phi>90</phi>
+            <doubleSidedExtrusion>true</doubleSidedExtrusion>
+            <structuralWallElementUID>PressureWall</structuralWallElementUID>
+            <wallPositionUIDs>
+                <wallPositionUID>Fuselage_mlgBayFwd</wallPositionUID>
+                <wallPositionUID>Fuselage_mlgBayAft</wallPositionUID>
+            </wallPositionUIDs>
+        </wallSegment>
+        <wallSegment uID="Fuselage_mlgBayAftWall">
+            <phi>90</phi>
+            <doubleSidedExtrusion>true</doubleSidedExtrusion>
+            <structuralWallElementUID>PressureWall</structuralWallElementUID>
+            <wallPositionUIDs>
+                <wallPositionUID>Fuselage_mlgBayAft</wallPositionUID>
+                <wallPositionUID>Fuselage_mlgBayKeel</wallPositionUID>
+            </wallPositionUIDs>
+        </wallSegment>
+    </wallSegments>
+</walls>
+                                ]]>
+                            </ddue:code>
+                        </ddue:content>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -51945,16 +52270,12 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:all>
                     <xsd:element name="wallPositions" type="wallPositionsType">
                         <xsd:annotation>
-                            <xsd:documentation>
-                                Wall positions to place walls inside fuselage
-                            </xsd:documentation>
+                            <xsd:documentation>Points through which the walls run</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="wallSegments" type="wallSegmentsType">
                         <xsd:annotation>
-                            <xsd:documentation>
-                                List of wall segments
-                            </xsd:documentation>
+                            <xsd:documentation>Walls</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -52372,10 +52693,16 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Window assembly position</ddue:para>
+                        <ddue:para>Window in the structure of the fuselage</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>The position of a windows assembly</ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                A window in the structure, given by an element of the library that describes its size (<ddue:codeInline>cutOutType</ddue:codeInline>) and by its position on the fuselage.
+                                <ddue:codeInline>&lt;positionX&gt;</ddue:codeInline> is the x-coordinate of the window; <ddue:codeInline>&lt;positionZ&gt;</ddue:codeInline> and <ddue:codeInline>&lt;angleX&gt;</ddue:codeInline> give its height and its direction about the x-axis, but how the two place the window on the fuselage is not specified yet.
+                                New data describes windows as cut-outs of the fuselage (<ddue:codeInline>fuselageCutOutType</ddue:codeInline> of the type window), which place the opening and give its size in one place.
+                            </ddue:para>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -52385,27 +52712,22 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:all>
                     <xsd:element name="windowElementUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of the window element to be used
-                            </xsd:documentation>
+                            <xsd:documentation>UID of the window element of the structural elements</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="positionX" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>X position of window element on global x axis
-                            </xsd:documentation>
+                            <xsd:documentation>X-coordinate of the window [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="positionZ" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Z position of window element reference point
-                            </xsd:documentation>
+                            <xsd:documentation>Z-coordinate of the reference point of the window [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="angleX" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Angle around global x axis to define window
-                                position with respect to positionX and postionZ
-                            </xsd:documentation>
+                            <xsd:documentation>Angle about the x-axis [deg]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -52423,10 +52745,10 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Windows assembly</ddue:para>
+                        <ddue:para>Windows</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Assembly of windows</ddue:para>
+                        <ddue:para>The windows in the structure of the fuselage (<ddue:codeInline>windowAssemblyPositionType</ddue:codeInline>).</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -52436,7 +52758,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:sequence>
                     <xsd:element name="window" maxOccurs="unbounded" type="windowAssemblyPositionType">
                         <xsd:annotation>
-                            <xsd:documentation>Window position</xsd:documentation>
+                            <xsd:documentation>Window</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -52451,6 +52773,9 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     <ddue:summary>
                         <ddue:para>Windows</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>The window elements of the library (<ddue:codeInline>cutOutType</ddue:codeInline>).</ddue:para>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>

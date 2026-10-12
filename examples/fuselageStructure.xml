@@ -8,7 +8,7 @@
     xsi:noNamespaceSchemaLocation="../schema/cpacs_schema.xsd">
     <header>
         <name>Fuselage structure</name>
-        <description>Skin, stringers, frames and floors of the barrel around the forward cargo door of a short-range airliner fuselage.</description>
+        <description>Skin, stringers, frames and floors of the barrel around the forward cargo door of a short-range airliner fuselage, its pressure bulkheads with their frames, the walls of the bay of the main landing gear, and the structure of the cargo door.</description>
         <version>1.0.0</version>
         <versionInfos>
             <versionInfo version="1.0.0">
@@ -1446,6 +1446,30 @@
                                         </alignment>
                                     </framePosition>
                                 </frame>
+                                <frame uID="Fuselage_frameFwdBulkhead">
+                                    <framePosition uID="Fuselage_frameFwdBulkhead_position1">
+                                        <structuralElementUID>ZFrame</structuralElementUID>
+                                        <positionX>1.5</positionX>
+                                        <referenceY>0</referenceY>
+                                        <referenceZ>0</referenceZ>
+                                        <referenceAngle>0</referenceAngle>
+                                        <alignment uID="Fuselage_frameFwdBulkhead_position1_alignment">
+                                            <translationLocZ>0.025</translationLocZ>
+                                        </alignment>
+                                    </framePosition>
+                                </frame>
+                                <frame uID="Fuselage_frameAftBulkhead">
+                                    <framePosition uID="Fuselage_frameAftBulkhead_position1">
+                                        <structuralElementUID>ZFrame</structuralElementUID>
+                                        <positionX>20</positionX>
+                                        <referenceY>0</referenceY>
+                                        <referenceZ>0</referenceZ>
+                                        <referenceAngle>0</referenceAngle>
+                                        <alignment uID="Fuselage_frameAftBulkhead_position1_alignment">
+                                            <translationLocZ>0.025</translationLocZ>
+                                        </alignment>
+                                    </framePosition>
+                                </frame>
                             </frames>
                             <paxCrossBeams>
                                 <paxCrossBeam uID="Fuselage_paxCrossBeam1">
@@ -1947,6 +1971,84 @@
                                     </alignment>
                                 </floorPanel>
                             </floorPanels>
+                            <pressureBulkheads>
+                                <pressureBulkhead uID="Fuselage_fwdPressureBulkhead">
+                                    <frameUID>Fuselage_frameFwdBulkhead</frameUID>
+                                    <pressureBulkheadElementUID>FwdPressureBulkhead</pressureBulkheadElementUID>
+                                </pressureBulkhead>
+                                <pressureBulkhead uID="Fuselage_aftPressureBulkhead">
+                                    <frameUID>Fuselage_frameAftBulkhead</frameUID>
+                                    <pressureBulkheadElementUID>AftPressureBulkhead</pressureBulkheadElementUID>
+                                </pressureBulkhead>
+                            </pressureBulkheads>
+                            <walls>
+                                <wallPositions>
+                                    <wallPosition uID="Fuselage_mlgBayFwd">
+                                        <x>13.25</x>
+                                        <y>0</y>
+                                        <z>-0.75</z>
+                                    </wallPosition>
+                                    <wallPosition uID="Fuselage_mlgBayAft">
+                                        <x>15.4</x>
+                                        <y>0</y>
+                                        <z>-0.75</z>
+                                    </wallPosition>
+                                    <wallPosition uID="Fuselage_mlgBayKeel">
+                                        <x>15.4</x>
+                                        <y>0</y>
+                                        <z>-1.6</z>
+                                    </wallPosition>
+                                </wallPositions>
+                                <wallSegments>
+                                    <wallSegment uID="Fuselage_mlgBayCeiling">
+                                        <phi>90</phi>
+                                        <doubleSidedExtrusion>true</doubleSidedExtrusion>
+                                        <structuralWallElementUID>PressureWall</structuralWallElementUID>
+                                        <wallPositionUIDs>
+                                            <wallPositionUID>Fuselage_mlgBayFwd</wallPositionUID>
+                                            <wallPositionUID>Fuselage_mlgBayAft</wallPositionUID>
+                                        </wallPositionUIDs>
+                                    </wallSegment>
+                                    <wallSegment uID="Fuselage_mlgBayAftWall">
+                                        <phi>90</phi>
+                                        <doubleSidedExtrusion>true</doubleSidedExtrusion>
+                                        <structuralWallElementUID>PressureWall</structuralWallElementUID>
+                                        <wallPositionUIDs>
+                                            <wallPositionUID>Fuselage_mlgBayAft</wallPositionUID>
+                                            <wallPositionUID>Fuselage_mlgBayKeel</wallPositionUID>
+                                        </wallPositionUIDs>
+                                    </wallSegment>
+                                </wallSegments>
+                            </walls>
+                            <cargoDoors>
+                                <cargoDoor uID="Fuselage_cargoDoorFwdStructure">
+                                    <name>Forward cargo door</name>
+                                    <doorType>cargo</doorType>
+                                    <doorElementUID>CargoDoor</doorElementUID>
+                                    <startFrameUID>Fuselage_frame2</startFrameUID>
+                                    <endFrameUID>Fuselage_frame4</endFrameUID>
+                                    <startStringerUID>Fuselage_stringer210</startStringerUID>
+                                    <endStringerUID>Fuselage_stringer255</endStringerUID>
+                                </cargoDoor>
+                            </cargoDoors>
+                            <intercostals>
+                                <intercostal uID="Fuselage_cargoDoorSill">
+                                    <name>Sill beam</name>
+                                    <frontFrameUID>Fuselage_frame2</frontFrameUID>
+                                    <rearFrameUID>Fuselage_frame4</rearFrameUID>
+                                    <doorUID>Fuselage_cargoDoorFwdStructure</doorUID>
+                                    <positionRelZ>0.14</positionRelZ>
+                                    <structuralElementUID>ZFrame</structuralElementUID>
+                                </intercostal>
+                                <intercostal uID="Fuselage_cargoDoorHeader">
+                                    <name>Header beam</name>
+                                    <frontFrameUID>Fuselage_frame2</frontFrameUID>
+                                    <rearFrameUID>Fuselage_frame4</rearFrameUID>
+                                    <doorUID>Fuselage_cargoDoorFwdStructure</doorUID>
+                                    <positionRelZ>0.705</positionRelZ>
+                                    <structuralElementUID>ZFrame</structuralElementUID>
+                                </intercostal>
+                            </intercostals>
                         </structure>
                     </fuselage>
                 </fuselages>
@@ -2359,6 +2461,24 @@
                         <thickness>0.0032</thickness>
                     </materialDefinition>
                 </sheetBasedStructuralElement>
+                <sheetBasedStructuralElement uID="BulkheadFlat">
+                    <materialDefinition>
+                        <materialUID>Aluminium2024</materialUID>
+                        <thickness>0.002</thickness>
+                    </materialDefinition>
+                </sheetBasedStructuralElement>
+                <sheetBasedStructuralElement uID="BulkheadCalotte">
+                    <materialDefinition>
+                        <materialUID>Aluminium2024</materialUID>
+                        <thickness>0.0012</thickness>
+                    </materialDefinition>
+                </sheetBasedStructuralElement>
+                <sheetBasedStructuralElement uID="WallSheet">
+                    <materialDefinition>
+                        <materialUID>Aluminium2024</materialUID>
+                        <thickness>0.0025</thickness>
+                    </materialDefinition>
+                </sheetBasedStructuralElement>
                 <sheetBasedStructuralElement uID="FloorPanel">
                     <materialDefinition>
                         <materialUID>FloorPanelSandwich</materialUID>
@@ -2366,6 +2486,35 @@
                     </materialDefinition>
                 </sheetBasedStructuralElement>
             </sheetBasedStructuralElements>
+            <structuralWallElements>
+                <structuralWallElement uID="PressureWall">
+                    <sheetElementUID>WallSheet</sheetElementUID>
+                </structuralWallElement>
+            </structuralWallElements>
+            <pressureBulkheads>
+                <pressureBulkhead uID="FwdPressureBulkhead">
+                    <name>Forward pressure bulkhead</name>
+                    <sheetElementUID>BulkheadFlat</sheetElementUID>
+                    <reinforcementNumberVertical>5</reinforcementNumberVertical>
+                    <structuralElementVerticalUID>ZFrame</structuralElementVerticalUID>
+                    <reinforcementNumberHorizontal>3</reinforcementNumberHorizontal>
+                    <structuralElementHorizontalUID>TStringer</structuralElementHorizontalUID>
+                </pressureBulkhead>
+                <pressureBulkhead uID="AftPressureBulkhead">
+                    <name>Aft pressure bulkhead</name>
+                    <sheetElementUID>BulkheadCalotte</sheetElementUID>
+                    <bulkheadCalotteRadiusAtFrame>1.45</bulkheadCalotteRadiusAtFrame>
+                    <maxFlectionDepth>0.55</maxFlectionDepth>
+                    <reinforcementNumberRadial>16</reinforcementNumberRadial>
+                    <structuralElementRadialUID>TStringer</structuralElementRadialUID>
+                </pressureBulkhead>
+            </pressureBulkheads>
+            <doors>
+                <door uID="CargoDoor">
+                    <name>Cargo door</name>
+                    <filletRadius>0.15</filletRadius>
+                </door>
+            </doors>
         </structuralElements>
         <materials>
             <material uID="Aluminium2024">
