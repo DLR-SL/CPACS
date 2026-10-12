@@ -21110,8 +21110,11 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>List of fuselage fuel tanks.</ddue:para>
+                        <ddue:para>Fuel tanks of the fuselage</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>Fuel tanks inside the fuselage, each the volume of a compartment (<ddue:codeInline>fuselageFuelTankType</ddue:codeInline>). Tanks with a shape of their own, also in other components, are described at the level of the aircraft model (<ddue:codeInline>fuelTanksType</ddue:codeInline>).</ddue:para>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -21120,8 +21123,7 @@ cpacs@dlr.de
                 <xsd:sequence>
                     <xsd:element name="fuselageFuelTank" maxOccurs="unbounded" type="fuselageFuelTankType">
                         <xsd:annotation>
-                            <xsd:documentation>The fuselage fuel tank geometry is defined by a link to a fuselage geometry compartment.
-The fuel tank volume type should also be used for the wing fuel tank.</xsd:documentation>
+                            <xsd:documentation>Fuel tank</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -21134,12 +21136,19 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Definition of one fuselage fuel tank.</ddue:para>
+                        <ddue:para>Fuel tank in the fuselage</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>The definition of fuselage tanks is still preliminary.
-                            Currently, there is no link to any structural elements
-                        </ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                A fuel tank inside the fuselage whose shape is the volume of a compartment (<ddue:codeInline>compartmentType</ddue:codeInline>), referenced by <ddue:codeInline>&lt;compartmentUID&gt;</ddue:codeInline>: the volume enclosed by the boundary components of the compartment and the skin of the fuselage.
+                                <ddue:codeInline>&lt;volume&gt;</ddue:codeInline> gives the volume the shape encloses and the shares of it that are really available and usable (<ddue:codeInline>fuelTankVolumeType</ddue:codeInline>).
+                            </ddue:para>
+                            <ddue:para>
+                                The tank is described by its volume only; the walls and bulkheads that bound it belong to the compartment.
+                                Tanks with a shape of their own, e.g. cryogenic vessels, are described by vessels at the level of the aircraft model (<ddue:codeInline>fuelTanksType</ddue:codeInline>).
+                            </ddue:para>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -21159,12 +21168,12 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     </xsd:element>
                     <xsd:element name="compartmentUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Link to the tank geometry defined by a compartment</xsd:documentation>
+                            <xsd:documentation>UID of the compartment whose volume the tank is</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="volume" minOccurs="0" type="fuelTankVolumeType">
                         <xsd:annotation>
-                            <xsd:documentation>Volume</xsd:documentation>
+                            <xsd:documentation>Volumes of the tank</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
