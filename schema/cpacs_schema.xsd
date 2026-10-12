@@ -7210,10 +7210,10 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Center fuselage areas assembly</ddue:para>
+                        <ddue:para>Center fuselage areas</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Center fuselage area assembly</ddue:para>
+                        <ddue:para>The center fuselage areas of the fuselage (<ddue:codeInline>centerFuselageAreaType</ddue:codeInline>), usually one.</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -7239,7 +7239,19 @@ cpacs@dlr.de
                         <ddue:para>Center fuselage area</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Wing box assemblies</ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                The center fuselage area is the region where the wing box and the bay of the main landing gear interrupt the structure of the fuselage, and where the loads of the wing enter it.
+                                It is described by references to frames, stringers, pressure bulkheads and structural elements; a structural model, e.g. a finite element model, generates its parts from them.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Options</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The area is described in one of three ways: as a simple area, the cut-out of the wing box in the shell with rigid edges, e.g. for the analysis of a standard section of the fuselage; as the detailed area of a low-wing aircraft (<ddue:codeInline>centerFuselageLowWingConfigurationType</ddue:codeInline>); or as the detailed area of a high-wing aircraft (<ddue:codeInline>centerFuselageHighWingConfigurationType</ddue:codeInline>), a draft definition.
+                                The simple area extends along the fuselage from the frame <ddue:codeInline>&lt;startFrameUID&gt;</ddue:codeInline> to the frame <ddue:codeInline>&lt;endFrameUID&gt;</ddue:codeInline>, and around it from the stringer <ddue:codeInline>&lt;startStringerUID&gt;</ddue:codeInline> in the direction of increasing <ddue:codeInline>&lt;referenceAngle&gt;</ddue:codeInline> to the stringer <ddue:codeInline>&lt;endStringerUID&gt;</ddue:codeInline>, as a skin panel does (<ddue:codeInline>skinSegmentType</ddue:codeInline>).
+                            </ddue:para>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -7258,26 +7270,22 @@ cpacs@dlr.de
                         </xsd:annotation>
                         <xsd:element name="startFrameUID" type="stringUIDBaseType">
                             <xsd:annotation>
-                                <xsd:documentation>UID of first frame in rigid center fuselage
-                                    area</xsd:documentation>
+                                <xsd:documentation>UID of the frame at the forward edge of the simple area</xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
                         <xsd:element name="endFrameUID" type="stringUIDBaseType">
                             <xsd:annotation>
-                                <xsd:documentation>UID of last frame in rigid center fuselage
-                                    area</xsd:documentation>
+                                <xsd:documentation>UID of the frame at the rear edge of the simple area</xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
                         <xsd:element name="startStringerUID" type="stringUIDBaseType">
                             <xsd:annotation>
-                                <xsd:documentation>UID of start stringer to define center
-                                    fuselage area</xsd:documentation>
+                                <xsd:documentation>UID of the stringer from which the simple area extends in the direction of increasing referenceAngle</xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
                         <xsd:element name="endStringerUID" type="stringUIDBaseType">
                             <xsd:annotation>
-                                <xsd:documentation>UID of end stringer to define center fuselage
-                                    area</xsd:documentation>
+                                <xsd:documentation>UID of the stringer at which the simple area ends</xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
                     </xsd:sequence>
@@ -7318,8 +7326,17 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Center fuselage high-wing configuration</ddue:para>
+                        <ddue:para>Center fuselage area of a high-wing aircraft (draft)</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>
+                                A draft definition for high-wing aircraft, e.g. with a strut-braced wing.
+                                The wing passes over the fuselage through a cut-out of the upper shell (<ddue:codeInline>wingInterfaceDefinitionsType</ddue:codeInline>), the main landing gear sits in a bay of the fuselage (<ddue:codeInline>landingGearInterfaceDefinitionsType</ddue:codeInline>), and a main strut may connect the wing to the fuselage (<ddue:codeInline>mainStrutInterfaceDefinitionsType</ddue:codeInline>).
+                                The parts are given by references like those of the low-wing area (<ddue:codeInline>centerFuselageLowWingConfigurationType</ddue:codeInline>); how they are to be read is not specified beyond their names.
+                            </ddue:para>
+                        </ddue:content>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -7328,17 +7345,17 @@ cpacs@dlr.de
                 <xsd:all>
                     <xsd:element name="wingInterfaceDefinitions" type="wingInterfaceDefinitionsType">
                         <xsd:annotation>
-                            <xsd:documentation>Definitions of the wing interface</xsd:documentation>
+                            <xsd:documentation>Cut-out through which the wing passes</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="landingGearInterfaceDefinitions" minOccurs="0" type="landingGearInterfaceDefinitionsType">
                         <xsd:annotation>
-                            <xsd:documentation>Definitions of the landing gear interface</xsd:documentation>
+                            <xsd:documentation>Bay of the main landing gear</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="mainStrutInterfaceDefinitions" minOccurs="0" type="mainStrutInterfaceDefinitionsType">
                         <xsd:annotation>
-                            <xsd:documentation>Definitions of the main strut interface</xsd:documentation>
+                            <xsd:documentation>Attachment of the main strut</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -7356,11 +7373,21 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Center fuselage keel beam</ddue:para>
+                        <ddue:para>Keel beam of the center fuselage area</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>CenterFuselage / Keelbeam definition between mainframe1
-                            und mainframe3</ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                The keel beam carries the bending of the fuselage across the cut-out of the wing box and the bay of the main landing gear, along the bottom from the first to the third main frame.
+                                It is a box between the stringers <ddue:codeInline>&lt;keelWidthStringerUID&gt;</ddue:codeInline> on both sides, mirrored at the x-z plane, and up to the height of the stringer <ddue:codeInline>&lt;keelHeightStringerUID&gt;</ddue:codeInline>; its sheet is <ddue:codeInline>&lt;sheetElementUID&gt;</ddue:codeInline>.
+                            </ddue:para>
+                            <ddue:para>
+                                At its ends, triangular connections lead the loads into the skin.
+                                The horizontal connections reach to the frames <ddue:codeInline>&lt;hFwdConLengthFrameUID&gt;</ddue:codeInline> and <ddue:codeInline>&lt;hRearConLengthFrameUID&gt;</ddue:codeInline>, at the heights of the stringers <ddue:codeInline>&lt;hFwdConHeightStringerUID&gt;</ddue:codeInline> and <ddue:codeInline>&lt;hRearConHeightStringerUID&gt;</ddue:codeInline>; the vertical connections reach to the frames <ddue:codeInline>&lt;vFwdConLengthFrameUID&gt;</ddue:codeInline> and <ddue:codeInline>&lt;vRearConLengthFrameUID&gt;</ddue:codeInline>.
+                                <ddue:codeInline>&lt;startCwbConFrameUID&gt;</ddue:codeInline> and <ddue:codeInline>&lt;endCwbConFrameUID&gt;</ddue:codeInline> bound its connection to the center wing box.
+                                The exact shape of the connections is not specified yet.
+                            </ddue:para>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -7370,7 +7397,7 @@ cpacs@dlr.de
                 <xsd:all>
                     <xsd:element name="sheetElementUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of the structural sheet element used for the keel beam</xsd:documentation>
+                            <xsd:documentation>UID of the sheetBasedStructuralElement of the keel beam</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="keelWidthStringerUID" type="stringUIDBaseType">
@@ -7463,11 +7490,16 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Center fuselage lateral panels</ddue:para>
+                        <ddue:para>Lateral panels of the center fuselage area</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>CenterFuselage / lateral Panel definition between
-                            mainframe2 und mainframe3</ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                The lateral panels stiffen the cut-out of the bay of the main landing gear on each side: a flat forward panel connects the lower edge of the side box to the rear spar, and a rear panel follows the curvature of the fuselage.
+                                They meet at the frame <ddue:codeInline>&lt;transitionFrameUID&gt;</ddue:codeInline>.
+                                <ddue:codeInline>&lt;fwdLatPanelLowY&gt;</ddue:codeInline> and <ddue:codeInline>&lt;rearLatPanelHeightStringerUID&gt;</ddue:codeInline> bound the forward panel below and the rear panel in height; how exactly is not specified yet.
+                            </ddue:para>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -7482,32 +7514,32 @@ cpacs@dlr.de
                     </xsd:element>
                     <xsd:element name="fwdLatPanelLowY" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Lower y position of the forward lateral panel</xsd:documentation>
+                            <xsd:documentation>Y-coordinate of the lower edge of the forward lateral panel [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="fwdLatPanelSheetUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of the structural sheet element used for the forward lateral panel</xsd:documentation>
+                            <xsd:documentation>UID of the sheetBasedStructuralElement of the forward lateral panel</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="fwdLatPanelReinforcementUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of the reinforcement element of the forward lateral panel</xsd:documentation>
+                            <xsd:documentation>UID of the profileBasedStructuralElement of the reinforcements of the forward lateral panel</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="rearLatPanelHeightStringerUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of the stringer defining the height of the rear lateral panel</xsd:documentation>
+                            <xsd:documentation>UID of the stringer at the height of the rear lateral panel</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="rearLatPanelSheetUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of the structural sheet element used for the rear lateral panel</xsd:documentation>
+                            <xsd:documentation>UID of the sheetBasedStructuralElement of the rear lateral panel</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="rearLatPanelReinforcementUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of the reinforcement element of the rear lateral panel</xsd:documentation>
+                            <xsd:documentation>UID of the profileBasedStructuralElement of the reinforcements of the rear lateral panel</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -7525,11 +7557,14 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Center fuselage longitudinal floor beams connection</ddue:para>
+                        <ddue:para>Connection of the longitudinal floor beams to the pressure floor</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>CenterFuselage / Long. floor beam connection
-                        </ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                A simplified representation of the portal frames that carry the cabin floor over the wing box and the bay: vertical struts with the profile of <ddue:codeInline>&lt;connectionProfileUID&gt;</ddue:codeInline> connect the longitudinal floor beams to the pressure floor.
+                            </ddue:para>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -7539,7 +7574,7 @@ cpacs@dlr.de
                 <xsd:all>
                     <xsd:element name="connectionProfileUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of the profile used for the connection of the longitudinal floor beams</xsd:documentation>
+                            <xsd:documentation>UID of the structural element of the vertical struts</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -7557,8 +7592,66 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Center fuselage low-wing configuration</ddue:para>
+                        <ddue:para>Center fuselage area of a low-wing aircraft</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>
+                                The detailed center fuselage area of a low-wing transport aircraft: the wing box passes through the fuselage below the cabin floor, and the bay of the main landing gear follows directly behind it.
+                                The definition describes the parts that carry the loads around this cut-out of the shell.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Parts</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:list class="bullet">
+                                <ddue:listItem>
+                                    <ddue:para>
+                                        <ddue:codeInline>&lt;centerFuselageMainFrames&gt;</ddue:codeInline>: three main frames bound the area, the first and the second at the front and the rear spar of the wing box, the third at the rear end of the bay. Flat pressure bulkheads at the first and the third separate the pressurised cabin from the wing box and the bay.</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>
+                                        <ddue:codeInline>&lt;centerFuselagePressureFloor&gt;</ddue:codeInline>: the horizontal pressure boundary over the bay, between the second and the third main frame.</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>
+                                        <ddue:codeInline>&lt;centerFuselageSidebox&gt;</ddue:codeInline>: box-shaped longitudinal reinforcements on both sides of the bay, between the pressure floor and the skin, from the rear spar to the third main frame; the pressure floor ends at them.</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>
+                                        <ddue:codeInline>&lt;centerFuselageLateralPanels&gt;</ddue:codeInline>: triangular panels on each side that connect the side boxes to the rear spar.</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>
+                                        <ddue:codeInline>&lt;centerFuselageKeelbeam&gt;</ddue:codeInline>: a box-shaped beam along the bottom from the first to the third main frame that carries the bending of the fuselage across the cut-out, with triangular ends that lead the loads into the skin.</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>
+                                        <ddue:codeInline>&lt;centerFuselageLongFloorBeamsConnection&gt;</ddue:codeInline>: the connection of the longitudinal floor beams to the pressure floor, a simplified representation of the portal frames.</ddue:para>
+                                </ddue:listItem>
+                            </ddue:list>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="centerFuselageArea"/>
+                            </ddue:mediaLink>
+                            <ddue:para>
+                                The figure illustrates the parts in the fuselage of the examples, with the main frames at the spars of the wing at x = 10.75 m and 13.25 m and at the end of the bay at x = 15.4 m.
+                                It shows the layout, not the parameters: the sizes of the parts are chosen for the illustration.
+                            </ddue:para>
+                            <ddue:para>
+                                How several parameters of the parts are to be read is not specified yet; the pages of the parts say which.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Rules</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:list class="bullet">
+                                <ddue:listItem>
+                                    <ddue:para>The first and the second main frame lie at the front and the rear spar of the wing box where it passes through the fuselage.</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>A stringer that gives a height, of the pressure floor or of the keel beam, runs at a constant height along the area.</ddue:para>
+                                </ddue:listItem>
+                            </ddue:list>
+                        </ddue:content>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -7567,32 +7660,32 @@ cpacs@dlr.de
                 <xsd:all>
                     <xsd:element name="centerFuselageMainFrames" type="centerFuselageMainFramesType">
                         <xsd:annotation>
-                            <xsd:documentation>Main frames bounding the center fuselage</xsd:documentation>
+                            <xsd:documentation>Main frames that bound the area, and their pressure bulkheads</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="centerFuselagePressureFloor" type="centerFuselagePressureFloorType">
                         <xsd:annotation>
-                            <xsd:documentation>Pressure floor</xsd:documentation>
+                            <xsd:documentation>Pressure floor over the bay of the main landing gear</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="centerFuselageSidebox" type="centerFuselageSideboxType">
                         <xsd:annotation>
-                            <xsd:documentation>Side box</xsd:documentation>
+                            <xsd:documentation>Side boxes beside the bay</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="centerFuselageLateralPanels" type="centerFuselageLateralPanelsType">
                         <xsd:annotation>
-                            <xsd:documentation>Lateral panels</xsd:documentation>
+                            <xsd:documentation>Lateral panels between the side boxes and the rear spar</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="centerFuselageKeelbeam" type="centerFuselageKeelbeamType">
                         <xsd:annotation>
-                            <xsd:documentation>Keel beam</xsd:documentation>
+                            <xsd:documentation>Keel beam along the bottom</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="centerFuselageLongFloorBeamsConnection" type="centerFuselageLongFloorBeamsConnectionType">
                         <xsd:annotation>
-                            <xsd:documentation>Connection of the longitudinal floor beams</xsd:documentation>
+                            <xsd:documentation>Connection of the longitudinal floor beams to the pressure floor</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -7610,11 +7703,15 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Center fuselage main frames</ddue:para>
+                        <ddue:para>Main frames of the center fuselage area</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>CenterFuselage / main frame definition, containing
-                            mainframe and pressure Bulkhead definitions</ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                The three main frames bound the center fuselage area: the first at the front spar and the second at the rear spar of the wing box, the third at the rear end of the bay of the main landing gear.
+                                At the first and the third, flat pressure bulkheads (<ddue:codeInline>pressureBulkheadAssemblyPositionType</ddue:codeInline>) close the pressurised cabin against the wing box and the bay.
+                            </ddue:para>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -7624,7 +7721,7 @@ cpacs@dlr.de
                 <xsd:all>
                     <xsd:element name="mainFrame1UID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of the first main frame</xsd:documentation>
+                            <xsd:documentation>UID of the main frame at the front spar</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="mainFrame1PressureBulkheadUID" type="stringUIDBaseType">
@@ -7634,12 +7731,12 @@ cpacs@dlr.de
                     </xsd:element>
                     <xsd:element name="mainFrame2UID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of the second main frame</xsd:documentation>
+                            <xsd:documentation>UID of the main frame at the rear spar</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="mainFrame3UID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of the third main frame</xsd:documentation>
+                            <xsd:documentation>UID of the main frame at the rear end of the bay of the main landing gear</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="mainFrame3PressureBulkheadUID" type="stringUIDBaseType">
@@ -7662,11 +7759,17 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Center fuselage pressure floor</ddue:para>
+                        <ddue:para>Pressure floor over the bay of the main landing gear</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>CenterFuselage / pressure floor definition between
-                            mainframe2 und mainframe3</ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                The pressure floor closes the pressurised cabin downwards over the bay of the main landing gear, between the second and the third main frame.
+                                It lies at the height of the stringer <ddue:codeInline>&lt;positionZStringerUID&gt;</ddue:codeInline> and ends at the side boxes on both sides.
+                                It consists of arched membranes of the sheet <ddue:codeInline>&lt;sheetElementUID&gt;</ddue:codeInline>, reinforced by longitudinal beams of the element <ddue:codeInline>&lt;reinforcementElementUID&gt;</ddue:codeInline>.
+                                How <ddue:codeInline>&lt;membraneRadius&gt;</ddue:codeInline> shapes the membranes, and which frame <ddue:codeInline>&lt;startHorizontalFrameUID&gt;</ddue:codeInline> names, is not specified yet.
+                            </ddue:para>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -7676,27 +7779,27 @@ cpacs@dlr.de
                 <xsd:all>
                     <xsd:element name="positionZStringerUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of the stringer defining the z position of the pressure floor</xsd:documentation>
+                            <xsd:documentation>UID of the stringer at the height of the pressure floor</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="startHorizontalFrameUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of the horizontal frame at which the pressure floor starts</xsd:documentation>
+                            <xsd:documentation>UID of a frame at which the pressure floor starts (meaning not specified yet)</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="membraneRadius" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Radius of the pressure floor membrane</xsd:documentation>
+                            <xsd:documentation>Radius of the arched membranes [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="sheetElementUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of the structural sheet element used for the pressure floor</xsd:documentation>
+                            <xsd:documentation>UID of the sheetBasedStructuralElement of the membranes</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="reinforcementElementUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of the reinforcement element of the pressure floor</xsd:documentation>
+                            <xsd:documentation>UID of the profileBasedStructuralElement of the longitudinal reinforcements</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -7714,11 +7817,15 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Center fuselage side box</ddue:para>
+                        <ddue:para>Side boxes of the center fuselage area</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>CenterFuselage / side box definition between mainframe2
-                            und mainframe3</ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                The side boxes are box-shaped longitudinal reinforcements on both sides of the bay of the main landing gear, between the pressure floor and the skin, from the rear spar to the third main frame; the pressure floor ends at them.
+                                <ddue:codeInline>&lt;sideboxWidthFactor&gt;</ddue:codeInline> gives their width relative to a reference that is not specified yet.
+                            </ddue:para>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -7728,12 +7835,12 @@ cpacs@dlr.de
                 <xsd:all>
                     <xsd:element name="sideboxWidthFactor" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Width of the side box relative to the fuselage width</xsd:documentation>
+                            <xsd:documentation>Width of the side boxes relative to a reference not specified yet [-]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="sheetElementUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of the structural sheet element used for the side box</xsd:documentation>
+                            <xsd:documentation>UID of the sheetBasedStructuralElement of the side boxes</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -21378,6 +21485,9 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     <ddue:summary>
                         <ddue:para>Structural mounts</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>The structural mounts of the fuselage (<ddue:codeInline>structuralMountType</ddue:codeInline>).</ddue:para>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -21445,6 +21555,13 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                             <ddue:para>
                                 The structure of a door is the area of the shell between two frames and two stringers in which the door sits (<ddue:codeInline>doorAssemblyPositionType</ddue:codeInline>), and intercostals between the frames reinforce it (<ddue:codeInline>intercostalPositionType</ddue:codeInline>).
                                 Windows (<ddue:codeInline>windowAssemblyPositionType</ddue:codeInline>) and general structural members (<ddue:codeInline>generalStructuralMemberType</ddue:codeInline>) are listed as well; for new data, the openings of doors and windows are cut-outs of the fuselage (<ddue:codeInline>fuselageCutOutType</ddue:codeInline>).
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Load introduction and connections</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The center fuselage area (<ddue:codeInline>centerFuselageAreaType</ddue:codeInline>) and the tailplane attachment area (<ddue:codeInline>tailplaneAttachmentAreaType</ddue:codeInline>) describe the structure where the wing and the tailplanes are attached.
+                                Interfaces between members (<ddue:codeInline>interfaceDefinitionsType</ddue:codeInline>), groups of UIDs (<ddue:codeInline>uIDGroupDefinitionType</ddue:codeInline>) and structural mounts (<ddue:codeInline>structuralMountType</ddue:codeInline>) serve structural models built from the data.
                             </ddue:para>
                         </ddue:content>
                     </ddue:remarks>
@@ -23791,11 +23908,15 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>HTP forward interface definition</ddue:para>
+                        <ddue:para>Forward attachment of the horizontal tailplane</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Definition of the interface of forward HTP attachment
-                        </ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                The mounting structure of the trim actuator: plates in the x- and in the z-direction, a reinforcement of the z-plate, and an element that connects the actuator to the plates.
+                                <ddue:codeInline>&lt;htpFwdReinfRelWidth&gt;</ddue:codeInline> and <ddue:codeInline>&lt;htpFwdPlateWidth&gt;</ddue:codeInline> give widths relative to a reference that is not specified yet; <ddue:codeInline>&lt;htpFwdPlateWidth&gt;</ddue:codeInline> applies only to the layout Type1 (<ddue:codeInline>tailplaneAttachmentAreaType</ddue:codeInline>).
+                            </ddue:para>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -23809,40 +23930,32 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     </xsd:annotation>
                     <xsd:element name="htpFwdReinfRelWidth" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Relative width of reinforcement at fwd HTP
-                                attachment, between 0.0 and 1.0</xsd:documentation>
+                            <xsd:documentation>Width of the reinforcement, relative, from 0 to 1 [-]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="htpFwdPlateWidth" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Relative width of plate at fwd HTP attachment
-                                (only applicable for Type1 model), between 0.0 and 1.0, smaller
-                                than htpPlateWidth</xsd:documentation>
+                            <xsd:documentation>Width of the plate, relative, from 0 to 1, only for the layout Type1 [-]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="htpFwdPlateXElemUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of panel element at HTP forward attachment
-                                in x-direction (shell elements)</xsd:documentation>
+                            <xsd:documentation>UID of the sheetBasedStructuralElement of the plate in the x-direction</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="htpFwdPlateZElemUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of panel element at HTP forward attachment
-                                in z-direction (shell elements)</xsd:documentation>
+                            <xsd:documentation>UID of the sheetBasedStructuralElement of the plate in the z-direction</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="htpFwdPlateZReinfStructElemUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of reinforcements for panel element at HTP
-                                forward attachment in z-direction (beam elements)
-                            </xsd:documentation>
+                            <xsd:documentation>UID of the profileBasedStructuralElement of the reinforcement of the plate in the z-direction</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="htpFwdAttachmentStructElemUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of the element to fix HTP to fuselage
-                                (beam elements)</xsd:documentation>
+                            <xsd:documentation>UID of the structural element that connects the trim actuator to the fuselage</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -23860,10 +23973,18 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>HTP interface definition</ddue:para>
+                        <ddue:para>Attachment of the horizontal tailplane</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Definition of the interface of HTP</ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                The horizontal tailplane is attached to two reinforced frames: at <ddue:codeInline>&lt;htpFrame1UID&gt;</ddue:codeInline> by its trim actuator (<ddue:codeInline>htpFwdInterfaceDefType</ddue:codeInline>), at <ddue:codeInline>&lt;htpFrame2UID&gt;</ddue:codeInline> by two bolts on its hinge line.
+                                The cut-out of the fuselage is sized to allow the trim range from <ddue:codeInline>&lt;htpAlphaDown&gt;</ddue:codeInline> to <ddue:codeInline>&lt;htpAlphaUp&gt;</ddue:codeInline>, and it is reinforced by crossbeams, diagonal beams and side beams (<ddue:codeInline>htpStructElemDefType</ddue:codeInline>).
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:codeInline>&lt;htpAreaToleranceX&gt;</ddue:codeInline>, <ddue:codeInline>&lt;htpAreaToleranceY&gt;</ddue:codeInline> and <ddue:codeInline>&lt;htpAreaToleranceZ&gt;</ddue:codeInline> are tolerances for checking that the rear attachment of the tailplane fits the frame <ddue:codeInline>&lt;htpFrame2UID&gt;</ddue:codeInline>.
+                            </ddue:para>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -23877,67 +23998,52 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     </xsd:annotation>
                     <xsd:element name="htpFrame1UID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of the fuselage frame at the forward HTP
-                                attachment
-                            </xsd:documentation>
+                            <xsd:documentation>UID of the frame at the forward attachment (trim actuator)</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="htpFrame2UID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of the fuselage frame at the backward HTP
-                                attachment
-                            </xsd:documentation>
+                            <xsd:documentation>UID of the frame at the rear attachment (hinge line)</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="htpAlphaUp" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Maximum HTP deflection (nose up in
-                                degrees)
-                            </xsd:documentation>
+                            <xsd:documentation>Largest trim deflection, nose up [deg]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="htpAlphaDown" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Maximum HTP deflection (nose down in
-                                degrees)
-                            </xsd:documentation>
+                            <xsd:documentation>Largest trim deflection, nose down [deg]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="htpReinfAngle" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Angle of the reinforcements at backward HTP
-                                attachment
-                                (in degrees)
-                            </xsd:documentation>
+                            <xsd:documentation>Angle of the reinforcements at the rear attachment [deg]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="htpAreaToleranceX" minOccurs="0" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Area (absolute) in x-direction around htpFrame2UID where the HTP attachmentpoint has correct position ==&gt; check and potentially warning message</xsd:documentation>
+                            <xsd:documentation>Tolerance on the x-position of the rear attachment around its frame [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="htpAreaToleranceY" minOccurs="0" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Area (absolute) in y-direction around the outer edge of htpFrame2UID where the HTP attachmentpoint has correct y-position ==&gt; check and potentially warning message
-                            </xsd:documentation>
+                            <xsd:documentation>Tolerance on the y-position of the rear attachment around the outer edge of its frame [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="htpAreaToleranceZ" minOccurs="0" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Allowed z-position for rear HTP attachment relative to total frame height ==&gt; check and potentially warning message ==&gt; check and potentially warning message
-                            </xsd:documentation>
+                            <xsd:documentation>Allowed z-position of the rear attachment relative to the height of its frame [-]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="htpStructuralElementDefinitions" type="htpStructElemDefType">
                         <xsd:annotation>
-                            <xsd:documentation>HTP structural elements
-                            </xsd:documentation>
+                            <xsd:documentation>Reinforcement of the cut-out</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="htpForwardInterfaceDefinitions" type="htpFwdInterfaceDefType">
                         <xsd:annotation>
-                            <xsd:documentation>HTP forward attachment to structure
-                            </xsd:documentation>
+                            <xsd:documentation>Forward attachment (trim actuator)</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -23955,11 +24061,15 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>HTP structural element definitions</ddue:para>
+                        <ddue:para>Reinforcement of the cut-out of the horizontal tailplane</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>definition of structural elements in HTP attachment
-                        </ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                The elements of the framework around the cut-out: front and rear crossbeams, diagonal beams, side beams, and the reinforcements of the upper and the lower edge of the cut-out.
+                                Without <ddue:codeInline>&lt;htpCutoutReinfLowerStructElemUID&gt;</ddue:codeInline>, the lower edge has the element of the upper one.
+                            </ddue:para>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -23997,15 +24107,12 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     </xsd:element>
                     <xsd:element name="htpCutoutReinfUpperStructElemUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of structural element for upper HTP cutout
-                                reinforcement beams, also used for lower cutout reinforcement,
-                                when not explicitly defined</xsd:documentation>
+                            <xsd:documentation>UID of the structural element of the reinforcement of the upper edge of the cut-out, and of the lower edge without htpCutoutReinfLowerStructElemUID</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="htpCutoutReinfLowerStructElemUID" minOccurs="0" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of structural element for lower HTP cutout
-                                reinforcement beams (optional)</xsd:documentation>
+                            <xsd:documentation>UID of the structural element of the reinforcement of the lower edge of the cut-out</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -24316,10 +24423,15 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Structural element interface definitions</ddue:para>
+                        <ddue:para>Interfaces between structural members</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Connections between structural elements</ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                Connections between the structural members of the fuselage for a structural model: riveted joints (<ddue:codeInline>rivetJointAreaAssemblyPositionType</ddue:codeInline>) and tied interfaces (<ddue:codeInline>tiedInterfaceType</ddue:codeInline>).
+                                <ddue:codeInline>&lt;automaticInterfaceGeneration&gt;</ddue:codeInline> lets a tool generate the interfaces itself; this option is a draft.
+                            </ddue:para>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -24329,8 +24441,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:all>
                     <xsd:element name="automaticInterfaceGeneration" minOccurs="0" type="booleanBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Flag for automatic generation of interface
-                                definitions (draft version)</xsd:documentation>
+                            <xsd:documentation>Whether a tool generates the interfaces itself (draft)</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="rivetJointAreas" minOccurs="0" type="rivetJointAreasAssemblyType">
@@ -24932,11 +25043,10 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Landing gear interface definitions</ddue:para>
+                        <ddue:para>Bay of the main landing gear of a high-wing aircraft</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>CenterFuselage landing gear interface definitions
-                        </ddue:para>
+                        <ddue:para>The bay of the main landing gear in the fuselage of a high-wing aircraft, between two main frames; its parts correspond to those of the low-wing center fuselage area (<ddue:codeInline>centerFuselageLowWingConfigurationType</ddue:codeInline>).</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -24989,11 +25099,10 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Landing gear interface keel beam</ddue:para>
+                        <ddue:para>Keel beam of the landing gear bay</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>HighWingCenterFuselage / Keelbeam definition between
-                            mainframe1 und mainframe2</ddue:para>
+                        <ddue:para>As <ddue:codeInline>centerFuselageKeelbeamType</ddue:codeInline>, for the bay of the main landing gear of a high-wing aircraft between its two main frames.</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -25081,11 +25190,10 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Landing gear interface lateral panels</ddue:para>
+                        <ddue:para>Lateral panels of the landing gear bay</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>HighWingCenterFuselage / lateral Panel definition
-                            between mainframe1 und mainframe2</ddue:para>
+                        <ddue:para>As <ddue:codeInline>centerFuselageLateralPanelsType</ddue:codeInline>, for the bay of the main landing gear of a high-wing aircraft between its two main frames.</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -25143,11 +25251,10 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Landing gear interface longitudinal floor beams connection</ddue:para>
+                        <ddue:para>Connection of the longitudinal floor beams in the landing gear bay</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>HighWingCenterFuselage / Long. floor beam connection
-                        </ddue:para>
+                        <ddue:para>As <ddue:codeInline>centerFuselageLongFloorBeamsConnectionType</ddue:codeInline>, for the bay of the main landing gear of a high-wing aircraft between its two main frames.</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -25175,11 +25282,10 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Landing gear interface main frames</ddue:para>
+                        <ddue:para>Main frames of the landing gear bay</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>High wing main frame definition, containing mainframe
-                            UIDs</ddue:para>
+                        <ddue:para>As <ddue:codeInline>centerFuselageMainFramesType</ddue:codeInline>, for the bay of the main landing gear of a high-wing aircraft between its two main frames.</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -25222,11 +25328,10 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Landing gear interface pressure floor</ddue:para>
+                        <ddue:para>Pressure floor of the landing gear bay</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>High Wing Center Fuselage / pressure floor definition
-                            between mainframe1 und mainframe2</ddue:para>
+                        <ddue:para>As <ddue:codeInline>centerFuselagePressureFloorType</ddue:codeInline>, for the bay of the main landing gear of a high-wing aircraft between its two main frames.</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -25269,11 +25374,10 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Landing gear interface side box</ddue:para>
+                        <ddue:para>Side boxes of the landing gear bay</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>HighWingCenterFuselage / side box definition between
-                            mainframe1 und mainframe2</ddue:para>
+                        <ddue:para>As <ddue:codeInline>centerFuselageSideboxType</ddue:codeInline>, for the bay of the main landing gear of a high-wing aircraft between its two main frames.</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -27309,11 +27413,10 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Main strut interface definitions</ddue:para>
+                        <ddue:para>Attachment of the main strut</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>HighWingCenterFuselage main strut interface definitions
-                        </ddue:para>
+                        <ddue:para>The attachment of the main strut of a strut-braced wing, carried by the wing <ddue:codeInline>&lt;mainStrutWingUID&gt;</ddue:codeInline>, to the fuselage (<ddue:codeInline>mainStrutWingFuselageAttachmentType</ddue:codeInline>).</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -27323,7 +27426,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:sequence>
                     <xsd:element name="mainStrutWingUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Reference to the wing carrying the main strut</xsd:documentation>
+                            <xsd:documentation>UID of the wing that carries the main strut</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="mainStrutWingFuselageAttachment" maxOccurs="unbounded" type="mainStrutWingFuselageAttachmentType">
@@ -27346,11 +27449,10 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Main strut wing-fuselage attachment</ddue:para>
+                        <ddue:para>Attachment of the main strut to the fuselage</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>HighWingCenterFuselage / main strut attachment to
-                            fuselage frame and stringer</ddue:para>
+                        <ddue:para>The attachment of a pin of the main strut (<ddue:codeInline>&lt;mainStrutWingAttachmentPinUID&gt;</ddue:codeInline>) to the fuselage at a frame and a stringer, with the structural element <ddue:codeInline>&lt;structuralElementUID&gt;</ddue:codeInline>.</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -27375,7 +27477,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     </xsd:element>
                     <xsd:element name="structuralElementUID" minOccurs="0" type="stringBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Reference to the structural element that comprises this connection </xsd:documentation>
+                            <xsd:documentation>UID of the structural element of the attachment</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -38756,8 +38858,16 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Rivet joint area assembly position</ddue:para>
+                        <ddue:para>Riveted joint</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>
+                                Structural members joined by rivets: <ddue:codeInline>&lt;structuralMemberUID&gt;</ddue:codeInline> lists the joined members, and <ddue:codeInline>&lt;maxRivetLength&gt;</ddue:codeInline> limits the length of the rivets.
+                                <ddue:codeInline>&lt;rivetJointAreaUID&gt;</ddue:codeInline> references the definition of the joint; which kind of element it names — presumably a rivet of the library (<ddue:codeInline>rivetType</ddue:codeInline>) — is not specified yet.
+                            </ddue:para>
+                        </ddue:content>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -38766,17 +38876,17 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:sequence>
                     <xsd:element name="rivetJointAreaUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Reference to the rivet joint area</xsd:documentation>
+                            <xsd:documentation>UID of the definition of the joint, presumably a rivet of the library</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="structuralMemberUID" maxOccurs="unbounded" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Reference to a structural member joined</xsd:documentation>
+                            <xsd:documentation>UID of a joined structural member</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="maxRivetLength" minOccurs="0" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Maximum length</xsd:documentation>
+                            <xsd:documentation>Maximum length of the rivets [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -38789,10 +38899,10 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Rivet joint areas assembly</ddue:para>
+                        <ddue:para>Riveted joints</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Rivet joint area assemblies</ddue:para>
+                        <ddue:para>The riveted joints between structural members (<ddue:codeInline>rivetJointAreaAssemblyPositionType</ddue:codeInline>).</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -38802,7 +38912,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:sequence>
                     <xsd:element name="rivetJointArea" maxOccurs="unbounded" type="rivetJointAreaAssemblyPositionType">
                         <xsd:annotation>
-                            <xsd:documentation>Rivet joint area</xsd:documentation>
+                            <xsd:documentation>Riveted joint</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -38817,6 +38927,9 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     <ddue:summary>
                         <ddue:para>Rivets</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>The rivets of the library (<ddue:codeInline>rivetType</ddue:codeInline>).</ddue:para>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -38840,6 +38953,14 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     <ddue:summary>
                         <ddue:para>Rivet</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>
+                                A kind of rivet and its strength.
+                                The unit of <ddue:codeInline>&lt;tensileStrength&gt;</ddue:codeInline> and <ddue:codeInline>&lt;shearStrength&gt;</ddue:codeInline> is not specified yet.
+                            </ddue:para>
+                        </ddue:content>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -38858,14 +38979,12 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     </xsd:element>
                     <xsd:element name="tensileStrength" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Tensile Strength of the rivet type
-                            </xsd:documentation>
+                            <xsd:documentation>Tensile strength of a rivet</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="shearStrength" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Shear Strength of the rivet type
-                            </xsd:documentation>
+                            <xsd:documentation>Shear strength of a rivet</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -42813,33 +42932,25 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     <ddue:remarks>
                         <ddue:content>
                             <ddue:para>
-                                In order to place non-structural masses in a model, it is necessary to define where these masses are attached to the structure.
-                                For example, you want to model a heavy on-board system, a piece of payload, a fuel tank, an engine, etc. as a fixed point mass.
-                                The first step would be to create a mass point at the center of gravity of your component.
-                                For some components this is directly available, the a fuel tank you would evaluate the volume and fill rate from its CPACS definition to get the CoG.
-                                The next step is to connect the mass point to the structure in a physically meaningful way to properly introduce any inertial loads generated by that mass into the structure. This purpose is fulfilled by the structural mounts. The logic of these mounts is to identify points or lines in the geometry created by the intersection of two referenced structural components ("fromStructureUID" and "toStructureUID"). These points or lines are then connected to the center of gravity of the mass point. The reasoning behind this is that the intersections between two structural objects (e.g., rib and spar) usually represent locations in the model that are stiff enough to support the additional loads from any equipment.
+                                A structural mount says where a component that is not part of the structure — a system, a piece of payload, a tank, an engine or a landing gear — is attached to the structure, so that its inertia loads enter the structure there.
+                                The mount is the intersection of two structural members, a line or a point; the component references the mounts it is attached to, usually several.
                             </ddue:para>
                             <ddue:para>
-                                For example, the following figure shows a heavy system represented by a generic sphere attached to the structure by three structural mounts:
+                                <ddue:legacyBold>Intersection</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:codeInline>&lt;fromStructureUID&gt;</ddue:codeInline> and <ddue:codeInline>&lt;toStructureUID&gt;</ddue:codeInline> name the two members: in a wing, e.g. the skin, a spar, a rib set or a stringer; in a fuselage, e.g. a skin panel, a frame, a stringer, a cross beam, a strut or a longitudinal floor beam.
+                                Where a UID names a set of numbered members, such as the ribs of a rib set, <ddue:codeInline>&lt;fromStructureCounter&gt;</ddue:codeInline> and <ddue:codeInline>&lt;toStructureCounter&gt;</ddue:codeInline> select one of them.
+                                With <ddue:codeInline>&lt;takeOnlyEndPoints&gt;</ddue:codeInline> set to true, only the end points of the intersection line are used, otherwise all points on it.
+                                <ddue:codeInline>&lt;blockedDOF&gt;</ddue:codeInline> gives the degrees of freedom the mount blocks; its coding is not specified yet.
                             </ddue:para>
                             <ddue:mediaLink>
                                 <ddue:image xlink:href="structuralAttachments"/>
                             </ddue:mediaLink>
                             <ddue:para>
-                                From left to right:
-                            </ddue:para>
-                            <ddue:list class="bullet">
-                                <ddue:listItem>The leftmost attachment uses the end points of the intersection line between the starboard wall and the forward bulkhead.</ddue:listItem>
-                                <ddue:listItem>The middle attachment uses all points (here only 7 points are drawn for visualization) on the intersection line between the middle wall and the front bulkhead.</ddue:listItem>
-                                <ddue:listItem>The rightmost attachment has a similar definition to the left one, using the end points of the intersection line between the port wall and the front bulkhead.</ddue:listItem>
-                            </ddue:list>
-                            <ddue:para>
-                                When creating a structural FEM model of this CPACS representation, a rigid body element (e.g. Nastran RBEx) can be generated based on the yellow lines.
-                                This is used, for example, to attach landing gear struts to the aircraft structure.
-                            </ddue:para>
-                            <ddue:para>
-                                In short, structural mounts identify points or lines by intersecting two structural components, the resulting points or lines are then attached to a third component that references this structural mount as its attachment.
-                                Typically, as in the example above, components reference more than one structural mount as their attachment points.
+                                In the figure, a heavy system, drawn as a sphere, is attached to the structure by three mounts.
+                                The left one uses the end points of the intersection line between the starboard wall and the forward bulkhead, the middle one all points on the intersection line between the middle wall and the forward bulkhead (seven are drawn), and the right one the end points of the intersection line between the port wall and the forward bulkhead.
+                                In a finite element model, each mount typically becomes a rigid element, e.g. a Nastran RBE, between these points and the component; landing gear struts are attached in the same way.
                             </ddue:para>
                         </ddue:content>
                     </ddue:remarks>
@@ -42851,37 +42962,32 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:all>
                     <xsd:element name="blockedDOF" type="integerBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Degrees of freedom blocked by the mount</xsd:documentation>
+                            <xsd:documentation>Degrees of freedom blocked by the mount (coding not specified yet)</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="takeOnlyEndPoints" type="booleanBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>If this value is set to true then only the end points of the intersection shall be included as nodes in the model
-                            </xsd:documentation>
+                            <xsd:documentation>Whether only the end points of the intersection are used</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="fromStructureUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>The UID for the first connection UID may include for wings: skin, sparUID, ribDefinitionUID, ribNumber, stringerUID, stingerNumber, and for fuselages: skinSegmentUID, frameUID, stringerUID, crossBeamUID, crossBeamStrutUID, longFloorBeamUID
-                            </xsd:documentation>
+                            <xsd:documentation>UID of the first structural member</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="fromStructureCounter" minOccurs="0" type="integerBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Optional counter to specify numbered items, e.g. ribs in a ribSet
-                            </xsd:documentation>
+                            <xsd:documentation>Number of the member within a numbered set, e.g. a rib of a rib set</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="toStructureUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>The UID for the second connection UID may include for wings: skin, sparUID, ribDefinitionUID, ribNumber, stringerUID, stingerNumber, and for fuselages: skinSegmentUID, frameUID, stringerUID, crossBeamUID, crossBeamStrutUID, longFloorBeamUID
-                            </xsd:documentation>
+                            <xsd:documentation>UID of the second structural member</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="toStructureCounter" minOccurs="0" type="integerBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Optional counter to specify numbered items, e.g. ribs in a ribSet
-                            </xsd:documentation>
+                            <xsd:documentation>Number of the member within a numbered set, e.g. a rib of a rib set</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -48840,7 +48946,20 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                         <ddue:para>Tailplane attachment area</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Dat on fuselage structure to attach tailplaine</ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                The region of the rear fuselage where the horizontal and the vertical tailplane are attached, for a conventional tail of medium- and long-range aircraft.
+                                The vertical tailplane is attached to reinforced frames; the horizontal tailplane is attached to two reinforced frames, by two bolts on its hinge line and by the trim actuator in front of them.
+                                It passes through a cut-out of the fuselage that allows its full trim range and is reinforced by a framework of beams and rods.
+                                The attachment pins themselves belong to the tailplanes (<ddue:codeInline>attachmentPinType</ddue:codeInline>).
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Layout</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:codeInline>&lt;tailplaneAttachmentType&gt;</ddue:codeInline> selects one of two layouts of the forward attachment of the horizontal tailplane, Type1 and Type2; their geometry is not specified yet.
+                            </ddue:para>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -48856,10 +48975,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     </xsd:annotation>
                     <xsd:element name="tailplaneAttachmentType" minOccurs="0">
                         <xsd:annotation>
-                            <xsd:documentation>Type of tailplane attachment: Currently
-                                restricted to
-                                'Type1' and 'Type2' (see documentation)
-                            </xsd:documentation>
+                            <xsd:documentation>Layout of the forward attachment of the horizontal tailplane: Type1 or Type2</xsd:documentation>
                         </xsd:annotation>
                         <xsd:complexType>
                             <xsd:simpleContent>
@@ -48872,14 +48988,12 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     </xsd:element>
                     <xsd:element name="vtpInterfaceDefinitions" type="vtpInterfaceDefType">
                         <xsd:annotation>
-                            <xsd:documentation>Definitions of VTP interface
-                            </xsd:documentation>
+                            <xsd:documentation>Attachment of the vertical tailplane</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="htpInterfaceDefinitions" type="htpInterfaceDefType">
                         <xsd:annotation>
-                            <xsd:documentation>Definitions of VTP interface
-                            </xsd:documentation>
+                            <xsd:documentation>Attachment of the horizontal tailplane</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -48998,7 +49112,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                         <ddue:para>Tied interfaces</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Simple connections</ddue:para>
+                        <ddue:para>The tied interfaces between structural members (<ddue:codeInline>tiedInterfaceType</ddue:codeInline>).</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -49024,7 +49138,13 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                         <ddue:para>Tied interface</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Simple connection</ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                A tied interface connects two groups of structural members in a structural model without describing the joint in detail.
+                                The nodes of the members <ddue:codeInline>&lt;structuralMember1UID&gt;</ddue:codeInline> that lie within <ddue:codeInline>&lt;connectionSearchRadius&gt;</ddue:codeInline> of the members <ddue:codeInline>&lt;structuralMember2UID&gt;</ddue:codeInline> are tied to them.
+                                The members can be any structural members of the fuselage, e.g. skin panels, stringers, frames, cross beams, struts, longitudinal floor beams or floor panels.
+                            </ddue:para>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -49034,23 +49154,17 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:sequence>
                     <xsd:element name="structuralMember1UID" maxOccurs="unbounded" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Can be each structural member (skinSegment,
-                                stringer, frame, paxCrossBeam, cargoCrossBeam,
-                                paxCrossBeamStrut, cargoCrossBeamStrut, long. floor beams,
-                                floorPanel, seatModule)</xsd:documentation>
+                            <xsd:documentation>UID of a structural member on the first side</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="structuralMember2UID" maxOccurs="unbounded" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Can be each structural member (skinSegment,
-                                stringer, frame, paxCrossBeam, cargoCrossBeam,
-                                paxCrossBeamStrut, cargoCrossBeamStrut, long. floor beams,
-                                floorPanel, seatModule)</xsd:documentation>
+                            <xsd:documentation>UID of a structural member on the second side</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="connectionSearchRadius" minOccurs="0" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Search radius used to find the nodes to be tied</xsd:documentation>
+                            <xsd:documentation>Radius within which nodes are tied [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -51014,8 +51128,11 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>UID group definitions</ddue:para>
+                        <ddue:para>Groups of UIDs</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:para>The groups of UIDs of the structure (<ddue:codeInline>uIDGroupDefinitionType</ddue:codeInline>).</ddue:para>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -51024,7 +51141,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:sequence>
                     <xsd:element name="UIDGroupDefinition" maxOccurs="unbounded" type="uIDGroupDefinitionType">
                         <xsd:annotation>
-                            <xsd:documentation>UID group definition</xsd:documentation>
+                            <xsd:documentation>Group of UIDs</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -51042,8 +51159,16 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>UID group definition</ddue:para>
+                        <ddue:para>Group of UIDs</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>
+                                A group of structural members (<ddue:codeInline>&lt;structuralMemberUID&gt;</ddue:codeInline>), structural elements (<ddue:codeInline>&lt;structuralElementUID&gt;</ddue:codeInline>) and other entities (<ddue:codeInline>&lt;entityUID&gt;</ddue:codeInline>), referenced by the UID of the group.
+                                What a group is used for is not specified yet; a structural model can, for example, treat its members as one part.
+                            </ddue:para>
+                        </ddue:content>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -51778,11 +51903,15 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>VTP frame definitions</ddue:para>
+                        <ddue:para>Frame of the vertical tailplane attachment</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Definition of the individual VTP attachments
-                        </ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                A frame to which the vertical tailplane is attached, and the reinforcement of the frame.
+                                The pin sits at the frame <ddue:codeInline>&lt;vtpFrameUID&gt;</ddue:codeInline>; with <ddue:codeInline>&lt;vtpFramePlus1&gt;</ddue:codeInline> set to true, it sits between this frame and the next one, and both are reinforced in the same way.
+                            </ddue:para>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -51796,38 +51925,32 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     </xsd:annotation>
                     <xsd:element name="vtpFrameUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of the fuselage frame at this VTP
-                                attachment</xsd:documentation>
+                            <xsd:documentation>UID of the frame</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="vtpFramePlus1" minOccurs="0" type="booleanBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Flag for option for VTP attachment between
-                                defined FrameUID and the next one</xsd:documentation>
+                            <xsd:documentation>Whether the pin sits between this frame and the next one, both reinforced</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="vtpFrameSheetElemUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of panel element at VTP attachment (shell
-                                elements)</xsd:documentation>
+                            <xsd:documentation>UID of the sheetBasedStructuralElement of the plate at the frame</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="vtpFrameReinfBaseStructElemUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of structural element at VTP attachment
-                                (base, beams)</xsd:documentation>
+                            <xsd:documentation>UID of the profileBasedStructuralElement of the base reinforcement</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="vtpFrameReinfHorizStructElemUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of structural element at VTP attachment
-                                (horizontal, beams)</xsd:documentation>
+                            <xsd:documentation>UID of the profileBasedStructuralElement of the horizontal reinforcements</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="vtpFrameReinfRadialStructElemUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of structural element at VTP attachment
-                                (radial, beams)</xsd:documentation>
+                            <xsd:documentation>UID of the profileBasedStructuralElement of the radial reinforcements</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -51845,10 +51968,19 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>VTP interface definition</ddue:para>
+                        <ddue:para>Attachment of the vertical tailplane</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Definition of the interface of the VTP</ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                The vertical tailplane is attached to two or more frames (<ddue:codeInline>vtpFrameDefType</ddue:codeInline>), which are reinforced by plates and beams.
+                                <ddue:codeInline>&lt;vtpReinfRelZ&gt;</ddue:codeInline>, <ddue:codeInline>&lt;vtpReinfRelWidth&gt;</ddue:codeInline> and <ddue:codeInline>&lt;vtpIntersectionArc&gt;</ddue:codeInline> give the extent of these reinforcements relative to the frame; how they are measured is not specified yet.
+                                <ddue:codeInline>&lt;vtpAttachmentStructElemUID&gt;</ddue:codeInline> connects the attachment pins to the fuselage.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:codeInline>&lt;vtpAreaToleranceX&gt;</ddue:codeInline> and <ddue:codeInline>&lt;vtpAreaToleranceZ&gt;</ddue:codeInline> are tolerances for checking that the pins of the tailplane fit the fuselage: along x where a pin is attached directly to a frame, and as the largest distance between the fuselage and the pins.
+                            </ddue:para>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -51862,47 +51994,37 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     </xsd:annotation>
                     <xsd:element name="vtpFrameDefinitions" minOccurs="2" maxOccurs="unbounded" type="vtpFrameDefType">
                         <xsd:annotation>
-                            <xsd:documentation>VTP attachment frames and their reinforcement
-                            </xsd:documentation>
+                            <xsd:documentation>Frame of the attachment and its reinforcement</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="vtpAreaToleranceX" minOccurs="0" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Area for valid x-position of VTP (just used if attachmentpoint is directly based on frame) ==&gt; check and potentially warning message
-                            </xsd:documentation>
+                            <xsd:documentation>Tolerance on the x-position of a pin at its frame [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="vtpAreaToleranceZ" minOccurs="0" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Max. distance between fuselage and the defined VTP pins ==&gt; check and potentially warning message
-                            </xsd:documentation>
+                            <xsd:documentation>Largest distance between the fuselage and the pins [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="vtpReinfRelZ" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Reinforcement area at VTP frame positions (relative coordinate, smaller than 1.0)
-                            </xsd:documentation>
+                            <xsd:documentation>Height of the reinforced area at the frames, relative, smaller than 1 [-]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="vtpReinfRelWidth" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Vertical reinforcements at VTP frame positions (relative coordinate, smaller than 1.0)
-                            </xsd:documentation>
+                            <xsd:documentation>Width of the vertical reinforcements at the frames, relative, smaller than 1 [-]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="vtpIntersectionArc" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Value to change from horizontal to radial
-                                reinforcements for VTP frame plates
-                            </xsd:documentation>
+                            <xsd:documentation>Value at which the reinforcements of the frame plates change from horizontal to radial</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="vtpAttachmentStructElemUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of elements to connect VTP pins with
-                                fuselage
-                                (beam elements)
-                            </xsd:documentation>
+                            <xsd:documentation>UID of the structural element that connects the pins to the fuselage</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -53564,11 +53686,15 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Wing interface definitions</ddue:para>
+                        <ddue:para>Wing interface of a high-wing aircraft</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>CenterFuselage high wing interface definitions
-                        </ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                The cut-out of the upper shell through which the wing passes: along the fuselage between the two main frames of <ddue:codeInline>&lt;wingInterfaceMainFrames&gt;</ddue:codeInline>, around it between the stringers <ddue:codeInline>&lt;startStringerUID&gt;</ddue:codeInline> and <ddue:codeInline>&lt;endStringerUID&gt;</ddue:codeInline>.
+                                <ddue:codeInline>&lt;cutoutReinfStructElemUID&gt;</ddue:codeInline> reinforces its edge, and support struts may connect attachment pins of the wing to the fuselage (<ddue:codeInline>wingInterfaceSupportStrutType</ddue:codeInline>).
+                            </ddue:para>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -53578,7 +53704,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                 <xsd:all>
                     <xsd:element name="cutoutReinfStructElemUID" minOccurs="0" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>UID of the reinforcement element of the cut out</xsd:documentation>
+                            <xsd:documentation>UID of the structural element that reinforces the edge of the cut-out</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="wingInterfaceMainFrames" type="wingInterfaceMainFramesType">
@@ -53616,11 +53742,10 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Wing interface main frames</ddue:para>
+                        <ddue:para>Main frames of the wing interface</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>High wing main frame definition, containing mainframe
-                            UIDs</ddue:para>
+                        <ddue:para>The two main frames that bound the cut-out of the wing along the fuselage.</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -53653,10 +53778,10 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Wing interface support struts assembly</ddue:para>
+                        <ddue:para>Support struts of the wing interface</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Support struts assembly</ddue:para>
+                        <ddue:para>The struts between the wing and the fuselage (<ddue:codeInline>wingInterfaceSupportStrutType</ddue:codeInline>).</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -53684,10 +53809,15 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Wing interface support strut</ddue:para>
+                        <ddue:para>Support strut between wing and fuselage</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Support strut definition</ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                A strut from an attachment pin of the wing (<ddue:codeInline>attachmentPinType</ddue:codeInline>) to the fuselage at the frame <ddue:codeInline>&lt;fuselageAttachmentFrameUID&gt;</ddue:codeInline> and the stringer <ddue:codeInline>&lt;fuselageAttachmentStringerUID&gt;</ddue:codeInline>, with the profile of the element <ddue:codeInline>&lt;structuralElementUID&gt;</ddue:codeInline>.
+                                <ddue:codeInline>&lt;description&gt;</ddue:codeInline> names it a lateral or a longitudinal strut.
+                            </ddue:para>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -53702,8 +53832,7 @@ The fuel tank volume type should also be used for the wing fuel tank.</xsd:docum
                     </xsd:element>
                     <xsd:element name="description" minOccurs="0" type="stringBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Type description: lateral or longitudinal
-                                support strut</xsd:documentation>
+                            <xsd:documentation>Description, e.g. lateral or longitudinal support strut</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="structuralElementUID" type="stringUIDBaseType">

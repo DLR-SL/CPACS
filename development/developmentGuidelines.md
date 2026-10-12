@@ -243,6 +243,7 @@ The figures of the fuselage use the assignment below.
 | Floor panels | Series 1 at area-wash opacity |
 | Sheets of pressure bulkheads and walls | Series 1 at area-wash opacity, the walls seen edge-on as series 1 lines |
 | Reinforcements of pressure bulkheads | Series 1 |
+| Parts of the center fuselage area (pressure floor, side boxes, lateral panels, keel beam) | Series 1, their sheets at area-wash opacity; the wing box muted |
 | Cut-outs, and the doors and spaces of a deck that belong to them | Series 2 |
 | Frames | Series 3 |
 | Galleys and lavatories of a deck | Series 3 |
