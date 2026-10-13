@@ -250,6 +250,14 @@ The figures of the fuselage use the assignment below.
 | Seats of a deck | Series 1 |
 | Contour of the fuselage, aisles | Muted |
 
+The figures of the ducts use the assignment below.
+
+| Part | Color |
+| ---------- | ---------- |
+| Ducts, and the contour of the hole they cut | Series 1, the area of a duct at area-wash opacity |
+| Mirrored side of a duct | Mirrored |
+| Contour of the component that is cut | Muted, its remaining cross section in muted at a light wash |
+
 The table grows with the documentation: whoever works on another area adds the assignment of its parts here, in the same form, so that the next author of that area finds it instead of choosing again.
 
 - **§23: Color identifies, text explains. Text is set in ink, never in a series color, and identity never depends on color alone.**

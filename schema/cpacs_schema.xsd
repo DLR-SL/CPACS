@@ -17199,8 +17199,83 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Duct assembly</ddue:para>
+                        <ddue:para>Group of ducts that is cut out of other components as one body</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>
+                                A duct assembly fuses the ducts it references, together with their mirror images, into one body, places this body in the model and removes it from other components.
+                                The ducts may overlap: this is how several ducts form one channel, e.g. two intakes that merge in front of an engine.
+                                A duct may be referenced by more than one assembly and is then cut out wherever each of them places it.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Placement</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                A point p of a duct is placed in the model at
+                            </ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="eq_ductPoint"/>
+                            </ddue:mediaLink>
+                            <ddue:para>
+                                where T<ddue:subscript>duct</ddue:subscript> is the transformation of the duct, M the mirroring by its <ddue:codeInline>@symmetry</ddue:codeInline> (the identity for the duct itself), T<ddue:subscript>assembly</ddue:subscript> the transformation of the assembly and t<ddue:subscript>parent</ddue:subscript> the position of the component named in <ddue:codeInline>&lt;parentUID&gt;</ddue:codeInline>, or zero without a parent.
+                                The assembly follows the translation of its parent but neither its rotation nor its scaling (<ddue:codeInline>transformationType</ddue:codeInline>).
+                                Usually the assembly is attached to the component the ducts are cut out of, so that the ducts are given in the coordinate system of that component and move with it.
+                                As the mirroring comes before the transformation of the assembly, a duct and its mirror image move together: a translation of the assembly in y shifts both to the same side.
+                            </ddue:para>
+                            <ddue:alert class="tigl">
+                                <ddue:para>
+                                    TiGL 3.5 cuts the ducts of an assembly as described.
+                                    The geometry of a duct on its own, e.g. when it is displayed or exported, is placed by the transformation of the duct only, without the transformation and the parent of its assembly.
+                                </ddue:para>
+                            </ddue:alert>
+                            <ddue:para>
+                                <ddue:legacyBold>Components that are cut</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The body of an assembly is removed from every fuselage, wing and fuel tank of the model, together with the structure inside them.
+                                <ddue:codeInline>&lt;excludeObjectUIDs&gt;</ddue:codeInline> lists the components that keep their shape, e.g. a neighbouring fuselage section into which the ducts reach.
+                                Listing a fuel tank excludes all its vessels, listing a vessel only that vessel.
+                                Other components, such as engines, pylons and landing gears, are not cut.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Example</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The assembly of the intake ducts of a fighter, attached to its fuselage; the ducts are shown in the documentation of <ddue:codeInline>ductsType</ddue:codeInline>.
+                            </ddue:para>
+                            <ddue:code language="XML" title="Duct assembly attached to the fuselage">
+                                <![CDATA[
+<ductAssembly uID="IntakeDuctAssembly">
+    <name>Intake ducts</name>
+    <description>Air intake of the engine, cut out of the fuselage</description>
+    <parentUID>Fuselage</parentUID>
+    <transformation>
+        <rotation>
+            <x>0</x>
+            <y>0</y>
+            <z>0</z>
+        </rotation>
+        <scaling>
+            <x>1</x>
+            <y>1</y>
+            <z>1</z>
+        </scaling>
+        <translation>
+            <x>0</x>
+            <y>0</y>
+            <z>0</z>
+        </translation>
+    </transformation>
+    <ductUIDs>
+        <uID>IntakeDuct</uID>
+        <uID>ChannelDuct</uID>
+    </ductUIDs>
+</ductAssembly>
+                                ]]>
+                            </ddue:code>
+                        </ddue:content>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -17209,16 +17284,12 @@ cpacs@dlr.de
                 <xsd:sequence>
                     <xsd:element name="name" type="stringBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>
-                                 Name
-                             </xsd:documentation>
+                            <xsd:documentation>Name</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="description" minOccurs="0" type="stringBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>
-                                 Description
-                             </xsd:documentation>
+                            <xsd:documentation>Description</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="parentUID" minOccurs="0" type="stringUIDBaseType">
@@ -17228,17 +17299,17 @@ cpacs@dlr.de
                     </xsd:element>
                     <xsd:element name="transformation" minOccurs="0" type="transformationType">
                         <xsd:annotation>
-                            <xsd:documentation>Position and orientation</xsd:documentation>
+                            <xsd:documentation>Position and orientation of the assembly coordinate system, in which the ducts are placed</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="excludeObjectUIDs" minOccurs="0" type="uIDSequenceType">
                         <xsd:annotation>
-                            <xsd:documentation>References to objects</xsd:documentation>
+                            <xsd:documentation>Components the assembly does not cut: fuselages, wings, fuel tanks or vessels</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="ductUIDs" type="uIDSequenceType">
                         <xsd:annotation>
-                            <xsd:documentation>References to the ducts forming the assembly</xsd:documentation>
+                            <xsd:documentation>Ducts fused into the body of the assembly</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -17256,8 +17327,16 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Duct structure</ddue:para>
+                        <ddue:para>Structure of the wall of a duct</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>
+                                The skin, stringers and frames of a duct describe the wall of the channel in the same way as those of a fuselage (<ddue:codeInline>fuselageStructureType</ddue:codeInline>).
+                                Their positions are given in the duct coordinate system.
+                            </ddue:para>
+                        </ddue:content>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -17289,8 +17368,83 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Ducts</ddue:para>
+                        <ddue:para>Ducts and the assemblies that cut them out of other components</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>
+                                Ducts are bodies that are cut out of other components: the air intake of an engine, a tunnel through a fuel tank, a bay in a fuselage.
+                                A duct describes the shape of such a body, and a duct assembly combines ducts into one body and removes it from the fuselages, wings and fuel tanks of the model.
+                            </ddue:para>
+                            <ddue:list class="bullet">
+                                <ddue:listItem>
+                                    <ddue:para>
+                                        <ddue:codeInline>&lt;duct&gt;</ddue:codeInline> (<ddue:codeInline>ductType</ddue:codeInline>) is a body built like a fuselage, from sections, elements, positionings and segments. It has no material of its own: it describes the space it takes out of other components.</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>
+                                        <ddue:codeInline>&lt;ductAssembly&gt;</ddue:codeInline> (<ddue:codeInline>ductAssemblyType</ddue:codeInline>) references ducts by their UID, fuses them into one body and places this body in the model. A duct takes effect only through an assembly; a duct that no assembly references cuts nothing.</ddue:para>
+                                </ddue:listItem>
+                            </ddue:list>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="ductIntake"/>
+                            </ddue:mediaLink>
+                            <ddue:para>
+                                The figure shows the example below.
+                                In the top view (a), the intake duct on the side y &gt; 0 starts in front of the fuselage, so that the cut opens the side of the fuselage where it widens; its mirror image is the intake on the other side.
+                                Both reach into the channel duct, so that the three bodies form one channel up to the engine face.
+                                The sections (b) and (c) show the fuselage after the cut: one hole behind each intake, and a single one where the ducts merge.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Example</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The air intake of a single-engine fighter: the intake duct is written once and mirrored at the x-z plane, and the channel duct lies on the axis.
+                                The assembly fuses the three bodies and cuts them out of the fuselage, to which it is attached.
+                                The sections of the ducts are written like those of a fuselage (<ddue:codeInline>fuselageSectionType</ddue:codeInline>).
+                            </ddue:para>
+                            <ddue:code language="XML" title="Intake ducts of a fighter, cut out of its fuselage by one assembly">
+                                <![CDATA[
+<ducts>
+    <duct uID="IntakeDuct" symmetry="x-z-plane">
+        <name>Intake duct</name>
+        ...
+    </duct>
+    <duct uID="ChannelDuct">
+        <name>Channel duct</name>
+        ...
+    </duct>
+    <ductAssembly uID="IntakeDuctAssembly">
+        <name>Intake ducts</name>
+        <description>Air intake of the engine, cut out of the fuselage</description>
+        <parentUID>Fuselage</parentUID>
+        <transformation>
+            <rotation>
+                <x>0</x>
+                <y>0</y>
+                <z>0</z>
+            </rotation>
+            <scaling>
+                <x>1</x>
+                <y>1</y>
+                <z>1</z>
+            </scaling>
+            <translation>
+                <x>0</x>
+                <y>0</y>
+                <z>0</z>
+            </translation>
+        </transformation>
+        <ductUIDs>
+            <uID>IntakeDuct</uID>
+            <uID>ChannelDuct</uID>
+        </ductUIDs>
+    </ductAssembly>
+</ducts>
+                                ]]>
+                            </ddue:code>
+                        </ddue:content>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -17317,8 +17471,31 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Duct</ddue:para>
+                        <ddue:para>Body that is cut out of other components, e.g. an air intake</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>
+                                A duct describes the shape of a body that is removed from other components, e.g. the air intake of an engine.
+                                It is built like a fuselage (<ddue:codeInline>fuselageType</ddue:codeInline>): profiles are placed at sections along the x-axis, and the surface is lofted through the profiles of the segments into one closed body.
+                                A duct takes effect only through a duct assembly (<ddue:codeInline>ductAssemblyType</ddue:codeInline>), which places it and cuts it out.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Coordinate system</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The transformation of the duct places the duct coordinate system in the coordinate system of its assembly.
+                                A duct has no <ddue:codeInline>&lt;parentUID&gt;</ddue:codeInline> of its own: it is attached to a component through its assembly, and without a transformation and a parent of the assembly, the duct coordinate system is placed in the global coordinate system.
+                                <ddue:codeInline>@symmetry</ddue:codeInline> mirrors the duct at the named plane of the assembly coordinate system; the mirror image belongs to the same assemblies as the duct, so that an intake on each side of a fuselage is written once.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Structure</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:codeInline>&lt;structure&gt;</ddue:codeInline> describes the wall of the duct with skin, stringers and frames, positioned in the duct coordinate system as those of a fuselage (<ddue:codeInline>ductStructureType</ddue:codeInline>).
+                            </ddue:para>
+                        </ddue:content>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -17327,41 +17504,37 @@ cpacs@dlr.de
                 <xsd:all>
                     <xsd:element name="name" type="stringBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>
-                                 Name
-                             </xsd:documentation>
+                            <xsd:documentation>Name</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="description" minOccurs="0" type="stringBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>
-                                 Description
-                             </xsd:documentation>
+                            <xsd:documentation>Description</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="transformation" minOccurs="0" type="transformationType">
                         <xsd:annotation>
-                            <xsd:documentation>Position and orientation</xsd:documentation>
+                            <xsd:documentation>Position and orientation of the duct coordinate system in the coordinate system of its assembly</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="sections" type="fuselageSectionsType">
                         <xsd:annotation>
-                            <xsd:documentation>Sections</xsd:documentation>
+                            <xsd:documentation>Sections at which the profiles are placed</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="positionings" minOccurs="0" type="positioningsType">
                         <xsd:annotation>
-                            <xsd:documentation>Positionings of the duct sections</xsd:documentation>
+                            <xsd:documentation>Translations of the sections by length, sweep angle and dihedral angle</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="segments" type="fuselageSegmentsType">
                         <xsd:annotation>
-                            <xsd:documentation>Segments</xsd:documentation>
+                            <xsd:documentation>Segments connecting the elements of the sections</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="structure" minOccurs="0" type="ductStructureType">
                         <xsd:annotation>
-                            <xsd:documentation>Structural layout</xsd:documentation>
+                            <xsd:documentation>Wall of the duct: skin, stringers and frames</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -17377,7 +17550,7 @@ cpacs@dlr.de
                 </xsd:attribute>
                 <xsd:attribute name="loftContinuity" type="loftContinuityType">
                     <xsd:annotation>
-                        <xsd:documentation>Continuity used for lofting this component (default: C2 for fuselages and ducts, C0 for wings)</xsd:documentation>
+                        <xsd:documentation>Continuity of the surface across the sections, C0 or C2 (default: C2)</xsd:documentation>
                     </xsd:annotation>
                 </xsd:attribute>
             </xsd:extension>
