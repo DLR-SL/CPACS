@@ -255,7 +255,7 @@ cpacs@dlr.de
                                             <ddue:para>Where an optional element or attribute is missing, its default value applies, e.g. <ddue:codeInline>absLocal</ddue:codeInline> for <ddue:codeInline>translation/@refType</ddue:codeInline> or <ddue:codeInline>inherit</ddue:codeInline> for <ddue:codeInline>@symmetry</ddue:codeInline>. The documentation of each element states its default. A tool that reads the dataset uses the default; a tool that writes it may leave out values equal to their default.</ddue:para>
                                         </ddue:listItem>
                                         <ddue:listItem>
-                                            <ddue:para>Numbers are written with a decimal point, optionally with an exponent, e.g. <ddue:codeInline>0.25</ddue:codeInline> or <ddue:codeInline>2.5e-1</ddue:codeInline>; <ddue:codeInline>NaN</ddue:codeInline> and <ddue:codeInline>INF</ddue:codeInline> are valid values. A decimal comma makes the dataset invalid. Boolean values are <ddue:codeInline>true</ddue:codeInline> or <ddue:codeInline>false</ddue:codeInline> (or <ddue:codeInline>1</ddue:codeInline> and <ddue:codeInline>0</ddue:codeInline>), and points in time follow ISO 8601, e.g. <ddue:codeInline>2026-10-01T14:30:00</ddue:codeInline>. Vectors and arrays are described in section 8, units in section 5.</ddue:para>
+                                            <ddue:para>Numbers are written with a decimal point, optionally with an exponent, e.g. <ddue:codeInline>0.25</ddue:codeInline> or <ddue:codeInline>2.5e-1</ddue:codeInline>; <ddue:codeInline>NaN</ddue:codeInline> and <ddue:codeInline>INF</ddue:codeInline> are valid values, in vectors and arrays only <ddue:codeInline>NaN</ddue:codeInline>. A decimal comma makes the dataset invalid. Boolean values are <ddue:codeInline>true</ddue:codeInline> or <ddue:codeInline>false</ddue:codeInline> (or <ddue:codeInline>1</ddue:codeInline> and <ddue:codeInline>0</ddue:codeInline>), and points in time follow ISO 8601, e.g. <ddue:codeInline>2026-10-01T14:30:00</ddue:codeInline>. Vectors and arrays are described in section 8, units in section 5.</ddue:para>
                                         </ddue:listItem>
                                         <ddue:listItem>
                                             <ddue:para>Elements whose documentation marks them as deprecated may still occur in older datasets and are understood when they are read, but they are no longer written.</ddue:para>
@@ -1947,11 +1947,15 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Complex base type</ddue:para>
+                        <ddue:para>Base of all types with child elements</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Base type for complex nodes (including external data
-                            attributes)</ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                Every type with child elements extends this type.
+                                It adds the attributes <ddue:codeInline>@externalFileName</ddue:codeInline>, <ddue:codeInline>@externalDataDirectory</ddue:codeInline> and <ddue:codeInline>@externalDataNodePath</ddue:codeInline>, with which a tool marks an element that it inserted from an external file when merging a split dataset (section 11 of <ddue:codeInline>cpacsType</ddue:codeInline>).
+                            </ddue:para>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -1978,16 +1982,21 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>String array base type</ddue:para>
+                        <ddue:para>Array of texts separated by semicolons</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Base type for string array nodes (including maptype
-                            array attribute)</ddue:para>
-                        <ddue:para>
-                            DEPRECATED: As of CPACCS version 3.3, the
-                            <ddue:codeInline>@mapType</ddue:codeInline>
-                            attribute is set to optional to ensure the compatibility of older data records. However, since the type is uniquely defined via the XSD, the attribute is superfluous and will therefore be completely omitted in future versions.
-                        </ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                An array of two or more dimensions is written as one list separated by semicolons.
+                                Each dimension is spanned by a vector that the documentation of the element names, and the entries are listed with the last index running fastest.
+                                Section 8 of <ddue:codeInline>cpacsType</ddue:codeInline> shows an example.
+                            </ddue:para>
+                            <ddue:para>
+                                Older datasets write <ddue:codeInline>mapType="array"</ddue:codeInline>.
+                                The attribute is deprecated: the type already defines that the element is an array.
+                                It remains valid, but may be removed in a future version.
+                            </ddue:para>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -1996,7 +2005,7 @@ cpacs@dlr.de
             <xsd:extension base="stringBaseType">
                 <xsd:attribute name="mapType" fixed="array" type="xsd:string">
                     <xsd:annotation>
-                        <xsd:documentation>Mapping type of the data, fixed to array</xsd:documentation>
+                        <xsd:documentation>Deprecated: mapping type of the data, always array</xsd:documentation>
                     </xsd:annotation>
                 </xsd:attribute>
             </xsd:extension>
@@ -2008,40 +2017,97 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>String vector base type</ddue:para>
+                        <ddue:para>List of texts separated by semicolons</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>Base type for string vector nodes</ddue:para>
-                            <ddue:para>The vector base type can include optional uncertainty
-                                information. The description of uncertainties is placed in
-                                additional attributes. First, it is described by an attribute that
-                                describes the type of uncertainty function called uncertaintyFunctionName.
-                                The uncertaintyFunctionName attribute includes the tag name of the
-                                distribution function which is listed in the table shown below.
-                                Each uncertainty function is further described by a set of
-                                parameters that are described in the table below.</ddue:para>
-                            <ddue:para>If the uncertainty values change for the elements of
-                                the vector than the attribute may be written as a list of values
-                                separated by semicolons</ddue:para>
                             <ddue:para>
-                                DEPRECATED: As of
-                                CPACS
-                                version 3.3, the
-                                <ddue:codeInline>@mapType</ddue:codeInline>
-                                attribute is set to optional to ensure the compatibility of older data sets.
-                                However, since the type is uniquely defined via the XSD, the attribute is superfluous
-                                and will therefore be completely omitted in the next major release (Note: requires
-                                TiXI &gt;= 3.3). Please contact the
-                                CPACS
-                                team
-                                if for any reason you see a long-term need for the
-                                <ddue:codeInline>@mapType</ddue:codeInline>
-                                attribute.
+                                A vector holds several values in one element, separated by semicolons.
+                                The entries themselves are not restricted.
                             </ddue:para>
-                            <ddue:mediaLink>
-                                <ddue:image xlink:href="uncertaintyFunctions"/>
-                            </ddue:mediaLink>
+                            <ddue:table>
+                                <ddue:title>Example values</ddue:title>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:legacyBold>Value</ddue:legacyBold>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        <ddue:legacyBold>Validity</ddue:legacyBold>
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>D-ABCD;D-ABCE;D-ABCF</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        valid
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>climb;cruise;descent</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        valid
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>cruise</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        valid, one entry
+                                    </ddue:entry>
+                                </ddue:row>
+                            </ddue:table>
+                            <ddue:para>
+                                <ddue:legacyBold>Uncertainty (deprecated)</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                The entries can be described as random variables: <ddue:codeInline>@uncertaintyFunctionName</ddue:codeInline> names their probability distribution, and further attributes give its parameters.
+                                Each parameter holds either one value for all entries or one value per entry, separated by semicolons.
+                                Two distributions are defined:
+                            </ddue:para>
+                            <ddue:table>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:legacyBold>Distribution</ddue:legacyBold>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        <ddue:legacyBold>Parameters</ddue:legacyBold>
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>GaussianNormalDistribution</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        <ddue:codeInline>@mu</ddue:codeInline> mean, <ddue:codeInline>@delta</ddue:codeInline> standard deviation
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>ExponentialDistribution</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        <ddue:codeInline>@b</ddue:codeInline> mean, i.e. the inverse of the rate
+                                    </ddue:entry>
+                                </ddue:row>
+                            </ddue:table>
+                            <ddue:para>
+                                The attributes <ddue:codeInline>@a</ddue:codeInline>, <ddue:codeInline>@c</ddue:codeInline>, <ddue:codeInline>@v</ddue:codeInline> and <ddue:codeInline>@w</ddue:codeInline> belong to neither distribution.
+                            </ddue:para>
+                            <ddue:alert class="note">
+                                <ddue:para>
+                                    The uncertainty attributes are deprecated.
+                                    They remain valid, but will be removed in a future version, so new datasets do not use them.
+                                </ddue:para>
+                            </ddue:alert>
+                            <ddue:para>
+                                Older datasets write <ddue:codeInline>mapType="vector"</ddue:codeInline>.
+                                The attribute is deprecated: the type already defines that the element is a vector.
+                                It remains valid, but may be removed in a future version.
+                            </ddue:para>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -2051,47 +2117,47 @@ cpacs@dlr.de
             <xsd:extension base="stringBaseType">
                 <xsd:attribute name="mapType" fixed="vector" type="xsd:string">
                     <xsd:annotation>
-                        <xsd:documentation>Mapping type of the data, fixed to vector</xsd:documentation>
+                        <xsd:documentation>Deprecated: mapping type of the data, always vector</xsd:documentation>
                     </xsd:annotation>
                 </xsd:attribute>
                 <xsd:attribute name="uncertaintyFunctionName" type="uncertaintyFunctionType">
                     <xsd:annotation>
-                        <xsd:documentation>Name of the uncertainty distribution function</xsd:documentation>
+                        <xsd:documentation>Deprecated: probability distribution of the value (GaussianNormalDistribution or ExponentialDistribution)</xsd:documentation>
                     </xsd:annotation>
                 </xsd:attribute>
                 <xsd:attribute name="mu" type="xsd:string">
                     <xsd:annotation>
-                        <xsd:documentation>Parameter mu of the uncertainty distribution function</xsd:documentation>
+                        <xsd:documentation>Deprecated: mean of the normal distribution; one value for all entries or one per entry, separated by semicolons</xsd:documentation>
                     </xsd:annotation>
                 </xsd:attribute>
                 <xsd:attribute name="delta" type="xsd:string">
                     <xsd:annotation>
-                        <xsd:documentation>Parameter delta of the uncertainty distribution function</xsd:documentation>
+                        <xsd:documentation>Deprecated: standard deviation of the normal distribution; one value for all entries or one per entry, separated by semicolons</xsd:documentation>
                     </xsd:annotation>
                 </xsd:attribute>
                 <xsd:attribute name="a" type="xsd:string">
                     <xsd:annotation>
-                        <xsd:documentation>Parameter a of the uncertainty distribution function</xsd:documentation>
+                        <xsd:documentation>Deprecated: not used by any distribution</xsd:documentation>
                     </xsd:annotation>
                 </xsd:attribute>
                 <xsd:attribute name="b" type="xsd:string">
                     <xsd:annotation>
-                        <xsd:documentation>Parameter b of the uncertainty distribution function</xsd:documentation>
+                        <xsd:documentation>Deprecated: mean of the exponential distribution; one value for all entries or one per entry, separated by semicolons</xsd:documentation>
                     </xsd:annotation>
                 </xsd:attribute>
                 <xsd:attribute name="c" type="xsd:string">
                     <xsd:annotation>
-                        <xsd:documentation>Parameter c of the uncertainty distribution function</xsd:documentation>
+                        <xsd:documentation>Deprecated: not used by any distribution</xsd:documentation>
                     </xsd:annotation>
                 </xsd:attribute>
                 <xsd:attribute name="v" type="xsd:string">
                     <xsd:annotation>
-                        <xsd:documentation>Parameter v of the uncertainty distribution function</xsd:documentation>
+                        <xsd:documentation>Deprecated: not used by any distribution</xsd:documentation>
                     </xsd:annotation>
                 </xsd:attribute>
                 <xsd:attribute name="w" type="xsd:string">
                     <xsd:annotation>
-                        <xsd:documentation>Parameter w of the uncertainty distribution function</xsd:documentation>
+                        <xsd:documentation>Deprecated: not used by any distribution</xsd:documentation>
                     </xsd:annotation>
                 </xsd:attribute>
             </xsd:extension>
@@ -2103,11 +2169,81 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Boolean base type</ddue:para>
+                        <ddue:para>Boolean value</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Base type for boolean nodes (including external data
-                            attributes)</ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                The value is <ddue:codeInline>true</ddue:codeInline> or <ddue:codeInline>false</ddue:codeInline>; <ddue:codeInline>1</ddue:codeInline> and <ddue:codeInline>0</ddue:codeInline> are equivalent spellings.
+                            </ddue:para>
+                            <ddue:table>
+                                <ddue:title>Example values</ddue:title>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:legacyBold>Value</ddue:legacyBold>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        <ddue:legacyBold>Validity</ddue:legacyBold>
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>true</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        valid
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>false</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        valid
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>1</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        valid, same as <ddue:codeInline>true</ddue:codeInline>
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>0</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        valid, same as <ddue:codeInline>false</ddue:codeInline>
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>True</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        invalid, capital letter
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>yes</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        invalid
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        empty element
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        invalid
+                                    </ddue:entry>
+                                </ddue:row>
+                            </ddue:table>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -2138,17 +2274,74 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Date base type</ddue:para>
+                        <ddue:para>Calendar date</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Base type for date nodes (including external data attributes).
-                            This date type is based on the xsd:date definition.
-                            "To specify a time zone, you can either enter a date in UTC time by adding a "Z" behind the date - like this: 2002-09-24Z
-                            or you can specify an offset from the UTC time by adding a positive or negative time behind the date - like this:
-                            2002-09-24-06:00
-                            or
-                            2002-09-24+06:00" (description taken from http://www.w3schools.com/xml/schema_dtypes_date.asp)
-                        </ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                Written as year-month-day with two digits for month and day.
+                                A time zone can follow, as <ddue:codeInline>Z</ddue:codeInline> for UTC or as an offset from UTC; without it, the time zone is not specified.
+                            </ddue:para>
+                            <ddue:table>
+                                <ddue:title>Example values</ddue:title>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:legacyBold>Value</ddue:legacyBold>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        <ddue:legacyBold>Validity</ddue:legacyBold>
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>2026-10-13</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        valid
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>2026-10-13Z</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        valid, UTC
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>2026-10-13+02:00</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        valid, two hours ahead of UTC
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>2026-1-3</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        invalid, one digit for month and day
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>13.10.2026</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        invalid, order and separator
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>2026-10-13T00:00:00</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        invalid, contains a time
+                                    </ddue:entry>
+                                </ddue:row>
+                            </ddue:table>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -2179,11 +2372,66 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Date and time base type</ddue:para>
+                        <ddue:para>Date and time of day</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Base type for dateTime nodes (including external data
-                            attributes)</ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                A date (year-month-day) and a time of day (hours:minutes:seconds), joined by <ddue:codeInline>T</ddue:codeInline>.
+                                A time zone can follow, as <ddue:codeInline>Z</ddue:codeInline> for UTC or as an offset from UTC; without it, the time zone is not specified.
+                            </ddue:para>
+                            <ddue:table>
+                                <ddue:title>Example values</ddue:title>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:legacyBold>Value</ddue:legacyBold>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        <ddue:legacyBold>Validity</ddue:legacyBold>
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>2026-10-13T14:30:00</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        valid
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>2026-10-13T14:30:00Z</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        valid, UTC
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>2026-10-13T14:30:00+02:00</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        valid, two hours ahead of UTC
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>2026-10-13 14:30:00</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        invalid, space instead of T
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>2026-10-13</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        invalid, time missing
+                                    </ddue:entry>
+                                </ddue:row>
+                            </ddue:table>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -2214,68 +2462,63 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Array with semicolon separated values of type double</ddue:para>
+                        <ddue:para>Array of floating-point numbers separated by semicolons</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
                             <ddue:para>
-                                In
-                                CPACS
-                                arrays are used to exchange values
-                            in full-factorial parameter spaces, for example to describe the aerodynamic coefficients depending
-                            on Mach number and altitude.
+                                An array of two or more dimensions is written as one list separated by semicolons.
+                                Each dimension is spanned by a vector that the documentation of the element names, and the entries are listed with the last index running fastest.
+                                The number of entries is therefore the product of the lengths of these vectors.
+                                Section 8 of <ddue:codeInline>cpacsType</ddue:codeInline> shows an example.
                             </ddue:para>
-                            <ddue:para>Thus, the dimensions of the array are spanned by the input vectors. See the following
-                            example where two input vectors are defined. For clarification the entries of the array result from
-                            the multiplication of the index values of the corresponding input vectors:</ddue:para>
-                            <ddue:code language="XML" title="Input vectors">
-                                <![CDATA[
-<inputVector1>1;2;3</inputVector1>
-<inputVector2>4;5;6;7</inputVector2>
-                                ]]>
-                            </ddue:code>
-                            <ddue:code language="XML" title="Resulting 3x4 array">
-                                <![CDATA[
-<array>4;5;6;7;8;10;12;14;12;15;18;21</array>
-                                ]]>
-                            </ddue:code>
                             <ddue:para>
-                                Any entries of type
-                                <ddue:codeInline>double</ddue:codeInline>
-                                separated by semicolons are valid, e.g.:
+                                Every entry is a number with an optional decimal point and an optional exponent, or <ddue:codeInline>NaN</ddue:codeInline>; white space around an entry is allowed.
+                                Empty entries are invalid, although the validation against the schema does not detect them.
                             </ddue:para>
-                            <ddue:code language="XML" title="Example 1: valid double array">
-                                <![CDATA[
-<doubleArrayTest>123.456;+123.456;-1.234e56;-.45E-6;NaN;0</doubleArrayTest>
-                                ]]>
-                            </ddue:code>
-                            <ddue:code language="XML" title="Example 2: valid double array with only one entry">
-                                <![CDATA[
-<doubleArrayTest>123.456</doubleArrayTest>
-                                ]]>
-                            </ddue:code>
-                            <ddue:code language="XML" title="Example 3: invalid double array due to comma separation">
-                                <![CDATA[
-<doubleArrayTest>123.456,+1234.456</doubleArrayTest>
-                                ]]>
-                            </ddue:code>
-                            <ddue:code language="XML" title="Example 4: invalid double array due to string entry">
-                                <![CDATA[
-<doubleArrayTest>123.456;mainWingUID</doubleArrayTest>
-                                ]]>
-                            </ddue:code>
-                            <ddue:code language="XML" title="Example 5: invalid double array due to invalid double values">
-                                <![CDATA[
-<doubleArrayTest>1234.4E 56;-1.234e5.6</doubleArrayTest>
-                                ]]>
-                            </ddue:code>
-                            <ddue:para>
-                                Please note that the syntax of arrays in the current
-                                CPACS
-                                version correspond exactly to the syntax of vectors. There is no special character indicating
-                                the dimensions. Thus, the input vectors have to be determined from the documentation of the
-                                corresponding elements and splitting of the one-dimensional vector has to be done manually.
-                            </ddue:para>
+                            <ddue:table>
+                                <ddue:title>Example values</ddue:title>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:legacyBold>Value</ddue:legacyBold>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        <ddue:legacyBold>Validity</ddue:legacyBold>
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>0;0.21;0.38;0;0.2;0.36</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        valid, e.g. 2 × 3 entries
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>0;;0.38</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        invalid, empty entry
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>0,21;0.38</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        invalid, decimal comma
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>0;INF</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        invalid, <ddue:codeInline>INF</ddue:codeInline>
+                                    </ddue:entry>
+                                </ddue:row>
+                            </ddue:table>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -2293,24 +2536,147 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Floating point base type</ddue:para>
+                        <ddue:para>Floating-point number</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>Base type for double nodes (including external data
-                                attributes)</ddue:para>
-                            <ddue:para>The double base type can include optional uncertainty
-                                information. The description of uncertainties is placed in
-                                additional attributes. First, it is described by an attribute
-                                that describes the type of uncertainty function called
-                                uncertaintyFunctionName. The uncertaintyFunctionName attribute includes the tag name
-                                of the distribution function which is listed in the table
-                                shown below. Each uncertainty function is further described by a
-                                set of parameters that are described in the table below.
+                            <ddue:para>
+                                A number with an optional decimal point and an optional exponent.
+                                <ddue:codeInline>NaN</ddue:codeInline> (not a number), <ddue:codeInline>INF</ddue:codeInline> and <ddue:codeInline>-INF</ddue:codeInline> (infinity) are valid values.
                             </ddue:para>
-                            <ddue:mediaLink>
-                                <ddue:image xlink:href="uncertaintyFunctions"/>
-                            </ddue:mediaLink>
+                            <ddue:table>
+                                <ddue:title>Example values</ddue:title>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:legacyBold>Value</ddue:legacyBold>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        <ddue:legacyBold>Validity</ddue:legacyBold>
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>0.25</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        valid
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>-1.5e3</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        valid, −1500
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>5</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        valid
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>NaN</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        valid
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>INF</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        valid
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>-INF</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        valid
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>1,5</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        invalid, decimal comma
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>+INF</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        invalid, sign before INF
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>nan</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        invalid, lower case
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        empty element
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        invalid
+                                    </ddue:entry>
+                                </ddue:row>
+                            </ddue:table>
+                            <ddue:para>
+                                <ddue:legacyBold>Uncertainty (deprecated)</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                A value can be described as a random variable: <ddue:codeInline>@uncertaintyFunctionName</ddue:codeInline> names its probability distribution, and further attributes give the parameters of that distribution.
+                                Two distributions are defined:
+                            </ddue:para>
+                            <ddue:table>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:legacyBold>Distribution</ddue:legacyBold>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        <ddue:legacyBold>Parameters</ddue:legacyBold>
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>GaussianNormalDistribution</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        <ddue:codeInline>@mu</ddue:codeInline> mean, <ddue:codeInline>@delta</ddue:codeInline> standard deviation
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>ExponentialDistribution</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        <ddue:codeInline>@b</ddue:codeInline> mean, i.e. the inverse of the rate
+                                    </ddue:entry>
+                                </ddue:row>
+                            </ddue:table>
+                            <ddue:para>
+                                The attributes <ddue:codeInline>@a</ddue:codeInline>, <ddue:codeInline>@c</ddue:codeInline>, <ddue:codeInline>@v</ddue:codeInline> and <ddue:codeInline>@w</ddue:codeInline> belong to neither distribution.
+                            </ddue:para>
+                            <ddue:alert class="note">
+                                <ddue:para>
+                                    The uncertainty attributes are deprecated.
+                                    They remain valid, but will be removed in a future version, so new datasets do not use them.
+                                </ddue:para>
+                            </ddue:alert>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -2335,42 +2701,42 @@ cpacs@dlr.de
                 </xsd:attribute>
                 <xsd:attribute name="uncertaintyFunctionName" type="uncertaintyFunctionType">
                     <xsd:annotation>
-                        <xsd:documentation>Name of the uncertainty distribution function</xsd:documentation>
+                        <xsd:documentation>Deprecated: probability distribution of the value (GaussianNormalDistribution or ExponentialDistribution)</xsd:documentation>
                     </xsd:annotation>
                 </xsd:attribute>
                 <xsd:attribute name="mu" type="xsd:double">
                     <xsd:annotation>
-                        <xsd:documentation>Parameter mu of the uncertainty distribution function</xsd:documentation>
+                        <xsd:documentation>Deprecated: mean of the normal distribution</xsd:documentation>
                     </xsd:annotation>
                 </xsd:attribute>
                 <xsd:attribute name="delta" type="xsd:double">
                     <xsd:annotation>
-                        <xsd:documentation>Parameter delta of the uncertainty distribution function</xsd:documentation>
+                        <xsd:documentation>Deprecated: standard deviation of the normal distribution</xsd:documentation>
                     </xsd:annotation>
                 </xsd:attribute>
                 <xsd:attribute name="a" type="xsd:double">
                     <xsd:annotation>
-                        <xsd:documentation>Parameter a of the uncertainty distribution function</xsd:documentation>
+                        <xsd:documentation>Deprecated: not used by any distribution</xsd:documentation>
                     </xsd:annotation>
                 </xsd:attribute>
                 <xsd:attribute name="b" type="xsd:double">
                     <xsd:annotation>
-                        <xsd:documentation>Parameter b of the uncertainty distribution function</xsd:documentation>
+                        <xsd:documentation>Deprecated: mean of the exponential distribution</xsd:documentation>
                     </xsd:annotation>
                 </xsd:attribute>
                 <xsd:attribute name="c" type="xsd:double">
                     <xsd:annotation>
-                        <xsd:documentation>Parameter c of the uncertainty distribution function</xsd:documentation>
+                        <xsd:documentation>Deprecated: not used by any distribution</xsd:documentation>
                     </xsd:annotation>
                 </xsd:attribute>
                 <xsd:attribute name="v" type="xsd:double">
                     <xsd:annotation>
-                        <xsd:documentation>Parameter v of the uncertainty distribution function</xsd:documentation>
+                        <xsd:documentation>Deprecated: not used by any distribution</xsd:documentation>
                     </xsd:annotation>
                 </xsd:attribute>
                 <xsd:attribute name="w" type="xsd:double">
                     <xsd:annotation>
-                        <xsd:documentation>Parameter w of the uncertainty distribution function</xsd:documentation>
+                        <xsd:documentation>Deprecated: not used by any distribution</xsd:documentation>
                     </xsd:annotation>
                 </xsd:attribute>
             </xsd:extension>
@@ -2382,12 +2748,83 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Floating point constraint base type</ddue:para>
+                        <ddue:para>Floating-point number with a relational operator</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>Base type for double nodes including a relational operator attribute indicating valid constraint region</ddue:para>
-                            <ddue:para>The doubleConstraintBaseType extends the doubleBaseType and thus inherits all its attributes.</ddue:para>
+                            <ddue:para>
+                                The value is a bound for the quantity named by the element, a floating-point number such as <ddue:codeInline>128.61</ddue:codeInline>.
+                                The required attribute <ddue:codeInline>@relationalOperator</ddue:codeInline> states how the quantity relates to it:
+                            </ddue:para>
+                            <ddue:table>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:legacyBold>Value</ddue:legacyBold>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        <ddue:legacyBold>The quantity is</ddue:legacyBold>
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>lt</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        less than the value
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>le</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        less than or equal to the value
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>eq</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        equal to the value
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>ne</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        not equal to the value
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>gt</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        greater than the value
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>ge</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        greater than or equal to the value
+                                    </ddue:entry>
+                                </ddue:row>
+                            </ddue:table>
+                            <ddue:para>
+                                The example limits the calibrated airspeed of a point performance case to at most 128.61 m/s (250 kt) and the Mach number to at most 0.78.
+                            </ddue:para>
+                            <ddue:code language="XML" title="Upper bounds for the speed of a point performance case">
+                                <![CDATA[
+<constraints>
+    <calibratedAirSpeed relationalOperator="le">128.61</calibratedAirSpeed>
+    <machNumber relationalOperator="le">0.78</machNumber>
+</constraints>
+                                ]]>
+                            </ddue:code>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -2397,7 +2834,7 @@ cpacs@dlr.de
             <xsd:extension base="doubleBaseType">
                 <xsd:attribute name="relationalOperator" use="required">
                     <xsd:annotation>
-                        <xsd:documentation>Relational operator of the constraint (lt, le, eq, ne, gt, ge)</xsd:documentation>
+                        <xsd:documentation>Relation of the quantity to the value (lt, le, eq, ne, gt, ge)</xsd:documentation>
                     </xsd:annotation>
                     <xsd:simpleType>
                         <xsd:restriction base="xsd:string">
@@ -2419,14 +2856,32 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Vector with semicolon separated values of type double</ddue:para>
+                        <ddue:para>List of floating-point numbers separated by semicolons</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
                             <ddue:para>
-                                Any entries of type
-                                <ddue:codeInline>double</ddue:codeInline>
-                                separated by semicolons are permitted, e.g.:
+                                A vector holds several numbers in one element.
+                                What its entries stand for is stated in the documentation of the element.
+                            </ddue:para>
+                            <ddue:list class="bullet">
+                                <ddue:listItem>
+                                    <ddue:para>The entries are separated by semicolons. White space around an entry, including a line break, is allowed.</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>Every entry is a number with an optional decimal point and an optional exponent, or <ddue:codeInline>NaN</ddue:codeInline>. An empty entry, e.g. between two semicolons or after a final semicolon, and an empty element are invalid.</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>
+                                        <ddue:codeInline>INF</ddue:codeInline> and <ddue:codeInline>-INF</ddue:codeInline> are invalid.</ddue:para>
+                                </ddue:listItem>
+                                <ddue:listItem>
+                                    <ddue:para>A vector with one entry is written as that number.</ddue:para>
+                                </ddue:listItem>
+                            </ddue:list>
+                            <ddue:para>
+                                The validation against the schema does not detect empty entries, so a tool that writes a vector makes sure that none occur.
+                                The placeholder <ddue:codeInline>&lt;doubleVectorTest&gt;</ddue:codeInline> in the examples stands for any element of this type.
                             </ddue:para>
                             <ddue:code language="XML" title="Example 1: valid double vector">
                                 <![CDATA[
@@ -2453,6 +2908,11 @@ cpacs@dlr.de
 <doubleVectorTest>123.456;1234.4E 56;-1.234e5.6</doubleVectorTest>
                                 ]]>
                             </ddue:code>
+                            <ddue:code language="XML" title="Example 6: invalid double vector due to an empty entry">
+                                <![CDATA[
+<doubleVectorTest>123.456;;-1.5</doubleVectorTest>
+                                ]]>
+                            </ddue:code>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -2470,12 +2930,87 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Floating point vector constraint base type</ddue:para>
+                        <ddue:para>Floating-point numbers with a relational operator</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>Base type for double vectors including a relational operator attribute indicating valid constraint region.</ddue:para>
-                            <ddue:para>The doubleVectorConstraintBaseType extends the doubleVectorBaseType and thus inherits all its attributes.</ddue:para>
+                            <ddue:para>
+                                The value is a list of floating-point numbers separated by semicolons, each a bound for the quantity named by the element.
+                                What the entries stand for is stated in the documentation of the element.
+                                The required attribute <ddue:codeInline>@relationalOperator</ddue:codeInline> applies to every entry and states how the quantity relates to it:
+                            </ddue:para>
+                            <ddue:table>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:legacyBold>Value</ddue:legacyBold>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        <ddue:legacyBold>The quantity is</ddue:legacyBold>
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>lt</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        less than the value
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>le</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        less than or equal to the value
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>eq</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        equal to the value
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>ne</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        not equal to the value
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>gt</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        greater than the value
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>ge</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        greater than or equal to the value
+                                    </ddue:entry>
+                                </ddue:row>
+                            </ddue:table>
+                            <ddue:para>
+                                In the example, the entries belong to the two parts of a climb segment, below and above flight level 100.
+                                The calibrated airspeed is at most 128.61 m/s (250 kt) in the first part and at most 154.33 m/s (300 kt) in the second, the Mach number at most 0.78 in both.
+                            </ddue:para>
+                            <ddue:code language="XML" title="Upper bounds for the speed in two parts of a climb segment">
+                                <![CDATA[
+<constraint>
+    ...
+    <calibratedAirSpeed relationalOperator="le">128.61;154.33</calibratedAirSpeed>
+    <machNumber relationalOperator="le">0.78;0.78</machNumber>
+    ...
+</constraint>
+                                ]]>
+                            </ddue:code>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -2485,7 +3020,7 @@ cpacs@dlr.de
             <xsd:extension base="doubleVectorBaseType">
                 <xsd:attribute name="relationalOperator" use="required">
                     <xsd:annotation>
-                        <xsd:documentation>Relational operator of the constraint (lt, le, eq, ne, gt, ge)</xsd:documentation>
+                        <xsd:documentation>Relation of the quantity to each entry (lt, le, eq, ne, gt, ge)</xsd:documentation>
                     </xsd:annotation>
                     <xsd:simpleType>
                         <xsd:restriction base="xsd:string">
@@ -2507,11 +3042,73 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Integer base type</ddue:para>
+                        <ddue:para>Integer</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Base type for integer nodes (including external data
-                            attributes)</ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                A whole number with an optional sign. There is no upper or lower limit.
+                            </ddue:para>
+                            <ddue:table>
+                                <ddue:title>Example values</ddue:title>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:legacyBold>Value</ddue:legacyBold>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        <ddue:legacyBold>Validity</ddue:legacyBold>
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>42</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        valid
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>-1</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        valid
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>+7</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        valid
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>3.0</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        invalid, decimal point
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>1e3</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        invalid, exponent
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>1 000</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        invalid, space
+                                    </ddue:entry>
+                                </ddue:row>
+                            </ddue:table>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -2542,8 +3139,74 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Positive double values larger than 0</ddue:para>
+                        <ddue:para>Positive floating-point number</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>
+                                A number greater than 0, with an optional decimal point and an optional exponent.
+                            </ddue:para>
+                            <ddue:table>
+                                <ddue:title>Example values</ddue:title>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:legacyBold>Value</ddue:legacyBold>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        <ddue:legacyBold>Validity</ddue:legacyBold>
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>0.5</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        valid
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>1e-6</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        valid
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>2</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        valid
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>0</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        invalid, not greater than 0
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>-0.5</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        invalid, negative
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>0,5</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        invalid, decimal comma
+                                    </ddue:entry>
+                                </ddue:row>
+                            </ddue:table>
+                        </ddue:content>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -2559,8 +3222,66 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Positive integer values larger than 0</ddue:para>
+                        <ddue:para>Positive integer</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>
+                                A whole number greater than 0.
+                            </ddue:para>
+                            <ddue:table>
+                                <ddue:title>Example values</ddue:title>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:legacyBold>Value</ddue:legacyBold>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        <ddue:legacyBold>Validity</ddue:legacyBold>
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>1</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        valid
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>24</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        valid
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>0</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        invalid, not greater than 0
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>-3</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        invalid, negative
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>2.0</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        invalid, decimal point
+                                    </ddue:entry>
+                                </ddue:row>
+                            </ddue:table>
+                        </ddue:content>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -2576,11 +3297,15 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Vector with semicolon separated positive integer values</ddue:para>
+                        <ddue:para>List of non-negative integers separated by semicolons</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>Any positive integer values separated by semicolons are permitted, e.g.:</ddue:para>
+                            <ddue:para>
+                                Each entry is a whole number without sign, decimal point or exponent, typically an index or an identifier; 0 is valid.
+                                The entries are separated by semicolons, and white space around an entry is allowed.
+                                The placeholder <ddue:codeInline>&lt;intVectorTest&gt;</ddue:codeInline> in the examples stands for any element of this type.
+                            </ddue:para>
                             <ddue:code language="XML" title="Example 1: valid integer vector">
                                 <![CDATA[
 <intVectorTest>0;1;2;3;4;5</intVectorTest>
@@ -2623,11 +3348,58 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>String base type</ddue:para>
+                        <ddue:para>Text</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Base type for string nodes (including external data
-                            attributes)</ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                Any text is valid.
+                                As everywhere in XML, the characters <ddue:codeInline>&lt;</ddue:codeInline> and <ddue:codeInline>&amp;</ddue:codeInline> are written as <ddue:codeInline>&amp;lt;</ddue:codeInline> and <ddue:codeInline>&amp;amp;</ddue:codeInline>.
+                            </ddue:para>
+                            <ddue:table>
+                                <ddue:title>Example values</ddue:title>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:legacyBold>Value</ddue:legacyBold>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        <ddue:legacyBold>Validity</ddue:legacyBold>
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>Main wing</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        valid
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>Flügel 1</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        valid, any Unicode character is allowed
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>cd &amp;lt; 0.03</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        valid, stands for cd &lt; 0.03
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>cd &lt; 0.03</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        invalid, the dataset is not well-formed
+                                    </ddue:entry>
+                                </ddue:row>
+                            </ddue:table>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -2742,11 +3514,7 @@ cpacs@dlr.de
             <xsd:extension base="xsd:IDREF">
                 <xsd:attribute name="isLink" default="True" type="xsd:string">
                     <xsd:annotation>
-                        <xsd:documentation>
-                            <ddue:legacyBold>DEPRECATED</ddue:legacyBold>:
-                            The <ddue:codeInline>@isLink</ddue:codeInline> attribute is set to optional to ensure the compatibility of older data records.
-                            However, since the linking character is explicitly defined by the <ddue:legacyBold>stringUIDBaseType</ddue:legacyBold>, the attribute is superfluous and will therefore be completely omitted in future versions.
-                        </xsd:documentation>
+                        <xsd:documentation>Deprecated: marks the element as a reference, which its type already does; valid for older datasets, but may be removed in a future version</xsd:documentation>
                     </xsd:annotation>
                 </xsd:attribute>
                 <xsd:attribute name="symmetry">
@@ -2770,16 +3538,82 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Time base type</ddue:para>
+                        <ddue:para>Time of day</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Base type for time nodes (including external data attributes)
-                            This time type is based on the xsd:time definition.
-                            "To specify a time zone, you can either enter a time in UTC time by adding a "Z" behind the time - like this: 09:30:10Z
-                            or you can specify an offset from the UTC time by adding a positive or negative time behind the time - like this:
-                            09:30:10-06:00
-                            or
-                            09:30:10+06:00" (description taken from http://www.w3schools.com/xml/schema_dtypes_date.asp)</ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                Written as hours:minutes:seconds with two digits each, optionally with decimal seconds.
+                                A time zone can follow, as <ddue:codeInline>Z</ddue:codeInline> for UTC or as an offset from UTC; without it, the time zone is not specified.
+                            </ddue:para>
+                            <ddue:table>
+                                <ddue:title>Example values</ddue:title>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:legacyBold>Value</ddue:legacyBold>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        <ddue:legacyBold>Validity</ddue:legacyBold>
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>14:30:00</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        valid
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>14:30:00.5</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        valid
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>14:30:00Z</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        valid, UTC
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>14:30:00+02:00</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        valid, two hours ahead of UTC
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>14:30</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        invalid, seconds missing
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>2:30:00</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        invalid, one digit for the hour
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>25:00:00</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        invalid, hour out of range
+                                    </ddue:entry>
+                                </ddue:row>
+                            </ddue:table>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -2810,12 +3644,72 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Time constraint base type</ddue:para>
+                        <ddue:para>Time of day with a relational operator</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>Base type for time nodes including a relational operator attribute indicating valid constraint region</ddue:para>
-                            <ddue:para>The timeConstraintBaseType extends the timeBaseType and thus inherits all its attributes.</ddue:para>
+                            <ddue:para>
+                                The value is a bound for the time named by the element, written as hours:minutes:seconds, e.g. <ddue:codeInline>14:30:00</ddue:codeInline>.
+                                The required attribute <ddue:codeInline>@relationalOperator</ddue:codeInline> states how the time relates to it:
+                            </ddue:para>
+                            <ddue:table>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:legacyBold>Value</ddue:legacyBold>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        <ddue:legacyBold>The time is</ddue:legacyBold>
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>lt</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        earlier than the value
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>le</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        at or before the value
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>eq</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        equal to the value
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>ne</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        not equal to the value
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>gt</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        later than the value
+                                    </ddue:entry>
+                                </ddue:row>
+                                <ddue:row>
+                                    <ddue:entry>
+                                        <ddue:codeInline>ge</ddue:codeInline>
+                                    </ddue:entry>
+                                    <ddue:entry>
+                                        at or after the value
+                                    </ddue:entry>
+                                </ddue:row>
+                            </ddue:table>
                         </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -2825,7 +3719,7 @@ cpacs@dlr.de
             <xsd:extension base="timeBaseType">
                 <xsd:attribute name="relationalOperator" use="required">
                     <xsd:annotation>
-                        <xsd:documentation>Relational operator of the constraint (lt, le, eq, ne, gt, ge)</xsd:documentation>
+                        <xsd:documentation>Relation of the time to the value (lt, le, eq, ne, gt, ge)</xsd:documentation>
                     </xsd:annotation>
                     <xsd:simpleType>
                         <xsd:restriction base="xsd:string">
