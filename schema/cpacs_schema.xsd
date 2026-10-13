@@ -5363,10 +5363,64 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Global data</ddue:para>
+                        <ddue:para>Top-level requirements and flight envelopes of the aircraft model</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Global data of the aircraft</ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                The global data hold the top-level aircraft requirements of the model, i.e. the values the design has to reach in range, payload, airport compatibility and flight performance, and the flight envelopes of the aircraft.
+                                Each requirement gives the required value and the value the design actually reaches (<ddue:codeInline>requirementType</ddue:codeInline>).
+                            </ddue:para>
+                            <ddue:para>
+                                The example shows some of the requirements of a short-range airliner.
+                                Its flight envelope is shown in <ddue:codeInline>flightEnvelopeType</ddue:codeInline>.
+                            </ddue:para>
+                            <ddue:code language="XML" title="Top-level requirements of a short-range airliner">
+                                <![CDATA[
+<global>
+    <designRange>
+        <required>4600000</required>
+        <actual>4750000</actual>
+    </designRange>
+    <payload>
+        <paxSeats>
+            <required>150</required>
+            <actual>150</actual>
+        </paxSeats>
+        <cargoCapacity>
+            <required>3000</required>
+            <actual>3400</actual>
+        </cargoCapacity>
+    </payload>
+    <airportCompatibility>
+        <wingSpan>
+            <required>36</required>
+            <actual>34.1</actual>
+        </wingSpan>
+        <takeOffFieldLength>
+            <required>2100</required>
+            <actual>2050</actual>
+        </takeOffFieldLength>
+        ...
+    </airportCompatibility>
+    <performanceTargets>
+        <cruiseMach>
+            <required>0.78</required>
+            <actual>0.78</actual>
+        </cruiseMach>
+        <maxOperatingAltitude>
+            <required>11887</required>
+            <actual>11887</actual>
+        </maxOperatingAltitude>
+        ...
+    </performanceTargets>
+    <flightEnvelopes>
+        ...
+    </flightEnvelopes>
+</global>
+                                ]]>
+                            </ddue:code>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -5376,31 +5430,27 @@ cpacs@dlr.de
                 <xsd:all>
                     <xsd:element name="designRange" minOccurs="0" type="requirementType">
                         <xsd:annotation>
-                            <xsd:documentation>
-                                designRange equals the full payload max
-                                range, i.e. point B in payload range
-                                diagram
-                            </xsd:documentation>
+                            <xsd:documentation>Design range, i.e. the range with maximum payload (point B of the payload-range diagram) [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="payload" minOccurs="0" type="payloadGlobalType">
                         <xsd:annotation>
-                            <xsd:documentation>Payload capability of the aircraft model</xsd:documentation>
+                            <xsd:documentation>Payload requirements</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="airportCompatibility" minOccurs="0" type="airportCompatibilityGlobalType">
                         <xsd:annotation>
-                            <xsd:documentation>Airport compatibility characteristics</xsd:documentation>
+                            <xsd:documentation>Airport compatibility requirements</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="performanceTargets" minOccurs="0" type="performanceTargetsGlobalType">
                         <xsd:annotation>
-                            <xsd:documentation>Performance targets of the aircraft model</xsd:documentation>
+                            <xsd:documentation>Performance requirements</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="flightEnvelopes" minOccurs="0" type="flightEnvelopesType">
                         <xsd:annotation>
-                            <xsd:documentation>Flight envelopes of the aircraft model</xsd:documentation>
+                            <xsd:documentation>Flight envelopes</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -5730,7 +5780,7 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Airport compatibility</ddue:para>
+                        <ddue:para>Airport compatibility requirements</ddue:para>
                     </ddue:summary>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -5740,27 +5790,27 @@ cpacs@dlr.de
                 <xsd:all>
                     <xsd:element name="wingSpan" minOccurs="0" type="requirementType">
                         <xsd:annotation>
-                            <xsd:documentation>Wing span requirement</xsd:documentation>
+                            <xsd:documentation>Wing span [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="wheelTrackWidth" minOccurs="0" type="requirementType">
                         <xsd:annotation>
-                            <xsd:documentation>Wheel track width requirement</xsd:documentation>
+                            <xsd:documentation>Wheel track of the main landing gear [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="runwayLoading" minOccurs="0" type="requirementType">
                         <xsd:annotation>
-                            <xsd:documentation>Runway loading requirement</xsd:documentation>
+                            <xsd:documentation>Aircraft classification number (ACN) [-]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="takeOffFieldLength" minOccurs="0" type="requirementType">
                         <xsd:annotation>
-                            <xsd:documentation>Take-off field length requirement</xsd:documentation>
+                            <xsd:documentation>Take-off field length [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="landingFieldLength" minOccurs="0" type="requirementType">
                         <xsd:annotation>
-                            <xsd:documentation>Landing field length requirement</xsd:documentation>
+                            <xsd:documentation>Landing field length [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -6853,8 +6903,11 @@ cpacs@dlr.de
                         <ddue:para>Atmospheric model</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Available options: ISA. See documentation of  &lt;CPACS&gt; root element for further details.
-                        </ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                <ddue:codeInline>ISA</ddue:codeInline> is the ICAO Standard Atmosphere, see section 10 of <ddue:codeInline>cpacsType</ddue:codeInline>.
+                            </ddue:para>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -19248,12 +19301,15 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Flight envelope speed</ddue:para>
+                        <ddue:para>Boundary of the flight envelope at one characteristic speed</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>
-                            Specification of the V-speed
-                        </ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                <ddue:codeInline>&lt;speedName&gt;</ddue:codeInline> names the characteristic speed, and <ddue:codeInline>&lt;altitude&gt;</ddue:codeInline> and <ddue:codeInline>&lt;trueAirSpeed&gt;</ddue:codeInline> give the points of its curve.
+                                The two vectors have the same length; entries with the same index form one point, and the points are listed with increasing altitude.
+                            </ddue:para>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -19263,21 +19319,17 @@ cpacs@dlr.de
                 <xsd:all>
                     <xsd:element name="speedName" type="speedDesignatorsType">
                         <xsd:annotation>
-                            <xsd:documentation>Designator of the speed the envelope boundary refers to</xsd:documentation>
+                            <xsd:documentation>Characteristic speed the curve belongs to</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="altitude" type="doubleVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>
-                                Vector with altitudes
-                            </xsd:documentation>
+                            <xsd:documentation>Altitudes of the points of the curve [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="trueAirSpeed" type="doubleVectorBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>
-                                Vector with True Airspeeds
-                            </xsd:documentation>
+                            <xsd:documentation>True airspeeds of the points of the curve [m/s]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -19290,12 +19342,14 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Flight Envelopes</ddue:para>
+                        <ddue:para>Flight envelopes</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>
-                            Specification of flight envelopes
-                        </ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                One or more flight envelopes of the aircraft model, e.g. for a standard and for a hot day.
+                            </ddue:para>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -19318,12 +19372,48 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Flight Envelope</ddue:para>
+                        <ddue:para>Flight envelope</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>
-                            Specification of a flight envelope
-                        </ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                A flight envelope is the range of altitude and speed in which the aircraft is operated.
+                                It is bounded by curves of characteristic speeds over altitude, such as the stall speed <ddue:codeInline>VS</ddue:codeInline> on the low-speed side and the maximum operating speed <ddue:codeInline>VMO</ddue:codeInline> on the high-speed side, each given as a <ddue:codeInline>&lt;speed&gt;</ddue:codeInline>.
+                                The altitudes refer to <ddue:codeInline>&lt;atmosphericModel&gt;</ddue:codeInline>, shifted by <ddue:codeInline>&lt;deltaTemperature&gt;</ddue:codeInline> (section 10 of <ddue:codeInline>cpacsType</ddue:codeInline>).
+                                The speeds are true airspeeds, so that the curves of a hot day differ from those of a standard day.
+                            </ddue:para>
+                            <ddue:mediaLink>
+                                <ddue:image xlink:href="flightEnvelope"/>
+                            </ddue:mediaLink>
+                            <ddue:para>
+                                The figure shows the flight envelope of a short-range airliner with the points of the example below.
+                                Up to about 7.5 km, <ddue:codeInline>VMO</ddue:codeInline> and the design diving speed <ddue:codeInline>VD</ddue:codeInline> are constant calibrated airspeeds, whose true airspeed grows with altitude; above, they are limited by a constant Mach number, the maximum operating Mach number for <ddue:codeInline>VMO</ddue:codeInline> and the design diving Mach number for <ddue:codeInline>VD</ddue:codeInline>.
+                                The curves named <ddue:codeInline>VMO</ddue:codeInline> and <ddue:codeInline>VD</ddue:codeInline> include these parts limited by a Mach number.
+                                The shaded area between the stall speed and the maximum operating speed is the normal operating range; all curves end at the maximum operating altitude.
+                            </ddue:para>
+                            <ddue:code language="XML" title="Flight envelope of a short-range airliner">
+                                <![CDATA[
+<flightEnvelope>
+    <atmosphericModel>ISA</atmosphericModel>
+    <speed>
+        <speedName>VS</speedName>
+        <altitude>0;1000;2000;3000;4000;5000;6000;7000;8000;9000;10000;11000;11887</altitude>
+        <trueAirSpeed>66;69.2;72.7;76.5;80.5;84.8;89.5;94.5;100;105.9;112.3;119.2;127.5</trueAirSpeed>
+    </speed>
+    <speed>
+        <speedName>VMO</speedName>
+        <altitude>0;1000;2000;3000;4000;5000;6000;7000;7489;8000;9000;10000;11000;11887</altitude>
+        <trueAirSpeed>180;188.2;196.9;206.1;215.8;226.1;237;248.5;254.4;252.6;249.1;245.6;242;242</trueAirSpeed>
+    </speed>
+    <speed>
+        <speedName>VD</speedName>
+        <altitude>0;1000;2000;3000;4000;5000;6000;7000;7555;8000;9000;10000;11000;11887</altitude>
+        <trueAirSpeed>196;204.8;214.1;223.9;234.2;245.2;256.7;268.8;275.8;274.2;270.4;266.5;262.6;262.6</trueAirSpeed>
+    </speed>
+</flightEnvelope>
+                                ]]>
+                            </ddue:code>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -19333,18 +19423,17 @@ cpacs@dlr.de
                 <xsd:sequence>
                     <xsd:element name="atmosphericModel" type="atmosphericModelType">
                         <xsd:annotation>
-                            <xsd:documentation>Atmospheric model the flight envelope is based on</xsd:documentation>
+                            <xsd:documentation>Atmospheric model the altitudes refer to</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="deltaTemperature" minOccurs="0" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Offset from temperature of the atmospheric model [K]
-                            </xsd:documentation>
+                            <xsd:documentation>Temperature offset from the atmospheric model, see section 10 of the documentation of the root element [K]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="speed" maxOccurs="unbounded" type="flightEnvelopeSpeedType">
                         <xsd:annotation>
-                            <xsd:documentation>Speed boundary</xsd:documentation>
+                            <xsd:documentation>Boundary curve at one characteristic speed</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -35801,7 +35890,7 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Global payload data</ddue:para>
+                        <ddue:para>Payload requirements</ddue:para>
                     </ddue:summary>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -35811,12 +35900,12 @@ cpacs@dlr.de
                 <xsd:all>
                     <xsd:element name="paxSeats" minOccurs="0" type="requirementType">
                         <xsd:annotation>
-                            <xsd:documentation>Number of passenger seats</xsd:documentation>
+                            <xsd:documentation>Number of passenger seats [-]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="cargoCapacity" minOccurs="0" type="requirementType">
                         <xsd:annotation>
-                            <xsd:documentation>Cargo capacity</xsd:documentation>
+                            <xsd:documentation>Mass of cargo the aircraft can carry [kg]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -35922,7 +36011,7 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Global performance targets</ddue:para>
+                        <ddue:para>Performance requirements</ddue:para>
                     </ddue:summary>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -35932,37 +36021,37 @@ cpacs@dlr.de
                 <xsd:all>
                     <xsd:element name="cruiseMach" minOccurs="0" type="requirementType">
                         <xsd:annotation>
-                            <xsd:documentation>Cruise Mach number</xsd:documentation>
+                            <xsd:documentation>Cruise Mach number [-]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="maximumOperatingVelocity" minOccurs="0" type="requirementType">
                         <xsd:annotation>
-                            <xsd:documentation>Maximum operating velocity</xsd:documentation>
+                            <xsd:documentation>Maximum operating speed VMO as calibrated airspeed [m/s]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="maximumOperatingMach" minOccurs="0" type="requirementType">
                         <xsd:annotation>
-                            <xsd:documentation>Maximum operating Mach number</xsd:documentation>
+                            <xsd:documentation>Maximum operating Mach number MMO [-]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="initialCruiseAltitude" minOccurs="0" type="requirementType">
                         <xsd:annotation>
-                            <xsd:documentation>Initial cruise altitude</xsd:documentation>
+                            <xsd:documentation>Initial cruise altitude [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="timeToClimb" minOccurs="0" type="requirementType">
                         <xsd:annotation>
-                            <xsd:documentation>Time to climb</xsd:documentation>
+                            <xsd:documentation>Time to climb [s]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="maxOperatingAltitude" minOccurs="0" type="requirementType">
                         <xsd:annotation>
-                            <xsd:documentation>Maximum operating altitude</xsd:documentation>
+                            <xsd:documentation>Maximum operating altitude [m]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="approachSpeed" minOccurs="0" type="requirementType">
                         <xsd:annotation>
-                            <xsd:documentation>Approach speed</xsd:documentation>
+                            <xsd:documentation>Approach speed as calibrated airspeed [m/s]</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -39654,8 +39743,17 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Requirement</ddue:para>
+                        <ddue:para>Required and actual value of a requirement</ddue:para>
                     </ddue:summary>
+                    <ddue:remarks>
+                        <ddue:content>
+                            <ddue:para>
+                                <ddue:codeInline>&lt;required&gt;</ddue:codeInline> is the value the requirement asks for, <ddue:codeInline>&lt;actual&gt;</ddue:codeInline> the value the design reaches; <ddue:codeInline>&lt;actual&gt;</ddue:codeInline> is left out as long as the design has not been evaluated.
+                                Both are given in the unit of the requirement, which its element states.
+                                Whether the required value is a lower bound, an upper bound or a target is not part of the data.
+                            </ddue:para>
+                        </ddue:content>
+                    </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
         </xsd:annotation>
@@ -39664,12 +39762,12 @@ cpacs@dlr.de
                 <xsd:all>
                     <xsd:element name="required" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Required value</xsd:documentation>
+                            <xsd:documentation>Value the requirement asks for</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="actual" minOccurs="0" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Actual value achieved</xsd:documentation>
+                            <xsd:documentation>Value the design reaches</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -42725,12 +42823,14 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Speed designators</ddue:para>
+                        <ddue:para>Characteristic speed</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>
-                            Provides an enumerated list of V-speeds as defined by regulations.
-                        </ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                Characteristic speeds of an aircraft as defined in the certification specifications for aircraft (CS-23, CS-25).
+                            </ddue:para>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -42768,7 +42868,7 @@ cpacs@dlr.de
                 <xsd:enumeration value="VF">
                     <xsd:annotation>
                         <xsd:documentation>
-                            Designed flap speed
+                            Design flap speed
                         </xsd:documentation>
                     </xsd:annotation>
                 </xsd:enumeration>
