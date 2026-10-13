@@ -5527,7 +5527,7 @@ cpacs@dlr.de
                     </xsd:element>
                     <xsd:element name="engines" minOccurs="0" type="enginePositionsType">
                         <xsd:annotation>
-                            <xsd:documentation>Positions</xsd:documentation>
+                            <xsd:documentation>Installed engines</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="enginePylons" minOccurs="0" type="enginePylonsType">
@@ -18691,10 +18691,13 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Engine references</ddue:para>
+                        <ddue:para>Engines installed in the model</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Reference to the used engines and their positions at the configuration</ddue:para>
+                        <ddue:para>
+                            Each engine position installs an engine defined in <ddue:codeInline>vehicles/engines</ddue:codeInline> at one place of the model.
+                            Several positions may install the same engine, and a position that is mirrored stands for two installed engines.
+                        </ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -18717,10 +18720,129 @@ cpacs@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Engine position</ddue:para>
+                        <ddue:para>Engine installed at one place of the model</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Data for a single engine</ddue:para>
+                        <ddue:content>
+                            <ddue:para>
+                                An engine position installs an engine at one place of the model, usually under a pylon.
+                                The engine itself is defined once in <ddue:codeInline>vehicles/engines</ddue:codeInline> (<ddue:codeInline>engineType</ddue:codeInline>), with its nacelle, geometry and performance; the position references it by <ddue:codeInline>&lt;engineUID&gt;</ddue:codeInline> and states where it is installed.
+                                Several positions may reference the same engine, e.g. the inner and the outer engines of a four-engine aircraft.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Placement</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:codeInline>&lt;transformation&gt;</ddue:codeInline> places the engine coordinate system in the coordinate system of the component named in <ddue:codeInline>&lt;parentUID&gt;</ddue:codeInline>.
+                                The engine coordinate system has its origin in the center of the fan plane, its x-axis along the engine axis to the rear and its z-axis upwards (<ddue:codeInline>engineGeometryType</ddue:codeInline>).
+                                Like every component with a parent, the engine follows the translation of its parent but neither its rotation nor its scaling (<ddue:codeInline>transformationType</ddue:codeInline>).
+                            </ddue:para>
+                            <ddue:para>
+                                The transformation acts on the geometry only.
+                                Thrust, mass and performance maps remain those of the engine definition, also where the transformation scales the engine; an engine of another size is defined as another engine.
+                            </ddue:para>
+                            <ddue:para>
+                                <ddue:legacyBold>Symmetry</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                Without <ddue:codeInline>@symmetry</ddue:codeInline>, an engine position takes the symmetry of its parent (section 7.1 of <ddue:codeInline>cpacsType</ddue:codeInline>): an engine under a pylon of a wing with <ddue:codeInline>symmetry="x-z-plane"</ddue:codeInline> is installed on both sides of the aircraft.
+                                With <ddue:codeInline>@symmetry</ddue:codeInline>, the position sets a symmetry of its own; <ddue:codeInline>none</ddue:codeInline> installs the engine once, even if its parent is mirrored.
+                            </ddue:para>
+                            <ddue:para>
+                                The mirror image is the same engine at the mirrored place: its geometry is mirrored, while all data of the engine definition, including the direction of rotation, remain unchanged.
+                                Engines that turn in opposite directions on the two sides are therefore defined as two engines and installed by two positions.
+                            </ddue:para>
+                            <ddue:alert class="tigl">
+                                <ddue:para>
+                                    TiGL 3.5 does not evaluate <ddue:codeInline>@symmetry</ddue:codeInline> of an engine position: the engine always takes the symmetry of its parent
+                                    (<ddue:externalLink>
+                                        <ddue:linkText>TiGL issue #844</ddue:linkText>
+                                        <ddue:linkUri>https://github.com/DLR-SC/tigl/issues/844</ddue:linkUri>
+                                    </ddue:externalLink>).
+                                    With <ddue:codeInline>none</ddue:codeInline>, an engine under a mirrored pylon is mirrored nevertheless, and with a symmetry plane, an engine under a pylon that is not mirrored is installed once.
+                                </ddue:para>
+                            </ddue:alert>
+                            <ddue:para>
+                                <ddue:legacyBold>Example</ddue:legacyBold>
+                            </ddue:para>
+                            <ddue:para>
+                                A four-engine aircraft: an inner and an outer pylon hang on the wing, which is mirrored at the x-z plane, and one engine hangs under each pylon.
+                                Both positions reference the same engine definition and take the symmetry of the wing through their pylons, so that the excerpt describes four engines.
+                                Each fan plane lies 2 m ahead of and 1.5 m below the origin of its pylon.
+                            </ddue:para>
+                            <ddue:code language="XML" title="Four engines of one definition, installed by two positions under mirrored pylons">
+                                <![CDATA[
+<vehicles>
+    <aircraft>
+        <model uID="FourEngineAircraft">
+            ...
+            <wings>
+                <wing uID="Wing" symmetry="x-z-plane">
+                    ...
+                </wing>
+            </wings>
+            <engines>
+                <engine uID="InnerEngine">
+                    <name>Inner engine</name>
+                    <engineUID>Turbofan</engineUID>
+                    <parentUID>InnerPylon</parentUID>
+                    <transformation>
+                        <translation>
+                            <x>-2.0</x>
+                            <y>0.0</y>
+                            <z>-1.5</z>
+                        </translation>
+                    </transformation>
+                </engine>
+                <engine uID="OuterEngine">
+                    <name>Outer engine</name>
+                    <engineUID>Turbofan</engineUID>
+                    <parentUID>OuterPylon</parentUID>
+                    <transformation>
+                        <translation>
+                            <x>-2.0</x>
+                            <y>0.0</y>
+                            <z>-1.5</z>
+                        </translation>
+                    </transformation>
+                </engine>
+            </engines>
+            <enginePylons>
+                <enginePylon uID="InnerPylon">
+                    <parentUID>Wing</parentUID>
+                    <transformation>
+                        <translation>
+                            <x>4.0</x>
+                            <y>10.0</y>
+                            <z>0.7</z>
+                        </translation>
+                    </transformation>
+                    ...
+                </enginePylon>
+                <enginePylon uID="OuterPylon">
+                    <parentUID>Wing</parentUID>
+                    <transformation>
+                        <translation>
+                            <x>8.2</x>
+                            <y>17.3</y>
+                            <z>1.5</z>
+                        </translation>
+                    </transformation>
+                    ...
+                </enginePylon>
+            </enginePylons>
+        </model>
+    </aircraft>
+    <engines>
+        <engine uID="Turbofan">
+            <name>Turbofan</name>
+            ...
+        </engine>
+    </engines>
+</vehicles>
+                                ]]>
+                            </ddue:code>
+                        </ddue:content>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -18740,8 +18862,7 @@ cpacs@dlr.de
                     </xsd:element>
                     <xsd:element name="engineUID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Reference to the used engine
-                            </xsd:documentation>
+                            <xsd:documentation>UID of the installed engine, defined in vehicles/engines</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="parentUID" type="stringUIDBaseType">
@@ -18751,7 +18872,7 @@ cpacs@dlr.de
                     </xsd:element>
                     <xsd:element name="transformation" type="transformationType">
                         <xsd:annotation>
-                            <xsd:documentation>Position and orientation</xsd:documentation>
+                            <xsd:documentation>Position and orientation of the engine coordinate system</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -40867,7 +40988,7 @@ cpacs@dlr.de
                     </xsd:element>
                     <xsd:element name="engines" minOccurs="0" type="enginePositionsType">
                         <xsd:annotation>
-                            <xsd:documentation>Engines</xsd:documentation>
+                            <xsd:documentation>Installed engines</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="driveSystems" minOccurs="0" type="driveSystemsType">
