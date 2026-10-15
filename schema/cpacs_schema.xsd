@@ -438,9 +438,6 @@ cpacs@dlr.de
                                         <ddue:para>Compared with the aerodynamic axes of the aeronautical standards (ISO 1151, LN 9300), the d- and l-axis point the other way: to the rear and upwards instead of forwards and downwards. The angles α and β have the same sign as there, and so has the pitching moment. The rolling moment <ddue:codeInline>&lt;cmd&gt;</ddue:codeInline> and the yawing moment <ddue:codeInline>&lt;cml&gt;</ddue:codeInline> have the opposite sign, and they are normalized with the reference length instead of the span.</ddue:para>
                                     </ddue:alert>
                                     <ddue:para>
-                                        The aerodynamic maps of rotorcraft (<ddue:codeInline>aeroPerformanceMapRCType</ddue:codeInline>) are an exception: their coefficients <ddue:codeInline>&lt;cfx&gt;</ddue:codeInline> to <ddue:codeInline>&lt;cmz&gt;</ddue:codeInline> are given along and about the axes of the CPACS coordinate system.
-                                    </ddue:para>
-                                    <ddue:para>
                                         <ddue:legacyBold>4.3. Local coordinate systems via parentUID and transformation</ddue:legacyBold>
                                     </ddue:para>
                                     <ddue:para>
@@ -4830,132 +4827,6 @@ cpacs@dlr.de
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="aeroPerformanceMapRCType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Aerodynamic performance map (rotorcraft)</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>Performance map with aerodynamic data. Array order is: angleOfAttack min-&gt;max then angleOfSideslip then altitude then machNumber</ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="atmosphericModel" type="atmosphericModelOldType">
-                        <xsd:annotation>
-                            <xsd:documentation>Atmospheric model and temperature offset</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="machNumber" type="stringVectorBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Mach number</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="altitude" type="stringVectorBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Altitude</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="angleOfSideslip" type="stringVectorBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Sideslip angle</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="angleOfAttack" type="stringVectorBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Angle of attack</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="analysisTool" minOccurs="0" type="toolType">
-                        <xsd:annotation>
-                            <xsd:documentation>Name and version of the tool used to compute
-                                the aerodynamic performance</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="analysisLevel" minOccurs="0" type="integerBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Modeling level of the methods used to compute
-                                the aerodynamic performance. The higher the analysisLevel, the
-                                higher the quality of the results. Possible use of
-                                analysisLevel: 0- 9 = Statistical models, 10-19 = Analytic
-                                models, 20-29 = Lifting line method, 30-39 = Panel method, 40-49
-                                = Panel-BL-coupled method, 50-59 = Full potential method, 60-69
-                                = Full potential-BL coupled method, 70-79 = CFD euler method,
-                                80-89 = CFD euler-bl coupled method, 99-99 = CFD RANS method,
-                                &gt;=100 = Experimental data.</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="cfx" minOccurs="0" type="stringArrayBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Force coefficient in x-direction of the CPACS coordinate system</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="cfy" minOccurs="0" type="stringArrayBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Force coefficient in y-direction of the CPACS coordinate system</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="cfz" minOccurs="0" type="stringArrayBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Force coefficient in z-direction of the CPACS coordinate system</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="cmx" minOccurs="0" type="stringArrayBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Moment coefficient around the x-axis of the CPACS coordinate system</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="cmy" minOccurs="0" type="stringArrayBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Moment coefficient around the y-axis of the CPACS coordinate system</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="cmz" minOccurs="0" type="stringArrayBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Moment coefficient around the z-axis of the CPACS coordinate system</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="dampingDerivatives" minOccurs="0" type="dampingDerivativesRatesArrayType">
-                        <xsd:annotation>
-                            <xsd:documentation>Damping derivatives for positive and negative rotation rates</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="aeroPerformanceMapsRCType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Aerodynamic performance maps (rotorcraft)</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>Multiple aeroPerformanceMapRC nodes for different cases</ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element name="aeroPerformanceMap" maxOccurs="unbounded" type="aeroPerformanceMapRCType">
-                        <xsd:annotation>
-                            <xsd:documentation>Aerodynamic performance map</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:sequence>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
     <xsd:complexType name="aeroPerformanceMapType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -5082,57 +4953,6 @@ cpacs@dlr.de
                     <xsd:element name="incrementMaps" minOccurs="0" type="aeroPerformanceIncrementMapsType">
                         <xsd:annotation>
                             <xsd:documentation>Increments of the aerodynamic coefficients due to movable device deflections</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="aeroPerformanceRCType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Aerodynamic performance (rotorcraft)</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>Performance maps with aerodynamic data of an airfoil.</ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="globalAeroPerformance" minOccurs="0" type="globalAeroPerformanceType">
-                        <xsd:annotation>
-                            <xsd:documentation>Aerodynamic performance map of the full
-                                configuration</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="fuselagesAeroPerformance" minOccurs="0" type="fuselagesAeroPerformanceType">
-                        <xsd:annotation>
-                            <xsd:documentation>Aerodynamic performance maps of isolated
-                                fuselages</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="wingsAeroPerformance" minOccurs="0" type="wingsAeroPerformanceType">
-                        <xsd:annotation>
-                            <xsd:documentation>Aerodynamic performance maps of isolated wings
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="controlSurfacesAeroPerformance" minOccurs="0" type="controlSurfacePerformanceMapsOldType">
-                        <xsd:annotation>
-                            <xsd:documentation>Aerodynamic performance maps of control
-                                surfaces</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="airfoilsAeroPerformance" minOccurs="0" type="airfoilsAeroPerformanceType">
-                        <xsd:annotation>
-                            <xsd:documentation>Aerodynamic performance maps of isolated
-                                airfoils</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -5611,68 +5431,6 @@ cpacs@dlr.de
                     <xsd:element name="model" maxOccurs="unbounded" type="aircraftModelType">
                         <xsd:annotation>
                             <xsd:documentation>Aircraft model</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:sequence>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="airfoilAeroPerformanceType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Airfoil aerodynamic performance</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>Performance maps with aerodynamic data of an airfoil.</ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="airfoilUID" type="stringUIDBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Reference to the UID of the analysed airfoil
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="reference" minOccurs="0" type="referenceType">
-                        <xsd:annotation>
-                            <xsd:documentation>References used for the calculation of the
-                                force and moment coefficients of the airfoil (in the airfoil
-                                axis system!)</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="aeroPerformanceMaps" type="aeroPerformanceMapsRCType">
-                        <xsd:annotation>
-                            <xsd:documentation>Calculated aerodynamic performance maps</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="airfoilsAeroPerformanceType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Airfoil aerodynamic performances</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element name="airfoilAeroPerformance" maxOccurs="unbounded" type="airfoilAeroPerformanceType">
-                        <xsd:annotation>
-                            <xsd:documentation>Aerodynamic performance of a single airfoil</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -6849,51 +6607,6 @@ cpacs@dlr.de
             </xsd:enumeration>
         </xsd:restriction>
     </xsd:simpleType>
-
-    <xsd:complexType name="atmosphericModelOldType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Atmospheric model (legacy)</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>Defines the the athmospheric model which should be used.
-                                Currently there is only a single option which is ISA for ICAO Standard
-                                atmosphere (ISA) from 1993. For more details on atmospheric
-                                models, please refer to documentation of the &lt;CPACS&gt; root
-                                element.</ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="atmosphericModel">
-                        <xsd:annotation>
-                            <xsd:documentation>Atmospheric model (e.g. ISA for ICAO Standard
-                                atmosphere (ISA) from 1993)</xsd:documentation>
-                        </xsd:annotation>
-                        <xsd:complexType>
-                            <xsd:simpleContent>
-                                <xsd:restriction base="stringBaseType">
-                                    <xsd:enumeration value="ISA"/>
-                                </xsd:restriction>
-                            </xsd:simpleContent>
-                        </xsd:complexType>
-                    </xsd:element>
-                    <xsd:element name="deltaTemperature" minOccurs="0" type="doubleBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Offset from temperature of the atmospheric model [K].
-                                For more details on atmospheric models, please refer to documentation
-                                of the &lt;CPACS&gt; root element.</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
 
     <xsd:complexType name="atmosphericModelType">
         <xsd:annotation>
@@ -12330,94 +12043,6 @@ cpacs@dlr.de
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="controlSurfacePerformanceMapOldType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Control surface performance map (legacy)</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>Delta performance map with aerodynamic data for a control surface. Array order is: relativeDeflection min-&gt;max then angleOfAttack then angleOfSideslip then altitude then machNumber. AngleOfAttack, angleOfSideslip, altitude and machNumber are taken from the basic performance map one level above.</ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element name="controlSurfaceUID" type="stringUIDBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Reference to the control surface
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="relDeflection" type="stringVectorBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Relative deflection</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="dcd" minOccurs="0" type="stringArrayBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Increment of the drag coefficient due to the control surface deflection</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="dcs" minOccurs="0" type="stringArrayBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Increment of the side force coefficient due to the control surface deflection</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="dcl" minOccurs="0" type="stringArrayBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Increment of the lift coefficient due to the control surface deflection</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="dcmd" minOccurs="0" type="stringArrayBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Increment of the moment coefficient around the d-axis due to the control surface deflection</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="dcms" minOccurs="0" type="stringArrayBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Increment of the moment coefficient around the s-axis due to the control surface deflection</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="dcml" minOccurs="0" type="stringArrayBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Increment of the moment coefficient around the l-axis due to the control surface deflection</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:sequence>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="controlSurfacePerformanceMapsOldType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Control surface performance maps (legacy)</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>Aerodynamic delta performance maps for one or more control surfaces.</ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element name="controlSurface" maxOccurs="unbounded" type="controlSurfacePerformanceMapOldType">
-                        <xsd:annotation>
-                            <xsd:documentation>Performance map of a single control surface</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:sequence>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
     <xsd:complexType name="controlSurfaceSkinCutOutBorderType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -15307,66 +14932,6 @@ cpacs@dlr.de
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="dampingDerivativesRatesArrayType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Damping derivatives for positive and negative rotation
-                            rates</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:content>
-                            <ddue:section>
-                                <ddue:title>0. General overview</ddue:title>
-                                <ddue:content>
-                                    <ddue:para>This type contains the damping derivatives. They are
-                                        split up into those derivatives for positive rotation rates,
-                                        and those for negative rotation rates.</ddue:para>
-                                </ddue:content>
-                            </ddue:section>
-                            <ddue:section>
-                                <ddue:title>1. &lt;positiveRates&gt; (optional)</ddue:title>
-                                <ddue:content>
-                                    <ddue:para>Damping derivatives, calculated by positive rotation
-                                        rates.</ddue:para>
-                                </ddue:content>
-                            </ddue:section>
-                            <ddue:section>
-                                <ddue:title>2. &lt;negativeRates&gt; (optional)</ddue:title>
-                                <ddue:content>
-                                    <ddue:para>Damping derivatives, calculated by negative rotation
-                                        rates.</ddue:para>
-                                </ddue:content>
-                            </ddue:section>
-                        </ddue:content>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="positiveRates" minOccurs="0" type="dampingDerivativesType">
-                        <xsd:annotation>
-                            <xsd:documentation>Damping derivatives for positive rotation rates</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="negativeRates" minOccurs="0" type="dampingDerivativesType">
-                        <xsd:annotation>
-                            <xsd:documentation>Damping derivatives for negative rotation rates</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:all>
-                <xsd:attribute name="uID" use="required" type="xsd:ID">
-                    <xsd:annotation>
-                        <xsd:documentation>UID</xsd:documentation>
-                    </xsd:annotation>
-                </xsd:attribute>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -21958,45 +21523,6 @@ cpacs@dlr.de
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="fuselageAeroPerformanceType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Fuselage aerodynamic performance</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>Performance maps with aerodynamic data of a fuselage.</ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="fuselageUID" type="stringUIDBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Reference to the UID of the analysed fuselage
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="reference" minOccurs="0" type="referenceType">
-                        <xsd:annotation>
-                            <xsd:documentation>References used for the calculation of the
-                                force and moment coefficients of the fuselage (in the fuselage
-                                axis system!)</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="aeroPerformanceMaps" type="aeroPerformanceMapsRCType">
-                        <xsd:annotation>
-                            <xsd:documentation>Calculated aerodynamic performance maps</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
     <xsd:complexType name="fuselageCutOutsType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -22482,29 +22008,6 @@ cpacs@dlr.de
                     <xsd:element name="fuselageProfile" maxOccurs="unbounded" type="profileGeometryType">
                         <xsd:annotation>
                             <xsd:documentation>Fuselage profile</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:sequence>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="fuselagesAeroPerformanceType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Fuselage aerodynamic performances</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element name="fuselageAeroPerformance" maxOccurs="unbounded" type="fuselageAeroPerformanceType">
-                        <xsd:annotation>
-                            <xsd:documentation>Aerodynamic performance of a single fuselage</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
@@ -24326,39 +23829,6 @@ cpacs@dlr.de
             </xsd:enumeration>
         </xsd:restriction>
     </xsd:simpleType>
-
-    <xsd:complexType name="globalAeroPerformanceType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Global aerodynamic performance</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>Performance maps with aerodynamic data of an airfoil.</ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="reference" minOccurs="0" type="referenceType">
-                        <xsd:annotation>
-                            <xsd:documentation>References used for the calculation of the
-                                force and moment coefficients</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="aeroPerformanceMaps" type="aeroPerformanceMapsRCType">
-                        <xsd:annotation>
-                            <xsd:documentation>Calculated aerodynamic performance maps of the
-                                full configuration</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
 
     <xsd:complexType name="globalBeamPropertiesType">
         <xsd:annotation>
@@ -40596,7 +40066,7 @@ cpacs@dlr.de
         <xsd:complexContent>
             <xsd:extension base="complexBaseType">
                 <xsd:all>
-                    <xsd:element name="aeroPerformance" minOccurs="0" type="aeroPerformanceRCType">
+                    <xsd:element name="aeroPerformance" minOccurs="0" type="aeroPerformanceType">
                         <xsd:annotation>
                             <xsd:documentation>Aerodynamic performance results</xsd:documentation>
                         </xsd:annotation>
@@ -40943,7 +40413,7 @@ cpacs@dlr.de
                         <ddue:para>Rotorcraft model</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Complete rotorcraft model (Geometry and all specific data). The rotorcraftModelType is basically a copy of the aircraftModelType with the following additional elements: rotors, rotorBlades, driveSystems. Furthermore the following elements have been adapted for rotorcraft: global and analyses (aeroPerformance and massBreakdown).</ddue:para>
+                        <ddue:para>Complete rotorcraft model (Geometry and all specific data). The rotorcraftModelType is basically a copy of the aircraftModelType with the following additional elements: rotors, rotorBlades, driveSystems. Furthermore the following elements have been adapted for rotorcraft: global and analyses (massBreakdown).</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
             </xsd:appinfo>
@@ -54216,45 +53686,6 @@ cpacs@dlr.de
         </xsd:complexContent>
     </xsd:complexType>
 
-    <xsd:complexType name="wingAeroPerformanceType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Wing aerodynamic performance</ddue:para>
-                    </ddue:summary>
-                    <ddue:remarks>
-                        <ddue:para>Performance maps with aerodynamic data of a wing.</ddue:para>
-                    </ddue:remarks>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:all>
-                    <xsd:element name="wingUID" type="stringUIDBaseType">
-                        <xsd:annotation>
-                            <xsd:documentation>Reference to the UID of the analysed wing
-                            </xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="reference" minOccurs="0" type="referenceType">
-                        <xsd:annotation>
-                            <xsd:documentation>References used for the calculation of the
-                                force and moment coefficients of the wing (in the wing axis
-                                system!)</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                    <xsd:element name="aeroPerformanceMaps" type="aeroPerformanceMapsRCType">
-                        <xsd:annotation>
-                            <xsd:documentation>Calculated aerodynamic performance maps</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:all>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
     <xsd:complexType name="wingAirfoilsType">
         <xsd:annotation>
             <xsd:appinfo>
@@ -55843,29 +55274,6 @@ cpacs@dlr.de
                     <xsd:element name="ribRotation" type="ribRotationType">
                         <xsd:annotation>
                             <xsd:documentation>Direction of the ribs</xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:element>
-                </xsd:sequence>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="wingsAeroPerformanceType">
-        <xsd:annotation>
-            <xsd:appinfo>
-                <sd:schemaDoc>
-                    <ddue:summary>
-                        <ddue:para>Wing aerodynamic performances</ddue:para>
-                    </ddue:summary>
-                </sd:schemaDoc>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexContent>
-            <xsd:extension base="complexBaseType">
-                <xsd:sequence>
-                    <xsd:element name="wingAeroPerformance" maxOccurs="unbounded" type="wingAeroPerformanceType">
-                        <xsd:annotation>
-                            <xsd:documentation>Aerodynamic performance of a single wing</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
