@@ -16186,7 +16186,7 @@ cpacs@dlr.de
                             <ddue:para>
                                 The three shapes serve different purposes.
                                 An ellipsoidal dome is the general case and the one to use where no particular head is meant.
-                                A torispherical dome is the head that pressure vessels are usually built from, because dish and knuckle can be pressed from sheet.
+                                A torispherical dome is the head that pressure vessels are usually built from, because dish and knuckle can be pressed from sheet metal.
                                 An isotensoid dome is the shape a filament-wound vessel takes when every filament carries the same tension.
                             </ddue:para>
                         </ddue:content>
@@ -21278,7 +21278,7 @@ cpacs@dlr.de
                             </ddue:para>
                             <ddue:para>
                                 The vessels of a tank are nested in its coordinate system, so the transformation of the tank scales and rotates them together with their own translation.
-                                A tank has more than one vessel wherever it is built from more than one shell: a pressure vessel with a vacuum jacket around it, or several cylinders in a row.
+                                A tank has more than one vessel wherever it is built from more than one shell, for example a pressure vessel with a vacuum jacket around it, or several cylinders in a row.
                             </ddue:para>
                             <ddue:mediaLink>
                                 <ddue:image xlink:href="fuelTankVessels"/>
@@ -25226,7 +25226,7 @@ cpacs@dlr.de
                         <ddue:content>
                             <ddue:para>
                                 The shape a filament-wound dome takes when every filament carries the same tension.
-                                It does not reach the axis: the filaments turn around a polar opening of radius r<ddue:subscript>p</ddue:subscript>, and the dome is closed there by a flat disk of that radius.
+                                It does not reach the axis: the filaments turn around a polar opening of radius r<ddue:subscript>p</ddue:subscript>, which is larger than zero, and the dome is closed there by a flat disk of that radius.
                             </ddue:para>
                             <ddue:para>
                                 The meridian has no closed form. It is the solution of
@@ -25249,15 +25249,9 @@ cpacs@dlr.de
                                 </ddue:externalLink>, 1996.
                                 The theory of isotensoid domes and their design are treated in depth in V. V. Vasiliev, "Composite Pressure Vessels: Design, Analysis, and Manufacturing", Bull Ridge Publishing, Blacksburg, 2009.
                             </ddue:para>
-                            <ddue:para>
-                                The singular radius also limits the polar opening: a dome exists only while it is smaller than the cylinder radius, that is for a polar opening radius below R divided by the square root of 1.5, about 0.816 R.
-                                Well below that limit the dome height hardly depends on the opening, between 0.60 R for a small opening and 0.63 R at an opening of 0.3 R.
-                                Towards the limit it grows without bound: 0.88 R at an opening of 0.7 R, 1.14 R at 0.75 R and 3.09 R at 0.80 R.
-                                A vessel whose dome is much taller than its radius is a sign that the opening is too large, not a shape anyone intended.
-                            </ddue:para>
                             <ddue:alert class="tigl">
                                 <ddue:para>
-                                    TiGL 3.5 integrates the contour in 50 steps and fits a spline through the result, so the vessel it builds is 0.3 % to 0.4 % smaller in volume than the contour above gives; measured for polar openings between 0.1 and 0.7 times the cylinder radius, and growing towards the limit. Two cases fail outright. A polar opening radius of 0.82 R or more, which TiGL accepts although no dome exists there, produces a bare cylinder with flat end faces and no error message. And an isotensoid dome together with a cylinder length of zero produces a broken shape whose volume is about half of the correct one.
+                                    TiGL 3.5 integrates the contour in 50 steps and fits a spline through the result, so the vessel it builds is 0.3 % to 0.4 % smaller in volume than the contour above gives; measured for polar openings between 0.1 and 0.7 times the cylinder radius. Two cases fail outright. A polar opening radius of 0.82 R or more, which TiGL accepts although the singular radius then lies beyond the cylinder and no dome exists, produces a bare cylinder with flat end faces and no error message. And an isotensoid dome together with a cylinder length of zero produces a broken shape whose volume is about half of the correct one.
                                 </ddue:para>
                             </ddue:alert>
                             <ddue:para>
@@ -52391,10 +52385,9 @@ cpacs@dlr.de
                         <ddue:content>
                             <ddue:para>
                                 Frames, stringers and walls are described by the same types as the structure of a fuselage (see <ddue:codeInline>fuselageStructureType</ddue:codeInline>) and are positioned in the same way.
-                                A vessel given by design parameters has no sections, so its frames and stringers are placed by an absolute position rather than by a section element.
                             </ddue:para>
                             <ddue:para>
-                                The one part that differs from a fuselage is the wall: a fuselage carries a single skin, while a vessel carries a stack of layers, given under <ddue:codeInline>&lt;skinLayers&gt;</ddue:codeInline> and described in <ddue:codeInline>vesselSkinLayersType</ddue:codeInline>.
+                                What differs from a fuselage are the skin layers: a fuselage carries a single skin, while a vessel carries a stack of layers, given under <ddue:codeInline>&lt;skinLayers&gt;</ddue:codeInline> and described in <ddue:codeInline>vesselSkinLayersType</ddue:codeInline>.
                             </ddue:para>
                         </ddue:content>
                     </ddue:remarks>
@@ -52481,7 +52474,7 @@ cpacs@dlr.de
                             <ddue:para>
                                 This branch uses the same types as a fuselage, including guide curves, and its cross sections are taken from the <ddue:codeInline>fuselageProfilesType</ddue:codeInline> collection.
                                 What a section and a segment mean, and how the profiles are placed and lofted, is defined in <ddue:codeInline>fuselageType</ddue:codeInline> and holds here without change.
-                                Use this branch wherever the vessel is not a body of revolution, for example where it follows the cross section of the fuselage around it.
+                                Use this branch wherever the vessel cannot be described by the simpler design parameters of the next section.
                             </ddue:para>
                             <ddue:para>
                                 <ddue:legacyBold>Design parameters</ddue:legacyBold>
@@ -52501,7 +52494,7 @@ cpacs@dlr.de
                             </ddue:para>
                             <ddue:alert class="tigl">
                                 <ddue:para>
-                                    TiGL 3.5 builds this branch from exact spherical, conical and toroidal surfaces and converts them to splines as soon as the vessel or its tank is scaled by different factors in x, y and z. The converted shape is slightly too large: measured over scaling factors from 0.5 to 3 and over all three dome shapes, the volume comes out 1.3 % above the exact value, while a scaling by one common factor is exact.
+                                    TiGL 3.5 builds this branch as an exact surface of revolution, from arcs of an ellipse or of circles for the ellipsoidal and the torispherical dome and from a spline through the integrated contour for the isotensoid dome. It converts these surfaces to splines as soon as the vessel or its tank is scaled by different factors in x, y and z. The converted shape is slightly too large: measured over scaling factors from 0.5 to 3, the volume comes out 1.3 % above the exact value for the ellipsoidal and the torispherical dome and 1.1 % for the isotensoid dome, while a scaling by one common factor is exact.
                                 </ddue:para>
                             </ddue:alert>
                             <ddue:para>
@@ -52518,12 +52511,12 @@ cpacs@dlr.de
                                 <ddue:codeInline>&lt;burstPressure&gt;</ddue:codeInline> is the internal pressure at which the vessel fails, not the pressure it is operated at.
                             </ddue:para>
                             <ddue:para>
-                                <ddue:legacyBold>Rules</ddue:legacyBold>
+                                <ddue:legacyBold>Rules for the design parameters</ddue:legacyBold>
                             </ddue:para>
                             <ddue:list class="bullet">
                                 <ddue:listItem>
                                     <ddue:para>
-                                        <ddue:codeInline>&lt;cylinderRadius&gt;</ddue:codeInline> and <ddue:codeInline>&lt;cylinderLength&gt;</ddue:codeInline> describe the reference surface of the vessel, the surface the contour sweeps out. Layers given under <ddue:codeInline>&lt;skinLayers&gt;</ddue:codeInline> lie on it, towards the outside.</ddue:para>
+                                        <ddue:codeInline>&lt;cylinderRadius&gt;</ddue:codeInline>, <ddue:codeInline>&lt;cylinderLength&gt;</ddue:codeInline> and <ddue:codeInline>&lt;domeType&gt;</ddue:codeInline> describe the reference surface of the vessel, the surface the contour sweeps out. Layers given under <ddue:codeInline>&lt;skinLayers&gt;</ddue:codeInline> lie on it, towards the outside.</ddue:para>
                                 </ddue:listItem>
                                 <ddue:listItem>
                                     <ddue:para>
