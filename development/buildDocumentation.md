@@ -65,6 +65,35 @@ on a broken schema. Warnings and notes do not fail the build.
 
 ---
 
+## Changes Since the Last Release
+
+```cmd
+pixi run doc-diff --open
+```
+
+compares the schema of the working copy with the schema of the last release (the highest
+`vX.Y.Z` tag) and draws the changes on the diagram, in `build/diff/diff.html`: added, removed
+and changed nodes, renames and moves, and for each change whether files valid against the
+release stay valid (*breaking*, *to review*, *compatible*). `report.md` next to it lists them
+in full, `summary.md` briefly. `--base` compares with another release, branch or commit, e.g.
+`--base v3.5`.
+
+The `Build documentation` workflow publishes the same page for `develop` under
+<https://dlr-sl.github.io/CPACS/diff/diff.html> and links it from the start page of the site.
+
+Whether a removed node and an added one are the same node renamed can be decided in
+`schema/cpacs_schema.renames.toml` next to the schema: a `[[rename]]` confirms such a pair
+(optionally only below one `parentType`), a `[[reject]]` stops it from being guessed again.
+Without the file, such pairs are shown as suspected renames, marked with "?".
+
+```toml
+[[rename]]
+old = "airportCompatability"
+new = "airportCompatibility"
+```
+
+---
+
 ## Updating the Generator
 
 `pixi.toml` pins cpacs-doc to a release tag, and `pixi.lock` records the exact commit. The

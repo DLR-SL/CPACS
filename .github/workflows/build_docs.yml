@@ -45,6 +45,12 @@ jobs:
         # schema without a second check.
         run: pixi run --frozen doc-build
 
+      - name: Draw the changes since the last release
+        # diff.html (+ report.md, summary.md, diff.json) under diff/ of the site, linked from its
+        # start page: what the next release adds, changes and breaks, as `pixi run doc-diff`
+        # shows it locally. The last release is the highest vX.Y.Z tag.
+        run: pixi run --frozen doc-diff -o build/doc/diff --link-from build/doc/index.html
+
       - name: Separate the one-file build from the Pages tree
         # What is deployed stays the site; the one file is 20 MB that no page
         # there links to. It is offered as a download instead, in the role the
