@@ -33,6 +33,10 @@ EXAMPLE_FILES = [
     if path.name not in EXCLUDED_EXAMPLES
 ]
 
+# Semantic Versioning 2.0.0; pre-release identifiers in lower case, so that
+# 3.6.0-dev < 3.6.0-rc.1 < 3.6.0 in the order the specification defines.
+SCHEMA_VERSION = re.compile(r"(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(-(dev|rc\.[1-9]\d*))?")
+
 DDUE = "http://ddue.schemas.microsoft.com/authoring/2003/5"
 XSD = "http://www.w3.org/2001/XMLSchema"
 
@@ -130,3 +134,27 @@ def test_toolspecific_documentation_shows_the_example_file() -> None:
     documented = documented_code_block("Data of a single tool")
     in_file = re.search(r"<toolspecific>.*</toolspecific>", TOOLSPECIFIC_EXAMPLE.read_text(encoding="utf-8"), re.S)
     assert compact(documented) == compact(in_file.group())
+
+
+def test_schema_states_its_version() -> None:
+    """xsd:schema/@version is the one machine-readable statement of the CPACS version."""
+    version = etree.parse(str(SCHEMA)).getroot().get("version")
+    assert version, "xsd:schema carries no version attribute, see development/release.md"
+    assert SCHEMA_VERSION.fullmatch(version), (
+        f"xsd:schema/@version {version!r} is not of the form X.Y.Z, X.Y.Z-dev or X.Y.Z-rc.N"
+    )
+
+
+def test_documented_version_matches_the_schema_version() -> None:
+    """The version table in the documentation of cpacsType repeats xsd:schema/@version for readers."""
+    root = etree.parse(str(SCHEMA)).getroot()
+    terms = root.xpath(
+        "xsd:complexType[@name='cpacsType']//ddue:definitionTable/ddue:definedTerm[normalize-space()='Version']",
+        namespaces={"xsd": XSD, "ddue": DDUE},
+    )
+    assert len(terms) == 1, "cpacsType documents no version, see development/release.md"
+    definition = terms[0].getnext()
+    documented = " ".join("".join(definition.itertext()).split())
+    assert documented == root.get("version"), (
+        f"cpacsType documents version {documented!r}, xsd:schema states {root.get('version')!r}"
+    )
