@@ -39,6 +39,10 @@ Furthermore, we should avoid using mathematical symbols or abbreviations as thei
 - **§6: Always use SI and accepted derived units.***
 - **§7: Use the CPACS coordinate system for describing data (do not introduce new coordinate systems if not absolutely necessary).**
 
+## Version of the schema
+
+The CPACS version of the schema is stated in one place: the `version` attribute on the root element `xsd:schema`, for example `<xsd:schema … version="3.6.0-dev">`. Tools that need the version, such as TiGL comparing a dataset's `cpacsVersion` with the CPACS version it was built against, read it there, not from the release notes or other documentation text, which may be reworded at any time. Project branches that extend the schema keep the version they are based on. How the attribute changes over a release is described in [the release process](release.md).
+
 ## Documentation of elements and attributes
 
 Every element and every attribute carries an `xsd:annotation/xsd:documentation` text. It is the string a user sees next to the node in the generated documentation, so it should read as a caption for *that* node — not as a sentence about the schema. §8 to §13 below apply to elements and attributes alike; §14 adds what is specific to attributes.
